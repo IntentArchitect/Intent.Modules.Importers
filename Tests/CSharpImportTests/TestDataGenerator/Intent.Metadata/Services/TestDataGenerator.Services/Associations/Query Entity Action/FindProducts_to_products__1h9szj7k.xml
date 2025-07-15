@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="52349e15-9ad7-443b-8f3c-baa6456c34b0">
+  <sourceEnd id="ac753030-6297-4548-bed2-3537d019fbfa" type="Query Entity Action Source End" typeId="32a65f26-2555-4616-8a2c-6a90805600bb">
+    <display>: FindProducts</display>
+    <order>0</order>
+    <typeReference id="289113da-225c-4740-b771-6d737f6a84ec">
+      <typeId>547db09c-46b0-4a44-8785-09c75c6cc1c0</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>TestDataGenerator.Services</typePackageName>
+      <typePackageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="52349e15-9ad7-443b-8f3c-baa6456c34b0" type="Query Entity Action Target End" typeId="93ef6675-cba4-4998-adff-cb22d5343ed4">
+    <name>products</name>
+    <display>[query] products: Product[*]</display>
+    <order>0</order>
+    <typeReference id="38912698-ff61-4b09-809b-2576666ab602">
+      <typeId>e2a8bbd3-321e-49b7-9be5-9117e32801d9</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>TestDataGenerator.Domain</typePackageName>
+      <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <mappings>
+      <mapping type="Query Entity Mapping" typeId="25f25af9-c38b-4053-9474-b0fabe9d7ea7">
+        <source applicationId="54d7cf1b-876e-4967-a08b-5fc13e690a6d" designerId="81104ae6-2bc5-4bae-b05a-f987b0372d81" elementId="547db09c-46b0-4a44-8785-09c75c6cc1c0" location="[TestDataGenerator].[Services].[FindProducts]" />
+        <target applicationId="54d7cf1b-876e-4967-a08b-5fc13e690a6d" designerId="6ab29b31-27af-4f56-a67c-986d82097d63" elementId="e2a8bbd3-321e-49b7-9be5-9117e32801d9" location="[TestDataGenerator].[Services].[Product]" />
+        <mappedEnds />
+      </mapping>
+    </mappings>
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Query Entity Action</associationType>
+  <associationTypeId>47ab5888-a258-4bec-a9fc-a83de69eb79d</associationTypeId>
+  <stereotypes />
+</association>

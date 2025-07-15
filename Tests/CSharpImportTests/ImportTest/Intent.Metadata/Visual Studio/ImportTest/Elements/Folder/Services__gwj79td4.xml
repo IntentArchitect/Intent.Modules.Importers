@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="00266ad7-c145-491f-96b3-453687a66ede" type="Folder" typeId="3407a825-1331-4f3f-89a4-901903ed97ce">
+  <name>Services</name>
+  <display>Services</display>
+  <isAbstract>false</isAbstract>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>ac9b42d3-cf01-4db9-b20d-1e8947e11c8a</parentFolderId>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="47924246-9ba8-4be4-aa64-40e2d083a78c" type="Template Output" typeId="d421c322-7a51-4094-89fa-e5d8a0a97b27">
+      <name>Intent.MediatR.DomainEvents.DomainEventService</name>
+      <display>Intent.MediatR.DomainEvents.DomainEventService</display>
+      <externalReference>Intent.MediatR.DomainEvents</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <isMapped>false</isMapped>
+      <parentFolderId>00266ad7-c145-491f-96b3-453687a66ede</parentFolderId>
+      <stereotypes />
+      <metadata>
+        <entry key="status" value="assigned" />
+      </metadata>
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

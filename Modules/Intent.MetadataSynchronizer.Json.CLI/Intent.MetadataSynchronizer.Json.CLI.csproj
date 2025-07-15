@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Version>1.0.0-pre.2</Version>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>intent-json-metadata-synchronizer</ToolCommandName>
+    <PackageIcon>Intent Architect - Logo (color).png</PackageIcon>
+    <Authors>Jonathan Lydall</Authors>
+    <Company>Intent Software (Pty) Ltd.</Company>
+    <Description>The Intent JSON Metadata Synchronizer CLI tool can be used to synchronize an object graph in a JSON file into an Intent Architect Document DB domain package.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://intentarchitect.com/</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Intent.MetadataSynchronizer\Intent.MetadataSynchronizer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../logo.png">
+      <Pack>True</Pack>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="3efae3b2-d86f-4633-b9c3-4f99f63b4165" type="DTO" typeId="fee0edca-4aa0-4f77-a524-6bbd84e78734">
+  <name>ProductCreateDto</name>
+  <display>ProductCreateDto</display>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>3f5e8a15-f0a5-41ce-879f-42bbc56d4366</parentFolderId>
+  <packageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</packageId>
+  <packageName>TestDataGenerator.Services</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="e305272e-de8e-4b37-aa5e-65827b4d0e9d" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+      <name>Name</name>
+      <display>Name: string</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="d5254158-5116-410f-af6d-ba94a3455db0">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>3efae3b2-d86f-4633-b9c3-4f99f63b4165</parentFolderId>
+      <packageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</packageId>
+      <packageName>TestDataGenerator.Services</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="659ea292-2e37-4b41-8330-7ea428ef7699" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+      <name>Type</name>
+      <display>Type: ProductType</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="ee6d15af-be43-4e03-b7e1-f0717b112f53">
+        <typeId>45f7c880-d90e-4750-8a8d-8b0987b50ddc</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>3efae3b2-d86f-4633-b9c3-4f99f63b4165</parentFolderId>
+      <packageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</packageId>
+      <packageName>TestDataGenerator.Services</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

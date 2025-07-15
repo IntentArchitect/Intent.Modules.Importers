@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="0388dee0-1212-432e-9139-3ff8f2ff3035" type="Value Object" typeId="5fe6bb0a-7fc3-42ae-a351-d9188f5b8bc5">
+  <name>Money</name>
+  <display>Money</display>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</parentFolderId>
+  <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+  <packageName>TestDataGenerator.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="5f9670c2-4533-4108-9e85-700cf272c36d" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Amount</name>
+      <display>Amount: decimal</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="4b2f222f-73e5-48a7-ad17-d663a108a1cd">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>0388dee0-1212-432e-9139-3ff8f2ff3035</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="e7501e42-d96e-479f-8516-631fb3699580" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Currency</name>
+      <display>Currency: string</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="ff967fcb-d747-4a1b-ac4d-b5cf8025988b">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>0388dee0-1212-432e-9139-3ff8f2ff3035</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes>
+        <stereotype stereotypeDefinitionId="6347286E-A637-44D6-A5D7-D9BE5789CA7A" name="Text Constraints">
+          <addedByDefault>false</addedByDefault>
+          <definitionPackageName>Intent.Metadata.RDBMS</definitionPackageName>
+          <definitionPackageId>AF8F3810-745C-42A2-93C8-798860DC45B1</definitionPackageId>
+          <properties>
+            <property name="1288cfcd-ee51-437e-9713-73b80118f026" display="SQL Data Type" value="DEFAULT" isActive="true" />
+            <property name="A04CC24D-81FB-4EA2-A34A-B3C58E04DCFD" display="MaxLength" isActive="true" />
+            <property name="67EC4CF4-7706-4B39-BC7C-DF539EE2B0AF" display="IsUnicode" value="false" isActive="true" />
+          </properties>
+        </stereotype>
+      </stereotypes>
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

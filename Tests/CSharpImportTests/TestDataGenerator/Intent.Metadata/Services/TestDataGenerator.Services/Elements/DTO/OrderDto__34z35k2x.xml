@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="a147ba2d-752b-42c6-b76e-1eb07e0b5908" type="DTO" typeId="fee0edca-4aa0-4f77-a524-6bbd84e78734">
+  <name>OrderDto</name>
+  <display>OrderDto</display>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>true</isMapped>
+  <mappedClass isRoot="true">
+    <applicationId>54d7cf1b-876e-4967-a08b-5fc13e690a6d</applicationId>
+    <metadataId>6ab29b31-27af-4f56-a67c-986d82097d63</metadataId>
+    <mappingSettingsId>1f747d14-681c-4a20-8c68-34223f41b825</mappingSettingsId>
+    <autoSyncTypeReference>true</autoSyncTypeReference>
+    <mappedPath>
+      <target id="08135bcb-63e9-4be2-8f63-7c89907f7a42" name="Order" type="element" specialization="Class" specializationId="04e12b51-ed12-42a3-9667-a6aa81bb6d10" />
+    </mappedPath>
+  </mappedClass>
+  <parentFolderId>a3c1b92c-808c-4717-bc03-8062324086fd</parentFolderId>
+  <packageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</packageId>
+  <packageName>TestDataGenerator.Services</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="5617606f-b904-42bc-ac0b-7e8a101d0a23" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+      <name>RefNo</name>
+      <display>RefNo: int</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="7a1b4b34-0ece-4d09-9535-3822a22d3e10">
+        <typeId>fb0a362d-e9e2-40de-b6ff-5ce8167cbe74</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>true</isMapped>
+      <mappedClass>
+        <mappingSettingsId>1f747d14-681c-4a20-8c68-34223f41b825</mappingSettingsId>
+        <autoSyncTypeReference>true</autoSyncTypeReference>
+        <mappedPath>
+          <target id="bed54410-e73e-492d-a318-714329bed176" name="RefNo" type="element" specialization="Attribute" specializationId="0090fb93-483e-41af-a11d-5ad2dc796adf" />
+        </mappedPath>
+      </mappedClass>
+      <parentFolderId>a147ba2d-752b-42c6-b76e-1eb07e0b5908</parentFolderId>
+      <packageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</packageId>
+      <packageName>TestDataGenerator.Services</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="0477cdd3-f9c4-48d1-bf04-bad6f126f34f" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+      <name>CreatedDate</name>
+      <display>CreatedDate: datetime</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="8addf2ab-5747-4f26-b93d-8c5afce6e617">
+        <typeId>a4107c29-7851-4121-9416-cf1236908f1e</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>true</isMapped>
+      <mappedClass>
+        <mappingSettingsId>1f747d14-681c-4a20-8c68-34223f41b825</mappingSettingsId>
+        <autoSyncTypeReference>true</autoSyncTypeReference>
+        <mappedPath>
+          <target id="5cf34ca5-17d6-463a-b880-01f60a1ea235" name="CreatedDate" type="element" specialization="Attribute" specializationId="0090fb93-483e-41af-a11d-5ad2dc796adf" />
+        </mappedPath>
+      </mappedClass>
+      <parentFolderId>a147ba2d-752b-42c6-b76e-1eb07e0b5908</parentFolderId>
+      <packageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</packageId>
+      <packageName>TestDataGenerator.Services</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="86bd119d-4865-427d-8287-e8ed0cff6eb2" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+      <name>Id</name>
+      <display>Id: guid</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="704991f9-28b6-4a28-a170-f32d666fbc74">
+        <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>true</isMapped>
+      <mappedClass>
+        <mappingSettingsId>1f747d14-681c-4a20-8c68-34223f41b825</mappingSettingsId>
+        <autoSyncTypeReference>true</autoSyncTypeReference>
+        <mappedPath>
+          <target id="7675cc6f-384b-4ffa-8c0c-1d2bf7c8ef02" name="Id" type="element" specialization="Attribute" specializationId="0090fb93-483e-41af-a11d-5ad2dc796adf" />
+        </mappedPath>
+      </mappedClass>
+      <parentFolderId>a147ba2d-752b-42c6-b76e-1eb07e0b5908</parentFolderId>
+      <packageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</packageId>
+      <packageName>TestDataGenerator.Services</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

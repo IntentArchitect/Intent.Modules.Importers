@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="58db4bc5-89f6-4d76-a4e7-959168c17744">
+  <sourceEnd id="fbfc8025-54ee-4bff-bce1-0ab13b399017" type="Delete Entity Action Source End" typeId="8c2d9fed-bd14-44b2-9f98-8a801aaf157e">
+    <display>deleted by : OrdersService.DeleteOrder</display>
+    <order>0</order>
+    <typeReference id="44a43ca5-9b09-4459-8b2d-3546df90aab4">
+      <typeId>0abfc88e-029d-414b-9c47-c842c13c10b4</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>TestDataGenerator.Services</typePackageName>
+      <typePackageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="58db4bc5-89f6-4d76-a4e7-959168c17744" type="Delete Entity Action Target End" typeId="4a04cfc2-5841-438c-9c16-fb58b784b365">
+    <name>order</name>
+    <display>[delete] order: Order</display>
+    <order>1</order>
+    <typeReference id="8f0c2589-d1a8-494e-b05d-a5eefa63f7da">
+      <typeId>08135bcb-63e9-4be2-8f63-7c89907f7a42</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>TestDataGenerator.Domain</typePackageName>
+      <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <mappings>
+      <mapping type="Query Entity Mapping" typeId="25f25af9-c38b-4053-9474-b0fabe9d7ea7">
+        <source applicationId="54d7cf1b-876e-4967-a08b-5fc13e690a6d" designerId="81104ae6-2bc5-4bae-b05a-f987b0372d81" elementId="0abfc88e-029d-414b-9c47-c842c13c10b4" location="[TestDataGenerator].[Services].[DeleteOrder]" />
+        <target applicationId="54d7cf1b-876e-4967-a08b-5fc13e690a6d" designerId="6ab29b31-27af-4f56-a67c-986d82097d63" elementId="08135bcb-63e9-4be2-8f63-7c89907f7a42" location="[TestDataGenerator].[Services].[Order]" />
+        <mappedEnds>
+          <mappedEnd>
+            <expression>{id}</expression>
+            <path>
+              <target id="08135bcb-63e9-4be2-8f63-7c89907f7a42" name="Order" type="element" specialization="Class" />
+              <target id="7675cc6f-384b-4ffa-8c0c-1d2bf7c8ef02" name="Id" type="element" specialization="Attribute" />
+            </path>
+            <sources>
+              <source identifier="id" mappingType="Filter Mapping" mappingTypeId="01d09a7f-0e7c-4670-b7bc-395d7e893ef2">
+                <path>
+                  <target id="0abfc88e-029d-414b-9c47-c842c13c10b4" name="DeleteOrder" type="element" specialization="Operation" />
+                  <target id="18c6408b-ffd9-4b81-97ea-40adab2ceae9" name="id" type="element" specialization="Parameter" />
+                </path>
+              </source>
+            </sources>
+          </mappedEnd>
+        </mappedEnds>
+      </mapping>
+    </mappings>
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Delete Entity Action</associationType>
+  <associationTypeId>bfc823fb-60ab-451d-ba62-12671fe7e28e</associationTypeId>
+  <stereotypes />
+</association>

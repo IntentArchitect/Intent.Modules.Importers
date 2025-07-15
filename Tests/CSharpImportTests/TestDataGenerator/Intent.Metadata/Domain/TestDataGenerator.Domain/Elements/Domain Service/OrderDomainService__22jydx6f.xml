@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="3881201e-1d6b-40df-9524-1bdc1ba01e77" type="Domain Service" typeId="07f936ea-3756-48c8-babd-24ac7271daac">
+  <name>OrderDomainService</name>
+  <display>OrderDomainService</display>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</parentFolderId>
+  <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+  <packageName>TestDataGenerator.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="bf01f868-062d-46b5-b4ca-53240d4d4d0a" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>GetOrder</name>
+      <display>GetOrder(id: guid): Order</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="6538414c-0d43-47aa-88ed-88919eea5ef7">
+        <typeId>08135bcb-63e9-4be2-8f63-7c89907f7a42</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>3881201e-1d6b-40df-9524-1bdc1ba01e77</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="18cad542-4eba-4d5f-bee2-69e0c7786a82" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>id</name>
+          <display>in : id: guid</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="b56e3e95-943a-4a7c-b8ca-e7bbf43d4420">
+            <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>Intent.Common.Types</typePackageName>
+            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>bf01f868-062d-46b5-b4ca-53240d4d4d0a</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="28c64ac1-e24d-4b69-8598-c8b2b790c94b" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>GetOrderAsync</name>
+      <display>GetOrderAsync(id: guid): Order</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="4c0496c1-0a3b-49ed-ba69-ea6153943ac2">
+        <typeId>08135bcb-63e9-4be2-8f63-7c89907f7a42</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>3881201e-1d6b-40df-9524-1bdc1ba01e77</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="58174db0-75ed-4e6e-ad8d-402ae1fb5d46" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>id</name>
+          <display>in : id: guid</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="6b8b3135-e439-40ee-9764-0c5c211e60fc">
+            <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>Intent.Common.Types</typePackageName>
+            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>28c64ac1-e24d-4b69-8598-c8b2b790c94b</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+  </childElements>
+</class>

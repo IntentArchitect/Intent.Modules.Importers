@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="61559468-3ca7-4310-9ee9-b667bf10086e">
+  <sourceEnd id="6dc3772b-f18c-40a4-a0a9-908b34371a36" type="Create Entity Action Source End" typeId="a3e7c59e-b0a1-47e1-ba29-66f2c7047b0a">
+    <display>created by : ProductsService.CreateProduct</display>
+    <order>0</order>
+    <typeReference id="92efab67-6968-4dc3-bb21-61aca8e3494b">
+      <typeId>c061a05c-8bec-4559-bfa7-f09e7033c8b7</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>TestDataGenerator.Services</typePackageName>
+      <typePackageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="61559468-3ca7-4310-9ee9-b667bf10086e" type="Create Entity Action Target End" typeId="328f54e5-7bad-4b5f-90ca-03ce3105d016">
+    <name>product</name>
+    <display>[create] product: Product</display>
+    <order>1</order>
+    <typeReference id="0110f38a-26ca-44ad-bfec-8ce841d9e08e">
+      <typeId>e2a8bbd3-321e-49b7-9be5-9117e32801d9</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>TestDataGenerator.Domain</typePackageName>
+      <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <mappings>
+      <mapping type="Create Entity Mapping" typeId="5f172141-fdba-426b-980e-163e782ff53e">
+        <source applicationId="54d7cf1b-876e-4967-a08b-5fc13e690a6d" designerId="81104ae6-2bc5-4bae-b05a-f987b0372d81" elementId="c061a05c-8bec-4559-bfa7-f09e7033c8b7" location="[TestDataGenerator].[Services].[CreateProduct]" />
+        <target applicationId="54d7cf1b-876e-4967-a08b-5fc13e690a6d" designerId="6ab29b31-27af-4f56-a67c-986d82097d63" elementId="e2a8bbd3-321e-49b7-9be5-9117e32801d9" location="[TestDataGenerator].[Services].[Product]" />
+        <mappedEnds>
+          <mappedEnd>
+            <expression>{CreateProduct}</expression>
+            <path>
+              <target id="e2a8bbd3-321e-49b7-9be5-9117e32801d9" name="Product" type="element" specialization="Class" />
+            </path>
+            <sources>
+              <source identifier="CreateProduct" mappingType="Invocation Mapping" mappingTypeId="47dc4a51-30a3-4ee8-8c7d-25a35bb965b9">
+                <path>
+                  <target id="c061a05c-8bec-4559-bfa7-f09e7033c8b7" name="CreateProduct" type="element" specialization="Operation" />
+                </path>
+              </source>
+            </sources>
+          </mappedEnd>
+          <mappedEnd>
+            <expression>{dto.Name}</expression>
+            <path>
+              <target id="e2a8bbd3-321e-49b7-9be5-9117e32801d9" name="Product" type="element" specialization="Class" />
+              <target id="fb707137-6ab7-4014-8b98-05f5ac62cd78" name="Name" type="element" specialization="Attribute" />
+            </path>
+            <sources>
+              <source identifier="dto.Name" mappingType="Data Mapping" mappingTypeId="50dccfb2-bd24-4135-adf6-ed31f28f8fe0">
+                <path>
+                  <target id="c061a05c-8bec-4559-bfa7-f09e7033c8b7" name="CreateProduct" type="element" specialization="Operation" />
+                  <target id="e64ccbe0-5ab5-42f3-94f8-8ad1a2e2e5cc" name="dto" type="element" specialization="Parameter" />
+                  <target id="e305272e-de8e-4b37-aa5e-65827b4d0e9d" name="Name" type="element" specialization="DTO-Field" />
+                </path>
+              </source>
+            </sources>
+          </mappedEnd>
+          <mappedEnd>
+            <expression>{dto.Type}</expression>
+            <path>
+              <target id="e2a8bbd3-321e-49b7-9be5-9117e32801d9" name="Product" type="element" specialization="Class" />
+              <target id="1c70fe75-0813-448f-b5aa-871ea589ad9d" name="Type" type="element" specialization="Attribute" />
+            </path>
+            <sources>
+              <source identifier="dto.Type" mappingType="Data Mapping" mappingTypeId="50dccfb2-bd24-4135-adf6-ed31f28f8fe0">
+                <path>
+                  <target id="c061a05c-8bec-4559-bfa7-f09e7033c8b7" name="CreateProduct" type="element" specialization="Operation" />
+                  <target id="e64ccbe0-5ab5-42f3-94f8-8ad1a2e2e5cc" name="dto" type="element" specialization="Parameter" />
+                  <target id="659ea292-2e37-4b41-8330-7ea428ef7699" name="Type" type="element" specialization="DTO-Field" />
+                </path>
+              </source>
+            </sources>
+          </mappedEnd>
+        </mappedEnds>
+      </mapping>
+    </mappings>
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Create Entity Action</associationType>
+  <associationTypeId>7a3f0474-3cf8-4249-baac-8c07c49465e0</associationTypeId>
+  <stereotypes />
+</association>

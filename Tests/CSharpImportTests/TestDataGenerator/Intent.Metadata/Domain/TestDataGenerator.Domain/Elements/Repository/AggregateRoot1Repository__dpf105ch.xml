@@ -1,0 +1,1819 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="ecaca0b7-2a25-4077-a339-e85eff6e91e3" type="Repository" typeId="96ffceb2-a70a-4b69-869b-0df436c470c3">
+  <name>AggregateRoot1Repository</name>
+  <display>AggregateRoot1Repository&lt;AggregateRoot1&gt;</display>
+  <isAbstract>false</isAbstract>
+  <sort-children>manually</sort-children>
+  <genericTypes />
+  <typeReference id="76fc04da-206a-492c-9042-8a2cd03c6325">
+    <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+    <isNavigable>true</isNavigable>
+    <isNullable>false</isNullable>
+    <isCollection>false</isCollection>
+    <isRequired>true</isRequired>
+    <typePackageName>TestDataGenerator.Domain</typePackageName>
+    <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+    <stereotypes />
+    <genericTypeParameters />
+  </typeReference>
+  <isMapped>false</isMapped>
+  <parentFolderId>950e968e-63ef-4339-bf35-3bafe2a4ccc1</parentFolderId>
+  <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+  <packageName>TestDataGenerator.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="4729f7e3-aeb3-4b5a-bf36-3e20244c359c" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params0_ReturnsV_Collection0</name>
+      <display>Operation_Params0_ReturnsV_Collection0(): void</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="785bafa7-3043-4a96-aeb8-3e89fdda4af7">
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="2c8f1a5f-1c6f-4156-959b-6ca8472cfa55" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params0_ReturnsD_Collection0</name>
+      <display>Operation_Params0_ReturnsD_Collection0(): SpResult</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="ddf4b7ed-a1b2-4d03-b37a-9bd53cfe37bd">
+        <typeId>2c2dcbd7-41bf-4eba-877d-03331113eeb6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="08cf82b1-d5f5-444d-934f-3ef9bab6dd06" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params0_ReturnsD_Collection1</name>
+      <display>Operation_Params0_ReturnsD_Collection1(): SpResult[*]</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="a285421c-15de-48bf-98d3-12e97e1f3beb">
+        <typeId>2c2dcbd7-41bf-4eba-877d-03331113eeb6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="9929d006-9c3a-4a61-85fd-f00c2f247d32" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params0_ReturnsE_Collection0</name>
+      <display>Operation_Params0_ReturnsE_Collection0(): AggregateRoot1</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="050a1b5d-09cb-444b-9e98-f8eab64dfc8b">
+        <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="9eaddffd-39ed-4a50-81b1-f4a59634427d" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params0_ReturnsE_Collection1</name>
+      <display>Operation_Params0_ReturnsE_Collection1(): AggregateRoot1[*]</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="0ad7f96d-3cca-4c95-9013-fdd76a1c97cc">
+        <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="90fff182-a0eb-4e81-a4ed-ffc863acb376" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params0_ReturnsV_Collection0Async</name>
+      <display>Operation_Params0_ReturnsV_Collection0Async(): void</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="9b5db272-72cc-40e6-8837-6110935c69ae">
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="f2180b36-2ca5-4653-bf2b-9d62a13a7c00" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params0_ReturnsD_Collection0Async</name>
+      <display>Operation_Params0_ReturnsD_Collection0Async(): SpResult</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="9aa3c908-6aa8-48b2-afb4-35c615f37f59">
+        <typeId>2c2dcbd7-41bf-4eba-877d-03331113eeb6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="f2c4888c-d431-4fd0-b2d3-336e269417c7" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params0_ReturnsD_Collection1Async</name>
+      <display>Operation_Params0_ReturnsD_Collection1Async(): SpResult[*]</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="de6c1fd2-fd98-4dad-91f4-e3d713bc7ab3">
+        <typeId>2c2dcbd7-41bf-4eba-877d-03331113eeb6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="b2d8ed9c-867b-475a-86d6-1c7b89a45fec" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params0_ReturnsE_Collection0Async</name>
+      <display>Operation_Params0_ReturnsE_Collection0Async(): AggregateRoot1</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="27e76e80-70a8-4267-9fee-b482c990fab5">
+        <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="62b4156c-7d5e-4f79-aed4-10725caffc84" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params0_ReturnsE_Collection1Async</name>
+      <display>Operation_Params0_ReturnsE_Collection1Async(): AggregateRoot1[*]</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="d0145a37-6d30-42eb-ae2d-2dcf9adda27e">
+        <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="471afe2c-e3af-4e99-9dfd-aed1f035c97c" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params1_ReturnsV_Collection0</name>
+      <display>Operation_Params1_ReturnsV_Collection0(param: SpParameter): void</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="63106a4e-63f5-426a-bb33-1f06b3830f14">
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="9dc240a3-32d5-4044-8aee-4cd495a516de" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="9e9919b2-8817-4ff5-903c-bc292e6a0812">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>471afe2c-e3af-4e99-9dfd-aed1f035c97c</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="6287a164-0f31-4329-bdfa-601674097b84" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params1_ReturnsD_Collection0</name>
+      <display>Operation_Params1_ReturnsD_Collection0(param: SpParameter): SpResult</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="c128500e-bb9d-4c4c-afb6-fcfaf86613b2">
+        <typeId>2c2dcbd7-41bf-4eba-877d-03331113eeb6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="09da5a22-f3e0-417e-8235-a5c003e7f74f" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="61a63f97-046b-4996-9be6-80b2846c28e9">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>6287a164-0f31-4329-bdfa-601674097b84</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="cf5118a8-4bbc-476b-a4f4-98e4b27be57f" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params1_ReturnsD_Collection1</name>
+      <display>Operation_Params1_ReturnsD_Collection1(param: SpParameter): SpResult[*]</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="ea3ef0a4-081b-4f30-8b47-90e6eaa800fb">
+        <typeId>2c2dcbd7-41bf-4eba-877d-03331113eeb6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="33ba686c-2fce-46ba-a78f-3485599fb284" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="93ba6268-bf89-41b8-b5ff-76bb45f83232">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>cf5118a8-4bbc-476b-a4f4-98e4b27be57f</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="65ca12b5-59a0-4567-a72c-b1003f583c0a" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params1_ReturnsE_Collection0</name>
+      <display>Operation_Params1_ReturnsE_Collection0(param: SpParameter): AggregateRoot1</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="fccb591e-77ce-4ebd-9510-be4c66a9ff2a">
+        <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="dd03066a-6fd5-4acf-9e52-28bb1df17474" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="0084bf41-c79f-4d39-8d5d-e9db66f94088">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>65ca12b5-59a0-4567-a72c-b1003f583c0a</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="c20109ab-8f7d-4b0d-a1aa-50f187516e94" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params1_ReturnsE_Collection1</name>
+      <display>Operation_Params1_ReturnsE_Collection1(param: SpParameter): AggregateRoot1[*]</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="e56402db-98c3-4c9a-b1e3-321892f694b8">
+        <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="7d19adbf-47f3-49c4-ab4a-33a9533e6787" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="2b469e67-6953-46ed-8ea5-a043d47e8694">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>c20109ab-8f7d-4b0d-a1aa-50f187516e94</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="2c071a14-ce50-4a6f-bcce-9247ca3239a0" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params1_ReturnsV_Collection0Async</name>
+      <display>Operation_Params1_ReturnsV_Collection0Async(param: SpParameter): void</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="1164a4c3-72dc-4d6e-8d81-1e6606499fd2">
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="f53c6897-00aa-4e71-bcd6-8c5ebd47431d" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="853e8918-f93b-454d-a755-d7ab6abed3e5">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>2c071a14-ce50-4a6f-bcce-9247ca3239a0</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="a4a4a48f-1153-461f-99de-5f72c5739ee3" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params1_ReturnsD_Collection0Async</name>
+      <display>Operation_Params1_ReturnsD_Collection0Async(param: SpParameter): SpResult</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="29daaacc-bca8-4bc6-9bc7-e687bcc77a8b">
+        <typeId>2c2dcbd7-41bf-4eba-877d-03331113eeb6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="75c7a27e-d512-446c-9177-b8d2e105382d" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="b613c404-8ce4-4f80-9a67-1ce73ccfa373">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>a4a4a48f-1153-461f-99de-5f72c5739ee3</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="079997e1-66a4-4a39-8fec-11dcc054e384" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params1_ReturnsD_Collection1Async</name>
+      <display>Operation_Params1_ReturnsD_Collection1Async(param: SpParameter): SpResult[*]</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="370c22ef-93fe-4c9d-a31b-53d18dcfbb33">
+        <typeId>2c2dcbd7-41bf-4eba-877d-03331113eeb6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="e71b4256-38c1-4fac-b81e-e2151e0a6daa" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="d5a5b7c9-2a61-45e6-a4ff-c2a4ecfdfb58">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>079997e1-66a4-4a39-8fec-11dcc054e384</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="3172d714-6e50-4714-9062-bbcf75a8e47b" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params1_ReturnsE_Collection0Async</name>
+      <display>Operation_Params1_ReturnsE_Collection0Async(param: SpParameter): AggregateRoot1</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="6b1113c9-3e2d-4ba1-ae3b-804647d1e13d">
+        <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="20d16841-ed71-44c3-ae95-8b5d977bd8a8" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="032b54e7-f750-4f4b-a498-2c9a8bcec30e">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>3172d714-6e50-4714-9062-bbcf75a8e47b</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="a5b6b889-cb8b-466b-945d-d0f64174914c" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params1_ReturnsE_Collection1Async</name>
+      <display>Operation_Params1_ReturnsE_Collection1Async(param: SpParameter): AggregateRoot1[*]</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="9f8dc419-8f07-4e56-99b9-306b5b2911b8">
+        <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="5fe5f284-a400-4b89-b2b3-38e3f3b273a0" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="1932d969-46be-4f86-9045-0c33c3ec1efa">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>a5b6b889-cb8b-466b-945d-d0f64174914c</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="9ee0936b-74ef-498f-a08a-af78e83f44f2" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params3_ReturnsV_Collection0</name>
+      <display>Operation_Params3_ReturnsV_Collection0(param: SpParameter, aggrParam: AggregateRoot1, strParam: string): void</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="e7d00fa8-b273-4fa3-9970-942349be7cb1">
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="3b35a1cf-a56c-4d04-85f4-882c3f4ef9b3" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="558a1e4b-c3f3-4d8b-806f-8e11d7b0a492">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>9ee0936b-74ef-498f-a08a-af78e83f44f2</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="724abf46-1a41-4223-a378-8892f24479a0" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>aggrParam</name>
+          <display>in : aggrParam: AggregateRoot1</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="a23b7e63-e132-4bb3-8e1a-3884acbf0270">
+            <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>9ee0936b-74ef-498f-a08a-af78e83f44f2</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="7b6aacba-ec13-47cc-b35e-78169ef5dc6f" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>strParam</name>
+          <display>in : strParam: string</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="8b8924f7-b271-4da5-ad66-e6f1fd1dfc32">
+            <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>Intent.Common.Types</typePackageName>
+            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>9ee0936b-74ef-498f-a08a-af78e83f44f2</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="8a37112b-e929-4b38-91e9-f0c57dbbf2ba" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params3_ReturnsD_Collection0</name>
+      <display>Operation_Params3_ReturnsD_Collection0(param: SpParameter, aggrParam: AggregateRoot1, strParam: string): SpResult</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="d4419f9d-91bd-40bd-8511-e0cc650fbe4b">
+        <typeId>2c2dcbd7-41bf-4eba-877d-03331113eeb6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="335c83c0-6ce9-45b5-a7ab-82c3dfe2e325" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="0417aaaf-3ab2-4f2c-bcec-7ee944efe8c9">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>8a37112b-e929-4b38-91e9-f0c57dbbf2ba</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="ae417468-ee48-440b-8ffe-29d4d3a0c578" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>aggrParam</name>
+          <display>in : aggrParam: AggregateRoot1</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="c5318c49-e396-4ace-a41e-f838932bde38">
+            <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>8a37112b-e929-4b38-91e9-f0c57dbbf2ba</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="7f7cbf82-9d90-4376-9a19-6d1a6bfeb320" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>strParam</name>
+          <display>in : strParam: string</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="592573d2-2d0f-4f50-ac10-442d29c47bd8">
+            <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>Intent.Common.Types</typePackageName>
+            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>8a37112b-e929-4b38-91e9-f0c57dbbf2ba</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="c841b6c5-ba28-4c9d-965f-f63e6ea3144c" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params3_ReturnsD_Collection1</name>
+      <display>Operation_Params3_ReturnsD_Collection1(param: SpParameter, aggrParam: AggregateRoot1, strParam: string): SpResult[*]</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="16792e7a-e7d4-462d-ba88-9782b1bc0f91">
+        <typeId>2c2dcbd7-41bf-4eba-877d-03331113eeb6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="2159d576-3294-4495-9115-b33da2ec7c0f" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="65896d21-a48b-4c03-9110-faf3f30c27e5">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>c841b6c5-ba28-4c9d-965f-f63e6ea3144c</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="baf66377-8302-4b6b-8a2e-ce2bcde0217b" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>aggrParam</name>
+          <display>in : aggrParam: AggregateRoot1</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="df2ad200-1974-4647-8a74-2232a7334398">
+            <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>c841b6c5-ba28-4c9d-965f-f63e6ea3144c</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="b0631ed0-4f77-43e8-b262-a0b418b87ed8" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>strParam</name>
+          <display>in : strParam: string</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="96fb89cc-df51-4f5c-adb4-0dedbe48acf2">
+            <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>Intent.Common.Types</typePackageName>
+            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>c841b6c5-ba28-4c9d-965f-f63e6ea3144c</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="8c72a50a-0539-4687-856e-ab2245c55152" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params3_ReturnsE_Collection0</name>
+      <display>Operation_Params3_ReturnsE_Collection0(param: SpParameter, aggrParam: AggregateRoot1, strParam: string): AggregateRoot1</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="875aa96b-2485-4345-ac9f-71aef6f7dc0b">
+        <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="a65da78b-dfea-4a15-a80e-cb0cd94af23e" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="2ff1efdd-f703-4156-beb4-61e7cb7b107d">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>8c72a50a-0539-4687-856e-ab2245c55152</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="99f01326-7d6d-423e-bd35-b65ed3220bf5" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>aggrParam</name>
+          <display>in : aggrParam: AggregateRoot1</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="4ad97ec5-d8c1-4d19-83ca-c526182b25e0">
+            <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>8c72a50a-0539-4687-856e-ab2245c55152</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="bdad1667-beb7-4b85-a6b3-dc6478a36ee2" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>strParam</name>
+          <display>in : strParam: string</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="e928e174-01a7-4c30-8af9-e04c47dabfb3">
+            <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>Intent.Common.Types</typePackageName>
+            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>8c72a50a-0539-4687-856e-ab2245c55152</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="ee86028f-2f59-460b-80f8-8ca6ccbfc37d" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params3_ReturnsE_Collection1</name>
+      <display>Operation_Params3_ReturnsE_Collection1(param: SpParameter, aggrParam: AggregateRoot1, strParam: string): AggregateRoot1[*]</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="58288079-f9f5-479d-b280-e5b63872db8a">
+        <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="6774dba1-6f31-4f39-8ad3-c81e58faf28d" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="ea745f3e-5200-4299-b603-e23319390d64">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>ee86028f-2f59-460b-80f8-8ca6ccbfc37d</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="3c5d851a-51a1-4e6d-8fc7-e9172e58153b" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>aggrParam</name>
+          <display>in : aggrParam: AggregateRoot1</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="5ec7c354-fc7a-44ae-819c-e6e4477d38ab">
+            <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>ee86028f-2f59-460b-80f8-8ca6ccbfc37d</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="3e4940a0-7ec0-4faa-9737-b2c98e996f1a" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>strParam</name>
+          <display>in : strParam: string</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="613d4f23-ffe9-4d5e-ab57-d20abf2e4dc0">
+            <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>Intent.Common.Types</typePackageName>
+            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>ee86028f-2f59-460b-80f8-8ca6ccbfc37d</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="48187ee8-b3c4-4ec3-8d74-adf4c1be0056" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params3_ReturnsV_Collection0Async</name>
+      <display>Operation_Params3_ReturnsV_Collection0Async(param: SpParameter, aggrParam: AggregateRoot1, strParam: string): void</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="3b3f53ee-c7f5-4996-89ca-6284df745442">
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="fbb480ad-345f-4ec8-956c-14e5e5e25e19" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="52bd96ad-84a5-4a51-9891-736834bae6e7">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>48187ee8-b3c4-4ec3-8d74-adf4c1be0056</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="d0167160-ecf1-43b8-b201-c3053ec186f4" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>aggrParam</name>
+          <display>in : aggrParam: AggregateRoot1</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="6d982cf8-e79b-4521-8926-e09575ecf086">
+            <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>48187ee8-b3c4-4ec3-8d74-adf4c1be0056</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="81b3e486-e834-4c12-ab8b-15daaf8a4ef6" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>strParam</name>
+          <display>in : strParam: string</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="0c486eab-8789-49b0-a7b5-02f1f25a1112">
+            <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>Intent.Common.Types</typePackageName>
+            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>48187ee8-b3c4-4ec3-8d74-adf4c1be0056</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="7271ff6e-f663-4158-b2cb-ab19557f4cb3" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params3_ReturnsD_Collection0Async</name>
+      <display>Operation_Params3_ReturnsD_Collection0Async(param: SpParameter, aggrParam: AggregateRoot1, strParam: string): SpResult</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="c0b3c9dc-471a-4ed7-9522-add8d2b79760">
+        <typeId>2c2dcbd7-41bf-4eba-877d-03331113eeb6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="a23af077-4fbd-4119-abe6-eba434f31829" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="ca6c935f-dee3-4b2e-ad8c-0d0f04ce79a7">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>7271ff6e-f663-4158-b2cb-ab19557f4cb3</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="240d74b0-03c3-44b0-82c5-962c09784668" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>aggrParam</name>
+          <display>in : aggrParam: AggregateRoot1</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="3cbdba6e-75a5-4f2b-b5fe-9f18d18da20b">
+            <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>7271ff6e-f663-4158-b2cb-ab19557f4cb3</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="100f0761-7c16-46cb-857f-722c4c8bad1a" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>strParam</name>
+          <display>in : strParam: string</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="88b9961f-51c0-4b8a-8f75-f42ce1d8de43">
+            <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>Intent.Common.Types</typePackageName>
+            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>7271ff6e-f663-4158-b2cb-ab19557f4cb3</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="4dd068b2-0c04-451c-ae6d-f18573330290" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params3_ReturnsD_Collection1Async</name>
+      <display>Operation_Params3_ReturnsD_Collection1Async(param: SpParameter, aggrParam: AggregateRoot1, strParam: string): SpResult[*]</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="39803e27-e838-44e8-aa4b-0b68f042f91e">
+        <typeId>2c2dcbd7-41bf-4eba-877d-03331113eeb6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="811a793f-dae2-41c4-a402-87a5ae3010bd" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="01d04a24-e890-4334-a071-6531a467657c">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>4dd068b2-0c04-451c-ae6d-f18573330290</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="b8bb6c64-8f97-45dc-8879-c2dc154f832e" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>aggrParam</name>
+          <display>in : aggrParam: AggregateRoot1</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="001b07ff-cbf7-41ff-91a2-6a5a013263f1">
+            <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>4dd068b2-0c04-451c-ae6d-f18573330290</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="b198447a-5980-4c41-ba54-be81255c15b2" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>strParam</name>
+          <display>in : strParam: string</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="8d36ac4d-67fb-48a6-a26e-0bfd3271cf51">
+            <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>Intent.Common.Types</typePackageName>
+            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>4dd068b2-0c04-451c-ae6d-f18573330290</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="b241cd26-f6cd-4f51-bc20-b991e4715e5c" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params3_ReturnsE_Collection0Async</name>
+      <display>Operation_Params3_ReturnsE_Collection0Async(param: SpParameter, aggrParam: AggregateRoot1, strParam: string): AggregateRoot1</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="adddaba2-578d-42c5-83bb-13a1e8eafedb">
+        <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="d8fb2f25-4003-478f-b835-08c60176fbe6" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="24c9916a-67db-4796-bff4-0295b6c6a267">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>b241cd26-f6cd-4f51-bc20-b991e4715e5c</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="d45ba347-5ab8-4853-865f-11f7c2120aeb" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>aggrParam</name>
+          <display>in : aggrParam: AggregateRoot1</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="37d908cf-f289-4a8b-aefc-706d3220f4a1">
+            <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>b241cd26-f6cd-4f51-bc20-b991e4715e5c</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="07fcb120-4e59-4064-bfe4-e3a607b3e0b7" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>strParam</name>
+          <display>in : strParam: string</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="8b004f8b-5b81-499c-a673-64268bd59cf1">
+            <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>Intent.Common.Types</typePackageName>
+            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>b241cd26-f6cd-4f51-bc20-b991e4715e5c</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="1d016264-3e91-4daf-bcf6-350ece511ff5" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>Operation_Params3_ReturnsE_Collection1Async</name>
+      <display>Operation_Params3_ReturnsE_Collection1Async(param: SpParameter, aggrParam: AggregateRoot1, strParam: string): AggregateRoot1[*]</display>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="c849ee2b-be58-4d42-a243-c34f4530e5a3">
+        <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ecaca0b7-2a25-4077-a339-e85eff6e91e3</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes />
+      <metadata />
+      <childElements>
+        <childElement id="7dcaff1d-3870-4b54-af18-9581c4397500" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>param</name>
+          <display>in : param: SpParameter</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="b829391f-5f87-4a00-8a0a-09ee22a26768">
+            <typeId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>1d016264-3e91-4daf-bcf6-350ece511ff5</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="939e42ef-3351-4b10-9971-bf818ad0e8dc" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>aggrParam</name>
+          <display>in : aggrParam: AggregateRoot1</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="94f7dc89-9b23-4175-a2c3-61b0f4562682">
+            <typeId>d707363d-0984-404c-8120-98f913bdc3c7</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>TestDataGenerator.Domain</typePackageName>
+            <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>1d016264-3e91-4daf-bcf6-350ece511ff5</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="bfb025fd-2aa0-4fb0-bb41-409e55ce9e41" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>strParam</name>
+          <display>in : strParam: string</display>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="dcce38bc-7826-4850-bb64-8078f6b8e69b">
+            <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>false</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>Intent.Common.Types</typePackageName>
+            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>1d016264-3e91-4daf-bcf6-350ece511ff5</parentFolderId>
+          <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+          <packageName>TestDataGenerator.Domain</packageName>
+          <stereotypes />
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+  </childElements>
+</class>

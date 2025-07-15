@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="173b23d1-e5b6-4d87-bb03-809a141d78a6" type="Enum" typeId="85fba0e9-9161-4c85-a603-a229ef312beb">
+  <name>ServiceProductEnum</name>
+  <display>ServiceProductEnum</display>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>3f5e8a15-f0a5-41ce-879f-42bbc56d4366</parentFolderId>
+  <packageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</packageId>
+  <packageName>TestDataGenerator.Services</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="6d3aa26f-b90e-45f9-b6a6-e5bcb4bd4fce" type="Enum-Literal" typeId="4215f417-25d2-4509-9309-5076a1452eaa">
+      <name>Commercial</name>
+      <display>Commercial = 2</display>
+      <isAbstract>false</isAbstract>
+      <value>2</value>
+      <genericTypes />
+      <isMapped>false</isMapped>
+      <parentFolderId>173b23d1-e5b6-4d87-bb03-809a141d78a6</parentFolderId>
+      <packageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</packageId>
+      <packageName>TestDataGenerator.Services</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="956b8e10-62ce-4256-952e-e2ed3db5117c" type="Enum-Literal" typeId="4215f417-25d2-4509-9309-5076a1452eaa">
+      <name>Personal</name>
+      <display>Personal = 1</display>
+      <isAbstract>false</isAbstract>
+      <value>1</value>
+      <genericTypes />
+      <isMapped>false</isMapped>
+      <parentFolderId>173b23d1-e5b6-4d87-bb03-809a141d78a6</parentFolderId>
+      <packageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</packageId>
+      <packageName>TestDataGenerator.Services</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

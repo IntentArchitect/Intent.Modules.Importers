@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="e51e4f02-9fa8-46d9-9b50-262ae5ed2d4b" type="DTO" typeId="fee0edca-4aa0-4f77-a524-6bbd84e78734">
+  <name>ProductUpdateDto</name>
+  <display>ProductUpdateDto</display>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>3f5e8a15-f0a5-41ce-879f-42bbc56d4366</parentFolderId>
+  <packageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</packageId>
+  <packageName>TestDataGenerator.Services</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="ff72e494-1cdd-4aa9-ac2d-cd441287218f" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+      <name>Id</name>
+      <display>Id: guid</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="e363051c-c2cc-4b11-96cd-2bdc25da4e9e">
+        <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>e51e4f02-9fa8-46d9-9b50-262ae5ed2d4b</parentFolderId>
+      <packageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</packageId>
+      <packageName>TestDataGenerator.Services</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="47396528-2073-470b-854e-7497b4f01bda" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+      <name>Name</name>
+      <display>Name: string</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="3a24eeb9-5e1a-44fb-84c1-9c1a07d9277c">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>e51e4f02-9fa8-46d9-9b50-262ae5ed2d4b</parentFolderId>
+      <packageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</packageId>
+      <packageName>TestDataGenerator.Services</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="00ddf79d-569b-4a3e-b856-15d18f55d538" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+      <name>Type</name>
+      <display>Type: ProductType</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="a20a3176-9904-409d-a6e6-66ac6e4b3ed4">
+        <typeId>45f7c880-d90e-4750-8a8d-8b0987b50ddc</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>e51e4f02-9fa8-46d9-9b50-262ae5ed2d4b</parentFolderId>
+      <packageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</packageId>
+      <packageName>TestDataGenerator.Services</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

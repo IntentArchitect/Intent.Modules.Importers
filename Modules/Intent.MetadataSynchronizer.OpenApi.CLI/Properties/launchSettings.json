@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Intent.MetadataSynchronizer.OpenApi.CLI": {
+      "commandName": "Project",
+      "commandLineArgs": " --serialized-config \"{\\\"IslnFile\\\":\\\"C:\\\\Dev\\\\Spikes\\\\CypherView.Telematics\\\\intent\\\\CypherView.Telematics.isln\\\",\\\"ApplicationName\\\":\\\"CypherView.Telematics.Api\\\",\\\"OpenApiSpecificationFile\\\":\\\"C:\\\\Users\\\\JoelTurner\\\\Desktop\\\\fleet_swagger.json\\\",\\\"TargetFolderId\\\":null,\\\"PackageId\\\":\\\"a2f6a4ae-854d-4521-9241-f400d96d3689\\\",\\\"AddPostFixes\\\":true,\\\"IsAzureFunctions\\\":false,\\\"ServiceType\\\":\\\"CQRS\\\",\\\"AllowRemoval\\\":true,\\\"SettingPersistence\\\":\\\"None\\\", \\\"ReverseEngineerImplementation\\\":true, \\\"DomainPackageId\\\":\"\\\"4d4aa303-37b5-4306-b5fa-1de261d3e7b6\\\"}\" "
+    }
+  }
+}

@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="a4174c0e-d658-4ccf-80bf-1e79d6f5b515" type="Data Contract" typeId="4464fabe-c59e-4d90-81fc-c9245bdd1afd">
+  <name>SpParameter</name>
+  <display>SpParameter</display>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>950e968e-63ef-4339-bf35-3bafe2a4ccc1</parentFolderId>
+  <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+  <packageName>TestDataGenerator.Domain</packageName>
+  <stereotypes>
+    <stereotype stereotypeDefinitionId="43937e01-7079-4ab1-b5c4-b3cb0dee9dcd" name="User-Defined Table Type Settings">
+      <addedByDefault>true</addedByDefault>
+      <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
+      <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
+      <properties>
+        <property name="fe47cbcb-5976-462c-8f85-7dbffcfea97d" display="Name" value="" isActive="true" />
+      </properties>
+    </stereotype>
+  </stereotypes>
+  <metadata />
+  <childElements>
+    <childElement id="f4f71a13-6926-40a1-8009-3e33c48267cd" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>AttributeBinary</name>
+      <display>AttributeBinary: binary</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="33149ce6-940a-436a-a720-4b2da4edc9ca">
+        <typeId>013af2c5-3c32-4752-8f59-db5691050aef</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="18d2b181-4d60-49d1-9eb2-e217e835f88a" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>AttributeBool</name>
+      <display>AttributeBool: bool</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="fa95dc87-d4aa-4932-aee7-769da70c39a0">
+        <typeId>e6f92b09-b2c5-4536-8270-a4d9e5bbd930</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="3c3ced57-117e-4b50-88bb-16c5f3ac8ff2" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>AttributeByte</name>
+      <display>AttributeByte: byte</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="edddebda-e209-441d-be41-a9b538bee2d3">
+        <typeId>A4E9102F-C1C8-4902-A417-CA418E1874D2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="41983610-699f-4fa9-b6df-05d4a457ee4e" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>AttributeDate</name>
+      <display>AttributeDate: datetime</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="3c0575f7-6248-49ea-92ae-348ec2d6e151">
+        <typeId>a4107c29-7851-4121-9416-cf1236908f1e</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata>
+        <entry key="common-charp-migration-date-to-datetime" value="true" />
+      </metadata>
+      <childElements />
+    </childElement>
+    <childElement id="024c657b-93eb-431d-bfd5-cd105fa5a1f6" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>AttributeDateTime</name>
+      <display>AttributeDateTime: datetime</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="532d2f7f-aaf6-4ee0-a969-52bd596a07ef">
+        <typeId>a4107c29-7851-4121-9416-cf1236908f1e</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="a8714db3-c711-45fc-adb4-4f7eebba6fad" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>AttributeDateTimeOffset</name>
+      <display>AttributeDateTimeOffset: datetimeoffset</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="1b39569c-91f0-475f-ba68-672ce1a0f6d7">
+        <typeId>f1ba4df3-a5bc-427e-a591-4f6029f89bd7</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="78dea6d3-5f77-4b7c-8480-7c7e012eb1ea" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>AttributeDecimal</name>
+      <display>AttributeDecimal: decimal</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="980011fa-b50d-4a0c-89a5-cbf31e3456a8">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="e5c89301-2359-481e-871c-826f1157b7a4" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>AttributeDouble</name>
+      <display>AttributeDouble: double</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="b0bfbf63-a67a-4373-91a2-64bab2ca41b1">
+        <typeId>24A77F70-5B97-40DD-8F9A-4208AD5F9219</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="e9ccba90-421f-4f19-89b6-abe8bd35e525" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>AttributeFloat</name>
+      <display>AttributeFloat: float</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="79e5472c-1c6a-4232-abdf-4a659229e2ba">
+        <typeId>341929E9-E3E7-46AA-ACB3-B0438421F4C4</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="ebc00731-0dbf-4d95-867a-ca288fb0a192" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>AttributeGuid</name>
+      <display>AttributeGuid: guid</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="674db4dd-5103-47cd-ae33-1f2989fd0b02">
+        <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="53287233-970f-4cb7-a3ad-a140ff894301" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>AttributeInt</name>
+      <display>AttributeInt: int</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="dccd4663-86f3-4d31-b5fc-02198096f0e8">
+        <typeId>fb0a362d-e9e2-40de-b6ff-5ce8167cbe74</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="75fadce9-c10e-4e6f-be22-c3dd44c72507" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>AttributeLong</name>
+      <display>AttributeLong: long</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="9d95993d-14f4-4c6e-9242-293ff635eb06">
+        <typeId>33013006-E404-48C2-AC46-24EF5A5774FD</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="32cb8ed1-d28d-4207-9025-5e24cf423582" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>AttributeShort</name>
+      <display>AttributeShort: short</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="f936c82d-2e99-4c69-a471-227760cb4e9f">
+        <typeId>2ABF0FD3-CD56-4349-8838-D120ED268245</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="b41a4a79-79e7-4e8f-ae64-4e0c164d8b66" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>AttributeString</name>
+      <display>AttributeString: string</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="bc9b7f1c-3ffd-4116-8c66-13459b9b592d">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="8122404e-c185-44b8-8703-23c923bfee58" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Money</name>
+      <display>Money: Money</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="09a866aa-f10a-4c30-9558-c06cfe25f8d5">
+        <typeId>0388dee0-1212-432e-9139-3ff8f2ff3035</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>TestDataGenerator.Domain</typePackageName>
+        <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>a4174c0e-d658-4ccf-80bf-1e79d6f5b515</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

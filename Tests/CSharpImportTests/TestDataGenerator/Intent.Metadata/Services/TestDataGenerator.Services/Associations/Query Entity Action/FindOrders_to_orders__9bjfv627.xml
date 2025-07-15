@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="642c2387-85b8-4537-b1ba-ae8b4911e0b5">
+  <sourceEnd id="da765ade-4ddc-4a77-8e28-d4c8d222a1fd" type="Query Entity Action Source End" typeId="32a65f26-2555-4616-8a2c-6a90805600bb">
+    <display>: FindOrders</display>
+    <order>0</order>
+    <typeReference id="26288974-08af-4fdc-9f36-4b2075e4c0de">
+      <typeId>08f9d9a0-9817-48d0-9381-28a2e9aa4e9b</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>TestDataGenerator.Services</typePackageName>
+      <typePackageId>aba1e976-aea4-43f7-8f15-1472d1a761ae</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="642c2387-85b8-4537-b1ba-ae8b4911e0b5" type="Query Entity Action Target End" typeId="93ef6675-cba4-4998-adff-cb22d5343ed4">
+    <name>orders</name>
+    <display>[query] orders: Order[*]</display>
+    <order>0</order>
+    <typeReference id="ef646d8e-ef36-4db0-bffe-9edb61473e11">
+      <typeId>08135bcb-63e9-4be2-8f63-7c89907f7a42</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>TestDataGenerator.Domain</typePackageName>
+      <typePackageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <mappings>
+      <mapping type="Query Entity Mapping" typeId="25f25af9-c38b-4053-9474-b0fabe9d7ea7">
+        <source applicationId="54d7cf1b-876e-4967-a08b-5fc13e690a6d" designerId="81104ae6-2bc5-4bae-b05a-f987b0372d81" elementId="08f9d9a0-9817-48d0-9381-28a2e9aa4e9b" location="[TestDataGenerator].[Services].[FindOrders]" />
+        <target applicationId="54d7cf1b-876e-4967-a08b-5fc13e690a6d" designerId="6ab29b31-27af-4f56-a67c-986d82097d63" elementId="08135bcb-63e9-4be2-8f63-7c89907f7a42" location="[TestDataGenerator].[Services].[Order]" />
+        <mappedEnds />
+      </mapping>
+    </mappings>
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Query Entity Action</associationType>
+  <associationTypeId>47ab5888-a258-4bec-a9fc-a83de69eb79d</associationTypeId>
+  <stereotypes />
+</association>

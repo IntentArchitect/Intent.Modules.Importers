@@ -1,0 +1,320 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "SwaggerTest API",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/players/{playerId}/Bets/max": {
+      "post": {
+        "tags": [
+          "Bets"
+        ],
+        "summary": "Gets max possible bet size for the specific player.",
+        "operationId": "Get max bet amount",
+        "parameters": [
+          {
+            "name": "playerId",
+            "in": "path",
+            "description": "Id of player which places a bet.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Bet request data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Marlin.SportsbetApi.Host.Models.BetPlacement.BetRequestViewModel"
+                  }
+                ],
+                "description": "Represents bet request."
+              }
+            },
+            "text/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Marlin.SportsbetApi.Host.Models.BetPlacement.BetRequestViewModel"
+                  }
+                ],
+                "description": "Represents bet request."
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Marlin.SportsbetApi.Host.Models.BetPlacement.BetRequestViewModel"
+                  }
+                ],
+                "description": "Represents bet request."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns results of max bet calculation.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Marlin.SportsbetApi.Host.Models.BetPlacement.MaxBetResultViewModel"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Marlin.SportsbetApi.Host.Models.BetPlacement.MaxBetResultViewModel"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Marlin.SportsbetApi.Host.Models.BetPlacement.MaxBetResultViewModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request arguments are not valid.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error occurred."
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "429": {
+            "description": "Too many requests"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Microsoft.AspNetCore.Mvc.ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": {}
+      },
+      "Marlin.SportsbetApi.Host.Models.BetPlacement.BetRequestViewModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique request id (in the client's system);",
+            "nullable": true
+          },
+          "player": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Marlin.SportsbetApi.Host.Models.BetPlacement.PlayerViewModel"
+              }
+            ],
+            "description": "Identification of the end user. Contains information about Ip, language and device from which bet was placed.",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "description": "Bet amount in EUR currency",
+            "format": "double"
+          },
+          "priceChange": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Marlin.SportsbetApi.Host.Models.BetPlacement.PriceChange"
+              }
+            ],
+            "description": "Price change auto acceptance. (None - 0, Any - 1, Higher - 2)\n\n0 = None (No price changes are accepted.)\n\n1 = Any (Any price change is accepted.)\n\n2 = Higher (Only higher price will be accepted.)",
+            "x-enumNames": [
+              "None",
+              "Any",
+              "Higher"
+            ],
+            "x-enumDescriptions": [
+              "No price changes are accepted.",
+              "Any price change is accepted.",
+              "Only higher price will be accepted."
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Marlin.SportsbetApi.Host.Models.BetPlacement.BetItemViewModel"
+            },
+            "description": "List of bet items",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents bet request."
+      },
+      "Marlin.SportsbetApi.Host.Models.BetPlacement.PlayerViewModel": {
+        "type": "object",
+        "properties": {
+          "deviceId": {
+            "type": "string",
+            "description": "End user's device id",
+            "nullable": true
+          },
+          "languageId": {
+            "type": "string",
+            "description": "ISO 639-1 language code",
+            "nullable": true
+          },
+          "ip": {
+            "type": "string",
+            "description": "End user's IP",
+            "nullable": true
+          },
+          "segmentId": {
+            "type": "integer",
+            "description": "End user's limit Id",
+            "format": "int32"
+          },
+          "channel": {
+            "type": "string",
+            "description": "End user's channel",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents player data."
+      },
+      "Marlin.SportsbetApi.Host.Models.BetPlacement.BetItemViewModel": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "integer",
+            "description": "Event id on which the bet is placed.",
+            "format": "int64"
+          },
+          "marketId": {
+            "type": "integer",
+            "description": "Market id on which the bet is placed.",
+            "format": "int64"
+          },
+          "selectionId": {
+            "type": "integer",
+            "description": "Selection id on which the bet is placed. Should be `-1` for exotics bet.",
+            "format": "int64"
+          },
+          "racingSelection": {
+            "type": "string",
+            "description": "Racing exotics selection.",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "description": "Price on which the bet is placed. Should be `null` for tote exotics and SP bet.",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents item inside the bet."
+      },
+      "Marlin.SportsbetApi.Host.Models.BetPlacement.MaxBetResultViewModel": {
+        "type": "object",
+        "properties": {
+          "rejectReason": {
+            "type": "integer",
+            "description": "Information about rejection cause. (None - 0, UnknownError - 1, PriceChanged - 2, LimitExceeded - 3 , SelectionNotFound - 4 etc.)",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Max bet amount in EUR currency",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Marlin.SportsbetApi.Host.Models.BetPlacement.PriceChange": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "description": "Types of price change acceptance.\n\n0 = None (No price changes are accepted.)\n\n1 = Any (Any price change is accepted.)\n\n2 = Higher (Only higher price will be accepted.)",
+        "format": "int32",
+        "x-enumNames": [
+          "None",
+          "Any",
+          "Higher"
+        ],
+        "x-enumDescriptions": [
+          "No price changes are accepted.",
+          "Any price change is accepted.",
+          "Only higher price will be accepted."
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "Enter a Bearer Token into the `Value` field to have it automatically prefixed with `Bearer ` and used as an `Authorization` header value for requests.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ]
+}

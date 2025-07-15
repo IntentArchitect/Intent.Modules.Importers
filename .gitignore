@@ -416,3 +416,12 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# INTENT FILES:
+*.imod
+*.iat
+!*.application.output.log
+!*.application.deviations.log
+.intent/
+
+.idea/

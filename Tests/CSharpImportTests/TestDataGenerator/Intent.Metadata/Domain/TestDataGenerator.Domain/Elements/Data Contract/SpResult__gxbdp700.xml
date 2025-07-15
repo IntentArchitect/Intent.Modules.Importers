@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="2c2dcbd7-41bf-4eba-877d-03331113eeb6" type="Data Contract" typeId="4464fabe-c59e-4d90-81fc-c9245bdd1afd">
+  <name>SpResult</name>
+  <display>SpResult</display>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>950e968e-63ef-4339-bf35-3bafe2a4ccc1</parentFolderId>
+  <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+  <packageName>TestDataGenerator.Domain</packageName>
+  <stereotypes>
+    <stereotype stereotypeDefinitionId="43937e01-7079-4ab1-b5c4-b3cb0dee9dcd" name="User-Defined Table Type Settings">
+      <addedByDefault>true</addedByDefault>
+      <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
+      <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
+      <properties>
+        <property name="fe47cbcb-5976-462c-8f85-7dbffcfea97d" display="Name" value="" isActive="true" />
+      </properties>
+    </stereotype>
+  </stereotypes>
+  <metadata />
+  <childElements>
+    <childElement id="e465d7fb-6680-4f36-be80-b208f4a50cb5" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Data</name>
+      <display>Data: string</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="dc9d9a7e-5e40-4d01-a533-00b71a24b92c">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>2c2dcbd7-41bf-4eba-877d-03331113eeb6</parentFolderId>
+      <packageId>ec8c5c9d-c026-45b0-bad2-781b5a371a80</packageId>
+      <packageName>TestDataGenerator.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>
