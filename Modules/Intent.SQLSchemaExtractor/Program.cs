@@ -13,7 +13,7 @@ public class Program
         
         // Register all commands
         rootCommand.Subcommands.Add(Commands.CreateImportSchemaCommand());
-        rootCommand.Subcommands.Add(Commands.CreateListStoredProcsCommand());
+        rootCommand.Subcommands.Add(Commands.CreateListStoredProceduresCommand());
         rootCommand.Subcommands.Add(Commands.CreateTestConnectionCommand());
         rootCommand.Subcommands.Add(Commands.CreateRetrieveDatabaseObjectsCommand());
         

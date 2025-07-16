@@ -45,7 +45,7 @@ internal static partial class Commands
             });
     }
 
-    public static Command CreateListStoredProcsCommand()
+    public static Command CreateListStoredProceduresCommand()
     {
         return CreateStandardCommand(
             "list-stored-procs",
