@@ -1,8 +1,5 @@
 ﻿using System;
 using System.CommandLine;
-using System.CommandLine.Binding;
-using System.CommandLine.Builder;
-using System.CommandLine.Parsing;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -28,55 +25,35 @@ public class Program
 
     public static async Task<int> Main(string[] args)
     {
-        //Backwards compatability
-        if (args.Length == 2 && !args[0].StartsWith("--"))
-        {
-            var configFile = new ImportConfiguration
-            {
-                ConnectionString = args[0],
-                PackageFileName = args[1]
-            };
-            Run(configFile);
-            return 0;
-        }
-
         var rootCommand = new RootCommand(
             "The Intent SQL Schema Extractor tool can be used to create / update ans Intent Architect Domain Package" +
             "  based on a  SQL Schema.")
         {
             new Option<FileInfo>(
-                name: GetOptionName(nameof(ImportConfiguration.ConfigFile)),
-                description: "Path to a JSON formatted file containing options to use for execution of " +
+                GetOptionName(nameof(ImportConfiguration.ConfigFile)),
+                "Path to a JSON formatted file containing options to use for execution of " +
                              "this tool as an alternative to using command line options. The " +
                              $"{GetOptionName(nameof(ImportConfiguration.GenerateConfigFile))} option can be used to " +
                              "generate a file with all the possible fields populated with null."),
             new Option<bool>(
-                name: GetOptionName(nameof(ImportConfiguration.GenerateConfigFile)),
-                description: $"Scaffolds into the current working directory a \"config.json\" for use with the " +
+                GetOptionName(nameof(ImportConfiguration.GenerateConfigFile)),
+                $"Scaffolds into the current working directory a \"config.json\" for use with the " +
                              $"{GetOptionName(nameof(ImportConfiguration.ConfigFile))} option."),
             new Option<string?>(
-                name: GetOptionName(nameof(ImportConfiguration.ConnectionString)),
-                description: "Connection string for connecting to the database to import the schema from. "),
+                GetOptionName(nameof(ImportConfiguration.ConnectionString)),
+                "Connection string for connecting to the database to import the schema from. "),
             new Option<string?>(
-                name: GetOptionName(nameof(ImportConfiguration.PackageFileName)),
-                description: "The file name of the Intent Domain Package into which to synchronize the metadata."),
+                GetOptionName(nameof(ImportConfiguration.PackageFileName)),
+                "The file name of the Intent Domain Package into which to synchronize the metadata."),
             new Option<string?>(
-                name: GetOptionName(nameof(ImportConfiguration.ImportFilterFilePath)),
-                description: $"Path to import filter file (may be relative to {nameof(ImportConfiguration.PackageFileName)} file)"),
+                GetOptionName(nameof(ImportConfiguration.ImportFilterFilePath)),
+                $"Path to import filter file (may be relative to {nameof(ImportConfiguration.PackageFileName)} file)"),
             new Option<string?>(
-                name: GetOptionName(nameof(ImportConfiguration.SerializedConfig)),
-                description: "JSON string representing a serialized configuration file."),
+                GetOptionName(nameof(ImportConfiguration.SerializedConfig)),
+                "JSON string representing a serialized configuration file."),
         };
         
-        rootCommand.SetHandler(
-            handle: (
-                FileInfo? configFile,
-                bool generateConfigFile,
-                string? connectionString,
-                string? packageFileName,
-                string? importFilterFilePath,
-                string? serializedConfig
-            ) =>
+        rootCommand.SetAction(parseResult =>
             {
                 try
                 {
@@ -85,6 +62,13 @@ public class Program
                         Converters = { new JsonStringEnumConverter() },
                         WriteIndented = true
                     };
+
+                    var configFile = parseResult.GetValue<FileInfo>(GetOptionName(nameof(ImportConfiguration.ConfigFile)));
+                    var generateConfigFile = parseResult.GetValue<bool>(GetOptionName(nameof(ImportConfiguration.GenerateConfigFile)));
+                    var connectionString = parseResult.GetValue<string?>(GetOptionName(nameof(ImportConfiguration.ConnectionString)));
+                    var packageFileName = parseResult.GetValue<string?>(GetOptionName(nameof(ImportConfiguration.PackageFileName)));
+                    var importFilterFilePath = parseResult.GetValue<string?>(GetOptionName(nameof(ImportConfiguration.ImportFilterFilePath)));
+                    var serializedConfig = parseResult.GetValue<string?>(GetOptionName(nameof(ImportConfiguration.SerializedConfig)));
 
                     if (generateConfigFile)
                     {
@@ -148,34 +132,28 @@ public class Program
                     Console.WriteLine(".");
                     throw;
                 }
-            },
-            symbols: Enumerable.Empty<IValueDescriptor>()
-                .Concat(rootCommand.Options)
-                .ToArray());
+            });
 
-        var connectionOption = new Option<string>(name: "--connection", description: "SQL Server connection string.") { IsRequired = true };
+        var connectionOption = new Option<string>("--connection", "SQL Server connection string.") { Required = true };
         
         var listStoredProcCommand = new Command("list-stored-proc", "Returns a list of stored procedures in the database.");
-        listStoredProcCommand.AddOption(connectionOption);
-        listStoredProcCommand.SetHandler((string connection) => ListProceduresAsync(connection), connectionOption);
-        rootCommand.AddCommand(listStoredProcCommand);
+        listStoredProcCommand.Options.Add(connectionOption);
+        listStoredProcCommand.SetAction((parseResult, cancellationToken) => ListProceduresAsync(parseResult.GetValue<string>("--connection")));
+        rootCommand.Subcommands.Add(listStoredProcCommand);
 
         var testConnectionCommand = new Command("test-connection", "Tests the connection to the database.");
-        testConnectionCommand.AddOption(connectionOption);
-        testConnectionCommand.SetHandler((string connection) => TestConnectionAsync(connection), connectionOption);
-        rootCommand.AddCommand(testConnectionCommand);
+        testConnectionCommand.Options.Add(connectionOption);
+        testConnectionCommand.SetAction((parseResult, cancellationToken) => TestConnectionAsync(parseResult.GetValue<string>("--connection")));
+        rootCommand.Subcommands.Add(testConnectionCommand);
         
         var extractMetadataCommand = new Command("extract-metadata", "Extracts database metadata (tables, views, stored procedures) as JSON.");
-        extractMetadataCommand.AddOption(connectionOption);
-        extractMetadataCommand.SetHandler((string connection) => ExtractMetadataAsync(connection), connectionOption);
-        rootCommand.AddCommand(extractMetadataCommand);
+        extractMetadataCommand.Options.Add(connectionOption);
+        extractMetadataCommand.SetAction((parseResult, cancellationToken) => ExtractMetadataAsync(parseResult.GetValue<string>("--connection")));
+        rootCommand.Subcommands.Add(extractMetadataCommand);
         
         Console.WriteLine($"{rootCommand.Name} version {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion}");
 
-        return await new CommandLineBuilder(rootCommand)
-            .UseDefaults()
-            .Build()
-            .InvokeAsync(args);
+        return await rootCommand.Parse(args).InvokeAsync();
     }
 
     public static void Run(ImportConfiguration config)
