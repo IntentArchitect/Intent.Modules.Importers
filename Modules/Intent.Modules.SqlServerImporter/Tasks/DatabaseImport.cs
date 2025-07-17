@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Intent.Engine;
 using Intent.Modules.SqlServerImporter.Tasks.Helpers;
 using Intent.Modules.SqlServerImporter.Tasks.Models;
@@ -36,7 +37,7 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
         PrepareInputModel(importModel);
 
         var executionResult = new ExecuteResult();
-        
+        Debugger.Launch();
         // Step 1: Run CLI tool to get both package and schema data
         var result = ImporterTool.Run<ImportSchemaResult>("import-schema", importModel);
 

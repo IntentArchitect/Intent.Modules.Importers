@@ -2,6 +2,287 @@
   DatabaseName: master,
   Tables: [
     {
+      Name: AuditLog,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: AuditID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: TableName,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: RecordID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: Action,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 10
+        },
+        {
+          Name: OldValues,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: NewValues,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: ChangedBy,
+          DataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: ChangeDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        }
+      ]
+    },
+    {
+      Name: Categories,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: CategoryID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: CategoryName,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: Description,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 500
+        },
+        {
+          Name: ParentCategoryID,
+          DataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: IsActive,
+          DataType: bit,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 1,
+          NumericPrecision: 1,
+          DefaultConstraint: {
+            Text: ((1))
+          }
+        },
+        {
+          Name: CreatedDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        },
+        {
+          Name: ModifiedDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: FK_Categories_ParentCategory,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: Categories,
+          Columns: [
+            {
+              Name: ParentCategoryID,
+              ReferencedColumnName: CategoryID
+            }
+          ]
+        }
+      ]
+    },
+    {
+      Name: InventoryTransactions,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: TransactionID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: ProductID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: TransactionType,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 20
+        },
+        {
+          Name: Quantity,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: UnitPrice,
+          DataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 9,
+          NumericPrecision: 10,
+          NumericScale: 2
+        },
+        {
+          Name: ReferenceID,
+          DataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: Notes,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 500
+        },
+        {
+          Name: CreatedDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        },
+        {
+          Name: CreatedBy,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: FK_InventoryTransactions_Products,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: Products,
+          Columns: [
+            {
+              Name: ProductID,
+              ReferencedColumnName: ProductID
+            }
+          ]
+        },
+        {
+          Name: FK_InventoryTransactions_Users,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: Users,
+          Columns: [
+            {
+              Name: CreatedBy,
+              ReferencedColumnName: UserID
+            }
+          ]
+        }
+      ]
+    },
+    {
       Name: MSreplication_options,
       Schema: dbo,
       Columns: [
@@ -57,6 +338,976 @@
           IsIdentity: false,
           MaxLength: 4,
           NumericPrecision: 10
+        }
+      ]
+    },
+    {
+      Name: OrderDetails,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: OrderDetailID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: OrderID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: ProductID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: Quantity,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: UnitPrice,
+          DataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 9,
+          NumericPrecision: 10,
+          NumericScale: 2
+        },
+        {
+          Name: Discount,
+          DataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 5,
+          NumericPrecision: 5,
+          NumericScale: 2,
+          DefaultConstraint: {
+            Text: ((0))
+          }
+        },
+        {
+          Name: LineTotal,
+          DataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 13,
+          NumericPrecision: 28,
+          NumericScale: 4,
+          ComputedColumn: {
+            Expression: (([Quantity]*[UnitPrice])*((1)-[Discount])),
+            IsPersisted: true
+          }
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: FK_OrderDetails_Orders,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: Orders,
+          Columns: [
+            {
+              Name: OrderID,
+              ReferencedColumnName: OrderID
+            }
+          ]
+        },
+        {
+          Name: FK_OrderDetails_Products,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: Products,
+          Columns: [
+            {
+              Name: ProductID,
+              ReferencedColumnName: ProductID
+            }
+          ]
+        }
+      ],
+      Triggers: [
+        {
+          Name: TR_OrderDetails_UpdateInventory,
+          ParentSchema: dbo,
+          ParentName: OrderDetails,
+          ParentType: Table
+        },
+        {
+          Name: TR_Orders_CalculateTotals,
+          ParentSchema: dbo,
+          ParentName: OrderDetails,
+          ParentType: Table
+        }
+      ]
+    },
+    {
+      Name: Orders,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: OrderID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: UserID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: OrderDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        },
+        {
+          Name: RequiredDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7
+        },
+        {
+          Name: ShippedDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7
+        },
+        {
+          Name: ShippingAddressID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: BillingAddressID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: SubTotal,
+          DataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 9,
+          NumericPrecision: 12,
+          NumericScale: 2
+        },
+        {
+          Name: TaxAmount,
+          DataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 9,
+          NumericPrecision: 12,
+          NumericScale: 2,
+          DefaultConstraint: {
+            Text: ((0))
+          }
+        },
+        {
+          Name: ShippingAmount,
+          DataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 9,
+          NumericPrecision: 12,
+          NumericScale: 2,
+          DefaultConstraint: {
+            Text: ((0))
+          }
+        },
+        {
+          Name: TotalAmount,
+          DataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 9,
+          NumericPrecision: 12,
+          NumericScale: 2
+        },
+        {
+          Name: OrderStatus,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 20,
+          DefaultConstraint: {
+            Text: ('Pending')
+          }
+        },
+        {
+          Name: PaymentStatus,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 20,
+          DefaultConstraint: {
+            Text: ('Pending')
+          }
+        },
+        {
+          Name: TrackingNumber,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: Notes,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 1000
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: FK_Orders_BillingAddress,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: UserAddresses,
+          Columns: [
+            {
+              Name: BillingAddressID,
+              ReferencedColumnName: AddressID
+            }
+          ]
+        },
+        {
+          Name: FK_Orders_ShippingAddress,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: UserAddresses,
+          Columns: [
+            {
+              Name: ShippingAddressID,
+              ReferencedColumnName: AddressID
+            }
+          ]
+        },
+        {
+          Name: FK_Orders_Users,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: Users,
+          Columns: [
+            {
+              Name: UserID,
+              ReferencedColumnName: UserID
+            }
+          ]
+        }
+      ]
+    },
+    {
+      Name: PaymentMethods,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: PaymentMethodID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: UserID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: PaymentType,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 20
+        },
+        {
+          Name: CardNumber,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 20
+        },
+        {
+          Name: CardHolderName,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: ExpiryMonth,
+          DataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: ExpiryYear,
+          DataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: IsDefault,
+          DataType: bit,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 1,
+          NumericPrecision: 1,
+          DefaultConstraint: {
+            Text: ((0))
+          }
+        },
+        {
+          Name: IsActive,
+          DataType: bit,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 1,
+          NumericPrecision: 1,
+          DefaultConstraint: {
+            Text: ((1))
+          }
+        },
+        {
+          Name: CreatedDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: FK_PaymentMethods_Users,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: Users,
+          Columns: [
+            {
+              Name: UserID,
+              ReferencedColumnName: UserID
+            }
+          ]
+        }
+      ]
+    },
+    {
+      Name: Payments,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: PaymentID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: OrderID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: PaymentMethodID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: Amount,
+          DataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 9,
+          NumericPrecision: 12,
+          NumericScale: 2
+        },
+        {
+          Name: PaymentDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        },
+        {
+          Name: PaymentStatus,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 20,
+          DefaultConstraint: {
+            Text: ('Pending')
+          }
+        },
+        {
+          Name: TransactionID,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: ProcessorResponse,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 500
+        },
+        {
+          Name: CreatedDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: FK_Payments_Orders,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: Orders,
+          Columns: [
+            {
+              Name: OrderID,
+              ReferencedColumnName: OrderID
+            }
+          ]
+        },
+        {
+          Name: FK_Payments_PaymentMethods,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: PaymentMethods,
+          Columns: [
+            {
+              Name: PaymentMethodID,
+              ReferencedColumnName: PaymentMethodID
+            }
+          ]
+        }
+      ]
+    },
+    {
+      Name: ProductReviews,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: ReviewID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: ProductID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: UserID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: Rating,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: Title,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 200
+        },
+        {
+          Name: ReviewText,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 2000
+        },
+        {
+          Name: IsApproved,
+          DataType: bit,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 1,
+          NumericPrecision: 1,
+          DefaultConstraint: {
+            Text: ((0))
+          }
+        },
+        {
+          Name: HelpfulCount,
+          DataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10,
+          DefaultConstraint: {
+            Text: ((0))
+          }
+        },
+        {
+          Name: CreatedDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: FK_ProductReviews_Products,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: Products,
+          Columns: [
+            {
+              Name: ProductID,
+              ReferencedColumnName: ProductID
+            }
+          ]
+        },
+        {
+          Name: FK_ProductReviews_Users,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: Users,
+          Columns: [
+            {
+              Name: UserID,
+              ReferencedColumnName: UserID
+            }
+          ]
+        }
+      ]
+    },
+    {
+      Name: Products,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: ProductID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: ProductName,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 255
+        },
+        {
+          Name: Description,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 1000
+        },
+        {
+          Name: SKU,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: CategoryID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: SupplierID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: UnitPrice,
+          DataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 9,
+          NumericPrecision: 10,
+          NumericScale: 2
+        },
+        {
+          Name: UnitsInStock,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10,
+          DefaultConstraint: {
+            Text: ((0))
+          }
+        },
+        {
+          Name: UnitsOnOrder,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10,
+          DefaultConstraint: {
+            Text: ((0))
+          }
+        },
+        {
+          Name: ReorderLevel,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10,
+          DefaultConstraint: {
+            Text: ((0))
+          }
+        },
+        {
+          Name: Discontinued,
+          DataType: bit,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 1,
+          NumericPrecision: 1,
+          DefaultConstraint: {
+            Text: ((0))
+          }
+        },
+        {
+          Name: Weight,
+          DataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 5,
+          NumericPrecision: 8,
+          NumericScale: 2
+        },
+        {
+          Name: Dimensions,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: ImageURL,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 500
+        },
+        {
+          Name: CreatedDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        },
+        {
+          Name: ModifiedDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: FK_Products_Categories,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: Categories,
+          Columns: [
+            {
+              Name: CategoryID,
+              ReferencedColumnName: CategoryID
+            }
+          ]
+        },
+        {
+          Name: FK_Products_Suppliers,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: Suppliers,
+          Columns: [
+            {
+              Name: SupplierID,
+              ReferencedColumnName: SupplierID
+            }
+          ]
+        }
+      ],
+      Triggers: [
+        {
+          Name: TR_Products_UpdateModifiedDate,
+          ParentSchema: dbo,
+          ParentName: Products,
+          ParentType: Table
+        }
+      ]
+    },
+    {
+      Name: ShoppingCart,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: CartID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: UserID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: ProductID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: Quantity,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10,
+          DefaultConstraint: {
+            Text: ((1))
+          }
+        },
+        {
+          Name: UnitPrice,
+          DataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 9,
+          NumericPrecision: 10,
+          NumericScale: 2
+        },
+        {
+          Name: CreatedDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        },
+        {
+          Name: ModifiedDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: FK_ShoppingCart_Products,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: Products,
+          Columns: [
+            {
+              Name: ProductID,
+              ReferencedColumnName: ProductID
+            }
+          ]
+        },
+        {
+          Name: FK_ShoppingCart_Users,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: Users,
+          Columns: [
+            {
+              Name: UserID,
+              ReferencedColumnName: UserID
+            }
+          ]
         }
       ]
     },
@@ -427,11 +1678,11 @@
       ]
     },
     {
-      Name: OrderItems,
-      Schema: TestSchema,
+      Name: Suppliers,
+      Schema: dbo,
       Columns: [
         {
-          Name: Id,
+          Name: SupplierID,
           DataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
@@ -440,166 +1691,47 @@
           NumericPrecision: 10
         },
         {
-          Name: OrderId,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: ProductName,
+          Name: SupplierName,
           DataType: nvarchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 200
+          MaxLength: 100
         },
         {
-          Name: Quantity,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: UnitPrice,
-          DataType: decimal,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 9,
-          NumericPrecision: 18,
-          NumericScale: 2
-        }
-      ],
-      ForeignKeys: [
-        {
-          Name: FK_OrderItems_Orders,
-          ReferencedTableSchema: TestSchema,
-          ReferencedTableName: Orders,
-          Columns: [
-            {
-              Name: OrderId,
-              ReferencedColumnName: Id
-            }
-          ]
-        }
-      ]
-    },
-    {
-      Name: Orders,
-      Schema: TestSchema,
-      Columns: [
-        {
-          Name: Id,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: true,
-          IsIdentity: true,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: UserId,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: OrderNumber,
+          Name: ContactName,
           DataType: nvarchar,
-          IsNullable: false,
+          IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 50
+          MaxLength: 100
         },
         {
-          Name: OrderDate,
-          DataType: datetime2,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
-          DefaultConstraint: {
-            Text: (getdate())
-          }
-        },
-        {
-          Name: TotalAmount,
-          DataType: decimal,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 9,
-          NumericPrecision: 18,
-          NumericScale: 2
-        },
-        {
-          Name: Status,
+          Name: Email,
           DataType: nvarchar,
-          IsNullable: false,
+          IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 20,
-          DefaultConstraint: {
-            Text: ('Pending')
-          }
-        }
-      ],
-      ForeignKeys: [
-        {
-          Name: FK_Orders_Users,
-          ReferencedTableSchema: TestSchema,
-          ReferencedTableName: Users,
-          Columns: [
-            {
-              Name: UserId,
-              ReferencedColumnName: Id
-            }
-          ]
-        }
-      ]
-    },
-    {
-      Name: Users,
-      Schema: TestSchema,
-      Columns: [
-        {
-          Name: Id,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: true,
-          IsIdentity: true,
-          MaxLength: 4,
-          NumericPrecision: 10
+          MaxLength: 100
         },
         {
-          Name: UserName,
+          Name: Phone,
           DataType: nvarchar,
-          IsNullable: false,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 15
+        },
+        {
+          Name: Address,
+          DataType: nvarchar,
+          IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 255
         },
         {
-          Name: Email,
-          DataType: nvarchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 320
-        },
-        {
-          Name: FirstName,
+          Name: City,
           DataType: nvarchar,
           IsNullable: true,
           IsPrimaryKey: false,
@@ -607,30 +1739,36 @@
           MaxLength: 100
         },
         {
-          Name: LastName,
+          Name: State,
           DataType: nvarchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 100
+          MaxLength: 50
         },
         {
-          Name: DateCreated,
-          DataType: datetime2,
-          IsNullable: false,
+          Name: ZipCode,
+          DataType: nvarchar,
+          IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
+          MaxLength: 10
+        },
+        {
+          Name: Country,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: ('USA')
           }
         },
         {
           Name: IsActive,
           DataType: bit,
-          IsNullable: false,
+          IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 1,
@@ -640,14 +1778,272 @@
           }
         },
         {
-          Name: Balance,
-          DataType: decimal,
+          Name: CreatedDate,
+          DataType: datetime2,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
-          NumericPrecision: 18,
-          NumericScale: 2
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        }
+      ]
+    },
+    {
+      Name: UserAddresses,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: AddressID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: UserID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: AddressType,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 20
+        },
+        {
+          Name: AddressLine1,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 255
+        },
+        {
+          Name: AddressLine2,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 255
+        },
+        {
+          Name: City,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: State,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: ZipCode,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 10
+        },
+        {
+          Name: Country,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50,
+          DefaultConstraint: {
+            Text: ('USA')
+          }
+        },
+        {
+          Name: IsDefault,
+          DataType: bit,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 1,
+          NumericPrecision: 1,
+          DefaultConstraint: {
+            Text: ((0))
+          }
+        },
+        {
+          Name: CreatedDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: FK_UserAddresses_Users,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: Users,
+          Columns: [
+            {
+              Name: UserID,
+              ReferencedColumnName: UserID
+            }
+          ]
+        }
+      ]
+    },
+    {
+      Name: Users,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: UserID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: Username,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: Email,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: PasswordHash,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 255
+        },
+        {
+          Name: FirstName,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: LastName,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: DateOfBirth,
+          DataType: date,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 3,
+          NumericPrecision: 10
+        },
+        {
+          Name: PhoneNumber,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 15
+        },
+        {
+          Name: IsActive,
+          DataType: bit,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 1,
+          NumericPrecision: 1,
+          DefaultConstraint: {
+            Text: ((1))
+          }
+        },
+        {
+          Name: CreatedDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        },
+        {
+          Name: ModifiedDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        },
+        {
+          Name: LastLoginDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7
+        }
+      ],
+      Triggers: [
+        {
+          Name: TR_Users_Audit,
+          ParentSchema: dbo,
+          ParentName: Users,
+          ParentType: Table
+        },
+        {
+          Name: TR_Users_UpdateModifiedDate,
+          ParentSchema: dbo,
+          ParentName: Users,
+          ParentType: Table
         }
       ]
     }
@@ -702,6 +2098,190 @@
         },
         {
           Name: status,
+          DataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        }
+      ]
+    },
+    {
+      Name: vw_OrderSummary,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: OrderID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: OrderDate,
+          DataType: datetime2,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7
+        },
+        {
+          Name: OrderStatus,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 20
+        },
+        {
+          Name: PaymentStatus,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 20
+        },
+        {
+          Name: CustomerName,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 101
+        },
+        {
+          Name: CustomerEmail,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: ItemCount,
+          DataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: TotalAmount,
+          DataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 9,
+          NumericPrecision: 12,
+          NumericScale: 2
+        },
+        {
+          Name: TrackingNumber,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        }
+      ]
+    },
+    {
+      Name: vw_ProductCatalog,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: ProductID,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: ProductName,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 255
+        },
+        {
+          Name: Description,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 1000
+        },
+        {
+          Name: SKU,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: UnitPrice,
+          DataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 9,
+          NumericPrecision: 10,
+          NumericScale: 2
+        },
+        {
+          Name: UnitsInStock,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: ImageURL,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 500
+        },
+        {
+          Name: CategoryName,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: SupplierName,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: AverageRating,
+          DataType: float,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 53
+        },
+        {
+          Name: ReviewCount,
           DataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
