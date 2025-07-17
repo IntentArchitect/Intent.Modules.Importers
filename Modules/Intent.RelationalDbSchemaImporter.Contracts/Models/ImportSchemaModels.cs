@@ -1,4 +1,5 @@
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
+using Intent.RelationalDbSchemaImporter.Contracts.Schema;
 
 namespace Intent.RelationalDbSchemaImporter.Contracts.Models;
 
@@ -24,5 +25,7 @@ public class ImportSchemaResult
     public int ViewsImported { get; set; }
     public int StoredProceduresImported { get; set; }
     public int IndexesImported { get; set; }
+    
+    // NEW: The actual extracted schema data
+    public DatabaseSchema SchemaData { get; set; } = new();
 }
-

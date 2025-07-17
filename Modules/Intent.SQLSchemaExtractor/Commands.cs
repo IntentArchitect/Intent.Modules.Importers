@@ -253,6 +253,11 @@ internal static partial class Commands
         var server = dbConnection.Value.server;
         var db = dbConnection.Value.database;
 
+        // Extract schema to intermediary types
+        var schemaExtractor = new DatabaseSchemaExtractor(config, db);
+        var databaseSchema = schemaExtractor.ExtractSchema();
+
+        // Build Intent package model
         var extractor = new SqlServerSchemaExtractor(config, db, server);
         var package = extractor.BuildPackageModel(config.PackageFileName!, CreateSchemaExtractorEventManager());
 
@@ -266,7 +271,8 @@ internal static partial class Commands
             TablesImported = extractor.Statistics.TableCount,
             ViewsImported = extractor.Statistics.ViewCount,
             StoredProceduresImported = extractor.Statistics.StoredProcedureCount,
-            IndexesImported = extractor.Statistics.IndexCount
+            IndexesImported = extractor.Statistics.IndexCount,
+            SchemaData = databaseSchema
         };
     }
 
