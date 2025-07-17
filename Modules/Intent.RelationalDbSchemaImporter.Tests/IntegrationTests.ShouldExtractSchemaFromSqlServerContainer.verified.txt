@@ -1,0 +1,715 @@
+﻿{
+  DatabaseName: master,
+  Tables: [
+    {
+      Name: MSreplication_options,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: optname,
+          DataType: sysname,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 128
+        },
+        {
+          Name: value,
+          DataType: bit,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 1,
+          NumericPrecision: 1
+        },
+        {
+          Name: major_version,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: minor_version,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: revision,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: install_failures,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        }
+      ]
+    },
+    {
+      Name: spt_fallback_db,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: xserver_name,
+          DataType: varchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 30
+        },
+        {
+          Name: xdttm_ins,
+          DataType: datetime,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 23,
+          NumericScale: 3
+        },
+        {
+          Name: xdttm_last_ins_upd,
+          DataType: datetime,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 23,
+          NumericScale: 3
+        },
+        {
+          Name: xfallback_dbid,
+          DataType: smallint,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 2,
+          NumericPrecision: 5
+        },
+        {
+          Name: name,
+          DataType: varchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 30
+        },
+        {
+          Name: dbid,
+          DataType: smallint,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 2,
+          NumericPrecision: 5
+        },
+        {
+          Name: status,
+          DataType: smallint,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 2,
+          NumericPrecision: 5
+        },
+        {
+          Name: version,
+          DataType: smallint,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 2,
+          NumericPrecision: 5
+        }
+      ]
+    },
+    {
+      Name: spt_fallback_dev,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: xserver_name,
+          DataType: varchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 30
+        },
+        {
+          Name: xdttm_ins,
+          DataType: datetime,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 23,
+          NumericScale: 3
+        },
+        {
+          Name: xdttm_last_ins_upd,
+          DataType: datetime,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 23,
+          NumericScale: 3
+        },
+        {
+          Name: xfallback_low,
+          DataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: xfallback_drive,
+          DataType: char,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 2
+        },
+        {
+          Name: low,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: high,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: status,
+          DataType: smallint,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 2,
+          NumericPrecision: 5
+        },
+        {
+          Name: name,
+          DataType: varchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 30
+        },
+        {
+          Name: phyname,
+          DataType: varchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 127
+        }
+      ]
+    },
+    {
+      Name: spt_fallback_usg,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: xserver_name,
+          DataType: varchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 30
+        },
+        {
+          Name: xdttm_ins,
+          DataType: datetime,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 23,
+          NumericScale: 3
+        },
+        {
+          Name: xdttm_last_ins_upd,
+          DataType: datetime,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 23,
+          NumericScale: 3
+        },
+        {
+          Name: xfallback_vstart,
+          DataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: dbid,
+          DataType: smallint,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 2,
+          NumericPrecision: 5
+        },
+        {
+          Name: segmap,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: lstart,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: sizepg,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: vstart,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        }
+      ]
+    },
+    {
+      Name: spt_monitor,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: lastrun,
+          DataType: datetime,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 23,
+          NumericScale: 3
+        },
+        {
+          Name: cpu_busy,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: io_busy,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: idle,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: pack_received,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: pack_sent,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: connections,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: pack_errors,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: total_read,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: total_write,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: total_errors,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        }
+      ]
+    },
+    {
+      Name: OrderItems,
+      Schema: TestSchema,
+      Columns: [
+        {
+          Name: Id,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: OrderId,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: ProductName,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 200
+        },
+        {
+          Name: Quantity,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: UnitPrice,
+          DataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 9,
+          NumericPrecision: 18,
+          NumericScale: 2
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: FK_OrderItems_Orders,
+          ReferencedTableSchema: TestSchema,
+          ReferencedTableName: Orders,
+          Columns: [
+            {
+              Name: OrderId,
+              ReferencedColumnName: Id
+            }
+          ]
+        }
+      ]
+    },
+    {
+      Name: Orders,
+      Schema: TestSchema,
+      Columns: [
+        {
+          Name: Id,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: UserId,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: OrderNumber,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: OrderDate,
+          DataType: datetime2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        },
+        {
+          Name: TotalAmount,
+          DataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 9,
+          NumericPrecision: 18,
+          NumericScale: 2
+        },
+        {
+          Name: Status,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 20,
+          DefaultConstraint: {
+            Text: ('Pending')
+          }
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: FK_Orders_Users,
+          ReferencedTableSchema: TestSchema,
+          ReferencedTableName: Users,
+          Columns: [
+            {
+              Name: UserId,
+              ReferencedColumnName: Id
+            }
+          ]
+        }
+      ]
+    },
+    {
+      Name: Users,
+      Schema: TestSchema,
+      Columns: [
+        {
+          Name: Id,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: UserName,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 255
+        },
+        {
+          Name: Email,
+          DataType: nvarchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 320
+        },
+        {
+          Name: FirstName,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: LastName,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: DateCreated,
+          DataType: datetime2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        },
+        {
+          Name: IsActive,
+          DataType: bit,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 1,
+          NumericPrecision: 1,
+          DefaultConstraint: {
+            Text: ((1))
+          }
+        },
+        {
+          Name: Balance,
+          DataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 9,
+          NumericPrecision: 18,
+          NumericScale: 2
+        }
+      ]
+    }
+  ],
+  Views: [
+    {
+      Name: spt_values,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: name,
+          DataType: nvarchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 35
+        },
+        {
+          Name: number,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: type,
+          DataType: nchar,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 3
+        },
+        {
+          Name: low,
+          DataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: high,
+          DataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: status,
+          DataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        }
+      ]
+    }
+  ]
+}

@@ -20,11 +20,22 @@
         <PackageReference Include="Verify.Xunit" Version="30.4.0" />
         <PackageReference Include="NSubstitute" Version="5.3.0" />
         <PackageReference Include="Shouldly" Version="4.3.0" />
+        <PackageReference Include="Testcontainers.MsSql" Version="4.6.0" />
+        <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Intent.RelationalDbSchemaImporter.Runner\Intent.RelationalDbSchemaImporter.Runner.csproj" />
-      <ProjectReference Include="..\Intent.SQLSchemaExtractor\Intent.SQLSchemaExtractor.csproj" />
+        <ProjectReference Include="..\Intent.SQLSchemaExtractor\Intent.SQLSchemaExtractor.csproj">
+            <IncludeAssets>native</IncludeAssets>
+        </ProjectReference>
+      <ProjectReference Include="..\Intent.Modules.SqlServerImporter\Intent.Modules.SqlServerImporter.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="TestData\TestSchema.sql">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>

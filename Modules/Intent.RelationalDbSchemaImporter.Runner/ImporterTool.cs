@@ -12,8 +12,21 @@ public static class ImporterTool
     {
         WriteIndented = false
     };
+
+    private static string? _toolDirectory;
+    private static string ToolDirectory
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(_toolDirectory))
+            {
+                throw new InvalidOperationException("Tool directory not set.");
+            }
+            return _toolDirectory;
+        }
+        set => _toolDirectory = value;
+    }
     
-    private static string? ToolDirectory;
     private static string ToolExecutable => Path.Combine(ToolDirectory, "Intent.SQLSchemaExtractor.dll");
 
     public static void SetToolDirectory(string toolDirectory)
@@ -23,10 +36,6 @@ public static class ImporterTool
     
     public static StandardResponse<TResult> Run<TResult>(string command, object payloadObject)
     {
-        if (string.IsNullOrWhiteSpace(ToolDirectory))
-        {
-            throw new InvalidOperationException("Tool directory is not set.");
-        }
         var payloadJson = JsonSerializer.Serialize(payloadObject, SerializerOptions);
 
         string? responseLine = null;
@@ -67,15 +76,15 @@ public static class ImporterTool
             .GetAwaiter()
             .GetResult();
 
+        if (errorString.Length > 0)
+        {
+            throw new InvalidOperationException(errorString.ToString());
+        }
+        
         if (responseLine is not null)
         {
             var responseObj = JsonSerializer.Deserialize<StandardResponse<TResult>>(responseLine, SerializerOptions)!;
             return responseObj;
-        }
-
-        if (errorString.Length > 0)
-        {
-            throw new InvalidOperationException(errorString.ToString());
         }
         
         throw new InvalidOperationException("No response received.");
