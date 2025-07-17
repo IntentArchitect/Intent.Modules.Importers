@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Intent.Modules.SqlServerImporter.Tasks.Models;
 using Intent.Plugins;
+using Intent.RelationalDbSchemaImporter.Runner;
 using Intent.Utils;
 
 namespace Intent.Modules.SqlServerImporter.Tasks.Helpers;
@@ -39,6 +41,10 @@ public abstract class ModuleTaskSingleInputBase<TInputModel> : IModuleTask
             
             Logging.Log.Info($"Executing: {TaskTypeId}; Input: {JsonSerializer.Serialize(inputModel, SerializerOptions)}");
 
+            ImporterTool.SetToolDirectory(Path.GetFullPath(Path.Combine(
+                Path.GetDirectoryName(typeof(ImporterTool).Assembly.Location)!, 
+                "../content/tool")));
+            
             var executeResult = ExecuteModuleTask(inputModel);
             if (executeResult is null)
             {

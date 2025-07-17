@@ -30,6 +30,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RelationalDbSchemaImporter"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intent.RelationalDbSchemaImporter.Contracts", "Intent.RelationalDbSchemaImporter.Contracts\Intent.RelationalDbSchemaImporter.Contracts.csproj", "{EC571725-DE72-4B2F-AA2A-4EF36B460412}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intent.RelationalDbSchemaImporter.Tests", "Intent.RelationalDbSchemaImporter.Tests\Intent.RelationalDbSchemaImporter.Tests.csproj", "{5BE9EE08-4347-4F0C-A7F2-F5FC0DE340C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intent.RelationalDbSchemaImporter.Runner", "Intent.RelationalDbSchemaImporter.Runner\Intent.RelationalDbSchemaImporter.Runner.csproj", "{C24B7421-6089-4169-801E-6B434CB100E6}"
+EndProject
 Global
 	GlobalSection(NestedProjects) = preSolution
 		{5FCD4F69-1170-49A5-ACFF-FA761098B928} = {4BDFA0CD-A767-4B6B-A0DC-32FFA660C12D}
@@ -43,6 +47,8 @@ Global
 		{5F21D826-D501-44D2-8ECF-A51EAC109ACC} = {5C31005F-A1A1-4612-B2EF-CFD1A3DE266B}
 		{CFC06753-BA2E-4844-BC2F-D0A146253EA1} = {48C8A411-F3BD-4278-A089-5F2115521276}
 		{EC571725-DE72-4B2F-AA2A-4EF36B460412} = {48C8A411-F3BD-4278-A089-5F2115521276}
+		{5BE9EE08-4347-4F0C-A7F2-F5FC0DE340C1} = {48C8A411-F3BD-4278-A089-5F2115521276}
+		{C24B7421-6089-4169-801E-6B434CB100E6} = {48C8A411-F3BD-4278-A089-5F2115521276}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5FCD4F69-1170-49A5-ACFF-FA761098B928}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -89,6 +95,14 @@ Global
 		{EC571725-DE72-4B2F-AA2A-4EF36B460412}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC571725-DE72-4B2F-AA2A-4EF36B460412}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC571725-DE72-4B2F-AA2A-4EF36B460412}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BE9EE08-4347-4F0C-A7F2-F5FC0DE340C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BE9EE08-4347-4F0C-A7F2-F5FC0DE340C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BE9EE08-4347-4F0C-A7F2-F5FC0DE340C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BE9EE08-4347-4F0C-A7F2-F5FC0DE340C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C24B7421-6089-4169-801E-6B434CB100E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C24B7421-6089-4169-801E-6B434CB100E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C24B7421-6089-4169-801E-6B434CB100E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C24B7421-6089-4169-801E-6B434CB100E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

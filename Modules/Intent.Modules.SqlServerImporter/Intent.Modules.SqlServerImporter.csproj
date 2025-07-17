@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CliWrap" Version="3.9.0" />
     <PackageReference Include="Intent.Architect.Persistence" Version="3.7.1" />
     <PackageReference Include="Intent.Modules.Common" Version="3.7.2" />
     <PackageReference Include="Intent.Modules.Common.CSharp" Version="3.8.1" />
@@ -27,7 +26,8 @@
     </Reference>
   </ItemGroup>
 
-  <Target Name="CopyRelationalSchemaImporter" BeforeTargets="RunIntentArchitectPackager">
+  <Target Name="CopyRelationalSchemaImporter" BeforeTargets="RunIntentArchitectPackager" AfterTargets="Build">
+    <Message Text="Copying over RelationalSchemaImporter..." Importance="high" />
     <ItemGroup>
       <SourceFiles Include="$(ProjectDir)../Intent.SQLSchemaExtractor/bin/$(Configuration)/net8.0/**/*.*" />
     </ItemGroup>
@@ -35,13 +35,13 @@
           DestinationFiles="@(SourceFiles -> '$(ProjectDir)resources/tool/%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 
-
   <ItemGroup>
     <None Include="resources\tool\**\*.*" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Intent.RelationalDbSchemaImporter.Contracts\Intent.RelationalDbSchemaImporter.Contracts.csproj" />
+    <ProjectReference Include="..\Intent.RelationalDbSchemaImporter.Runner\Intent.RelationalDbSchemaImporter.Runner.csproj" />
   </ItemGroup>
 
   <ItemGroup>

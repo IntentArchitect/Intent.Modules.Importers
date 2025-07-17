@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="CliWrap" Version="3.9.0" />
+        <PackageReference Include="Intent.SoftwareFactory.SDK" Version="3.7.0" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Intent.RelationalDbSchemaImporter.Contracts\Intent.RelationalDbSchemaImporter.Contracts.csproj" />
+    </ItemGroup>
+
+</Project>

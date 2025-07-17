@@ -6,6 +6,7 @@ using Intent.Modules.SqlServerImporter.Tasks.Models;
 using Intent.Modules.SqlServerImporter.Tasks.Mappers;
 using Intent.RelationalDbSchemaImporter.Contracts.Models;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
+using Intent.RelationalDbSchemaImporter.Runner;
 
 namespace Intent.Modules.SqlServerImporter.Tasks;
 

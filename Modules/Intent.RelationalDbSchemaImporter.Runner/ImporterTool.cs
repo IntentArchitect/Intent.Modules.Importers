@@ -1,30 +1,32 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using CliWrap;
-using Intent.Modules.SqlServerImporter.Tasks.Models;
 using Intent.RelationalDbSchemaImporter.Contracts.Models;
 using Intent.Utils;
 
-namespace Intent.Modules.SqlServerImporter.Tasks.Helpers;
+namespace Intent.RelationalDbSchemaImporter.Runner;
 
-internal static class ImporterTool
+public static class ImporterTool
 {
     private static readonly JsonSerializerOptions SerializerOptions = new()
     {
         WriteIndented = false
     };
     
-    private static readonly string ToolDirectory = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(typeof(ImporterTool).Assembly.Location)!, "../content/tool"));
-    private static readonly string ToolExecutable = Path.Combine(ToolDirectory, "Intent.SQLSchemaExtractor.dll");
+    private static string? ToolDirectory;
+    private static string ToolExecutable => Path.Combine(ToolDirectory, "Intent.SQLSchemaExtractor.dll");
+
+    public static void SetToolDirectory(string toolDirectory)
+    {
+        ToolDirectory = toolDirectory;
+    }
     
     public static StandardResponse<TResult> Run<TResult>(string command, object payloadObject)
     {
+        if (string.IsNullOrWhiteSpace(ToolDirectory))
+        {
+            throw new InvalidOperationException("Tool directory is not set.");
+        }
         var payloadJson = JsonSerializer.Serialize(payloadObject, SerializerOptions);
 
         string? responseLine = null;
