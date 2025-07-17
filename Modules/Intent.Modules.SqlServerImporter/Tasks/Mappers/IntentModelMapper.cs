@@ -17,12 +17,6 @@ public class IntentModelMapper
 {
     private readonly TypeReferenceMapper _typeReferenceMapper;
     
-    // Global tracking for deduplication
-    private static readonly List<string> _addedTableNames = new();
-    private static readonly List<string> _addedColumnNames = new();
-    private static readonly List<string> _addedViewNames = new();
-    private static readonly List<string> _addedProcedureNames = new();
-    
     // Reserved C# keywords
     private static readonly HashSet<string> ReservedWords = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -38,9 +32,9 @@ public class IntentModelMapper
         _typeReferenceMapper = new TypeReferenceMapper();
     }
 
-    public ElementPersistable MapTableToClass(TableSchema table, ImportConfiguration config, string? parentFolderId = null)
+    public ElementPersistable MapTableToClass(TableSchema table, ImportConfiguration config, string? parentFolderId = null, DeduplicationContext? deduplicationContext = null)
     {
-        var className = GetEntityName(table.Name, config.EntityNameConvention, table.Schema);
+        var className = GetEntityName(table.Name, config.EntityNameConvention, table.Schema, deduplicationContext);
         
         var classElement = new ElementPersistable
         {
@@ -56,7 +50,7 @@ public class IntentModelMapper
         // Map columns to attributes
         foreach (var column in table.Columns)
         {
-            var attribute = MapColumnToAttribute(column, table.Name, className, table.Schema, classElement.Id);
+            var attribute = MapColumnToAttribute(column, table.Name, className, table.Schema, classElement.Id, deduplicationContext);
             classElement.ChildElements.Add(attribute);
             
             // Apply stereotypes
@@ -80,9 +74,9 @@ public class IntentModelMapper
         return classElement;
     }
 
-    public ElementPersistable MapViewToClass(ViewSchema view, ImportConfiguration config, string? parentFolderId = null)
+    public ElementPersistable MapViewToClass(ViewSchema view, ImportConfiguration config, string? parentFolderId = null, DeduplicationContext? deduplicationContext = null)
     {
-        var className = GetEntityName(view.Name, config.EntityNameConvention, view.Schema);
+        var className = GetViewName(view.Name, config.EntityNameConvention, view.Schema, deduplicationContext);
         
         var classElement = new ElementPersistable
         {
@@ -98,7 +92,7 @@ public class IntentModelMapper
         // Map columns to attributes
         foreach (var column in view.Columns)
         {
-            var attribute = MapColumnToAttribute(column, view.Name, className, view.Schema, classElement.Id);
+            var attribute = MapColumnToAttribute(column, view.Name, className, view.Schema, classElement.Id, deduplicationContext);
             classElement.ChildElements.Add(attribute);
             
             // Apply stereotypes (views don't have primary keys, defaults, or computed values)
@@ -113,34 +107,9 @@ public class IntentModelMapper
         return classElement;
     }
 
-    // public ElementPersistable MapStoredProcedureToElement(StoredProcedureSchema storedProc, ImportConfiguration config)
-    // {
-    //     var procElement = new ElementPersistable
-    //     {
-    //         Id = Guid.NewGuid().ToString(),
-    //         Name = GetStoredProcedureName(storedProc.Name),
-    //         SpecializationType = OperationModel.SpecializationType,
-    //         SpecializationTypeId = OperationModel.SpecializationTypeId,
-    //         ChildElements = new List<ElementPersistable>(),
-    //         Stereotypes = new List<StereotypePersistable>()
-    //     };
-    //
-    //     // Map parameters
-    //     foreach (var parameter in storedProc.Parameters)
-    //     {
-    //         var paramElement = MapParameterToElement(parameter);
-    //         procElement.ChildElements.Add(paramElement);
-    //     }
-    //
-    //     // Apply stored procedure stereotypes
-    //     RdbmsSchemaAnnotator.ApplyStoredProcedureSettings(storedProc, procElement);
-    //
-    //     return procElement;
-    // }
-
-    private ElementPersistable MapColumnToAttribute(ColumnSchema column, string tableName, string className, string schema, string? parentClassId = null)
+    private ElementPersistable MapColumnToAttribute(ColumnSchema column, string tableName, string className, string schema, string? parentClassId = null, DeduplicationContext? deduplicationContext = null)
     {
-        var attributeName = GetAttributeName(column.Name, tableName, className, schema);
+        var attributeName = GetAttributeName(column.Name, tableName, className, schema, deduplicationContext);
         
         return new ElementPersistable
         {
@@ -155,23 +124,7 @@ public class IntentModelMapper
         };
     }
 
-    // private ElementPersistable MapParameterToElement(StoredProcedureParameterSchema parameter)
-    // {
-    //     var paramName = GetParameterName(parameter.Name);
-    //     
-    //     return new ElementPersistable
-    //     {
-    //         Id = Guid.NewGuid().ToString(),
-    //         Name = paramName,
-    //         SpecializationType = ParameterModel.SpecializationType,
-    //         SpecializationTypeId = ParameterModel.SpecializationTypeId,
-    //         TypeReference = _typeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter),
-    //         ChildElements = new List<ElementPersistable>(),
-    //         Stereotypes = new List<StereotypePersistable>()
-    //     };
-    // }
-
-    private string GetEntityName(string tableName, EntityNameConvention convention, string schema)
+    private string GetEntityName(string tableName, EntityNameConvention convention, string schema, DeduplicationContext? deduplicationContext)
     {
         var normalized = convention switch
         {
@@ -179,21 +132,33 @@ public class IntentModelMapper
             EntityNameConvention.SingularEntity => NormalizeTableName(tableName.Singularize()),
             _ => NormalizeTableName(tableName)
         };
-        return DeDuplicateTable(normalized, schema);
+        return deduplicationContext?.DeduplicateTable(normalized, schema) ?? normalized;
     }
 
-    private string GetAttributeName(string columnName, string? tableName, string className, string schema)
+    private string GetViewName(string viewName, EntityNameConvention convention, string schema, DeduplicationContext? deduplicationContext)
     {
-        // Normalize and deduplicate column name
-        var normalized = NormalizeColumnName(columnName, tableName);
-        return DeDuplicateColumn(normalized, className, schema);
+        var normalized = convention switch
+        {
+            EntityNameConvention.MatchTable => NormalizeTableName(viewName),
+            EntityNameConvention.SingularEntity => NormalizeTableName(viewName.Singularize()),
+            _ => NormalizeTableName(viewName)
+        };
+        return deduplicationContext?.DeduplicateView(normalized, schema) ?? normalized;
     }
 
-    private string GetStoredProcedureName(string procName)
+    private string GetAttributeName(string columnName, string? tableName, string className, string schema, DeduplicationContext? deduplicationContext)
+    {
+        // Normalize column name
+        var normalized = NormalizeColumnName(columnName, tableName);
+        return deduplicationContext?.DeduplicateColumn(normalized, className, schema) ?? normalized;
+    }
+
+    private string GetStoredProcedureName(string procName, string schema, DeduplicationContext? deduplicationContext)
     {
         // Remove schema prefix if present and convert to PascalCase
         var name = procName.Contains('.') ? procName.Split('.').Last() : procName;
-        return name.ToPascalCase();
+        var normalized = NormalizeStoredProcName(name);
+        return deduplicationContext?.DeduplicateStoredProcedure(normalized, schema) ?? normalized;
     }
 
     private string GetParameterName(string paramName)
@@ -203,7 +168,7 @@ public class IntentModelMapper
         return name.ToCamelCase();
     }
 
-    #region Name Normalization and Deduplication
+    #region Name Normalization
 
     /// <summary>
     /// Converts database identifier to valid C# identifier following C# naming conventions
@@ -311,97 +276,10 @@ public class IntentModelMapper
         return normalized;
     }
 
-    private static string DeDuplicateTable(string className, string schema)
+    private static string NormalizeSchemaName(string schemaName)
     {
-        var counter = 0;
-        var addedReference = $"[{schema}].[{className}]";
-        bool duplicateFound = false;
-
-        while (_addedTableNames.Any(x => x == addedReference))
-        {
-            duplicateFound = true;
-            counter++;
-            addedReference = $"[{schema}].[{className}{counter}]";
-        }
-
-        if (duplicateFound)
-        {
-            className = $"{className}{counter}";
-        }
-
-        _addedTableNames.Add(addedReference);
-        return className;
-    }
-
-    private static string DeDuplicateView(string className, string schema)
-    {
-        var counter = 0;
-        var addedReference = $"[{schema}].[{className}]";
-        bool duplicateFound = false;
-
-        while (_addedViewNames.Any(x => x == addedReference))
-        {
-            duplicateFound = true;
-            counter++;
-            addedReference = $"[{schema}].[{className}{counter}]";
-        }
-
-        if (duplicateFound)
-        {
-            className = $"{className}{counter}";
-        }
-
-        _addedViewNames.Add(addedReference);
-        return className;
-    }
-
-    private static string DeDuplicateColumn(string propertyName, string className, string schema)
-    {
-        if (propertyName == className)
-        {
-            propertyName = propertyName + "Property";
-        }
-
-        var counter = 0;
-        var addedReference = $"[{schema}].[{className}].[{propertyName}]";
-        bool duplicateFound = false;
-
-        while (_addedColumnNames.Any(x => x == addedReference))
-        {
-            duplicateFound = true;
-            counter++;
-            addedReference = $"[{schema}].[{className}].[{propertyName}{counter}]";
-        }
-
-        if (duplicateFound)
-        {
-            propertyName = $"{propertyName}{counter}";
-        }
-
-        _addedColumnNames.Add(addedReference);
-        return propertyName;
-    }
-
-    private static string DeDuplicateStoredProcedure(string procedureName, string schema)
-    {
-        var counter = 0;
-        var addedReference = $"[{schema}].[{procedureName}]";
-        bool duplicateFound = false;
-
-        while (_addedProcedureNames.Any(x => x == addedReference))
-        {
-            duplicateFound = true;
-            counter++;
-            addedReference = $"[{schema}].[{procedureName}{counter}]";
-        }
-
-        if (duplicateFound)
-        {
-            procedureName = $"{procedureName}{counter}";
-        }
-
-        _addedProcedureNames.Add(addedReference);
-        return procedureName;
+        var normalized = schemaName;
+        return normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
     }
 
     #endregion
@@ -428,15 +306,14 @@ public class IntentModelMapper
     /// <summary>
     /// Maps a stored procedure to an element (Element mode)
     /// </summary>
-    public ElementPersistable MapStoredProcedureToElement(StoredProcedureSchema storedProc, string repositoryId, ImportConfiguration config)
+    public ElementPersistable MapStoredProcedureToElement(StoredProcedureSchema storedProc, string? repositoryId, ImportConfiguration config, DeduplicationContext? deduplicationContext = null)
     {
-        var procName = NormalizeStoredProcName(storedProc.Name);
-        var dedupedName = DeDuplicateStoredProcedure(procName, storedProc.Schema);
+        var procName = GetStoredProcedureName(storedProc.Name, storedProc.Schema, deduplicationContext);
 
         var procElement = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = dedupedName,
+            Name = procName,
             SpecializationType = "Stored Procedure",
             SpecializationTypeId = "575edd35-9438-406d-b0a7-b99d6f29b560", // Stored Procedure specialization type ID
             ParentFolderId = repositoryId, // Stored procedures belong to repository
@@ -457,15 +334,14 @@ public class IntentModelMapper
     /// <summary>
     /// Maps a stored procedure to an operation (Operation mode)
     /// </summary>
-    public ElementPersistable MapStoredProcedureToOperation(StoredProcedureSchema storedProc, string repositoryId, ImportConfiguration config)
+    public ElementPersistable MapStoredProcedureToOperation(StoredProcedureSchema storedProc, string repositoryId, ImportConfiguration config, DeduplicationContext? deduplicationContext = null)
     {
-        var procName = NormalizeStoredProcName(storedProc.Name);
-        var dedupedName = DeDuplicateStoredProcedure(procName, storedProc.Schema);
+        var procName = GetStoredProcedureName(storedProc.Name, storedProc.Schema, deduplicationContext);
 
         var operationElement = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = dedupedName,
+            Name = procName,
             SpecializationType = "Operation",
             SpecializationTypeId = "e030c97a-e066-40a7-8188-808c275df3cb", // Operation specialization type ID
             ParentFolderId = repositoryId, // Operations belong to repository
@@ -590,13 +466,13 @@ public class IntentModelMapper
                 AutoSyncTypeReference = false,
                 Path = new List<MappedPathTargetPersistable>
                 {
-                                         new()
-                     {
-                         Id = attributeId,
-                         Name = GetAttributeNameById(attributeId, package),
-                         Type = "Element",
-                         Specialization = "Attribute"
-                     }
+                    new()
+                    {
+                        Id = attributeId,
+                        Name = GetAttributeNameById(attributeId, package),
+                        Type = "Element",
+                        Specialization = "Attribute"
+                    }
                 }
             };
         }
@@ -723,12 +599,6 @@ public class IntentModelMapper
             ChildElements = new List<ElementPersistable>(),
             Stereotypes = new List<StereotypePersistable>()
         };
-    }
-
-    private static string NormalizeSchemaName(string schemaName)
-    {
-        var normalized = schemaName;
-        return normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
     }
 
     /// <summary>

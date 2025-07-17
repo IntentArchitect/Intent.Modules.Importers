@@ -37,7 +37,6 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
         PrepareInputModel(importModel);
 
         var executionResult = new ExecuteResult();
-        Debugger.Launch();
         // Step 1: Run CLI tool to get both package and schema data
         var result = ImporterTool.Run<ImportSchemaResult>("import-schema", importModel);
 
@@ -115,8 +114,11 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
             // Create the schema mapper
             var schemaMapper = new SchemaToIntentMapper(config);
 
+            // Create deduplication context for this import operation
+            var deduplicationContext = new DeduplicationContext();
+
             // Apply the mapping using the schema data from the CLI
-            var mappingResult = schemaMapper.MapSchemaToPackage(importResult.SchemaData, package);
+            var mappingResult = schemaMapper.MapSchemaToPackage(importResult.SchemaData, package, deduplicationContext);
 
             // Save the package if mapping was successful
             if (mappingResult.IsSuccessful)

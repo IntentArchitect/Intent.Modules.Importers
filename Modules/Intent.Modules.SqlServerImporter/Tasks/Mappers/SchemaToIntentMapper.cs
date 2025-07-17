@@ -23,7 +23,7 @@ public class SchemaToIntentMapper
         _intentModelMapper = new IntentModelMapper();
     }
 
-    public PackageUpdateResult MapSchemaToPackage(DatabaseSchema databaseSchema, PackageModelPersistable package)
+    public PackageUpdateResult MapSchemaToPackage(DatabaseSchema databaseSchema, PackageModelPersistable package, DeduplicationContext? deduplicationContext = null)
     {
         var result = new PackageUpdateResult();
 
@@ -38,7 +38,7 @@ public class SchemaToIntentMapper
                 foreach (var table in databaseSchema.Tables)
                 {
                     // Check if class already exists first (before creating folder structure)
-                    // Create a temporary mapping to get the expected name
+                    // Create a temporary mapping to get the expected name WITHOUT deduplication context
                     var tempClassElement = _intentModelMapper.MapTableToClass(table, _config, null);
                     var existingClass = existingElements.FirstOrDefault(c => 
                         c.Name == tempClassElement.Name || 
@@ -47,6 +47,7 @@ public class SchemaToIntentMapper
                     if (existingClass != null)
                     {
                         // Update existing class without moving it (keep existing ParentFolderId)
+                        // Don't use deduplication context for updates to preserve existing names
                         var updatedClassElement = _intentModelMapper.MapTableToClass(table, _config, existingClass.ParentFolderId);
                         UpdateExistingClass(existingClass, updatedClassElement);
                         result.UpdatedElements.Add(existingClass);
@@ -58,7 +59,8 @@ public class SchemaToIntentMapper
                     {
                         // Only create schema folder for new elements
                         var schemaFolder = GetOrCreateSchemaFolder(table.Schema, package);
-                        var classElement = _intentModelMapper.MapTableToClass(table, _config, schemaFolder.Id);
+                        // Use deduplication context for new elements only
+                        var classElement = _intentModelMapper.MapTableToClass(table, _config, schemaFolder.Id, deduplicationContext);
                         
                         package.Classes.Add(classElement);
                         result.AddedElements.Add(classElement);
@@ -75,6 +77,7 @@ public class SchemaToIntentMapper
                 foreach (var view in databaseSchema.Views)
                 {
                     // Check if class already exists first (before creating folder structure)
+                    // Create a temporary mapping to get the expected name WITHOUT deduplication context
                     var tempClassElement = _intentModelMapper.MapViewToClass(view, _config, null);
                     var existingClass = existingElements.FirstOrDefault(c => 
                         c.Name == tempClassElement.Name || 
@@ -83,6 +86,7 @@ public class SchemaToIntentMapper
                     if (existingClass != null)
                     {
                         // Update existing class without moving it (keep existing ParentFolderId)
+                        // Don't use deduplication context for updates to preserve existing names
                         var updatedClassElement = _intentModelMapper.MapViewToClass(view, _config, existingClass.ParentFolderId);
                         UpdateExistingClass(existingClass, updatedClassElement);
                         result.UpdatedElements.Add(existingClass);
@@ -91,7 +95,8 @@ public class SchemaToIntentMapper
                     {
                         // Only create schema folder for new elements
                         var schemaFolder = GetOrCreateSchemaFolder(view.Schema, package);
-                        var classElement = _intentModelMapper.MapViewToClass(view, _config, schemaFolder.Id);
+                        // Use deduplication context for new elements only
+                        var classElement = _intentModelMapper.MapViewToClass(view, _config, schemaFolder.Id, deduplicationContext);
                         
                         package.Classes.Add(classElement);
                         result.AddedElements.Add(classElement);
@@ -110,7 +115,7 @@ public class SchemaToIntentMapper
                     if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
                     {
                         // Create as stored procedure element (no parent folder for standalone elements)
-                        procElement = _intentModelMapper.MapStoredProcedureToElement(storedProc, null, _config);
+                        procElement = _intentModelMapper.MapStoredProcedureToElement(storedProc, null, _config, deduplicationContext);
                     }
                     else
                     {
@@ -118,7 +123,7 @@ public class SchemaToIntentMapper
                         var repositoryElement = GetOrCreateRepository(storedProc.Schema, package);
                         
                         // Create as operation within repository
-                        procElement = _intentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, _config);
+                        procElement = _intentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, _config, deduplicationContext);
                         repositoryElement.ChildElements.Add(procElement);
                         
                         // Don't add to package.Classes since it's a child of repository

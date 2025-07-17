@@ -122,8 +122,11 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
             // Create the schema mapper
             var schemaMapper = new SchemaToIntentMapper(config);
 
+            // Create deduplication context for this import operation
+            var deduplicationContext = new DeduplicationContext();
+
             // Apply the mapping using the schema data from the CLI
-            var mappingResult = schemaMapper.MapSchemaToPackage(importResult.SchemaData, package);
+            var mappingResult = schemaMapper.MapSchemaToPackage(importResult.SchemaData, package, deduplicationContext);
 
             // Save the package if mapping was successful
             if (mappingResult.IsSuccessful)
