@@ -28,21 +28,24 @@
   </ItemGroup>
 
   <Target Name="CopyRelationalSchemaImporter" BeforeTargets="RunIntentArchitectPackager">
-    <Copy SourceFiles="$(ProjectDir)../Intent.SQLSchemaExtractor/bin/$(Configuration)/net8.0/Intent.RelationalDbSchemaImporter.Contracts.dll" DestinationFolder="$(ProjectDir)resources/tool" />
-    <Copy SourceFiles="$(ProjectDir)../Intent.SQLSchemaExtractor/bin/$(Configuration)/net8.0/Intent.SQLSchemaExtractor.exe" DestinationFolder="$(ProjectDir)resources/tool" />
-    <Copy SourceFiles="$(ProjectDir)../Intent.SQLSchemaExtractor/bin/$(Configuration)/net8.0/Intent.SQLSchemaExtractor.dll" DestinationFolder="$(ProjectDir)resources/tool" />
-    <Copy SourceFiles="$(ProjectDir)../Intent.SQLSchemaExtractor/bin/$(Configuration)/net8.0/Intent.SQLSchemaExtractor.pdb" DestinationFolder="$(ProjectDir)resources/tool" />
-    <Copy SourceFiles="$(ProjectDir)../Intent.SQLSchemaExtractor/bin/$(Configuration)/net8.0/Intent.SQLSchemaExtractor.deps.json" DestinationFolder="$(ProjectDir)resources/tool" />
-    <Copy SourceFiles="$(ProjectDir)../Intent.SQLSchemaExtractor/bin/$(Configuration)/net8.0/Intent.SQLSchemaExtractor.runtimeconfig.json" DestinationFolder="$(ProjectDir)resources/tool" />
-    <Copy SourceFiles="$(ProjectDir)../Intent.SQLSchemaExtractor/bin/$(Configuration)/net8.0/System.CommandLine.dll" DestinationFolder="$(ProjectDir)resources/tool" />
+    <ItemGroup>
+      <SourceFiles Include="$(ProjectDir)../Intent.SQLSchemaExtractor/bin/$(Configuration)/net8.0/**/*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(SourceFiles)"
+          DestinationFiles="@(SourceFiles -> '$(ProjectDir)resources/tool/%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
-  
+
+
   <ItemGroup>
     <None Include="resources\tool\**\*.*" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Intent.RelationalDbSchemaImporter.Contracts\Intent.RelationalDbSchemaImporter.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="resources\tool\" />
   </ItemGroup>
 
 </Project>
