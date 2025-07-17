@@ -80,10 +80,15 @@ public class TypeReferenceMapper
         };
     }
 
+
+
     private string? GetTypeId(string dataType)
     {
+        // Extract base type name by removing size/precision information
+        var baseType = ExtractBaseTypeName(dataType);
+        
         // Convert database-agnostic data type string to Intent type ID
-        return dataType.ToLower() switch
+        return baseType.ToLower() switch
         {
             "varchar" or "nvarchar" or "text" or "ntext" or "char" or "nchar" or "sysname" or "xml" => Constants.TypeDefinitions.CommonTypes.String,
             "int" => Constants.TypeDefinitions.CommonTypes.Int,
@@ -100,5 +105,21 @@ public class TypeReferenceMapper
             "datetimeoffset" => Constants.TypeDefinitions.CommonTypes.DatetimeOffset,
             _ => null
         };
+    }
+
+    /// <summary>
+    /// Extracts the base type name from a SQL data type string, removing size/precision information
+    /// Examples: "nvarchar(255)" -> "nvarchar", "decimal(18,2)" -> "decimal", "varchar(max)" -> "varchar"
+    /// </summary>
+    private string ExtractBaseTypeName(string dataType)
+    {
+        if (string.IsNullOrWhiteSpace(dataType))
+        {
+            return string.Empty;
+        }
+
+        // Find the opening parenthesis and extract everything before it
+        var parenIndex = dataType.IndexOf('(');
+        return parenIndex > 0 ? dataType.Substring(0, parenIndex).Trim() : dataType.Trim();
     }
 }

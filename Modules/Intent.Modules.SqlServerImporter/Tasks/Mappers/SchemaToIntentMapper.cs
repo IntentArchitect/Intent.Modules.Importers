@@ -51,11 +51,17 @@ public class SchemaToIntentMapper
                     {
                         UpdateExistingClass(existingClass, classElement);
                         result.UpdatedElements.Add(existingClass);
+                        
+                        // Process indexes for existing class
+                        ProcessTableIndexes(table, existingClass, package);
                     }
                     else
                     {
                         package.Classes.Add(classElement);
                         result.AddedElements.Add(classElement);
+                        
+                        // Process indexes for new class
+                        ProcessTableIndexes(table, classElement, package);
                     }
                 }
             }
@@ -122,6 +128,29 @@ public class SchemaToIntentMapper
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// Processes table indexes and creates them in the package
+    /// </summary>
+    private void ProcessTableIndexes(TableSchema table, ElementPersistable classElement, PackageModelPersistable package)
+    {
+        foreach (var index in table.Indexes)
+        {
+            var indexElement = _intentModelMapper.CreateIndex(index, classElement.Id, package);
+            package.Classes.Add(indexElement);
+            
+            // Create index columns
+            foreach (var indexColumn in index.Columns)
+            {
+                // Find the corresponding attribute in the class
+                var attribute = classElement.ChildElements.FirstOrDefault(attr => 
+                    attr.Name.Equals(indexColumn.Name, StringComparison.OrdinalIgnoreCase));
+                
+                var indexColumnElement = _intentModelMapper.CreateIndexColumn(indexColumn, indexElement.Id, attribute?.Id, package);
+                indexElement.ChildElements.Add(indexColumnElement);
+            }
+        }
     }
 
     private bool IsTableMappedToClass(ElementPersistable classElement, TableSchema table)
