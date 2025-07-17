@@ -400,13 +400,12 @@ public class DatabaseSchemaExtractor
 
     private string GetDataTypeString(DataType dataType)
     {
+        // Return base type name without size/precision information
         return dataType.SqlDataType switch
         {
-            SqlDataType.VarBinaryMax => "varbinary(max)",
-            SqlDataType.VarCharMax => "varchar(max)",
-            SqlDataType.NVarCharMax => "nvarchar(max)",
-            SqlDataType.VarChar or SqlDataType.NVarChar or SqlDataType.VarBinary when dataType.MaximumLength > 0 =>
-                $"{dataType.Name}({dataType.MaximumLength})",
+            SqlDataType.VarBinaryMax => "varbinary",
+            SqlDataType.VarCharMax => "varchar", 
+            SqlDataType.NVarCharMax => "nvarchar",
             _ => dataType.Name
         };
     }

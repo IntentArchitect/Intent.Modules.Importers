@@ -37,19 +37,18 @@ public class SchemaToIntentMapper
             {
                 foreach (var table in databaseSchema.Tables)
                 {
-                    // Get or create schema folder for proper organization
-                    var schemaFolder = GetOrCreateSchemaFolder(table.Schema, package);
-                    
-                    var classElement = _intentModelMapper.MapTableToClass(table, _config, schemaFolder.Id);
-                    
-                    // Check if class already exists and update or add
+                    // Check if class already exists first (before creating folder structure)
+                    // Create a temporary mapping to get the expected name
+                    var tempClassElement = _intentModelMapper.MapTableToClass(table, _config, null);
                     var existingClass = existingElements.FirstOrDefault(c => 
-                        c.Name == classElement.Name || 
+                        c.Name == tempClassElement.Name || 
                         IsTableMappedToClass(c, table));
                     
                     if (existingClass != null)
                     {
-                        UpdateExistingClass(existingClass, classElement);
+                        // Update existing class without moving it (keep existing ParentFolderId)
+                        var updatedClassElement = _intentModelMapper.MapTableToClass(table, _config, existingClass.ParentFolderId);
+                        UpdateExistingClass(existingClass, updatedClassElement);
                         result.UpdatedElements.Add(existingClass);
                         
                         // Process indexes for existing class
@@ -57,6 +56,10 @@ public class SchemaToIntentMapper
                     }
                     else
                     {
+                        // Only create schema folder for new elements
+                        var schemaFolder = GetOrCreateSchemaFolder(table.Schema, package);
+                        var classElement = _intentModelMapper.MapTableToClass(table, _config, schemaFolder.Id);
+                        
                         package.Classes.Add(classElement);
                         result.AddedElements.Add(classElement);
                         
@@ -71,22 +74,25 @@ public class SchemaToIntentMapper
             {
                 foreach (var view in databaseSchema.Views)
                 {
-                    // Get or create schema folder for proper organization
-                    var schemaFolder = GetOrCreateSchemaFolder(view.Schema, package);
-                    
-                    var classElement = _intentModelMapper.MapViewToClass(view, _config, schemaFolder.Id);
-                    
+                    // Check if class already exists first (before creating folder structure)
+                    var tempClassElement = _intentModelMapper.MapViewToClass(view, _config, null);
                     var existingClass = existingElements.FirstOrDefault(c => 
-                        c.Name == classElement.Name || 
+                        c.Name == tempClassElement.Name || 
                         IsViewMappedToClass(c, view));
                     
                     if (existingClass != null)
                     {
-                        UpdateExistingClass(existingClass, classElement);
+                        // Update existing class without moving it (keep existing ParentFolderId)
+                        var updatedClassElement = _intentModelMapper.MapViewToClass(view, _config, existingClass.ParentFolderId);
+                        UpdateExistingClass(existingClass, updatedClassElement);
                         result.UpdatedElements.Add(existingClass);
                     }
                     else
                     {
+                        // Only create schema folder for new elements
+                        var schemaFolder = GetOrCreateSchemaFolder(view.Schema, package);
+                        var classElement = _intentModelMapper.MapViewToClass(view, _config, schemaFolder.Id);
+                        
                         package.Classes.Add(classElement);
                         result.AddedElements.Add(classElement);
                     }
@@ -94,28 +100,49 @@ public class SchemaToIntentMapper
             }
 
             // Map stored procedures
-            // if (_config.ExportStoredProcedures())
-            // {
-            //     foreach (var storedProc in databaseSchema.StoredProcedures)
-            //     {
-            //         var procElement = _intentModelMapper.MapStoredProcedureToElement(storedProc, _config);
-            //         
-            //         // Add to appropriate collection based on stored procedure type
-            //         if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
-            //         {
-            //             // Add to stored procedures collection if it exists
-            //             // For now, add to classes collection as operations
-            //             package.Classes.Add(procElement);
-            //         }
-            //         else
-            //         {
-            //             // Add as operation to repository or service
-            //             package.Classes.Add(procElement);
-            //         }
-            //         
-            //         result.AddedElements.Add(procElement);
-            //     }
-            // }
+            if (_config.ExportStoredProcedures())
+            {
+                foreach (var storedProc in databaseSchema.StoredProcedures)
+                {
+                    ElementPersistable procElement;
+                    
+                    // Create stored procedure element based on configuration
+                    if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
+                    {
+                        // Create as stored procedure element (no parent folder for standalone elements)
+                        procElement = _intentModelMapper.MapStoredProcedureToElement(storedProc, null, _config);
+                    }
+                    else
+                    {
+                        // Create repository first if it doesn't exist
+                        var repositoryElement = GetOrCreateRepository(storedProc.Schema, package);
+                        
+                        // Create as operation within repository
+                        procElement = _intentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, _config);
+                        repositoryElement.ChildElements.Add(procElement);
+                        
+                        // Don't add to package.Classes since it's a child of repository
+                        result.AddedElements.Add(procElement);
+                        continue;
+                    }
+                    
+                    // Check if stored procedure element already exists
+                    var existingProc = existingElements.FirstOrDefault(c => 
+                        c.Name == procElement.Name && 
+                        c.SpecializationType == procElement.SpecializationType);
+                    
+                    if (existingProc != null)
+                    {
+                        UpdateExistingClass(existingProc, procElement);
+                        result.UpdatedElements.Add(existingProc);
+                    }
+                    else
+                    {
+                        package.Classes.Add(procElement);
+                        result.AddedElements.Add(procElement);
+                    }
+                }
+            }
 
             result.IsSuccessful = true;
             result.Message = $"Successfully mapped {result.AddedElements.Count} new elements and updated {result.UpdatedElements.Count} existing elements.";
@@ -227,6 +254,29 @@ public class SchemaToIntentMapper
     private static string GetNormalizedSchemaName(string schemaName)
     {
         return schemaName.Substring(0, 1).ToUpper() + schemaName.Substring(1);
+    }
+
+    /// <summary>
+    /// Gets or creates a repository element for stored procedure operations
+    /// </summary>
+    private ElementPersistable GetOrCreateRepository(string schemaName, PackageModelPersistable package)
+    {
+        var repositoryName = $"{GetNormalizedSchemaName(schemaName)}Repository";
+        
+        // Check if repository already exists
+        var repository = package.Classes.FirstOrDefault(c => 
+            c.Name == repositoryName && 
+            c.SpecializationType == "Repository");
+
+        if (repository == null)
+        {
+            // Get or create schema folder for repository organization
+            var schemaFolder = GetOrCreateSchemaFolder(schemaName, package);
+            repository = _intentModelMapper.CreateRepository(repositoryName, schemaFolder.Id);
+            package.Classes.Add(repository);
+        }
+
+        return repository;
     }
 }
 
