@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
 namespace Intent.SQLSchemaExtractor.ModelMapper;
 

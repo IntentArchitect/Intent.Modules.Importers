@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using Intent.Engine;
@@ -61,25 +60,25 @@ public class FilterLoad : ModuleTaskSingleInputBase<FilterLoadInputModel>
             if (!File.Exists(filePath))
             {
                 executionResult.Warnings.Add($"Filter file not found: {filePath}");
-                executionResult.ResultModel = new ImportFilterModel();
+                executionResult.Result = new ImportFilterModel();
                 return executionResult;
             }
 
             var jsonContent = File.ReadAllText(filePath);
             if (string.IsNullOrWhiteSpace(jsonContent))
             {
-                executionResult.ResultModel = new ImportFilterModel();
+                executionResult.Result = new ImportFilterModel();
                 return executionResult;
             }
 
             var filterModel = JsonSerializer.Deserialize<ImportFilterModel>(jsonContent);
 
-            executionResult.ResultModel = filterModel ?? new ImportFilterModel();
+            executionResult.Result = filterModel ?? new ImportFilterModel();
         }
         catch (Exception ex)
         {
             executionResult.Errors.Add($"Error loading filter file: {ex.Message}");
-            executionResult.ResultModel = new ImportFilterModel();
+            executionResult.Result = new ImportFilterModel();
         }
 
         return executionResult;

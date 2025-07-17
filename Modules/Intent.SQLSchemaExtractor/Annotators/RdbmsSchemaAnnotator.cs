@@ -4,6 +4,7 @@ using System.Linq;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.Modules.Common.Templates;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.SQLSchemaExtractor.ExtensionMethods;
 using Intent.SQLSchemaExtractor.ModelMapper;
 using Microsoft.SqlServer.Management.Smo;

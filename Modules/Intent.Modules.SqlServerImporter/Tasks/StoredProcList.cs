@@ -1,17 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading;
-using Intent.Modules.Common.Templates;
 using Intent.Modules.SqlServerImporter.Tasks.Helpers;
 using Intent.Modules.SqlServerImporter.Tasks.Models;
-using Intent.Plugins;
-using Intent.Utils;
+using Intent.RelationalDbSchemaImporter.Contracts.Models;
 
 namespace Intent.Modules.SqlServerImporter.Tasks;
 
@@ -29,35 +20,13 @@ public class StoredProcList : ModuleTaskSingleInputBase<StoredProcListInputModel
     {
         var executionResult = new ExecuteResult();
         
-        var storedProcs = new List<string>();
-        var capture = false;
-        SqlSchemaExtractorRunner.Run($@"list-stored-proc --connection ""{importModel.ConnectionString}""", (output, process) =>
-        {
-            if (output.Data?.Trim().StartsWith("Stored Procedures:") == true)
-            {
-                capture = true;
-            }
-            else if (output.Data?.Trim().StartsWith("Error:") == true)
-            {
-                executionResult.Errors.Add(output.Data.Trim().RemovePrefix("Error:"));
-                process.Kill(true);
-            }
-            else if (capture && output.Data?.Trim() == ".")
-            {
-                capture = false;
-                process.Kill(true);
-            }
-            else if (capture)
-            {
-                storedProcs.Add(output.Data ?? "");
-            }
-        });
+        var result = ImporterTool.Run<StoredProceduresListResult>("list-stored-procedures", importModel);
 
         if (executionResult.Errors.Count == 0)
         {
             var resultModel = new StoredProcListResultModel
             {
-                StoredProcs = storedProcs
+                StoredProcs = result.Result!.StoredProcedures
                     .Where(p => !string.IsNullOrWhiteSpace(p))
                     .Select(s =>
                     {
@@ -69,7 +38,7 @@ public class StoredProcList : ModuleTaskSingleInputBase<StoredProcListInputModel
                     .GroupBy(k => k.Schema, v => v.Name)
                     .ToDictionary(k => k.Key, v => v.ToArray())
             };
-            executionResult.ResultModel = resultModel;
+            executionResult.Result = resultModel;
         }
 
         return executionResult;

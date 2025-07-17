@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Intent.Modules.SqlServerImporter.Tasks.Models;
 using Intent.Plugins;
 using Intent.Utils;
 
@@ -81,13 +82,6 @@ public abstract class ModuleTaskSingleInputBase<TInputModel> : IModuleTask
         }
     }
 
-    protected class ExecuteResult
-    {
-        public object? ResultModel { get; set; }
-        public List<string> Warnings { get; private set; } = [];
-        public List<string> Errors { get; private set; } = [];
-    }
-
     private bool ValidateRequest(string[] args, out TInputModel? inputModel, out string? errorMessage)
     {
         inputModel = null;
@@ -124,20 +118,7 @@ public abstract class ModuleTaskSingleInputBase<TInputModel> : IModuleTask
     
     private static string GetResultString(ExecuteResult executeResult)
     {
-        var temp = new Dictionary<string, object?>();
-        if (executeResult.ResultModel is not null)
-        {
-            temp["Result"] = executeResult.ResultModel;
-        }
-        if (executeResult.Errors.Count > 0)
-        {
-            temp["Errors"] = executeResult.Errors;
-        }
-        if (executeResult.Warnings.Count > 0)
-        {
-            temp["Warnings"] = executeResult.Warnings;
-        }
-        return JsonSerializer.Serialize(temp, SerializerOptions);
+        return JsonSerializer.Serialize(executeResult, SerializerOptions);
     }
 
     private string Fail(string reason)

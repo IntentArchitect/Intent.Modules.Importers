@@ -1,6 +1,6 @@
-using System.Collections.Generic;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
-namespace Intent.SQLSchemaExtractor.Models;
+namespace Intent.RelationalDbSchemaImporter.Contracts.Models;
 
 public class ImportSchemaRequest
 {
@@ -15,3 +15,14 @@ public class ImportSchemaRequest
     public string? RepositoryElementId { get; set; }
     public List<string> StoredProcNames { get; set; } = [];
 }
+
+public class ImportSchemaResult
+{
+    public string PackageName { get; set; } = string.Empty;
+    public string PackageFilePath { get; set; } = string.Empty;
+    public int TablesImported { get; set; }
+    public int ViewsImported { get; set; }
+    public int StoredProceduresImported { get; set; }
+    public int IndexesImported { get; set; }
+}
+

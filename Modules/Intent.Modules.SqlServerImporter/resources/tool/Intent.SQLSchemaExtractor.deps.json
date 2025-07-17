@@ -6,13 +6,14 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "Intent.SQLSchemaExtractor/1.3.6": {
+      "Intent.SQLSchemaExtractor/1.0.0": {
         "dependencies": {
           "Intent.Architect.Persistence": "3.4.0",
-          "Intent.Modules.Common": "3.7.6-pre.0",
+          "Intent.Modules.Common": "3.7.6",
+          "Intent.RelationalDbSchemaImporter.Contracts": "1.0.0",
           "JsonSchema.Net": "7.3.3",
           "Microsoft.SqlServer.SqlManagementObjects": "171.30.0",
-          "System.CommandLine": "2.0.0-beta3.22114.1"
+          "System.CommandLine": "2.0.0-beta5.25306.1"
         },
         "runtime": {
           "Intent.SQLSchemaExtractor.dll": {}
@@ -89,7 +90,7 @@
           }
         }
       },
-      "Intent.Modules.Common/3.7.6-pre.0": {
+      "Intent.Modules.Common/3.7.6": {
         "dependencies": {
           "Intent.SoftwareFactory.SDK": "3.5.0",
           "Microsoft.Extensions.FileSystemGlobbing": "3.1.32",
@@ -500,51 +501,51 @@
           }
         }
       },
-      "System.CommandLine/2.0.0-beta3.22114.1": {
+      "System.CommandLine/2.0.0-beta5.25306.1": {
         "runtime": {
-          "lib/net6.0/System.CommandLine.dll": {
+          "lib/net8.0/System.CommandLine.dll": {
             "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.0.22.11401"
+            "fileVersion": "2.0.25.30601"
           }
         },
         "resources": {
-          "lib/net6.0/cs/System.CommandLine.resources.dll": {
+          "lib/net8.0/cs/System.CommandLine.resources.dll": {
             "locale": "cs"
           },
-          "lib/net6.0/de/System.CommandLine.resources.dll": {
+          "lib/net8.0/de/System.CommandLine.resources.dll": {
             "locale": "de"
           },
-          "lib/net6.0/es/System.CommandLine.resources.dll": {
+          "lib/net8.0/es/System.CommandLine.resources.dll": {
             "locale": "es"
           },
-          "lib/net6.0/fr/System.CommandLine.resources.dll": {
+          "lib/net8.0/fr/System.CommandLine.resources.dll": {
             "locale": "fr"
           },
-          "lib/net6.0/it/System.CommandLine.resources.dll": {
+          "lib/net8.0/it/System.CommandLine.resources.dll": {
             "locale": "it"
           },
-          "lib/net6.0/ja/System.CommandLine.resources.dll": {
+          "lib/net8.0/ja/System.CommandLine.resources.dll": {
             "locale": "ja"
           },
-          "lib/net6.0/ko/System.CommandLine.resources.dll": {
+          "lib/net8.0/ko/System.CommandLine.resources.dll": {
             "locale": "ko"
           },
-          "lib/net6.0/pl/System.CommandLine.resources.dll": {
+          "lib/net8.0/pl/System.CommandLine.resources.dll": {
             "locale": "pl"
           },
-          "lib/net6.0/pt-BR/System.CommandLine.resources.dll": {
+          "lib/net8.0/pt-BR/System.CommandLine.resources.dll": {
             "locale": "pt-BR"
           },
-          "lib/net6.0/ru/System.CommandLine.resources.dll": {
+          "lib/net8.0/ru/System.CommandLine.resources.dll": {
             "locale": "ru"
           },
-          "lib/net6.0/tr/System.CommandLine.resources.dll": {
+          "lib/net8.0/tr/System.CommandLine.resources.dll": {
             "locale": "tr"
           },
-          "lib/net6.0/zh-Hans/System.CommandLine.resources.dll": {
+          "lib/net8.0/zh-Hans/System.CommandLine.resources.dll": {
             "locale": "zh-Hans"
           },
-          "lib/net6.0/zh-Hant/System.CommandLine.resources.dll": {
+          "lib/net8.0/zh-Hant/System.CommandLine.resources.dll": {
             "locale": "zh-Hant"
           }
         }
@@ -781,11 +782,19 @@
             "fileVersion": "6.0.21.52210"
           }
         }
+      },
+      "Intent.RelationalDbSchemaImporter.Contracts/1.0.0": {
+        "runtime": {
+          "Intent.RelationalDbSchemaImporter.Contracts.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
   "libraries": {
-    "Intent.SQLSchemaExtractor/1.3.6": {
+    "Intent.SQLSchemaExtractor/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -818,12 +827,12 @@
       "path": "intent.architect.persistence/3.4.0",
       "hashPath": "intent.architect.persistence.3.4.0.nupkg.sha512"
     },
-    "Intent.Modules.Common/3.7.6-pre.0": {
+    "Intent.Modules.Common/3.7.6": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-2+C9eF6Zy1wbkqoY4qH46St11aP/kVvLR5sk34FxPVVBLWtruIE48dC9VMOsKSGgEqqMpt7JDXv3SgjAxcVdpQ==",
-      "path": "intent.modules.common/3.7.6-pre.0",
-      "hashPath": "intent.modules.common.3.7.6-pre.0.nupkg.sha512"
+      "sha512": "sha512-Xqsp8SWysj8uqCu9cJlWv4e3M20aWf0UHeyhC/gor30uCrL6WYwAxrxH6Ew8APi2+jRDlF3MlSoybPR/sCQXHg==",
+      "path": "intent.modules.common/3.7.6",
+      "hashPath": "intent.modules.common.3.7.6.nupkg.sha512"
     },
     "Intent.SoftwareFactory.SDK/3.5.0": {
       "type": "package",
@@ -1021,12 +1030,12 @@
       "path": "system.codedom/6.0.0",
       "hashPath": "system.codedom.6.0.0.nupkg.sha512"
     },
-    "System.CommandLine/2.0.0-beta3.22114.1": {
+    "System.CommandLine/2.0.0-beta5.25306.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-QMzk1jj+PzdGbwuVsxII7FcQaCelnK+TcRcAqOGVoPovLBCSQPdikKiEzb56vAidvum5t4LSdDZ34O4j7+ALgw==",
-      "path": "system.commandline/2.0.0-beta3.22114.1",
-      "hashPath": "system.commandline.2.0.0-beta3.22114.1.nupkg.sha512"
+      "sha512": "sha512-ce0wuowuh13Cd7GXqLCq77/YWlxQMxrVCMIO/2/QUP6CdP/JWnlYSN/N3/55wwGsUwa9CvPuT8ddjgyypUr5ag==",
+      "path": "system.commandline/2.0.0-beta5.25306.1",
+      "hashPath": "system.commandline.2.0.0-beta5.25306.1.nupkg.sha512"
     },
     "System.Configuration.ConfigurationManager/6.0.1": {
       "type": "package",
@@ -1216,6 +1225,11 @@
       "sha512": "sha512-IXoJOXIqc39AIe+CIR7koBtRGMiCt/LPM3lI+PELtDIy9XdyeSrwXFdWV9dzJ2Awl0paLWUaknLxFQ5HpHZUog==",
       "path": "system.windows.extensions/6.0.0",
       "hashPath": "system.windows.extensions.6.0.0.nupkg.sha512"
+    },
+    "Intent.RelationalDbSchemaImporter.Contracts/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

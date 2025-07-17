@@ -1,9 +1,8 @@
 using System.Linq;
-using System.Text.Json;
 using Intent.Engine;
-using Intent.Modules.Common.Templates;
 using Intent.Modules.SqlServerImporter.Tasks.Helpers;
 using Intent.Modules.SqlServerImporter.Tasks.Models;
+using Intent.RelationalDbSchemaImporter.Contracts.Models;
 
 namespace Intent.Modules.SqlServerImporter.Tasks;
 
@@ -42,27 +41,14 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
 
         PrepareInputModel(importModel);
 
-        var sqlImportSettings = JsonSerializer.Serialize(importModel).Replace("\"", "\\\"");
-
-        SqlSchemaExtractorRunner.Run($@"--serialized-config ""{sqlImportSettings}""", (output, process) =>
-        {
-            if (output.Data?.Trim().StartsWith("Error:") == true)
-            {
-                var error = output.Data.Trim().RemovePrefix("Error:");
-                executionResult.Errors.Add(error);
-                process.Kill(true);
-            }
-            else if (output.Data?.Trim().StartsWith("Warning:") == true)
-            {
-                var warning = output.Data.Trim().RemovePrefix("Warning:");
-                executionResult.Warnings.Add(warning);
-            }
-        });
+        var result = ImporterTool.Run<ImportSchemaResult>("import-schema", importModel);
 
         if (executionResult.Errors.Count == 0)
         {
             SettingsHelper.PersistSettings(importModel);
         }
+        executionResult.Errors.AddRange(result.Errors);
+        executionResult.Warnings.AddRange(result.Warnings);
 
         return executionResult;
     }

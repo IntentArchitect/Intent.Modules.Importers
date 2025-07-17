@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
 namespace Intent.SQLSchemaExtractor;
 
@@ -21,7 +22,7 @@ public class ImportConfiguration
 	public EntityNameConvention EntityNameConvention { get; set; } = EntityNameConvention.SingularEntity;
 	public TableStereotype TableStereotype { get; set; } = TableStereotype.WhenDifferent;
 	public HashSet<ExportType> TypesToExport { get; set; } = [ExportType.Table, ExportType.View, ExportType.StoredProcedure, ExportType.Index];
-	public string ImportFilterFilePath { get; set; }
+	public string? ImportFilterFilePath { get; set; }
 	
 	public StoredProcedureType StoredProcedureType { get; set; } = StoredProcedureType.Default;
 	public string? RepositoryElementId { get; set; }
@@ -215,32 +216,13 @@ public class ImportConfiguration
     }
 }
 
-public enum ExportType
-{
-	Table,
-	View,
-	StoredProcedure,
-	Index
-}
 
-public enum TableStereotype
-{
-	Always,
-	WhenDifferent
-}
 
-public enum EntityNameConvention
-{
-	MatchTable,
-	SingularEntity
-}
 
-public enum StoredProcedureType
-{
-	Default,
-	StoredProcedureElement,
-	RepositoryOperation
-}
+
+
+
+
 
 // IMPORTANT! If anything changes here, you need to update the SQL Server Import Module too!
 class ImportFilterSettings

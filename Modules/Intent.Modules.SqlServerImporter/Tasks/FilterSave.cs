@@ -78,12 +78,12 @@ public class FilterSave : ModuleTaskSingleInputBase<FilterSaveInputModel>
 
             File.WriteAllText(filePath, jsonContent);
             
-            executionResult.ResultModel = new { Success = true, FilePath = filePath };
+            executionResult.Result = new { Success = true, FilePath = filePath };
         }
         catch (Exception ex)
         {
             executionResult.Errors.Add($"Error saving filter file: {ex.Message}");
-            executionResult.ResultModel = new { Success = false };
+            executionResult.Result = new { Success = false };
         }
 
         return executionResult;

@@ -1,16 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Intent.Modules.Common.Templates;
 using Intent.Modules.SqlServerImporter.Tasks.Helpers;
 using Intent.Modules.SqlServerImporter.Tasks.Models;
-using Intent.Plugins;
-using Intent.Utils;
-using Serilog;
+using Intent.RelationalDbSchemaImporter.Contracts.Models;
 
 namespace Intent.Modules.SqlServerImporter.Tasks;
 
@@ -26,23 +17,14 @@ public class TestConnection : ModuleTaskSingleInputBase<TestConnectionInputModel
 
     protected override ExecuteResult ExecuteModuleTask(TestConnectionInputModel importModel)
     {
-        var executionResult = new ExecuteResult();
-        
-        SqlSchemaExtractorRunner.Run($@"test-connection --connection ""{importModel.ConnectionString}""", (output, process) =>
+        var input = new ConnectionTestRequest
         {
-            if (output.Data?.Trim().StartsWith("Error:") == true)
-            {
-                var error = output.Data.Trim().RemovePrefix("Error:");
-                executionResult.Errors.Add(error);
-                process.Kill(true);
-            }
-            else if (output.Data?.Trim().StartsWith("Warning:") == true)
-            {
-                var warning = output.Data.Trim().RemovePrefix("Warning:");
-                executionResult.Warnings.Add(warning);
-            }
-        });
-        
+            ConnectionString = importModel.ConnectionString
+        };
+        var executionResult = new ExecuteResult();
+        var result = ImporterTool.Run<ConnectionTestResult>("test-connection", input);
+        executionResult.Errors.AddRange(result.Errors);
+        executionResult.Warnings.AddRange(result.Warnings);
         return executionResult;
     }
 }

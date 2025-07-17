@@ -71,7 +71,7 @@ public class PathResolution : ModuleTaskSingleInputBase<PathResolutionInputModel
                 resolvedPath = selectedFilePath;
             }
 
-            executionResult.ResultModel = new 
+            executionResult.Result = new 
             { 
                 ResolvedPath = resolvedPath,
                 IsRelative = resolvedPath.StartsWith("./")
@@ -80,7 +80,7 @@ public class PathResolution : ModuleTaskSingleInputBase<PathResolutionInputModel
         catch (Exception ex)
         {
             executionResult.Errors.Add($"Error resolving path: {ex.Message}");
-            executionResult.ResultModel = new { ResolvedPath = inputModel.SelectedFilePath, IsRelative = false };
+            executionResult.Result = new { ResolvedPath = inputModel.SelectedFilePath, IsRelative = false };
         }
 
         return executionResult;

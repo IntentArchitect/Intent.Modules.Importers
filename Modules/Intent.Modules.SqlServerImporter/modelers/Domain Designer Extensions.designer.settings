@@ -396,7 +396,6 @@ class DatabaseImportStrategy {
                 id: "inclusiveSelection",
                 fieldType: "tree-view",
                 label: "Objects to Include in Import",
-                hint: "Objects to Include in Import",
                 isRequired: false,
                 treeViewOptions: {
                     isMultiSelect: true,
@@ -434,7 +433,6 @@ class DatabaseImportStrategy {
                 id: "exclusiveSelection",
                 fieldType: "tree-view",
                 label: "Objects to Exclude from Import",
-                hint: "Objects to Exclude from Import",
                 isRequired: false,
                 treeViewOptions: {
                     isMultiSelect: true,
@@ -547,7 +545,7 @@ class DatabaseImportStrategy {
         var _a;
         // Get database metadata
         const metadataModel = { connectionString: connectionString };
-        const metadataExecutionResult = await executeImporterModuleTask("Intent.Modules.SqlServerImporter.Tasks.DatabaseMetadataExtract", metadataModel);
+        const metadataExecutionResult = await executeImporterModuleTask("Intent.Modules.SqlServerImporter.Tasks.RetrieveDatabaseObjects", metadataModel);
         if (((_a = metadataExecutionResult.errors) !== null &amp;&amp; _a !== void 0 ? _a : []).length &gt; 0) {
             await displayExecutionResultErrors(metadataExecutionResult);
             return null;

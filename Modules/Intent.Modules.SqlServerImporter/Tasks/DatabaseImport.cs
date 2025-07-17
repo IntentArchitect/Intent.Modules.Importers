@@ -1,12 +1,7 @@
-﻿using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using Intent.Engine;
-using Intent.Modules.Common.Templates;
+﻿using Intent.Engine;
 using Intent.Modules.SqlServerImporter.Tasks.Helpers;
 using Intent.Modules.SqlServerImporter.Tasks.Models;
-using Intent.Utils;
+using Intent.RelationalDbSchemaImporter.Contracts.Models;
 
 namespace Intent.Modules.SqlServerImporter.Tasks;
 
@@ -34,49 +29,18 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
 
     protected override ExecuteResult ExecuteModuleTask(DatabaseImportModel importModel)
     {
-        var executionResult = new ExecuteResult();
-
         PrepareInputModel(importModel);
 
-        var sqlImportSettings = JsonSerializer.Serialize(importModel).Replace("\"", "\\\"");
+        var executionResult = new ExecuteResult();
+        
+        var result = ImporterTool.Run<ImportSchemaResult>("import-schema", importModel);
 
-        var errorMessage = new StringBuilder();
-        SqlSchemaExtractorRunner.Run($@"--serialized-config ""{sqlImportSettings}""", (output, process) =>
-        {
-            if (output.Data?.Trim().StartsWith("Error:") == true)
-            {
-                var error = output.Data.Trim().RemovePrefix("Error:");
-                errorMessage.AppendLine(error);
-            }
-            else if (output.Data?.Trim().StartsWith("Warning:") == true)
-            {
-                var warning = output.Data.Trim().RemovePrefix("Warning:");
-                executionResult.Warnings.Add(warning);
-            }
-            else if (errorMessage.Length > 0)
-            {
-                if (output.Data.Trim().Equals("."))
-                {
-                    process.Kill(true);
-                    return;
-                }
-                errorMessage.AppendLine(output.Data);
-            }
-            else if (output.Data is not null)
-            {
-                Logging.Log.Info(output.Data);
-            }
-        });
-
-        if (errorMessage.Length > 0)
-        {
-            executionResult.Errors.Add(errorMessage.ToString());
-        }
-
-        if (executionResult.Errors.Count == 0)
+        if (result.Errors.Count == 0)
         {
             SettingsHelper.PersistSettings(importModel);
         }
+        executionResult.Errors.AddRange(result.Errors);
+        executionResult.Warnings.AddRange(result.Warnings);
 
         return executionResult;
     }

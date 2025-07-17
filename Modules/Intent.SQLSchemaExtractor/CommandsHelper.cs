@@ -3,7 +3,7 @@ using System.CommandLine;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Intent.Modules.Common.Templates;
-using Intent.SQLSchemaExtractor.Models;
+using Intent.RelationalDbSchemaImporter.Contracts.Models;
 
 namespace Intent.SQLSchemaExtractor;
 
@@ -16,7 +16,7 @@ internal static partial class Commands
 
     private static string GetOptionName(string propertyName) => $"--{propertyName.ToKebabCase()}";
     
-    private static Command CreateStandardCommand(string name, string description, Func<string, StandardResponse> executeFunc)
+    private static Command CreateStandardCommand<TResult>(string name, string description, Func<string, StandardResponse<TResult>, StandardResponse<TResult>> executeFunc)
     {
         var command = new Command(name, description);
         
@@ -28,20 +28,21 @@ internal static partial class Commands
         
         command.SetAction(parseResult =>
         {
+            var prettyPrint = parseResult.GetValue<bool>(GetOptionName("pretty-print"));
+            var response = new StandardResponse<TResult>();
             try
             {
-                var payload = parseResult.GetValue<string>(GetOptionName("payload"));
-                var prettyPrint = parseResult.GetValue<bool>(GetOptionName("pretty-print"));
+                var payload = parseResult.GetValue<string>(GetOptionName("payload"))!;
                 
-                var response = executeFunc(payload);
-                var json = SerializeResponse(response, prettyPrint);
+                var execResponse = executeFunc(payload, response);
+                
+                var json = SerializeResponse(execResponse, prettyPrint);
                 Console.WriteLine(json);
             }
             catch (Exception ex)
             {
-                var errorResponse = new StandardResponse();
-                errorResponse.AddError(ex.Message);
-                var json = SerializeResponse(errorResponse, parseResult.GetValue<bool>(GetOptionName("pretty-print")));
+                response.AddError(ex.Message);
+                var json = SerializeResponse(response, prettyPrint);
                 Console.WriteLine(json);
             }
         });
@@ -63,7 +64,7 @@ internal static partial class Commands
         return option;
     }
 
-    private static string SerializeResponse(StandardResponse response, bool prettyPrint)
+    private static string SerializeResponse<TResult>(StandardResponse<TResult> response, bool prettyPrint)
     {
         var options = new JsonSerializerOptions
         {
@@ -73,11 +74,11 @@ internal static partial class Commands
         return JsonSerializer.Serialize(response, options);
     }
 
-    private static T? DeserializeRequest<T>(string jsonPayload, StandardResponse response) where T : class
+    private static TRequest? DeserializeRequest<TRequest>(string jsonPayload, StandardResponse response) where TRequest : class
     {
         try
         {
-            var request = JsonSerializer.Deserialize<T>(jsonPayload, DeserializationOptions);
+            var request = JsonSerializer.Deserialize<TRequest>(jsonPayload, DeserializationOptions);
             if (request == null)
             {
                 response.AddError("Invalid JSON payload");

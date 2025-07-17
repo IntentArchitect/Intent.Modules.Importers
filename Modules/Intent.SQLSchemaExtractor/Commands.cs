@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.CommandLine;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
+using Intent.RelationalDbSchemaImporter.Contracts.Models;
 using Intent.SQLSchemaExtractor.Annotators;
 using Intent.SQLSchemaExtractor.Extractors;
-using Intent.SQLSchemaExtractor.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
@@ -17,12 +19,11 @@ internal static partial class Commands
 {
     public static Command CreateImportSchemaCommand()
     {
-        return CreateStandardCommand(
+        return CreateStandardCommand<ImportSchemaResult>(
             "import-schema",
             "Imports database schema into Intent package",
-            jsonPayload =>
+            (jsonPayload, response) =>
             {
-                var response = new StandardResponse();
                 var request = DeserializeRequest<ImportSchemaRequest>(jsonPayload, response);
                 if (request == null)
                 {
@@ -47,13 +48,12 @@ internal static partial class Commands
 
     public static Command CreateListStoredProceduresCommand()
     {
-        return CreateStandardCommand(
-            "list-stored-procs",
+        return CreateStandardCommand<StoredProceduresListResult>(
+            "list-stored-procedures",
             "Returns a list of stored procedures in the database",
-            jsonPayload =>
+            (jsonPayload, response) =>
             {
-                var response = new StandardResponse();
-                var request = DeserializeRequest<ConnectionRequest>(jsonPayload, response);
+                var request = DeserializeRequest<ConnectionTestRequest>(jsonPayload, response);
                 if (request == null || !ValidateConnectionString(request.ConnectionString, response))
                 {
                     return response;
@@ -65,27 +65,29 @@ internal static partial class Commands
                 using var connection = dbConnection.Value.connection;
                 var db = dbConnection.Value.database;
 
-                var storedProcs = db.StoredProcedures
-                    .OfType<StoredProcedure>()
-                    .Where(x => x.Schema != "sys")
-                    .Select(sp => $"{sp.Schema}.{sp.Name}")
-                    .OrderBy(name => name)
-                    .ToList();
+                var result = new StoredProceduresListResult
+                {
+                    StoredProcedures = db.StoredProcedures
+                        .OfType<StoredProcedure>()
+                        .Where(x => x.Schema != "sys")
+                        .Select(sp => $"{sp.Schema}.{sp.Name}")
+                        .OrderBy(name => name)
+                        .ToList()
+                };
 
-                response.SetResult(storedProcs);
+                response.SetResult(result);
                 return response;
             });
     }
 
     public static Command CreateTestConnectionCommand()
     {
-        return CreateStandardCommand(
+        return CreateStandardCommand<ConnectionTestResult>(
             "test-connection",
             "Tests the connection to the database",
-            jsonPayload =>
+            (jsonPayload, response) =>
             {
-                var response = new StandardResponse();
-                var request = DeserializeRequest<ConnectionRequest>(jsonPayload, response);
+                var request = DeserializeRequest<ConnectionTestRequest>(jsonPayload, response);
                 if (request == null || !ValidateConnectionString(request.ConnectionString, response))
                 {
                     return response;
@@ -100,16 +102,13 @@ internal static partial class Commands
                     }
 
                     using var connection = dbConnection.Value.connection;
-                    var server = dbConnection.Value.server;
                     var db = dbConnection.Value.database;
 
                     db.ExecuteWithResults("SELECT 1");
 
                     var result = new ConnectionTestResult
                     {
-                        IsSuccessful = true,
-                        DatabaseName = db.Name,
-                        ServerName = server.Name
+                        IsSuccessful = true
                     };
 
                     response.SetResult(result);
@@ -119,9 +118,7 @@ internal static partial class Commands
                 {
                     var result = new ConnectionTestResult
                     {
-                        IsSuccessful = false,
-                        DatabaseName = string.Empty,
-                        ServerName = string.Empty
+                        IsSuccessful = false
                     };
                     response.SetResult(result);
                     response.AddError(ex.Message);
@@ -132,13 +129,12 @@ internal static partial class Commands
 
     public static Command CreateRetrieveDatabaseObjectsCommand()
     {
-        return CreateStandardCommand(
+        return CreateStandardCommand<DatabaseObjectsResult>(
             "retrieve-database-objects",
             "Extracts database metadata (tables, views, stored procedures) as JSON",
-            jsonPayload =>
+            (jsonPayload, response) =>
             {
-                var response = new StandardResponse();
-                var request = DeserializeRequest<ConnectionRequest>(jsonPayload, response);
+                var request = DeserializeRequest<ConnectionTestRequest>(jsonPayload, response);
                 if (request == null || !ValidateConnectionString(request.ConnectionString, response))
                 {
                     return response;
