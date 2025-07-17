@@ -1,36 +1,54 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using Intent.RelationalDbSchemaImporter.Contracts.Schema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.Modules.SqlServerImporter.Tasks.Models;
 using Intent.Modules.Common.Templates;
+using Intent.Modelers.Domain.Api;
 
 namespace Intent.Modules.SqlServerImporter.Tasks.Mappers;
 
 public class IntentModelMapper
 {
     private readonly TypeReferenceMapper _typeReferenceMapper;
-    private readonly RdbmsStereotypeApplicator _stereotypeApplicator;
+    
+    // Global tracking for deduplication
+    private static readonly List<string> _addedTableNames = new();
+    private static readonly List<string> _addedColumnNames = new();
+    private static readonly List<string> _addedViewNames = new();
+    private static readonly List<string> _addedProcedureNames = new();
+    
+    // Reserved C# keywords
+    private static readonly HashSet<string> ReservedWords = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal", "default", "delegate", "do",
+        "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in", "int", 
+        "interface", "internal", "is", "lock", "long", "namespace", "new", "null", "object", "operator", "out", "override", "params", "private", "protected", "public",
+        "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try",
+        "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "using static", "virtual", "void", "volatile", "while"
+    };
 
     public IntentModelMapper()
     {
         _typeReferenceMapper = new TypeReferenceMapper();
-        _stereotypeApplicator = new RdbmsStereotypeApplicator();
     }
 
-    public ElementPersistable MapTableToClass(TableSchema table, ImportConfiguration config)
+    public ElementPersistable MapTableToClass(TableSchema table, ImportConfiguration config, string? parentFolderId = null)
     {
-        var className = GetEntityName(table.Name, config.EntityNameConvention);
+        var className = GetEntityName(table.Name, config.EntityNameConvention, table.Schema);
         
         var classElement = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
             Name = className,
-            SpecializationType = "Class",
-            SpecializationTypeId = "04e12b51-ed12-42a3-9667-a6aa81bb6d94", // Class specialization type ID
+            SpecializationType = ClassModel.SpecializationType,
+            SpecializationTypeId = ClassModel.SpecializationTypeId,
+            ParentFolderId = parentFolderId, // Set parent folder for schema organization
             ChildElements = new List<ElementPersistable>(),
             Stereotypes = new List<StereotypePersistable>()
         };
@@ -38,34 +56,41 @@ public class IntentModelMapper
         // Map columns to attributes
         foreach (var column in table.Columns)
         {
-            var attribute = MapColumnToAttribute(column);
+            var attribute = MapColumnToAttribute(column, table.Name, className, table.Schema, classElement.Id);
             classElement.ChildElements.Add(attribute);
             
             // Apply stereotypes
-            _stereotypeApplicator.ApplyPrimaryKey(column, attribute);
-            _stereotypeApplicator.ApplyColumnDetails(column, attribute);
-            _stereotypeApplicator.ApplyTextConstraint(column, attribute);
-            _stereotypeApplicator.ApplyDecimalConstraint(column, attribute);
-            _stereotypeApplicator.ApplyDefaultConstraint(column, attribute);
-            _stereotypeApplicator.ApplyComputedValue(column, attribute);
+            RdbmsSchemaAnnotator.ApplyPrimaryKey(column, attribute);
+            RdbmsSchemaAnnotator.ApplyColumnDetails(column, attribute);
+            RdbmsSchemaAnnotator.ApplyTextConstraint(column, attribute);
+            RdbmsSchemaAnnotator.ApplyDecimalConstraint(column, attribute);
+            RdbmsSchemaAnnotator.ApplyDefaultConstraint(column, attribute);
+            RdbmsSchemaAnnotator.ApplyComputedValue(column, attribute);
         }
 
         // Apply table stereotypes
-        _stereotypeApplicator.ApplyTableDetails(config, table, classElement);
+        RdbmsSchemaAnnotator.ApplyTableDetails(config, table, classElement);
+        
+        // Apply HasTrigger stereotype if table has triggers
+        if (table.Triggers.Count > 0)
+        {
+            ApplyHasTriggerStereotype(classElement);
+        }
 
         return classElement;
     }
 
-    public ElementPersistable MapViewToClass(ViewSchema view, ImportConfiguration config)
+    public ElementPersistable MapViewToClass(ViewSchema view, ImportConfiguration config, string? parentFolderId = null)
     {
-        var className = GetEntityName(view.Name, config.EntityNameConvention);
+        var className = GetEntityName(view.Name, config.EntityNameConvention, view.Schema);
         
         var classElement = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
             Name = className,
-            SpecializationType = "Class",
-            SpecializationTypeId = "04e12b51-ed12-42a3-9667-a6aa81bb6d94", // Class specialization type ID
+            SpecializationType = ClassModel.SpecializationType,
+            SpecializationTypeId = ClassModel.SpecializationTypeId,
+            ParentFolderId = parentFolderId, // Set parent folder for schema organization
             ChildElements = new List<ElementPersistable>(),
             Stereotypes = new List<StereotypePersistable>()
         };
@@ -73,92 +98,95 @@ public class IntentModelMapper
         // Map columns to attributes
         foreach (var column in view.Columns)
         {
-            var attribute = MapColumnToAttribute(column);
+            var attribute = MapColumnToAttribute(column, view.Name, className, view.Schema, classElement.Id);
             classElement.ChildElements.Add(attribute);
             
             // Apply stereotypes (views don't have primary keys, defaults, or computed values)
-            _stereotypeApplicator.ApplyColumnDetails(column, attribute);
-            _stereotypeApplicator.ApplyTextConstraint(column, attribute);
-            _stereotypeApplicator.ApplyDecimalConstraint(column, attribute);
+            RdbmsSchemaAnnotator.ApplyColumnDetails(column, attribute);
+            RdbmsSchemaAnnotator.ApplyTextConstraint(column, attribute);
+            RdbmsSchemaAnnotator.ApplyDecimalConstraint(column, attribute);
         }
 
         // Apply view stereotypes
-        _stereotypeApplicator.ApplyViewDetails(view, classElement);
+        RdbmsSchemaAnnotator.ApplyViewDetails(view, classElement);
 
         return classElement;
     }
 
-    public ElementPersistable MapStoredProcedureToElement(StoredProcedureSchema storedProc, ImportConfiguration config)
+    // public ElementPersistable MapStoredProcedureToElement(StoredProcedureSchema storedProc, ImportConfiguration config)
+    // {
+    //     var procElement = new ElementPersistable
+    //     {
+    //         Id = Guid.NewGuid().ToString(),
+    //         Name = GetStoredProcedureName(storedProc.Name),
+    //         SpecializationType = OperationModel.SpecializationType,
+    //         SpecializationTypeId = OperationModel.SpecializationTypeId,
+    //         ChildElements = new List<ElementPersistable>(),
+    //         Stereotypes = new List<StereotypePersistable>()
+    //     };
+    //
+    //     // Map parameters
+    //     foreach (var parameter in storedProc.Parameters)
+    //     {
+    //         var paramElement = MapParameterToElement(parameter);
+    //         procElement.ChildElements.Add(paramElement);
+    //     }
+    //
+    //     // Apply stored procedure stereotypes
+    //     RdbmsSchemaAnnotator.ApplyStoredProcedureSettings(storedProc, procElement);
+    //
+    //     return procElement;
+    // }
+
+    private ElementPersistable MapColumnToAttribute(ColumnSchema column, string tableName, string className, string schema, string? parentClassId = null)
     {
-        var procElement = new ElementPersistable
-        {
-            Id = Guid.NewGuid().ToString(),
-            Name = GetStoredProcedureName(storedProc.Name),
-            SpecializationType = "Operation", // or appropriate stored procedure type
-            SpecializationTypeId = "e030c97a-e066-40a7-8188-808c275df3cb", // Operation specialization type ID
-            ChildElements = new List<ElementPersistable>(),
-            Stereotypes = new List<StereotypePersistable>()
-        };
-
-        // Map parameters
-        foreach (var parameter in storedProc.Parameters)
-        {
-            var paramElement = MapParameterToElement(parameter);
-            procElement.ChildElements.Add(paramElement);
-        }
-
-        // Apply stored procedure stereotypes
-        _stereotypeApplicator.ApplyStoredProcedureSettings(storedProc, procElement);
-
-        return procElement;
-    }
-
-    private ElementPersistable MapColumnToAttribute(ColumnSchema column)
-    {
-        var attributeName = GetAttributeName(column.Name);
+        var attributeName = GetAttributeName(column.Name, tableName, className, schema);
         
         return new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
             Name = attributeName,
-            SpecializationType = "Attribute",
-            SpecializationTypeId = "0090fb93-483e-4e74-8cce-1e9b96e5fb9d", // Attribute specialization type ID
+            SpecializationType = AttributeModel.SpecializationType,
+            SpecializationTypeId = AttributeModel.SpecializationTypeId,
+            ParentFolderId = parentClassId, // Attributes belong to their parent class
             TypeReference = _typeReferenceMapper.MapColumnTypeToTypeReference(column),
             ChildElements = new List<ElementPersistable>(),
             Stereotypes = new List<StereotypePersistable>()
         };
     }
 
-    private ElementPersistable MapParameterToElement(StoredProcedureParameterSchema parameter)
+    // private ElementPersistable MapParameterToElement(StoredProcedureParameterSchema parameter)
+    // {
+    //     var paramName = GetParameterName(parameter.Name);
+    //     
+    //     return new ElementPersistable
+    //     {
+    //         Id = Guid.NewGuid().ToString(),
+    //         Name = paramName,
+    //         SpecializationType = ParameterModel.SpecializationType,
+    //         SpecializationTypeId = ParameterModel.SpecializationTypeId,
+    //         TypeReference = _typeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter),
+    //         ChildElements = new List<ElementPersistable>(),
+    //         Stereotypes = new List<StereotypePersistable>()
+    //     };
+    // }
+
+    private string GetEntityName(string tableName, EntityNameConvention convention, string schema)
     {
-        var paramName = GetParameterName(parameter.Name);
-        
-        return new ElementPersistable
+        var normalized = convention switch
         {
-            Id = Guid.NewGuid().ToString(),
-            Name = paramName,
-            SpecializationType = "Parameter",
-            SpecializationTypeId = "f1b9c8c8-e8e8-4e8e-8e8e-8e8e8e8e8e8e", // Parameter specialization type ID (placeholder)
-            TypeReference = _typeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter),
-            ChildElements = new List<ElementPersistable>(),
-            Stereotypes = new List<StereotypePersistable>()
+            EntityNameConvention.MatchTable => NormalizeTableName(tableName),
+            EntityNameConvention.SingularEntity => NormalizeTableName(tableName.Singularize()),
+            _ => NormalizeTableName(tableName)
         };
+        return DeDuplicateTable(normalized, schema);
     }
 
-    private string GetEntityName(string tableName, EntityNameConvention convention)
+    private string GetAttributeName(string columnName, string? tableName, string className, string schema)
     {
-        return convention switch
-        {
-            EntityNameConvention.MatchTable => tableName,
-            EntityNameConvention.SingularEntity => tableName.Singularize(),
-            _ => tableName
-        };
-    }
-
-    private string GetAttributeName(string columnName)
-    {
-        // Convert to PascalCase and remove underscores
-        return columnName.ToPascalCase();
+        // Normalize and deduplicate column name
+        var normalized = NormalizeColumnName(columnName, tableName);
+        return DeDuplicateColumn(normalized, className, schema);
     }
 
     private string GetStoredProcedureName(string procName)
@@ -174,4 +202,556 @@ public class IntentModelMapper
         var name = paramName.StartsWith("@") ? paramName.Substring(1) : paramName;
         return name.ToCamelCase();
     }
+
+    #region Name Normalization and Deduplication
+
+    /// <summary>
+    /// Converts database identifier to valid C# identifier following C# naming conventions
+    /// </summary>
+    public static string ToCSharpIdentifier(string identifier, string prefixValue = "Db")
+    {
+        if (string.IsNullOrWhiteSpace(identifier))
+        {
+            return string.Empty;
+        }
+
+        // Replace common symbols
+        identifier = identifier
+            .Replace("#", "Sharp")
+            .Replace("&", "And");
+
+        var asCharArray = identifier.ToCharArray();
+        for (var i = 0; i < asCharArray.Length; i++)
+        {
+            // Underscore character conversion to space for processing
+            if (asCharArray[i] == '_')
+            {
+                asCharArray[i] = ' ';
+                continue;
+            }
+
+            switch (char.GetUnicodeCategory(asCharArray[i]))
+            {
+                case UnicodeCategory.DecimalDigitNumber:
+                case UnicodeCategory.LetterNumber:
+                case UnicodeCategory.LowercaseLetter:
+                case UnicodeCategory.ModifierLetter:
+                case UnicodeCategory.OtherLetter:
+                case UnicodeCategory.TitlecaseLetter:
+                case UnicodeCategory.UppercaseLetter:
+                case UnicodeCategory.Format:
+                    break;
+                default:
+                    asCharArray[i] = ' ';
+                    break;
+            }
+        }
+
+        identifier = new string(asCharArray);
+
+        // Replace double spaces
+        while (identifier.Contains("  "))
+        {
+            identifier = identifier.Replace("  ", " ");
+        }
+
+        // Convert to PascalCase
+        identifier = string.Concat(identifier
+            .Split(' ')
+            .Where(element => !string.IsNullOrWhiteSpace(element))
+            .Select((element, index) => index == 0
+                ? element
+                : element.ToPascalCase()));
+
+        // Ensure identifier starts with letter
+        if (char.IsNumber(identifier[0]))
+        {
+            identifier = $"{prefixValue}{identifier}";
+        }
+
+        // Handle reserved words
+        if (ReservedWords.Contains(identifier))
+        {
+            identifier = $"{prefixValue}{identifier}";
+        }
+
+        return identifier;
+    }
+
+    private static string NormalizeTableName(string tableName)
+    {
+        var normalized = tableName.RemovePrefix("tbl");
+        normalized = ToCSharpIdentifier(normalized, "Db");
+        normalized = normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
+        return normalized;
+    }
+
+    private static string NormalizeColumnName(string colName, string? tableOrViewName)
+    {
+        var normalized = colName != tableOrViewName ? colName : colName + "Value";
+        normalized = ToCSharpIdentifier(normalized, "db");
+        normalized = normalized.RemovePrefix("col").RemovePrefix("pk");
+        normalized = normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
+
+        if (normalized.EndsWith("ID"))
+        {
+            normalized = normalized.RemoveSuffix("ID") + "Id";
+        }
+
+        return normalized;
+    }
+
+    private static string NormalizeStoredProcName(string storeProcName)
+    {
+        var normalized = ToCSharpIdentifier(storeProcName);
+        normalized = normalized.RemovePrefix("prc")
+            .RemovePrefix("Prc")
+            .RemovePrefix("proc");
+        normalized = normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
+        return normalized;
+    }
+
+    private static string DeDuplicateTable(string className, string schema)
+    {
+        var counter = 0;
+        var addedReference = $"[{schema}].[{className}]";
+        bool duplicateFound = false;
+
+        while (_addedTableNames.Any(x => x == addedReference))
+        {
+            duplicateFound = true;
+            counter++;
+            addedReference = $"[{schema}].[{className}{counter}]";
+        }
+
+        if (duplicateFound)
+        {
+            className = $"{className}{counter}";
+        }
+
+        _addedTableNames.Add(addedReference);
+        return className;
+    }
+
+    private static string DeDuplicateView(string className, string schema)
+    {
+        var counter = 0;
+        var addedReference = $"[{schema}].[{className}]";
+        bool duplicateFound = false;
+
+        while (_addedViewNames.Any(x => x == addedReference))
+        {
+            duplicateFound = true;
+            counter++;
+            addedReference = $"[{schema}].[{className}{counter}]";
+        }
+
+        if (duplicateFound)
+        {
+            className = $"{className}{counter}";
+        }
+
+        _addedViewNames.Add(addedReference);
+        return className;
+    }
+
+    private static string DeDuplicateColumn(string propertyName, string className, string schema)
+    {
+        if (propertyName == className)
+        {
+            propertyName = propertyName + "Property";
+        }
+
+        var counter = 0;
+        var addedReference = $"[{schema}].[{className}].[{propertyName}]";
+        bool duplicateFound = false;
+
+        while (_addedColumnNames.Any(x => x == addedReference))
+        {
+            duplicateFound = true;
+            counter++;
+            addedReference = $"[{schema}].[{className}].[{propertyName}{counter}]";
+        }
+
+        if (duplicateFound)
+        {
+            propertyName = $"{propertyName}{counter}";
+        }
+
+        _addedColumnNames.Add(addedReference);
+        return propertyName;
+    }
+
+    private static string DeDuplicateStoredProcedure(string procedureName, string schema)
+    {
+        var counter = 0;
+        var addedReference = $"[{schema}].[{procedureName}]";
+        bool duplicateFound = false;
+
+        while (_addedProcedureNames.Any(x => x == addedReference))
+        {
+            duplicateFound = true;
+            counter++;
+            addedReference = $"[{schema}].[{procedureName}{counter}]";
+        }
+
+        if (duplicateFound)
+        {
+            procedureName = $"{procedureName}{counter}";
+        }
+
+        _addedProcedureNames.Add(addedReference);
+        return procedureName;
+    }
+
+    #endregion
+
+    #region Stored Procedure and Repository Support
+
+    /// <summary>
+    /// Creates a repository element for containing stored procedures/operations
+    /// </summary>
+    public ElementPersistable CreateRepository(string repositoryName, string schemaFolderId)
+    {
+        return new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = repositoryName,
+            SpecializationType = "Repository",
+            SpecializationTypeId = "96ffceb2-a70a-4b69-869b-0df436c470c3", // Repository specialization type ID
+            ParentFolderId = schemaFolderId, // Repositories belong to schema folders
+            ChildElements = new List<ElementPersistable>(),
+            Stereotypes = new List<StereotypePersistable>()
+        };
+    }
+
+    /// <summary>
+    /// Maps a stored procedure to an element (Element mode)
+    /// </summary>
+    public ElementPersistable MapStoredProcedureToElement(StoredProcedureSchema storedProc, string repositoryId, ImportConfiguration config)
+    {
+        var procName = NormalizeStoredProcName(storedProc.Name);
+        var dedupedName = DeDuplicateStoredProcedure(procName, storedProc.Schema);
+
+        var procElement = new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = dedupedName,
+            SpecializationType = "Stored Procedure",
+            SpecializationTypeId = "575edd35-9438-406d-b0a7-b99d6f29b560", // Stored Procedure specialization type ID
+            ParentFolderId = repositoryId, // Stored procedures belong to repository
+            ChildElements = new List<ElementPersistable>(),
+            Stereotypes = new List<StereotypePersistable>()
+        };
+
+        // Map parameters
+        foreach (var parameter in storedProc.Parameters)
+        {
+            var paramElement = MapStoredProcParameterToElement(parameter, procElement.Id, storedProc.Schema);
+            procElement.ChildElements.Add(paramElement);
+        }
+
+        return procElement;
+    }
+
+    /// <summary>
+    /// Maps a stored procedure to an operation (Operation mode)
+    /// </summary>
+    public ElementPersistable MapStoredProcedureToOperation(StoredProcedureSchema storedProc, string repositoryId, ImportConfiguration config)
+    {
+        var procName = NormalizeStoredProcName(storedProc.Name);
+        var dedupedName = DeDuplicateStoredProcedure(procName, storedProc.Schema);
+
+        var operationElement = new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = dedupedName,
+            SpecializationType = "Operation",
+            SpecializationTypeId = "e030c97a-e066-40a7-8188-808c275df3cb", // Operation specialization type ID
+            ParentFolderId = repositoryId, // Operations belong to repository
+            ChildElements = new List<ElementPersistable>(),
+            Stereotypes = new List<StereotypePersistable>()
+        };
+
+        // Map parameters
+        foreach (var parameter in storedProc.Parameters)
+        {
+            var paramElement = MapStoredProcParameterToParameter(parameter, operationElement.Id, storedProc.Schema);
+            operationElement.ChildElements.Add(paramElement);
+        }
+
+        // Set return type if stored procedure has result set
+        if (storedProc.ResultSetColumns.Count > 0)
+        {
+            operationElement.TypeReference = _typeReferenceMapper.CreateStoredProcedureReturnTypeReference(null, true);
+        }
+
+        return operationElement;
+    }
+
+    /// <summary>
+    /// Maps a stored procedure parameter to a stored procedure parameter element
+    /// </summary>
+    private ElementPersistable MapStoredProcParameterToElement(StoredProcedureParameterSchema parameter, string storedProcId, string schema)
+    {
+        var paramName = GetParameterName(parameter.Name);
+
+        return new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = paramName,
+            SpecializationType = "Stored Procedure Parameter",
+            SpecializationTypeId = "5823b192-eb03-47c8-90d8-5501c922e9a5", // Stored Procedure Parameter specialization type ID
+            ParentFolderId = storedProcId, // Parameters belong to stored procedure
+            TypeReference = _typeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter),
+            ChildElements = new List<ElementPersistable>(),
+            Stereotypes = new List<StereotypePersistable>()
+        };
+    }
+
+    /// <summary>
+    /// Maps a stored procedure parameter to an operation parameter
+    /// </summary>
+    private ElementPersistable MapStoredProcParameterToParameter(StoredProcedureParameterSchema parameter, string operationId, string schema)
+    {
+        var paramName = GetParameterName(parameter.Name);
+
+        return new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = paramName,
+            SpecializationType = "Parameter",
+            SpecializationTypeId = "00208d20-469d-41cb-8501-768fd5eb796b", // Parameter specialization type ID
+            ParentFolderId = operationId, // Parameters belong to operation
+            TypeReference = _typeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter),
+            ChildElements = new List<ElementPersistable>(),
+            Stereotypes = new List<StereotypePersistable>()
+        };
+    }
+
+    #endregion
+
+    #region Index and Mapping Support
+
+    /// <summary>
+    /// Creates an index element with proper mapping to attributes
+    /// </summary>
+    public ElementPersistable CreateIndex(IndexSchema index, string classId, PackageModelPersistable package)
+    {
+        var indexElement = new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = index.Name,
+            SpecializationType = "Index",
+            SpecializationTypeId = "436e3afe-b4ef-481c-b803-0d1e7d263561", // Index specialization type ID
+            ParentFolderId = classId, // Indexes belong to their parent class
+            ChildElements = new List<ElementPersistable>(),
+            Stereotypes = new List<StereotypePersistable>(),
+            IsMapped = true,
+            Mapping = new BasicMappingModelPersistable
+            {
+                ApplicationId = package.ApplicationId,
+                MappingSettingsId = "30f4278f-1d74-4e7e-bfdb-39c8e120f24c", // Column mapping settings ID
+                MetadataId = "6ab29b31-27af-4f56-a67c-986d82097d63", // Domain metadata ID
+                AutoSyncTypeReference = false,
+                Path = new List<MappedPathTargetPersistable>
+                {
+                    new()
+                    {
+                        Id = classId,
+                        Name = GetClassNameById(classId, package),
+                        Type = "Element",
+                        Specialization = "Class"
+                    }
+                }
+            },
+            PackageId = package.Id,
+            PackageName = package.Name
+        };
+
+        // Apply index stereotypes
+        ApplyIndexStereotype(indexElement, index);
+
+        return indexElement;
+    }
+
+    /// <summary>
+    /// Creates an index column element with mapping to the corresponding attribute
+    /// </summary>
+    public ElementPersistable CreateIndexColumn(IndexColumnSchema indexColumn, string indexId, string? attributeId, PackageModelPersistable package)
+    {
+        BasicMappingModelPersistable? mapping = null;
+        if (attributeId != null)
+        {
+            mapping = new BasicMappingModelPersistable
+            {
+                MappingSettingsId = "30f4278f-1d74-4e7e-bfdb-39c8e120f24c", // Column mapping settings ID
+                MetadataId = "6ab29b31-27af-4f56-a67c-986d82097d63", // Domain metadata ID
+                AutoSyncTypeReference = false,
+                Path = new List<MappedPathTargetPersistable>
+                {
+                                         new()
+                     {
+                         Id = attributeId,
+                         Name = GetAttributeNameById(attributeId, package),
+                         Type = "Element",
+                         Specialization = "Attribute"
+                     }
+                }
+            };
+        }
+
+        var columnIndex = new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = indexColumn.Name,
+            SpecializationType = "Index Column",
+            SpecializationTypeId = "c5ba925d-5c08-4809-a848-585a0cd4ddd3", // Index Column specialization type ID
+            IsMapped = mapping != null,
+            Mapping = mapping,
+            ParentFolderId = indexId, // Index columns belong to their parent index
+            PackageId = package.Id,
+            PackageName = package.Name,
+            ChildElements = new List<ElementPersistable>(),
+            Stereotypes = new List<StereotypePersistable>()
+        };
+
+        // Apply index column stereotypes
+        ApplyIndexColumnStereotype(columnIndex, indexColumn);
+
+        return columnIndex;
+    }
+
+    private void ApplyIndexStereotype(ElementPersistable indexElement, IndexSchema index)
+    {
+        var indexStereotype = new StereotypePersistable
+        {
+            Name = "Index Settings",
+            DefinitionId = Constants.Stereotypes.Rdbms.Index.Settings.DefinitionId,
+            DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId,
+            DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName,
+            AddedByDefault = true,
+            Properties = new List<StereotypePropertyPersistable>
+            {
+                new()
+                {
+                    DefinitionId = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UseDefaultName,
+                    Name = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UseDefaultNameName,
+                    Value = "false"
+                },
+                new()
+                {
+                    DefinitionId = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.Unique,
+                    Name = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UniqueName,
+                    Value = index.IsUnique.ToString().ToLower()
+                },
+                new()
+                {
+                    DefinitionId = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.Filter,
+                    Name = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.FilterName,
+                    Value = "Default"
+                }
+            }
+        };
+
+        indexElement.Stereotypes.Add(indexStereotype);
+    }
+
+    private void ApplyIndexColumnStereotype(ElementPersistable columnIndex, IndexColumnSchema indexColumn)
+    {
+        var indexColumnStereotype = new StereotypePersistable
+        {
+            Name = "Index Column Settings",
+            DefinitionId = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.DefinitionId,
+            DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId,
+            DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName,
+            AddedByDefault = true,
+            Properties = new List<StereotypePropertyPersistable>
+            {
+                new()
+                {
+                    DefinitionId = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.Type,
+                    Name = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.TypeName,
+                    Value = indexColumn.IsIncluded ? "Included" : "Key"
+                },
+                new()
+                {
+                    DefinitionId = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirection,
+                    Name = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirectionName,
+                    Value = indexColumn.IsDescending ? "Descending" : "Ascending"
+                }
+            }
+        };
+
+        columnIndex.Stereotypes.Add(indexColumnStereotype);
+    }
+
+    private string GetClassNameById(string classId, PackageModelPersistable package)
+    {
+        var element = package.Classes.FirstOrDefault(c => c.Id == classId);
+        return element?.Name ?? "Unknown";
+    }
+
+    private string GetAttributeNameById(string attributeId, PackageModelPersistable package)
+    {
+        foreach (var classElement in package.Classes)
+        {
+            var attribute = classElement.ChildElements?.FirstOrDefault(c => c.Id == attributeId);
+            if (attribute != null)
+                return attribute.Name;
+        }
+        return "Unknown";
+    }
+
+    #endregion
+
+    #region Folder and Schema Support
+
+    /// <summary>
+    /// Creates a folder element for schema organization
+    /// </summary>
+    public ElementPersistable CreateSchemaFolder(string schemaName, string packageId)
+    {
+        var normalizedFolderName = NormalizeSchemaName(schemaName);
+        return new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = normalizedFolderName,
+            SpecializationType = "Folder",
+            SpecializationTypeId = "4d95d53a-8855-4f35-aa82-e312643f5c5f", // Folder specialization type ID
+            ParentFolderId = packageId, // Folders belong to the package root
+            ChildElements = new List<ElementPersistable>(),
+            Stereotypes = new List<StereotypePersistable>()
+        };
+    }
+
+    private static string NormalizeSchemaName(string schemaName)
+    {
+        var normalized = schemaName;
+        return normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
+    }
+
+    /// <summary>
+    /// Applies HasTrigger stereotype to classes that have triggers on their underlying tables
+    /// </summary>
+    private static void ApplyHasTriggerStereotype(ElementPersistable classElement)
+    {
+        // Check if HasTrigger stereotype is already applied
+        if (classElement.Stereotypes.Any(s => s.Name == "Has Trigger"))
+            return;
+
+        var hasTriggerStereotype = new StereotypePersistable
+        {
+            Name = "Has Trigger",
+            DefinitionId = Constants.Stereotypes.Rdbms.HasTrigger.DefinitionId,
+            DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId,
+            DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName,
+            AddedByDefault = false,
+            Properties = new List<StereotypePropertyPersistable>()
+        };
+
+        classElement.Stereotypes.Add(hasTriggerStereotype);
+    }
+
+    #endregion
 }

@@ -49,8 +49,6 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
         // Step 2: If we have schema data, use our new mapping infrastructure
         if (result.Result?.SchemaData != null)
         {
-            executionResult.Warnings.Add($"Schema data received: {result.Result.SchemaData.Tables.Count} tables, {result.Result.SchemaData.Views.Count} views, {result.Result.SchemaData.StoredProcedures.Count} stored procedures");
-            
             var mappingResult = ApplySchemaMapping(importModel, result.Result);
             if (!mappingResult.IsSuccessful)
             {
@@ -59,10 +57,6 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
                 {
                     executionResult.Errors.Add($"Exception: {mappingResult.Exception.Message}");
                 }
-            }
-            else
-            {
-                executionResult.Warnings.Add($"Schema mapping completed: {mappingResult.Message}");
             }
         }
 

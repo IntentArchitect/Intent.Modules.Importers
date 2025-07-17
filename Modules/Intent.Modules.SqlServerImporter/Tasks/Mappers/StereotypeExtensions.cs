@@ -21,11 +21,7 @@ internal static class StereotypeExtensions
             return false;
         }
 
-        // Try different property matching strategies
-        var property = stereotype.Properties.FirstOrDefault(x => 
-            (x.GetType().GetProperty("Id")?.GetValue(x) as string) == propertyId ||
-            (x.GetType().GetProperty("PropertyId")?.GetValue(x) as string) == propertyId);
-        
+        var property = stereotype.Properties.SingleOrDefault(x => x.DefinitionId == propertyId);
         if (property == null)
         {
             value = default;
@@ -93,11 +89,7 @@ internal static class StereotypeExtensions
     {
         stereotype.Properties ??= new List<StereotypePropertyPersistable>();
 
-        // Try different property matching strategies
-        var property = stereotype.Properties.FirstOrDefault(p => 
-            (p.GetType().GetProperty("Id")?.GetValue(p) as string) == propertyId ||
-            (p.GetType().GetProperty("PropertyId")?.GetValue(p) as string) == propertyId);
-            
+        var property = stereotype.Properties.SingleOrDefault(p => p.DefinitionId == propertyId);
         if (property == null)
         {
             if (initAction == null)
@@ -106,35 +98,13 @@ internal static class StereotypeExtensions
             }
             property = new StereotypePropertyPersistable
             {
+                DefinitionId = propertyId,
                 IsActive = true
             };
-            
-            // Set the property ID using reflection
-            var idProperty = property.GetType().GetProperty("Id");
-            var propertyIdProperty = property.GetType().GetProperty("PropertyId");
-            
-            if (idProperty != null)
-            {
-                idProperty.SetValue(property, propertyId);
-            }
-            else if (propertyIdProperty != null)
-            {
-                propertyIdProperty.SetValue(property, propertyId);
-            }
-            
             initAction(property);
             stereotype.Properties.Add(property);
         }
 
         return property;
-    }
-
-    public static bool IsStoredProcedure(this ElementPersistable element)
-    {
-        // Check if the element has a stored procedure specialization type
-        // This is a simplified check - in a real implementation you might need to check the SpecializationType
-        return element.Name.Contains("StoredProcedure") || 
-               element.SpecializationType?.Contains("StoredProcedure") == true ||
-               element.SpecializationTypeId?.Contains("StoredProcedure") == true;
     }
 }

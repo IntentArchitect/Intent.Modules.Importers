@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Intent.RelationalDbSchemaImporter.Contracts.Schema;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
@@ -15,8 +16,8 @@ public class TypeReferenceMapper
             TypeId = GetTypeId(column.DataType),
             IsNullable = column.IsNullable,
             IsCollection = false,
-            Stereotypes = [],
-            GenericTypeParameters = []
+            Stereotypes = new List<StereotypePersistable>(),
+            GenericTypeParameters = new List<TypeReferencePersistable>()
         };
     }
 
@@ -26,10 +27,10 @@ public class TypeReferenceMapper
         {
             Id = Guid.NewGuid().ToString(),
             TypeId = GetTypeId(parameter.DataType),
-            IsNullable = false, // Stored procedure parameters are typically not nullable in the type system
-            IsCollection = false,
-            Stereotypes = [],
-            GenericTypeParameters = []
+            IsNullable = !parameter.IsOutputParameter, // Input parameters can be nullable, output parameters typically aren't
+            IsCollection = parameter.DataType.ToLower() == "user-defined-table-type",
+            Stereotypes = new List<StereotypePersistable>(),
+            GenericTypeParameters = new List<TypeReferencePersistable>()
         };
     }
 
@@ -41,8 +42,41 @@ public class TypeReferenceMapper
             TypeId = GetTypeId(column.DataType),
             IsNullable = column.IsNullable,
             IsCollection = false,
-            Stereotypes = [],
-            GenericTypeParameters = []
+            Stereotypes = new List<StereotypePersistable>(),
+            GenericTypeParameters = new List<TypeReferencePersistable>()
+        };
+    }
+
+    /// <summary>
+    /// Creates a type reference for stored procedure return types
+    /// </summary>
+    public TypeReferencePersistable CreateStoredProcedureReturnTypeReference(string? dataContractId, bool hasMultipleRows = true)
+    {
+        return new TypeReferencePersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            TypeId = dataContractId,
+            IsNullable = false,
+            IsCollection = hasMultipleRows,
+            Stereotypes = new List<StereotypePersistable>(),
+            GenericTypeParameters = new List<TypeReferencePersistable>()
+        };
+    }
+
+    /// <summary>
+    /// Creates a type reference for association ends
+    /// </summary>
+    public TypeReferencePersistable CreateAssociationTypeReference(string targetClassId, bool isNullable, bool isCollection, bool isNavigable = true)
+    {
+        return new TypeReferencePersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            TypeId = targetClassId,
+            IsNullable = isNullable,
+            IsCollection = isCollection,
+            IsNavigable = isNavigable,
+            Stereotypes = new List<StereotypePersistable>(),
+            GenericTypeParameters = new List<TypeReferencePersistable>()
         };
     }
 

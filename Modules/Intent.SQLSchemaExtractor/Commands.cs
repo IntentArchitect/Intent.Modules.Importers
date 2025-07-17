@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.CommandLine;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.RelationalDbSchemaImporter.Contracts.Models;
-using Intent.SQLSchemaExtractor.Annotators;
 using Intent.SQLSchemaExtractor.Extractors;
 using Microsoft.Data.SqlClient;
 using Microsoft.SqlServer.Management.Common;
@@ -256,118 +253,11 @@ internal static partial class Commands
         // Extract schema to intermediary types
         var schemaExtractor = new DatabaseSchemaExtractor(config, db);
         var databaseSchema = schemaExtractor.ExtractSchema();
-
-        // Build Intent package model
-        var extractor = new SqlServerSchemaExtractor(config, db, server);
-        var package = extractor.BuildPackageModel(config.PackageFileName!, CreateSchemaExtractorEventManager());
-
-        ConfigurePackage(package, extractor, config);
-        package.Save();
-
+        
         return new ImportSchemaResult
         {
-            PackageName = package.Name,
-            PackageFilePath = config.PackageFileName,
-            TablesImported = extractor.Statistics.TableCount,
-            ViewsImported = extractor.Statistics.ViewCount,
-            StoredProceduresImported = extractor.Statistics.StoredProcedureCount,
-            IndexesImported = extractor.Statistics.IndexCount,
             SchemaData = databaseSchema
         };
-    }
-
-    private static SchemaExtractorEventManager CreateSchemaExtractorEventManager()
-    {
-        return new SchemaExtractorEventManager
-        {
-            OnTableHandlers = new[]
-            {
-                RdbmsSchemaAnnotator.ApplyTableDetails
-            },
-            OnViewHandlers = new[]
-            {
-                RdbmsSchemaAnnotator.ApplyViewDetails
-            },
-            OnTableColumnHandlers = new[]
-            {
-                RdbmsSchemaAnnotator.ApplyPrimaryKey,
-                RdbmsSchemaAnnotator.ApplyColumnDetails,
-                RdbmsSchemaAnnotator.ApplyTextConstraint,
-                RdbmsSchemaAnnotator.ApplyDecimalConstraint,
-                RdbmsSchemaAnnotator.ApplyDefaultConstraint,
-                RdbmsSchemaAnnotator.ApplyComputedValue
-            },
-            OnViewColumnHandlers = new[]
-            {
-                RdbmsSchemaAnnotator.ApplyColumnDetails,
-                RdbmsSchemaAnnotator.ApplyTextConstraint,
-                RdbmsSchemaAnnotator.ApplyDecimalConstraint
-            },
-            OnIndexHandlers = new[]
-            {
-                RdbmsSchemaAnnotator.ApplyIndex
-            },
-            OnStoredProcedureHandlers = new[]
-            {
-                RdbmsSchemaAnnotator.ApplyStoredProcedureSettings
-            }
-        };
-    }
-
-    private static void ConfigurePackage(PackageModelPersistable package, SqlServerSchemaExtractor extractor, ImportConfiguration config)
-    {
-        package.Name = Path.GetFileNameWithoutExtension(package.Name);
-        
-        AddStandardPackageReferences(package);
-        
-        if (extractor.Statistics.StoredProcedureCount > 0 || config.ExportStoredProcedures())
-        {
-            AddStoredProcedurePackageReference(package);
-        }
-    }
-
-    private static void AddStandardPackageReferences(PackageModelPersistable package)
-    {
-        var standardReferences = new[]
-        {
-            new PackageReferenceModel
-            {
-                PackageId = "870ad967-cbd4-4ea9-b86d-9c3a5d55ea67",
-                Name = "Intent.Common.Types",
-                Module = "Intent.Common.Types",
-                IsExternal = true
-            },
-            new PackageReferenceModel
-            {
-                PackageId = "AF8F3810-745C-42A2-93C8-798860DC45B1",
-                Name = "Intent.Metadata.RDBMS",
-                Module = "Intent.Metadata.RDBMS",
-                IsExternal = true
-            },
-            new PackageReferenceModel
-            {
-                PackageId = "a9d2a398-04e4-4300-9fbb-768568c65f9e",
-                Name = "Intent.EntityFrameworkCore",
-                Module = "Intent.EntityFrameworkCore",
-                IsExternal = true
-            }
-        };
-
-        foreach (var reference in standardReferences)
-        {
-            package.References.Add(reference);
-        }
-    }
-
-    private static void AddStoredProcedurePackageReference(PackageModelPersistable package)
-    {
-        package.References.Add(new PackageReferenceModel
-        {
-            PackageId = "5869084c-2a08-4e40-a5c9-ff26220470c8",
-            Name = "Intent.EntityFrameworkCore.Repositories",
-            Module = "Intent.EntityFrameworkCore.Repositories",
-            IsExternal = true
-        });
     }
     
     private static (SqlConnection connection, Server server, Database database)? CreateDatabaseConnection(

@@ -7,5 +7,4 @@ public class DatabaseSchema
     public List<ViewSchema> Views { get; set; } = [];
     public List<StoredProcedureSchema> StoredProcedures { get; set; } = [];
     public List<UserDefinedTableTypeSchema> UserDefinedTableTypes { get; set; } = [];
-    public Dictionary<string, object> Metadata { get; set; } = new();
 }

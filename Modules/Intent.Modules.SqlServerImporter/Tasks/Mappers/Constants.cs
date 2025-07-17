@@ -1,6 +1,6 @@
 namespace Intent.Modules.SqlServerImporter.Tasks.Mappers;
 
-public static class Constants
+internal static class Constants
 {
     public static class Packages
     {
@@ -173,6 +173,12 @@ public static class Constants
                     public const string Scale = "ff13f032-826f-4ca3-9806-ea4f10b8d600";
                     public const string ScaleName = "Scale";
                 }
+            }
+
+            public static class HasTrigger
+            {
+                public const string DefinitionId = "70bbade7-14c0-4b71-9c3b-3d3e9b0e4e3e"; // HasTrigger stereotype definition ID
+                public const string Name = "Has Trigger";
             }
 
             public static class TextConstraints
