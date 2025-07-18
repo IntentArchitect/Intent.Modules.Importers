@@ -6,6 +6,7 @@ using System.Linq;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.RelationalDbSchemaImporter.Contracts.Models;
 using Intent.SQLSchemaExtractor.Extractors;
+using Intent.SQLSchemaExtractor.Providers;
 using Microsoft.Data.SqlClient;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
@@ -243,21 +244,37 @@ internal static partial class Commands
 
     private static ImportSchemaResult? PerformSchemaImport(ImportConfiguration config, StandardResponse response)
     {
-        var dbConnection = CreateDatabaseConnection(config.ConnectionString, response);
-        if (dbConnection == null) return null;
-
-        using var connection = dbConnection.Value.connection;
-        var server = dbConnection.Value.server;
-        var db = dbConnection.Value.database;
-
-        // Extract schema to intermediary types
-        var schemaExtractor = new DatabaseSchemaExtractor(config, db);
-        var databaseSchema = schemaExtractor.ExtractSchema();
-        
-        return new ImportSchemaResult
+        try
         {
-            SchemaData = databaseSchema
-        };
+            // Use the new provider-based architecture
+            var factory = new DatabaseProviderFactory();
+            var databaseType = config.DatabaseType.ToProviderType();
+            
+            // Auto-detect database type if not specified
+            if (databaseType == Providers.DatabaseType.Auto)
+            {
+                databaseType = factory.DetectDatabaseType(config.ConnectionString);
+                
+                if (databaseType == Providers.DatabaseType.Auto)
+                {
+                    response.AddError("Could not auto-detect database type from connection string. Please specify the database type explicitly.");
+                    return null;
+                }
+            }
+
+            var provider = factory.CreateProvider(databaseType);
+            var databaseSchema = provider.ExtractSchemaAsync(config.ConnectionString, config).GetAwaiter().GetResult();
+            
+            return new ImportSchemaResult
+            {
+                SchemaData = databaseSchema
+            };
+        }
+        catch (Exception ex)
+        {
+            response.AddError($"Schema extraction failed: {ex.Message}");
+            return null;
+        }
     }
     
     private static (SqlConnection connection, Server server, Database database)? CreateDatabaseConnection(

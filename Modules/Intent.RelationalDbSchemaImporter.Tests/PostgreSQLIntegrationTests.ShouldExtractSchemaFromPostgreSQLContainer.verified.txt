@@ -1,2293 +1,6114 @@
 ﻿{
-  DatabaseName: master,
+  DatabaseName: testdb,
   Tables: [
     {
-      Name: AuditLog,
-      Schema: dbo,
+      Name: sql_features,
+      Schema: information_schema,
       Columns: [
         {
-          Name: AuditID,
+          Name: feature_id,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: feature_name,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: sub_feature_id,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: sub_feature_name,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: is_supported,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 3
+        },
+        {
+          Name: is_verified_by,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: comments,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: sql_implementation_info,
+      Schema: information_schema,
+      Columns: [
+        {
+          Name: implementation_info_id,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: implementation_info_name,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: integer_value,
+          DataType: int4,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: character_value,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: comments,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: sql_parts,
+      Schema: information_schema,
+      Columns: [
+        {
+          Name: feature_id,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: feature_name,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: is_supported,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 3
+        },
+        {
+          Name: is_verified_by,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: comments,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: sql_sizing,
+      Schema: information_schema,
+      Columns: [
+        {
+          Name: sizing_id,
+          DataType: int4,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: sizing_name,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: supported_value,
+          DataType: int4,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: comments,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_aggregate,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: aggfnoid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: aggkind,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggnumdirectargs,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: aggtransfn,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggfinalfn,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggcombinefn,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggserialfn,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggdeserialfn,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggmtransfn,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggminvtransfn,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggmfinalfn,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggfinalextra,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggmfinalextra,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggfinalmodify,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggmfinalmodify,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggsortop,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggtranstype,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggtransspace,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: aggmtranstype,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggmtransspace,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: agginitval,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: aggminitval,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_am,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: amname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: amhandler,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: amtype,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_amop,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: amopfamily,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: amoplefttype,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: amoprighttype,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: amopstrategy,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: amoppurpose,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: amopopr,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: amopmethod,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: amopsortfamily,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_amproc,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: amprocfamily,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: amproclefttype,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: amprocrighttype,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: amprocnum,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: amproc,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_attrdef,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: adrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: adnum,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: adbin,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_attribute,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: attrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: attname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: atttypid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: attstattarget,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: attlen,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: attnum,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: attndims,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: attcacheoff,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: atttypmod,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: attbyval,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: attalign,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: attstorage,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: attcompression,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: attnotnull,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: atthasdef,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: atthasmissing,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: attidentity,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: attgenerated,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: attisdropped,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: attislocal,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: attinhcount,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: attcollation,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: attacl,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: attoptions,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: attfdwoptions,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: attmissingval,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_auth_members,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: roleid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: member,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: grantor,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: admin_option,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_authid,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: rolname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: rolsuper,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: rolinherit,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: rolcreaterole,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: rolcreatedb,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: rolcanlogin,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: rolreplication,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: rolbypassrls,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: rolconnlimit,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: rolpassword,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: rolvaliduntil,
+          DataType: timestamptz,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_cast,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: castsource,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: casttarget,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: castfunc,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: castcontext,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: castmethod,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_class,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: relname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relnamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: reltype,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: reloftype,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relam,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relfilenode,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: reltablespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relpages,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: reltuples,
+          DataType: float4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 24
+        },
+        {
+          Name: relallvisible,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: reltoastrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relhasindex,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relisshared,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relpersistence,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relkind,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relnatts,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: relchecks,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: relhasrules,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relhastriggers,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relhassubclass,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relrowsecurity,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relforcerowsecurity,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relispopulated,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relreplident,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relispartition,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relrewrite,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relfrozenxid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relminmxid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relacl,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: reloptions,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: relpartbound,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_collation,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: collname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: collnamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: collowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: collprovider,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: collisdeterministic,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: collencoding,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: collcollate,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: collctype,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: colliculocale,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: collversion,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_constraint,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: conname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: connamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: contype,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: condeferrable,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: condeferred,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: convalidated,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: conrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: contypid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: conindid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: conparentid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: confrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: confupdtype,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: confdeltype,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: confmatchtype,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: conislocal,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: coninhcount,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: connoinherit,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: conkey,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: confkey,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: conpfeqop,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: conppeqop,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: conffeqop,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: confdelsetcols,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: conexclop,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: conbin,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_conversion,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: conname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: connamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: conowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: conforencoding,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: contoencoding,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: conproc,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: condefault,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_database,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: datname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: datdba,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: encoding,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: datlocprovider,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: datistemplate,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: datallowconn,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: datconnlimit,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: datfrozenxid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: datminmxid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: dattablespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: datcollate,
+          DataType: text,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: datctype,
+          DataType: text,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: daticulocale,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: datcollversion,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: datacl,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_db_role_setting,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: setdatabase,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: setrole,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: setconfig,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_default_acl,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: defaclrole,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: defaclnamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: defaclobjtype,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: defaclacl,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_depend,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: classid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: objid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: objsubid,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: refclassid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: refobjid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: refobjsubid,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: deptype,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_description,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: objoid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: classoid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: objsubid,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: description,
+          DataType: text,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_enum,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: enumtypid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: enumsortorder,
+          DataType: float4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 24
+        },
+        {
+          Name: enumlabel,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_event_trigger,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: evtname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: evtevent,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: evtowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: evtfoid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: evtenabled,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: evttags,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_extension,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: extname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: extowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: extnamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: extrelocatable,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: extversion,
+          DataType: text,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: extconfig,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: extcondition,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_foreign_data_wrapper,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: fdwname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: fdwowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: fdwhandler,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: fdwvalidator,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: fdwacl,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: fdwoptions,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_foreign_server,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: srvname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: srvowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: srvfdw,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: srvtype,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: srvversion,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: srvacl,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: srvoptions,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_foreign_table,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: ftrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: ftserver,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: ftoptions,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_index,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: indexrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: indrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indnatts,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: indnkeyatts,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: indisunique,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indnullsnotdistinct,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indisprimary,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indisexclusion,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indimmediate,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indisclustered,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indisvalid,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indcheckxmin,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indisready,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indislive,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indisreplident,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indkey,
           DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indcollation,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indclass,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indoption,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indexprs,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: indpred,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_inherits,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: inhrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: inhparent,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: inhseqno,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: inhdetachpending,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_init_privs,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: objoid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: classoid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: objsubid,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: privtype,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: initprivs,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_language,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: lanname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: lanowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: lanispl,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: lanpltrusted,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: lanplcallfoid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: laninline,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: lanvalidator,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: lanacl,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_largeobject,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: loid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: pageno,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: data,
+          DataType: bytea,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_largeobject_metadata,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: lomowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: lomacl,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_namespace,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: nspname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: nspowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: nspacl,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_opclass,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: opcmethod,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: opcname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: opcnamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: opcowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: opcfamily,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: opcintype,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: opcdefault,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: opckeytype,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_operator,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: oprname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: oprnamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: oprowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: oprkind,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: oprcanmerge,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: oprcanhash,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: oprleft,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: oprright,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: oprresult,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: oprcom,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: oprnegate,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: oprcode,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: oprrest,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: oprjoin,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_opfamily,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: opfmethod,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: opfname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: opfnamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: opfowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_parameter_acl,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: parname,
+          DataType: text,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: paracl,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_partitioned_table,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: partrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: partstrat,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: partnatts,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: partdefid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: partattrs,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: partclass,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: partcollation,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: partexprs,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_policy,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: polname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: polrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: polcmd,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: polpermissive,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: polroles,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: polqual,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: polwithcheck,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_proc,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: proname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: pronamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: proowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: prolang,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: procost,
+          DataType: float4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 24
+        },
+        {
+          Name: prorows,
+          DataType: float4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 24
+        },
+        {
+          Name: provariadic,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: prosupport,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: prokind,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: prosecdef,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: proleakproof,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: proisstrict,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: proretset,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: provolatile,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: proparallel,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: pronargs,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: pronargdefaults,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: prorettype,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: proargtypes,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: proallargtypes,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: proargmodes,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: proargnames,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: proargdefaults,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: protrftypes,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: prosrc,
+          DataType: text,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: probin,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: prosqlbody,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: proconfig,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: proacl,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_publication,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: pubname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: pubowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: puballtables,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: pubinsert,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: pubupdate,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: pubdelete,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: pubtruncate,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: pubviaroot,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_publication_namespace,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: pnpubid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: pnnspid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_publication_rel,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: prpubid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: prrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: prqual,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: prattrs,
+          DataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_range,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: rngtypid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: rngsubtype,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: rngmultitypid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: rngcollation,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: rngsubopc,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: rngcanonical,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: rngsubdiff,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_replication_origin,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: roident,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: roname,
+          DataType: text,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_rewrite,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: rulename,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: ev_class,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: ev_type,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: ev_enabled,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: is_instead,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: ev_qual,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: ev_action,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_seclabel,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: objoid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: classoid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: objsubid,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: provider,
+          DataType: text,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: label,
+          DataType: text,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_sequence,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: seqrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: seqtypid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: seqstart,
+          DataType: int8,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 64
+        },
+        {
+          Name: seqincrement,
+          DataType: int8,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 64
+        },
+        {
+          Name: seqmax,
+          DataType: int8,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 64
+        },
+        {
+          Name: seqmin,
+          DataType: int8,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 64
+        },
+        {
+          Name: seqcache,
+          DataType: int8,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 64
+        },
+        {
+          Name: seqcycle,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_shdepend,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: dbid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: classid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: objid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: objsubid,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: refclassid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: refobjid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: deptype,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_shdescription,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: objoid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: classoid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: description,
+          DataType: text,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_shseclabel,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: objoid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: classoid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: provider,
+          DataType: text,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: label,
+          DataType: text,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_statistic,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: starelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: staattnum,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: stainherit,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: stanullfrac,
+          DataType: float4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 24
+        },
+        {
+          Name: stawidth,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: stadistinct,
+          DataType: float4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 24
+        },
+        {
+          Name: stakind1,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: stakind2,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: stakind3,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: stakind4,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: stakind5,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: staop1,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: staop2,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: staop3,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: staop4,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: staop5,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stacoll1,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stacoll2,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stacoll3,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stacoll4,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stacoll5,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stanumbers1,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stanumbers2,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stanumbers3,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stanumbers4,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stanumbers5,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stavalues1,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stavalues2,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stavalues3,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stavalues4,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stavalues5,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_statistic_ext,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: stxrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stxname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stxnamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stxowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stxstattarget,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: stxkeys,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stxkind,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stxexprs,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_statistic_ext_data,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: stxoid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: stxdinherit,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: stxdndistinct,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stxddependencies,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stxdmcv,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: stxdexpr,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_subscription,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: subdbid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: subskiplsn,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: subname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: subowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: subenabled,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: subbinary,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: substream,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: subtwophasestate,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: subdisableonerr,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: subconninfo,
+          DataType: text,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: subslotname,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: subsynccommit,
+          DataType: text,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: subpublications,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_subscription_rel,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: srsubid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: srrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: srsubstate,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: srsublsn,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_tablespace,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: spcname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: spcowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: spcacl,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: spcoptions,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_transform,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: trftype,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: trflang,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: trffromsql,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: trftosql,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_trigger,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: tgrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tgparentid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tgname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tgfoid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tgtype,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: tgenabled,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tgisinternal,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tgconstrrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tgconstrindid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tgconstraint,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tgdeferrable,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tginitdeferred,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tgnargs,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: tgattr,
+          DataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tgargs,
+          DataType: bytea,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tgqual,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tgoldtable,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tgnewtable,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_ts_config,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: cfgname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: cfgnamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: cfgowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: cfgparser,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_ts_config_map,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: mapcfg,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: maptokentype,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: mapseqno,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: mapdict,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_ts_dict,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: dictname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: dictnamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: dictowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: dicttemplate,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: dictinitoption,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_ts_parser,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: prsname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: prsnamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: prsstart,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: prstoken,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: prsend,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: prsheadline,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: prslextype,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_ts_template,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: tmplname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tmplnamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tmplinit,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tmpllexize,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_type,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: typname,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typnamespace,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typowner,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typlen,
+          DataType: int2,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: typbyval,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typtype,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typcategory,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typispreferred,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typisdefined,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typdelim,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typrelid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typsubscript,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typelem,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typarray,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typinput,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typoutput,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typreceive,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typsend,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typmodin,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typmodout,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typanalyze,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typalign,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typstorage,
+          DataType: char,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typnotnull,
+          DataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typbasetype,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typtypmod,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: typndims,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: typcollation,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typdefaultbin,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typdefault,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: typacl,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: pg_user_mapping,
+      Schema: pg_catalog,
+      Columns: [
+        {
+          Name: oid,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: umuser,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: umserver,
+          DataType: unknown,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: umoptions,
+          DataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
+      Name: audit_log,
+      Schema: public,
+      Columns: [
+        {
+          Name: audit_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('audit_log_audit_id_seq'::regclass)
+          }
         },
         {
-          Name: TableName,
-          DataType: nvarchar,
+          Name: table_name,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 100
         },
         {
-          Name: RecordID,
-          DataType: int,
+          Name: record_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: Action,
-          DataType: nvarchar,
+          Name: action,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 10
         },
         {
-          Name: OldValues,
-          DataType: nvarchar,
+          Name: old_values,
+          DataType: unknown,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
-          Name: NewValues,
-          DataType: nvarchar,
+          Name: new_values,
+          DataType: unknown,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
-          Name: ChangedBy,
-          DataType: int,
+          Name: changed_by,
+          DataType: int4,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: ChangeDate,
-          DataType: datetime2,
+          Name: change_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         }
       ]
     },
     {
-      Name: Categories,
-      Schema: dbo,
+      Name: categories,
+      Schema: public,
       Columns: [
         {
-          Name: CategoryID,
-          DataType: int,
+          Name: category_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('categories_category_id_seq'::regclass)
+          }
         },
         {
-          Name: CategoryName,
-          DataType: nvarchar,
+          Name: category_name,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 100
         },
         {
-          Name: Description,
-          DataType: nvarchar,
+          Name: description,
+          DataType: text,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 500
+          IsIdentity: false
         },
         {
-          Name: ParentCategoryID,
-          DataType: int,
+          Name: parent_category_id,
+          DataType: int4,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: IsActive,
-          DataType: bit,
+          Name: is_active,
+          DataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
-            Text: ((1))
+            Text: true
           }
         },
         {
-          Name: CreatedDate,
-          DataType: datetime2,
+          Name: created_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         },
         {
-          Name: ModifiedDate,
-          DataType: datetime2,
+          Name: modified_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         }
       ],
       ForeignKeys: [
         {
-          Name: FK_Categories_ParentCategory,
+          Name: fk_categories_parent_category,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: Categories,
-          Columns: [
-            {
-              Name: ParentCategoryID,
-              ReferencedColumnName: CategoryID
-            }
-          ]
+          ReferencedTableName: categories
         }
       ]
     },
     {
-      Name: InventoryTransactions,
-      Schema: dbo,
+      Name: inventory_transactions,
+      Schema: public,
       Columns: [
         {
-          Name: TransactionID,
-          DataType: int,
+          Name: transaction_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('inventory_transactions_transaction_id_seq'::regclass)
+          }
         },
         {
-          Name: ProductID,
-          DataType: int,
+          Name: product_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: TransactionType,
-          DataType: nvarchar,
+          Name: transaction_type,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 20
         },
         {
-          Name: Quantity,
-          DataType: int,
+          Name: quantity,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: UnitPrice,
-          DataType: decimal,
+          Name: unit_price,
+          DataType: numeric,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 10,
           NumericScale: 2
         },
         {
-          Name: ReferenceID,
-          DataType: int,
+          Name: reference_id,
+          DataType: int4,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: Notes,
-          DataType: nvarchar,
+          Name: notes,
+          DataType: text,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 500
+          IsIdentity: false
         },
         {
-          Name: CreatedDate,
-          DataType: datetime2,
+          Name: created_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         },
         {
-          Name: CreatedBy,
-          DataType: int,
+          Name: created_by,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         }
       ],
       ForeignKeys: [
         {
-          Name: FK_InventoryTransactions_Products,
+          Name: fk_inventory_transactions_products,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: Products,
-          Columns: [
-            {
-              Name: ProductID,
-              ReferencedColumnName: ProductID
-            }
-          ]
+          ReferencedTableName: products
         },
         {
-          Name: FK_InventoryTransactions_Users,
+          Name: fk_inventory_transactions_users,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: Users,
-          Columns: [
-            {
-              Name: CreatedBy,
-              ReferencedColumnName: UserID
-            }
-          ]
+          ReferencedTableName: users
         }
       ]
     },
     {
-      Name: MSreplication_options,
-      Schema: dbo,
+      Name: order_details,
+      Schema: public,
       Columns: [
         {
-          Name: optname,
-          DataType: sysname,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 128
-        },
-        {
-          Name: value,
-          DataType: bit,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1
-        },
-        {
-          Name: major_version,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: minor_version,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: revision,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: install_failures,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        }
-      ]
-    },
-    {
-      Name: OrderDetails,
-      Schema: dbo,
-      Columns: [
-        {
-          Name: OrderDetailID,
-          DataType: int,
+          Name: order_detail_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('order_details_order_detail_id_seq'::regclass)
+          }
         },
         {
-          Name: OrderID,
-          DataType: int,
+          Name: order_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: ProductID,
-          DataType: int,
+          Name: product_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: Quantity,
-          DataType: int,
+          Name: quantity,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: UnitPrice,
-          DataType: decimal,
+          Name: unit_price,
+          DataType: numeric,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 10,
           NumericScale: 2
         },
         {
-          Name: Discount,
-          DataType: decimal,
+          Name: discount,
+          DataType: numeric,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 5,
           NumericPrecision: 5,
           NumericScale: 2,
           DefaultConstraint: {
-            Text: ((0))
+            Text: 0
           }
         },
         {
-          Name: LineTotal,
-          DataType: decimal,
+          Name: line_total,
+          DataType: numeric,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 13,
-          NumericPrecision: 28,
-          NumericScale: 4,
-          ComputedColumn: {
-            Expression: (([Quantity]*[UnitPrice])*((1)-[Discount])),
-            IsPersisted: true
-          }
+          NumericPrecision: 12,
+          NumericScale: 2
         }
       ],
       ForeignKeys: [
         {
-          Name: FK_OrderDetails_Orders,
+          Name: fk_order_details_orders,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: Orders,
-          Columns: [
-            {
-              Name: OrderID,
-              ReferencedColumnName: OrderID
-            }
-          ]
+          ReferencedTableName: orders
         },
         {
-          Name: FK_OrderDetails_Products,
+          Name: fk_order_details_products,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: Products,
-          Columns: [
-            {
-              Name: ProductID,
-              ReferencedColumnName: ProductID
-            }
-          ]
-        }
-      ],
-      Triggers: [
-        {
-          Name: TR_OrderDetails_UpdateInventory,
-          ParentSchema: dbo,
-          ParentName: OrderDetails,
-          ParentType: Table
-        },
-        {
-          Name: TR_Orders_CalculateTotals,
-          ParentSchema: dbo,
-          ParentName: OrderDetails,
-          ParentType: Table
+          ReferencedTableName: products
         }
       ]
     },
     {
-      Name: Orders,
-      Schema: dbo,
+      Name: orders,
+      Schema: public,
       Columns: [
         {
-          Name: OrderID,
-          DataType: int,
+          Name: order_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: UserID,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: OrderDate,
-          DataType: datetime2,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
+          NumericPrecision: 32,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: nextval('orders_order_id_seq'::regclass)
           }
         },
         {
-          Name: RequiredDate,
-          DataType: datetime2,
+          Name: user_id,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: order_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7
+          DefaultConstraint: {
+            Text: CURRENT_TIMESTAMP
+          }
         },
         {
-          Name: ShippedDate,
-          DataType: datetime2,
+          Name: required_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7
+          IsIdentity: false
         },
         {
-          Name: ShippingAddressID,
-          DataType: int,
+          Name: shipped_date,
+          DataType: timestamp,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: shipping_address_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: BillingAddressID,
-          DataType: int,
+          Name: billing_address_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: SubTotal,
-          DataType: decimal,
+          Name: sub_total,
+          DataType: numeric,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 12,
           NumericScale: 2
         },
         {
-          Name: TaxAmount,
-          DataType: decimal,
+          Name: tax_amount,
+          DataType: numeric,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 12,
           NumericScale: 2,
           DefaultConstraint: {
-            Text: ((0))
+            Text: 0
           }
         },
         {
-          Name: ShippingAmount,
-          DataType: decimal,
+          Name: shipping_amount,
+          DataType: numeric,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 12,
           NumericScale: 2,
           DefaultConstraint: {
-            Text: ((0))
+            Text: 0
           }
         },
         {
-          Name: TotalAmount,
-          DataType: decimal,
+          Name: total_amount,
+          DataType: numeric,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 12,
           NumericScale: 2
         },
         {
-          Name: OrderStatus,
-          DataType: nvarchar,
+          Name: order_status,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 20,
           DefaultConstraint: {
-            Text: ('Pending')
+            Text: 'Pending'::character varying
           }
         },
         {
-          Name: PaymentStatus,
-          DataType: nvarchar,
+          Name: payment_status,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 20,
           DefaultConstraint: {
-            Text: ('Pending')
+            Text: 'Pending'::character varying
           }
         },
         {
-          Name: TrackingNumber,
-          DataType: nvarchar,
+          Name: tracking_number,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 50
         },
         {
-          Name: Notes,
-          DataType: nvarchar,
+          Name: notes,
+          DataType: text,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 1000
+          IsIdentity: false
         }
       ],
       ForeignKeys: [
         {
-          Name: FK_Orders_BillingAddress,
+          Name: fk_orders_billing_address,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: UserAddresses,
-          Columns: [
-            {
-              Name: BillingAddressID,
-              ReferencedColumnName: AddressID
-            }
-          ]
+          ReferencedTableName: user_addresses
         },
         {
-          Name: FK_Orders_ShippingAddress,
+          Name: fk_orders_shipping_address,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: UserAddresses,
-          Columns: [
-            {
-              Name: ShippingAddressID,
-              ReferencedColumnName: AddressID
-            }
-          ]
+          ReferencedTableName: user_addresses
         },
         {
-          Name: FK_Orders_Users,
+          Name: fk_orders_users,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: Users,
-          Columns: [
-            {
-              Name: UserID,
-              ReferencedColumnName: UserID
-            }
-          ]
+          ReferencedTableName: users
         }
       ]
     },
     {
-      Name: PaymentMethods,
-      Schema: dbo,
+      Name: payment_methods,
+      Schema: public,
       Columns: [
         {
-          Name: PaymentMethodID,
-          DataType: int,
+          Name: payment_method_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('payment_methods_payment_method_id_seq'::regclass)
+          }
         },
         {
-          Name: UserID,
-          DataType: int,
+          Name: user_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: PaymentType,
-          DataType: nvarchar,
+          Name: payment_type,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 20
         },
         {
-          Name: CardNumber,
-          DataType: nvarchar,
+          Name: card_number,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 20
         },
         {
-          Name: CardHolderName,
-          DataType: nvarchar,
+          Name: card_holder_name,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 100
         },
         {
-          Name: ExpiryMonth,
-          DataType: int,
+          Name: expiry_month,
+          DataType: int4,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: ExpiryYear,
-          DataType: int,
+          Name: expiry_year,
+          DataType: int4,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: IsDefault,
-          DataType: bit,
+          Name: is_default,
+          DataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
-            Text: ((0))
+            Text: false
           }
         },
         {
-          Name: IsActive,
-          DataType: bit,
+          Name: is_active,
+          DataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
-            Text: ((1))
+            Text: true
           }
         },
         {
-          Name: CreatedDate,
-          DataType: datetime2,
+          Name: created_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         }
       ],
       ForeignKeys: [
         {
-          Name: FK_PaymentMethods_Users,
+          Name: fk_payment_methods_users,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: Users,
-          Columns: [
-            {
-              Name: UserID,
-              ReferencedColumnName: UserID
-            }
-          ]
+          ReferencedTableName: users
         }
       ]
     },
     {
-      Name: Payments,
-      Schema: dbo,
+      Name: payments,
+      Schema: public,
       Columns: [
         {
-          Name: PaymentID,
-          DataType: int,
+          Name: payment_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('payments_payment_id_seq'::regclass)
+          }
         },
         {
-          Name: OrderID,
-          DataType: int,
+          Name: order_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: PaymentMethodID,
-          DataType: int,
+          Name: payment_method_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: Amount,
-          DataType: decimal,
+          Name: amount,
+          DataType: numeric,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 12,
           NumericScale: 2
         },
         {
-          Name: PaymentDate,
-          DataType: datetime2,
+          Name: payment_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         },
         {
-          Name: PaymentStatus,
-          DataType: nvarchar,
+          Name: payment_status,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 20,
           DefaultConstraint: {
-            Text: ('Pending')
+            Text: 'Pending'::character varying
           }
         },
         {
-          Name: TransactionID,
-          DataType: nvarchar,
+          Name: transaction_id,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 100
         },
         {
-          Name: ProcessorResponse,
-          DataType: nvarchar,
+          Name: processor_response,
+          DataType: text,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 500
+          IsIdentity: false
         },
         {
-          Name: CreatedDate,
-          DataType: datetime2,
+          Name: created_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         }
       ],
       ForeignKeys: [
         {
-          Name: FK_Payments_Orders,
+          Name: fk_payments_orders,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: Orders,
-          Columns: [
-            {
-              Name: OrderID,
-              ReferencedColumnName: OrderID
-            }
-          ]
+          ReferencedTableName: orders
         },
         {
-          Name: FK_Payments_PaymentMethods,
+          Name: fk_payments_payment_methods,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: PaymentMethods,
-          Columns: [
-            {
-              Name: PaymentMethodID,
-              ReferencedColumnName: PaymentMethodID
-            }
-          ]
+          ReferencedTableName: payment_methods
         }
       ]
     },
     {
-      Name: ProductReviews,
-      Schema: dbo,
+      Name: product_reviews,
+      Schema: public,
       Columns: [
         {
-          Name: ReviewID,
-          DataType: int,
+          Name: review_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('product_reviews_review_id_seq'::regclass)
+          }
         },
         {
-          Name: ProductID,
-          DataType: int,
+          Name: product_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: UserID,
-          DataType: int,
+          Name: user_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: Rating,
-          DataType: int,
+          Name: rating,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: Title,
-          DataType: nvarchar,
+          Name: title,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 200
         },
         {
-          Name: ReviewText,
-          DataType: nvarchar,
+          Name: review_text,
+          DataType: text,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 2000
+          IsIdentity: false
         },
         {
-          Name: IsApproved,
-          DataType: bit,
+          Name: is_approved,
+          DataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
-            Text: ((0))
+            Text: false
           }
         },
         {
-          Name: HelpfulCount,
-          DataType: int,
+          Name: helpful_count,
+          DataType: int4,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10,
+          NumericPrecision: 32,
           DefaultConstraint: {
-            Text: ((0))
+            Text: 0
           }
         },
         {
-          Name: CreatedDate,
-          DataType: datetime2,
+          Name: created_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         }
       ],
       ForeignKeys: [
         {
-          Name: FK_ProductReviews_Products,
+          Name: fk_product_reviews_products,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: Products,
-          Columns: [
-            {
-              Name: ProductID,
-              ReferencedColumnName: ProductID
-            }
-          ]
+          ReferencedTableName: products
         },
         {
-          Name: FK_ProductReviews_Users,
+          Name: fk_product_reviews_users,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: Users,
-          Columns: [
-            {
-              Name: UserID,
-              ReferencedColumnName: UserID
-            }
-          ]
+          ReferencedTableName: users
         }
       ]
     },
     {
-      Name: Products,
-      Schema: dbo,
+      Name: products,
+      Schema: public,
       Columns: [
         {
-          Name: ProductID,
-          DataType: int,
+          Name: product_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('products_product_id_seq'::regclass)
+          }
         },
         {
-          Name: ProductName,
-          DataType: nvarchar,
+          Name: product_name,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 255
         },
         {
-          Name: Description,
-          DataType: nvarchar,
+          Name: description,
+          DataType: text,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 1000
+          IsIdentity: false
         },
         {
-          Name: SKU,
-          DataType: nvarchar,
+          Name: sku,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 50
         },
         {
-          Name: CategoryID,
-          DataType: int,
+          Name: category_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: SupplierID,
-          DataType: int,
+          Name: supplier_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: UnitPrice,
-          DataType: decimal,
+          Name: unit_price,
+          DataType: numeric,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 10,
           NumericScale: 2
         },
         {
-          Name: UnitsInStock,
-          DataType: int,
+          Name: units_in_stock,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10,
+          NumericPrecision: 32,
           DefaultConstraint: {
-            Text: ((0))
+            Text: 0
           }
         },
         {
-          Name: UnitsOnOrder,
-          DataType: int,
+          Name: units_on_order,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10,
+          NumericPrecision: 32,
           DefaultConstraint: {
-            Text: ((0))
+            Text: 0
           }
         },
         {
-          Name: ReorderLevel,
-          DataType: int,
+          Name: reorder_level,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10,
+          NumericPrecision: 32,
           DefaultConstraint: {
-            Text: ((0))
+            Text: 0
           }
         },
         {
-          Name: Discontinued,
-          DataType: bit,
+          Name: discontinued,
+          DataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
-            Text: ((0))
+            Text: false
           }
         },
         {
-          Name: Weight,
-          DataType: decimal,
+          Name: weight,
+          DataType: numeric,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 5,
           NumericPrecision: 8,
           NumericScale: 2
         },
         {
-          Name: Dimensions,
-          DataType: nvarchar,
+          Name: dimensions,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 50
         },
         {
-          Name: ImageURL,
-          DataType: nvarchar,
+          Name: image_url,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 500
         },
         {
-          Name: CreatedDate,
-          DataType: datetime2,
+          Name: created_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         },
         {
-          Name: ModifiedDate,
-          DataType: datetime2,
+          Name: modified_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         }
       ],
       ForeignKeys: [
         {
-          Name: FK_Products_Categories,
+          Name: fk_products_categories,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: Categories,
-          Columns: [
-            {
-              Name: CategoryID,
-              ReferencedColumnName: CategoryID
-            }
-          ]
+          ReferencedTableName: categories
         },
         {
-          Name: FK_Products_Suppliers,
+          Name: fk_products_suppliers,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: Suppliers,
-          Columns: [
-            {
-              Name: SupplierID,
-              ReferencedColumnName: SupplierID
-            }
-          ]
-        }
-      ],
-      Triggers: [
-        {
-          Name: TR_Products_UpdateModifiedDate,
-          ParentSchema: dbo,
-          ParentName: Products,
-          ParentType: Table
+          ReferencedTableName: suppliers
         }
       ]
     },
     {
-      Name: ShoppingCart,
-      Schema: dbo,
+      Name: shopping_cart,
+      Schema: public,
       Columns: [
         {
-          Name: CartID,
-          DataType: int,
+          Name: cart_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: UserID,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: ProductID,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: Quantity,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10,
+          NumericPrecision: 32,
           DefaultConstraint: {
-            Text: ((1))
+            Text: nextval('shopping_cart_cart_id_seq'::regclass)
           }
         },
         {
-          Name: UnitPrice,
-          DataType: decimal,
+          Name: user_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
+          NumericPrecision: 32
+        },
+        {
+          Name: product_id,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: quantity,
+          DataType: int4,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: 1
+          }
+        },
+        {
+          Name: unit_price,
+          DataType: numeric,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
           NumericPrecision: 10,
           NumericScale: 2
         },
         {
-          Name: CreatedDate,
-          DataType: datetime2,
+          Name: created_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         },
         {
-          Name: ModifiedDate,
-          DataType: datetime2,
+          Name: modified_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         }
       ],
       ForeignKeys: [
         {
-          Name: FK_ShoppingCart_Products,
+          Name: fk_shopping_cart_products,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: Products,
-          Columns: [
-            {
-              Name: ProductID,
-              ReferencedColumnName: ProductID
-            }
-          ]
+          ReferencedTableName: products
         },
         {
-          Name: FK_ShoppingCart_Users,
+          Name: fk_shopping_cart_users,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: Users,
-          Columns: [
-            {
-              Name: UserID,
-              ReferencedColumnName: UserID
-            }
-          ]
+          ReferencedTableName: users
         }
       ]
     },
     {
-      Name: spt_fallback_db,
-      Schema: dbo,
+      Name: suppliers,
+      Schema: public,
       Columns: [
         {
-          Name: xserver_name,
-          DataType: varchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 30
-        },
-        {
-          Name: xdttm_ins,
-          DataType: datetime,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 23,
-          NumericScale: 3
-        },
-        {
-          Name: xdttm_last_ins_upd,
-          DataType: datetime,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 23,
-          NumericScale: 3
-        },
-        {
-          Name: xfallback_dbid,
-          DataType: smallint,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 2,
-          NumericPrecision: 5
-        },
-        {
-          Name: name,
-          DataType: varchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 30
-        },
-        {
-          Name: dbid,
-          DataType: smallint,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 2,
-          NumericPrecision: 5
-        },
-        {
-          Name: status,
-          DataType: smallint,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 2,
-          NumericPrecision: 5
-        },
-        {
-          Name: version,
-          DataType: smallint,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 2,
-          NumericPrecision: 5
-        }
-      ]
-    },
-    {
-      Name: spt_fallback_dev,
-      Schema: dbo,
-      Columns: [
-        {
-          Name: xserver_name,
-          DataType: varchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 30
-        },
-        {
-          Name: xdttm_ins,
-          DataType: datetime,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 23,
-          NumericScale: 3
-        },
-        {
-          Name: xdttm_last_ins_upd,
-          DataType: datetime,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 23,
-          NumericScale: 3
-        },
-        {
-          Name: xfallback_low,
-          DataType: int,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: xfallback_drive,
-          DataType: char,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 2
-        },
-        {
-          Name: low,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: high,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: status,
-          DataType: smallint,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 2,
-          NumericPrecision: 5
-        },
-        {
-          Name: name,
-          DataType: varchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 30
-        },
-        {
-          Name: phyname,
-          DataType: varchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 127
-        }
-      ]
-    },
-    {
-      Name: spt_fallback_usg,
-      Schema: dbo,
-      Columns: [
-        {
-          Name: xserver_name,
-          DataType: varchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 30
-        },
-        {
-          Name: xdttm_ins,
-          DataType: datetime,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 23,
-          NumericScale: 3
-        },
-        {
-          Name: xdttm_last_ins_upd,
-          DataType: datetime,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 23,
-          NumericScale: 3
-        },
-        {
-          Name: xfallback_vstart,
-          DataType: int,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: dbid,
-          DataType: smallint,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 2,
-          NumericPrecision: 5
-        },
-        {
-          Name: segmap,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: lstart,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: sizepg,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: vstart,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        }
-      ]
-    },
-    {
-      Name: spt_monitor,
-      Schema: dbo,
-      Columns: [
-        {
-          Name: lastrun,
-          DataType: datetime,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 23,
-          NumericScale: 3
-        },
-        {
-          Name: cpu_busy,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: io_busy,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: idle,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: pack_received,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: pack_sent,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: connections,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: pack_errors,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: total_read,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: total_write,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: total_errors,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        }
-      ]
-    },
-    {
-      Name: Suppliers,
-      Schema: dbo,
-      Columns: [
-        {
-          Name: SupplierID,
-          DataType: int,
+          Name: supplier_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('suppliers_supplier_id_seq'::regclass)
+          }
         },
         {
-          Name: SupplierName,
-          DataType: nvarchar,
+          Name: supplier_name,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 100
         },
         {
-          Name: ContactName,
-          DataType: nvarchar,
+          Name: contact_name,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 100
         },
         {
-          Name: Email,
-          DataType: nvarchar,
+          Name: email,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 100
         },
         {
-          Name: Phone,
-          DataType: nvarchar,
+          Name: phone,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 15
         },
         {
-          Name: Address,
-          DataType: nvarchar,
+          Name: address,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 255
         },
         {
-          Name: City,
-          DataType: nvarchar,
+          Name: city,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 100
         },
         {
-          Name: State,
-          DataType: nvarchar,
+          Name: state,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 50
         },
         {
-          Name: ZipCode,
-          DataType: nvarchar,
+          Name: zip_code,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 10
         },
         {
-          Name: Country,
-          DataType: nvarchar,
+          Name: country,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 50,
           DefaultConstraint: {
-            Text: ('USA')
+            Text: 'USA'::character varying
           }
         },
         {
-          Name: IsActive,
-          DataType: bit,
+          Name: is_active,
+          DataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
-            Text: ((1))
+            Text: true
           }
         },
         {
-          Name: CreatedDate,
-          DataType: datetime2,
+          Name: created_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         }
       ]
     },
     {
-      Name: UserAddresses,
-      Schema: dbo,
+      Name: user_addresses,
+      Schema: public,
       Columns: [
         {
-          Name: AddressID,
-          DataType: int,
+          Name: address_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('user_addresses_address_id_seq'::regclass)
+          }
         },
         {
-          Name: UserID,
-          DataType: int,
+          Name: user_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32
         },
         {
-          Name: AddressType,
-          DataType: nvarchar,
+          Name: address_type,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 20
         },
         {
-          Name: AddressLine1,
-          DataType: nvarchar,
+          Name: address_line1,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 255
         },
         {
-          Name: AddressLine2,
-          DataType: nvarchar,
+          Name: address_line2,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 255
         },
         {
-          Name: City,
-          DataType: nvarchar,
+          Name: city,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 100
         },
         {
-          Name: State,
-          DataType: nvarchar,
+          Name: state,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 50
         },
         {
-          Name: ZipCode,
-          DataType: nvarchar,
+          Name: zip_code,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 10
         },
         {
-          Name: Country,
-          DataType: nvarchar,
+          Name: country,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 50,
           DefaultConstraint: {
-            Text: ('USA')
+            Text: 'USA'::character varying
           }
         },
         {
-          Name: IsDefault,
-          DataType: bit,
+          Name: is_default,
+          DataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
-            Text: ((0))
+            Text: false
           }
         },
         {
-          Name: CreatedDate,
-          DataType: datetime2,
+          Name: created_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         }
       ],
       ForeignKeys: [
         {
-          Name: FK_UserAddresses_Users,
+          Name: fk_user_addresses_users,
           ReferencedTableSchema: dbo,
-          ReferencedTableName: Users,
-          Columns: [
-            {
-              Name: UserID,
-              ReferencedColumnName: UserID
-            }
-          ]
+          ReferencedTableName: users
         }
       ]
     },
     {
-      Name: Users,
-      Schema: dbo,
+      Name: users,
+      Schema: public,
       Columns: [
         {
-          Name: UserID,
-          DataType: int,
+          Name: user_id,
+          DataType: int4,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('users_user_id_seq'::regclass)
+          }
         },
         {
-          Name: Username,
-          DataType: nvarchar,
+          Name: username,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 50
         },
         {
-          Name: Email,
-          DataType: nvarchar,
+          Name: email,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 100
         },
         {
-          Name: PasswordHash,
-          DataType: nvarchar,
+          Name: password_hash,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 255
         },
         {
-          Name: FirstName,
-          DataType: nvarchar,
+          Name: first_name,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 50
         },
         {
-          Name: LastName,
-          DataType: nvarchar,
+          Name: last_name,
+          DataType: varchar,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 50
         },
         {
-          Name: DateOfBirth,
+          Name: date_of_birth,
           DataType: date,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 3,
-          NumericPrecision: 10
+          IsIdentity: false
         },
         {
-          Name: PhoneNumber,
-          DataType: nvarchar,
+          Name: phone_number,
+          DataType: varchar,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 15
         },
         {
-          Name: IsActive,
-          DataType: bit,
+          Name: is_active,
+          DataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
-            Text: ((1))
+            Text: true
           }
         },
         {
-          Name: CreatedDate,
-          DataType: datetime2,
+          Name: created_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         },
         {
-          Name: ModifiedDate,
-          DataType: datetime2,
+          Name: modified_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
-            Text: (getdate())
+            Text: CURRENT_TIMESTAMP
           }
         },
         {
-          Name: LastLoginDate,
-          DataType: datetime2,
+          Name: last_login_date,
+          DataType: timestamp,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7
-        }
-      ],
-      Triggers: [
-        {
-          Name: TR_Users_Audit,
-          ParentSchema: dbo,
-          ParentName: Users,
-          ParentType: Table
-        },
-        {
-          Name: TR_Users_UpdateModifiedDate,
-          ParentSchema: dbo,
-          ParentName: Users,
-          ParentType: Table
-        }
-      ]
-    }
-  ],
-  Views: [
-    {
-      Name: spt_values,
-      Schema: dbo,
-      Columns: [
-        {
-          Name: name,
-          DataType: nvarchar,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 35
-        },
-        {
-          Name: number,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: type,
-          DataType: nchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 3
-        },
-        {
-          Name: low,
-          DataType: int,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: high,
-          DataType: int,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: status,
-          DataType: int,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        }
-      ]
-    },
-    {
-      Name: vw_OrderSummary,
-      Schema: dbo,
-      Columns: [
-        {
-          Name: OrderID,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: OrderDate,
-          DataType: datetime2,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7
-        },
-        {
-          Name: OrderStatus,
-          DataType: nvarchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 20
-        },
-        {
-          Name: PaymentStatus,
-          DataType: nvarchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 20
-        },
-        {
-          Name: CustomerName,
-          DataType: nvarchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 101
-        },
-        {
-          Name: CustomerEmail,
-          DataType: nvarchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 100
-        },
-        {
-          Name: ItemCount,
-          DataType: int,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: TotalAmount,
-          DataType: decimal,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 9,
-          NumericPrecision: 12,
-          NumericScale: 2
-        },
-        {
-          Name: TrackingNumber,
-          DataType: nvarchar,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 50
-        }
-      ]
-    },
-    {
-      Name: vw_ProductCatalog,
-      Schema: dbo,
-      Columns: [
-        {
-          Name: ProductID,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: ProductName,
-          DataType: nvarchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 255
-        },
-        {
-          Name: Description,
-          DataType: nvarchar,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 1000
-        },
-        {
-          Name: SKU,
-          DataType: nvarchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 50
-        },
-        {
-          Name: UnitPrice,
-          DataType: decimal,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 9,
-          NumericPrecision: 10,
-          NumericScale: 2
-        },
-        {
-          Name: UnitsInStock,
-          DataType: int,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
-        },
-        {
-          Name: ImageURL,
-          DataType: nvarchar,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 500
-        },
-        {
-          Name: CategoryName,
-          DataType: nvarchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 100
-        },
-        {
-          Name: SupplierName,
-          DataType: nvarchar,
-          IsNullable: false,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 100
-        },
-        {
-          Name: AverageRating,
-          DataType: float,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 53
-        },
-        {
-          Name: ReviewCount,
-          DataType: int,
-          IsNullable: true,
-          IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          IsIdentity: false
         }
       ]
     }

@@ -19,6 +19,7 @@ public class ImportConfiguration
 	
 	public string? ApplicationId { get; set; }
 	
+	public Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType DatabaseType { get; set; } = Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType.Auto;
 	public EntityNameConvention EntityNameConvention { get; set; } = EntityNameConvention.SingularEntity;
 	public TableStereotype TableStereotype { get; set; } = TableStereotype.WhenDifferent;
 	public HashSet<ExportType> TypesToExport { get; set; } = [ExportType.Table, ExportType.View, ExportType.StoredProcedure, ExportType.Index];

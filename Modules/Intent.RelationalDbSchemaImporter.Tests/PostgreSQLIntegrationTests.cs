@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.RelationalDbSchemaImporter.Contracts.Models;
 using Intent.RelationalDbSchemaImporter.Runner;
@@ -41,7 +42,7 @@ public class PostgreSQLIntegrationTests : IAsyncLifetime
     {
         // Arrange
         var connectionString = _dbContainer.GetConnectionString();
-        
+
         var importRequest = new ImportSchemaRequest
         {
             ConnectionString = connectionString,
@@ -70,32 +71,76 @@ public class PostgreSQLIntegrationTests : IAsyncLifetime
         var sqlScript = await File.ReadAllTextAsync(scriptLocation);
         await ExecutePostgreSQLScript(_dbContainer.GetConnectionString(), sqlScript);
     }
-    
+
     private static async Task ExecutePostgreSQLScript(string connectionString, string sqlScript)
     {
         await using var connection = new NpgsqlConnection(connectionString);
         await connection.OpenAsync();
-        
-        // PostgreSQL doesn't use GO statements, but we can split on semicolons for safety
-        var statements = sqlScript.Split(';', StringSplitOptions.RemoveEmptyEntries);
-        
+
+        var statements = SplitPostgreSQLStatements(sqlScript);
+
         foreach (var statement in statements)
         {
             var trimmedStatement = statement.Trim();
-            if (string.IsNullOrEmpty(trimmedStatement))
+            if (string.IsNullOrEmpty(trimmedStatement) || trimmedStatement.StartsWith("--"))
                 continue;
-                
+
             try
             {
                 await using var command = new NpgsqlCommand(trimmedStatement, connection);
                 command.CommandTimeout = 60;
                 await command.ExecuteNonQueryAsync();
             }
-            catch (Exception ex) when (trimmedStatement.Contains("-- ") || trimmedStatement.StartsWith("--"))
+            catch (Exception ex)
             {
-                // Skip comment lines that might cause issues
-                continue;
+                Console.WriteLine($"Error executing statement: {trimmedStatement.Substring(0, Math.Min(100, trimmedStatement.Length))}...");
+                Console.WriteLine($"Error: {ex.Message}");
+                throw;
             }
         }
     }
-} 
+
+    private static List<string> SplitPostgreSQLStatements(string script)
+    {
+        var statements = new List<string>();
+        var currentStatement = new StringBuilder();
+        var inFunction = false;
+        var dollarQuoteDepth = 0;
+
+        var lines = script.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+        foreach (var line in lines)
+        {
+            var trimmedLine = line.Trim();
+
+            // Skip empty lines and comments
+            if (string.IsNullOrEmpty(trimmedLine) || trimmedLine.StartsWith("--"))
+                continue;
+
+            currentStatement.AppendLine(line);
+
+            // Track $$ delimiters for functions
+            if (trimmedLine.Contains("$$"))
+            {
+                var dollarCount = trimmedLine.Split(new[] { "$$" }, StringSplitOptions.None).Length - 1;
+                dollarQuoteDepth += dollarCount;
+                inFunction = dollarQuoteDepth % 2 == 1;
+            }
+
+            // If we hit a semicolon and we're not inside a function, end the statement
+            if (trimmedLine.EndsWith(";") && !inFunction)
+            {
+                statements.Add(currentStatement.ToString().Trim());
+                currentStatement.Clear();
+            }
+        }
+
+        // Add any remaining statement
+        if (currentStatement.Length > 0)
+        {
+            statements.Add(currentStatement.ToString().Trim());
+        }
+
+        return statements;
+    }
+}
