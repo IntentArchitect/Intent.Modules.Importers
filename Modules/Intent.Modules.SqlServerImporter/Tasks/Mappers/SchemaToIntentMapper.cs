@@ -38,11 +38,12 @@ public class SchemaToIntentMapper
                 foreach (var table in databaseSchema.Tables)
                 {
                     // Check if class already exists first (before creating folder structure)
-                    // Create a temporary mapping to get the expected name WITHOUT deduplication context
-                    var tempClassElement = _intentModelMapper.MapTableToClass(table, _config, null);
+                    // Use ExternalReference for robust lookup first, then fallback to name-based
+                    var tableExternalRef = IntentModelMapper.GetTableExternalReference(table.Name, table.Schema);
                     var existingClass = existingElements.FirstOrDefault(c => 
-                        c.Name == tempClassElement.Name || 
-                        IsTableMappedToClass(c, table));
+                        c.ExternalReference == tableExternalRef) ??
+                        existingElements.FirstOrDefault(c => 
+                            IsTableMappedToClass(c, table));
                     
                     if (existingClass != null)
                     {
@@ -77,11 +78,12 @@ public class SchemaToIntentMapper
                 foreach (var view in databaseSchema.Views)
                 {
                     // Check if class already exists first (before creating folder structure)
-                    // Create a temporary mapping to get the expected name WITHOUT deduplication context
-                    var tempClassElement = _intentModelMapper.MapViewToClass(view, _config, null);
+                    // Use ExternalReference for robust lookup first, then fallback to name-based
+                    var viewExternalRef = IntentModelMapper.GetViewExternalReference(view.Name, view.Schema);
                     var existingClass = existingElements.FirstOrDefault(c => 
-                        c.Name == tempClassElement.Name || 
-                        IsViewMappedToClass(c, view));
+                        c.ExternalReference == viewExternalRef) ??
+                        existingElements.FirstOrDefault(c => 
+                            IsViewMappedToClass(c, view));
                     
                     if (existingClass != null)
                     {
@@ -116,6 +118,9 @@ public class SchemaToIntentMapper
                     {
                         // Create as stored procedure element (no parent folder for standalone elements)
                         procElement = _intentModelMapper.MapStoredProcedureToElement(storedProc, null, _config, deduplicationContext);
+                        
+                        // Apply stored procedure stereotypes
+                        RdbmsSchemaAnnotator.ApplyStoredProcedureSettings(storedProc, procElement);
                     }
                     else
                     {
@@ -126,15 +131,22 @@ public class SchemaToIntentMapper
                         procElement = _intentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, _config, deduplicationContext);
                         repositoryElement.ChildElements.Add(procElement);
                         
+                        // Apply stored procedure stereotypes
+                        RdbmsSchemaAnnotator.ApplyStoredProcedureSettings(storedProc, procElement);
+                        
                         // Don't add to package.Classes since it's a child of repository
                         result.AddedElements.Add(procElement);
                         continue;
                     }
                     
-                    // Check if stored procedure element already exists
+                    // Check if stored procedure element already exists using ExternalReference first
+                    var procExternalRef = IntentModelMapper.GetStoredProcedureExternalReference(storedProc.Name, storedProc.Schema);
                     var existingProc = existingElements.FirstOrDefault(c => 
-                        c.Name == procElement.Name && 
-                        c.SpecializationType == procElement.SpecializationType);
+                        c.ExternalReference == procExternalRef && 
+                        c.SpecializationType == procElement.SpecializationType) ??
+                        existingElements.FirstOrDefault(c => 
+                            c.Name == procElement.Name && 
+                            c.SpecializationType == procElement.SpecializationType);
                     
                     if (existingProc != null)
                     {
@@ -148,6 +160,9 @@ public class SchemaToIntentMapper
                     }
                 }
             }
+
+            // Process foreign keys AFTER all classes are created
+            ProcessForeignKeys(databaseSchema, package, result);
 
             result.IsSuccessful = true;
             result.Message = $"Successfully mapped {result.AddedElements.Count} new elements and updated {result.UpdatedElements.Count} existing elements.";
@@ -282,6 +297,54 @@ public class SchemaToIntentMapper
         }
 
         return repository;
+    }
+
+    /// <summary>
+    /// Processes foreign keys to create associations and apply FK stereotypes
+    /// </summary>
+    private void ProcessForeignKeys(DatabaseSchema databaseSchema, PackageModelPersistable package, PackageUpdateResult result)
+    {
+        if (!_config.ExportTables()) return;
+
+        foreach (var table in databaseSchema.Tables)
+        {
+            // Find the corresponding class element
+            var tableExternalRef = IntentModelMapper.GetTableExternalReference(table.Name, table.Schema);
+            var classElement = package.Classes.FirstOrDefault(c => c.ExternalReference == tableExternalRef);
+            
+            if (classElement == null) continue;
+
+            // Process each foreign key
+            foreach (var foreignKey in table.ForeignKeys)
+            {
+                // Create association
+                var association = _intentModelMapper.GetOrCreateAssociation(foreignKey, table, classElement, package);
+                
+                if (association != null)
+                {
+                    // Apply FK stereotypes to corresponding columns
+                    foreach (var fkColumn in foreignKey.Columns)
+                    {
+                        // Find the corresponding attribute
+                        var columnExternalRef = IntentModelMapper.GetColumnExternalReference(fkColumn.Name, table.Name, table.Schema);
+                        var attribute = classElement.ChildElements.FirstOrDefault(attr => 
+                            attr.ExternalReference == columnExternalRef);
+
+                        if (attribute != null)
+                        {
+                            // Find the corresponding column schema
+                            var columnSchema = table.Columns.FirstOrDefault(c => c.Name == fkColumn.Name);
+                            
+                            if (columnSchema != null && IntentModelMapper.ShouldApplyForeignKeyStereotype(columnSchema, foreignKey))
+                            {
+                                // Apply FK stereotype with association link
+                                RdbmsSchemaAnnotator.ApplyForeignKey(columnSchema, attribute, association.TargetEnd.Id);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

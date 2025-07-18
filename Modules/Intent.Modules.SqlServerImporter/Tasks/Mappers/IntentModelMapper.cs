@@ -44,7 +44,8 @@ public class IntentModelMapper
             SpecializationTypeId = ClassModel.SpecializationTypeId,
             ParentFolderId = parentFolderId, // Set parent folder for schema organization
             ChildElements = new List<ElementPersistable>(),
-            Stereotypes = new List<StereotypePersistable>()
+            Stereotypes = new List<StereotypePersistable>(),
+            ExternalReference = GetTableExternalReference(table.Name, table.Schema)
         };
 
         // Map columns to attributes
@@ -86,7 +87,8 @@ public class IntentModelMapper
             SpecializationTypeId = ClassModel.SpecializationTypeId,
             ParentFolderId = parentFolderId, // Set parent folder for schema organization
             ChildElements = new List<ElementPersistable>(),
-            Stereotypes = new List<StereotypePersistable>()
+            Stereotypes = new List<StereotypePersistable>(),
+            ExternalReference = GetViewExternalReference(view.Name, view.Schema)
         };
 
         // Map columns to attributes
@@ -120,7 +122,8 @@ public class IntentModelMapper
             ParentFolderId = parentClassId, // Attributes belong to their parent class
             TypeReference = _typeReferenceMapper.MapColumnTypeToTypeReference(column),
             ChildElements = new List<ElementPersistable>(),
-            Stereotypes = new List<StereotypePersistable>()
+            Stereotypes = new List<StereotypePersistable>(),
+            ExternalReference = GetColumnExternalReference(column.Name, tableName, schema)
         };
     }
 
@@ -284,6 +287,50 @@ public class IntentModelMapper
 
     #endregion
 
+    #region ExternalReference Generation
+
+    /// <summary>
+    /// Generates ExternalReference for table following [schema].[tablename] pattern
+    /// </summary>
+    public static string GetTableExternalReference(string tableName, string schema)
+    {
+        return $"[{schema}].[{tableName}]";
+    }
+
+    /// <summary>
+    /// Generates ExternalReference for view following [schema].[viewname] pattern
+    /// </summary>
+    public static string GetViewExternalReference(string viewName, string schema)
+    {
+        return $"[{schema}].[{viewName}]";
+    }
+
+    /// <summary>
+    /// Generates ExternalReference for column following [schema].[tablename].[columnname] pattern
+    /// </summary>
+    public static string GetColumnExternalReference(string columnName, string tableName, string schema)
+    {
+        return $"[{schema}].[{tableName}].[{columnName}]";
+    }
+
+    /// <summary>
+    /// Generates ExternalReference for stored procedure following [schema].[procname] pattern
+    /// </summary>
+    public static string GetStoredProcedureExternalReference(string procName, string schema)
+    {
+        return $"[{schema}].[{procName}]";
+    }
+
+    /// <summary>
+    /// Generates ExternalReference for foreign key following [schema].[tablename].[fkname] pattern
+    /// </summary>
+    private static string GetForeignKeyExternalReference(string fkName, string tableName, string schema)
+    {
+        return $"[{schema}].[{tableName}].[{fkName}]";
+    }
+
+    #endregion
+
     #region Stored Procedure and Repository Support
 
     /// <summary>
@@ -318,7 +365,8 @@ public class IntentModelMapper
             SpecializationTypeId = "575edd35-9438-406d-b0a7-b99d6f29b560", // Stored Procedure specialization type ID
             ParentFolderId = repositoryId, // Stored procedures belong to repository
             ChildElements = new List<ElementPersistable>(),
-            Stereotypes = new List<StereotypePersistable>()
+            Stereotypes = new List<StereotypePersistable>(),
+            ExternalReference = GetStoredProcedureExternalReference(storedProc.Name, storedProc.Schema)
         };
 
         // Map parameters
@@ -346,7 +394,8 @@ public class IntentModelMapper
             SpecializationTypeId = "e030c97a-e066-40a7-8188-808c275df3cb", // Operation specialization type ID
             ParentFolderId = repositoryId, // Operations belong to repository
             ChildElements = new List<ElementPersistable>(),
-            Stereotypes = new List<StereotypePersistable>()
+            Stereotypes = new List<StereotypePersistable>(),
+            ExternalReference = GetStoredProcedureExternalReference(storedProc.Name, storedProc.Schema)
         };
 
         // Map parameters
@@ -577,6 +626,169 @@ public class IntentModelMapper
                 return attribute.Name;
         }
         return "Unknown";
+    }
+
+    #endregion
+
+    #region Foreign Key and Association Support
+
+    /// <summary>
+    /// Gets or creates an association based on foreign key information
+    /// Ported from original DatabaseSchemaToModelMapper.GetOrCreateAssociation
+    /// </summary>
+    public AssociationPersistable? GetOrCreateAssociation(ForeignKeySchema foreignKey, TableSchema sourceTable, ElementPersistable sourceClass, PackageModelPersistable package)
+    {
+        var targetTableExternalRef = GetTableExternalReference(foreignKey.ReferencedTableName, foreignKey.ReferencedTableSchema);
+        
+        // Find target class by ExternalReference first, then by name
+        var targetClass = package.Classes.FirstOrDefault(c => 
+            c.ExternalReference == targetTableExternalRef && c.SpecializationType == "Class") ??
+            package.Classes.FirstOrDefault(c => 
+                c.Name.Equals(GetEntityName(foreignKey.ReferencedTableName, EntityNameConvention.SingularEntity, foreignKey.ReferencedTableSchema, null), StringComparison.OrdinalIgnoreCase) && 
+                c.SpecializationType == "Class");
+
+        if (targetClass == null)
+        {
+            return null; // Target class not found, skip association creation
+        }
+
+        // Generate target name based on foreign key column naming
+        string targetName;
+        var singularTableName = foreignKey.ReferencedTableName.Singularize();
+        var firstColumnName = foreignKey.Columns.First().Name;
+
+        // Determine association target name based on column naming patterns
+        if (firstColumnName.IndexOf(singularTableName, StringComparison.OrdinalIgnoreCase) == 0)
+        {
+            targetName = singularTableName;
+        }
+        else if (firstColumnName.IndexOf(foreignKey.ReferencedTableName, StringComparison.OrdinalIgnoreCase) == -1)
+        {
+            targetName = firstColumnName.Replace("ID", "", StringComparison.OrdinalIgnoreCase) + foreignKey.ReferencedTableName;
+        }
+        else if (firstColumnName.IndexOf(foreignKey.ReferencedTableName, StringComparison.OrdinalIgnoreCase) == 0)
+        {
+            targetName = singularTableName;
+        }
+        else
+        {
+            var index = firstColumnName.IndexOf(foreignKey.ReferencedTableName, StringComparison.OrdinalIgnoreCase);
+            targetName = firstColumnName.Substring(0, index + foreignKey.ReferencedTableName.Length);
+        }
+
+        // Generate external reference for foreign key
+        var fkExternalRef = GetForeignKeyExternalReference(foreignKey.Name, sourceTable.Name, sourceTable.Schema);
+
+        // Check if association already exists
+        var association = package.Associations?.FirstOrDefault(a => a.ExternalReference == fkExternalRef);
+
+        if (association == null)
+        {
+            // Check for existing association by target/source types and target name
+            var existingAssociations = package.Associations?.Where(a =>
+                a.TargetEnd.TypeReference?.TypeId == targetClass.Id &&
+                a.SourceEnd.TypeReference?.TypeId == sourceClass.Id) ?? Enumerable.Empty<AssociationPersistable>();
+
+            if (existingAssociations.Count() == 1)
+            {
+                association = existingAssociations.First();
+            }
+            else
+            {
+                association = existingAssociations.FirstOrDefault(a => a.TargetEnd.Name == targetName);
+            }
+        }
+
+        if (association == null)
+        {
+            // Determine if this is a one-to-one relationship (FK columns are all primary keys)
+            var sourcePKColumns = sourceTable.Columns.Where(c => c.IsPrimaryKey).Select(c => c.Name).ToHashSet();
+            var fkColumnNames = foreignKey.Columns.Select(c => c.Name).ToHashSet();
+            var isOneToOne = sourcePKColumns.Count == fkColumnNames.Count && 
+                           fkColumnNames.All(fk => sourcePKColumns.Contains(fk));
+
+            // Check if any FK columns are nullable to determine association nullability
+            var isNullable = foreignKey.Columns.Any(fkCol => 
+                sourceTable.Columns.Any(col => col.Name == fkCol.Name && col.IsNullable));
+
+            // Avoid naming conflicts
+            var finalTargetName = targetName.Equals(sourceTable.Name.Singularize(), StringComparison.OrdinalIgnoreCase) 
+                ? $"{targetName}Reference" 
+                : targetName;
+
+            var associationId = Guid.NewGuid().ToString();
+            association = new AssociationPersistable
+            {
+                Id = associationId,
+                ExternalReference = fkExternalRef,
+                AssociationTypeId = "eaf9ed4e-0b61-4ac1-ba88-09f912c12087", // Association specialization type ID
+                AssociationType = "Association",
+                TargetEnd = new AssociationEndPersistable
+                {
+                    Id = associationId, // Keep same as association ID for target end
+                    Name = finalTargetName,
+                    TypeReference = new TypeReferencePersistable
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        TypeId = targetClass.Id,
+                        IsNavigable = true,
+                        IsNullable = isNullable,
+                        IsCollection = false
+                    },
+                    Stereotypes = new List<StereotypePersistable>()
+                },
+                SourceEnd = new AssociationEndPersistable
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    TypeReference = new TypeReferencePersistable
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        TypeId = sourceClass.Id,
+                        IsNavigable = false,
+                        IsNullable = false,
+                        IsCollection = !isOneToOne // One-to-many unless it's one-to-one
+                    },
+                    Stereotypes = new List<StereotypePersistable>()
+                }
+            };
+
+            // Check for reverse ownership (manually modeled associations)
+            if (!SameAssociationExistsWithReverseOwnership(package.Associations?.ToList(), association))
+            {
+                package.Associations ??= new List<AssociationPersistable>();
+                package.Associations.Add(association);
+            }
+        }
+
+        return association;
+    }
+
+    /// <summary>
+    /// Checks if the same association exists with reverse ownership (manually modeled)
+    /// </summary>
+    private static bool SameAssociationExistsWithReverseOwnership(List<AssociationPersistable>? associations, AssociationPersistable newAssociation)
+    {
+        if (associations == null) return false;
+
+        return associations.Any(existing =>
+            existing.TargetEnd.TypeReference?.TypeId == newAssociation.SourceEnd.TypeReference?.TypeId &&
+            existing.SourceEnd.TypeReference?.TypeId == newAssociation.TargetEnd.TypeReference?.TypeId &&
+            existing.SourceEnd.TypeReference?.IsNavigable == true);
+    }
+
+    /// <summary>
+    /// Determines if a column should get a Foreign Key stereotype
+    /// Excludes columns that are both Primary Key and Foreign Key (one-to-one relationships)
+    /// </summary>
+    public static bool ShouldApplyForeignKeyStereotype(ColumnSchema column, ForeignKeySchema foreignKey)
+    {
+        // Don't apply FK stereotype if the column is both PK and FK (one-to-one relationship)
+        if (column.IsPrimaryKey && foreignKey.Columns.Any(fk => fk.Name == column.Name))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     #endregion

@@ -311,6 +311,30 @@ internal static class RdbmsSchemaAnnotator
         }
     }
 
+    public static void ApplyForeignKey(ColumnSchema column, ElementPersistable attribute, string? associationTargetEndId = null)
+    {
+        var stereotype = attribute.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.ForeignKey.DefinitionId, InitForeignKeyStereotype);
+        
+        // Link to association target end if provided
+        if (!string.IsNullOrEmpty(associationTargetEndId))
+        {
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.ForeignKey.PropertyId.Association).Value = associationTargetEndId;
+        }
+
+        return;
+
+        static void InitForeignKeyStereotype(StereotypePersistable stereotype)
+        {
+            stereotype.Name = Constants.Stereotypes.Rdbms.ForeignKey.Name;
+            stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
+            stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.ForeignKey.PropertyId.Association, prop =>
+            {
+                prop.Name = Constants.Stereotypes.Rdbms.ForeignKey.PropertyId.AssociationName;
+            });
+        }
+    }
+
     public static void ApplyStoredProcedureSettings(StoredProcedureSchema sqlStoredProc, ElementPersistable elementStoredProc)
     {
         var stereotype = elementStoredProc.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedure.DefinitionId, InitStoredProcStereotype);
