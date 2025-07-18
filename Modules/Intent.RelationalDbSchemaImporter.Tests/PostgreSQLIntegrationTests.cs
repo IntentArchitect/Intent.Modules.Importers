@@ -46,8 +46,6 @@ public class PostgreSQLIntegrationTests : IAsyncLifetime
         var importRequest = new ImportSchemaRequest
         {
             ConnectionString = connectionString,
-            ApplicationId = Guid.NewGuid().ToString(),
-            PackageFileName = "TestPackagePostgreSQL.pkg",
             EntityNameConvention = EntityNameConvention.SingularEntity,
             TableStereotype = TableStereotype.WhenDifferent,
             TypesToExport = [ExportType.Table, ExportType.View],

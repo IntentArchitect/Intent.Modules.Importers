@@ -198,14 +198,11 @@ internal static partial class Commands
         var config = new ImportConfiguration
         {
             ConnectionString = request.ConnectionString,
-            PackageFileName = request.PackageFileName,
             ImportFilterFilePath = request.ImportFilterFilePath,
-            ApplicationId = request.ApplicationId,
             EntityNameConvention = request.EntityNameConvention,
             TableStereotype = request.TableStereotype,
             TypesToExport = request.TypesToExport,
             StoredProcedureType = request.StoredProcedureType,
-            RepositoryElementId = request.RepositoryElementId,
             StoredProcNames = request.StoredProcNames
         };
 

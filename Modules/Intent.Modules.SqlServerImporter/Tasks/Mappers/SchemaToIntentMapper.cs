@@ -228,7 +228,7 @@ public class SchemaToIntentMapper
             ApplicationId = importModel.ApplicationId,
             EntityNameConvention = Enum.Parse<EntityNameConvention>(importModel.EntityNameConvention),
             TableStereotype = Enum.Parse<TableStereotype>(importModel.TableStereotype),
-            TypesToExport = importModel.TypesToExport.Select(t => Enum.Parse<ExportType>(t)).ToHashSet(),
+            TypesToExport = importModel.TypesToExport.Select(Enum.Parse<ExportType>).ToHashSet(),
             ImportFilterFilePath = importModel.ImportFilterFilePath,
             StoredProcedureType = string.IsNullOrWhiteSpace(importModel.StoredProcedureType) 
                 ? StoredProcedureType.Default 

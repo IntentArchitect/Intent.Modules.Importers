@@ -43,8 +43,6 @@ public class SqlServerIntegrationTests : IAsyncLifetime
         var importRequest = new ImportSchemaRequest
         {
             ConnectionString = connectionString,
-            ApplicationId = Guid.NewGuid().ToString(),
-            PackageFileName = "TestPackageSqlServer.pkg",
             EntityNameConvention = EntityNameConvention.SingularEntity,
             TableStereotype = TableStereotype.WhenDifferent,
             TypesToExport = [ExportType.Table, ExportType.View],

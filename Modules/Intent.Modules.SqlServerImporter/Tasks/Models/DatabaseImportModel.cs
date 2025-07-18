@@ -7,6 +7,7 @@ public class DatabaseImportModel
 	public string ApplicationId { get; set; } = null!;
 	public string DesignerId { get; set; } = null!;
 	public string PackageId { get; set; } = null!;
+	public string? PackageFileName { get; set; }
 
 	// SQL Extractor Contract BEGIN
 
@@ -20,7 +21,6 @@ public class DatabaseImportModel
 	public string? StoredProcedureType { get; set; }
 
 	public string ConnectionString { get; set; } = null!;
-	public string? PackageFileName { get; set; }
 		
 	// SQL Extractor Contract END
 
