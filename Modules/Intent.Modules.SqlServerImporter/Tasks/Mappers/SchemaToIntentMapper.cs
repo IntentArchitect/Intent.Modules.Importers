@@ -119,13 +119,13 @@ public class SchemaToIntentMapper
                         // Create repository first if it doesn't exist
                         var repositoryElement = GetOrCreateRepository(storedProc.Schema, package);
                         
-                        // Create as stored procedure element (no parent folder for standalone elements)
+                        // Create as stored procedure element
                         procElement = _intentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, _config, deduplicationContext);
+                        repositoryElement.ChildElements.Add(procElement);
                         
                         // Apply stored procedure stereotypes
                         RdbmsSchemaAnnotator.ApplyStoredProcedureSettings(storedProc, procElement);
                         
-                        // Don't add to package.Classes since it's a child of repository
                         result.AddedElements.Add(procElement);
                     }
                     else
@@ -140,29 +140,13 @@ public class SchemaToIntentMapper
                         // Apply stored procedure stereotypes
                         RdbmsSchemaAnnotator.ApplyStoredProcedureSettings(storedProc, procElement);
                         
-                        // Don't add to package.Classes since it's a child of repository
                         result.AddedElements.Add(procElement);
-                        continue;
                     }
                     
-                    // Check if stored procedure element already exists using ExternalReference first
-                    var procExternalRef = IntentModelMapper.GetStoredProcedureExternalReference(storedProc.Name, storedProc.Schema);
-                    var existingProc = existingElements.FirstOrDefault(c => 
-                        c.ExternalReference == procExternalRef && 
-                        c.SpecializationType == procElement.SpecializationType) ??
-                        existingElements.FirstOrDefault(c => 
-                            c.Name == procElement.Name && 
-                            c.SpecializationType == procElement.SpecializationType);
-                    
-                    if (existingProc != null)
+                    // Create data contract if stored procedure has result set
+                    if (storedProc.ResultSetColumns.Count > 0)
                     {
-                        UpdateExistingClass(existingProc, procElement);
-                        result.UpdatedElements.Add(existingProc);
-                    }
-                    else
-                    {
-                        package.Classes.Add(procElement);
-                        result.AddedElements.Add(procElement);
+                        ProcessStoredProcedureDataContract(storedProc, procElement, package, existingElements, result, deduplicationContext);
                     }
                 }
             }
@@ -351,6 +335,53 @@ public class SchemaToIntentMapper
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Processes stored procedure data contract creation for procedures with result sets
+    /// Following the pattern from old DatabaseSchemaToModelMapper.GetOrCreateDataContractResponse
+    /// </summary>
+    private void ProcessStoredProcedureDataContract(StoredProcedureSchema storedProc, ElementPersistable procElement, 
+        PackageModelPersistable package, List<ElementPersistable> existingElements, PackageUpdateResult result, 
+        DeduplicationContext? deduplicationContext)
+    {
+        // Get schema folder for data contract placement (same as stored procedure)
+        var schemaFolder = GetOrCreateSchemaFolder(storedProc.Schema, package);
+        
+        // Check if data contract already exists using ExternalReference first
+        var dataContractExternalRef = IntentModelMapper.GetDataContractExternalReference(storedProc.Name, storedProc.Schema);
+        var existingDataContract = existingElements.FirstOrDefault(c => 
+            c.ExternalReference == dataContractExternalRef && c.SpecializationType == "Data Contract") ??
+            package.Classes.FirstOrDefault(c => 
+                c.ExternalReference == dataContractExternalRef && c.SpecializationType == "Data Contract");
+
+        ElementPersistable dataContract;
+        if (existingDataContract != null)
+        {
+            // Update existing data contract
+            dataContract = _intentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name);
+            UpdateExistingClass(existingDataContract, dataContract);
+            result.UpdatedElements.Add(existingDataContract);
+            dataContract = existingDataContract; // Use the existing data contract for TypeReference
+        }
+        else
+        {
+            // Create new data contract
+            dataContract = _intentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name);
+            package.Classes.Add(dataContract);
+            result.AddedElements.Add(dataContract);
+        }
+        
+        // Set the stored procedure's TypeReference to point to the data contract
+        procElement.TypeReference = new TypeReferencePersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            TypeId = dataContract.Id, // Point to the actual data contract element ID
+            IsNullable = false,
+            IsCollection = true, // Stored procedures typically return collections
+            Stereotypes = new List<StereotypePersistable>(),
+            GenericTypeParameters = new List<TypeReferencePersistable>()
+        };
     }
 }
 

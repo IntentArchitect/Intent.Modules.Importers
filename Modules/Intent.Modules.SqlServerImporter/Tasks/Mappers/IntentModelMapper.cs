@@ -323,6 +323,14 @@ public class IntentModelMapper
     }
 
     /// <summary>
+    /// Generates ExternalReference for data contract following stored procedure external ref + .Response pattern
+    /// </summary>
+    public static string GetDataContractExternalReference(string procName, string schema)
+    {
+        return $"{GetStoredProcedureExternalReference(procName, schema)}.Response";
+    }
+
+    /// <summary>
     /// Generates ExternalReference for foreign key following [schema].[tablename].[fkname] pattern
     /// </summary>
     private static string GetForeignKeyExternalReference(string fkName, string tableName, string schema)
@@ -333,6 +341,14 @@ public class IntentModelMapper
     public static string GetTriggerExternalReference(string triggerName, string tableName, string schema)
     {
         return $"trigger:[{schema.ToLower()}].[{tableName.ToLower()}].[{triggerName.ToLower()}]";
+    }
+
+    /// <summary>
+    /// Generates ExternalReference for result set column following data contract external ref + .[columnname] pattern
+    /// </summary>
+    public static string GetResultSetColumnExternalReference(string columnName, string procName, string schema)
+    {
+        return $"{GetDataContractExternalReference(procName, schema)}.[{columnName.ToLower()}]";
     }
 
     #endregion
@@ -382,6 +398,8 @@ public class IntentModelMapper
             procElement.ChildElements.Add(paramElement);
         }
 
+        // TypeReference will be set later when data contract is created
+
         return procElement;
     }
 
@@ -411,13 +429,44 @@ public class IntentModelMapper
             operationElement.ChildElements.Add(paramElement);
         }
 
-        // Set return type if stored procedure has result set
-        if (storedProc.ResultSetColumns.Count > 0)
-        {
-            operationElement.TypeReference = _typeReferenceMapper.CreateStoredProcedureReturnTypeReference(null, true);
-        }
+        // TypeReference will be set later when data contract is created
 
         return operationElement;
+    }
+
+    /// <summary>
+    /// Creates a data contract for stored procedure result set
+    /// Following the pattern from old DatabaseSchemaToModelMapper.GetOrCreateDataContractResponse
+    /// </summary>
+    public ElementPersistable CreateDataContractForStoredProcedure(StoredProcedureSchema storedProc, string schemaFolderId, string storedProcElementName)
+    {
+        var dataContractName = $"{storedProcElementName}Response";
+        
+        var dataContract = new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = dataContractName,
+            SpecializationType = "Data Contract",
+            SpecializationTypeId = "4464fabe-c59e-4d90-81fc-c9245bdd1afd", // Data Contract specialization type ID
+            ParentFolderId = schemaFolderId, // Data contracts belong to schema folder (same as stored proc)
+            ChildElements = new List<ElementPersistable>(),
+            Stereotypes = new List<StereotypePersistable>(),
+            ExternalReference = GetDataContractExternalReference(storedProc.Name, storedProc.Schema)
+        };
+
+        // Map result set columns to attributes
+        foreach (var resultColumn in storedProc.ResultSetColumns)
+        {
+            var attribute = MapResultSetColumnToAttribute(resultColumn, dataContract.Id, storedProc.Name, storedProc.Schema);
+            dataContract.ChildElements.Add(attribute);
+            
+            // Apply stereotypes to result set columns
+            RdbmsSchemaAnnotator.ApplyColumnDetails(ConvertToColumnSchema(resultColumn), attribute);
+            RdbmsSchemaAnnotator.ApplyTextConstraint(ConvertToColumnSchema(resultColumn), attribute);
+            RdbmsSchemaAnnotator.ApplyDecimalConstraint(ConvertToColumnSchema(resultColumn), attribute);
+        }
+
+        return dataContract;
     }
 
     /// <summary>
@@ -457,6 +506,48 @@ public class IntentModelMapper
             TypeReference = _typeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter),
             ChildElements = new List<ElementPersistable>(),
             Stereotypes = new List<StereotypePersistable>()
+        };
+    }
+
+    /// <summary>
+    /// Maps a result set column to an attribute element
+    /// </summary>
+    private ElementPersistable MapResultSetColumnToAttribute(ResultSetColumnSchema resultColumn, string dataContractId, string procName, string schema)
+    {
+        var attributeName = NormalizeColumnName(resultColumn.Name, null); // No table name for result sets
+        
+        return new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = attributeName,
+            SpecializationType = AttributeModel.SpecializationType,
+            SpecializationTypeId = AttributeModel.SpecializationTypeId,
+            ParentFolderId = dataContractId, // Attributes belong to their parent data contract
+            TypeReference = _typeReferenceMapper.MapResultSetColumnTypeToTypeReference(resultColumn),
+            ChildElements = new List<ElementPersistable>(),
+            Stereotypes = new List<StereotypePersistable>(),
+            ExternalReference = GetResultSetColumnExternalReference(resultColumn.Name, procName, schema)
+        };
+    }
+
+    /// <summary>
+    /// Converts ResultSetColumnSchema to ColumnSchema for stereotype application
+    /// This allows reuse of existing stereotype logic
+    /// </summary>
+    private static ColumnSchema ConvertToColumnSchema(ResultSetColumnSchema resultColumn)
+    {
+        return new ColumnSchema
+        {
+            Name = resultColumn.Name,
+            DataType = resultColumn.DataType,
+            IsNullable = resultColumn.IsNullable,
+            MaxLength = resultColumn.MaxLength,
+            NumericPrecision = resultColumn.NumericPrecision,
+            NumericScale = resultColumn.NumericScale,
+            IsPrimaryKey = false, // Result set columns are never primary keys
+            IsIdentity = false,   // Result set columns are never identity
+            DefaultConstraint = null, // Result set columns don't have defaults
+            ComputedColumn = null     // Result set columns aren't computed
         };
     }
 
