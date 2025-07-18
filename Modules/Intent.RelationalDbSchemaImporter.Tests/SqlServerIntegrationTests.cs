@@ -9,7 +9,7 @@ using Xunit.Abstractions;
 
 namespace Intent.RelationalDbSchemaImporter.Tests;
 
-public class IntegrationTests : IAsyncLifetime
+public class SqlServerIntegrationTests : IAsyncLifetime
 {
     private readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
         .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
@@ -17,10 +17,10 @@ public class IntegrationTests : IAsyncLifetime
         .WithCleanUp(true)
         .Build();
 
-    public IntegrationTests(ITestOutputHelper outputHelper)
+    public SqlServerIntegrationTests(ITestOutputHelper outputHelper)
     {
         Logging.SetTracing(new DummyTracer(outputHelper));
-        ImporterTool.SetToolDirectory(Path.GetDirectoryName(typeof(IntegrationTests).Assembly.Location)!);
+        ImporterTool.SetToolDirectory(Path.GetDirectoryName(typeof(SqlServerIntegrationTests).Assembly.Location)!);
     }
 
     public async Task InitializeAsync()
@@ -44,11 +44,12 @@ public class IntegrationTests : IAsyncLifetime
         {
             ConnectionString = connectionString,
             ApplicationId = Guid.NewGuid().ToString(),
-            PackageFileName = "TestPackage.pkg",
+            PackageFileName = "TestPackageSqlServer.pkg",
             EntityNameConvention = EntityNameConvention.SingularEntity,
             TableStereotype = TableStereotype.WhenDifferent,
             TypesToExport = [ExportType.Table, ExportType.View],
-            StoredProcedureType = StoredProcedureType.StoredProcedureElement
+            StoredProcedureType = StoredProcedureType.StoredProcedureElement,
+            DatabaseType = Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType.SqlServer
         };
 
         // Act
@@ -62,14 +63,15 @@ public class IntegrationTests : IAsyncLifetime
         var schemaData = result.Result.SchemaData;
         Assert.NotNull(schemaData);
         
-        // Verify the schema data structure
-        await Verify(schemaData);
+        // Verify the schema data structure  
+        await Verify(schemaData)
+            .UseParameters(nameof(SqlServerIntegrationTests));
     }
 
     private async Task SetupTestSchema()
     {
         var location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-        var scriptLocation = Path.GetFullPath(Path.Combine(location, "TestData", "TestSchema.sql"));
+        var scriptLocation = Path.GetFullPath(Path.Combine(location, "TestData", "SqlServerTestSchema.sql"));
         var sqlScript = await File.ReadAllTextAsync(scriptLocation);
         await ExecuteSqlScript(_dbContainer.GetConnectionString(), sqlScript);
     }

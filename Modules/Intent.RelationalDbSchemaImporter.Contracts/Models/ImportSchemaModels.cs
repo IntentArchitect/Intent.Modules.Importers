@@ -15,6 +15,7 @@ public class ImportSchemaRequest
     public StoredProcedureType StoredProcedureType { get; set; } = StoredProcedureType.Default;
     public string? RepositoryElementId { get; set; }
     public List<string> StoredProcNames { get; set; } = [];
+    public DatabaseType DatabaseType { get; set; } = DatabaseType.Auto;
 }
 
 public class ImportSchemaResult
