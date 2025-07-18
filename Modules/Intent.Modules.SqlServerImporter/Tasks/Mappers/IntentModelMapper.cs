@@ -66,10 +66,11 @@ public class IntentModelMapper
         // Apply table stereotypes
         RdbmsSchemaAnnotator.ApplyTableDetails(config, table, classElement);
         
-        // Apply HasTrigger stereotype if table has triggers
-        if (table.Triggers.Count > 0)
+        // Map triggers to child elements
+        foreach (var trigger in table.Triggers)
         {
-            ApplyHasTriggerStereotype(classElement);
+            var triggerElement = MapTriggerToElement(trigger, table.Name, table.Schema, classElement.Id);
+            classElement.ChildElements.Add(triggerElement);
         }
 
         return classElement;
@@ -318,7 +319,7 @@ public class IntentModelMapper
     /// </summary>
     public static string GetStoredProcedureExternalReference(string procName, string schema)
     {
-        return $"[{schema}].[{procName}]";
+        return $"stored-procedure:[{schema.ToLower()}].[{procName.ToLower()}]";
     }
 
     /// <summary>
@@ -327,6 +328,11 @@ public class IntentModelMapper
     private static string GetForeignKeyExternalReference(string fkName, string tableName, string schema)
     {
         return $"[{schema}].[{tableName}].[{fkName}]";
+    }
+
+    public static string GetTriggerExternalReference(string triggerName, string tableName, string schema)
+    {
+        return $"trigger:[{schema.ToLower()}].[{tableName.ToLower()}].[{triggerName.ToLower()}]";
     }
 
     #endregion
@@ -800,39 +806,36 @@ public class IntentModelMapper
     /// </summary>
     public ElementPersistable CreateSchemaFolder(string schemaName, string packageId)
     {
-        var normalizedFolderName = NormalizeSchemaName(schemaName);
         return new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = normalizedFolderName,
+            Name = NormalizeSchemaName(schemaName),
             SpecializationType = "Folder",
-            SpecializationTypeId = "4d95d53a-8855-4f35-aa82-e312643f5c5f", // Folder specialization type ID
-            ParentFolderId = packageId, // Folders belong to the package root
-            ChildElements = new List<ElementPersistable>(),
-            Stereotypes = new List<StereotypePersistable>()
+            SpecializationTypeId = "4d95d53a-8855-4f35-9820-3106413fec04", // Generic Folder
+            ParentFolderId = packageId,
+            ExternalReference = $"schema:[{schemaName.ToLower()}]"
         };
     }
 
-    /// <summary>
-    /// Applies HasTrigger stereotype to classes that have triggers on their underlying tables
-    /// </summary>
-    private static void ApplyHasTriggerStereotype(ElementPersistable classElement)
+    private ElementPersistable MapTriggerToElement(TriggerSchema trigger, string tableName, string schema, string parentClassId)
     {
-        // Check if HasTrigger stereotype is already applied
-        if (classElement.Stereotypes.Any(s => s.Name == "Has Trigger"))
-            return;
-
-        var hasTriggerStereotype = new StereotypePersistable
+        var triggerName = trigger.Name; // Names are typically unique and descriptive
+        
+        var triggerElement = new ElementPersistable
         {
-            Name = "Has Trigger",
-            DefinitionId = Constants.Stereotypes.Rdbms.HasTrigger.DefinitionId,
-            DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId,
-            DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName,
-            AddedByDefault = false,
-            Properties = new List<StereotypePropertyPersistable>()
+            Id = Guid.NewGuid().ToString(),
+            Name = triggerName,
+            SpecializationType = "Trigger", // Using a descriptive name for the element type
+            SpecializationTypeId = "5b7b5e77-e627-464b-a157-6d01f2042641", // Replace with a valid GUID for "Trigger" element
+            ParentFolderId = parentClassId,
+            Stereotypes = new List<StereotypePersistable>(),
+            ExternalReference = GetTriggerExternalReference(trigger.Name, tableName, schema)
         };
-
-        classElement.Stereotypes.Add(hasTriggerStereotype);
+        
+        // Optionally, apply stereotypes to the trigger if it needs to hold more metadata
+        // RdbmsSchemaAnnotator.ApplyTriggerDetails(trigger, triggerElement);
+        
+        return triggerElement;
     }
 
     #endregion
