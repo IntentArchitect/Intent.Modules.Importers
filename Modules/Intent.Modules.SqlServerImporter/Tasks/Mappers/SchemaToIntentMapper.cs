@@ -116,11 +116,17 @@ public class SchemaToIntentMapper
                     // Create stored procedure element based on configuration
                     if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
                     {
+                        // Create repository first if it doesn't exist
+                        var repositoryElement = GetOrCreateRepository(storedProc.Schema, package);
+                        
                         // Create as stored procedure element (no parent folder for standalone elements)
-                        procElement = _intentModelMapper.MapStoredProcedureToElement(storedProc, null, _config, deduplicationContext);
+                        procElement = _intentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, _config, deduplicationContext);
                         
                         // Apply stored procedure stereotypes
                         RdbmsSchemaAnnotator.ApplyStoredProcedureSettings(storedProc, procElement);
+                        
+                        // Don't add to package.Classes since it's a child of repository
+                        result.AddedElements.Add(procElement);
                     }
                     else
                     {
