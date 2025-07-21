@@ -84,8 +84,8 @@ internal static partial class Commands
                 var dbConnection = await CreateDatabaseConnection(request.ConnectionString, response, cancellationToken);
                 if (dbConnection == null) return response;
 
-                using var connection = dbConnection.Value.connection;
-                var db = dbConnection.Value.database;
+                using var connection = dbConnection.Connection;
+                var db = dbConnection.Database;
 
                 var result = new StoredProceduresListResult
                 {
@@ -123,8 +123,8 @@ internal static partial class Commands
                         return response;
                     }
 
-                    using var connection = dbConnection.Value.connection;
-                    var db = dbConnection.Value.database;
+                    using var connection = dbConnection.Connection;
+                    var db = dbConnection.Database;
 
                     db.ExecuteWithResults("SELECT 1");
 
@@ -168,8 +168,8 @@ internal static partial class Commands
                     return response;
                 }
 
-                using var connection = dbConnection.Value.connection;
-                var db = dbConnection.Value.database;
+                using var connection = dbConnection.Connection;
+                var db = dbConnection.Database;
         
                 var tables = ExtractTables(db);
                 var views = ExtractViews(db);
@@ -217,7 +217,7 @@ internal static partial class Commands
             });
     }
     
-    private static async Task<(SqlConnection connection, Server server, Database database)?> CreateDatabaseConnection(
+    private static async Task<ConnectionResult?> CreateDatabaseConnection(
         string connectionString, StandardResponse response, CancellationToken cancellationToken)
     {
         try
@@ -226,7 +226,7 @@ internal static partial class Commands
             await connection.OpenAsync(cancellationToken);
             var server = new Server(new ServerConnection(connection));
             var database = server.Databases[connection.Database];
-            return (connection, server, database);
+            return new ConnectionResult(connection, server, database);
         }
         catch (Exception ex)
         {
@@ -234,4 +234,6 @@ internal static partial class Commands
             return null;
         }
     }
+
+    private record ConnectionResult(SqlConnection Connection, Server Server, Database Database);
 }
