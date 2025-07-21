@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
-namespace Intent.Modules.SqlServerImporter.Tasks.Models;
+namespace Intent.Modules.SqlServerImporter.Tasks.Mappers;
 
 public class ImportConfiguration
 {
