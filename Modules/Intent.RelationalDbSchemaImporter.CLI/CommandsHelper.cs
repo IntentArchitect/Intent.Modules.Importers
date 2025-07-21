@@ -2,7 +2,10 @@ using System;
 using System.CommandLine;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading;
+using System.Threading.Tasks;
 using Intent.Modules.Common.Templates;
+using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 
 namespace Intent.RelationalDbSchemaImporter.CLI;
@@ -16,7 +19,7 @@ internal static partial class Commands
 
     private static string GetOptionName(string propertyName) => $"--{propertyName.ToKebabCase()}";
     
-    private static Command CreateStandardCommand<TResult>(string name, string description, Func<string, StandardResponse<TResult>, StandardResponse<TResult>> executeFunc)
+    private static Command CreateStandardCommand<TResult>(string name, string description, Func<string, StandardResponse<TResult>, CancellationToken, Task<StandardResponse<TResult>>> executeFunc)
     {
         var command = new Command(name, description);
         
@@ -26,7 +29,7 @@ internal static partial class Commands
         command.Options.Add(payloadOption);
         command.Options.Add(prettyPrintOption);
         
-        command.SetAction(parseResult =>
+        command.SetAction(async (parseResult, cancellationToken) =>
         {
             var prettyPrint = parseResult.GetValue<bool>(GetOptionName("pretty-print"));
             var response = new StandardResponse<TResult>();
@@ -34,7 +37,7 @@ internal static partial class Commands
             {
                 var payload = parseResult.GetValue<string>(GetOptionName("payload"))!;
                 
-                var execResponse = executeFunc(payload, response);
+                var execResponse = await executeFunc(payload, response, cancellationToken);
                 
                 var json = SerializeResponse(execResponse, prettyPrint);
                 Console.WriteLine(json);
@@ -101,5 +104,17 @@ internal static partial class Commands
             return false;
         }
         return true;
+    }
+    
+    private static bool ValidateImportFilterFile(ImportFilterService importFilterService, StandardResponse<ImportSchemaResult> response)
+    {
+        importFilterService.ValidateFilterFile();
+        if (!importFilterService.ValidateFilterFile())
+        {
+            response.AddError("Import filter file validation failed");
+            return true;
+        }
+
+        return false;
     }
 }

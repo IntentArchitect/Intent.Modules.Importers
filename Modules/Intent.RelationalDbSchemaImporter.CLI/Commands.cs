@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.CommandLine;
-using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Intent.RelationalDbSchemaImporter.CLI.Providers;
+using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Microsoft.Data.SqlClient;
@@ -19,7 +21,7 @@ internal static partial class Commands
         return CreateStandardCommand<ImportSchemaResult>(
             "import-schema",
             "Imports database schema into Intent package",
-            (jsonPayload, response) =>
+            async (jsonPayload, response, cancellationToken) =>
             {
                 var request = DeserializeRequest<ImportSchemaRequest>(jsonPayload, response);
                 if (request == null)
@@ -27,17 +29,40 @@ internal static partial class Commands
                     return response;
                 }
 
-                // var config = CreateImportConfiguration(request, response);
-                // if (config == null || !ValidateImportConfiguration(config, response))
-                // {
-                //     return response;
-                // }
-                //
-                // var result = PerformSchemaImport(config, response);
-                // if (result != null)
-                // {
-                //     response.SetResult(result);
-                // }
+                if (!ValidateConnectionString(request.ConnectionString, response))
+                {
+                    return response;
+                }
+                
+                var importFilterService = new ImportFilterService(request);
+                if (ValidateImportFilterFile(importFilterService, response))
+                {
+                    return response;
+                }
+                
+                // Use the new provider-based architecture
+                var factory = new DatabaseProviderFactory();
+                var databaseType = request.DatabaseType;
+                
+                // Auto-detect database type if not specified
+                if (databaseType == DatabaseType.Auto)
+                {
+                    databaseType = factory.DetectDatabaseType(request.ConnectionString);
+                    
+                    if (databaseType == DatabaseType.Auto)
+                    {
+                        response.AddError("Could not auto-detect database type from connection string. Please specify the database type explicitly.");
+                        return null;
+                    }
+                }
+                
+                var provider = factory.CreateProvider(databaseType);
+                var databaseSchema = await provider.ExtractSchemaAsync(request.ConnectionString, importFilterService);
+
+                response.SetResult(new ImportSchemaResult
+                {
+                    SchemaData = databaseSchema
+                });
 
                 return response;
             });
@@ -48,7 +73,7 @@ internal static partial class Commands
         return CreateStandardCommand<StoredProceduresListResult>(
             "list-stored-procedures",
             "Returns a list of stored procedures in the database",
-            (jsonPayload, response) =>
+            async (jsonPayload, response, cancellationToken) =>
             {
                 var request = DeserializeRequest<ConnectionTestRequest>(jsonPayload, response);
                 if (request == null || !ValidateConnectionString(request.ConnectionString, response))
@@ -56,7 +81,7 @@ internal static partial class Commands
                     return response;
                 }
 
-                var dbConnection = CreateDatabaseConnection(request.ConnectionString, response);
+                var dbConnection = await CreateDatabaseConnection(request.ConnectionString, response, cancellationToken);
                 if (dbConnection == null) return response;
 
                 using var connection = dbConnection.Value.connection;
@@ -82,7 +107,7 @@ internal static partial class Commands
         return CreateStandardCommand<ConnectionTestResult>(
             "test-connection",
             "Tests the connection to the database",
-            (jsonPayload, response) =>
+            async (jsonPayload, response, cancellationToken) =>
             {
                 var request = DeserializeRequest<ConnectionTestRequest>(jsonPayload, response);
                 if (request == null || !ValidateConnectionString(request.ConnectionString, response))
@@ -92,7 +117,7 @@ internal static partial class Commands
 
                 try
                 {
-                    var dbConnection = CreateDatabaseConnection(request.ConnectionString, response);
+                    var dbConnection = await CreateDatabaseConnection(request.ConnectionString, response, cancellationToken);
                     if (dbConnection == null)
                     {
                         return response;
@@ -129,7 +154,7 @@ internal static partial class Commands
         return CreateStandardCommand<DatabaseObjectsResult>(
             "retrieve-database-objects",
             "Extracts database metadata (tables, views, stored procedures) as JSON",
-            (jsonPayload, response) =>
+            async (jsonPayload, response, cancellationToken) =>
             {
                 var request = DeserializeRequest<ConnectionTestRequest>(jsonPayload, response);
                 if (request == null || !ValidateConnectionString(request.ConnectionString, response))
@@ -137,7 +162,7 @@ internal static partial class Commands
                     return response;
                 }
 
-                var dbConnection = CreateDatabaseConnection(request.ConnectionString, response);
+                var dbConnection = await CreateDatabaseConnection(request.ConnectionString, response, cancellationToken);
                 if (dbConnection == null)
                 {
                     return response;
@@ -191,89 +216,14 @@ internal static partial class Commands
                 }
             });
     }
-
-    // private static ImportConfiguration? CreateImportConfiguration(ImportSchemaRequest request, StandardResponse response)
-    // {
-    //     var config = new ImportConfiguration
-    //     {
-    //         ConnectionString = request.ConnectionString,
-    //         ImportFilterFilePath = request.ImportFilterFilePath,
-    //         EntityNameConvention = request.EntityNameConvention,
-    //         TableStereotype = request.TableStereotype,
-    //         TypesToExport = request.TypesToExport,
-    //         StoredProcNames = request.StoredProcNames
-    //     };
-    //
-    //     if (!ValidateConnectionString(config.ConnectionString, response)) return null;
-    //
-    //     if (string.IsNullOrWhiteSpace(config.PackageFileName))
-    //     {
-    //         response.AddError("PackageFileName is required");
-    //         return null;
-    //     }
-    //
-    //     return config;
-    // }
-    //
-    // private static bool ValidateImportConfiguration(ImportConfiguration config, StandardResponse response)
-    // {
-    //     if (!string.IsNullOrWhiteSpace(config.ImportFilterFilePath) &&
-    //         !Path.IsPathRooted(config.ImportFilterFilePath))
-    //     {
-    //         config.ImportFilterFilePath = Path.Combine(Path.GetDirectoryName(config.PackageFileName)!, config.ImportFilterFilePath);
-    //     }
-    //     
-    //     if (!config.ValidateFilterFile())
-    //     {
-    //         response.AddError("Import filter file validation failed");
-    //         return false;
-    //     }
-    //
-    //     return true;
-    // }
-
-    // private static ImportSchemaResult? PerformSchemaImport(ImportConfiguration config, StandardResponse response)
-    // {
-    //     try
-    //     {
-    //         // Use the new provider-based architecture
-    //         var factory = new DatabaseProviderFactory();
-    //         var databaseType = config.DatabaseType;
-    //         
-    //         // Auto-detect database type if not specified
-    //         if (databaseType == DatabaseType.Auto)
-    //         {
-    //             databaseType = factory.DetectDatabaseType(config.ConnectionString);
-    //             
-    //             if (databaseType == DatabaseType.Auto)
-    //             {
-    //                 response.AddError("Could not auto-detect database type from connection string. Please specify the database type explicitly.");
-    //                 return null;
-    //             }
-    //         }
-    //
-    //         var provider = factory.CreateProvider(databaseType);
-    //         var databaseSchema = provider.ExtractSchemaAsync(config.ConnectionString, config).GetAwaiter().GetResult();
-    //         
-    //         return new ImportSchemaResult
-    //         {
-    //             SchemaData = databaseSchema
-    //         };
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         response.AddError($"Schema extraction failed: {ex.Message}");
-    //         return null;
-    //     }
-    // }
     
-    private static (SqlConnection connection, Server server, Database database)? CreateDatabaseConnection(
-        string connectionString, StandardResponse response)
+    private static async Task<(SqlConnection connection, Server server, Database database)?> CreateDatabaseConnection(
+        string connectionString, StandardResponse response, CancellationToken cancellationToken)
     {
         try
         {
             var connection = new SqlConnection(connectionString);
-            connection.Open();
+            await connection.OpenAsync(cancellationToken);
             var server = new Server(new ServerConnection(connection));
             var database = server.Databases[connection.Database];
             return (connection, server, database);
