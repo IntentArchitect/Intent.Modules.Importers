@@ -46,8 +46,8 @@ public class PostgreSQLIntegrationTests : IAsyncLifetime
         var importRequest = new ImportSchemaRequest
         {
             ConnectionString = connectionString,
-            TypesToExport = [ExportType.Table, ExportType.View],
-            DatabaseType = Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType.PostgreSQL
+            TypesToExport = [ExportType.Table, ExportType.View, ExportType.Index, ExportType.StoredProcedure],
+            DatabaseType = DatabaseType.PostgreSQL
         };
 
         // Act

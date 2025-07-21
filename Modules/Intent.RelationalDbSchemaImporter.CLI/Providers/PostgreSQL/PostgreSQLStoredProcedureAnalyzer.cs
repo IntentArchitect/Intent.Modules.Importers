@@ -71,7 +71,8 @@ internal class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
                     resultColumns.Add(new ResultSetColumnSchema
                     {
                         Name = "result",
-                        DataType = MapPostgreSQLDataType(returnType),
+                        DataType = returnType ?? "unknown", // Use raw PostgreSQL type
+                        NormalizedDataType = NormalizePostgreSQLType(returnType),
                         IsNullable = true,
                         MaxLength = null,
                         NumericPrecision = null,
@@ -84,7 +85,8 @@ internal class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
                     resultColumns.Add(new ResultSetColumnSchema
                     {
                         Name = procedureName, // Function name as column name
-                        DataType = MapPostgreSQLDataType(returnType),
+                        DataType = returnType ?? "unknown", // Use raw PostgreSQL type
+                        NormalizedDataType = NormalizePostgreSQLType(returnType),
                         IsNullable = true,
                         MaxLength = null,
                         NumericPrecision = null,
@@ -103,54 +105,54 @@ internal class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
     }
 
     /// <summary>
-    /// Maps PostgreSQL data types to normalized names
+    /// Maps PostgreSQL data types to fundamental types for Intent type mapping
     /// </summary>
-    private string MapPostgreSQLDataType(string? dataTypeName)
+    private string NormalizePostgreSQLType(string? dataTypeName)
     {
         if (string.IsNullOrEmpty(dataTypeName))
             return "unknown";
 
-        return dataTypeName.ToLowerInvariant() switch
+        return dataTypeName.ToLowerInvariant().Trim() switch
         {
-            "character varying" => "varchar",
-            "character" => "char", 
-            "text" => "text",
-            "integer" => "int",
-            "bigint" => "bigint",
-            "smallint" => "smallint",
-            "decimal" => "decimal",
-            "numeric" => "numeric",
-            "real" => "real",
-            "double precision" => "float",
-            "boolean" => "boolean",
-            "timestamp without time zone" => "timestamp",
-            "timestamp with time zone" => "timestamptz",
+            // String types
+            "character varying" or "character" or "text" or "json" or "jsonb" or "xml" => "string",
+
+            // Integer types
+            "integer" or "serial" => "int",
+            "bigint" or "bigserial" => "long",
+            "smallint" or "smallserial" => "short",
+
+            // Decimal/Float types
+            "decimal" or "numeric" or "money" or "real" or "double precision" => "decimal",
+
+            // Boolean types
+            "boolean" => "bool",
+
+            // Date/Time types (without timezone)
+            "timestamp without time zone" => "datetime",
+            
+            // Date/Time types (with timezone)
+            "timestamp with time zone" => "datetimeoffset",
+            
+            // Date only
             "date" => "date",
-            "time without time zone" => "time",
-            "time with time zone" => "timetz",
-            "uuid" => "uuid",
-            "json" => "json",
-            "jsonb" => "jsonb",
-            "bytea" => "bytea",
-            "inet" => "inet",
-            "cidr" => "cidr",
-            "macaddr" => "macaddr",
-            "point" => "point",
-            "line" => "line",
-            "lseg" => "lseg",
-            "box" => "box",
-            "path" => "path",
-            "polygon" => "polygon",
-            "circle" => "circle",
-            "bit" => "bit",
-            "bit varying" => "varbit",
-            "money" => "money",
-            "interval" => "interval",
-            "xml" => "xml",
-            "serial" => "serial",
-            "bigserial" => "bigserial",
-            "smallserial" => "smallserial",
-            _ => dataTypeName.ToLowerInvariant()
+            
+            // Time only
+            "time without time zone" or "time with time zone" or "interval" => "time",
+
+            // UUID/GUID types
+            "uuid" => "guid",
+
+            // Binary types
+            "bytea" => "binary",
+
+            // PostgreSQL specific types that don't have direct equivalents - map to string
+            "inet" or "cidr" or "macaddr" => "string", // Network types as strings
+            "point" or "line" or "lseg" or "box" or "path" or "polygon" or "circle" => "string", // Geometric types as strings
+            "bit" or "bit varying" => "string", // Bit types as strings
+            
+            // Fallback for unknown types
+            _ => "string"
         };
     }
 } 

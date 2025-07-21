@@ -9,8 +9,8 @@
 -- Users Table
 CREATE TABLE Users (
                        UserID INT IDENTITY(1,1) PRIMARY KEY,
-                       Username NVARCHAR(50) NOT NULL UNIQUE,
-                       Email NVARCHAR(100) NOT NULL UNIQUE,
+                       Username NVARCHAR(50) NOT NULL,
+                       Email NVARCHAR(100) NOT NULL,
                        PasswordHash NVARCHAR(255) NOT NULL,
                        FirstName NVARCHAR(50) NOT NULL,
                        LastName NVARCHAR(50) NOT NULL,
@@ -19,7 +19,9 @@ CREATE TABLE Users (
                        IsActive BIT DEFAULT 1,
                        CreatedDate DATETIME2 DEFAULT GETDATE(),
                        ModifiedDate DATETIME2 DEFAULT GETDATE(),
-                       LastLoginDate DATETIME2
+                       LastLoginDate DATETIME2,
+                       CONSTRAINT UQ_Username UNIQUE (Username),
+                       CONSTRAINT UQ_Email UNIQUE (Email)
 );
 
 -- User Addresses
@@ -40,12 +42,13 @@ CREATE TABLE UserAddresses (
 -- Categories
 CREATE TABLE Categories (
                             CategoryID INT IDENTITY(1,1) PRIMARY KEY,
-                            CategoryName NVARCHAR(100) NOT NULL UNIQUE,
+                            CategoryName NVARCHAR(100) NOT NULL,
                             Description NVARCHAR(500),
                             ParentCategoryID INT,
                             IsActive BIT DEFAULT 1,
                             CreatedDate DATETIME2 DEFAULT GETDATE(),
-                            ModifiedDate DATETIME2 DEFAULT GETDATE()
+                            ModifiedDate DATETIME2 DEFAULT GETDATE(),
+                            CONSTRAINT UQ_CategoryName UNIQUE (CategoryName)
 );
 
 -- Suppliers
@@ -69,7 +72,7 @@ CREATE TABLE Products (
                           ProductID INT IDENTITY(1,1) PRIMARY KEY,
                           ProductName NVARCHAR(255) NOT NULL,
                           Description NVARCHAR(1000),
-                          SKU NVARCHAR(50) NOT NULL UNIQUE,
+                          SKU NVARCHAR(50) NOT NULL,
                           CategoryID INT NOT NULL,
                           SupplierID INT NOT NULL,
                           UnitPrice DECIMAL(10,2) NOT NULL,
@@ -81,7 +84,8 @@ CREATE TABLE Products (
                           Dimensions NVARCHAR(50),
                           ImageURL NVARCHAR(500),
                           CreatedDate DATETIME2 DEFAULT GETDATE(),
-                          ModifiedDate DATETIME2 DEFAULT GETDATE()
+                          ModifiedDate DATETIME2 DEFAULT GETDATE(),
+                          CONSTRAINT UQ_SKU UNIQUE (SKU)
 );
 
 -- Product Reviews

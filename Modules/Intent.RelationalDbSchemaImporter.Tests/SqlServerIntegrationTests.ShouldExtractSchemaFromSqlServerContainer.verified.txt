@@ -8,6 +8,7 @@
         {
           Name: AuditID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -17,6 +18,7 @@
         {
           Name: TableName,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -25,6 +27,7 @@
         {
           Name: RecordID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -34,6 +37,7 @@
         {
           Name: Action,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -42,6 +46,7 @@
         {
           Name: OldValues,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -49,6 +54,7 @@
         {
           Name: NewValues,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -56,6 +62,7 @@
         {
           Name: ChangedBy,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -65,6 +72,7 @@
         {
           Name: ChangeDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -75,6 +83,47 @@
             Text: (getdate())
           }
         }
+      ],
+      Indexes: [
+        {
+          Name: IX_AuditLog_Date,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: ChangeDate,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_AuditLog_RecordID,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: RecordID,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_AuditLog_TableName,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: TableName,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        }
       ]
     },
     {
@@ -84,6 +133,7 @@
         {
           Name: CategoryID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -93,6 +143,7 @@
         {
           Name: CategoryName,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -101,6 +152,7 @@
         {
           Name: Description,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -109,6 +161,7 @@
         {
           Name: ParentCategoryID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -118,6 +171,7 @@
         {
           Name: IsActive,
           DataType: bit,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -130,6 +184,7 @@
         {
           Name: CreatedDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -143,6 +198,7 @@
         {
           Name: ModifiedDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -152,6 +208,21 @@
           DefaultConstraint: {
             Text: (getdate())
           }
+        }
+      ],
+      Indexes: [
+        {
+          Name: UQ_CategoryName,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: CategoryName,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -175,6 +246,7 @@
         {
           Name: TransactionID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -184,6 +256,7 @@
         {
           Name: ProductID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -193,6 +266,7 @@
         {
           Name: TransactionType,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -201,6 +275,7 @@
         {
           Name: Quantity,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -210,6 +285,7 @@
         {
           Name: UnitPrice,
           DataType: decimal,
+          NormalizedDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -220,6 +296,7 @@
         {
           Name: ReferenceID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -229,6 +306,7 @@
         {
           Name: Notes,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -237,6 +315,7 @@
         {
           Name: CreatedDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -250,11 +329,40 @@
         {
           Name: CreatedBy,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 4,
           NumericPrecision: 10
+        }
+      ],
+      Indexes: [
+        {
+          Name: IX_InventoryTransactions_Date,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: CreatedDate,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_InventoryTransactions_ProductID,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: ProductID,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -289,6 +397,7 @@
         {
           Name: optname,
           DataType: sysname,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -297,6 +406,7 @@
         {
           Name: value,
           DataType: bit,
+          NormalizedDataType: bool,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -306,6 +416,7 @@
         {
           Name: major_version,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -315,6 +426,7 @@
         {
           Name: minor_version,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -324,6 +436,7 @@
         {
           Name: revision,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -333,6 +446,7 @@
         {
           Name: install_failures,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -348,6 +462,7 @@
         {
           Name: OrderDetailID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -357,6 +472,7 @@
         {
           Name: OrderID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -366,6 +482,7 @@
         {
           Name: ProductID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -375,6 +492,7 @@
         {
           Name: Quantity,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -384,6 +502,7 @@
         {
           Name: UnitPrice,
           DataType: decimal,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -394,6 +513,7 @@
         {
           Name: Discount,
           DataType: decimal,
+          NormalizedDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -407,6 +527,7 @@
         {
           Name: LineTotal,
           DataType: decimal,
+          NormalizedDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -417,6 +538,34 @@
             Expression: (([Quantity]*[UnitPrice])*((1)-[Discount])),
             IsPersisted: true
           }
+        }
+      ],
+      Indexes: [
+        {
+          Name: IX_OrderDetails_OrderID,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: OrderID,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_OrderDetails_ProductID,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: ProductID,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -465,6 +614,7 @@
         {
           Name: OrderID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -474,6 +624,7 @@
         {
           Name: UserID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -483,6 +634,7 @@
         {
           Name: OrderDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -496,6 +648,7 @@
         {
           Name: RequiredDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -506,6 +659,7 @@
         {
           Name: ShippedDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -516,6 +670,7 @@
         {
           Name: ShippingAddressID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -525,6 +680,7 @@
         {
           Name: BillingAddressID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -534,6 +690,7 @@
         {
           Name: SubTotal,
           DataType: decimal,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -544,6 +701,7 @@
         {
           Name: TaxAmount,
           DataType: decimal,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -557,6 +715,7 @@
         {
           Name: ShippingAmount,
           DataType: decimal,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -570,6 +729,7 @@
         {
           Name: TotalAmount,
           DataType: decimal,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -580,6 +740,7 @@
         {
           Name: OrderStatus,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -591,6 +752,7 @@
         {
           Name: PaymentStatus,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -602,6 +764,7 @@
         {
           Name: TrackingNumber,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -610,10 +773,65 @@
         {
           Name: Notes,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 1000
+        }
+      ],
+      Indexes: [
+        {
+          Name: IX_Orders_OrderDate,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: OrderDate,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_Orders_Status,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: OrderStatus,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_Orders_TrackingNumber,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: TrackingNumber,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_Orders_UserID,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: UserID,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -659,6 +877,7 @@
         {
           Name: PaymentMethodID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -668,6 +887,7 @@
         {
           Name: UserID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -677,6 +897,7 @@
         {
           Name: PaymentType,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -685,6 +906,7 @@
         {
           Name: CardNumber,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -693,6 +915,7 @@
         {
           Name: CardHolderName,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -701,6 +924,7 @@
         {
           Name: ExpiryMonth,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -710,6 +934,7 @@
         {
           Name: ExpiryYear,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -719,6 +944,7 @@
         {
           Name: IsDefault,
           DataType: bit,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -731,6 +957,7 @@
         {
           Name: IsActive,
           DataType: bit,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -743,6 +970,7 @@
         {
           Name: CreatedDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -775,6 +1003,7 @@
         {
           Name: PaymentID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -784,6 +1013,7 @@
         {
           Name: OrderID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -793,6 +1023,7 @@
         {
           Name: PaymentMethodID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -802,6 +1033,7 @@
         {
           Name: Amount,
           DataType: decimal,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -812,6 +1044,7 @@
         {
           Name: PaymentDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -825,6 +1058,7 @@
         {
           Name: PaymentStatus,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -836,6 +1070,7 @@
         {
           Name: TransactionID,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -844,6 +1079,7 @@
         {
           Name: ProcessorResponse,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -852,6 +1088,7 @@
         {
           Name: CreatedDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -895,6 +1132,7 @@
         {
           Name: ReviewID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -904,6 +1142,7 @@
         {
           Name: ProductID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -913,6 +1152,7 @@
         {
           Name: UserID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -922,6 +1162,7 @@
         {
           Name: Rating,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -931,6 +1172,7 @@
         {
           Name: Title,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -939,6 +1181,7 @@
         {
           Name: ReviewText,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -947,6 +1190,7 @@
         {
           Name: IsApproved,
           DataType: bit,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -959,6 +1203,7 @@
         {
           Name: HelpfulCount,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -971,6 +1216,7 @@
         {
           Name: CreatedDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -980,6 +1226,47 @@
           DefaultConstraint: {
             Text: (getdate())
           }
+        }
+      ],
+      Indexes: [
+        {
+          Name: IX_ProductReviews_ProductID,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: ProductID,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_ProductReviews_Rating,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: Rating,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_ProductReviews_UserID,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: UserID,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -1014,6 +1301,7 @@
         {
           Name: ProductID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -1023,6 +1311,7 @@
         {
           Name: ProductName,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1031,6 +1320,7 @@
         {
           Name: Description,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1039,6 +1329,7 @@
         {
           Name: SKU,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1047,6 +1338,7 @@
         {
           Name: CategoryID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1056,6 +1348,7 @@
         {
           Name: SupplierID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1065,6 +1358,7 @@
         {
           Name: UnitPrice,
           DataType: decimal,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1075,6 +1369,7 @@
         {
           Name: UnitsInStock,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1087,6 +1382,7 @@
         {
           Name: UnitsOnOrder,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1099,6 +1395,7 @@
         {
           Name: ReorderLevel,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1111,6 +1408,7 @@
         {
           Name: Discontinued,
           DataType: bit,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1123,6 +1421,7 @@
         {
           Name: Weight,
           DataType: decimal,
+          NormalizedDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1133,6 +1432,7 @@
         {
           Name: Dimensions,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1141,6 +1441,7 @@
         {
           Name: ImageURL,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1149,6 +1450,7 @@
         {
           Name: CreatedDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1162,6 +1464,7 @@
         {
           Name: ModifiedDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1171,6 +1474,86 @@
           DefaultConstraint: {
             Text: (getdate())
           }
+        }
+      ],
+      Indexes: [
+        {
+          Name: IX_Products_CategoryID,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: CategoryID,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_Products_Price,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: UnitPrice,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_Products_SKU,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: SKU,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_Products_Stock,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: UnitsInStock,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_Products_SupplierID,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: SupplierID,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: UQ_SKU,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: SKU,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -1213,6 +1596,7 @@
         {
           Name: CartID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -1222,6 +1606,7 @@
         {
           Name: UserID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1231,6 +1616,7 @@
         {
           Name: ProductID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1240,6 +1626,7 @@
         {
           Name: Quantity,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1252,6 +1639,7 @@
         {
           Name: UnitPrice,
           DataType: decimal,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1262,6 +1650,7 @@
         {
           Name: CreatedDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1275,6 +1664,7 @@
         {
           Name: ModifiedDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1284,6 +1674,34 @@
           DefaultConstraint: {
             Text: (getdate())
           }
+        }
+      ],
+      Indexes: [
+        {
+          Name: IX_ShoppingCart_ProductID,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: ProductID,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_ShoppingCart_UserID,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: UserID,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -1318,6 +1736,7 @@
         {
           Name: xserver_name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1326,6 +1745,7 @@
         {
           Name: xdttm_ins,
           DataType: datetime,
+          NormalizedDataType: datetime,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1336,6 +1756,7 @@
         {
           Name: xdttm_last_ins_upd,
           DataType: datetime,
+          NormalizedDataType: datetime,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1346,6 +1767,7 @@
         {
           Name: xfallback_dbid,
           DataType: smallint,
+          NormalizedDataType: short,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1355,6 +1777,7 @@
         {
           Name: name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1363,6 +1786,7 @@
         {
           Name: dbid,
           DataType: smallint,
+          NormalizedDataType: short,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1372,6 +1796,7 @@
         {
           Name: status,
           DataType: smallint,
+          NormalizedDataType: short,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1381,6 +1806,7 @@
         {
           Name: version,
           DataType: smallint,
+          NormalizedDataType: short,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1396,6 +1822,7 @@
         {
           Name: xserver_name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1404,6 +1831,7 @@
         {
           Name: xdttm_ins,
           DataType: datetime,
+          NormalizedDataType: datetime,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1414,6 +1842,7 @@
         {
           Name: xdttm_last_ins_upd,
           DataType: datetime,
+          NormalizedDataType: datetime,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1424,6 +1853,7 @@
         {
           Name: xfallback_low,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1433,6 +1863,7 @@
         {
           Name: xfallback_drive,
           DataType: char,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1441,6 +1872,7 @@
         {
           Name: low,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1450,6 +1882,7 @@
         {
           Name: high,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1459,6 +1892,7 @@
         {
           Name: status,
           DataType: smallint,
+          NormalizedDataType: short,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1468,6 +1902,7 @@
         {
           Name: name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1476,6 +1911,7 @@
         {
           Name: phyname,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1490,6 +1926,7 @@
         {
           Name: xserver_name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1498,6 +1935,7 @@
         {
           Name: xdttm_ins,
           DataType: datetime,
+          NormalizedDataType: datetime,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1508,6 +1946,7 @@
         {
           Name: xdttm_last_ins_upd,
           DataType: datetime,
+          NormalizedDataType: datetime,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1518,6 +1957,7 @@
         {
           Name: xfallback_vstart,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1527,6 +1967,7 @@
         {
           Name: dbid,
           DataType: smallint,
+          NormalizedDataType: short,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1536,6 +1977,7 @@
         {
           Name: segmap,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1545,6 +1987,7 @@
         {
           Name: lstart,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1554,6 +1997,7 @@
         {
           Name: sizepg,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1563,6 +2007,7 @@
         {
           Name: vstart,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1578,6 +2023,7 @@
         {
           Name: lastrun,
           DataType: datetime,
+          NormalizedDataType: datetime,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1588,6 +2034,7 @@
         {
           Name: cpu_busy,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1597,6 +2044,7 @@
         {
           Name: io_busy,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1606,6 +2054,7 @@
         {
           Name: idle,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1615,6 +2064,7 @@
         {
           Name: pack_received,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1624,6 +2074,7 @@
         {
           Name: pack_sent,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1633,6 +2084,7 @@
         {
           Name: connections,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1642,6 +2094,7 @@
         {
           Name: pack_errors,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1651,6 +2104,7 @@
         {
           Name: total_read,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1660,6 +2114,7 @@
         {
           Name: total_write,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1669,6 +2124,7 @@
         {
           Name: total_errors,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1684,6 +2140,7 @@
         {
           Name: SupplierID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -1693,6 +2150,7 @@
         {
           Name: SupplierName,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1701,6 +2159,7 @@
         {
           Name: ContactName,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1709,6 +2168,7 @@
         {
           Name: Email,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1717,6 +2177,7 @@
         {
           Name: Phone,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1725,6 +2186,7 @@
         {
           Name: Address,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1733,6 +2195,7 @@
         {
           Name: City,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1741,6 +2204,7 @@
         {
           Name: State,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1749,6 +2213,7 @@
         {
           Name: ZipCode,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1757,6 +2222,7 @@
         {
           Name: Country,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1768,6 +2234,7 @@
         {
           Name: IsActive,
           DataType: bit,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1780,6 +2247,7 @@
         {
           Name: CreatedDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1799,6 +2267,7 @@
         {
           Name: AddressID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -1808,6 +2277,7 @@
         {
           Name: UserID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1817,6 +2287,7 @@
         {
           Name: AddressType,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1825,6 +2296,7 @@
         {
           Name: AddressLine1,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1833,6 +2305,7 @@
         {
           Name: AddressLine2,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1841,6 +2314,7 @@
         {
           Name: City,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1849,6 +2323,7 @@
         {
           Name: State,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1857,6 +2332,7 @@
         {
           Name: ZipCode,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1865,6 +2341,7 @@
         {
           Name: Country,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1876,6 +2353,7 @@
         {
           Name: IsDefault,
           DataType: bit,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1888,6 +2366,7 @@
         {
           Name: CreatedDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1920,6 +2399,7 @@
         {
           Name: UserID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -1929,6 +2409,7 @@
         {
           Name: Username,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1937,6 +2418,7 @@
         {
           Name: Email,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1945,6 +2427,7 @@
         {
           Name: PasswordHash,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1953,6 +2436,7 @@
         {
           Name: FirstName,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1961,6 +2445,7 @@
         {
           Name: LastName,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1969,6 +2454,7 @@
         {
           Name: DateOfBirth,
           DataType: date,
+          NormalizedDataType: date,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1978,6 +2464,7 @@
         {
           Name: PhoneNumber,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1986,6 +2473,7 @@
         {
           Name: IsActive,
           DataType: bit,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1998,6 +2486,7 @@
         {
           Name: CreatedDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2011,6 +2500,7 @@
         {
           Name: ModifiedDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2024,12 +2514,80 @@
         {
           Name: LastLoginDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           MaxLength: 8,
           NumericPrecision: 27,
           NumericScale: 7
+        }
+      ],
+      Indexes: [
+        {
+          Name: IX_Users_Email,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: Email,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_Users_LastLoginDate,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: LastLoginDate,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_Users_Username,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: Username,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: UQ_Email,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: Email,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: UQ_Username,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: Username,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       Triggers: [
@@ -2056,6 +2614,7 @@
         {
           Name: name,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2064,6 +2623,7 @@
         {
           Name: number,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2073,6 +2633,7 @@
         {
           Name: type,
           DataType: nchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2081,6 +2642,7 @@
         {
           Name: low,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2090,6 +2652,7 @@
         {
           Name: high,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2099,6 +2662,7 @@
         {
           Name: status,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2114,6 +2678,7 @@
         {
           Name: OrderID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2123,6 +2688,7 @@
         {
           Name: OrderDate,
           DataType: datetime2,
+          NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2133,6 +2699,7 @@
         {
           Name: OrderStatus,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2141,6 +2708,7 @@
         {
           Name: PaymentStatus,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2149,6 +2717,7 @@
         {
           Name: CustomerName,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2157,6 +2726,7 @@
         {
           Name: CustomerEmail,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2165,6 +2735,7 @@
         {
           Name: ItemCount,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2174,6 +2745,7 @@
         {
           Name: TotalAmount,
           DataType: decimal,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2184,6 +2756,7 @@
         {
           Name: TrackingNumber,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2198,6 +2771,7 @@
         {
           Name: ProductID,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2207,6 +2781,7 @@
         {
           Name: ProductName,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2215,6 +2790,7 @@
         {
           Name: Description,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2223,6 +2799,7 @@
         {
           Name: SKU,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2231,6 +2808,7 @@
         {
           Name: UnitPrice,
           DataType: decimal,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2241,6 +2819,7 @@
         {
           Name: UnitsInStock,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2250,6 +2829,7 @@
         {
           Name: ImageURL,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2258,6 +2838,7 @@
         {
           Name: CategoryName,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2266,6 +2847,7 @@
         {
           Name: SupplierName,
           DataType: nvarchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2274,6 +2856,7 @@
         {
           Name: AverageRating,
           DataType: float,
+          NormalizedDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2283,9 +2866,570 @@
         {
           Name: ReviewCount,
           DataType: int,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        }
+      ]
+    }
+  ],
+  StoredProcedures: [
+    {
+      Name: sp_AddToCart,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @UserID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsOutputParameter: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: @ProductID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsOutputParameter: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: @Quantity,
+          DataType: int,
+          NormalizedDataType: int,
+          IsOutputParameter: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        }
+      ]
+    },
+    {
+      Name: sp_CreateOrder,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @UserID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsOutputParameter: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: @ShippingAddressID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsOutputParameter: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: @BillingAddressID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsOutputParameter: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: @TaxAmount,
+          DataType: decimal,
+          NormalizedDataType: decimal,
+          IsOutputParameter: false,
+          MaxLength: 9,
+          NumericPrecision: 12,
+          NumericScale: 2
+        },
+        {
+          Name: @ShippingAmount,
+          DataType: decimal,
+          NormalizedDataType: decimal,
+          IsOutputParameter: false,
+          MaxLength: 9,
+          NumericPrecision: 12,
+          NumericScale: 2
+        },
+        {
+          Name: @OrderID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsOutputParameter: true,
+          MaxLength: 4,
+          NumericPrecision: 10
+        }
+      ]
+    },
+    {
+      Name: sp_GetOrderDetails,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @OrderID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsOutputParameter: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: OrderID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsNullable: false
+        },
+        {
+          Name: OrderDate,
+          DataType: datetime2,
+          NormalizedDataType: datetime,
+          IsNullable: true
+        },
+        {
+          Name: OrderStatus,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: PaymentStatus,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: SubTotal,
+          DataType: decimal,
+          NormalizedDataType: decimal,
+          IsNullable: false
+        },
+        {
+          Name: TaxAmount,
+          DataType: decimal,
+          NormalizedDataType: decimal,
+          IsNullable: false
+        },
+        {
+          Name: ShippingAmount,
+          DataType: decimal,
+          NormalizedDataType: decimal,
+          IsNullable: false
+        },
+        {
+          Name: TotalAmount,
+          DataType: decimal,
+          NormalizedDataType: decimal,
+          IsNullable: false
+        },
+        {
+          Name: TrackingNumber,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: true
+        },
+        {
+          Name: CustomerName,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: CustomerEmail,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: ShippingAddress1,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: ShippingAddress2,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: true
+        },
+        {
+          Name: ShippingCity,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: ShippingState,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: ShippingZip,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: UserID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsNullable: false
+        },
+        {
+          Name: AddressID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsNullable: false
+        }
+      ]
+    },
+    {
+      Name: sp_GetSalesReport,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @StartDate,
+          DataType: datetime2,
+          NormalizedDataType: datetime,
+          IsOutputParameter: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7
+        },
+        {
+          Name: @EndDate,
+          DataType: datetime2,
+          NormalizedDataType: datetime,
+          IsOutputParameter: false,
+          MaxLength: 8,
+          NumericPrecision: 27,
+          NumericScale: 7
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: ProductID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsNullable: false
+        },
+        {
+          Name: ProductName,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: SKU,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: CategoryName,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: TotalQuantitySold,
+          DataType: int,
+          NormalizedDataType: int,
+          IsNullable: true
+        },
+        {
+          Name: TotalRevenue,
+          DataType: decimal,
+          NormalizedDataType: decimal,
+          IsNullable: true
+        },
+        {
+          Name: AverageSellingPrice,
+          DataType: decimal,
+          NormalizedDataType: decimal,
+          IsNullable: true
+        },
+        {
+          Name: NumberOfOrders,
+          DataType: int,
+          NormalizedDataType: int,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: sp_GetUserProfile,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @UserID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsOutputParameter: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: UserID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsNullable: false
+        },
+        {
+          Name: Username,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: Email,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: FirstName,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: LastName,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: DateOfBirth,
+          DataType: date,
+          NormalizedDataType: date,
+          IsNullable: true
+        },
+        {
+          Name: PhoneNumber,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: true
+        },
+        {
+          Name: IsActive,
+          DataType: bit,
+          NormalizedDataType: bool,
+          IsNullable: true
+        },
+        {
+          Name: CreatedDate,
+          DataType: datetime2,
+          NormalizedDataType: datetime,
+          IsNullable: true
+        },
+        {
+          Name: LastLoginDate,
+          DataType: datetime2,
+          NormalizedDataType: datetime,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: sp_MScleanupmergepublisher,
+      Schema: dbo
+    },
+    {
+      Name: sp_MSrepl_startup,
+      Schema: dbo
+    },
+    {
+      Name: sp_SearchProducts,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @SearchTerm,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsOutputParameter: false,
+          MaxLength: 255
+        },
+        {
+          Name: @CategoryID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsOutputParameter: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: @MinPrice,
+          DataType: decimal,
+          NormalizedDataType: decimal,
+          IsOutputParameter: false,
+          MaxLength: 9,
+          NumericPrecision: 10,
+          NumericScale: 2
+        },
+        {
+          Name: @MaxPrice,
+          DataType: decimal,
+          NormalizedDataType: decimal,
+          IsOutputParameter: false,
+          MaxLength: 9,
+          NumericPrecision: 10,
+          NumericScale: 2
+        },
+        {
+          Name: @SortBy,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsOutputParameter: false,
+          MaxLength: 20
+        },
+        {
+          Name: @SortOrder,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsOutputParameter: false,
+          MaxLength: 4
+        },
+        {
+          Name: @PageNumber,
+          DataType: int,
+          NormalizedDataType: int,
+          IsOutputParameter: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: @PageSize,
+          DataType: int,
+          NormalizedDataType: int,
+          IsOutputParameter: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: ProductID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsNullable: false
+        },
+        {
+          Name: ProductName,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: Description,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: true
+        },
+        {
+          Name: SKU,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: UnitPrice,
+          DataType: decimal,
+          NormalizedDataType: decimal,
+          IsNullable: false
+        },
+        {
+          Name: UnitsInStock,
+          DataType: int,
+          NormalizedDataType: int,
+          IsNullable: false
+        },
+        {
+          Name: ImageURL,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: true
+        },
+        {
+          Name: CategoryName,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: SupplierName,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsNullable: false
+        },
+        {
+          Name: AverageRating,
+          DataType: float,
+          NormalizedDataType: decimal,
+          IsNullable: true
+        },
+        {
+          Name: ReviewCount,
+          DataType: int,
+          NormalizedDataType: int,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: sp_UpdateProductStock,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @ProductID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsOutputParameter: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: @Quantity,
+          DataType: int,
+          NormalizedDataType: int,
+          IsOutputParameter: false,
+          MaxLength: 4,
+          NumericPrecision: 10
+        },
+        {
+          Name: @TransactionType,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsOutputParameter: false,
+          MaxLength: 20
+        },
+        {
+          Name: @UnitPrice,
+          DataType: decimal,
+          NormalizedDataType: decimal,
+          IsOutputParameter: false,
+          MaxLength: 9,
+          NumericPrecision: 10,
+          NumericScale: 2
+        },
+        {
+          Name: @Notes,
+          DataType: nvarchar,
+          NormalizedDataType: string,
+          IsOutputParameter: false,
+          MaxLength: 500
+        },
+        {
+          Name: @UserID,
+          DataType: int,
+          NormalizedDataType: int,
+          IsOutputParameter: false,
           MaxLength: 4,
           NumericPrecision: 10
         }

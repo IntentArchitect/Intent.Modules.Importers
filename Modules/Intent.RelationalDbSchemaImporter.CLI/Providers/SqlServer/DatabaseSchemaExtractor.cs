@@ -143,6 +143,7 @@ internal class DatabaseSchemaExtractor
             {
                 Name = col.Name,
                 DataType = GetDataTypeString(col.DataType),
+                NormalizedDataType = GetNormalizedDataTypeString(col.DataType),
                 IsNullable = col.Nullable,
                 IsPrimaryKey = col.InPrimaryKey,
                 IsIdentity = col.Identity,
@@ -174,6 +175,7 @@ internal class DatabaseSchemaExtractor
             {
                 Name = col.Name,
                 DataType = GetDataTypeString(col.DataType),
+                NormalizedDataType = GetNormalizedDataTypeString(col.DataType),
                 IsNullable = col.Nullable,
                 IsPrimaryKey = false, // Views don't have primary keys
                 IsIdentity = false, // Views don't have identity columns
@@ -329,6 +331,7 @@ internal class DatabaseSchemaExtractor
             {
                 Name = parameter.Name,
                 DataType = GetDataTypeString(parameter.DataType),
+                NormalizedDataType = GetNormalizedDataTypeString(parameter.DataType),
                 IsOutputParameter = parameter.IsOutputParameter,
                 MaxLength = GetMaxLength(parameter.DataType),
                 NumericPrecision = GetNumericPrecision(parameter.DataType),
@@ -355,6 +358,7 @@ internal class DatabaseSchemaExtractor
                 {
                     Name = column.Name,
                     DataType = GetDataTypeString(column.SqlDataType),
+                    NormalizedDataType = GetNormalizedDataTypeString(column.SqlDataType),
                     IsNullable = column.IsNullable,
                     MaxLength = null, // Not available in ResultSetColumn
                     NumericPrecision = null, // Not available in ResultSetColumn
@@ -411,9 +415,67 @@ internal class DatabaseSchemaExtractor
         };
     }
 
+    private string GetNormalizedDataTypeString(DataType dataType)
+    {
+        return NormalizeSqlServerDataType(dataType.Name);
+    }
+
     private string GetDataTypeString(SqlDataType sqlDataType)
     {
         return sqlDataType.ToString().ToLower();
+    }
+
+    private string GetNormalizedDataTypeString(SqlDataType sqlDataType)
+    {
+        return NormalizeSqlServerDataType(sqlDataType.ToString());
+    }
+
+    /// <summary>
+    /// Maps SQL Server data types to fundamental types for Intent type mapping
+    /// </summary>
+    private string NormalizeSqlServerDataType(string dataTypeName)
+    {
+        if (string.IsNullOrEmpty(dataTypeName))
+            return "unknown";
+
+        return dataTypeName.ToLowerInvariant().Trim() switch
+        {
+            // String types
+            "varchar" or "nvarchar" or "char" or "nchar" or "text" or "ntext" or "sysname" or "xml" => "string",
+
+            // Integer types
+            "int" => "int",
+            "bigint" => "long",
+            "smallint" => "short",
+            "tinyint" => "byte",
+
+            // Decimal/Float types
+            "decimal" or "numeric" or "money" or "smallmoney" or "float" or "real" => "decimal",
+
+            // Boolean types
+            "bit" => "bool",
+
+            // Date/Time types (without timezone)
+            "datetime" or "datetime2" or "smalldatetime" => "datetime",
+            
+            // Date/Time types (with timezone)
+            "datetimeoffset" => "datetimeoffset",
+            
+            // Date only
+            "date" => "date",
+            
+            // Time only
+            "time" => "time",
+
+            // UUID/GUID types
+            "uniqueidentifier" => "guid",
+
+            // Binary types
+            "varbinary" or "binary" or "image" or "timestamp" => "binary",
+            
+            // Fallback for unknown types
+            _ => "string"
+        };
     }
 
     private int? GetMaxLength(DataType dataType)

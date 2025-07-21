@@ -13,6 +13,10 @@ public class StoredProcedureParameterSchema
 {
     public string Name { get; set; } = string.Empty;
     public string DataType { get; set; } = string.Empty;
+    /// <summary>
+    /// Normalized data type for Intent type mapping (e.g., "string", "int", "datetime")
+    /// </summary>
+    public string NormalizedDataType { get; set; } = string.Empty;
     public bool IsOutputParameter { get; set; }
     public int? MaxLength { get; set; }
     public int? NumericPrecision { get; set; }
@@ -24,6 +28,10 @@ public class ResultSetColumnSchema
 {
     public string Name { get; set; } = string.Empty;
     public string DataType { get; set; } = string.Empty;
+    /// <summary>
+    /// Normalized data type for Intent type mapping (e.g., "string", "int", "datetime")
+    /// </summary>
+    public string NormalizedDataType { get; set; } = string.Empty;
     public bool IsNullable { get; set; }
     public int? MaxLength { get; set; }
     public int? NumericPrecision { get; set; }

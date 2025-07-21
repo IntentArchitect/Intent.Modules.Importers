@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using DatabaseSchemaReader.DataSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Intent.RelationalDbSchemaImporter.CLI.Services;
@@ -32,9 +33,13 @@ internal class PostgreSQLProvider : BaseDatabaseProvider
         return new PostgreSQLStoredProcedureAnalyzer(connection);
     }
 
-    protected override string GetDataTypeString(string? dataTypeName)
+    protected override string GetNormalizedDataTypeString(DataType? dataType, string dbDataType)
     {
-        return MapPostgreSQLDataType(dataTypeName);
+        if (dbDataType == "jsonb")
+        {
+            return "string";
+        }
+        return base.GetNormalizedDataTypeString(dataType, dbDataType);
     }
 
     /// <summary>
@@ -66,7 +71,7 @@ internal class PostgreSQLProvider : BaseDatabaseProvider
         var storedProcedures = new List<StoredProcedureSchema>();
         
         // PostgreSQL primarily uses functions instead of stored procedures
-        var routines = new List<DatabaseSchemaReader.DataSchema.DatabaseStoredProcedure>();
+        var routines = new List<DatabaseStoredProcedure>();
         
         // Add functions (primary approach for PostgreSQL)
         if (databaseSchema.Functions != null)
@@ -74,7 +79,7 @@ internal class PostgreSQLProvider : BaseDatabaseProvider
             var functionRoutines = databaseSchema.Functions
                 .Where(func => !IsSystemObject(func.SchemaOwner, func.Name) && 
                               importFilterService.ExportStoredProcedure(func.SchemaOwner, func.Name))
-                .Cast<DatabaseSchemaReader.DataSchema.DatabaseStoredProcedure>();
+                .Cast<DatabaseStoredProcedure>();
             
             routines.AddRange(functionRoutines);
         }
@@ -111,57 +116,5 @@ internal class PostgreSQLProvider : BaseDatabaseProvider
         }
 
         return storedProcedures;
-    }
-
-    /// <summary>
-    /// Maps PostgreSQL data types to normalized names
-    /// </summary>
-    private string MapPostgreSQLDataType(string? dataTypeName)
-    {
-        if (string.IsNullOrEmpty(dataTypeName))
-            return "unknown";
-
-        return dataTypeName.ToLowerInvariant() switch
-        {
-            "character varying" => "varchar",
-            "character" => "char",
-            "text" => "text",
-            "integer" => "int",
-            "bigint" => "bigint",
-            "smallint" => "smallint",
-            "decimal" => "decimal",
-            "numeric" => "numeric",
-            "real" => "real",
-            "double precision" => "float",
-            "boolean" => "boolean",
-            "timestamp without time zone" => "timestamp",
-            "timestamp with time zone" => "timestamptz",
-            "date" => "date",
-            "time without time zone" => "time",
-            "time with time zone" => "timetz",
-            "uuid" => "uuid",
-            "json" => "json",
-            "jsonb" => "jsonb",
-            "bytea" => "bytea",
-            "inet" => "inet",
-            "cidr" => "cidr",
-            "macaddr" => "macaddr",
-            "point" => "point",
-            "line" => "line",
-            "lseg" => "lseg",
-            "box" => "box",
-            "path" => "path",
-            "polygon" => "polygon",
-            "circle" => "circle",
-            "bit" => "bit",
-            "bit varying" => "varbit",
-            "money" => "money",
-            "interval" => "interval",
-            "xml" => "xml",
-            "serial" => "serial",
-            "bigserial" => "bigserial",
-            "smallserial" => "smallserial",
-            _ => dataTypeName.ToLowerInvariant()
-        };
     }
 } 

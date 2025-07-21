@@ -43,8 +43,8 @@ public class SqlServerIntegrationTests : IAsyncLifetime
         var importRequest = new ImportSchemaRequest
         {
             ConnectionString = connectionString,
-            TypesToExport = [ExportType.Table, ExportType.View],
-            DatabaseType = Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType.SqlServer
+            TypesToExport = [ExportType.Table, ExportType.View, ExportType.Index, ExportType.StoredProcedure],
+            DatabaseType = DatabaseType.SqlServer
         };
 
         // Act

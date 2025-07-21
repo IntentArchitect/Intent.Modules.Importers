@@ -8,6 +8,7 @@
         {
           Name: audit_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -19,6 +20,7 @@
         {
           Name: table_name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -27,6 +29,7 @@
         {
           Name: record_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -35,6 +38,7 @@
         {
           Name: action,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -42,14 +46,16 @@
         },
         {
           Name: old_values,
-          DataType: unknown,
+          DataType: jsonb,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
           Name: new_values,
-          DataType: unknown,
+          DataType: jsonb,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -57,6 +63,7 @@
         {
           Name: changed_by,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -65,12 +72,67 @@
         {
           Name: change_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           DefaultConstraint: {
             Text: CURRENT_TIMESTAMP
           }
+        }
+      ],
+      Indexes: [
+        {
+          Name: audit_log_pkey,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: audit_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_audit_log_date,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: change_date,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_audit_log_record_id,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: record_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_audit_log_table_name,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: table_name,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ]
     },
@@ -81,6 +143,7 @@
         {
           Name: category_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -92,6 +155,7 @@
         {
           Name: category_name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -100,6 +164,7 @@
         {
           Name: description,
           DataType: text,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -107,6 +172,7 @@
         {
           Name: parent_category_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -115,6 +181,7 @@
         {
           Name: is_active,
           DataType: bool,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -125,6 +192,7 @@
         {
           Name: created_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -135,12 +203,41 @@
         {
           Name: modified_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           DefaultConstraint: {
             Text: CURRENT_TIMESTAMP
           }
+        }
+      ],
+      Indexes: [
+        {
+          Name: categories_category_name_key,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: category_name,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: categories_pkey,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: category_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -172,6 +269,7 @@
         {
           Name: transaction_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -183,6 +281,7 @@
         {
           Name: product_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -191,6 +290,7 @@
         {
           Name: transaction_type,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -199,6 +299,7 @@
         {
           Name: quantity,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -207,6 +308,7 @@
         {
           Name: unit_price,
           DataType: numeric,
+          NormalizedDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -216,6 +318,7 @@
         {
           Name: reference_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -224,6 +327,7 @@
         {
           Name: notes,
           DataType: text,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -231,6 +335,7 @@
         {
           Name: created_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -241,10 +346,52 @@
         {
           Name: created_by,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
           NumericPrecision: 32
+        }
+      ],
+      Indexes: [
+        {
+          Name: idx_inventory_transactions_date,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: created_date,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_inventory_transactions_product_id,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: product_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: inventory_transactions_pkey,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: transaction_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -279,6 +426,7 @@
         {
           Name: order_detail_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -290,6 +438,7 @@
         {
           Name: order_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -298,6 +447,7 @@
         {
           Name: product_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -306,6 +456,7 @@
         {
           Name: quantity,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -314,6 +465,7 @@
         {
           Name: unit_price,
           DataType: numeric,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -323,6 +475,7 @@
         {
           Name: discount,
           DataType: numeric,
+          NormalizedDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -335,11 +488,53 @@
         {
           Name: line_total,
           DataType: numeric,
+          NormalizedDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           NumericPrecision: 12,
           NumericScale: 2
+        }
+      ],
+      Indexes: [
+        {
+          Name: idx_order_details_order_id,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: order_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_order_details_product_id,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: product_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: order_details_pkey,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: order_detail_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -406,6 +601,7 @@
         {
           Name: order_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -417,6 +613,7 @@
         {
           Name: user_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -425,6 +622,7 @@
         {
           Name: order_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -435,6 +633,7 @@
         {
           Name: required_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -442,6 +641,7 @@
         {
           Name: shipped_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -449,6 +649,7 @@
         {
           Name: shipping_address_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -457,6 +658,7 @@
         {
           Name: billing_address_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -465,6 +667,7 @@
         {
           Name: sub_total,
           DataType: numeric,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -474,6 +677,7 @@
         {
           Name: tax_amount,
           DataType: numeric,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -486,6 +690,7 @@
         {
           Name: shipping_amount,
           DataType: numeric,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -498,6 +703,7 @@
         {
           Name: total_amount,
           DataType: numeric,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -507,6 +713,7 @@
         {
           Name: order_status,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -518,6 +725,7 @@
         {
           Name: payment_status,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -529,6 +737,7 @@
         {
           Name: tracking_number,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -537,9 +746,77 @@
         {
           Name: notes,
           DataType: text,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
+        }
+      ],
+      Indexes: [
+        {
+          Name: idx_orders_order_date,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: order_date,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_orders_status,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: order_status,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_orders_tracking_number,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: tracking_number,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_orders_user_id,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: user_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: orders_pkey,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: order_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -585,6 +862,7 @@
         {
           Name: payment_method_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -596,6 +874,7 @@
         {
           Name: user_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -604,6 +883,7 @@
         {
           Name: payment_type,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -612,6 +892,7 @@
         {
           Name: card_number,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -620,6 +901,7 @@
         {
           Name: card_holder_name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -628,6 +910,7 @@
         {
           Name: expiry_month,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -636,6 +919,7 @@
         {
           Name: expiry_year,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -644,6 +928,7 @@
         {
           Name: is_default,
           DataType: bool,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -654,6 +939,7 @@
         {
           Name: is_active,
           DataType: bool,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -664,12 +950,28 @@
         {
           Name: created_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           DefaultConstraint: {
             Text: CURRENT_TIMESTAMP
           }
+        }
+      ],
+      Indexes: [
+        {
+          Name: payment_methods_pkey,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: payment_method_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -693,6 +995,7 @@
         {
           Name: payment_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -704,6 +1007,7 @@
         {
           Name: order_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -712,6 +1016,7 @@
         {
           Name: payment_method_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -720,6 +1025,7 @@
         {
           Name: amount,
           DataType: numeric,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -729,6 +1035,7 @@
         {
           Name: payment_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -739,6 +1046,7 @@
         {
           Name: payment_status,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -750,6 +1058,7 @@
         {
           Name: transaction_id,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -758,6 +1067,7 @@
         {
           Name: processor_response,
           DataType: text,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -765,12 +1075,28 @@
         {
           Name: created_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           DefaultConstraint: {
             Text: CURRENT_TIMESTAMP
           }
+        }
+      ],
+      Indexes: [
+        {
+          Name: payments_pkey,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: payment_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -805,6 +1131,7 @@
         {
           Name: review_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -816,6 +1143,7 @@
         {
           Name: product_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -824,6 +1152,7 @@
         {
           Name: user_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -832,6 +1161,7 @@
         {
           Name: rating,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -840,6 +1170,7 @@
         {
           Name: title,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -848,6 +1179,7 @@
         {
           Name: review_text,
           DataType: text,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -855,6 +1187,7 @@
         {
           Name: is_approved,
           DataType: bool,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -865,6 +1198,7 @@
         {
           Name: helpful_count,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -876,12 +1210,67 @@
         {
           Name: created_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           DefaultConstraint: {
             Text: CURRENT_TIMESTAMP
           }
+        }
+      ],
+      Indexes: [
+        {
+          Name: idx_product_reviews_product_id,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: product_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_product_reviews_rating,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: rating,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_product_reviews_user_id,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: user_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: product_reviews_pkey,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: review_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -916,6 +1305,7 @@
         {
           Name: product_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -927,6 +1317,7 @@
         {
           Name: product_name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -935,6 +1326,7 @@
         {
           Name: description,
           DataType: text,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -942,6 +1334,7 @@
         {
           Name: sku,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -950,6 +1343,7 @@
         {
           Name: category_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -958,6 +1352,7 @@
         {
           Name: supplier_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -966,6 +1361,7 @@
         {
           Name: unit_price,
           DataType: numeric,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -975,6 +1371,7 @@
         {
           Name: units_in_stock,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -986,6 +1383,7 @@
         {
           Name: units_on_order,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -997,6 +1395,7 @@
         {
           Name: reorder_level,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1008,6 +1407,7 @@
         {
           Name: discontinued,
           DataType: bool,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1018,6 +1418,7 @@
         {
           Name: weight,
           DataType: numeric,
+          NormalizedDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1027,6 +1428,7 @@
         {
           Name: dimensions,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1035,6 +1437,7 @@
         {
           Name: image_url,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1043,6 +1446,7 @@
         {
           Name: created_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1053,12 +1457,119 @@
         {
           Name: modified_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           DefaultConstraint: {
             Text: CURRENT_TIMESTAMP
           }
+        }
+      ],
+      Indexes: [
+        {
+          Name: idx_products_category_id,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: category_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_products_name,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: to_tsvector,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_products_price,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: unit_price,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_products_sku,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: sku,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_products_stock,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: units_in_stock,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_products_supplier_id,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: supplier_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: products_pkey,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: product_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: products_sku_key,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: sku,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -1101,6 +1612,7 @@
         {
           Name: cart_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -1112,6 +1624,7 @@
         {
           Name: user_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1120,6 +1633,7 @@
         {
           Name: product_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1128,6 +1642,7 @@
         {
           Name: quantity,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1139,6 +1654,7 @@
         {
           Name: unit_price,
           DataType: numeric,
+          NormalizedDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1148,6 +1664,7 @@
         {
           Name: created_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1158,12 +1675,54 @@
         {
           Name: modified_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           DefaultConstraint: {
             Text: CURRENT_TIMESTAMP
           }
+        }
+      ],
+      Indexes: [
+        {
+          Name: idx_shopping_cart_product_id,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: product_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_shopping_cart_user_id,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: user_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: shopping_cart_pkey,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: cart_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -1206,6 +1765,7 @@
         {
           Name: supplier_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -1217,6 +1777,7 @@
         {
           Name: supplier_name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1225,6 +1786,7 @@
         {
           Name: contact_name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1233,6 +1795,7 @@
         {
           Name: email,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1241,6 +1804,7 @@
         {
           Name: phone,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1249,6 +1813,7 @@
         {
           Name: address,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1257,6 +1822,7 @@
         {
           Name: city,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1265,6 +1831,7 @@
         {
           Name: state,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1273,6 +1840,7 @@
         {
           Name: zip_code,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1281,6 +1849,7 @@
         {
           Name: country,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1292,6 +1861,7 @@
         {
           Name: is_active,
           DataType: bool,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1302,12 +1872,28 @@
         {
           Name: created_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           DefaultConstraint: {
             Text: CURRENT_TIMESTAMP
           }
+        }
+      ],
+      Indexes: [
+        {
+          Name: suppliers_pkey,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: supplier_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ]
     },
@@ -1318,6 +1904,7 @@
         {
           Name: address_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -1329,6 +1916,7 @@
         {
           Name: user_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1337,6 +1925,7 @@
         {
           Name: address_type,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1345,6 +1934,7 @@
         {
           Name: address_line1,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1353,6 +1943,7 @@
         {
           Name: address_line2,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1361,6 +1952,7 @@
         {
           Name: city,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1369,6 +1961,7 @@
         {
           Name: state,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1377,6 +1970,7 @@
         {
           Name: zip_code,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1385,6 +1979,7 @@
         {
           Name: country,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1396,6 +1991,7 @@
         {
           Name: is_default,
           DataType: bool,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1406,12 +2002,28 @@
         {
           Name: created_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           DefaultConstraint: {
             Text: CURRENT_TIMESTAMP
           }
+        }
+      ],
+      Indexes: [
+        {
+          Name: user_addresses_pkey,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: address_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       ForeignKeys: [
@@ -1435,6 +2047,7 @@
         {
           Name: user_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -1446,6 +2059,7 @@
         {
           Name: username,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1454,6 +2068,7 @@
         {
           Name: email,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1462,6 +2077,7 @@
         {
           Name: password_hash,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1470,6 +2086,7 @@
         {
           Name: first_name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1478,6 +2095,7 @@
         {
           Name: last_name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1486,6 +2104,7 @@
         {
           Name: date_of_birth,
           DataType: date,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -1493,6 +2112,7 @@
         {
           Name: phone_number,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1501,6 +2121,7 @@
         {
           Name: is_active,
           DataType: bool,
+          NormalizedDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1511,6 +2132,7 @@
         {
           Name: created_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1521,6 +2143,7 @@
         {
           Name: modified_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1531,9 +2154,90 @@
         {
           Name: last_login_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
+        }
+      ],
+      Indexes: [
+        {
+          Name: idx_users_email,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: email,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_users_last_login_date,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: last_login_date,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_users_username,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: username,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: users_email_key,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: email,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: users_pkey,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: user_id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: users_username_key,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: username,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ],
       Triggers: [
@@ -1572,6 +2276,7 @@
         {
           Name: order_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1580,6 +2285,7 @@
         {
           Name: order_date,
           DataType: timestamp,
+          NormalizedDataType: DateTime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -1587,6 +2293,7 @@
         {
           Name: order_status,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1595,6 +2302,7 @@
         {
           Name: payment_status,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1603,6 +2311,7 @@
         {
           Name: customer_name,
           DataType: text,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -1610,6 +2319,7 @@
         {
           Name: customer_email,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1618,6 +2328,7 @@
         {
           Name: item_count,
           DataType: int8,
+          NormalizedDataType: long,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1626,6 +2337,7 @@
         {
           Name: total_amount,
           DataType: numeric,
+          NormalizedDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1635,6 +2347,7 @@
         {
           Name: tracking_number,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1649,6 +2362,7 @@
         {
           Name: product_id,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1657,6 +2371,7 @@
         {
           Name: product_name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1665,6 +2380,7 @@
         {
           Name: description,
           DataType: text,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -1672,6 +2388,7 @@
         {
           Name: sku,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1680,6 +2397,7 @@
         {
           Name: unit_price,
           DataType: numeric,
+          NormalizedDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1689,6 +2407,7 @@
         {
           Name: units_in_stock,
           DataType: int4,
+          NormalizedDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1697,6 +2416,7 @@
         {
           Name: image_url,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1705,6 +2425,7 @@
         {
           Name: category_name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1713,6 +2434,7 @@
         {
           Name: supplier_name,
           DataType: varchar,
+          NormalizedDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1721,6 +2443,7 @@
         {
           Name: average_rating,
           DataType: numeric,
+          NormalizedDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1730,10 +2453,1905 @@
         {
           Name: review_count,
           DataType: int8,
+          NormalizedDataType: long,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
           NumericPrecision: 64
+        }
+      ]
+    }
+  ],
+  StoredProcedures: [
+    {
+      Name: add_to_cart,
+      Schema: public,
+      Parameters: [
+        {
+          Name: p_user_id,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_product_id,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_quantity,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        }
+      ]
+    },
+    {
+      Name: armor,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text[],
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text[],
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: armor,
+          DataType: text,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: armor,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text[],
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text[],
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: armor,
+          DataType: text,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: crypt,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: crypt,
+          DataType: text,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: dearmor,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: dearmor,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: decrypt,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: decrypt,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: decrypt_iv,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg3,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: decrypt_iv,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: digest,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: digest,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: digest,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: digest,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: encrypt,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: encrypt,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: encrypt_iv,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg3,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: encrypt_iv,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: gen_random_bytes,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: gen_random_bytes,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: gen_random_uuid,
+      Schema: public,
+      ResultSetColumns: [
+        {
+          Name: gen_random_uuid,
+          DataType: uuid,
+          NormalizedDataType: guid,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: gen_salt,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: gen_salt,
+          DataType: text,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: gen_salt,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: gen_salt,
+          DataType: text,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: get_sales_report,
+      Schema: public,
+      Parameters: [
+        {
+          Name: p_start_date,
+          DataType: date,
+          NormalizedDataType: DateTime,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_end_date,
+          DataType: date,
+          NormalizedDataType: DateTime,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_category_id,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: result,
+          DataType: record,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: get_user_cart,
+      Schema: public,
+      Parameters: [
+        {
+          Name: p_user_id,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: result,
+          DataType: record,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: hmac,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: hmac,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: hmac,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: hmac,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_armor_headers,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: result,
+          DataType: record,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_key_id,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_key_id,
+          DataType: text,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_pub_decrypt,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg3,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_pub_decrypt,
+          DataType: text,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_pub_decrypt,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg3,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_pub_decrypt,
+          DataType: text,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_pub_decrypt,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg3,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_pub_decrypt,
+          DataType: text,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_pub_decrypt_bytea,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg3,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_pub_decrypt_bytea,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_pub_decrypt_bytea,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg3,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_pub_decrypt_bytea,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_pub_decrypt_bytea,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg3,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_pub_decrypt_bytea,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_pub_encrypt,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_pub_encrypt,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_pub_encrypt,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_pub_encrypt,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_pub_encrypt_bytea,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_pub_encrypt_bytea,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_pub_encrypt_bytea,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_pub_encrypt_bytea,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_sym_decrypt,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_sym_decrypt,
+          DataType: text,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_sym_decrypt,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_sym_decrypt,
+          DataType: text,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_sym_decrypt_bytea,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_sym_decrypt_bytea,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_sym_decrypt_bytea,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_sym_decrypt_bytea,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_sym_encrypt,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_sym_encrypt,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_sym_encrypt,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_sym_encrypt,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_sym_encrypt_bytea,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_sym_encrypt_bytea,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: pgp_sym_encrypt_bytea,
+      Schema: public,
+      Parameters: [
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg0,
+          DataType: bytea,
+          NormalizedDataType: System.Byte[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: pgp_sym_encrypt_bytea,
+          DataType: bytea,
+          NormalizedDataType: binary,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: process_order,
+      Schema: public,
+      Parameters: [
+        {
+          Name: p_user_id,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_shipping_address_id,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_payment_method,
+          DataType: character varying,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: process_order,
+          DataType: int4,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: search_products,
+      Schema: public,
+      Parameters: [
+        {
+          Name: p_search_term,
+          DataType: character varying,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_category_id,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_min_price,
+          DataType: numeric,
+          NormalizedDataType: decimal,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_max_price,
+          DataType: numeric,
+          NormalizedDataType: decimal,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_limit,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_offset,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: result,
+          DataType: record,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: update_inventory,
+      Schema: public,
+      Parameters: [
+        {
+          Name: p_product_id,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_quantity_change,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_operation,
+          DataType: character varying,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: update_inventory,
+          DataType: bool,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: update_user_profile,
+      Schema: public,
+      Parameters: [
+        {
+          Name: p_user_id,
+          DataType: integer,
+          NormalizedDataType: int,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_first_name,
+          DataType: character varying,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_last_name,
+          DataType: character varying,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_email,
+          DataType: character varying,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        },
+        {
+          Name: p_phone,
+          DataType: character varying,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: update_user_profile,
+          DataType: bool,
+          NormalizedDataType: string,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: uuid_generate_v1,
+      Schema: public,
+      ResultSetColumns: [
+        {
+          Name: uuid_generate_v1,
+          DataType: uuid,
+          NormalizedDataType: guid,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: uuid_generate_v1mc,
+      Schema: public,
+      ResultSetColumns: [
+        {
+          Name: uuid_generate_v1mc,
+          DataType: uuid,
+          NormalizedDataType: guid,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: uuid_generate_v3,
+      Schema: public,
+      Parameters: [
+        {
+          Name: namespace,
+          DataType: uuid,
+          NormalizedDataType: System.Guid,
+          IsOutputParameter: false
+        },
+        {
+          Name: name,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: uuid_generate_v3,
+          DataType: uuid,
+          NormalizedDataType: guid,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: uuid_generate_v4,
+      Schema: public,
+      ResultSetColumns: [
+        {
+          Name: uuid_generate_v4,
+          DataType: uuid,
+          NormalizedDataType: guid,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: uuid_generate_v5,
+      Schema: public,
+      Parameters: [
+        {
+          Name: namespace,
+          DataType: uuid,
+          NormalizedDataType: System.Guid,
+          IsOutputParameter: false
+        },
+        {
+          Name: name,
+          DataType: text,
+          NormalizedDataType: string,
+          IsOutputParameter: false
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: uuid_generate_v5,
+          DataType: uuid,
+          NormalizedDataType: guid,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: uuid_nil,
+      Schema: public,
+      ResultSetColumns: [
+        {
+          Name: uuid_nil,
+          DataType: uuid,
+          NormalizedDataType: guid,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: uuid_ns_dns,
+      Schema: public,
+      ResultSetColumns: [
+        {
+          Name: uuid_ns_dns,
+          DataType: uuid,
+          NormalizedDataType: guid,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: uuid_ns_oid,
+      Schema: public,
+      ResultSetColumns: [
+        {
+          Name: uuid_ns_oid,
+          DataType: uuid,
+          NormalizedDataType: guid,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: uuid_ns_url,
+      Schema: public,
+      ResultSetColumns: [
+        {
+          Name: uuid_ns_url,
+          DataType: uuid,
+          NormalizedDataType: guid,
+          IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: uuid_ns_x500,
+      Schema: public,
+      ResultSetColumns: [
+        {
+          Name: uuid_ns_x500,
+          DataType: uuid,
+          NormalizedDataType: guid,
+          IsNullable: true
         }
       ]
     }

@@ -41,9 +41,6 @@
         <Content Include="TestData\PostgreSQLTestSchema.sql">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Include="TestData\MySQLTestSchema.sql">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
     </ItemGroup>
 
 </Project>

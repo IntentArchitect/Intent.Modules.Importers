@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DatabaseSchemaReader;
+using DatabaseSchemaReader.DataSchema;
 using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
+using DatabaseSchema = Intent.RelationalDbSchemaImporter.Contracts.DbSchema.DatabaseSchema;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 
@@ -21,6 +24,28 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
     protected abstract DbConnection CreateConnection(string connectionString);
     protected abstract IDependencyResolver CreateDependencyResolver(DbConnection connection);
     protected abstract IStoredProcedureAnalyzer CreateStoredProcedureAnalyzer(DbConnection connection);
+
+    /// <summary>
+    /// Gets the base SQL data type name without length/precision information
+    /// </summary>
+    /// <remarks>
+    /// PostgresSQL: SERIAL / BIGSERIAL aren't real datatypes - syntactic sugar for autoincrement columns - is actually INT4 / INT8. 
+    /// </remarks>
+    protected virtual string GetDataTypeString(string? dataTypeName)
+    {
+        if (string.IsNullOrEmpty(dataTypeName))
+            return "unknown";
+
+        // Strip length/precision information (e.g., "nvarchar(255)" -> "nvarchar", "decimal(18,2)" -> "decimal")
+        var baseTypeName = dataTypeName;
+        var parenIndex = baseTypeName.IndexOf('(');
+        if (parenIndex > 0)
+        {
+            baseTypeName = baseTypeName.Substring(0, parenIndex);
+        }
+
+        return baseTypeName.Trim().ToLowerInvariant();
+    }
 
     public virtual async Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportFilterService importFilterService)
     {
@@ -179,9 +204,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return tables;
     }
     
-    protected virtual List<ColumnSchema> ExtractTableColumns(
-        DatabaseSchemaReader.DataSchema.DatabaseTable table, 
-        ImportFilterService importFilterService)
+    protected virtual List<ColumnSchema> ExtractTableColumns(DatabaseTable table, ImportFilterService importFilterService)
     {
         var columns = new List<ColumnSchema>();
 
@@ -195,7 +218,8 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
             var columnSchema = new ColumnSchema
             {
                 Name = col.Name,
-                DataType = GetDataTypeString(col.DataType?.TypeName),
+                DataType = GetDataTypeString(col.DbDataType),
+                NormalizedDataType = GetNormalizedDataTypeString(col.DataType, col.DbDataType),
                 IsNullable = col.Nullable,
                 IsPrimaryKey = col.IsPrimaryKey,
                 IsIdentity = col.IsAutoNumber,
@@ -212,9 +236,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return columns;
     }
 
-    protected virtual List<IndexSchema> ExtractTableIndexes(
-        DatabaseSchemaReader.DataSchema.DatabaseTable table, 
-        ImportFilterService importFilterService)
+    protected virtual List<IndexSchema> ExtractTableIndexes(DatabaseTable table, ImportFilterService importFilterService)
     {
         var indexes = new List<IndexSchema>();
 
@@ -228,7 +250,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         {
             var indexSchema = new IndexSchema
             {
-                Name = index.Name ?? $"IDX_{table.Name}",
+                Name = index.Name ?? "",
                 IsUnique = index.IsUnique,
                 IsClustered = false, // DatabaseSchemaReader doesn't expose this directly for all databases
                 HasFilter = false, // DatabaseSchemaReader doesn't expose filter information directly
@@ -242,7 +264,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return indexes;
     }
 
-    protected virtual List<IndexColumnSchema> ExtractIndexColumns(DatabaseSchemaReader.DataSchema.DatabaseIndex index)
+    protected virtual List<IndexColumnSchema> ExtractIndexColumns(DatabaseIndex index)
     {
         var columns = new List<IndexColumnSchema>();
 
@@ -262,8 +284,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return columns;
     }
 
-    protected virtual List<ForeignKeySchema> ExtractTableForeignKeys(
-        DatabaseSchemaReader.DataSchema.DatabaseTable table)
+    protected virtual List<ForeignKeySchema> ExtractTableForeignKeys(DatabaseTable table)
     {
         var foreignKeys = new List<ForeignKeySchema>();
 
@@ -284,7 +305,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return foreignKeys;
     }
 
-    protected virtual List<ForeignKeyColumnSchema> ExtractForeignKeyColumns(DatabaseSchemaReader.DataSchema.DatabaseConstraint foreignKey)
+    protected virtual List<ForeignKeyColumnSchema> ExtractForeignKeyColumns(DatabaseConstraint foreignKey)
     {
         var columns = new List<ForeignKeyColumnSchema>();
 
@@ -303,8 +324,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return columns;
     }
 
-    protected virtual List<TriggerSchema> ExtractTableTriggers(
-        DatabaseSchemaReader.DataSchema.DatabaseTable table)
+    protected virtual List<TriggerSchema> ExtractTableTriggers(DatabaseTable table)
     {
         var triggers = new List<TriggerSchema>();
 
@@ -350,9 +370,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return views;
     }
 
-    protected virtual List<ColumnSchema> ExtractViewColumns(
-        DatabaseSchemaReader.DataSchema.DatabaseView view, 
-        ImportFilterService importFilterService)
+    protected virtual List<ColumnSchema> ExtractViewColumns(DatabaseView view, ImportFilterService importFilterService)
     {
         var columns = new List<ColumnSchema>();
 
@@ -366,7 +384,8 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
             var columnSchema = new ColumnSchema
             {
                 Name = col.Name,
-                DataType = GetDataTypeString(col.DataType?.TypeName),
+                DataType = GetDataTypeString(col.DbDataType),
+                NormalizedDataType = GetNormalizedDataTypeString(col.DataType, col.DbDataType),
                 IsNullable = col.Nullable,
                 IsPrimaryKey = false, // Views don't have primary keys
                 IsIdentity = false, // Views don't have identity columns
@@ -383,7 +402,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return columns;
     }
 
-    protected virtual List<TriggerSchema> ExtractViewTriggers(DatabaseSchemaReader.DataSchema.DatabaseView view)
+    protected virtual List<TriggerSchema> ExtractViewTriggers(DatabaseView view)
     {
         var triggers = new List<TriggerSchema>();
 
@@ -412,7 +431,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         var storedProcedures = new List<StoredProcedureSchema>();
         
         // Combine stored procedures and functions (PostgreSQL uses functions instead of stored procedures)
-        var routines = new List<DatabaseSchemaReader.DataSchema.DatabaseStoredProcedure>();
+        var routines = new List<DatabaseStoredProcedure>();
         
         // Add stored procedures
         if (databaseSchema.StoredProcedures != null)
@@ -427,7 +446,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
             // Convert functions to stored procedure format for consistent handling
             var functionRoutines = databaseSchema.Functions
                 .Where(func => !IsSystemObject(func.SchemaOwner, func.Name) && importFilterService.ExportStoredProcedure(func.SchemaOwner, func.Name))
-                .Cast<DatabaseSchemaReader.DataSchema.DatabaseStoredProcedure>(); // Functions inherit from base routine type
+                .Cast<DatabaseStoredProcedure>(); // Functions inherit from base routine type
             
             routines.AddRange(functionRoutines);
         }
@@ -458,7 +477,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return storedProcedures;
     }
 
-    protected virtual List<StoredProcedureParameterSchema> ExtractStoredProcedureParameters(DatabaseSchemaReader.DataSchema.DatabaseStoredProcedure routine)
+    protected virtual List<StoredProcedureParameterSchema> ExtractStoredProcedureParameters(DatabaseStoredProcedure routine)
     {
         var parameters = new List<StoredProcedureParameterSchema>();
 
@@ -468,7 +487,8 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
             var parameterSchema = new StoredProcedureParameterSchema
             {
                 Name = argument.Name ?? "",
-                DataType = GetDataTypeString(argument.DataType?.TypeName),
+                DataType = GetDataTypeString(argument.DatabaseDataType),
+                NormalizedDataType = GetNormalizedDataTypeString(argument.DataType, argument.DatabaseDataType),
                 IsOutputParameter = argument.Out, // DatabaseSchemaReader exposes input/output information
                 MaxLength = GetMaxLength(argument),
                 NumericPrecision = GetNumericPrecision(argument),
@@ -481,9 +501,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return parameters;
     }
 
-    protected virtual async Task<List<ResultSetColumnSchema>> ExtractStoredProcedureResultSetAsync(
-        DatabaseSchemaReader.DataSchema.DatabaseStoredProcedure routine, 
-        DbConnection connection)
+    protected virtual async Task<List<ResultSetColumnSchema>> ExtractStoredProcedureResultSetAsync(DatabaseStoredProcedure routine, DbConnection connection)
     {
         var resultColumns = new List<ResultSetColumnSchema>();
 
@@ -504,7 +522,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return resultColumns;
     }
 
-    protected virtual DefaultConstraintSchema? ExtractDefaultConstraint(DatabaseSchemaReader.DataSchema.DatabaseColumn column)
+    protected virtual DefaultConstraintSchema? ExtractDefaultConstraint(DatabaseColumn column)
     {
         if (string.IsNullOrEmpty(column.DefaultValue))
         {
@@ -517,46 +535,58 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         };
     }
 
-    protected virtual ComputedColumnSchema? ExtractComputedColumn(DatabaseSchemaReader.DataSchema.DatabaseColumn column)
+    /// <remarks>
+    /// If you get an exception thrown here, you will need to perform an override on this method in the respective database provider.
+    /// Then you will need to perform the "dbDataType" checks first to determine the appropriate C# type.
+    /// After that call this base method.
+    /// </remarks>
+    protected virtual string GetNormalizedDataTypeString(DataType? dataType, string dbDataType)
     {
-        // DatabaseSchemaReader doesn't expose computed column information directly
-        return null;
+        return dataType?.NetDataTypeCSharpName ?? throw new InvalidOperationException($"Unable to extract normalized data type for database data type '{dbDataType}'");;
     }
 
-    protected virtual string GetDataTypeString(string? dataTypeName)
+    protected virtual ComputedColumnSchema? ExtractComputedColumn(DatabaseColumn column)
     {
-        return dataTypeName?.ToLowerInvariant() ?? "unknown";
-    }
-
-    // Fixed: Access properties directly from DatabaseColumn instead of DataType
-    protected virtual int? GetMaxLength(DatabaseSchemaReader.DataSchema.DatabaseColumn column)
-    {
-        return column.Length > 0 ? column.Length : null;
-    }
-
-    protected virtual int? GetNumericPrecision(DatabaseSchemaReader.DataSchema.DatabaseColumn column)
-    {
-        return column.Precision > 0 ? column.Precision : null;
-    }
-
-    protected virtual int? GetNumericScale(DatabaseSchemaReader.DataSchema.DatabaseColumn column)
-    {
-        return column.Scale > 0 ? column.Scale : null;
+        if (column.ComputedDefinition is null)
+        {
+            return null;
+        }
+        
+        return new ComputedColumnSchema
+        {
+            Expression = column.ComputedDefinition
+        };
     }
 
     // Helper methods for extracting length/precision/scale from DatabaseSchemaReader objects
-    protected virtual int? GetMaxLength(DatabaseSchemaReader.DataSchema.DatabaseArgument argument)
+    protected virtual int? GetMaxLength(DatabaseArgument argument)
     {
         return argument.Length > 0 ? argument.Length : null;
     }
 
-    protected virtual int? GetNumericPrecision(DatabaseSchemaReader.DataSchema.DatabaseArgument argument)
+    protected virtual int? GetNumericPrecision(DatabaseArgument argument)
     {
         return argument.Precision > 0 ? argument.Precision : null;
     }
 
-    protected virtual int? GetNumericScale(DatabaseSchemaReader.DataSchema.DatabaseArgument argument)
+    protected virtual int? GetNumericScale(DatabaseArgument argument)
     {
         return argument.Scale > 0 ? argument.Scale : null;
+    }
+
+    // Helper methods for DatabaseColumn (separate from DatabaseArgument)
+    protected virtual int? GetMaxLength(DatabaseColumn column)
+    {
+        return column.Length > 0 ? column.Length : null;
+    }
+
+    protected virtual int? GetNumericPrecision(DatabaseColumn column)
+    {
+        return column.Precision > 0 ? column.Precision : null;
+    }
+
+    protected virtual int? GetNumericScale(DatabaseColumn column)
+    {
+        return column.Scale > 0 ? column.Scale : null;
     }
 } 

@@ -13,7 +13,7 @@ internal static class TypeReferenceMapper
         return new TypeReferencePersistable
         {
             Id = Guid.NewGuid().ToString(),
-            TypeId = GetTypeId(column.DataType),
+            TypeId = GetTypeId(column.NormalizedDataType),
             IsNullable = column.IsNullable,
             IsCollection = false,
             Stereotypes = [],
@@ -26,7 +26,7 @@ internal static class TypeReferenceMapper
         return new TypeReferencePersistable
         {
             Id = Guid.NewGuid().ToString(),
-            TypeId = GetTypeId(parameter.DataType),
+            TypeId = GetTypeId(parameter.NormalizedDataType),
             IsNullable = !parameter.IsOutputParameter, // Input parameters can be nullable, output parameters typically aren't
             IsCollection = parameter.DataType.ToLower() == "user-defined-table-type",
             Stereotypes = [],
@@ -39,7 +39,7 @@ internal static class TypeReferenceMapper
         return new TypeReferencePersistable
         {
             Id = Guid.NewGuid().ToString(),
-            TypeId = GetTypeId(column.DataType),
+            TypeId = GetTypeId(column.NormalizedDataType),
             IsNullable = column.IsNullable,
             IsCollection = false,
             Stereotypes = [],
@@ -47,24 +47,24 @@ internal static class TypeReferenceMapper
         };
     }
 
-    private static string? GetTypeId(string dataType)
+    private static string? GetTypeId(string normalizedDataType)
     {
-        // Convert database-agnostic data type string to Intent type ID
-        return dataType.ToLower() switch
+        // Map fundamental types to Intent common types - simple 1:1 mapping
+        return normalizedDataType switch
         {
-            "varchar" or "nvarchar" or "text" or "ntext" or "char" or "nchar" or "sysname" or "xml" => Constants.TypeDefinitions.CommonTypes.String,
+            "string" => Constants.TypeDefinitions.CommonTypes.String,
             "int" => Constants.TypeDefinitions.CommonTypes.Int,
-            "bigint" => Constants.TypeDefinitions.CommonTypes.Long,
-            "smallint" => Constants.TypeDefinitions.CommonTypes.Short,
-            "tinyint" => Constants.TypeDefinitions.CommonTypes.Byte,
-            "decimal" or "numeric" or "money" or "smallmoney" or "float" or "real" => Constants.TypeDefinitions.CommonTypes.Decimal,
-            "bit" => Constants.TypeDefinitions.CommonTypes.Bool,
-            "datetime" or "datetime2" or "smalldatetime" => Constants.TypeDefinitions.CommonTypes.Datetime,
+            "long" => Constants.TypeDefinitions.CommonTypes.Long,
+            "short" => Constants.TypeDefinitions.CommonTypes.Short,
+            "byte" => Constants.TypeDefinitions.CommonTypes.Byte,
+            "decimal" => Constants.TypeDefinitions.CommonTypes.Decimal,
+            "bool" => Constants.TypeDefinitions.CommonTypes.Bool,
+            "datetime" => Constants.TypeDefinitions.CommonTypes.Datetime,
+            "datetimeoffset" => Constants.TypeDefinitions.CommonTypes.DatetimeOffset,
             "date" => Constants.TypeDefinitions.CommonTypes.Date,
             "time" => Constants.TypeDefinitions.CommonTypes.TimeSpan,
-            "uniqueidentifier" => Constants.TypeDefinitions.CommonTypes.Guid,
-            "varbinary" or "binary" or "image" or "timestamp" => Constants.TypeDefinitions.CommonTypes.Binary,
-            "datetimeoffset" => Constants.TypeDefinitions.CommonTypes.DatetimeOffset,
+            "guid" => Constants.TypeDefinitions.CommonTypes.Guid,
+            "binary" => Constants.TypeDefinitions.CommonTypes.Binary,
             _ => null
         };
     }

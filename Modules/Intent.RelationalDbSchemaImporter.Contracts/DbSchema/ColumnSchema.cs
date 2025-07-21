@@ -4,9 +4,13 @@ public class ColumnSchema
 {
     public string Name { get; set; } = string.Empty;
     /// <summary>
-    /// Base data type name without size/precision information (e.g., "nvarchar", "decimal", "int")
+    /// Original SQL data type as-is from the database (e.g., "character varying", "nvarchar(255)")
     /// </summary>
     public string DataType { get; set; } = string.Empty;
+    /// <summary>
+    /// Normalized data type for Intent type mapping (e.g., "string", "int", "datetime")
+    /// </summary>
+    public string NormalizedDataType { get; set; } = string.Empty;
     public bool IsNullable { get; set; }
     public bool IsPrimaryKey { get; set; }
     public bool IsIdentity { get; set; }
