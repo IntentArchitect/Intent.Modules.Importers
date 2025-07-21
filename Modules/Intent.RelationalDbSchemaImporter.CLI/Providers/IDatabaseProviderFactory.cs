@@ -16,13 +16,6 @@ internal interface IDatabaseProviderFactory
     IDatabaseProvider CreateProvider(DatabaseType databaseType);
     
     /// <summary>
-    /// Attempts to detect the database type from a connection string
-    /// </summary>
-    /// <param name="connectionString">Database connection string</param>
-    /// <returns>Detected database type, or Auto if detection fails</returns>
-    DatabaseType DetectDatabaseType(string connectionString);
-    
-    /// <summary>
     /// Gets all supported database types
     /// </summary>
     /// <returns>Collection of supported database types</returns>

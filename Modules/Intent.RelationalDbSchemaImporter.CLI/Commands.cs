@@ -1,16 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.CommandLine;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Intent.RelationalDbSchemaImporter.CLI.Providers;
 using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
-using Microsoft.Data.SqlClient;
-using Microsoft.SqlServer.Management.Common;
-using Microsoft.SqlServer.Management.Smo;
 
 namespace Intent.RelationalDbSchemaImporter.CLI;
 
@@ -44,18 +39,6 @@ internal static partial class Commands
                 var factory = new DatabaseProviderFactory();
                 var databaseType = request.DatabaseType;
                 
-                // Auto-detect database type if not specified
-                if (databaseType == DatabaseType.Auto)
-                {
-                    databaseType = factory.DetectDatabaseType(request.ConnectionString);
-                    
-                    if (databaseType == DatabaseType.Auto)
-                    {
-                        response.AddError("Could not auto-detect database type from connection string. Please specify the database type explicitly.");
-                        return null;
-                    }
-                }
-                
                 var provider = factory.CreateProvider(databaseType);
                 var databaseSchema = await provider.ExtractSchemaAsync(request.ConnectionString, importFilterService);
 
@@ -75,30 +58,33 @@ internal static partial class Commands
             "Returns a list of stored procedures in the database",
             async (jsonPayload, response, cancellationToken) =>
             {
-                var request = DeserializeRequest<ConnectionTestRequest>(jsonPayload, response);
-                if (request == null || !ValidateConnectionString(request.ConnectionString, response))
+                var request = DeserializeRequest<StoredProceduresListRequest>(jsonPayload, response);
+                if (request == null || !ValidateConnectionString(request.ConnectionString, response) ||
+                    !ValidateDatabaseType(request.DatabaseType, response))
                 {
                     return response;
                 }
 
-                var dbConnection = await CreateDatabaseConnection(request.ConnectionString, response, cancellationToken);
-                if (dbConnection == null) return response;
-
-                using var connection = dbConnection.Connection;
-                var db = dbConnection.Database;
-
-                var result = new StoredProceduresListResult
+                try
                 {
-                    StoredProcedures = db.StoredProcedures
-                        .OfType<StoredProcedure>()
-                        .Where(x => x.Schema != "sys")
-                        .Select(sp => $"{sp.Schema}.{sp.Name}")
-                        .OrderBy(name => name)
-                        .ToList()
-                };
+                    var factory = new DatabaseProviderFactory();
+                    var provider = factory.CreateProvider(request.DatabaseType);
+                    
+                    var routines = await provider.GetRoutineNamesAsync(request.ConnectionString);
+                    
+                    var result = new StoredProceduresListResult
+                    {
+                        StoredProcedures = routines
+                    };
 
-                response.SetResult(result);
-                return response;
+                    response.SetResult(result);
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    response.AddError($"Error retrieving stored procedures: {ex.Message}");
+                    return response;
+                }
             });
     }
 
@@ -110,29 +96,24 @@ internal static partial class Commands
             async (jsonPayload, response, cancellationToken) =>
             {
                 var request = DeserializeRequest<ConnectionTestRequest>(jsonPayload, response);
-                if (request == null || !ValidateConnectionString(request.ConnectionString, response))
+                if (request == null || !ValidateConnectionString(request.ConnectionString, response) ||
+                    !ValidateDatabaseType(request.DatabaseType, response))
                 {
                     return response;
                 }
 
                 try
                 {
-                    var dbConnection = await CreateDatabaseConnection(request.ConnectionString, response, cancellationToken);
-                    if (dbConnection == null)
-                    {
-                        return response;
-                    }
-
-                    using var connection = dbConnection.Connection;
-                    var db = dbConnection.Database;
-
-                    db.ExecuteWithResults("SELECT 1");
-
+                    var factory = new DatabaseProviderFactory();
+                    var provider = factory.CreateProvider(request.DatabaseType);
+                    
+                    await provider.TestConnectionAsync(request.ConnectionString, cancellationToken);
+                    
                     var result = new ConnectionTestResult
                     {
                         IsSuccessful = true
                     };
-
+                    
                     response.SetResult(result);
                     return response;
                 }
@@ -156,84 +137,38 @@ internal static partial class Commands
             "Extracts database metadata (tables, views, stored procedures) as JSON",
             async (jsonPayload, response, cancellationToken) =>
             {
-                var request = DeserializeRequest<ConnectionTestRequest>(jsonPayload, response);
-                if (request == null || !ValidateConnectionString(request.ConnectionString, response))
+                var request = DeserializeRequest<DatabaseObjectsRequest>(jsonPayload, response);
+                if (request == null || !ValidateConnectionString(request.ConnectionString, response) ||
+                    !ValidateDatabaseType(request.DatabaseType, response))
                 {
                     return response;
                 }
 
-                var dbConnection = await CreateDatabaseConnection(request.ConnectionString, response, cancellationToken);
-                if (dbConnection == null)
+                try
                 {
+                    var factory = new DatabaseProviderFactory();
+                    var provider = factory.CreateProvider(request.DatabaseType);
+                    
+                    var tables = await provider.GetTableNamesAsync(request.ConnectionString);
+                    var views = await provider.GetViewNamesAsync(request.ConnectionString);
+                    var storedProcedures = await provider.GetRoutineNamesAsync(request.ConnectionString);
+
+                    var result = new DatabaseObjectsResult
+                    {
+                        Tables = tables,
+                        Views = views,
+                        StoredProcedures = storedProcedures
+                    };
+
+                    response.SetResult(result);
                     return response;
                 }
-
-                using var connection = dbConnection.Connection;
-                var db = dbConnection.Database;
-        
-                var tables = ExtractTables(db);
-                var views = ExtractViews(db);
-                var storedProcedures = ExtractStoredProcedures(db);
-
-                var result = new DatabaseObjectsResult
+                catch (Exception ex)
                 {
-                    Tables = tables,
-                    Views = views,
-                    StoredProcedures = storedProcedures
-                };
-
-                response.SetResult(result);
-                return response;
-        
-                static List<string> ExtractTables(Database db)
-                {
-                    return db.Tables
-                        .OfType<Table>()
-                        .Where(x => x.Schema != "sys")
-                        .Select(t => $"{t.Schema}.{t.Name}")
-                        .OrderBy(name => name)
-                        .ToList();
-                }
-
-                static List<string> ExtractViews(Database db)
-                {
-                    return db.Views
-                        .OfType<View>()
-                        .Where(x => x.Schema != "sys" && x.Schema != "INFORMATION_SCHEMA")
-                        .Select(v => $"{v.Schema}.{v.Name}")
-                        .OrderBy(name => name)
-                        .ToList();
-                }
-
-                static List<string> ExtractStoredProcedures(Database db)
-                {
-                    return db.StoredProcedures
-                        .OfType<StoredProcedure>()
-                        .Where(x => x.Schema != "sys")
-                        .Select(sp => $"{sp.Schema}.{sp.Name}")
-                        .OrderBy(name => name)
-                        .ToList();
+                    response.AddError($"Error retrieving database objects: {ex.Message}");
+                    return response;
                 }
             });
     }
-    
-    private static async Task<ConnectionResult?> CreateDatabaseConnection(
-        string connectionString, StandardResponse response, CancellationToken cancellationToken)
-    {
-        try
-        {
-            var connection = new SqlConnection(connectionString);
-            await connection.OpenAsync(cancellationToken);
-            var server = new Server(new ServerConnection(connection));
-            var database = server.Databases[connection.Database];
-            return new ConnectionResult(connection, server, database);
-        }
-        catch (Exception ex)
-        {
-            response.AddError($"Database connection error: {ex.Message}");
-            return null;
-        }
-    }
 
-    private record ConnectionResult(SqlConnection Connection, Server Server, Database Database);
 }

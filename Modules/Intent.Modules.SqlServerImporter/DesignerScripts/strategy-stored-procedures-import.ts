@@ -49,6 +49,19 @@ class StoredProceduresImportStrategy {
                     value: defaults.connectionString
                 },
                 {
+                    id: "databaseType",
+                    fieldType: "select",
+                    label: "Database Type",
+                    placeholder: null,
+                    hint: null,
+                    isRequired: true,
+                    value: "SqlServer",
+                    selectOptions: [
+                        { id: "SqlServer", description: "SQL Server" },
+                        { id: "PostgreSQL", description: "PostgreSQL" },
+                    ]
+                },
+                {
                     id: "storedProcedureType",
                     fieldType: "select",
                     label: "Stored Procedure Representation",
@@ -136,7 +149,8 @@ class StoredProceduresImportStrategy {
             connectionString: capturedInput.connectionString,
             storedProcNames: storedProcNamesArray,
             repositoryElementId: element.id,
-            settingPersistence: capturedInput.settingPersistence
+            settingPersistence: capturedInput.settingPersistence,
+            databaseType: capturedInput.databaseType
         };
 
         return importConfig;
@@ -265,6 +279,7 @@ interface IStoredProceduresImportModel {
     storedProcNames: string[];
     repositoryElementId: string;
     settingPersistence: string;
+    databaseType: string;
 }
 
 interface IStoredProcListResultModel {

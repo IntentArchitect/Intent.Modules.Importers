@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using DatabaseSchemaReader;
 using Intent.RelationalDbSchemaImporter.CLI.Services;
@@ -55,18 +57,83 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return schema;
     }
 
-    public virtual async Task<bool> TestConnectionAsync(string connectionString)
+    public virtual async Task TestConnectionAsync(string connectionString, CancellationToken cancellationToken)
     {
-        try
+        await using var connection = CreateConnection(connectionString);
+        await connection.OpenAsync(cancellationToken);
+        var command = connection.CreateCommand();
+        command.CommandText = "SELECT 1";
+        var result = await command.ExecuteNonQueryAsync(cancellationToken);
+    }
+
+    public virtual async Task<List<string>> GetTableNamesAsync(string connectionString)
+    {
+        using var connection = CreateConnection(connectionString);
+        await connection.OpenAsync();
+        
+        var reader = new DatabaseReader(connection);
+        var databaseSchema = reader.ReadAll();
+        
+        return databaseSchema.Tables
+            .Where(table => !IsSystemObject(table.SchemaOwner, table.Name))
+            .Select(t => $"{t.SchemaOwner ?? "dbo"}.{t.Name}")
+            .OrderBy(name => name)
+            .ToList();
+    }
+
+    public virtual async Task<List<string>> GetViewNamesAsync(string connectionString)
+    {
+        using var connection = CreateConnection(connectionString);
+        await connection.OpenAsync();
+        
+        var reader = new DatabaseReader(connection);
+        var databaseSchema = reader.ReadAll();
+        
+        return databaseSchema.Views
+            .Where(view => !IsSystemObject(view.SchemaOwner, view.Name))
+            .Select(v => $"{v.SchemaOwner ?? "dbo"}.{v.Name}")
+            .OrderBy(name => name)
+            .ToList();
+    }
+
+    public virtual async Task<List<string>> GetRoutineNamesAsync(string connectionString)
+    {
+        using var connection = CreateConnection(connectionString);
+        await connection.OpenAsync();
+        
+        var reader = new DatabaseReader(connection);
+        var databaseSchema = reader.ReadAll();
+        
+        var routines = new List<string>();
+        
+        // Add stored procedures
+        if (databaseSchema.StoredProcedures != null)
         {
-            using var connection = CreateConnection(connectionString);
-            await connection.OpenAsync();
-            return true;
+            routines.AddRange(databaseSchema.StoredProcedures
+                .Where(sp => !IsSystemObject(sp.SchemaOwner, sp.Name))
+                .Select(sp => $"{sp.SchemaOwner ?? "dbo"}.{sp.Name}"));
         }
-        catch
+        
+        // Add functions (if supported by DatabaseSchemaReader)
+        if (databaseSchema.Functions != null)
         {
-            return false;
+            routines.AddRange(databaseSchema.Functions
+                .Where(func => !IsSystemObject(func.SchemaOwner, func.Name))
+                .Select(func => $"{func.SchemaOwner ?? "dbo"}.{func.Name}"));
         }
+        
+        return routines.OrderBy(name => name).ToList();
+    }
+
+    protected virtual bool IsSystemObject(string? schema, string? name)
+    {
+        if (string.IsNullOrEmpty(name)) return true;
+        
+        var systemSchemas = new[] { "sys", "INFORMATION_SCHEMA", "information_schema", "pg_catalog", "pg_toast" };
+        var systemTables = new[] { "sysdiagrams", "__MigrationHistory", "__EFMigrationsHistory" };
+        
+        return systemSchemas.Contains(schema, StringComparer.OrdinalIgnoreCase) ||
+               systemTables.Contains(name, StringComparer.OrdinalIgnoreCase);
     }
 
     protected virtual async Task<List<TableSchema>> ExtractTablesAsync(

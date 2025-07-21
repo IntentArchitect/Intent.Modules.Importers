@@ -84,13 +84,27 @@ class DatabaseImportStrategy {
                             value: defaults.connectionString
                         },
                         {
+                            id: "databaseType",
+                            fieldType: "select",
+                            label: "Database Type",
+                            placeholder: null,
+                            hint: null,
+                            isRequired: true,
+                            value: "SqlServer",
+                            selectOptions: [
+                                { id: "SqlServer", description: "SQL Server" },
+                                { id: "PostgreSQL", description: "PostgreSQL" },
+                            ]
+                        },
+                        {
                             id: "connectionStringTest",
                             fieldType: "button",
                             label: "Test Connection",
                             hint: "Test whether the Connection String is valid to access the Database Server",
                             onClick: async (form: MacroApi.Context.IDynamicFormApi) => {
-                                let testConnectionModel = {
-                                    connectionString: form.getField("connectionString").value as string
+                                let testConnectionModel: ITestConnectionModel = {
+                                    connectionString: form.getField("connectionString").value as string,
+                                    databaseType: form.getField("databaseType").value as string
                                 };
                                 
                                 let executionResult = await executeImporterModuleTask(
@@ -232,9 +246,10 @@ class DatabaseImportStrategy {
                                     await dialogService.error("Please enter a connection string first.");
                                     return;
                                 }
+                                const databaseType = form.getField("databaseType").value as string;
                                 let importFilterFilePath = form.getField("importFilterFilePath").value as string;
                                 
-                                let returnedImportFilterFilePath = await this.presentManageFiltersDialog(connectionString, packageId, importFilterFilePath);
+                                let returnedImportFilterFilePath = await this.presentManageFiltersDialog(connectionString, databaseType, packageId, importFilterFilePath);
                                 if (returnedImportFilterFilePath != null) {
                                     form.getField("importFilterFilePath").value = returnedImportFilterFilePath;
                                 }
@@ -279,15 +294,16 @@ class DatabaseImportStrategy {
             importFilterFilePath: capturedInput.importFilterFilePath,
             storedProcedureType: capturedInput.storedProcedureType,
             connectionString: capturedInput.connectionString,
-            settingPersistence: capturedInput.settingPersistence
+            settingPersistence: capturedInput.settingPersistence,
+            databaseType: capturedInput.databaseType
         };
 
         return importConfig;
     }
 
-    private async presentManageFiltersDialog(connectionString: string, packageId: string, importFilterFilePath: string): Promise<string | null> {
+    private async presentManageFiltersDialog(connectionString: string, databaseType: string, packageId: string, importFilterFilePath: string): Promise<string | null> {
         try {
-            const metadata = await this.fetchDatabaseMetadata(connectionString);
+            const metadata = await this.fetchDatabaseMetadata(connectionString, databaseType);
             if (!metadata) {
                 return null;
             }
@@ -468,9 +484,12 @@ class DatabaseImportStrategy {
         return importFilterFilePath;
     }
 
-    private async fetchDatabaseMetadata(connectionString: string): Promise<IDatabaseMetadata|null> {
+    private async fetchDatabaseMetadata(connectionString: string, databaseType: string): Promise<IDatabaseMetadata|null> {
         // Get database metadata
-        const metadataModel = { connectionString: connectionString };
+        const metadataModel: IDatabaseMetadataInputModel = { 
+            connectionString: connectionString,
+            databaseType: databaseType 
+        };
         const metadataExecutionResult = await executeImporterModuleTask(
             "Intent.Modules.SqlServerImporter.Tasks.RetrieveDatabaseObjects", 
             metadataModel);
@@ -834,6 +853,17 @@ interface IDatabaseImportModel {
     connectionString: string;
     // Ignoring PackageFileName
     settingPersistence: string;
+    databaseType: string;
+}
+
+interface ITestConnectionModel {
+    connectionString: string;
+    databaseType: string;
+}
+
+interface IDatabaseMetadataInputModel {
+    connectionString: string;
+    databaseType: string;
 }
 
 interface IDatabaseMetadata {

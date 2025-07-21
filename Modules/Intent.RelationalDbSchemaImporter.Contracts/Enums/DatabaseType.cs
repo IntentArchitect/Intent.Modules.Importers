@@ -5,7 +5,7 @@ namespace Intent.RelationalDbSchemaImporter.Contracts.Enums;
 /// </summary>
 public enum DatabaseType
 {
-    Auto,
-    SqlServer,
-    PostgreSQL
+    Unspecified = 0,
+    SqlServer = 1,
+    PostgreSQL = 2
 } 

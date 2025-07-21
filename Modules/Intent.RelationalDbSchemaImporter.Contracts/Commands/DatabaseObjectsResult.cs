@@ -1,4 +1,18 @@
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
+
 namespace Intent.RelationalDbSchemaImporter.Contracts.Commands;
+
+public class DatabaseObjectsRequest
+{
+    public string ConnectionString { get; set; } = string.Empty;
+    public DatabaseType DatabaseType { get; set; }
+}
+
+public class StoredProceduresListRequest
+{
+    public string ConnectionString { get; set; } = string.Empty;
+    public DatabaseType DatabaseType { get; set; }
+}
 
 public class DatabaseObjectsResult
 {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
@@ -28,8 +29,29 @@ internal interface IDatabaseProvider
     /// Tests database connectivity
     /// </summary>
     /// <param name="connectionString">Database connection string</param>
-    /// <returns>True if connection is successful</returns>
-    Task<bool> TestConnectionAsync(string connectionString);
+    /// <remarks>It will throw an exception when the connection couldn't be established.</remarks>
+    Task TestConnectionAsync(string connectionString, CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Gets list of table names in the database
+    /// </summary>
+    /// <param name="connectionString">Database connection string</param>
+    /// <returns>List of table names in format "schema.table"</returns>
+    Task<List<string>> GetTableNamesAsync(string connectionString);
+    
+    /// <summary>
+    /// Gets list of view names in the database
+    /// </summary>
+    /// <param name="connectionString">Database connection string</param>
+    /// <returns>List of view names in format "schema.view"</returns>
+    Task<List<string>> GetViewNamesAsync(string connectionString);
+    
+    /// <summary>
+    /// Gets list of database routine names (stored procedures, functions, etc.)
+    /// </summary>
+    /// <param name="connectionString">Database connection string</param>
+    /// <returns>List of routine names in format "schema.routine"</returns>
+    Task<List<string>> GetRoutineNamesAsync(string connectionString);
 }
 
 /// <summary>

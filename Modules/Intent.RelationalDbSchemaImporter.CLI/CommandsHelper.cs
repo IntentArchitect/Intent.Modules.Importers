@@ -1,12 +1,15 @@
 using System;
 using System.CommandLine;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Intent.Modules.Common.Templates;
+using Intent.RelationalDbSchemaImporter.CLI.Providers;
 using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.Commands;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
 namespace Intent.RelationalDbSchemaImporter.CLI;
 
@@ -116,5 +119,23 @@ internal static partial class Commands
         }
 
         return false;
+    }
+    
+    private static bool ValidateDatabaseType(DatabaseType databaseType, StandardResponse response)
+    {
+        if (databaseType == DatabaseType.Unspecified)
+        {
+            response.AddError("DatabaseType must be explicitly specified.");
+            return false;
+        }
+        
+        var factory = new DatabaseProviderFactory();
+        if (!factory.GetSupportedTypes().Contains(databaseType))
+        {
+            response.AddError($"DatabaseType {databaseType} is not supported. Supported types: {string.Join(", ", factory.GetSupportedTypes())}");
+            return false;
+        }
+        
+        return true;
     }
 }

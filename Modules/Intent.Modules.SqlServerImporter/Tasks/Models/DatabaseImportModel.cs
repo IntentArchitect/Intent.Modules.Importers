@@ -1,30 +1,24 @@
 ﻿using System.Collections.Generic;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
 namespace Intent.Modules.SqlServerImporter.Tasks.Models;
 
 public class DatabaseImportModel
 {
 	public string ApplicationId { get; set; } = null!;
-	public string DesignerId { get; set; } = null!;
 	public string PackageId { get; set; } = null!;
 	public string? PackageFileName { get; set; }
-
-	// SQL Extractor Contract BEGIN
-
 	public string EntityNameConvention { get; set; } = null!;
 	public string TableStereotype { get; set; } = null!;
-
-	public List<string> TypesToExport { get; set; } = [];
-
-	public string ImportFilterFilePath { get; set; } = null!;
-	
 	public string? StoredProcedureType { get; set; }
-
-	public string ConnectionString { get; set; } = null!;
-		
-	// SQL Extractor Contract END
-
 	public DatabaseSettingPersistence SettingPersistence { get; set; } = DatabaseSettingPersistence.None;
+	
+	// BEGIN - ImportSchemaRequest
+	public string ConnectionString { get; set; } = null!;
+	public string ImportFilterFilePath { get; set; } = null!;
+	public List<string> TypesToExport { get; set; } = [];
+	public DatabaseType DatabaseType { get; set; }
+	// END - ImportSchemaRequest
 }
 
 public enum DatabaseSettingPersistence

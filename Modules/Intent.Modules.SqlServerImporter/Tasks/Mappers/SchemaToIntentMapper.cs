@@ -180,7 +180,8 @@ internal class SchemaToIntentMapper
             TypesToExport = importModel.TypesToExport.Select(Enum.Parse<ExportType>).ToHashSet(),
             StoredProcedureType = string.IsNullOrWhiteSpace(importModel.StoredProcedureType)
                 ? StoredProcedureType.Default
-                : Enum.Parse<StoredProcedureType>(importModel.StoredProcedureType)
+                : Enum.Parse<StoredProcedureType>(importModel.StoredProcedureType),
+            DatabaseType = importModel.DatabaseType
         };
     }
 
@@ -198,7 +199,8 @@ internal class SchemaToIntentMapper
             TypesToExport = importModel.TypesToExport.Select(Enum.Parse<ExportType>).ToHashSet(),
             StoredProcedureType = string.IsNullOrWhiteSpace(importModel.StoredProcedureType)
                 ? StoredProcedureType.Default
-                : Enum.Parse<StoredProcedureType>(importModel.StoredProcedureType)
+                : Enum.Parse<StoredProcedureType>(importModel.StoredProcedureType),
+            DatabaseType = importModel.DatabaseType
         };
     }
 

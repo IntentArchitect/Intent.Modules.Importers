@@ -24,9 +24,9 @@ internal class DatabaseProviderFactory : IDatabaseProviderFactory
 
     public IDatabaseProvider CreateProvider(DatabaseType databaseType)
     {
-        if (databaseType == DatabaseType.Auto)
+        if (databaseType == DatabaseType.Unspecified)
         {
-            throw new ArgumentException("Cannot create provider for Auto database type. Use DetectDatabaseType first.");
+            throw new ArgumentException("Cannot create provider for Auto database type.");
         }
 
         if (!_providerFactories.ContainsKey(databaseType))
@@ -35,39 +35,6 @@ internal class DatabaseProviderFactory : IDatabaseProviderFactory
         }
 
         return _providerFactories[databaseType]();
-    }
-
-    public DatabaseType DetectDatabaseType(string connectionString)
-    {
-        try
-        {
-            // Convert to lowercase for easier pattern matching
-            var connStr = connectionString.ToLowerInvariant();
-
-            // SQL Server patterns
-            if (connStr.Contains("server=") || connStr.Contains("data source=") || 
-                connStr.Contains("initial catalog=") || connStr.Contains(".database.windows.net") ||
-                connStr.Contains("sqlserver://") || connStr.Contains("mssql://") ||
-                connStr.Contains("trust server certificate"))
-            {
-                return DatabaseType.SqlServer;
-            }
-
-            // PostgreSQL patterns
-            if (connStr.Contains("host=") || connStr.Contains("postgresql://") || connStr.Contains("postgres://") ||
-                connStr.Contains("port=5432") || connStr.Contains("username=") || connStr.Contains("user="))
-            {
-                return DatabaseType.PostgreSQL;
-            }
-
-            Logging.LogWarning("Could not auto-detect database type from connection string.");
-            return DatabaseType.Auto;
-        }
-        catch (Exception ex)
-        {
-            Logging.LogWarning($"Error detecting database type: {ex.Message}");
-            return DatabaseType.Auto;
-        }
     }
 
     public IEnumerable<DatabaseType> GetSupportedTypes()

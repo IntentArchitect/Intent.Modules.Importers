@@ -20,8 +20,14 @@ public class StoredProcList : ModuleTaskSingleInputBase<StoredProcListInputModel
     protected override ExecuteResult ExecuteModuleTask(StoredProcListInputModel importModel)
     {
         var executionResult = new ExecuteResult();
+
+        var input = new StoredProceduresListRequest
+        {
+            ConnectionString = importModel.ConnectionString,
+            DatabaseType = importModel.DatabaseType
+        };
         
-        var result = ImporterTool.Run<StoredProceduresListResult>("list-stored-procedures", importModel);
+        var result = ImporterTool.Run<StoredProceduresListResult>("list-stored-procedures", input);
 
         if (executionResult.Errors.Count == 0)
         {

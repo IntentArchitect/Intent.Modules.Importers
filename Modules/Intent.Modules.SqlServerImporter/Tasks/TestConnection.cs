@@ -20,7 +20,8 @@ public class TestConnection : ModuleTaskSingleInputBase<TestConnectionInputModel
     {
         var input = new ConnectionTestRequest
         {
-            ConnectionString = importModel.ConnectionString
+            ConnectionString = importModel.ConnectionString,
+            DatabaseType = importModel.DatabaseType
         };
         var executionResult = new ExecuteResult();
         var result = ImporterTool.Run<ConnectionTestResult>("test-connection", input);
