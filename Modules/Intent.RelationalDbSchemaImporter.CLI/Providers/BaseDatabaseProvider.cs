@@ -24,7 +24,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
 
     public virtual async Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportFilterService importFilterService)
     {
-        using var connection = CreateConnection(connectionString);
+        await using var connection = CreateConnection(connectionString);
         await connection.OpenAsync();
         
         var reader = new DatabaseReader(connection);
@@ -68,7 +68,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
 
     public virtual async Task<List<string>> GetTableNamesAsync(string connectionString)
     {
-        using var connection = CreateConnection(connectionString);
+        await using var connection = CreateConnection(connectionString);
         await connection.OpenAsync();
         
         var reader = new DatabaseReader(connection);
@@ -76,14 +76,14 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         
         return databaseSchema.Tables
             .Where(table => !IsSystemObject(table.SchemaOwner, table.Name))
-            .Select(t => $"{t.SchemaOwner ?? "dbo"}.{t.Name}")
+            .Select(t => $"{t.SchemaOwner}.{t.Name}")
             .OrderBy(name => name)
             .ToList();
     }
 
     public virtual async Task<List<string>> GetViewNamesAsync(string connectionString)
     {
-        using var connection = CreateConnection(connectionString);
+        await using var connection = CreateConnection(connectionString);
         await connection.OpenAsync();
         
         var reader = new DatabaseReader(connection);
@@ -91,14 +91,14 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         
         return databaseSchema.Views
             .Where(view => !IsSystemObject(view.SchemaOwner, view.Name))
-            .Select(v => $"{v.SchemaOwner ?? "dbo"}.{v.Name}")
+            .Select(v => $"{v.SchemaOwner}.{v.Name}")
             .OrderBy(name => name)
             .ToList();
     }
 
     public virtual async Task<List<string>> GetRoutineNamesAsync(string connectionString)
     {
-        using var connection = CreateConnection(connectionString);
+        await using var connection = CreateConnection(connectionString);
         await connection.OpenAsync();
         
         var reader = new DatabaseReader(connection);
@@ -111,7 +111,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         {
             routines.AddRange(databaseSchema.StoredProcedures
                 .Where(sp => !IsSystemObject(sp.SchemaOwner, sp.Name))
-                .Select(sp => $"{sp.SchemaOwner ?? "dbo"}.{sp.Name}"));
+                .Select(sp => $"{sp.SchemaOwner}.{sp.Name}"));
         }
         
         // Add functions (if supported by DatabaseSchemaReader)
@@ -119,7 +119,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         {
             routines.AddRange(databaseSchema.Functions
                 .Where(func => !IsSystemObject(func.SchemaOwner, func.Name))
-                .Select(func => $"{func.SchemaOwner ?? "dbo"}.{func.Name}"));
+                .Select(func => $"{func.SchemaOwner}.{func.Name}"));
         }
         
         return routines.OrderBy(name => name).ToList();
@@ -143,20 +143,20 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
     {
         var tables = new List<TableSchema>();
         var filteredTables = databaseSchema.Tables
-            .Where(table => importFilterService.ExportTable(table.SchemaOwner ?? "dbo", table.Name))
+            .Where(table => !IsSystemObject(table.SchemaOwner, table.Name) && importFilterService.ExportTable(table.SchemaOwner, table.Name))
             .ToArray();
 
         // Handle dependent tables if required
         if (importFilterService.IncludeDependantTables())
         {
             var dependencyResolver = CreateDependencyResolver(connection);
-            var tableNames = filteredTables.Select(t => $"{t.SchemaOwner ?? "dbo"}.{t.Name}");
+            var tableNames = filteredTables.Select(t => $"{t.SchemaOwner}.{t.Name}");
             var dependentTableNames = await dependencyResolver.GetDependentTablesAsync(tableNames);
             
             var dependentTables = databaseSchema.Tables
-                .Where(t => dependentTableNames.Contains($"{t.SchemaOwner ?? "dbo"}.{t.Name}"))
+                .Where(t => dependentTableNames.Contains($"{t.SchemaOwner}.{t.Name}"))
                 .Where(t => !filteredTables.Contains(t))
-                .Where(t => importFilterService.ExportDependantTable(t.SchemaOwner ?? "dbo", t.Name));
+                .Where(t => importFilterService.ExportDependantTable(t.SchemaOwner, t.Name));
             
             filteredTables = filteredTables.Concat(dependentTables).ToArray();
         }
@@ -166,7 +166,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
             var tableSchema = new TableSchema
             {
                 Name = table.Name,
-                Schema = table.SchemaOwner ?? "dbo",
+                Schema = table.SchemaOwner,
                 Columns = ExtractTableColumns(table, importFilterService),
                 Indexes = ExtractTableIndexes(table, importFilterService),
                 ForeignKeys = ExtractTableForeignKeys(table),
@@ -187,7 +187,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
 
         foreach (var col in table.Columns)
         {
-            if (!importFilterService.ExportTableColumn(table.SchemaOwner ?? "dbo", table.Name, col.Name))
+            if (!importFilterService.ExportTableColumn(table.SchemaOwner, table.Name, col.Name))
             {
                 continue;
             }
