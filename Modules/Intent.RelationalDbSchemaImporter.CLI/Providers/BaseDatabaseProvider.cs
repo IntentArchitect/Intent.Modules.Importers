@@ -216,8 +216,50 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         DatabaseSchemaReader.DataSchema.DatabaseTable table, 
         ImportFilterService importFilterService)
     {
-        // Basic implementation - would be enhanced by derived classes
-        return [];
+        var indexes = new List<IndexSchema>();
+
+        if (!importFilterService.ExportIndexes())
+        {
+            return indexes;
+        }
+
+        // DatabaseSchemaReader provides indexes through the table.Indexes collection
+        foreach (var index in table.Indexes ?? [])
+        {
+            var indexSchema = new IndexSchema
+            {
+                Name = index.Name ?? $"IDX_{table.Name}",
+                IsUnique = index.IsUnique,
+                IsClustered = false, // DatabaseSchemaReader doesn't expose this directly for all databases
+                HasFilter = false, // DatabaseSchemaReader doesn't expose filter information directly
+                FilterDefinition = null, 
+                Columns = ExtractIndexColumns(index)
+            };
+
+            indexes.Add(indexSchema);
+        }
+
+        return indexes;
+    }
+
+    protected virtual List<IndexColumnSchema> ExtractIndexColumns(DatabaseSchemaReader.DataSchema.DatabaseIndex index)
+    {
+        var columns = new List<IndexColumnSchema>();
+
+        // DatabaseSchemaReader provides index columns
+        foreach (var indexColumn in index.Columns ?? [])
+        {
+            var columnSchema = new IndexColumnSchema
+            {
+                Name = indexColumn.Name ?? "",
+                IsDescending = false, // DatabaseSchemaReader doesn't expose sort order directly
+                IsIncluded = false // DatabaseSchemaReader doesn't expose this directly
+            };
+
+            columns.Add(columnSchema);
+        }
+
+        return columns;
     }
 
     protected virtual List<ForeignKeySchema> ExtractTableForeignKeys(
@@ -225,15 +267,15 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
     {
         var foreignKeys = new List<ForeignKeySchema>();
 
-        // Simplified implementation - using basic properties
+        // DatabaseSchemaReader provides comprehensive foreign key information
         foreach (var foreignKey in table.ForeignKeys ?? [])
         {
             var fkSchema = new ForeignKeySchema
             {
                 Name = foreignKey.Name ?? $"FK_{table.Name}",
-                ReferencedTableSchema = "dbo", // Default schema
+                ReferencedTableSchema = foreignKey.RefersToSchema ?? "dbo",
                 ReferencedTableName = foreignKey.RefersToTable ?? "",
-                Columns = [] // Simplified for now
+                Columns = ExtractForeignKeyColumns(foreignKey)
             };
 
             foreignKeys.Add(fkSchema);
@@ -242,11 +284,45 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return foreignKeys;
     }
 
+    protected virtual List<ForeignKeyColumnSchema> ExtractForeignKeyColumns(DatabaseSchemaReader.DataSchema.DatabaseConstraint foreignKey)
+    {
+        var columns = new List<ForeignKeyColumnSchema>();
+
+        // DatabaseSchemaReader provides column mappings in foreign keys
+        foreach (var column in foreignKey.Columns ?? [])
+        {
+            var columnSchema = new ForeignKeyColumnSchema
+            {
+                Name = column ?? "",
+                ReferencedColumnName = "" // DatabaseSchemaReader doesn't expose referenced column mapping directly
+            };
+
+            columns.Add(columnSchema);
+        }
+
+        return columns;
+    }
+
     protected virtual List<TriggerSchema> ExtractTableTriggers(
         DatabaseSchemaReader.DataSchema.DatabaseTable table)
     {
-        // Basic implementation - would be enhanced by derived classes
-        return [];
+        var triggers = new List<TriggerSchema>();
+
+        // DatabaseSchemaReader provides trigger information
+        foreach (var trigger in table.Triggers ?? [])
+        {
+            var triggerSchema = new TriggerSchema
+            {
+                Name = trigger.Name ?? "",
+                ParentSchema = table.SchemaOwner ?? "",
+                ParentName = table.Name ?? "",
+                ParentType = "Table"
+            };
+
+            triggers.Add(triggerSchema);
+        }
+
+        return triggers;
     }
 
     protected virtual async Task<List<ViewSchema>> ExtractViewsAsync(
@@ -254,8 +330,78 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         ImportFilterService importFilterService)
     {
         var views = new List<ViewSchema>();
-        // Basic implementation for views
+        var filteredViews = databaseSchema.Views
+            .Where(view => !IsSystemObject(view.SchemaOwner, view.Name) && importFilterService.ExportView(view.SchemaOwner, view.Name))
+            .ToArray();
+
+        foreach (var view in filteredViews)
+        {
+            var viewSchema = new ViewSchema
+            {
+                Name = view.Name,
+                Schema = view.SchemaOwner,
+                Columns = ExtractViewColumns(view, importFilterService),
+                Triggers = ExtractViewTriggers(view)
+            };
+
+            views.Add(viewSchema);
+        }
+
         return views;
+    }
+
+    protected virtual List<ColumnSchema> ExtractViewColumns(
+        DatabaseSchemaReader.DataSchema.DatabaseView view, 
+        ImportFilterService importFilterService)
+    {
+        var columns = new List<ColumnSchema>();
+
+        foreach (var col in view.Columns ?? [])
+        {
+            if (!importFilterService.ExportViewColumn(view.SchemaOwner, view.Name, col.Name))
+            {
+                continue;
+            }
+
+            var columnSchema = new ColumnSchema
+            {
+                Name = col.Name,
+                DataType = GetDataTypeString(col.DataType?.TypeName),
+                IsNullable = col.Nullable,
+                IsPrimaryKey = false, // Views don't have primary keys
+                IsIdentity = false, // Views don't have identity columns
+                MaxLength = GetMaxLength(col),
+                NumericPrecision = GetNumericPrecision(col),
+                NumericScale = GetNumericScale(col),
+                DefaultConstraint = null, // Views don't have default constraints
+                ComputedColumn = null // Views don't have computed columns in this context
+            };
+
+            columns.Add(columnSchema);
+        }
+
+        return columns;
+    }
+
+    protected virtual List<TriggerSchema> ExtractViewTriggers(DatabaseSchemaReader.DataSchema.DatabaseView view)
+    {
+        var triggers = new List<TriggerSchema>();
+
+        // DatabaseSchemaReader provides trigger information for views
+        foreach (var trigger in view.Triggers ?? [])
+        {
+            var triggerSchema = new TriggerSchema
+            {
+                Name = trigger.Name ?? "",
+                ParentSchema = view.SchemaOwner ?? "",
+                ParentName = view.Name ?? "",
+                ParentType = "View"
+            };
+
+            triggers.Add(triggerSchema);
+        }
+
+        return triggers;
     }
 
     protected virtual async Task<List<StoredProcedureSchema>> ExtractStoredProceduresAsync(
@@ -264,8 +410,98 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         DbConnection connection)
     {
         var storedProcedures = new List<StoredProcedureSchema>();
-        // Basic implementation for stored procedures
+        
+        // Combine stored procedures and functions (PostgreSQL uses functions instead of stored procedures)
+        var routines = new List<DatabaseSchemaReader.DataSchema.DatabaseStoredProcedure>();
+        
+        // Add stored procedures
+        if (databaseSchema.StoredProcedures != null)
+        {
+            routines.AddRange(databaseSchema.StoredProcedures
+                .Where(sp => !IsSystemObject(sp.SchemaOwner, sp.Name) && importFilterService.ExportStoredProcedure(sp.SchemaOwner, sp.Name)));
+        }
+        
+        // Add functions (important for PostgreSQL)
+        if (databaseSchema.Functions != null)
+        {
+            // Convert functions to stored procedure format for consistent handling
+            var functionRoutines = databaseSchema.Functions
+                .Where(func => !IsSystemObject(func.SchemaOwner, func.Name) && importFilterService.ExportStoredProcedure(func.SchemaOwner, func.Name))
+                .Cast<DatabaseSchemaReader.DataSchema.DatabaseStoredProcedure>(); // Functions inherit from base routine type
+            
+            routines.AddRange(functionRoutines);
+        }
+
+        // Apply additional filtering if specific stored procedure names are specified
+        if (importFilterService.GetStoredProcedureNames().Count > 0)
+        {
+            var storedProcLookup = new HashSet<string>(importFilterService.GetStoredProcedureNames(), StringComparer.OrdinalIgnoreCase);
+            routines = routines.Where(routine => 
+                storedProcLookup.Contains(routine.Name) || 
+                storedProcLookup.Contains($"{routine.SchemaOwner}.{routine.Name}"))
+                .ToList();
+        }
+
+        foreach (var routine in routines)
+        {
+            var storedProcSchema = new StoredProcedureSchema
+            {
+                Name = routine.Name,
+                Schema = routine.SchemaOwner,
+                Parameters = ExtractStoredProcedureParameters(routine),
+                ResultSetColumns = await ExtractStoredProcedureResultSetAsync(routine, connection)
+            };
+
+            storedProcedures.Add(storedProcSchema);
+        }
+
         return storedProcedures;
+    }
+
+    protected virtual List<StoredProcedureParameterSchema> ExtractStoredProcedureParameters(DatabaseSchemaReader.DataSchema.DatabaseStoredProcedure routine)
+    {
+        var parameters = new List<StoredProcedureParameterSchema>();
+
+        // DatabaseSchemaReader provides parameter information through Arguments
+        foreach (var argument in routine.Arguments ?? [])
+        {
+            var parameterSchema = new StoredProcedureParameterSchema
+            {
+                Name = argument.Name ?? "",
+                DataType = GetDataTypeString(argument.DataType?.TypeName),
+                IsOutputParameter = argument.Out, // DatabaseSchemaReader exposes input/output information
+                MaxLength = GetMaxLength(argument),
+                NumericPrecision = GetNumericPrecision(argument),
+                NumericScale = GetNumericScale(argument)
+            };
+
+            parameters.Add(parameterSchema);
+        }
+
+        return parameters;
+    }
+
+    protected virtual async Task<List<ResultSetColumnSchema>> ExtractStoredProcedureResultSetAsync(
+        DatabaseSchemaReader.DataSchema.DatabaseStoredProcedure routine, 
+        DbConnection connection)
+    {
+        var resultColumns = new List<ResultSetColumnSchema>();
+
+        // Use the stored procedure analyzer for database-specific result set analysis
+        var analyzer = CreateStoredProcedureAnalyzer(connection);
+        var parameters = ExtractStoredProcedureParameters(routine);
+        
+        try
+        {
+            resultColumns = await analyzer.AnalyzeResultSetAsync(routine.Name, routine.SchemaOwner, parameters);
+        }
+        catch (Exception)
+        {
+            // If analysis fails, return empty result set
+            // This is common for procedures that don't return result sets or require specific parameters
+        }
+
+        return resultColumns;
     }
 
     protected virtual DefaultConstraintSchema? ExtractDefaultConstraint(DatabaseSchemaReader.DataSchema.DatabaseColumn column)
@@ -306,5 +542,21 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
     protected virtual int? GetNumericScale(DatabaseSchemaReader.DataSchema.DatabaseColumn column)
     {
         return column.Scale > 0 ? column.Scale : null;
+    }
+
+    // Helper methods for extracting length/precision/scale from DatabaseSchemaReader objects
+    protected virtual int? GetMaxLength(DatabaseSchemaReader.DataSchema.DatabaseArgument argument)
+    {
+        return argument.Length > 0 ? argument.Length : null;
+    }
+
+    protected virtual int? GetNumericPrecision(DatabaseSchemaReader.DataSchema.DatabaseArgument argument)
+    {
+        return argument.Precision > 0 ? argument.Precision : null;
+    }
+
+    protected virtual int? GetNumericScale(DatabaseSchemaReader.DataSchema.DatabaseArgument argument)
+    {
+        return argument.Scale > 0 ? argument.Scale : null;
     }
 } 

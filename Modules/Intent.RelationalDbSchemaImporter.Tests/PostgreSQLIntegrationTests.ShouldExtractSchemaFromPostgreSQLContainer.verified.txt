@@ -146,8 +146,22 @@
       ForeignKeys: [
         {
           Name: fk_categories_parent_category,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: categories
+          ReferencedTableSchema: public,
+          ReferencedTableName: categories,
+          Columns: [
+            {
+              Name: parent_category_id,
+              ReferencedColumnName: 
+            }
+          ]
+        }
+      ],
+      Triggers: [
+        {
+          Name: tr_categories_update_modified_date,
+          ParentSchema: public,
+          ParentName: categories,
+          ParentType: Table
         }
       ]
     },
@@ -236,13 +250,25 @@
       ForeignKeys: [
         {
           Name: fk_inventory_transactions_products,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: products
+          ReferencedTableSchema: public,
+          ReferencedTableName: products,
+          Columns: [
+            {
+              Name: product_id,
+              ReferencedColumnName: 
+            }
+          ]
         },
         {
           Name: fk_inventory_transactions_users,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: users
+          ReferencedTableSchema: public,
+          ReferencedTableName: users,
+          Columns: [
+            {
+              Name: created_by,
+              ReferencedColumnName: 
+            }
+          ]
         }
       ]
     },
@@ -319,13 +345,57 @@
       ForeignKeys: [
         {
           Name: fk_order_details_orders,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: orders
+          ReferencedTableSchema: public,
+          ReferencedTableName: orders,
+          Columns: [
+            {
+              Name: order_id,
+              ReferencedColumnName: 
+            }
+          ]
         },
         {
           Name: fk_order_details_products,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: products
+          ReferencedTableSchema: public,
+          ReferencedTableName: products,
+          Columns: [
+            {
+              Name: product_id,
+              ReferencedColumnName: 
+            }
+          ]
+        }
+      ],
+      Triggers: [
+        {
+          Name: tr_order_details_calculate_totals,
+          ParentSchema: public,
+          ParentName: order_details,
+          ParentType: Table
+        },
+        {
+          Name: tr_order_details_calculate_totals,
+          ParentSchema: public,
+          ParentName: order_details,
+          ParentType: Table
+        },
+        {
+          Name: tr_order_details_calculate_totals,
+          ParentSchema: public,
+          ParentName: order_details,
+          ParentType: Table
+        },
+        {
+          Name: tr_order_details_calculate_line_total,
+          ParentSchema: public,
+          ParentName: order_details,
+          ParentType: Table
+        },
+        {
+          Name: tr_order_details_calculate_line_total,
+          ParentSchema: public,
+          ParentName: order_details,
+          ParentType: Table
         }
       ]
     },
@@ -475,18 +545,36 @@
       ForeignKeys: [
         {
           Name: fk_orders_billing_address,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: user_addresses
+          ReferencedTableSchema: public,
+          ReferencedTableName: user_addresses,
+          Columns: [
+            {
+              Name: billing_address_id,
+              ReferencedColumnName: 
+            }
+          ]
         },
         {
           Name: fk_orders_shipping_address,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: user_addresses
+          ReferencedTableSchema: public,
+          ReferencedTableName: user_addresses,
+          Columns: [
+            {
+              Name: shipping_address_id,
+              ReferencedColumnName: 
+            }
+          ]
         },
         {
           Name: fk_orders_users,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: users
+          ReferencedTableSchema: public,
+          ReferencedTableName: users,
+          Columns: [
+            {
+              Name: user_id,
+              ReferencedColumnName: 
+            }
+          ]
         }
       ]
     },
@@ -587,8 +675,14 @@
       ForeignKeys: [
         {
           Name: fk_payment_methods_users,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: users
+          ReferencedTableSchema: public,
+          ReferencedTableName: users,
+          Columns: [
+            {
+              Name: user_id,
+              ReferencedColumnName: 
+            }
+          ]
         }
       ]
     },
@@ -682,13 +776,25 @@
       ForeignKeys: [
         {
           Name: fk_payments_orders,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: orders
+          ReferencedTableSchema: public,
+          ReferencedTableName: orders,
+          Columns: [
+            {
+              Name: order_id,
+              ReferencedColumnName: 
+            }
+          ]
         },
         {
           Name: fk_payments_payment_methods,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: payment_methods
+          ReferencedTableSchema: public,
+          ReferencedTableName: payment_methods,
+          Columns: [
+            {
+              Name: payment_method_id,
+              ReferencedColumnName: 
+            }
+          ]
         }
       ]
     },
@@ -781,13 +887,25 @@
       ForeignKeys: [
         {
           Name: fk_product_reviews_products,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: products
+          ReferencedTableSchema: public,
+          ReferencedTableName: products,
+          Columns: [
+            {
+              Name: product_id,
+              ReferencedColumnName: 
+            }
+          ]
         },
         {
           Name: fk_product_reviews_users,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: users
+          ReferencedTableSchema: public,
+          ReferencedTableName: users,
+          Columns: [
+            {
+              Name: user_id,
+              ReferencedColumnName: 
+            }
+          ]
         }
       ]
     },
@@ -946,13 +1064,33 @@
       ForeignKeys: [
         {
           Name: fk_products_categories,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: categories
+          ReferencedTableSchema: public,
+          ReferencedTableName: categories,
+          Columns: [
+            {
+              Name: category_id,
+              ReferencedColumnName: 
+            }
+          ]
         },
         {
           Name: fk_products_suppliers,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: suppliers
+          ReferencedTableSchema: public,
+          ReferencedTableName: suppliers,
+          Columns: [
+            {
+              Name: supplier_id,
+              ReferencedColumnName: 
+            }
+          ]
+        }
+      ],
+      Triggers: [
+        {
+          Name: tr_products_update_modified_date,
+          ParentSchema: public,
+          ParentName: products,
+          ParentType: Table
         }
       ]
     },
@@ -1031,13 +1169,33 @@
       ForeignKeys: [
         {
           Name: fk_shopping_cart_products,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: products
+          ReferencedTableSchema: public,
+          ReferencedTableName: products,
+          Columns: [
+            {
+              Name: product_id,
+              ReferencedColumnName: 
+            }
+          ]
         },
         {
           Name: fk_shopping_cart_users,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: users
+          ReferencedTableSchema: public,
+          ReferencedTableName: users,
+          Columns: [
+            {
+              Name: user_id,
+              ReferencedColumnName: 
+            }
+          ]
+        }
+      ],
+      Triggers: [
+        {
+          Name: tr_shopping_cart_update_modified_date,
+          ParentSchema: public,
+          ParentName: shopping_cart,
+          ParentType: Table
         }
       ]
     },
@@ -1259,8 +1417,14 @@
       ForeignKeys: [
         {
           Name: fk_user_addresses_users,
-          ReferencedTableSchema: dbo,
-          ReferencedTableName: users
+          ReferencedTableSchema: public,
+          ReferencedTableName: users,
+          Columns: [
+            {
+              Name: user_id,
+              ReferencedColumnName: 
+            }
+          ]
         }
       ]
     },
@@ -1370,6 +1534,206 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
+        }
+      ],
+      Triggers: [
+        {
+          Name: tr_users_audit,
+          ParentSchema: public,
+          ParentName: users,
+          ParentType: Table
+        },
+        {
+          Name: tr_users_audit,
+          ParentSchema: public,
+          ParentName: users,
+          ParentType: Table
+        },
+        {
+          Name: tr_users_audit,
+          ParentSchema: public,
+          ParentName: users,
+          ParentType: Table
+        },
+        {
+          Name: tr_users_update_modified_date,
+          ParentSchema: public,
+          ParentName: users,
+          ParentType: Table
+        }
+      ]
+    }
+  ],
+  Views: [
+    {
+      Name: vw_order_summary,
+      Schema: public,
+      Columns: [
+        {
+          Name: order_id,
+          DataType: int4,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: order_date,
+          DataType: timestamp,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: order_status,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 20
+        },
+        {
+          Name: payment_status,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 20
+        },
+        {
+          Name: customer_name,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: customer_email,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: item_count,
+          DataType: int8,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 64
+        },
+        {
+          Name: total_amount,
+          DataType: numeric,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 12,
+          NumericScale: 2
+        },
+        {
+          Name: tracking_number,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        }
+      ]
+    },
+    {
+      Name: vw_product_catalog,
+      Schema: public,
+      Columns: [
+        {
+          Name: product_id,
+          DataType: int4,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: product_name,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 255
+        },
+        {
+          Name: description,
+          DataType: text,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: sku,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: unit_price,
+          DataType: numeric,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 10,
+          NumericScale: 2
+        },
+        {
+          Name: units_in_stock,
+          DataType: int4,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: image_url,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 500
+        },
+        {
+          Name: category_name,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: supplier_name,
+          DataType: varchar,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: average_rating,
+          DataType: numeric,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 3,
+          NumericScale: 2
+        },
+        {
+          Name: review_count,
+          DataType: int8,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 64
         }
       ]
     }
