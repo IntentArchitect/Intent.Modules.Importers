@@ -4,6 +4,7 @@ using System.Text.Json;
 using Intent.Engine;
 using Intent.Modules.SqlServerImporter.Tasks.Helpers;
 using Intent.Modules.SqlServerImporter.Tasks.Models;
+using Intent.RelationalDbSchemaImporter.Contracts.FileStructures;
 
 namespace Intent.Modules.SqlServerImporter.Tasks;
 
@@ -60,25 +61,25 @@ public class FilterLoad : ModuleTaskSingleInputBase<FilterLoadInputModel>
             if (!File.Exists(filePath))
             {
                 executionResult.Warnings.Add($"Filter file not found: {filePath}");
-                executionResult.Result = new ImportFilterModel();
+                executionResult.Result = new ImportFilterSettings();
                 return executionResult;
             }
 
             var jsonContent = File.ReadAllText(filePath);
             if (string.IsNullOrWhiteSpace(jsonContent))
             {
-                executionResult.Result = new ImportFilterModel();
+                executionResult.Result = new ImportFilterSettings();
                 return executionResult;
             }
 
-            var filterModel = JsonSerializer.Deserialize<ImportFilterModel>(jsonContent);
+            var filterModel = JsonSerializer.Deserialize<ImportFilterSettings>(jsonContent);
 
-            executionResult.Result = filterModel ?? new ImportFilterModel();
+            executionResult.Result = filterModel ?? new ImportFilterSettings();
         }
         catch (Exception ex)
         {
             executionResult.Errors.Add($"Error loading filter file: {ex.Message}");
-            executionResult.Result = new ImportFilterModel();
+            executionResult.Result = new ImportFilterSettings();
         }
 
         return executionResult;

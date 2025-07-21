@@ -6,7 +6,7 @@ namespace Intent.Modules.SqlServerImporter.Tasks.Mappers;
 /// <summary>
 /// Context for tracking deduplicated names during import operations to avoid naming conflicts
 /// </summary>
-public class DeduplicationContext
+internal class DeduplicationContext
 {
     private readonly List<string> _addedTableNames = new();
     private readonly List<string> _addedColumnNames = new();

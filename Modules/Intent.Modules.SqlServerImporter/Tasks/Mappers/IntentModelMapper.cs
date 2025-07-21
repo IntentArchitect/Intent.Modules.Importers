@@ -13,10 +13,8 @@ using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.Modules.SqlServerImporter.Tasks.Mappers;
 
-public class IntentModelMapper
+internal class IntentModelMapper
 {
-    private readonly TypeReferenceMapper _typeReferenceMapper;
-    
     // Reserved C# keywords
     private static readonly HashSet<string> ReservedWords = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -26,11 +24,6 @@ public class IntentModelMapper
         "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try",
         "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "using static", "virtual", "void", "volatile", "while"
     };
-
-    public IntentModelMapper()
-    {
-        _typeReferenceMapper = new TypeReferenceMapper();
-    }
 
     public ElementPersistable MapTableToClass(TableSchema table, ImportConfiguration config, string? parentFolderId = null, DeduplicationContext? deduplicationContext = null)
     {
@@ -121,7 +114,7 @@ public class IntentModelMapper
             SpecializationType = AttributeModel.SpecializationType,
             SpecializationTypeId = AttributeModel.SpecializationTypeId,
             ParentFolderId = parentClassId, // Attributes belong to their parent class
-            TypeReference = _typeReferenceMapper.MapColumnTypeToTypeReference(column),
+            TypeReference = TypeReferenceMapper.MapColumnTypeToTypeReference(column),
             ChildElements = new List<ElementPersistable>(),
             Stereotypes = new List<StereotypePersistable>(),
             ExternalReference = GetColumnExternalReference(column.Name, tableName, schema)
@@ -177,7 +170,7 @@ public class IntentModelMapper
     /// <summary>
     /// Converts database identifier to valid C# identifier following C# naming conventions
     /// </summary>
-    public static string ToCSharpIdentifier(string identifier, string prefixValue = "Db")
+    private static string ToCSharpIdentifier(string identifier, string prefixValue = "Db")
     {
         if (string.IsNullOrWhiteSpace(identifier))
         {
@@ -483,7 +476,7 @@ public class IntentModelMapper
             SpecializationType = "Stored Procedure Parameter",
             SpecializationTypeId = "5823b192-eb03-47c8-90d8-5501c922e9a5", // Stored Procedure Parameter specialization type ID
             ParentFolderId = storedProcId, // Parameters belong to stored procedure
-            TypeReference = _typeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter),
+            TypeReference = TypeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter),
             ChildElements = new List<ElementPersistable>(),
             Stereotypes = new List<StereotypePersistable>()
         };
@@ -503,7 +496,7 @@ public class IntentModelMapper
             SpecializationType = "Parameter",
             SpecializationTypeId = "00208d20-469d-41cb-8501-768fd5eb796b", // Parameter specialization type ID
             ParentFolderId = operationId, // Parameters belong to operation
-            TypeReference = _typeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter),
+            TypeReference = TypeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter),
             ChildElements = new List<ElementPersistable>(),
             Stereotypes = new List<StereotypePersistable>()
         };
@@ -523,7 +516,7 @@ public class IntentModelMapper
             SpecializationType = AttributeModel.SpecializationType,
             SpecializationTypeId = AttributeModel.SpecializationTypeId,
             ParentFolderId = dataContractId, // Attributes belong to their parent data contract
-            TypeReference = _typeReferenceMapper.MapResultSetColumnTypeToTypeReference(resultColumn),
+            TypeReference = TypeReferenceMapper.MapResultSetColumnTypeToTypeReference(resultColumn),
             ChildElements = new List<ElementPersistable>(),
             Stereotypes = new List<StereotypePersistable>(),
             ExternalReference = GetResultSetColumnExternalReference(resultColumn.Name, procName, schema)

@@ -9,7 +9,7 @@ using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.Modules.SqlServerImporter.Tasks.Mappers;
 
-public class SchemaToIntentMapper
+internal class SchemaToIntentMapper
 {
     private readonly IntentModelMapper _intentModelMapper;
     private readonly ImportConfiguration _config;
@@ -295,9 +295,7 @@ public class SchemaToIntentMapper
         var repository = !string.IsNullOrWhiteSpace(repositoryElementId)
             ? package.Classes.FirstOrDefault(x => x.Id == repositoryElementId) 
               ?? throw new Exception($"Selected Repository could not be found. Did you save your designer before running the importer?")
-            : package.Classes.FirstOrDefault(c =>
-                c.Name == repositoryName &&
-                c.SpecializationType == "Repository");
+            : package.Classes.FirstOrDefault(c => c.Name == repositoryName && c.SpecializationType == "Repository");
 
         if (repository == null)
         {

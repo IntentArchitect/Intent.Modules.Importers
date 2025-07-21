@@ -6,9 +6,9 @@ using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.Modules.SqlServerImporter.Tasks.Mappers;
 
-public class TypeReferenceMapper
+internal static class TypeReferenceMapper
 {
-    public TypeReferencePersistable MapColumnTypeToTypeReference(ColumnSchema column)
+    public static TypeReferencePersistable MapColumnTypeToTypeReference(ColumnSchema column)
     {
         return new TypeReferencePersistable
         {
@@ -16,12 +16,12 @@ public class TypeReferenceMapper
             TypeId = GetTypeId(column.DataType),
             IsNullable = column.IsNullable,
             IsCollection = false,
-            Stereotypes = new List<StereotypePersistable>(),
-            GenericTypeParameters = new List<TypeReferencePersistable>()
+            Stereotypes = [],
+            GenericTypeParameters = []
         };
     }
 
-    public TypeReferencePersistable MapStoredProcedureParameterTypeToTypeReference(StoredProcedureParameterSchema parameter)
+    public static TypeReferencePersistable MapStoredProcedureParameterTypeToTypeReference(StoredProcedureParameterSchema parameter)
     {
         return new TypeReferencePersistable
         {
@@ -29,12 +29,12 @@ public class TypeReferenceMapper
             TypeId = GetTypeId(parameter.DataType),
             IsNullable = !parameter.IsOutputParameter, // Input parameters can be nullable, output parameters typically aren't
             IsCollection = parameter.DataType.ToLower() == "user-defined-table-type",
-            Stereotypes = new List<StereotypePersistable>(),
-            GenericTypeParameters = new List<TypeReferencePersistable>()
+            Stereotypes = [],
+            GenericTypeParameters = []
         };
     }
 
-    public TypeReferencePersistable MapResultSetColumnTypeToTypeReference(ResultSetColumnSchema column)
+    public static TypeReferencePersistable MapResultSetColumnTypeToTypeReference(ResultSetColumnSchema column)
     {
         return new TypeReferencePersistable
         {
@@ -42,47 +42,12 @@ public class TypeReferenceMapper
             TypeId = GetTypeId(column.DataType),
             IsNullable = column.IsNullable,
             IsCollection = false,
-            Stereotypes = new List<StereotypePersistable>(),
-            GenericTypeParameters = new List<TypeReferencePersistable>()
+            Stereotypes = [],
+            GenericTypeParameters = []
         };
     }
 
-    /// <summary>
-    /// Creates a type reference for stored procedure return types
-    /// </summary>
-    public TypeReferencePersistable CreateStoredProcedureReturnTypeReference(string? dataContractId, bool hasMultipleRows = true)
-    {
-        return new TypeReferencePersistable
-        {
-            Id = Guid.NewGuid().ToString(),
-            TypeId = dataContractId,
-            IsNullable = false,
-            IsCollection = hasMultipleRows,
-            Stereotypes = new List<StereotypePersistable>(),
-            GenericTypeParameters = new List<TypeReferencePersistable>()
-        };
-    }
-
-    /// <summary>
-    /// Creates a type reference for association ends
-    /// </summary>
-    public TypeReferencePersistable CreateAssociationTypeReference(string targetClassId, bool isNullable, bool isCollection, bool isNavigable = true)
-    {
-        return new TypeReferencePersistable
-        {
-            Id = Guid.NewGuid().ToString(),
-            TypeId = targetClassId,
-            IsNullable = isNullable,
-            IsCollection = isCollection,
-            IsNavigable = isNavigable,
-            Stereotypes = new List<StereotypePersistable>(),
-            GenericTypeParameters = new List<TypeReferencePersistable>()
-        };
-    }
-
-
-
-    private string? GetTypeId(string dataType)
+    private static string? GetTypeId(string dataType)
     {
         // Convert database-agnostic data type string to Intent type ID
         return dataType.ToLower() switch
