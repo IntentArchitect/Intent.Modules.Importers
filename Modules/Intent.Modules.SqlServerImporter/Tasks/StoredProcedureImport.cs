@@ -117,7 +117,7 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
             }
 
             // Create configuration for our mappers
-            var config = CreateImportConfiguration(importModel);
+            var config = SchemaToIntentMapper.CreateImportConfiguration(importModel);
 
             // Create the schema mapper
             var schemaMapper = new SchemaToIntentMapper(config);
@@ -145,24 +145,6 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
                 Exception = ex
             };
         }
-    }
-
-    private ImportConfiguration CreateImportConfiguration(RepositoryImportModel importModel)
-    {
-        return new ImportConfiguration
-        {
-            ApplicationId = importModel.ApplicationId,
-            EntityNameConvention = Enum.Parse<Intent.RelationalDbSchemaImporter.Contracts.Enums.EntityNameConvention>(importModel.EntityNameConvention),
-            TableStereotype = Enum.Parse<Intent.RelationalDbSchemaImporter.Contracts.Enums.TableStereotype>(importModel.TableStereotype),
-            TypesToExport = importModel.TypesToExport.Select(t => Enum.Parse<Intent.RelationalDbSchemaImporter.Contracts.Enums.ExportType>(t)).ToHashSet(),
-            StoredProcedureType = string.IsNullOrWhiteSpace(importModel.StoredProcedureType) 
-                ? Intent.RelationalDbSchemaImporter.Contracts.Enums.StoredProcedureType.Default 
-                : Enum.Parse<Intent.RelationalDbSchemaImporter.Contracts.Enums.StoredProcedureType>(importModel.StoredProcedureType),
-            ConnectionString = importModel.ConnectionString,
-            PackageFileName = importModel.PackageFileName,
-            RepositoryElementId = importModel.RepositoryElementId,
-            StoredProcNames = importModel.StoredProcNames
-        };
     }
 
     private void PrepareInputModel(RepositoryImportModel importModel)
