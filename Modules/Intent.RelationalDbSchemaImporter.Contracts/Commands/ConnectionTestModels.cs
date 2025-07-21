@@ -1,6 +1,6 @@
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
-namespace Intent.RelationalDbSchemaImporter.Contracts.Models;
+namespace Intent.RelationalDbSchemaImporter.Contracts.Commands;
 
 public class ConnectionTestRequest
 {

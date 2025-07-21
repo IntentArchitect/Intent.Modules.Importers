@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Text;
+using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
-using Intent.RelationalDbSchemaImporter.Contracts.Models;
 using Intent.RelationalDbSchemaImporter.Runner;
 using Intent.Utils;
 using Npgsql;
@@ -49,7 +49,6 @@ public class PostgreSQLIntegrationTests : IAsyncLifetime
             EntityNameConvention = EntityNameConvention.SingularEntity,
             TableStereotype = TableStereotype.WhenDifferent,
             TypesToExport = [ExportType.Table, ExportType.View],
-            StoredProcedureType = StoredProcedureType.StoredProcedureElement,
             DatabaseType = Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType.PostgreSQL
         };
 

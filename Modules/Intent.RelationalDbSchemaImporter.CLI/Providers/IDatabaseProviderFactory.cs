@@ -6,7 +6,7 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 /// <summary>
 /// Factory for creating database providers and detecting database types
 /// </summary>
-public interface IDatabaseProviderFactory
+internal interface IDatabaseProviderFactory
 {
     /// <summary>
     /// Creates a database provider for the specified database type

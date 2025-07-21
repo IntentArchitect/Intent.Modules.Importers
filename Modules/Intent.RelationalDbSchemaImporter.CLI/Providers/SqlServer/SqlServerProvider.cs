@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Intent.RelationalDbSchemaImporter.CLI.Extractors;
+using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Microsoft.Data.SqlClient;
@@ -11,11 +11,11 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
 /// <summary>
 /// SQL Server database provider implementation
 /// </summary>
-public class SqlServerProvider : IDatabaseProvider
+internal class SqlServerProvider : IDatabaseProvider
 {
     public DatabaseType SupportedType => DatabaseType.SqlServer;
 
-    public async Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportConfiguration config)
+    public async Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportFilterService importFilterService)
     {
         // For now, delegate to the existing SQL Server implementation
         using var connection = new SqlConnection(connectionString);
@@ -23,7 +23,7 @@ public class SqlServerProvider : IDatabaseProvider
         var server = new Server(new ServerConnection(connection));
         var database = server.Databases[connection.Database];
 
-        var schemaExtractor = new DatabaseSchemaExtractor(config, database);
+        var schemaExtractor = new DatabaseSchemaExtractor(importFilterService, database);
         return schemaExtractor.ExtractSchema();
     }
 

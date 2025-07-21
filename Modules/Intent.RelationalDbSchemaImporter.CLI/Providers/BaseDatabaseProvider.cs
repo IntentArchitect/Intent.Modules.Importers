@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using DatabaseSchemaReader;
+using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
@@ -11,7 +12,7 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 /// <summary>
 /// Base implementation for database providers using DatabaseSchemaReader
 /// </summary>
-public abstract class BaseDatabaseProvider : IDatabaseProvider
+internal abstract class BaseDatabaseProvider : IDatabaseProvider
 {
     public abstract DatabaseType SupportedType { get; }
     
@@ -19,7 +20,7 @@ public abstract class BaseDatabaseProvider : IDatabaseProvider
     protected abstract IDependencyResolver CreateDependencyResolver(DbConnection connection);
     protected abstract IStoredProcedureAnalyzer CreateStoredProcedureAnalyzer(DbConnection connection);
 
-    public virtual async Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportConfiguration config)
+    public virtual async Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportFilterService importFilterService)
     {
         using var connection = CreateConnection(connectionString);
         await connection.OpenAsync();
@@ -36,19 +37,19 @@ public abstract class BaseDatabaseProvider : IDatabaseProvider
             UserDefinedTableTypes = []
         };
 
-        if (config.ExportTables())
+        if (importFilterService.ExportTables())
         {
-            schema.Tables = await ExtractTablesAsync(databaseSchema, config, connection);
+            schema.Tables = await ExtractTablesAsync(databaseSchema, importFilterService, connection);
         }
 
-        if (config.ExportViews())
+        if (importFilterService.ExportViews())
         {
-            schema.Views = await ExtractViewsAsync(databaseSchema, config);
+            schema.Views = await ExtractViewsAsync(databaseSchema, importFilterService);
         }
 
-        if (config.ExportStoredProcedures())
+        if (importFilterService.ExportStoredProcedures())
         {
-            schema.StoredProcedures = await ExtractStoredProceduresAsync(databaseSchema, config, connection);
+            schema.StoredProcedures = await ExtractStoredProceduresAsync(databaseSchema, importFilterService, connection);
         }
 
         return schema;
@@ -70,16 +71,16 @@ public abstract class BaseDatabaseProvider : IDatabaseProvider
 
     protected virtual async Task<List<TableSchema>> ExtractTablesAsync(
         DatabaseSchemaReader.DataSchema.DatabaseSchema databaseSchema, 
-        ImportConfiguration config,
+        ImportFilterService importFilterService,
         DbConnection connection)
     {
         var tables = new List<TableSchema>();
         var filteredTables = databaseSchema.Tables
-            .Where(table => config.ExportTable(table.SchemaOwner ?? "dbo", table.Name))
+            .Where(table => importFilterService.ExportTable(table.SchemaOwner ?? "dbo", table.Name))
             .ToArray();
 
         // Handle dependent tables if required
-        if (config.IncludeDependantTables())
+        if (importFilterService.IncludeDependantTables())
         {
             var dependencyResolver = CreateDependencyResolver(connection);
             var tableNames = filteredTables.Select(t => $"{t.SchemaOwner ?? "dbo"}.{t.Name}");
@@ -88,7 +89,7 @@ public abstract class BaseDatabaseProvider : IDatabaseProvider
             var dependentTables = databaseSchema.Tables
                 .Where(t => dependentTableNames.Contains($"{t.SchemaOwner ?? "dbo"}.{t.Name}"))
                 .Where(t => !filteredTables.Contains(t))
-                .Where(t => config.ExportDependantTable(t.SchemaOwner ?? "dbo", t.Name));
+                .Where(t => importFilterService.ExportDependantTable(t.SchemaOwner ?? "dbo", t.Name));
             
             filteredTables = filteredTables.Concat(dependentTables).ToArray();
         }
@@ -99,8 +100,8 @@ public abstract class BaseDatabaseProvider : IDatabaseProvider
             {
                 Name = table.Name,
                 Schema = table.SchemaOwner ?? "dbo",
-                Columns = ExtractTableColumns(table, config),
-                Indexes = ExtractTableIndexes(table, config),
+                Columns = ExtractTableColumns(table, importFilterService),
+                Indexes = ExtractTableIndexes(table, importFilterService),
                 ForeignKeys = ExtractTableForeignKeys(table),
                 Triggers = ExtractTableTriggers(table)
             };
@@ -113,13 +114,13 @@ public abstract class BaseDatabaseProvider : IDatabaseProvider
     
     protected virtual List<ColumnSchema> ExtractTableColumns(
         DatabaseSchemaReader.DataSchema.DatabaseTable table, 
-        ImportConfiguration config)
+        ImportFilterService importFilterService)
     {
         var columns = new List<ColumnSchema>();
 
         foreach (var col in table.Columns)
         {
-            if (!config.ExportTableColumn(table.SchemaOwner ?? "dbo", table.Name, col.Name))
+            if (!importFilterService.ExportTableColumn(table.SchemaOwner ?? "dbo", table.Name, col.Name))
             {
                 continue;
             }
@@ -146,7 +147,7 @@ public abstract class BaseDatabaseProvider : IDatabaseProvider
 
     protected virtual List<IndexSchema> ExtractTableIndexes(
         DatabaseSchemaReader.DataSchema.DatabaseTable table, 
-        ImportConfiguration config)
+        ImportFilterService importFilterService)
     {
         // Basic implementation - would be enhanced by derived classes
         return [];
@@ -183,7 +184,7 @@ public abstract class BaseDatabaseProvider : IDatabaseProvider
 
     protected virtual async Task<List<ViewSchema>> ExtractViewsAsync(
         DatabaseSchemaReader.DataSchema.DatabaseSchema databaseSchema, 
-        ImportConfiguration config)
+        ImportFilterService importFilterService)
     {
         var views = new List<ViewSchema>();
         // Basic implementation for views
@@ -192,7 +193,7 @@ public abstract class BaseDatabaseProvider : IDatabaseProvider
 
     protected virtual async Task<List<StoredProcedureSchema>> ExtractStoredProceduresAsync(
         DatabaseSchemaReader.DataSchema.DatabaseSchema databaseSchema, 
-        ImportConfiguration config,
+        ImportFilterService importFilterService,
         DbConnection connection)
     {
         var storedProcedures = new List<StoredProcedureSchema>();

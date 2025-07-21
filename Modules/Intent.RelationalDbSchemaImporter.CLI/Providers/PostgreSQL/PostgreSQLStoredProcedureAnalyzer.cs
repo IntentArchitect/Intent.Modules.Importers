@@ -8,7 +8,7 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 /// <summary>
 /// PostgreSQL-specific stored procedure analyzer
 /// </summary>
-public class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
+internal class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
 {
     private readonly DbConnection _connection;
 

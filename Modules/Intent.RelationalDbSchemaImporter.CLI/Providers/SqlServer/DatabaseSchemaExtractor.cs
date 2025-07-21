@@ -1,22 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Microsoft.SqlServer.Management.Smo;
 
-namespace Intent.RelationalDbSchemaImporter.CLI.Extractors;
+namespace Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
 
-public class DatabaseSchemaExtractor
+internal class DatabaseSchemaExtractor
 {
     private readonly Database _db;
-    private readonly ImportConfiguration _config;
+    private readonly ImportFilterService _importFilterService;
     private readonly List<string> _tablesToIgnore = ["sysdiagrams", "__MigrationHistory", "__EFMigrationsHistory"];
     private readonly List<string> _viewsToIgnore = [];
 
-    public DatabaseSchemaExtractor(ImportConfiguration config, Database db)
+    public DatabaseSchemaExtractor(ImportFilterService importFilterService, Database db)
     {
         _db = db;
-        _config = config;
+        _importFilterService = importFilterService;
     }
 
     public DatabaseSchema ExtractSchema()
@@ -30,17 +31,17 @@ public class DatabaseSchemaExtractor
             UserDefinedTableTypes = []
         };
 
-        if (_config.ExportTables())
+        if (_importFilterService.ExportTables())
         {
             schema.Tables = ExtractTables();
         }
 
-        if (_config.ExportViews())
+        if (_importFilterService.ExportViews())
         {
             schema.Views = ExtractViews();
         }
 
-        if (_config.ExportStoredProcedures())
+        if (_importFilterService.ExportStoredProcedures())
         {
             schema.StoredProcedures = ExtractStoredProcedures();
         }
@@ -99,14 +100,14 @@ public class DatabaseSchemaExtractor
 
         foreach (var storedProc in filteredStoredProcedures)
         {
-            if (!_config.ExportStoredProcedure(storedProc.Schema, storedProc.Name))
+            if (!_importFilterService.ExportStoredProcedure(storedProc.Schema, storedProc.Name))
             {
                 continue;
             }
 
-            if (_config.StoredProcNames?.Count > 0)
+            if (_importFilterService.GetStoredProcedureNames().Count > 0)
             {
-                var storedProcLookup = new HashSet<string>(_config.StoredProcNames, StringComparer.OrdinalIgnoreCase);
+                var storedProcLookup = new HashSet<string>(_importFilterService.GetStoredProcedureNames(), StringComparer.OrdinalIgnoreCase);
                 if (!storedProcLookup.Contains(storedProc.Name) && !storedProcLookup.Contains($"{storedProc.Schema}.{storedProc.Name}"))
                 {
                     continue;
@@ -133,7 +134,7 @@ public class DatabaseSchemaExtractor
 
         foreach (Column col in table.Columns)
         {
-            if (!_config.ExportTableColumn(table.Schema, table.Name, col.Name))
+            if (!_importFilterService.ExportTableColumn(table.Schema, table.Name, col.Name))
             {
                 continue;
             }
@@ -164,7 +165,7 @@ public class DatabaseSchemaExtractor
 
         foreach (Column col in view.Columns)
         {
-            if (!_config.ExportViewColumn(view.Schema, view.Name, col.Name))
+            if (!_importFilterService.ExportViewColumn(view.Schema, view.Name, col.Name))
             {
                 continue;
             }
@@ -193,7 +194,7 @@ public class DatabaseSchemaExtractor
     {
         var indexes = new List<IndexSchema>();
 
-        if (!_config.ExportIndexes())
+        if (!_importFilterService.ExportIndexes())
         {
             return indexes;
         }
@@ -433,7 +434,7 @@ public class DatabaseSchemaExtractor
     private Table[] GetFilteredTables()
     {
         return _db.Tables.OfType<Table>()
-            .Where(table => !_tablesToIgnore.Contains(table.Name) && _config.ExportTable(table.Schema, table.Name))
+            .Where(table => !_tablesToIgnore.Contains(table.Name) && _importFilterService.ExportTable(table.Schema, table.Name))
             .ToArray();
     }
 
@@ -441,7 +442,7 @@ public class DatabaseSchemaExtractor
     {
         return _db.Views.OfType<View>()
             .Where(view => view.Schema is not "sys" and not "INFORMATION_SCHEMA" &&
-                           !_viewsToIgnore.Contains(view.Name) && _config.ExportView(view.Schema, view.Name))
+                           !_viewsToIgnore.Contains(view.Name) && _importFilterService.ExportView(view.Schema, view.Name))
             .ToArray();
     }
 
@@ -449,7 +450,7 @@ public class DatabaseSchemaExtractor
     {
         return _db.StoredProcedures.OfType<StoredProcedure>()
             .Where(storedProc => storedProc.Schema is not "sys" && 
-                                 _config.ExportStoredProcedure(storedProc.Schema, storedProc.Name))
+                                 _importFilterService.ExportStoredProcedure(storedProc.Schema, storedProc.Name))
             .ToArray();
     }
 }

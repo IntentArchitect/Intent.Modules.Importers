@@ -9,7 +9,7 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 /// <summary>
 /// Factory implementation for creating database providers
 /// </summary>
-public class DatabaseProviderFactory : IDatabaseProviderFactory
+internal class DatabaseProviderFactory : IDatabaseProviderFactory
 {
     private readonly Dictionary<DatabaseType, Func<IDatabaseProvider>> _providerFactories;
 

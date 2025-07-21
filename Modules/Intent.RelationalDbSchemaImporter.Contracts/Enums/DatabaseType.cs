@@ -7,6 +7,5 @@ public enum DatabaseType
 {
     Auto,
     SqlServer,
-    PostgreSQL,
-    MySQL
+    PostgreSQL
 } 

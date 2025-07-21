@@ -7,7 +7,7 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 /// <summary>
 /// PostgreSQL database provider implementation
 /// </summary>
-public class PostgreSQLProvider : BaseDatabaseProvider
+internal class PostgreSQLProvider : BaseDatabaseProvider
 {
     public override DatabaseType SupportedType => DatabaseType.PostgreSQL;
 

@@ -1,6 +1,6 @@
 using System.Reflection;
+using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
-using Intent.RelationalDbSchemaImporter.Contracts.Models;
 using Intent.RelationalDbSchemaImporter.Runner;
 using Intent.Utils;
 using Microsoft.Data.SqlClient;
@@ -46,7 +46,6 @@ public class SqlServerIntegrationTests : IAsyncLifetime
             EntityNameConvention = EntityNameConvention.SingularEntity,
             TableStereotype = TableStereotype.WhenDifferent,
             TypesToExport = [ExportType.Table, ExportType.View],
-            StoredProcedureType = StoredProcedureType.StoredProcedureElement,
             DatabaseType = Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType.SqlServer
         };
 

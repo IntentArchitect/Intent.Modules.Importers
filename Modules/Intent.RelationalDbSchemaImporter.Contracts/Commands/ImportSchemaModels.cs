@@ -1,7 +1,7 @@
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
-namespace Intent.RelationalDbSchemaImporter.Contracts.Models;
+namespace Intent.RelationalDbSchemaImporter.Contracts.Commands;
 
 public class ImportSchemaRequest
 {
@@ -10,7 +10,6 @@ public class ImportSchemaRequest
     public EntityNameConvention EntityNameConvention { get; set; } = EntityNameConvention.SingularEntity;
     public TableStereotype TableStereotype { get; set; } = TableStereotype.WhenDifferent;
     public HashSet<ExportType> TypesToExport { get; set; } = [ExportType.Table, ExportType.View, ExportType.StoredProcedure, ExportType.Index];
-    public StoredProcedureType StoredProcedureType { get; set; } = StoredProcedureType.Default;
     public List<string> StoredProcNames { get; set; } = [];
     public DatabaseType DatabaseType { get; set; } = DatabaseType.Auto;
 }

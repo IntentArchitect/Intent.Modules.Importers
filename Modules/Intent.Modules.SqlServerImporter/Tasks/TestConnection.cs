@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Intent.Modules.SqlServerImporter.Tasks.Helpers;
 using Intent.Modules.SqlServerImporter.Tasks.Models;
-using Intent.RelationalDbSchemaImporter.Contracts.Models;
+using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.RelationalDbSchemaImporter.Runner;
 
 namespace Intent.Modules.SqlServerImporter.Tasks;

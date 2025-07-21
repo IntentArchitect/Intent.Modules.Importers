@@ -7,7 +7,7 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 /// <summary>
 /// PostgreSQL-specific dependency resolver
 /// </summary>
-public class PostgreSQLDependencyResolver : IDependencyResolver
+internal class PostgreSQLDependencyResolver : IDependencyResolver
 {
     private readonly DbConnection _connection;
 
@@ -19,7 +19,7 @@ public class PostgreSQLDependencyResolver : IDependencyResolver
     public async Task<IEnumerable<string>> GetDependentTablesAsync(IEnumerable<string> tableNames)
     {
         var dependentTables = new HashSet<string>();
-        
+
         foreach (var tableName in tableNames)
         {
             var dependencies = await GetTableDependenciesAsync(tableName);
@@ -38,32 +38,33 @@ public class PostgreSQLDependencyResolver : IDependencyResolver
         var schema = parts.Length > 1 ? parts[0] : "public";
         var table = parts.Length > 1 ? parts[1] : parts[0];
 
-        const string sql = @"
-            SELECT 
-                tc.constraint_schema,
-                tc.table_name,
-                kcu.column_name,
-                ccu.table_schema AS foreign_table_schema,
-                ccu.table_name AS foreign_table_name,
-                ccu.column_name AS foreign_column_name
-            FROM 
-                information_schema.table_constraints AS tc 
-                JOIN information_schema.key_column_usage AS kcu
-                  ON tc.constraint_name = kcu.constraint_name
-                  AND tc.table_schema = kcu.table_schema
-                JOIN information_schema.constraint_column_usage AS ccu
-                  ON ccu.constraint_name = tc.constraint_name
-                  AND ccu.table_schema = tc.table_schema
-            WHERE 
-                tc.constraint_type = 'FOREIGN KEY' 
-                AND ccu.table_schema = @schema 
-                AND ccu.table_name = @table";
+        const string sql = """
+                           SELECT 
+                               tc.constraint_schema,
+                               tc.table_name,
+                               kcu.column_name,
+                               ccu.table_schema AS foreign_table_schema,
+                               ccu.table_name AS foreign_table_name,
+                               ccu.column_name AS foreign_column_name
+                           FROM 
+                               information_schema.table_constraints AS tc 
+                               JOIN information_schema.key_column_usage AS kcu
+                                 ON tc.constraint_name = kcu.constraint_name
+                                 AND tc.table_schema = kcu.table_schema
+                               JOIN information_schema.constraint_column_usage AS ccu
+                                 ON ccu.constraint_name = tc.constraint_name
+                                 AND ccu.table_schema = tc.table_schema
+                           WHERE 
+                               tc.constraint_type = 'FOREIGN KEY' 
+                               AND ccu.table_schema = @schema 
+                               AND ccu.table_name = @table
+                           """;
 
         var dependentTables = new List<string>();
 
         using var command = _connection.CreateCommand();
         command.CommandText = sql;
-        
+
         var schemaParam = command.CreateParameter();
         schemaParam.ParameterName = "@schema";
         schemaParam.Value = schema;
@@ -84,4 +85,4 @@ public class PostgreSQLDependencyResolver : IDependencyResolver
 
         return dependentTables;
     }
-} 
+}

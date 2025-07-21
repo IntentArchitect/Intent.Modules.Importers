@@ -1,44 +1,45 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
+using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
+using Intent.RelationalDbSchemaImporter.Contracts.FileStructures;
 using Json.Schema;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Intent.RelationalDbSchemaImporter.CLI;
+namespace Intent.RelationalDbSchemaImporter.CLI.Services;
 
-public class ImportConfiguration
+internal class ImportFilterService
 {
-	public Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType DatabaseType { get; set; } = Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType.Auto;
-	public EntityNameConvention EntityNameConvention { get; set; } = EntityNameConvention.SingularEntity;
-	public TableStereotype TableStereotype { get; set; } = TableStereotype.WhenDifferent;
-	public HashSet<ExportType> TypesToExport { get; set; } = [ExportType.Table, ExportType.View, ExportType.StoredProcedure, ExportType.Index];
-	public string? ImportFilterFilePath { get; set; }
-	
-	public StoredProcedureType StoredProcedureType { get; set; } = StoredProcedureType.Default;
-	public string? RepositoryElementId { get; set; }
-	public List<string> StoredProcNames { get; set; } = [];
-	
-	public string? ConnectionString { get; set; }
-	public string? PackageFileName { get; set; }
+    private readonly ImportSchemaRequest _importSchemaRequest;
 
-	private ImportFilterSettings? _importFilterSettings;
-	internal ImportFilterSettings GetImportFilterSettings()
+    public ImportFilterService(ImportSchemaRequest importSchemaRequest)
+    {
+        _importSchemaRequest = importSchemaRequest;
+    }
+
+    public IReadOnlyList<string> GetStoredProcedureNames()
+    {
+	    return _importSchemaRequest.StoredProcNames;
+    }
+    
+    private ImportFilterSettings? _importFilterSettings;
+    public ImportFilterSettings GetImportFilterSettings()
 	{
 		if (_importFilterSettings is not null)
 		{
 			return _importFilterSettings;
 		}
 		
-		if (string.IsNullOrWhiteSpace(ImportFilterFilePath))
+		if (string.IsNullOrWhiteSpace(_importSchemaRequest.ImportFilterFilePath))
 		{
 			return new ImportFilterSettings();
 		}
 
-		var jsonContent = File.ReadAllText(ImportFilterFilePath);
+		var jsonContent = File.ReadAllText(_importSchemaRequest.ImportFilterFilePath);
 		_importFilterSettings =
 			JsonConvert.DeserializeObject<ImportFilterSettings>(
 				jsonContent,
@@ -54,13 +55,13 @@ public class ImportConfiguration
 		return _importFilterSettings;
 	}
 
-	internal bool ExportSchema(string schema)
+	public bool ExportSchema(string schema)
 	{
 		var settings = GetImportFilterSettings();
 		return settings.Schemas.Count == 0 || settings.Schemas.Contains(schema);
 	}
 
-    internal bool ExportTable(string schema, string tableName)
+	public bool ExportTable(string schema, string tableName)
 	{
 		var settings = GetImportFilterSettings();
 		if (!ExportSchema(schema))
@@ -77,7 +78,7 @@ public class ImportConfiguration
 		       settings.IncludeTables.Any(x => x.Name == tableName || x.Name == $"{schema}.{tableName}");
 	}
 
-	internal bool ExportView(string schema, string viewName)
+	public bool ExportView(string schema, string viewName)
 	{
 		var settings = GetImportFilterSettings();
 		if (!ExportSchema(schema))
@@ -94,7 +95,7 @@ public class ImportConfiguration
 		       settings.IncludeViews.Any(x => x.Name == viewName || x.Name == $"{schema}.{viewName}");
 	}
 
-	internal bool ExportStoredProcedure(string schema, string storedProcedureName)
+	public bool ExportStoredProcedure(string schema, string storedProcedureName)
 	{
 		var settings = GetImportFilterSettings();
 		if (!ExportSchema(schema))
@@ -112,7 +113,7 @@ public class ImportConfiguration
 		       settings.IncludeStoredProcedures.Contains($"{schema}.{storedProcedureName}");
 	}
 	
-	internal bool ExportDependantTable(string schema, string tableName)
+	public bool ExportDependantTable(string schema, string tableName)
 	{
 		if (!ExportSchema(schema))
 		{
@@ -128,55 +129,55 @@ public class ImportConfiguration
 		return true;
 	}
 	
-	internal bool ExportTableColumn(string schema, string tableName, string colName)
+	public bool ExportTableColumn(string schema, string tableName, string colName)
 	{
 		var filterSettings = GetImportFilterSettings();
 		var table = filterSettings.IncludeTables.FirstOrDefault(x => x.Name == tableName || x.Name == $"{schema}.{tableName}");
 		return table?.ExcludeColumns.Contains(colName) != true && filterSettings.ExcludedTableColumns.Contains(colName) != true;
 	}
 
-	internal bool ExportViewColumn(string schema, string viewName, string colName)
+	public bool ExportViewColumn(string schema, string viewName, string colName)
 	{
 		var filterSettings = GetImportFilterSettings();
 		var view = filterSettings.IncludeViews.FirstOrDefault(x => x.Name == viewName || x.Name == $"{schema}.{viewName}");
 		return view?.ExcludeColumns.Contains(colName) != true && filterSettings.ExcludedViewColumns.Contains(colName) != true;
 	}
 	
-	internal bool IncludeDependantTables()
+	public bool IncludeDependantTables()
 	{
 		var settings = GetImportFilterSettings();
 
 		return settings.IncludeDependantTables;
 	}
 	
-	internal bool ExportTables()
+	public bool ExportTables()
 	{
-		return TypesToExport.Contains(ExportType.Table);
+		return _importSchemaRequest.TypesToExport.Contains(ExportType.Table);
 	}
 
-	internal bool ExportViews()
+	public bool ExportViews()
 	{
-		return TypesToExport.Contains(ExportType.View);
+		return _importSchemaRequest.TypesToExport.Contains(ExportType.View);
 	}
 
-	internal bool ExportIndexes()
+	public bool ExportIndexes()
 	{
-		return TypesToExport.Contains(ExportType.Index);
+		return _importSchemaRequest.TypesToExport.Contains(ExportType.Index);
 	}
 	
-	internal bool ExportStoredProcedures()
+	public bool ExportStoredProcedures()
 	{
-		return TypesToExport.Contains(ExportType.StoredProcedure);
+		return _importSchemaRequest.TypesToExport.Contains(ExportType.StoredProcedure);
 	}
 
-	internal bool ValidateFilterFile()
+	public bool ValidateFilterFile()
 	{
-        if (string.IsNullOrWhiteSpace(ImportFilterFilePath))
+        if (string.IsNullOrWhiteSpace(_importSchemaRequest.ImportFilterFilePath))
         {
 			return true;
         }
 
-        var jsonContent = File.ReadAllText(ImportFilterFilePath);
+        var jsonContent = File.ReadAllText(_importSchemaRequest.ImportFilterFilePath);
 		var jsonSchema = JsonSchema.FromFile("Resources/filter-file-schema.json");
 
         var options = new EvaluationOptions
@@ -208,47 +209,4 @@ public class ImportConfiguration
 
 		return true;
     }
-}
-
-// IMPORTANT! If anything changes here, you need to update the SQL Server Import Module too!
-class ImportFilterSettings
-{
-	[JsonProperty("schemas")]
-	public HashSet<string> Schemas { get; set; } = new();
-
-    [JsonProperty("include_tables")]
-	public List<ImportFilterTable> IncludeTables { get; set; } = new();
-
-    [JsonProperty("include_dependant_tables")]
-	public bool IncludeDependantTables = false;
-
-    [JsonProperty("include_views")]
-	public List<ImportFilterTable> IncludeViews { get; set; } = new();
-	
-	[JsonProperty("exclude_tables")]
-	public List<string> ExcludeTables { get; set; } = new();
-	
-	[JsonProperty("exclude_views")]
-	public List<string> ExcludeViews { get; set; } = new();
-	
-	[JsonProperty("include_stored_procedures")]
-	public List<string> IncludeStoredProcedures { get; set; } = new();
-	
-	[JsonProperty("exclude_stored_procedures")]
-	public List<string> ExcludeStoredProcedures { get; set; } = new();
-
-    [JsonProperty("exclude_table_columns")]
-    public HashSet<string> ExcludedTableColumns { get; set; } = new();
-
-    [JsonProperty("exclude_view_columns")]
-    public HashSet<string> ExcludedViewColumns { get; set; } = new();
-}
-
-class ImportFilterTable
-{
-	[JsonProperty("name")]
-	public string Name { get; set; }
-
-	[JsonProperty("exclude_columns")]
-	public HashSet<string> ExcludeColumns { get; set; } = new();
 }

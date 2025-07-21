@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using CliWrap;
-using Intent.RelationalDbSchemaImporter.Contracts.Models;
+using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.Utils;
 
 namespace Intent.RelationalDbSchemaImporter.Runner;

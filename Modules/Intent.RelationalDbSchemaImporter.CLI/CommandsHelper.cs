@@ -3,7 +3,7 @@ using System.CommandLine;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Intent.Modules.Common.Templates;
-using Intent.RelationalDbSchemaImporter.Contracts.Models;
+using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 
 namespace Intent.RelationalDbSchemaImporter.CLI;
 

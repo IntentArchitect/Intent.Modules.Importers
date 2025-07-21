@@ -4,8 +4,8 @@ using System.CommandLine;
 using System.IO;
 using System.Linq;
 using Intent.RelationalDbSchemaImporter.CLI.Providers;
+using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
-using Intent.RelationalDbSchemaImporter.Contracts.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
@@ -27,17 +27,17 @@ internal static partial class Commands
                     return response;
                 }
 
-                var config = CreateImportConfiguration(request, response);
-                if (config == null || !ValidateImportConfiguration(config, response))
-                {
-                    return response;
-                }
-
-                var result = PerformSchemaImport(config, response);
-                if (result != null)
-                {
-                    response.SetResult(result);
-                }
+                // var config = CreateImportConfiguration(request, response);
+                // if (config == null || !ValidateImportConfiguration(config, response))
+                // {
+                //     return response;
+                // }
+                //
+                // var result = PerformSchemaImport(config, response);
+                // if (result != null)
+                // {
+                //     response.SetResult(result);
+                // }
 
                 return response;
             });
@@ -192,86 +192,80 @@ internal static partial class Commands
             });
     }
 
-    private static ImportConfiguration? CreateImportConfiguration(ImportSchemaRequest request, StandardResponse response)
-    {
-        var config = new ImportConfiguration
-        {
-            ConnectionString = request.ConnectionString,
-            ImportFilterFilePath = request.ImportFilterFilePath,
-            EntityNameConvention = request.EntityNameConvention,
-            TableStereotype = request.TableStereotype,
-            TypesToExport = request.TypesToExport,
-            StoredProcedureType = request.StoredProcedureType,
-            StoredProcNames = request.StoredProcNames
-        };
+    // private static ImportConfiguration? CreateImportConfiguration(ImportSchemaRequest request, StandardResponse response)
+    // {
+    //     var config = new ImportConfiguration
+    //     {
+    //         ConnectionString = request.ConnectionString,
+    //         ImportFilterFilePath = request.ImportFilterFilePath,
+    //         EntityNameConvention = request.EntityNameConvention,
+    //         TableStereotype = request.TableStereotype,
+    //         TypesToExport = request.TypesToExport,
+    //         StoredProcNames = request.StoredProcNames
+    //     };
+    //
+    //     if (!ValidateConnectionString(config.ConnectionString, response)) return null;
+    //
+    //     if (string.IsNullOrWhiteSpace(config.PackageFileName))
+    //     {
+    //         response.AddError("PackageFileName is required");
+    //         return null;
+    //     }
+    //
+    //     return config;
+    // }
+    //
+    // private static bool ValidateImportConfiguration(ImportConfiguration config, StandardResponse response)
+    // {
+    //     if (!string.IsNullOrWhiteSpace(config.ImportFilterFilePath) &&
+    //         !Path.IsPathRooted(config.ImportFilterFilePath))
+    //     {
+    //         config.ImportFilterFilePath = Path.Combine(Path.GetDirectoryName(config.PackageFileName)!, config.ImportFilterFilePath);
+    //     }
+    //     
+    //     if (!config.ValidateFilterFile())
+    //     {
+    //         response.AddError("Import filter file validation failed");
+    //         return false;
+    //     }
+    //
+    //     return true;
+    // }
 
-        if (!ValidateConnectionString(config.ConnectionString, response)) return null;
-
-        if (string.IsNullOrWhiteSpace(config.PackageFileName))
-        {
-            response.AddError("PackageFileName is required");
-            return null;
-        }
-
-        return config;
-    }
-
-    private static bool ValidateImportConfiguration(ImportConfiguration config, StandardResponse response)
-    {
-        if (!string.IsNullOrWhiteSpace(config.ImportFilterFilePath) &&
-            !Path.IsPathRooted(config.ImportFilterFilePath))
-        {
-            config.ImportFilterFilePath = Path.Combine(Path.GetDirectoryName(config.PackageFileName)!, config.ImportFilterFilePath);
-        }
-        
-        if (!config.ValidateFilterFile())
-        {
-            response.AddError("Import filter file validation failed");
-            return false;
-        }
-
-        if (config.StoredProcedureType == StoredProcedureType.Default)
-        {
-            config.StoredProcedureType = StoredProcedureType.StoredProcedureElement;
-        }
-
-        return true;
-    }
-
-    private static ImportSchemaResult? PerformSchemaImport(ImportConfiguration config, StandardResponse response)
-    {
-        try
-        {
-            // Use the new provider-based architecture
-            var factory = new DatabaseProviderFactory();
-            var databaseType = config.DatabaseType.ToProviderType();
-            
-            // Auto-detect database type if not specified
-            if (databaseType == DatabaseType.Auto)
-            {
-                databaseType = factory.DetectDatabaseType(config.ConnectionString);
-                
-                if (databaseType == DatabaseType.Auto)
-                {
-                    response.AddError("Could not auto-detect database type from connection string. Please specify the database type explicitly.");
-                    return null;
-                }
-            }
-
-            var provider = factory.CreateProvider(databaseType);
-            var databaseSchema = provider.ExtractSchemaAsync(config.ConnectionString, config).GetAwaiter().GetResult();
-            
-            return new ImportSchemaResult
-            {
-                SchemaData = databaseSchema
-            };
-        }
-        catch (Exception ex)
-        {
-            response.AddError($"Schema extraction failed: {ex.Message}");
-            return null;
-        }
-    }
+    // private static ImportSchemaResult? PerformSchemaImport(ImportConfiguration config, StandardResponse response)
+    // {
+    //     try
+    //     {
+    //         // Use the new provider-based architecture
+    //         var factory = new DatabaseProviderFactory();
+    //         var databaseType = config.DatabaseType;
+    //         
+    //         // Auto-detect database type if not specified
+    //         if (databaseType == DatabaseType.Auto)
+    //         {
+    //             databaseType = factory.DetectDatabaseType(config.ConnectionString);
+    //             
+    //             if (databaseType == DatabaseType.Auto)
+    //             {
+    //                 response.AddError("Could not auto-detect database type from connection string. Please specify the database type explicitly.");
+    //                 return null;
+    //             }
+    //         }
+    //
+    //         var provider = factory.CreateProvider(databaseType);
+    //         var databaseSchema = provider.ExtractSchemaAsync(config.ConnectionString, config).GetAwaiter().GetResult();
+    //         
+    //         return new ImportSchemaResult
+    //         {
+    //             SchemaData = databaseSchema
+    //         };
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         response.AddError($"Schema extraction failed: {ex.Message}");
+    //         return null;
+    //     }
+    // }
     
     private static (SqlConnection connection, Server server, Database database)? CreateDatabaseConnection(
         string connectionString, StandardResponse response)

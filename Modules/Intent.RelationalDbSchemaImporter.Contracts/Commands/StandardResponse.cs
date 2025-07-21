@@ -1,4 +1,4 @@
-namespace Intent.RelationalDbSchemaImporter.Contracts.Models;
+namespace Intent.RelationalDbSchemaImporter.Contracts.Commands;
 
 public abstract class StandardResponse
 {

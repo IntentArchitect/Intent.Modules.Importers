@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
@@ -8,7 +9,7 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 /// <summary>
 /// Defines the contract for database schema extraction providers
 /// </summary>
-public interface IDatabaseProvider
+internal interface IDatabaseProvider
 {
     /// <summary>
     /// The database type this provider supports
@@ -19,9 +20,9 @@ public interface IDatabaseProvider
     /// Extracts the complete database schema
     /// </summary>
     /// <param name="connectionString">Database connection string</param>
-    /// <param name="config">Import configuration settings</param>
+    /// <param name="importFilterService">Import Filter Service</param>
     /// <returns>Extracted database schema</returns>
-    Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportConfiguration config);
+    Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportFilterService importFilterService);
     
     /// <summary>
     /// Tests database connectivity
@@ -58,24 +59,3 @@ public interface IStoredProcedureAnalyzer
     /// <returns>Result set column information</returns>
     Task<List<ResultSetColumnSchema>> AnalyzeResultSetAsync(string procedureName, string schema, IEnumerable<StoredProcedureParameterSchema> parameters);
 }
-
-/// <summary>
-/// Extension methods for database type conversions
-/// </summary>
-public static class DatabaseTypeExtensions
-{
-    /// <summary>
-    /// Converts from contracts enum to provider enum
-    /// </summary>
-    public static DatabaseType ToProviderType(this Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType contractType)
-    {
-        return contractType switch
-        {
-            Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType.Auto => DatabaseType.Auto,
-            Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType.SqlServer => DatabaseType.SqlServer,
-            Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType.PostgreSQL => DatabaseType.PostgreSQL,
-            Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType.MySQL => DatabaseType.MySQL,
-            _ => DatabaseType.Auto
-        };
-    }
-} 
