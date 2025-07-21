@@ -102,8 +102,12 @@ internal class PostgreSQLProvider : BaseDatabaseProvider
                 .ToList();
         }
 
+        var progressOutput = ConsoleOutput.CreateSectionProgress("Stored Procedures", routines.Count);
+        
         foreach (var routine in routines)
         {
+            progressOutput.OutputNext(routine.Name);
+            
             var storedProcSchema = new StoredProcedureSchema
             {
                 Name = routine.Name,

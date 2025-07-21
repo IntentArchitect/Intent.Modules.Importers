@@ -6,6 +6,7 @@ using Intent.RelationalDbSchemaImporter.CLI.Providers;
 using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
+using Intent.Utils;
 
 namespace Intent.RelationalDbSchemaImporter.CLI;
 
@@ -30,8 +31,9 @@ internal static partial class Commands
                 }
                 
                 var importFilterService = new ImportFilterService(request);
-                if (ValidateImportFilterFile(importFilterService, response))
+                if (!importFilterService.ValidateFilterFile(out var errors))
                 {
+                    response.Errors.AddRange(errors);
                     return response;
                 }
                 
@@ -40,7 +42,7 @@ internal static partial class Commands
                 var databaseType = request.DatabaseType;
                 
                 var provider = factory.CreateProvider(databaseType);
-                var databaseSchema = await provider.ExtractSchemaAsync(request.ConnectionString, importFilterService);
+                var databaseSchema = await provider.ExtractSchemaAsync(request.ConnectionString, importFilterService, cancellationToken);
 
                 response.SetResult(new ImportSchemaResult
                 {

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 
@@ -23,7 +24,7 @@ internal interface IDatabaseProvider
     /// <param name="connectionString">Database connection string</param>
     /// <param name="importFilterService">Import Filter Service</param>
     /// <returns>Extracted database schema</returns>
-    Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportFilterService importFilterService);
+    Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportFilterService importFilterService, CancellationToken cancellationToken);
     
     /// <summary>
     /// Tests database connectivity

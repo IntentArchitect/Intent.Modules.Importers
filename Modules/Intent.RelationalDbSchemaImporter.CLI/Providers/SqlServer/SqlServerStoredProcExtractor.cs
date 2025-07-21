@@ -26,7 +26,7 @@ internal static class StoredProcExtractor
         }
         catch (Exception ex)
         {
-            Logging.LogWarning($"Failed to get stored procedure results for procedure {storedProc.Name}: {ex.Message}");
+            ConsoleOutput.WarnOutput($"Failed to get stored procedure results for procedure {storedProc.Name}: {ex.Message}");
             return new StoredProcedureResultSet();
         }
 
@@ -39,7 +39,7 @@ internal static class StoredProcExtractor
                 var tableIdResults = database.ExecuteWithResults($@"SELECT OBJECT_ID('{group.Key}') AS TableID;");
                 if (tableIdResults.Tables.Count != 1)
                 {
-                    Logging.LogWarning($"'{group.Key}' returned more than one table: {string.Join(",", tableIdResults.Tables.Cast<Table>().Select(s => s.Name))}");
+                    ConsoleOutput.WarnOutput($"'{group.Key}' returned more than one table: {string.Join(",", tableIdResults.Tables.Cast<Table>().Select(s => s.Name))}");
                     return null!;
                 }
 

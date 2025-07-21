@@ -10,6 +10,7 @@ using DatabaseSchemaReader.DataSchema;
 using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
+using Microsoft.Extensions.Logging;
 using DatabaseSchema = Intent.RelationalDbSchemaImporter.Contracts.DbSchema.DatabaseSchema;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
@@ -47,13 +48,13 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return baseTypeName.Trim().ToLowerInvariant();
     }
 
-    public virtual async Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportFilterService importFilterService)
+    public virtual async Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportFilterService importFilterService, CancellationToken cancellationToken)
     {
         await using var connection = CreateConnection(connectionString);
-        await connection.OpenAsync();
+        await connection.OpenAsync(cancellationToken);
         
         var reader = new DatabaseReader(connection);
-        var databaseSchema = reader.ReadAll();
+        var databaseSchema = reader.ReadAll(cancellationToken);
         
         var schema = new DatabaseSchema
         {
@@ -177,17 +178,22 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
             var dependencyResolver = CreateDependencyResolver(connection);
             var tableNames = filteredTables.Select(t => $"{t.SchemaOwner}.{t.Name}");
             var dependentTableNames = await dependencyResolver.GetDependentTablesAsync(tableNames);
-            
+
+            var tables1 = filteredTables;
             var dependentTables = databaseSchema.Tables
                 .Where(t => dependentTableNames.Contains($"{t.SchemaOwner}.{t.Name}"))
-                .Where(t => !filteredTables.Contains(t))
+                .Where(t => !tables1.Contains(t))
                 .Where(t => importFilterService.ExportDependantTable(t.SchemaOwner, t.Name));
             
             filteredTables = filteredTables.Concat(dependentTables).ToArray();
         }
 
+        var progressOutput = ConsoleOutput.CreateSectionProgress("Tables", filteredTables.Length);
+        
         foreach (var table in filteredTables)
         {
+            progressOutput.OutputNext(table.Name);
+            
             var tableSchema = new TableSchema
             {
                 Name = table.Name,
@@ -244,7 +250,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         {
             return indexes;
         }
-
+        
         // DatabaseSchemaReader provides indexes through the table.Indexes collection
         foreach (var index in table.Indexes ?? [])
         {
@@ -287,7 +293,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
     protected virtual List<ForeignKeySchema> ExtractTableForeignKeys(DatabaseTable table)
     {
         var foreignKeys = new List<ForeignKeySchema>();
-
+        
         // DatabaseSchemaReader provides comprehensive foreign key information
         foreach (var foreignKey in table.ForeignKeys ?? [])
         {
@@ -354,8 +360,12 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
             .Where(view => !IsSystemObject(view.SchemaOwner, view.Name) && importFilterService.ExportView(view.SchemaOwner, view.Name))
             .ToArray();
 
+        var progressOutput = ConsoleOutput.CreateSectionProgress("Views", filteredViews.Length);
+        
         foreach (var view in filteredViews)
         {
+            progressOutput.OutputNext(view.Name);
+            
             var viewSchema = new ViewSchema
             {
                 Name = view.Name,
@@ -461,8 +471,12 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
                 .ToList();
         }
 
+        var progressOutput = ConsoleOutput.CreateSectionProgress("Stored Procedures", routines.Count);
+        
         foreach (var routine in routines)
         {
+            progressOutput.OutputNext(routine.Name);
+            
             var storedProcSchema = new StoredProcedureSchema
             {
                 Name = routine.Name,

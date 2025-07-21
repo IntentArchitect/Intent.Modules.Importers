@@ -370,7 +370,7 @@ internal class DatabaseSchemaExtractor
         }
         catch (Exception ex)
         {
-            Logging.LogWarning($"Could not extract result set for stored procedure {storedProc.Schema}.{storedProc.Name}: {ex.Message}");
+            ConsoleOutput.WarnOutput($"Could not extract result set for stored procedure {storedProc.Schema}.{storedProc.Name}: {ex.Message}");
         }
 
         return columns;

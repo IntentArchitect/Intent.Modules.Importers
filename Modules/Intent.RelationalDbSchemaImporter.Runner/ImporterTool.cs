@@ -39,13 +39,13 @@ public static class ImporterTool
         var payloadJson = JsonSerializer.Serialize(payloadObject, SerializerOptions);
 
         string? responseLine = null;
-        var errorString = new StringBuilder();
         
         Cli.Wrap("dotnet")
             .WithArguments([ToolExecutable, command, "--payload", payloadJson])
             .WithWorkingDirectory(ToolDirectory)
             .WithStandardOutputPipe(PipeTarget.ToDelegate((line, ct) =>
             {
+                // Receive the JSON Payload in STD OUT.
                 Logging.Log.Debug($"Output: {line}");
                 if (!line.StartsWith('{'))
                 {
@@ -58,8 +58,8 @@ public static class ImporterTool
             }))
             .WithStandardErrorPipe(PipeTarget.ToDelegate((line, ct) =>
             {
-                Logging.Log.Debug($"Error: {line}");
-                errorString.AppendLine(line);
+                // Receive realtime updates through STD ERR.
+                Logging.Log.Debug(line);
                 return Task.CompletedTask;
             }))
             .WithEnvironmentVariables(new Dictionary<string, string?>
@@ -75,11 +75,6 @@ public static class ImporterTool
             })
             .GetAwaiter()
             .GetResult();
-
-        if (errorString.Length > 0)
-        {
-            throw new InvalidOperationException(errorString.ToString());
-        }
         
         if (responseLine is not null)
         {

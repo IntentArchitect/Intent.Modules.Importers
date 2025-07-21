@@ -19,11 +19,11 @@ internal class SqlServerProvider : IDatabaseProvider
 {
     public DatabaseType SupportedType => DatabaseType.SqlServer;
 
-    public async Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportFilterService importFilterService)
+    public async Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportFilterService importFilterService, CancellationToken cancellationToken)
     {
         // For now, delegate to the existing SQL Server implementation
-        using var connection = new SqlConnection(connectionString);
-        await connection.OpenAsync();
+        await using var connection = new SqlConnection(connectionString);
+        await connection.OpenAsync(cancellationToken);
         var server = new Server(new ServerConnection(connection));
         var database = server.Databases[connection.Database];
 

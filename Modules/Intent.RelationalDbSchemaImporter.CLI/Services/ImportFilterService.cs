@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.Json.Nodes;
 using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
@@ -170,10 +171,13 @@ internal class ImportFilterService
 		return _importSchemaRequest.TypesToExport.Contains(ExportType.StoredProcedure);
 	}
 
-	public bool ValidateFilterFile()
+	public bool ValidateFilterFile(out List<string> errors)
 	{
+		errors = [];
+		
         if (string.IsNullOrWhiteSpace(_importSchemaRequest.ImportFilterFilePath))
         {
+	        // If no filter file is specified then don't validate
 			return true;
         }
 
@@ -189,22 +193,19 @@ internal class ImportFilterService
         var result = jsonSchema.Evaluate(JsonNode.Parse(jsonContent), options);
         if (!result.IsValid)
         {
-			Console.ForegroundColor = ConsoleColor.Red;
-            Logging.LogError("The Import Filter File failed schema validation");
-			Console.WriteLine("");
-            foreach (var detail in result.Details.Where(d => d.HasErrors))
-			{
-                Console.WriteLine($"Error at path: {detail.EvaluationPath}");
-                Console.WriteLine($"Instance location: {detail.InstanceLocation}");
-                foreach (var error in detail?.Errors)
-                {
-                    Console.WriteLine($"  - {error.Key}: {error.Value}");
-                }
-            }
-            Console.WriteLine(".");
-
-			Console.ResetColor();
-            return false;
+	        var errorMessage = new StringBuilder();
+	        errorMessage.AppendLine("The Import Filter File failed schema validation.");
+	        foreach (var detail in result.Details.Where(d => d.HasErrors))
+	        {
+		        errorMessage.AppendLine($"Error at path: {detail.EvaluationPath}");
+		        errorMessage.AppendLine($"Instance location: {detail.InstanceLocation}");
+		        foreach (var error in detail?.Errors ?? new Dictionary<string, string>())
+		        {
+			        errorMessage.AppendLine($"  - {error.Key}: {error.Value}");
+		        }
+	        }
+	        errors.Add(errorMessage.ToString());
+	        return false;
         }
 
 		return true;

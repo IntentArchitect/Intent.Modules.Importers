@@ -10,6 +10,8 @@ using Intent.RelationalDbSchemaImporter.CLI.Providers;
 using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Intent.RelationalDbSchemaImporter.CLI;
 
@@ -22,7 +24,10 @@ internal static partial class Commands
 
     private static string GetOptionName(string propertyName) => $"--{propertyName.ToKebabCase()}";
     
-    private static Command CreateStandardCommand<TResult>(string name, string description, Func<string, StandardResponse<TResult>, CancellationToken, Task<StandardResponse<TResult>>> executeFunc)
+    private static Command CreateStandardCommand<TResult>(
+        string name, 
+        string description, 
+        Func<string, StandardResponse<TResult>, CancellationToken, Task<StandardResponse<TResult>>> executeFunc)
     {
         var command = new Command(name, description);
         
@@ -39,17 +44,15 @@ internal static partial class Commands
             try
             {
                 var payload = parseResult.GetValue<string>(GetOptionName("payload"))!;
-                
+
                 var execResponse = await executeFunc(payload, response, cancellationToken);
                 
-                var json = SerializeResponse(execResponse, prettyPrint);
-                Console.WriteLine(json);
+                ConsoleOutput.JsonOutput(execResponse, prettyPrint);
             }
             catch (Exception ex)
             {
                 response.AddError(ex.Message);
-                var json = SerializeResponse(response, prettyPrint);
-                Console.WriteLine(json);
+                ConsoleOutput.JsonOutput(response, prettyPrint);
             }
         });
         
@@ -68,16 +71,6 @@ internal static partial class Commands
         var option = new Option<bool>(GetOptionName("pretty-print"));
         option.Description = "Format JSON output for readability";
         return option;
-    }
-
-    private static string SerializeResponse<TResult>(StandardResponse<TResult> response, bool prettyPrint)
-    {
-        var options = new JsonSerializerOptions
-        {
-            WriteIndented = prettyPrint,
-            Converters = { new JsonStringEnumConverter() }
-        };
-        return JsonSerializer.Serialize(response, options);
     }
 
     private static TRequest? DeserializeRequest<TRequest>(string jsonPayload, StandardResponse response) where TRequest : class
@@ -107,18 +100,6 @@ internal static partial class Commands
             return false;
         }
         return true;
-    }
-    
-    private static bool ValidateImportFilterFile(ImportFilterService importFilterService, StandardResponse<ImportSchemaResult> response)
-    {
-        importFilterService.ValidateFilterFile();
-        if (!importFilterService.ValidateFilterFile())
-        {
-            response.AddError("Import filter file validation failed");
-            return true;
-        }
-
-        return false;
     }
     
     private static bool ValidateDatabaseType(DatabaseType databaseType, StandardResponse response)
