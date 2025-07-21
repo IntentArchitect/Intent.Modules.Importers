@@ -1,9 +1,7 @@
-﻿using System;
-using System.CommandLine;
-using System.Reflection;
+﻿using System.CommandLine;
 using System.Threading.Tasks;
 
-namespace Intent.SQLSchemaExtractor;
+namespace Intent.RelationalDbSchemaImporter.CLI;
 
 public class Program
 {

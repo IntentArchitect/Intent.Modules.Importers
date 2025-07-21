@@ -1,14 +1,14 @@
-﻿using Json.Schema;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
+using Json.Schema;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
-namespace Intent.SQLSchemaExtractor;
+namespace Intent.RelationalDbSchemaImporter.CLI;
 
 public class ImportConfiguration
 {

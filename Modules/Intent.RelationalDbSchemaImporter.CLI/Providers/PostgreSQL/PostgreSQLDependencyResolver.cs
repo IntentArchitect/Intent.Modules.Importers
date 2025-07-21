@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
 using System.Threading.Tasks;
-using Npgsql;
 
-namespace Intent.SQLSchemaExtractor.Providers.PostgreSQL;
+namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 
 /// <summary>
 /// PostgreSQL-specific dependency resolver

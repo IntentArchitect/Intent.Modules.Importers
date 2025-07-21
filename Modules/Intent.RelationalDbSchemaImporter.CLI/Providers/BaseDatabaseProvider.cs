@@ -1,12 +1,11 @@
-using System.Data.Common;
-using DatabaseSchemaReader;
-using Intent.RelationalDbSchemaImporter.Contracts.Schema;
-using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using DatabaseSchemaReader;
+using Intent.RelationalDbSchemaImporter.Contracts.Schema;
 
-namespace Intent.SQLSchemaExtractor.Providers;
+namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 
 /// <summary>
 /// Base implementation for database providers using DatabaseSchemaReader

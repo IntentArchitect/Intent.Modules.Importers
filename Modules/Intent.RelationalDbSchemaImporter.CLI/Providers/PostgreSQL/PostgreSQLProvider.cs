@@ -1,13 +1,7 @@
 using System.Data.Common;
 using Npgsql;
-using Intent.RelationalDbSchemaImporter.Contracts.Schema;
-using DatabaseSchemaReader;
-using System;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Collections.Generic;
 
-namespace Intent.SQLSchemaExtractor.Providers.PostgreSQL;
+namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 
 /// <summary>
 /// PostgreSQL database provider implementation

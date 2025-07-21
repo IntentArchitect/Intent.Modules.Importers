@@ -1,13 +1,11 @@
-using System.Data.Common;
-using Microsoft.Data.SqlClient;
-using Intent.RelationalDbSchemaImporter.Contracts.Schema;
-using Intent.SQLSchemaExtractor.Extractors;
-using Microsoft.SqlServer.Management.Smo;
-using Microsoft.SqlServer.Management.Common;
-using System;
 using System.Threading.Tasks;
+using Intent.RelationalDbSchemaImporter.CLI.Extractors;
+using Intent.RelationalDbSchemaImporter.Contracts.Schema;
+using Microsoft.Data.SqlClient;
+using Microsoft.SqlServer.Management.Common;
+using Microsoft.SqlServer.Management.Smo;
 
-namespace Intent.SQLSchemaExtractor.Providers.SqlServer;
+namespace Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
 
 /// <summary>
 /// SQL Server database provider implementation

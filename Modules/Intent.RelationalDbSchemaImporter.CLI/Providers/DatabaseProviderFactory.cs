@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Intent.SQLSchemaExtractor.Providers.SqlServer;
-using Intent.SQLSchemaExtractor.Providers.PostgreSQL;
+using Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
+using Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
 
-namespace Intent.SQLSchemaExtractor.Providers;
+namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 
 /// <summary>
 /// Factory implementation for creating database providers

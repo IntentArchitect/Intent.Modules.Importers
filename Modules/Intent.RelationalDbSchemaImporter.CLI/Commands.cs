@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.CommandLine;
 using System.IO;
 using System.Linq;
+using Intent.RelationalDbSchemaImporter.CLI.Providers;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.RelationalDbSchemaImporter.Contracts.Models;
-using Intent.SQLSchemaExtractor.Extractors;
-using Intent.SQLSchemaExtractor.Providers;
 using Microsoft.Data.SqlClient;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 
-namespace Intent.SQLSchemaExtractor;
+namespace Intent.RelationalDbSchemaImporter.CLI;
 
 internal static partial class Commands
 {

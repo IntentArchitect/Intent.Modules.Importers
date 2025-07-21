@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.SqlServer.Management.Smo;
 
-namespace Intent.SQLSchemaExtractor.Extractors;
+namespace Intent.RelationalDbSchemaImporter.CLI.Extractors;
 
 internal static class StoredProcExtractor
 {

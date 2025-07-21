@@ -3,7 +3,7 @@ using System.Data.Common;
 using System.Threading.Tasks;
 using Intent.RelationalDbSchemaImporter.Contracts.Schema;
 
-namespace Intent.SQLSchemaExtractor.Providers.PostgreSQL;
+namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 
 /// <summary>
 /// PostgreSQL-specific stored procedure analyzer

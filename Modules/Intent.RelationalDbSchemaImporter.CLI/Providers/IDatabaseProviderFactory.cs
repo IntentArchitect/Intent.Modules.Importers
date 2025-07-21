@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Intent.SQLSchemaExtractor.Providers;
+namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 
 /// <summary>
 /// Factory for creating database providers and detecting database types

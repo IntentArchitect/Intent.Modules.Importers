@@ -28,7 +28,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Intent.RelationalDbSchemaImporter.Runner\Intent.RelationalDbSchemaImporter.Runner.csproj" />
-        <ProjectReference Include="..\Intent.SQLSchemaExtractor\Intent.SQLSchemaExtractor.csproj">
+        <ProjectReference Include="..\Intent.RelationalDbSchemaImporter.CLI\Intent.RelationalDbSchemaImporter.CLI.csproj">
             <IncludeAssets>native</IncludeAssets>
         </ProjectReference>
       <ProjectReference Include="..\Intent.Modules.SqlServerImporter\Intent.Modules.SqlServerImporter.csproj" />

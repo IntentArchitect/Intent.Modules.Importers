@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intent.MetadataSynchronizer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intent.MetadataSynchronizer.OpenApi.CLI.Tests", "Intent.MetadataSynchronizer.OpenApi.CLI.Tests\Intent.MetadataSynchronizer.OpenApi.CLI.Tests.csproj", "{287C109A-2CCC-49BD-8751-4AAD2A28A624}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intent.SQLSchemaExtractor", "Intent.SQLSchemaExtractor\Intent.SQLSchemaExtractor.csproj", "{CFC06753-BA2E-4844-BC2F-D0A146253EA1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intent.RelationalDbSchemaImporter.CLI", "Intent.RelationalDbSchemaImporter.CLI\Intent.RelationalDbSchemaImporter.CLI.csproj", "{CFC06753-BA2E-4844-BC2F-D0A146253EA1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{5C31005F-A1A1-4612-B2EF-CFD1A3DE266B}"
 EndProject

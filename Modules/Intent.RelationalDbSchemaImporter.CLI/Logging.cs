@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Intent.SQLSchemaExtractor;
+namespace Intent.RelationalDbSchemaImporter.CLI;
 
 internal static class Logging
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using Intent.RelationalDbSchemaImporter.Contracts.Schema;
 using Microsoft.SqlServer.Management.Smo;
 
-namespace Intent.SQLSchemaExtractor.Extractors;
+namespace Intent.RelationalDbSchemaImporter.CLI.Extractors;
 
 public class DatabaseSchemaExtractor
 {

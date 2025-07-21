@@ -29,7 +29,7 @@
   <Target Name="CopyRelationalSchemaImporter" BeforeTargets="RunIntentArchitectPackager" AfterTargets="Build">
     <Message Text="Copying over RelationalSchemaImporter..." Importance="high" />
     <ItemGroup>
-      <SourceFiles Include="$(ProjectDir)../Intent.SQLSchemaExtractor/bin/$(Configuration)/net8.0/**/*.*" />
+      <SourceFiles Include="$(ProjectDir)../Intent.RelationalDbSchemaImporter.CLI/bin/$(Configuration)/net8.0/**/*.*" />
     </ItemGroup>
     <Copy SourceFiles="@(SourceFiles)"
           DestinationFiles="@(SourceFiles -> '$(ProjectDir)resources/tool/%(RecursiveDir)%(Filename)%(Extension)')" />

@@ -27,7 +27,7 @@ public static class ImporterTool
         set => _toolDirectory = value;
     }
     
-    private static string ToolExecutable => Path.Combine(ToolDirectory, "Intent.SQLSchemaExtractor.dll");
+    private static string ToolExecutable => Path.Combine(ToolDirectory, "Intent.RelationalDbSchemaImporter.CLI.dll");
 
     public static void SetToolDirectory(string toolDirectory)
     {

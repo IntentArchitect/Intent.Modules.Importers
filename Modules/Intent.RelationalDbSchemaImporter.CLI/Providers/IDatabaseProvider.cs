@@ -1,9 +1,8 @@
-using Intent.RelationalDbSchemaImporter.Contracts.Schema;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Intent.RelationalDbSchemaImporter.Contracts.Schema;
 
-namespace Intent.SQLSchemaExtractor.Providers;
+namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 
 /// <summary>
 /// Defines the contract for database schema extraction providers

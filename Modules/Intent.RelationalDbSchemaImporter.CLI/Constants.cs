@@ -1,4 +1,4 @@
-﻿namespace Intent.SQLSchemaExtractor;
+﻿namespace Intent.RelationalDbSchemaImporter.CLI;
 
 public static class Constants
 {

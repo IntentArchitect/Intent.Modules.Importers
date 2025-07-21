@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using Intent.Modules.Common.Templates;
 using Intent.RelationalDbSchemaImporter.Contracts.Models;
 
-namespace Intent.SQLSchemaExtractor;
+namespace Intent.RelationalDbSchemaImporter.CLI;
 
 internal static partial class Commands
 {
