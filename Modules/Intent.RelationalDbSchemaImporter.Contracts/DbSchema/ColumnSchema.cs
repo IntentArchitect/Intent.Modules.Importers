@@ -24,5 +24,4 @@ public class ColumnSchema
     public int? NumericScale { get; set; }
     public DefaultConstraintSchema? DefaultConstraint { get; set; }
     public ComputedColumnSchema? ComputedColumn { get; set; }
-    public Dictionary<string, object> Metadata { get; set; } = new();
 }

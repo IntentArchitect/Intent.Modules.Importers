@@ -273,7 +273,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
             var fkSchema = new ForeignKeySchema
             {
                 Name = foreignKey.Name ?? $"FK_{table.Name}",
-                ReferencedTableSchema = foreignKey.RefersToSchema ?? "dbo",
+                ReferencedTableSchema = foreignKey.RefersToSchema ?? "",
                 ReferencedTableName = foreignKey.RefersToTable ?? "",
                 Columns = ExtractForeignKeyColumns(foreignKey)
             };
