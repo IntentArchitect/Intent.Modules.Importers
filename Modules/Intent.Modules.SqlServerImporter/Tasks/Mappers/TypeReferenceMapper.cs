@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Intent.RelationalDbSchemaImporter.Contracts.Schema;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
+using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.Modules.SqlServerImporter.Tasks.Mappers;
 

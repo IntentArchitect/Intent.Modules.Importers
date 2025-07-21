@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Intent.RelationalDbSchemaImporter.Contracts.Schema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.Modules.Common.Templates;
 using Intent.Modules.SqlServerImporter.Tasks.Models;
+using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.Modules.SqlServerImporter.Tasks.Mappers;
 

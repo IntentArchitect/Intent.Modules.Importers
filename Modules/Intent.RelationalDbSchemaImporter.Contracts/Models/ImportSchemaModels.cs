@@ -1,5 +1,5 @@
+using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
-using Intent.RelationalDbSchemaImporter.Contracts.Schema;
 
 namespace Intent.RelationalDbSchemaImporter.Contracts.Models;
 

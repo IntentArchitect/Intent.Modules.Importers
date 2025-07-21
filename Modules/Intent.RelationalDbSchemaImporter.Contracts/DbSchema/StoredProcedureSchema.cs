@@ -1,4 +1,4 @@
-namespace Intent.RelationalDbSchemaImporter.Contracts.Schema;
+namespace Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 public class StoredProcedureSchema
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Intent.RelationalDbSchemaImporter.Contracts.Schema;
+using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Microsoft.SqlServer.Management.Smo;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Extractors;

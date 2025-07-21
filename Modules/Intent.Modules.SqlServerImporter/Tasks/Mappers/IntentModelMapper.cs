@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using Intent.RelationalDbSchemaImporter.Contracts.Schema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.Modules.SqlServerImporter.Tasks.Models;
 using Intent.Modules.Common.Templates;
 using Intent.Modelers.Domain.Api;
+using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.Modules.SqlServerImporter.Tasks.Mappers;
 

@@ -3,7 +3,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using DatabaseSchemaReader;
-using Intent.RelationalDbSchemaImporter.Contracts.Schema;
+using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 
