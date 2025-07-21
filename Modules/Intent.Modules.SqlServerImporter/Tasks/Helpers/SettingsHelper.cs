@@ -93,12 +93,24 @@ internal static class SettingsHelper
             package.AddMetadata("sql-import-repository:storedProcedureType", importModel.StoredProcedureType);
             ProcessConnectionStringSetting(package, importModel);
             package.AddMetadata("sql-import-repository:settingPersistence", importModel.SettingPersistence.ToString());
-            package.AddMetadata("sql-import-repository:databaseType", importModel.DatabaseType.ToString());
+            ProcessDatabaseTypeStringSetting(package, importModel);
         }
         
         package.Save();
         return;
 
+        static void ProcessDatabaseTypeStringSetting(PackageModelPersistable package, RepositoryImportModel settings)
+        {
+            if (settings.SettingPersistence == RepositorySettingPersistence.InheritDb)
+            {
+                package.RemoveMetadata("sql-import-repository:databaseType");
+            }
+            else
+            {
+                package.AddMetadata("sql-import-repository:databaseType", settings.DatabaseType.ToString());
+            }
+        }
+        
         static void ProcessConnectionStringSetting(PackageModelPersistable package, RepositoryImportModel settings)
         {
             var connectionString = settings.ConnectionString;

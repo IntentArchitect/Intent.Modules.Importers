@@ -18,7 +18,7 @@ public class RepositoryImportModel
     public string ConnectionString { get; set; } = null!;
     public List<string> TypesToExport { get; set; } = [];
     public List<string> StoredProcNames { get; set; } = [];
-    public DatabaseType DatabaseType { get; set; }
+    public DatabaseType? DatabaseType { get; set; }
     // END - ImportSchemaRequest
 }
 

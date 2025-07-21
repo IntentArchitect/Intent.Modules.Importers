@@ -787,11 +787,12 @@ class StoredProceduresImportStrategy {
         let domainPackage = element.getPackage();
         let result = {
             inheritedConnectionString: this.getSettingValue(domainPackage, "sql-import:connectionString", null),
+            inheritedDatabaseType: this.getSettingValue(domainPackage, "sql-import:databaseType", null),
             connectionString: this.getSettingValue(domainPackage, "sql-import-repository:connectionString", null),
             storedProcedureType: this.getSettingValue(domainPackage, "sql-import-repository:storedProcedureType", ""),
             storedProcNames: "",
             settingPersistence: this.getSettingValue(domainPackage, "sql-import-repository:settingPersistence", "None"),
-            databaseType: this.getSettingValue(domainPackage, "sql-import-repository:databaseType", "SqlServer")
+            databaseType: this.getSettingValue(domainPackage, "sql-import-repository:databaseType", "")
         };
         return result;
     }
@@ -845,15 +846,21 @@ class StoredProceduresImportStrategy {
                     onClick: async (form) => {
                         const connectionStringValue = form.getField("connectionString").value;
                         const settingPersistenceValue = form.getField("settingPersistence").value;
+                        const databaseTypeValue = form.getField("databaseType").value;
                         if (settingPersistenceValue != "InheritDb" && (connectionStringValue == null || (connectionStringValue === null || connectionStringValue === void 0 ? void 0 : connectionStringValue.trim()) === "")) {
                             await dialogService.error("Please enter a connection string (or inherit DB settings) before browsing stored procedures.");
                             return;
                         }
+                        if (settingPersistenceValue != "InheritDb" && (!databaseTypeValue || (databaseTypeValue === null || databaseTypeValue === void 0 ? void 0 : databaseTypeValue.trim()) === "")) {
+                            await dialogService.error("Database Type was not set.");
+                            return null;
+                        }
                         let connectionStringStr = settingPersistenceValue == "InheritDb" ? defaults.inheritedConnectionString : connectionStringValue;
+                        let dataTypeStr = settingPersistenceValue == "InheritDb" ? defaults.inheritedDatabaseType : databaseTypeValue;
                         try {
                             let storedProcNames = form.getField("storedProcNames").value;
                             let capturedStoredProcs = (storedProcNames).split(",").map(x => x.trim());
-                            const selectedProcs = await this.openStoredProcedureBrowseDialog(connectionStringStr, capturedStoredProcs);
+                            const selectedProcs = await this.openStoredProcedureBrowseDialog(connectionStringStr, dataTypeStr, capturedStoredProcs);
                             if (selectedProcs.length > 0) {
                                 const storedProcNamesField = form.getField("storedProcNames");
                                 storedProcNamesField.value = selectedProcs.join(", ");
@@ -904,7 +911,7 @@ class StoredProceduresImportStrategy {
             storedProcNames: storedProcNamesArray,
             repositoryElementId: element.id,
             settingPersistence: capturedInput.settingPersistence,
-            databaseType: capturedInput.databaseType
+            databaseType: capturedInput.databaseType === "" ? null : capturedInput.databaseType
         };
         return importConfig;
     }
@@ -912,7 +919,7 @@ class StoredProceduresImportStrategy {
         let persistedValue = domainPackage.getMetadata(key);
         return persistedValue ? persistedValue : defaultValue;
     }
-    async openStoredProcedureBrowseDialog(connectionString, preSelectedStoredProcs) {
+    async openStoredProcedureBrowseDialog(connectionString, databaseType, preSelectedStoredProcs) {
         var _a;
         let inputProcs = this.sanitizePreSelectedStoredProcs(preSelectedStoredProcs);
         let storedProcSelection = {
@@ -942,7 +949,11 @@ class StoredProceduresImportStrategy {
             }
         };
         try {
-            let executionResult = await executeImporterModuleTask("Intent.Modules.SqlServerImporter.Tasks.StoredProcList", { "connectionString": connectionString });
+            const input = {
+                connectionString: connectionString,
+                databaseType: databaseType
+            };
+            let executionResult = await executeImporterModuleTask("Intent.Modules.SqlServerImporter.Tasks.StoredProcList", input);
             if (((_a = executionResult.errors) === null || _a === void 0 ? void 0 : _a.length) > 0) {
                 await displayExecutionResultErrors(executionResult);
                 return [];

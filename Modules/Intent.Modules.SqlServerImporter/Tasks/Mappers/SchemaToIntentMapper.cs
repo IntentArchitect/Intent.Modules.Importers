@@ -200,7 +200,7 @@ internal class SchemaToIntentMapper
             StoredProcedureType = string.IsNullOrWhiteSpace(importModel.StoredProcedureType)
                 ? StoredProcedureType.Default
                 : Enum.Parse<StoredProcedureType>(importModel.StoredProcedureType),
-            DatabaseType = importModel.DatabaseType
+            DatabaseType = importModel.DatabaseType ?? throw new Exception("Database type is required for repository import.")
         };
     }
 

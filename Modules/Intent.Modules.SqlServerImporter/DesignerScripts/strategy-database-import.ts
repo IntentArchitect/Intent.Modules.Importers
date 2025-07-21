@@ -487,7 +487,7 @@ class DatabaseImportStrategy {
 
     private async fetchDatabaseMetadata(connectionString: string, databaseType: string): Promise<IDatabaseMetadata|null> {
         // Get database metadata
-        const metadataModel: IDatabaseMetadataInputModel = { 
+        const metadataModel: IRetrieveDatabaseObjectsModel = { 
             connectionString: connectionString,
             databaseType: databaseType 
         };
@@ -863,7 +863,7 @@ interface ITestConnectionModel {
     databaseType: string;
 }
 
-interface IDatabaseMetadataInputModel {
+interface IRetrieveDatabaseObjectsModel {
     connectionString: string;
     databaseType: string;
 }
