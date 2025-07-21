@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 
@@ -56,17 +57,6 @@ public interface IStoredProcedureAnalyzer
     /// <param name="parameters">Procedure parameters for analysis</param>
     /// <returns>Result set column information</returns>
     Task<List<ResultSetColumnSchema>> AnalyzeResultSetAsync(string procedureName, string schema, IEnumerable<StoredProcedureParameterSchema> parameters);
-}
-
-/// <summary>
-/// Supported database types
-/// </summary>
-public enum DatabaseType
-{
-    Auto,
-    SqlServer,
-    PostgreSQL,
-    MySQL
 }
 
 /// <summary>

@@ -247,11 +247,11 @@ internal static partial class Commands
             var databaseType = config.DatabaseType.ToProviderType();
             
             // Auto-detect database type if not specified
-            if (databaseType == Providers.DatabaseType.Auto)
+            if (databaseType == DatabaseType.Auto)
             {
                 databaseType = factory.DetectDatabaseType(config.ConnectionString);
                 
-                if (databaseType == Providers.DatabaseType.Auto)
+                if (databaseType == DatabaseType.Auto)
                 {
                     response.AddError("Could not auto-detect database type from connection string. Please specify the database type explicitly.");
                     return null;

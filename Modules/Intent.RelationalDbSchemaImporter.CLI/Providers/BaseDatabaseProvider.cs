@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DatabaseSchemaReader;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 

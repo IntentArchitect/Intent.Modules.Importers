@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 

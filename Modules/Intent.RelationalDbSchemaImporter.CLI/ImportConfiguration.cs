@@ -12,13 +12,6 @@ namespace Intent.RelationalDbSchemaImporter.CLI;
 
 public class ImportConfiguration
 {
-	public const string ConfigFile = nameof(ConfigFile);
-	public const string GenerateConfigFile = nameof(GenerateConfigFile);
-	public const string SerializedConfig = nameof(SerializedConfig);
-	
-	
-	public string? ApplicationId { get; set; }
-	
 	public Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType DatabaseType { get; set; } = Intent.RelationalDbSchemaImporter.Contracts.Enums.DatabaseType.Auto;
 	public EntityNameConvention EntityNameConvention { get; set; } = EntityNameConvention.SingularEntity;
 	public TableStereotype TableStereotype { get; set; } = TableStereotype.WhenDifferent;
@@ -216,14 +209,6 @@ public class ImportConfiguration
 		return true;
     }
 }
-
-
-
-
-
-
-
-
 
 // IMPORTANT! If anything changes here, you need to update the SQL Server Import Module too!
 class ImportFilterSettings

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 using Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 

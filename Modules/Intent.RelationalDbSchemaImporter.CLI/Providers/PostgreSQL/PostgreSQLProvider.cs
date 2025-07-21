@@ -1,4 +1,5 @@
 using System.Data.Common;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Npgsql;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;

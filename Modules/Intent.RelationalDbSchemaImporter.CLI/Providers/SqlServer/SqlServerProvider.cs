@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Intent.RelationalDbSchemaImporter.CLI.Extractors;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Microsoft.Data.SqlClient;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
