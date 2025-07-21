@@ -4,6 +4,7 @@ using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.IArchitect.Agent.Persistence.Serialization;
 using Intent.IArchitect.CrossPlatform.IO;
 using Intent.Modules.SqlServerImporter.Tasks.Models;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.Utils;
 using Microsoft.Data.SqlClient;
 
@@ -27,6 +28,7 @@ internal static class SettingsHelper
             package.AddMetadata("sql-import:storedProcedureType", importModel.StoredProcedureType);
             ProcessConnectionStringSetting(package, importModel);
             package.AddMetadata("sql-import:settingPersistence", importModel.SettingPersistence.ToString());
+            package.AddMetadata("sql-import:databaseType", importModel.DatabaseType.ToString());
         }
         else
         {
@@ -37,6 +39,7 @@ internal static class SettingsHelper
             package.RemoveMetadata("sql-import:storedProcedureType");
             package.RemoveMetadata("sql-import:connectionString");
             package.RemoveMetadata("sql-import:settingPersistence");
+            package.RemoveMetadata("sql-import:databaseType");
         }
         
         package.Save();
@@ -83,12 +86,14 @@ internal static class SettingsHelper
             package.RemoveMetadata("sql-import-repository:storedProcedureType");
             package.RemoveMetadata("sql-import-repository:connectionString");
             package.RemoveMetadata("sql-import-repository:settingPersistence");
+            package.RemoveMetadata("sql-import-repository:databaseType");
         }
         else
         {
             package.AddMetadata("sql-import-repository:storedProcedureType", importModel.StoredProcedureType);
             ProcessConnectionStringSetting(package, importModel);
             package.AddMetadata("sql-import-repository:settingPersistence", importModel.SettingPersistence.ToString());
+            package.AddMetadata("sql-import-repository:databaseType", importModel.DatabaseType.ToString());
         }
         
         package.Save();
@@ -140,6 +145,7 @@ internal static class SettingsHelper
         }
 
         importModel.ConnectionString = package.GetMetadataValue("sql-import:connectionString")!;
+        importModel.DatabaseType = Enum.TryParse<DatabaseType>(package.GetMetadataValue("sql-import:databaseType")!, out var databaseType) ? databaseType : DatabaseType.SqlServer;
     }
     
     // We can't use PackageModelPersistable.Load since it uses the underlying cached versions

@@ -31,7 +31,8 @@ class StoredProceduresImportStrategy {
             connectionString: this.getSettingValue(domainPackage, "sql-import-repository:connectionString", null),
             storedProcedureType: this.getSettingValue(domainPackage, "sql-import-repository:storedProcedureType", ""),
             storedProcNames: "",
-            settingPersistence: this.getSettingValue(domainPackage, "sql-import-repository:settingPersistence", "None")
+            settingPersistence: this.getSettingValue(domainPackage, "sql-import-repository:settingPersistence", "None"),
+            databaseType: this.getSettingValue(domainPackage, "sql-import-repository:databaseType", "SqlServer")       
         };
         return result;
     }
@@ -52,11 +53,9 @@ class StoredProceduresImportStrategy {
                     id: "databaseType",
                     fieldType: "select",
                     label: "Database Type",
-                    placeholder: null,
-                    hint: null,
-                    isRequired: true,
-                    value: "SqlServer",
+                    value: defaults.databaseType,
                     selectOptions: [
+                        { id: "", description: "(default or inherited setting)" },
                         { id: "SqlServer", description: "SQL Server" },
                         { id: "PostgreSQL", description: "PostgreSQL" },
                     ]
@@ -134,6 +133,11 @@ class StoredProceduresImportStrategy {
     private async createImportModel(capturedInput: any): Promise<IStoredProceduresImportModel|null> {
         if (capturedInput.settingPersistence != "InheritDb" && (!capturedInput.connectionString || capturedInput.connectionString?.trim() === "")) {
             await dialogService.error("Connection String was not set.");
+            return null;
+        }
+        
+        if (capturedInput.settingPersistence != "InheritDb" && (!capturedInput.databaseType || capturedInput.databaseType?.trim() === "")) {
+            await dialogService.error("Database Type was not set.");
             return null;
         }
 
@@ -268,6 +272,7 @@ interface ISqlStoredProceduresImportPackageSettings {
     storedProcedureType: string;
     storedProcNames: string;
     settingPersistence: string;
+    databaseType: string;
 }
 
 interface IStoredProceduresImportModel {

@@ -61,7 +61,8 @@ class DatabaseImportStrategy {
             importFilterFilePath: this.getSettingValue(domainPackage, "sql-import:importFilterFilePath", null),
             connectionString: this.getSettingValue(domainPackage, "sql-import:connectionString", null),
             storedProcedureType: this.getSettingValue(domainPackage, "sql-import:storedProcedureType", ""),
-            settingPersistence: this.getSettingValue(domainPackage, "sql-import:settingPersistence", "None")
+            settingPersistence: this.getSettingValue(domainPackage, "sql-import:settingPersistence", "None"),
+            databaseType: this.getSettingValue(domainPackage, "sql-import:databaseType", "SqlServer")
         };
         return result;
     }
@@ -90,7 +91,7 @@ class DatabaseImportStrategy {
                             placeholder: null,
                             hint: null,
                             isRequired: true,
-                            value: "SqlServer",
+                            value: defaults.databaseType,
                             selectOptions: [
                                 { id: "SqlServer", description: "SQL Server" },
                                 { id: "PostgreSQL", description: "PostgreSQL" },
@@ -839,6 +840,7 @@ interface ISqlDatabaseImportPackageSettings {
     storedProcedureType: string;
     connectionString: string;
     settingPersistence: string;
+    databaseType: string;
 }
 
 interface IDatabaseImportModel {

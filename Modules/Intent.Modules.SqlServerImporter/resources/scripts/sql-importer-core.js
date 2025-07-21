@@ -89,7 +89,8 @@ class DatabaseImportStrategy {
             importFilterFilePath: this.getSettingValue(domainPackage, "sql-import:importFilterFilePath", null),
             connectionString: this.getSettingValue(domainPackage, "sql-import:connectionString", null),
             storedProcedureType: this.getSettingValue(domainPackage, "sql-import:storedProcedureType", ""),
-            settingPersistence: this.getSettingValue(domainPackage, "sql-import:settingPersistence", "None")
+            settingPersistence: this.getSettingValue(domainPackage, "sql-import:settingPersistence", "None"),
+            databaseType: this.getSettingValue(domainPackage, "sql-import:databaseType", "SqlServer")
         };
         return result;
     }
@@ -117,7 +118,7 @@ class DatabaseImportStrategy {
                             placeholder: null,
                             hint: null,
                             isRequired: true,
-                            value: "SqlServer",
+                            value: defaults.databaseType,
                             selectOptions: [
                                 { id: "SqlServer", description: "SQL Server" },
                                 { id: "PostgreSQL", description: "PostgreSQL" },
@@ -789,7 +790,8 @@ class StoredProceduresImportStrategy {
             connectionString: this.getSettingValue(domainPackage, "sql-import-repository:connectionString", null),
             storedProcedureType: this.getSettingValue(domainPackage, "sql-import-repository:storedProcedureType", ""),
             storedProcNames: "",
-            settingPersistence: this.getSettingValue(domainPackage, "sql-import-repository:settingPersistence", "None")
+            settingPersistence: this.getSettingValue(domainPackage, "sql-import-repository:settingPersistence", "None"),
+            databaseType: this.getSettingValue(domainPackage, "sql-import-repository:databaseType", "SqlServer")
         };
         return result;
     }
@@ -809,11 +811,9 @@ class StoredProceduresImportStrategy {
                     id: "databaseType",
                     fieldType: "select",
                     label: "Database Type",
-                    placeholder: null,
-                    hint: null,
-                    isRequired: true,
-                    value: "SqlServer",
+                    value: defaults.databaseType,
                     selectOptions: [
+                        { id: "", description: "(default or inherited setting)" },
                         { id: "SqlServer", description: "SQL Server" },
                         { id: "PostgreSQL", description: "PostgreSQL" },
                     ]
@@ -884,9 +884,13 @@ class StoredProceduresImportStrategy {
         return capturedInput;
     }
     async createImportModel(capturedInput) {
-        var _a;
+        var _a, _b;
         if (capturedInput.settingPersistence != "InheritDb" && (!capturedInput.connectionString || ((_a = capturedInput.connectionString) === null || _a === void 0 ? void 0 : _a.trim()) === "")) {
             await dialogService.error("Connection String was not set.");
+            return null;
+        }
+        if (capturedInput.settingPersistence != "InheritDb" && (!capturedInput.databaseType || ((_b = capturedInput.databaseType) === null || _b === void 0 ? void 0 : _b.trim()) === "")) {
+            await dialogService.error("Database Type was not set.");
             return null;
         }
         const storedProcNamesArray = capturedInput.storedProcNames.split(',').map((name) => name.trim());
