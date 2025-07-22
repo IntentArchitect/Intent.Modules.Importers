@@ -35,10 +35,12 @@ internal class SqlServerForeignKeyExtractor : DefaultForeignKeyExtractor
                 // Try to get SQL Server foreign key columns, but fall back to base extraction if needed
                 var foreignKeyColumns = await ExtractSqlServerForeignKeyColumnsAsync(table, foreignKey.Name ?? "", connection);
                 
-                // If SQL Server query failed, use base implementation
+                // If SQL Server query failed, extract basic columns from DatabaseSchemaReader
                 if (foreignKeyColumns.Count == 0)
                 {
-                    foreignKeyColumns = await ExtractForeignKeyColumnsAsync(foreignKey, connection);
+                    // For SQL Server, we need to extract referenced column names from the DatabaseSchemaReader object
+                    // The foreignKey.RefersToTable should contain the referenced table, and we need to map columns
+                    foreignKeyColumns = ExtractBasicForeignKeyColumns(foreignKey);
                 }
 
                 var fkSchema = new ForeignKeySchema
@@ -199,5 +201,124 @@ internal class SqlServerForeignKeyExtractor : DefaultForeignKeyExtractor
         }
 
         return columns;
+    }
+
+    /// <summary>
+    /// Extract basic foreign key columns from DatabaseSchemaReader when custom T-SQL query fails
+    /// Attempts to infer referenced column names based on common naming conventions
+    /// </summary>
+    private static List<ForeignKeyColumnSchema> ExtractBasicForeignKeyColumns(DatabaseConstraint foreignKey)
+    {
+        var columns = new List<ForeignKeyColumnSchema>();
+
+        // DatabaseSchemaReader provides column mappings in foreign keys
+        foreach (var sourceColumn in foreignKey.Columns ?? [])
+        {
+            var columnName = sourceColumn ?? "";
+            
+            // Try to infer the referenced column name based on common patterns
+            var referencedColumnName = InferReferencedColumnName(columnName, foreignKey.RefersToTable ?? "");
+            
+            var columnSchema = new ForeignKeyColumnSchema
+            {
+                Name = columnName,
+                ReferencedColumnName = referencedColumnName
+            };
+
+            columns.Add(columnSchema);
+        }
+
+        return columns;
+    }
+
+    /// <summary>
+    /// Infer referenced column name based on common foreign key naming conventions
+    /// </summary>
+    private static string InferReferencedColumnName(string sourceColumnName, string referencedTableName)
+    {
+        // Common patterns:
+        // 1. ParentCategoryID -> CategoryID (strip table prefix, handle singular/plural)
+        // 2. CategoryID -> CategoryID (same name)
+        // 3. UserID -> UserID (same name) 
+        // 4. OrderID -> OrderID (same name)
+        
+        if (string.IsNullOrEmpty(referencedTableName))
+        {
+            return sourceColumnName; // Fallback to same name
+        }
+
+        var sourceColumnLower = sourceColumnName.ToLowerInvariant();
+        var tableNameLower = referencedTableName.ToLowerInvariant();
+        
+        // Handle singular/plural table name patterns
+        // Try both singular and plural forms of the table name
+        var tableSingular = GetSingularForm(referencedTableName);
+        var tableSingularLower = tableSingular.ToLowerInvariant();
+        
+        // Pattern 1: Check if source column ends with singular table name + "ID"
+        // Example: ParentCategoryID ends with "categoryid" -> CategoryID
+        if (sourceColumnLower.EndsWith(tableSingularLower + "id"))
+        {
+            return tableSingular + "ID";
+        }
+        
+        // Pattern 2: Check if source column ends with plural table name + "ID"  
+        // Example: ParentCategoriesID ends with "categoriesid" -> CategoriesID
+        if (sourceColumnLower.EndsWith(tableNameLower + "id"))
+        {
+            return referencedTableName + "ID";
+        }
+        
+        // Pattern 3: Check if source column is exactly singular table name + "ID"
+        // Example: CategoryID -> CategoryID
+        if (sourceColumnLower == tableSingularLower + "id")
+        {
+            return sourceColumnName;
+        }
+        
+        // Pattern 4: Check if source column is exactly plural table name + "ID"
+        // Example: CategoriesID -> CategoriesID
+        if (sourceColumnLower == tableNameLower + "id")
+        {
+            return sourceColumnName;
+        }
+        
+        // For other patterns, assume the referenced column has the same name
+        // This handles cases like UserID -> UserID, OrderID -> OrderID
+        return sourceColumnName;
+    }
+
+    /// <summary>
+    /// Get singular form of a table name by removing common plural suffixes
+    /// </summary>
+    private static string GetSingularForm(string tableName)
+    {
+        if (string.IsNullOrEmpty(tableName))
+            return tableName;
+            
+        // Handle common plural patterns
+        if (tableName.EndsWith("ies", StringComparison.OrdinalIgnoreCase))
+        {
+            // Categories -> Category
+            return tableName.Substring(0, tableName.Length - 3) + "y";
+        }
+        
+        if (tableName.EndsWith("es", StringComparison.OrdinalIgnoreCase))
+        {
+            // Addresses -> Address, but not for words ending in single 'e'
+            if (tableName.Length > 3 && !tableName.EndsWith("ses", StringComparison.OrdinalIgnoreCase))
+            {
+                return tableName.Substring(0, tableName.Length - 2);
+            }
+        }
+        
+        if (tableName.EndsWith("s", StringComparison.OrdinalIgnoreCase) && tableName.Length > 1)
+        {
+            // Users -> User, Products -> Product
+            return tableName.Substring(0, tableName.Length - 1);
+        }
+        
+        // If no plural pattern matches, return as-is
+        return tableName;
     }
 } 
