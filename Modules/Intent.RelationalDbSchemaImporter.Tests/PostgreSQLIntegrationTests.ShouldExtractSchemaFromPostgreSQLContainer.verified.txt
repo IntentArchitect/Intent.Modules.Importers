@@ -87,6 +87,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: audit_id,
@@ -100,6 +101,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: change_date,
@@ -113,6 +115,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: record_id,
@@ -126,6 +129,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: table_name,
@@ -218,6 +222,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: category_name,
@@ -231,6 +236,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: category_id,
@@ -248,7 +254,7 @@
           Columns: [
             {
               Name: parent_category_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: category_id
             }
           ]
         }
@@ -359,6 +365,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: created_date,
@@ -372,6 +379,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: product_id,
@@ -385,6 +393,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: transaction_id,
@@ -402,7 +411,7 @@
           Columns: [
             {
               Name: product_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: product_id
             }
           ]
         },
@@ -413,7 +422,7 @@
           Columns: [
             {
               Name: created_by,
-              ReferencedColumnName: 
+              ReferencedColumnName: user_id
             }
           ]
         }
@@ -502,6 +511,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: order_id,
@@ -515,6 +525,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: product_id,
@@ -528,6 +539,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: order_detail_id,
@@ -545,7 +557,7 @@
           Columns: [
             {
               Name: order_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: order_id
             }
           ]
         },
@@ -556,7 +568,7 @@
           Columns: [
             {
               Name: product_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: product_id
             }
           ]
         }
@@ -740,6 +752,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: order_date,
@@ -753,6 +766,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: order_status,
@@ -766,6 +780,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: tracking_number,
@@ -779,6 +794,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: user_id,
@@ -792,6 +808,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: order_id,
@@ -809,7 +826,7 @@
           Columns: [
             {
               Name: billing_address_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: address_id
             }
           ]
         },
@@ -820,7 +837,7 @@
           Columns: [
             {
               Name: shipping_address_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: address_id
             }
           ]
         },
@@ -831,7 +848,7 @@
           Columns: [
             {
               Name: user_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: user_id
             }
           ]
         }
@@ -947,6 +964,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: payment_method_id,
@@ -964,7 +982,7 @@
           Columns: [
             {
               Name: user_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: user_id
             }
           ]
         }
@@ -1072,6 +1090,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: payment_id,
@@ -1089,7 +1108,7 @@
           Columns: [
             {
               Name: order_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: order_id
             }
           ]
         },
@@ -1100,7 +1119,7 @@
           Columns: [
             {
               Name: payment_method_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: payment_method_id
             }
           ]
         }
@@ -1207,6 +1226,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: product_id,
@@ -1220,6 +1240,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: rating,
@@ -1233,6 +1254,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: user_id,
@@ -1246,6 +1268,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: review_id,
@@ -1263,7 +1286,7 @@
           Columns: [
             {
               Name: product_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: product_id
             }
           ]
         },
@@ -1274,7 +1297,7 @@
           Columns: [
             {
               Name: user_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: user_id
             }
           ]
         }
@@ -1454,6 +1477,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: category_id,
@@ -1467,19 +1491,14 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
-          Columns: [
-            {
-              Name: to_tsvector,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
+          FilterDefinition: 
         },
         {
           Name: idx_products_price,
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: unit_price,
@@ -1493,6 +1512,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: sku,
@@ -1506,6 +1526,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: units_in_stock,
@@ -1519,6 +1540,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: supplier_id,
@@ -1532,6 +1554,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: product_id,
@@ -1545,6 +1568,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: sku,
@@ -1562,7 +1586,7 @@
           Columns: [
             {
               Name: category_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: category_id
             }
           ]
         },
@@ -1573,7 +1597,7 @@
           Columns: [
             {
               Name: supplier_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: supplier_id
             }
           ]
         }
@@ -1672,6 +1696,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: product_id,
@@ -1685,6 +1710,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: user_id,
@@ -1698,6 +1724,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: cart_id,
@@ -1715,7 +1742,7 @@
           Columns: [
             {
               Name: product_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: product_id
             }
           ]
         },
@@ -1726,7 +1753,7 @@
           Columns: [
             {
               Name: user_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: user_id
             }
           ]
         }
@@ -1869,6 +1896,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: supplier_id,
@@ -1999,6 +2027,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: address_id,
@@ -2016,7 +2045,7 @@
           Columns: [
             {
               Name: user_id,
-              ReferencedColumnName: 
+              ReferencedColumnName: user_id
             }
           ]
         }
@@ -2148,6 +2177,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: email,
@@ -2161,6 +2191,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: last_login_date,
@@ -2174,6 +2205,7 @@
           IsUnique: false,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: username,
@@ -2187,6 +2219,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: email,
@@ -2200,6 +2233,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: user_id,
@@ -2213,6 +2247,7 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
+          FilterDefinition: ,
           Columns: [
             {
               Name: username,

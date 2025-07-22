@@ -67,7 +67,7 @@ internal class PostgreSQLProvider : BaseDatabaseProvider
                name.StartsWith("pg_", StringComparison.OrdinalIgnoreCase);
     }
 
-        /// <summary>
+    /// <summary>
     /// Override stored procedure extraction to handle PostgreSQL functions properly.
     /// 
     /// CUSTOM IMPLEMENTATION REQUIRED: DatabaseSchemaReader has a limitation where it cannot
@@ -80,7 +80,7 @@ internal class PostgreSQLProvider : BaseDatabaseProvider
     /// their unique OIDs (Object Identifiers).
     /// </summary>
     protected override async Task<List<StoredProcedureSchema>> ExtractStoredProceduresAsync(
-        DatabaseSchemaReader.DataSchema.DatabaseSchema databaseSchema, 
+        DatabaseSchemaReader.DataSchema.DatabaseSchema databaseSchema,
         ImportFilterService importFilterService,
         DbConnection connection)
     {
@@ -175,11 +175,11 @@ internal class PostgreSQLProvider : BaseDatabaseProvider
             var schema = reader["schema_name"].ToString() ?? "public";
             var functionName = reader["function_name"].ToString() ?? "";
             var functionOid = Convert.ToUInt32(reader["function_oid"]);
-            
+
             // Apply filtering
             if (!importFilterService.ExportStoredProcedure(schema, functionName))
                 continue;
-            
+
             if (IsSystemObject(schema, functionName))
                 continue;
 
@@ -219,14 +219,14 @@ internal class PostgreSQLProvider : BaseDatabaseProvider
             // Add parameter if it exists
             var paramTypeName = reader["param_type_name"]?.ToString();
             var paramPosition = reader["param_position"];
-            
+
             if (!string.IsNullOrEmpty(paramTypeName) && paramPosition != DBNull.Value)
             {
                 var position = Convert.ToInt32(paramPosition) - 1; // Convert to 0-based index
-                var paramName = function.ArgNames != null && position < function.ArgNames.Length 
-                    ? function.ArgNames[position] 
+                var paramName = function.ArgNames != null && position < function.ArgNames.Length
+                    ? function.ArgNames[position]
                     : $"param{position + 1}";
-                
+
                 // Determine if it's an output parameter (PostgreSQL uses modes: i=in, o=out, b=inout, v=variadic, t=table)
                 var isOutput = false;
                 if (function.ArgModes != null && position < function.ArgModes.Length)
@@ -251,14 +251,14 @@ internal class PostgreSQLProvider : BaseDatabaseProvider
         return functionsDict.Values.ToList();
     }
 
-        /// <summary>
+    /// <summary>
     /// Extract result set for PostgreSQL function using the existing analyzer.
     /// 
     /// Note: We use the original function name here because the analyzer needs to work with
     /// the actual function name as it appears in PostgreSQL, not our internal unique identifier.
     /// </summary>
     private async Task<List<ResultSetColumnSchema>> ExtractStoredProcedureResultSetAsync(
-        PostgreSQLFunction function, 
+        PostgreSQLFunction function,
         DbConnection connection)
     {
         var analyzer = CreateStoredProcedureAnalyzer(connection);
@@ -311,6 +311,192 @@ internal class PostgreSQLProvider : BaseDatabaseProvider
     }
 
     /// <summary>
+    /// Enhanced foreign key extraction with proper referenced column names using PostgreSQL system catalogs
+    /// </summary>
+    protected override async Task<List<ForeignKeyColumnSchema>> ExtractForeignKeyColumnsAsync(DatabaseConstraint foreignKey, DbConnection connection)
+    {
+        var columns = new List<ForeignKeyColumnSchema>();
+
+        if (string.IsNullOrEmpty(foreignKey.Name))
+        {
+            // Fallback to base implementation if no constraint name
+            return await base.ExtractForeignKeyColumnsAsync(foreignKey, connection);
+        }
+
+        const string sql =
+            """
+            SELECT 
+                kcu.column_name AS source_column,
+                ccu.column_name AS referenced_column
+            FROM information_schema.key_column_usage kcu
+            INNER JOIN information_schema.constraint_column_usage ccu 
+                ON kcu.constraint_name = ccu.constraint_name
+                AND kcu.constraint_schema = ccu.constraint_schema
+            WHERE kcu.constraint_name = @constraintName
+              AND kcu.constraint_schema = @schemaName
+            ORDER BY kcu.ordinal_position;
+            """;
+
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+
+        var constraintNameParam = command.CreateParameter();
+        constraintNameParam.ParameterName = "@constraintName";
+        constraintNameParam.Value = foreignKey.Name;
+        command.Parameters.Add(constraintNameParam);
+
+        var schemaNameParam = command.CreateParameter();
+        schemaNameParam.ParameterName = "@schemaName";
+        schemaNameParam.Value = foreignKey.SchemaOwner ?? "public";
+        command.Parameters.Add(schemaNameParam);
+
+        await using var reader = await command.ExecuteReaderAsync();
+
+        while (await reader.ReadAsync())
+        {
+            var sourceColumn = reader["source_column"]?.ToString() ?? "";
+            var referencedColumn = reader["referenced_column"]?.ToString() ?? "";
+
+            var columnSchema = new ForeignKeyColumnSchema
+            {
+                Name = sourceColumn,
+                ReferencedColumnName = referencedColumn
+            };
+
+            columns.Add(columnSchema);
+        }
+
+        // If we didn't get any results, fall back to base implementation
+        if (columns.Count == 0)
+        {
+            return await base.ExtractForeignKeyColumnsAsync(foreignKey, connection);
+        }
+
+        return columns;
+    }
+
+    /// <summary>
+    /// Enhanced index extraction with PostgreSQL-specific metadata
+    /// </summary>
+    protected override async Task<List<IndexSchema>> ExtractTableIndexesAsync(DatabaseTable table, ImportFilterService importFilterService, DbConnection connection)
+    {
+        var indexes = new List<IndexSchema>();
+
+        if (!importFilterService.ExportIndexes())
+        {
+            return indexes;
+        }
+
+        // Use a simplified query that works across all PostgreSQL versions
+        const string sql =
+            """
+            SELECT 
+                i.indexname AS index_name,
+                i.indexdef AS index_definition,
+                ix.indisunique AS is_unique,
+                ix.indisclustered AS is_clustered,
+                ix.indpred IS NOT NULL AS has_filter,
+                CAST(ix.indpred AS text) AS filter_definition,
+                STRING_AGG(
+                    CASE 
+                        WHEN a.attname IS NOT NULL THEN a.attname
+                        ELSE 'expression'
+                    END,
+                    ','
+                    ORDER BY array_position(ix.indkey, a.attnum)
+                ) AS column_names,
+                STRING_AGG(
+                    CASE 
+                        WHEN ix.indoption[array_position(ix.indkey, a.attnum) - 1] & 1 = 1 THEN 'DESC'
+                        ELSE 'ASC'
+                    END,
+                    ','
+                    ORDER BY array_position(ix.indkey, a.attnum)
+                ) AS sort_orders,
+                array_length(ix.indkey, 1) AS key_column_count
+            FROM pg_indexes i
+            INNER JOIN pg_class c ON c.relname = i.tablename
+            INNER JOIN pg_namespace n ON n.nspname = i.schemaname AND n.oid = c.relnamespace
+            INNER JOIN pg_index ix ON ix.indexrelid = (
+                SELECT oid FROM pg_class WHERE relname = i.indexname AND relnamespace = n.oid
+            )
+            LEFT JOIN pg_attribute a ON a.attrelid = c.oid 
+                AND a.attnum = ANY(ix.indkey[0:array_length(ix.indkey,1)-1])
+                AND a.attnum > 0
+            WHERE i.schemaname = @schemaName
+              AND i.tablename = @tableName
+            GROUP BY i.indexname, i.indexdef, ix.indisunique, ix.indisclustered, 
+                     ix.indpred, ix.indkey, ix.indoption
+            ORDER BY i.indexname;
+            """;
+
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+
+        var schemaParam = command.CreateParameter();
+        schemaParam.ParameterName = "@schemaName";
+        schemaParam.Value = table.SchemaOwner ?? "public";
+        command.Parameters.Add(schemaParam);
+
+        var tableParam = command.CreateParameter();
+        tableParam.ParameterName = "@tableName";
+        tableParam.Value = table.Name;
+        command.Parameters.Add(tableParam);
+
+        await using var reader = await command.ExecuteReaderAsync();
+
+        while (await reader.ReadAsync())
+        {
+            var indexName = reader["index_name"]?.ToString() ?? "";
+            var isUnique = Convert.ToBoolean(reader["is_unique"]);
+            var isClustered = Convert.ToBoolean(reader["is_clustered"]);
+            var hasFilter = Convert.ToBoolean(reader["has_filter"]);
+            var filterDefinition = reader["filter_definition"]?.ToString();
+            var columnNames = reader["column_names"]?.ToString()?.Split(',') ?? [];
+            var sortOrders = reader["sort_orders"]?.ToString()?.Split(',') ?? [];
+
+            var indexColumns = new List<IndexColumnSchema>();
+
+            for (int i = 0; i < columnNames.Length; i++)
+            {
+                if (string.IsNullOrEmpty(columnNames[i]) || columnNames[i] == "expression")
+                    continue;
+
+                var isDescending = i < sortOrders.Length && sortOrders[i] == "DESC";
+
+                var columnSchema = new IndexColumnSchema
+                {
+                    Name = columnNames[i].Trim(),
+                    IsDescending = isDescending,
+                    IsIncluded = false // For now, we'll set this to false for compatibility
+                };
+
+                indexColumns.Add(columnSchema);
+            }
+
+            var indexSchema = new IndexSchema
+            {
+                Name = indexName,
+                IsUnique = isUnique,
+                IsClustered = isClustered,
+                HasFilter = hasFilter,
+                FilterDefinition = filterDefinition,
+                Columns = indexColumns
+            };
+
+            indexes.Add(indexSchema);
+        }
+
+        // If we didn't get any results from our custom query, fall back to base implementation
+        if (indexes.Count == 0)
+        {
+            return await base.ExtractTableIndexesAsync(table, importFilterService, connection);
+        }
+
+        return indexes;
+    }
+
+    /// <summary>
     /// Internal class to represent PostgreSQL functions with overload support.
     /// 
     /// This class exists because DatabaseSchemaReader's function representation doesn't
@@ -326,7 +512,7 @@ internal class PostgreSQLProvider : BaseDatabaseProvider
         public string Schema { get; set; } = "";
         public string Name { get; set; } = ""; // Unique name with OID
         public string OriginalName { get; set; } = ""; // Original function name
-        public List<StoredProcedureParameterSchema> Parameters { get; set; } = new();
+        public List<StoredProcedureParameterSchema> Parameters { get; set; } = [];
         public string ReturnTypeName { get; set; } = "";
         public bool ReturnsSet { get; set; }
         public string[]? ArgNames { get; set; }

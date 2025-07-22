@@ -16,7 +16,7 @@ using DatabaseSchema = Intent.RelationalDbSchemaImporter.Contracts.DbSchema.Data
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
 
 /// <summary>
-/// Base implementation for database providers using DatabaseSchemaReader
+/// Base implementation for database providers using DatabaseSchemaReader with extensibility for custom implementations
 /// </summary>
 internal abstract class BaseDatabaseProvider : IDatabaseProvider
 {
@@ -199,8 +199,8 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
                 Name = table.Name,
                 Schema = table.SchemaOwner,
                 Columns = ExtractTableColumns(table, importFilterService),
-                Indexes = ExtractTableIndexes(table, importFilterService),
-                ForeignKeys = ExtractTableForeignKeys(table),
+                Indexes = await ExtractTableIndexesAsync(table, importFilterService, connection),
+                ForeignKeys = await ExtractTableForeignKeysAsync(table, connection),
                 Triggers = ExtractTableTriggers(table)
             };
 
@@ -242,7 +242,10 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return columns;
     }
 
-    protected virtual List<IndexSchema> ExtractTableIndexes(DatabaseTable table, ImportFilterService importFilterService)
+    /// <summary>
+    /// Extract table indexes. Can be overridden for database-specific implementations
+    /// </summary>
+    protected virtual async Task<List<IndexSchema>> ExtractTableIndexesAsync(DatabaseTable table, ImportFilterService importFilterService, DbConnection connection)
     {
         var indexes = new List<IndexSchema>();
 
@@ -290,7 +293,10 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return columns;
     }
 
-    protected virtual List<ForeignKeySchema> ExtractTableForeignKeys(DatabaseTable table)
+    /// <summary>
+    /// Extract table foreign keys. Can be overridden for database-specific implementations to fix missing referenced column names
+    /// </summary>
+    protected virtual async Task<List<ForeignKeySchema>> ExtractTableForeignKeysAsync(DatabaseTable table, DbConnection connection)
     {
         var foreignKeys = new List<ForeignKeySchema>();
         
@@ -302,7 +308,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
                 Name = foreignKey.Name ?? $"FK_{table.Name}",
                 ReferencedTableSchema = foreignKey.RefersToSchema ?? "",
                 ReferencedTableName = foreignKey.RefersToTable ?? "",
-                Columns = ExtractForeignKeyColumns(foreignKey)
+                Columns = await ExtractForeignKeyColumnsAsync(foreignKey, connection)
             };
 
             foreignKeys.Add(fkSchema);
@@ -311,7 +317,10 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         return foreignKeys;
     }
 
-    protected virtual List<ForeignKeyColumnSchema> ExtractForeignKeyColumns(DatabaseConstraint foreignKey)
+    /// <summary>
+    /// Extract foreign key columns. Can be overridden for database-specific implementations to populate ReferencedColumnName
+    /// </summary>
+    protected virtual Task<List<ForeignKeyColumnSchema>> ExtractForeignKeyColumnsAsync(DatabaseConstraint foreignKey, DbConnection connection)
     {
         var columns = new List<ForeignKeyColumnSchema>();
 
@@ -321,12 +330,15 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
             var columnSchema = new ForeignKeyColumnSchema
             {
                 Name = column ?? "",
+                // ReferencedColumnName is not provided by DatabaseSchemaReader
+                // Database-specific implementations should override this method to populate it
+                ReferencedColumnName = ""
             };
 
             columns.Add(columnSchema);
         }
 
-        return columns;
+        return Task.FromResult(columns);
     }
 
     protected virtual List<TriggerSchema> ExtractTableTriggers(DatabaseTable table)
