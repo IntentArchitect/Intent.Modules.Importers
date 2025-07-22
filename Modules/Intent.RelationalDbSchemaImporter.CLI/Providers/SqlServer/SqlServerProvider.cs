@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Intent.RelationalDbSchemaImporter.CLI.Providers.Core;
 using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
@@ -15,89 +17,47 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
 /// <summary>
 /// SQL Server database provider implementation
 /// </summary>
-internal class SqlServerProvider : IDatabaseProvider
+internal class SqlServerProvider : BaseDatabaseProvider
 {
-    public DatabaseType SupportedType => DatabaseType.SqlServer;
+    public override DatabaseType SupportedType => DatabaseType.SqlServer;
 
-    public async Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportFilterService importFilterService, CancellationToken cancellationToken)
+    protected override DbConnection CreateConnection(string connectionString)
     {
-        // For now, delegate to the existing SQL Server implementation
-        await using var connection = new SqlConnection(connectionString);
-        await connection.OpenAsync(cancellationToken);
-        var server = new Server(new ServerConnection(connection));
-        var database = server.Databases[connection.Database];
-
-        var schemaExtractor = new DatabaseSchemaExtractor(importFilterService, database);
-        return schemaExtractor.ExtractSchema();
+        return new SqlConnection(connectionString);
     }
 
-    public async Task TestConnectionAsync(string connectionString, CancellationToken cancellationToken)
+    protected override IDependencyResolver CreateDependencyResolver(DbConnection connection)
     {
-        await using var connection = new SqlConnection(connectionString);
-        await connection.OpenAsync(cancellationToken);
-        var server = new Server(new ServerConnection(connection));
+        // TODO: Implement SQL Server dependency resolver similar to PostgreSQL
+        throw new NotImplementedException("SQL Server dependency resolver not yet implemented in the new architecture");
+    }
+
+    protected override IStoredProcedureAnalyzer CreateStoredProcedureAnalyzer(DbConnection connection)
+    {
+        // TODO: Implement SQL Server stored procedure analyzer similar to PostgreSQL
+        throw new NotImplementedException("SQL Server stored procedure analyzer not yet implemented in the new architecture");
+    }
+
+    protected override async Task ExecuteConnectionTestAsync(DbConnection connection, CancellationToken cancellationToken)
+    {
+        // SQL Server specific connection test using SMO
+        var sqlConnection = (SqlConnection)connection;
+        var server = new Server(new ServerConnection(sqlConnection));
         var database = server.Databases[connection.Database];
         database.ExecuteWithResults("SELECT 1");
     }
 
-    public async Task<List<string>> GetTableNamesAsync(string connectionString)
-    {
-        using var connection = new SqlConnection(connectionString);
-        await connection.OpenAsync();
-        var server = new Server(new ServerConnection(connection));
-        var database = server.Databases[connection.Database];
+    // NOTE: The following methods were moved to base class for consistency
+    // They can be removed from here since they now use the template method pattern
+    
+    // Legacy implementation - can be extracted for reference:
+    // The old ExtractSchemaAsync method used DatabaseSchemaExtractor directly
+    // This should be migrated to override the protected methods in BaseDatabaseProvider
+    // when the SQL Server provider is fully migrated to the new architecture
 
-        return database.Tables
-            .OfType<Table>()
-            .Where(table => !IsSystemTable(table.Schema, table.Name))
-            .Select(t => $"{t.Schema}.{t.Name}")
-            .OrderBy(name => name)
-            .ToList();
-    }
-
-    public async Task<List<string>> GetViewNamesAsync(string connectionString)
-    {
-        using var connection = new SqlConnection(connectionString);
-        await connection.OpenAsync();
-        var server = new Server(new ServerConnection(connection));
-        var database = server.Databases[connection.Database];
-
-        return database.Views
-            .OfType<View>()
-            .Where(view => !IsSystemView(view.Schema, view.Name))
-            .Select(v => $"{v.Schema}.{v.Name}")
-            .OrderBy(name => name)
-            .ToList();
-    }
-
-    public async Task<List<string>> GetRoutineNamesAsync(string connectionString)
-    {
-        using var connection = new SqlConnection(connectionString);
-        await connection.OpenAsync();
-        var server = new Server(new ServerConnection(connection));
-        var database = server.Databases[connection.Database];
-
-        return database.StoredProcedures
-            .OfType<StoredProcedure>()
-            .Where(sp => !IsSystemStoredProcedure(sp.Schema, sp.Name))
-            .Select(sp => $"{sp.Schema}.{sp.Name}")
-            .OrderBy(name => name)
-            .ToList();
-    }
-
-    private static bool IsSystemTable(string schema, string name)
-    {
-        var systemTables = new[] { "sysdiagrams", "__MigrationHistory", "__EFMigrationsHistory" };
-        return schema == "sys" || systemTables.Contains(name, StringComparer.OrdinalIgnoreCase);
-    }
-
-    private static bool IsSystemView(string schema, string name)
-    {
-        return schema is "sys" or "INFORMATION_SCHEMA";
-    }
-
-    private static bool IsSystemStoredProcedure(string schema, string name)
-    {
-        return schema == "sys";
-    }
+    // TODO: Override protected virtual methods from BaseDatabaseProvider for SQL Server customizations
+    // - ExtractTablesAsync (if needed)
+    // - ExtractStoredProceduresAsync (if needed)
+    // - GetNormalizedDataTypeString (for SQL Server types)
+    // - IsSystemObject (for SQL Server system objects)
 } 

@@ -4,37 +4,37 @@ using Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 using Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
-namespace Intent.RelationalDbSchemaImporter.CLI.Providers;
+namespace Intent.RelationalDbSchemaImporter.CLI.Providers.Core;
 
 /// <summary>
 /// Factory implementation for creating database providers
 /// </summary>
-internal class DatabaseProviderFactory : IDatabaseProviderFactory
+internal class DatabaseProviderFactory
 {
-    private readonly Dictionary<DatabaseType, Func<IDatabaseProvider>> _providerFactories;
+    private readonly Dictionary<DatabaseType, Func<BaseDatabaseProvider>> _providerFactories;
 
     public DatabaseProviderFactory()
     {
-        _providerFactories = new Dictionary<DatabaseType, Func<IDatabaseProvider>>
+        _providerFactories = new Dictionary<DatabaseType, Func<BaseDatabaseProvider>>
         {
             { DatabaseType.SqlServer, () => new SqlServerProvider() },
             { DatabaseType.PostgreSQL, () => new PostgreSQLProvider() }
         };
     }
 
-    public IDatabaseProvider CreateProvider(DatabaseType databaseType)
+    public BaseDatabaseProvider CreateProvider(DatabaseType databaseType)
     {
         if (databaseType == DatabaseType.Unspecified)
         {
             throw new ArgumentException("Cannot create provider for Auto database type.");
         }
 
-        if (!_providerFactories.ContainsKey(databaseType))
+        if (!_providerFactories.TryGetValue(databaseType, out var factory))
         {
             throw new NotSupportedException($"Database type {databaseType} is not supported.");
         }
 
-        return _providerFactories[databaseType]();
+        return factory();
     }
 
     public IEnumerable<DatabaseType> GetSupportedTypes()

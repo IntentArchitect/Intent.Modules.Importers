@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Intent.Modules.Common.Templates;
 using Intent.RelationalDbSchemaImporter.CLI.Providers;
+using Intent.RelationalDbSchemaImporter.CLI.Providers.Core;
 using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;

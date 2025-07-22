@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
+using Intent.RelationalDbSchemaImporter.CLI.Providers.Core;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
