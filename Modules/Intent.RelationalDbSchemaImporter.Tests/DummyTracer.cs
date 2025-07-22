@@ -14,26 +14,61 @@ public class DummyTracer : ITracing
 
     public void Debug(string message)
     {
-        _outputHelper.WriteLine("DEBUG: " + message);
+        try
+        {
+            _outputHelper.WriteLine("DEBUG: " + message);
+        }
+        catch
+        {
+            // If this gets called before/after a unit test, ignore.
+        }
     }
 
     public void Failure(Exception exception)
     {
-        _outputHelper.WriteLine("FAIL: " + exception);
+        try
+        {
+            _outputHelper.WriteLine("FAIL: " + exception);
+        }
+        catch
+        {
+            // If this gets called before/after a unit test, ignore.
+        }
     }
 
     public void Failure(string exceptionMessage)
     {
-        _outputHelper.WriteLine("FAIL: " + exceptionMessage);
+        try
+        {
+            _outputHelper.WriteLine("FAIL: " + exceptionMessage);
+        }
+        catch
+        {
+            // If this gets called before/after a unit test, ignore.
+        }
     }
 
     public void Info(string message)
     {
-        _outputHelper.WriteLine("INFO: " + message);
+        try
+        {
+            _outputHelper.WriteLine("INFO: " + message);
+        }
+        catch
+        {
+            // If this gets called before/after a unit test, ignore.
+        }
     }
 
     public void Warning(string message)
     {
-        _outputHelper.WriteLine("WARN: " + message);
+        try
+        {
+            _outputHelper.WriteLine("WARN: " + message);
+        }
+        catch
+        {
+            // If this gets called before/after a unit test, ignore.
+        }
     }
 }
