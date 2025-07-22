@@ -55,7 +55,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
         
         var reader = new DatabaseReader(connection);
         var databaseSchema = reader.ReadAll(cancellationToken);
-        
+
         var schema = new DatabaseSchema
         {
             DatabaseName = connection.Database, // Use connection database name as fallback
@@ -332,7 +332,9 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
 
     protected virtual List<TriggerSchema> ExtractTableTriggers(DatabaseTable table)
     {
-        var triggers = new List<TriggerSchema>();
+        var triggers = new HashSet<TriggerSchema>(EqualityComparer<TriggerSchema>.Create(
+            (a, b) => string.Equals(a?.Name, b?.Name),
+            x => x?.Name?.GetHashCode() ?? 0));
 
         // DatabaseSchemaReader provides trigger information
         foreach (var trigger in table.Triggers ?? [])
@@ -348,10 +350,10 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
             triggers.Add(triggerSchema);
         }
 
-        return triggers;
+        return triggers.ToList();
     }
 
-    protected virtual async Task<List<ViewSchema>> ExtractViewsAsync(
+    protected virtual Task<List<ViewSchema>> ExtractViewsAsync(
         DatabaseSchemaReader.DataSchema.DatabaseSchema databaseSchema, 
         ImportFilterService importFilterService)
     {
@@ -377,7 +379,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
             views.Add(viewSchema);
         }
 
-        return views;
+        return Task.FromResult(views);
     }
 
     protected virtual List<ColumnSchema> ExtractViewColumns(DatabaseView view, ImportFilterService importFilterService)
@@ -414,7 +416,9 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
 
     protected virtual List<TriggerSchema> ExtractViewTriggers(DatabaseView view)
     {
-        var triggers = new List<TriggerSchema>();
+        var triggers = new HashSet<TriggerSchema>(EqualityComparer<TriggerSchema>.Create(
+            (a, b) => string.Equals(a?.Name, b?.Name),
+            x => x?.Name?.GetHashCode() ?? 0));
 
         // DatabaseSchemaReader provides trigger information for views
         foreach (var trigger in view.Triggers ?? [])
@@ -430,7 +434,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
             triggers.Add(triggerSchema);
         }
 
-        return triggers;
+        return triggers.ToList();
     }
 
     protected virtual async Task<List<StoredProcedureSchema>> ExtractStoredProceduresAsync(
@@ -556,7 +560,7 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
     /// </remarks>
     protected virtual string GetNormalizedDataTypeString(DataType? dataType, string dbDataType)
     {
-        return dataType?.NetDataTypeCSharpName ?? throw new InvalidOperationException($"Unable to extract normalized data type for database data type '{dbDataType}'");;
+        return dataType?.NetDataTypeCSharpName?.ToLowerInvariant() ?? throw new InvalidOperationException($"Unable to extract normalized data type for database data type '{dbDataType}'");;
     }
 
     protected virtual ComputedColumnSchema? ExtractComputedColumn(DatabaseColumn column)

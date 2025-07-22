@@ -65,6 +65,7 @@ internal static class TypeReferenceMapper
             "time" => Constants.TypeDefinitions.CommonTypes.TimeSpan,
             "guid" => Constants.TypeDefinitions.CommonTypes.Guid,
             "binary" => Constants.TypeDefinitions.CommonTypes.Binary,
+            "byte[]" => Constants.TypeDefinitions.CommonTypes.Binary,
             _ => null
         };
     }

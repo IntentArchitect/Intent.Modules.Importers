@@ -22,12 +22,13 @@ internal class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
     public async Task<List<ResultSetColumnSchema>> AnalyzeResultSetAsync(string procedureName, string schema, IEnumerable<StoredProcedureParameterSchema> parameters)
     {
         var resultColumns = new List<ResultSetColumnSchema>();
-        
+
         try
         {
             // PostgreSQL uses functions instead of traditional stored procedures
             // Query the PostgreSQL system catalogs to get function return type information
-            var sql = """
+            var sql =
+                """
                 SELECT 
                     p.proname as function_name,
                     t.typname as return_type,
@@ -45,7 +46,7 @@ internal class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
                   AND p.prokind IN ('f', 'p') -- functions and procedures
                 """;
 
-            using var command = _connection.CreateCommand();
+            await using var command = _connection.CreateCommand();
             command.CommandText = sql;
 
             var procParam = command.CreateParameter();
@@ -58,7 +59,7 @@ internal class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
             schemaParam.Value = schema ?? "public";
             command.Parameters.Add(schemaParam);
 
-            using var reader = await command.ExecuteReaderAsync();
+            await using var reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
                 var returnType = reader["return_type"].ToString();
@@ -130,13 +131,13 @@ internal class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
 
             // Date/Time types (without timezone)
             "timestamp without time zone" => "datetime",
-            
+
             // Date/Time types (with timezone)
             "timestamp with time zone" => "datetimeoffset",
-            
+
             // Date only
             "date" => "date",
-            
+
             // Time only
             "time without time zone" or "time with time zone" or "interval" => "time",
 
@@ -150,9 +151,9 @@ internal class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
             "inet" or "cidr" or "macaddr" => "string", // Network types as strings
             "point" or "line" or "lseg" or "box" or "path" or "polygon" or "circle" => "string", // Geometric types as strings
             "bit" or "bit varying" => "string", // Bit types as strings
-            
+
             // Fallback for unknown types
             _ => "string"
         };
     }
-} 
+}

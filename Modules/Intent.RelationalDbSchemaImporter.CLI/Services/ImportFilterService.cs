@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.RelationalDbSchemaImporter.Contracts.FileStructures;
 using Json.Schema;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Services;
 
@@ -41,16 +40,12 @@ internal class ImportFilterService
 		}
 
 		var jsonContent = File.ReadAllText(_importSchemaRequest.ImportFilterFilePath);
-		_importFilterSettings =
-			JsonConvert.DeserializeObject<ImportFilterSettings>(
-				jsonContent,
-				new JsonSerializerSettings
-				{
-					ContractResolver = new DefaultContractResolver
-					{
-						NamingStrategy = new SnakeCaseNamingStrategy()
-					}
-				})
+		var options = new JsonSerializerOptions
+		{
+			PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+			PropertyNameCaseInsensitive = true
+		};
+		_importFilterSettings = JsonSerializer.Deserialize<ImportFilterSettings>(jsonContent, options)
 			?? throw new Exception("Import filter settings are not valid.");
 
 		return _importFilterSettings;
