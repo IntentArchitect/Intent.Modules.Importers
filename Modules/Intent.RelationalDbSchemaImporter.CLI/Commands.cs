@@ -73,7 +73,7 @@ internal static partial class Commands
                     var factory = new DatabaseProviderFactory();
                     var provider = factory.CreateProvider(request.DatabaseType);
                     
-                    var routines = await provider.GetRoutineNamesAsync(request.ConnectionString);
+                    var routines = await provider.GetStoredProcedureNamesAsync(request.ConnectionString);
                     
                     var result = new StoredProceduresListResult
                     {
@@ -154,7 +154,7 @@ internal static partial class Commands
                     
                     var tables = await provider.GetTableNamesAsync(request.ConnectionString);
                     var views = await provider.GetViewNamesAsync(request.ConnectionString);
-                    var storedProcedures = await provider.GetRoutineNamesAsync(request.ConnectionString);
+                    var storedProcedures = await provider.GetStoredProcedureNamesAsync(request.ConnectionString);
 
                     var result = new DatabaseObjectsResult
                     {

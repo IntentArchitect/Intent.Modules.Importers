@@ -133,7 +133,7 @@ internal abstract class BaseDatabaseProvider
     /// <summary>
     /// Gets list of database routine names. This method cannot be overridden to ensure consistent system object filtering.
     /// </summary>
-    public async Task<List<string>> GetRoutineNamesAsync(string connectionString)
+    public async Task<List<string>> GetStoredProcedureNamesAsync(string connectionString)
     {
         await using var connection = CreateConnection(connectionString);
         await connection.OpenAsync();

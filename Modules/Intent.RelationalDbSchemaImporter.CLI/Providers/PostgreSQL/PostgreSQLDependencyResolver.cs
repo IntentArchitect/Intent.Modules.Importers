@@ -64,7 +64,7 @@ internal class PostgreSQLDependencyResolver : IDependencyResolver
 
         var dependentTables = new List<string>();
 
-        using var command = _connection.CreateCommand();
+        await using var command = _connection.CreateCommand();
         command.CommandText = sql;
 
         var schemaParam = command.CreateParameter();
@@ -77,7 +77,7 @@ internal class PostgreSQLDependencyResolver : IDependencyResolver
         tableParam.Value = table;
         command.Parameters.Add(tableParam);
 
-        using var reader = await command.ExecuteReaderAsync();
+        await using var reader = await command.ExecuteReaderAsync();
         while (await reader.ReadAsync())
         {
             var dependentSchema = reader["constraint_schema"].ToString();
