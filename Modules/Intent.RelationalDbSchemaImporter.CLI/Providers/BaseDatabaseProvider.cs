@@ -321,7 +321,6 @@ internal abstract class BaseDatabaseProvider : IDatabaseProvider
             var columnSchema = new ForeignKeyColumnSchema
             {
                 Name = column ?? "",
-                ReferencedColumnName = "" // DatabaseSchemaReader doesn't expose referenced column mapping directly
             };
 
             columns.Add(columnSchema);

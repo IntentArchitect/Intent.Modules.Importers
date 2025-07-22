@@ -12,5 +12,4 @@ public class ForeignKeySchema
 public class ForeignKeyColumnSchema
 {
     public string Name { get; set; } = string.Empty;
-    public string ReferencedColumnName { get; set; } = string.Empty;
 }
