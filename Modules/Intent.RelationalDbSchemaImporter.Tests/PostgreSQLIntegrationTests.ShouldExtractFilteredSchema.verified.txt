@@ -1,0 +1,466 @@
+﻿{
+  DatabaseName: postgres,
+  Tables: [
+    {
+      Name: orders,
+      Schema: public,
+      Columns: [
+        {
+          Name: order_id,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('orders_order_id_seq'::regclass)
+          }
+        },
+        {
+          Name: user_id,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: order_date,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          DefaultConstraint: {
+            Text: CURRENT_TIMESTAMP
+          }
+        },
+        {
+          Name: required_date,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: shipped_date,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: shipping_address_id,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: billing_address_id,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: sub_total,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 12,
+          NumericScale: 2
+        },
+        {
+          Name: tax_amount,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 12,
+          NumericScale: 2,
+          DefaultConstraint: {
+            Text: 0
+          }
+        },
+        {
+          Name: shipping_amount,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 12,
+          NumericScale: 2,
+          DefaultConstraint: {
+            Text: 0
+          }
+        },
+        {
+          Name: total_amount,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 12,
+          NumericScale: 2
+        },
+        {
+          Name: order_status,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 20,
+          DefaultConstraint: {
+            Text: 'Pending'::character varying
+          }
+        },
+        {
+          Name: payment_status,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 20,
+          DefaultConstraint: {
+            Text: 'Pending'::character varying
+          }
+        },
+        {
+          Name: tracking_number,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: notes,
+          DbDataType: text,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: fk_orders_billing_address,
+          TableName: ,
+          ReferencedTableSchema: public,
+          ReferencedTableName: user_addresses,
+          Columns: [
+            {
+              Name: billing_address_id,
+              ReferencedColumnName: address_id
+            }
+          ]
+        },
+        {
+          Name: fk_orders_shipping_address,
+          TableName: ,
+          ReferencedTableSchema: public,
+          ReferencedTableName: user_addresses,
+          Columns: [
+            {
+              Name: shipping_address_id,
+              ReferencedColumnName: address_id
+            }
+          ]
+        },
+        {
+          Name: fk_orders_users,
+          TableName: ,
+          ReferencedTableSchema: public,
+          ReferencedTableName: users,
+          Columns: [
+            {
+              Name: user_id,
+              ReferencedColumnName: user_id
+            }
+          ]
+        }
+      ]
+    },
+    {
+      Name: user_addresses,
+      Schema: public,
+      Columns: [
+        {
+          Name: address_id,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('user_addresses_address_id_seq'::regclass)
+          }
+        },
+        {
+          Name: user_id,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: address_type,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 20
+        },
+        {
+          Name: address_line1,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 255
+        },
+        {
+          Name: address_line2,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 255
+        },
+        {
+          Name: city,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: state,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: zip_code,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 10
+        },
+        {
+          Name: country,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50,
+          DefaultConstraint: {
+            Text: 'USA'::character varying
+          }
+        },
+        {
+          Name: is_default,
+          DbDataType: bool,
+          LanguageDataType: bool,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          DefaultConstraint: {
+            Text: false
+          }
+        },
+        {
+          Name: created_date,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          DefaultConstraint: {
+            Text: CURRENT_TIMESTAMP
+          }
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: fk_user_addresses_users,
+          TableName: ,
+          ReferencedTableSchema: public,
+          ReferencedTableName: users,
+          Columns: [
+            {
+              Name: user_id,
+              ReferencedColumnName: user_id
+            }
+          ]
+        }
+      ]
+    },
+    {
+      Name: users,
+      Schema: public,
+      Columns: [
+        {
+          Name: user_id,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('users_user_id_seq'::regclass)
+          }
+        },
+        {
+          Name: username,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: email,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: password_hash,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 255
+        },
+        {
+          Name: first_name,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: last_name,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: date_of_birth,
+          DbDataType: date,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: phone_number,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 15
+        },
+        {
+          Name: is_active,
+          DbDataType: bool,
+          LanguageDataType: bool,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          DefaultConstraint: {
+            Text: true
+          }
+        },
+        {
+          Name: created_date,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          DefaultConstraint: {
+            Text: CURRENT_TIMESTAMP
+          }
+        },
+        {
+          Name: modified_date,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          DefaultConstraint: {
+            Text: CURRENT_TIMESTAMP
+          }
+        },
+        {
+          Name: last_login_date,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ],
+      Triggers: [
+        {
+          Name: tr_users_audit,
+          ParentSchema: public,
+          ParentName: users,
+          ParentType: Table
+        },
+        {
+          Name: tr_users_update_modified_date,
+          ParentSchema: public,
+          ParentName: users,
+          ParentType: Table
+        }
+      ]
+    }
+  ]
+}

@@ -31,7 +31,7 @@ public class PostgreSQLIntegrationTests : ContainerTest<PostgreSqlBuilder, Postg
     }
 
     [Fact]
-    public async Task ShouldExtractSchemaFromPostgreSQLContainer()
+    public async Task ShouldExtractAllSchema()
     {
         // Arrange
         var connectionString = Container.GetConnectionString();
@@ -49,6 +49,36 @@ public class PostgreSQLIntegrationTests : ContainerTest<PostgreSqlBuilder, Postg
         Assert.NotNull(result.Result);
         // Verify the schema data structure
         await Verify(result.Result.SchemaData)
+            .UseParameters(nameof(PostgreSQLIntegrationTests));
+    }
+    
+    [Fact]
+    public async Task ShouldExtractFilteredSchema()
+    {
+        // Arrange
+        var connectionString = Container.GetConnectionString();
+        
+        var importRequest = new ImportSchemaRequest
+        {
+            ConnectionString = connectionString,
+            TypesToExport = [ExportType.Table],
+            DatabaseType = DatabaseType.PostgreSQL,
+            ImportFilterFilePath = "TestData/PostgreSQL_Filter.json"
+        };
+
+        // Act
+        var result = ImporterTool.Run<ImportSchemaResult>("import-schema", importRequest);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.True(result.Errors.Count == 0, $"Import failed with errors: {string.Join(", ", result.Errors)}");
+        Assert.NotNull(result.Result);
+        
+        var schemaData = result.Result.SchemaData;
+        Assert.NotNull(schemaData);
+        
+        // Verify the schema data structure  
+        await Verify(schemaData)
             .UseParameters(nameof(PostgreSQLIntegrationTests));
     }
 

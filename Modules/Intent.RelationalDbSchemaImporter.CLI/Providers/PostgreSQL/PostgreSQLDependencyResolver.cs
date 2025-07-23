@@ -17,34 +17,58 @@ internal class PostgreSQLDependencyResolver : IDependencyResolver
     public async Task<IEnumerable<string>> GetDependentTablesAsync(IEnumerable<string> tableNames)
     {
         var dependentTables = new HashSet<string>();
+        var processedTables = new HashSet<string>();
 
+        // Use a queue to process dependencies recursively
+        var tablesToProcess = new Queue<string>();
+        
+        // Add initial tables to process
         foreach (var tableName in tableNames)
         {
-            var dependencies = await GetTableDependenciesAsync(tableName);
+            tablesToProcess.Enqueue(tableName);
+        }
+
+        while (tablesToProcess.Count > 0)
+        {
+            var currentTable = tablesToProcess.Dequeue();
+            
+            // Skip if already processed
+            if (processedTables.Contains(currentTable))
+                continue;
+                
+            processedTables.Add(currentTable);
+
+            // Get direct dependencies of current table
+            var dependencies = await GetDirectTableDependenciesAsync(currentTable);
+            
             foreach (var dependency in dependencies)
             {
+                // Add to result set
                 dependentTables.Add(dependency);
+                
+                // Queue for further processing if not already processed
+                if (!processedTables.Contains(dependency))
+                {
+                    tablesToProcess.Enqueue(dependency);
+                }
             }
         }
 
         return dependentTables;
     }
 
-    private async Task<IEnumerable<string>> GetTableDependenciesAsync(string tableName)
+    private async Task<IEnumerable<string>> GetDirectTableDependenciesAsync(string tableName)
     {
         var parts = tableName.Split('.');
         var schema = parts.Length > 1 ? parts[0] : "public";
         var table = parts.Length > 1 ? parts[1] : parts[0];
 
+        // Updated query: Find tables that THIS table references (depends on)
         const string sql =
             """
-            SELECT 
-                tc.constraint_schema,
-                tc.table_name,
-                kcu.column_name,
-                ccu.table_schema AS foreign_table_schema,
-                ccu.table_name AS foreign_table_name,
-                ccu.column_name AS foreign_column_name
+            SELECT DISTINCT
+                ccu.table_schema AS referenced_table_schema,
+                ccu.table_name AS referenced_table_name
             FROM 
                 information_schema.table_constraints AS tc 
                 JOIN information_schema.key_column_usage AS kcu
@@ -55,8 +79,8 @@ internal class PostgreSQLDependencyResolver : IDependencyResolver
                   AND ccu.table_schema = tc.table_schema
             WHERE 
                 tc.constraint_type = 'FOREIGN KEY' 
-                AND ccu.table_schema = @schema 
-                AND ccu.table_name = @table
+                AND tc.table_schema = @schema 
+                AND tc.table_name = @table
             """;
 
         var dependentTables = new List<string>();
@@ -77,9 +101,9 @@ internal class PostgreSQLDependencyResolver : IDependencyResolver
         await using var reader = await command.ExecuteReaderAsync();
         while (await reader.ReadAsync())
         {
-            var dependentSchema = reader["constraint_schema"].ToString();
-            var dependentTable = reader["table_name"].ToString();
-            dependentTables.Add($"{dependentSchema}.{dependentTable}");
+            var referencedSchema = reader["referenced_table_schema"].ToString();
+            var referencedTable = reader["referenced_table_name"].ToString();
+            dependentTables.Add($"{referencedSchema}.{referencedTable}");
         }
 
         return dependentTables;

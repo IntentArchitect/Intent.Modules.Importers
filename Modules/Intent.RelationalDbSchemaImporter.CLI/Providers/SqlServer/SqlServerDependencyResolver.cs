@@ -18,37 +18,64 @@ internal class SqlServerDependencyResolver : IDependencyResolver
     public async Task<IEnumerable<string>> GetDependentTablesAsync(IEnumerable<string> tableNames)
     {
         var dependentTables = new HashSet<string>();
+        var processedTables = new HashSet<string>();
 
+        // Use a queue to process dependencies recursively
+        var tablesToProcess = new Queue<string>();
+        
+        // Add initial tables to process
         foreach (var tableName in tableNames)
         {
-            var dependencies = await GetTableDependenciesAsync(tableName);
+            tablesToProcess.Enqueue(tableName);
+        }
+
+        while (tablesToProcess.Count > 0)
+        {
+            var currentTable = tablesToProcess.Dequeue();
+            
+            // Skip if already processed
+            if (processedTables.Contains(currentTable))
+                continue;
+                
+            processedTables.Add(currentTable);
+
+            // Get direct dependencies of current table
+            var dependencies = await GetDirectTableDependenciesAsync(currentTable);
+            
             foreach (var dependency in dependencies)
             {
+                // Add to result set
                 dependentTables.Add(dependency);
+                
+                // Queue for further processing if not already processed
+                if (!processedTables.Contains(dependency))
+                {
+                    tablesToProcess.Enqueue(dependency);
+                }
             }
         }
 
         return dependentTables;
     }
 
-    private async Task<IEnumerable<string>> GetTableDependenciesAsync(string tableName)
+    private async Task<IEnumerable<string>> GetDirectTableDependenciesAsync(string tableName)
     {
         var parts = tableName.Split('.');
         var schema = parts.Length > 1 ? parts[0] : "dbo";
         var table = parts.Length > 1 ? parts[1] : parts[0];
 
-        // Query to find tables that reference this table via foreign keys
+        // Updated query: Find tables that THIS table references (depends on)
         const string sql = 
             """
             SELECT DISTINCT 
-                SCHEMA_NAME(t.schema_id) AS DependentSchema,
-                t.name AS DependentTable
+                SCHEMA_NAME(rt.schema_id) AS ReferencedSchema,
+                rt.name AS ReferencedTable
             FROM sys.foreign_keys fk
             INNER JOIN sys.tables t ON fk.parent_object_id = t.object_id
+            INNER JOIN sys.schemas s ON t.schema_id = s.schema_id
             INNER JOIN sys.tables rt ON fk.referenced_object_id = rt.object_id
-            INNER JOIN sys.schemas rs ON rt.schema_id = rs.schema_id
-            WHERE rt.name = @TableName 
-              AND rs.name = @SchemaName
+            WHERE t.name = @TableName 
+              AND s.name = @SchemaName
             """;
 
         var dependentTables = new List<string>();
@@ -73,12 +100,12 @@ internal class SqlServerDependencyResolver : IDependencyResolver
 
             while (await reader.ReadAsync())
             {
-                var dependentSchema = reader["DependentSchema"]?.ToString() ?? "dbo";
-                var dependentTable = reader["DependentTable"]?.ToString() ?? "";
+                var referencedSchema = reader["ReferencedSchema"]?.ToString() ?? "dbo";
+                var referencedTable = reader["ReferencedTable"]?.ToString() ?? "";
                 
-                if (!string.IsNullOrEmpty(dependentTable))
+                if (!string.IsNullOrEmpty(referencedTable))
                 {
-                    dependentTables.Add($"{dependentSchema}.{dependentTable}");
+                    dependentTables.Add($"{referencedSchema}.{referencedTable}");
                 }
             }
         }

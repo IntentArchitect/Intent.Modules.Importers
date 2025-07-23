@@ -32,7 +32,7 @@ public class SqlServerIntegrationTests : ContainerTest<MsSqlBuilder, MsSqlContai
     }
 
     [Fact]
-    public async Task ShouldExtractSchemaFromSqlServerContainer()
+    public async Task ShouldExtractAllSchema()
     {
         // Arrange
         var connectionString = Container.GetConnectionString();
@@ -42,6 +42,36 @@ public class SqlServerIntegrationTests : ContainerTest<MsSqlBuilder, MsSqlContai
             ConnectionString = connectionString,
             TypesToExport = [ExportType.Table, ExportType.View, ExportType.Index, ExportType.StoredProcedure],
             DatabaseType = DatabaseType.SqlServer
+        };
+
+        // Act
+        var result = ImporterTool.Run<ImportSchemaResult>("import-schema", importRequest);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.True(result.Errors.Count == 0, $"Import failed with errors: {string.Join(", ", result.Errors)}");
+        Assert.NotNull(result.Result);
+        
+        var schemaData = result.Result.SchemaData;
+        Assert.NotNull(schemaData);
+        
+        // Verify the schema data structure  
+        await Verify(schemaData)
+            .UseParameters(nameof(SqlServerIntegrationTests));
+    }
+
+    [Fact]
+    public async Task ShouldExtractFilteredSchema()
+    {
+        // Arrange
+        var connectionString = Container.GetConnectionString();
+        
+        var importRequest = new ImportSchemaRequest
+        {
+            ConnectionString = connectionString,
+            TypesToExport = [ExportType.Table],
+            DatabaseType = DatabaseType.SqlServer,
+            ImportFilterFilePath = "TestData/SqlServer_Filter.json"
         };
 
         // Act
