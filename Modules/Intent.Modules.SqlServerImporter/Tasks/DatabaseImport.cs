@@ -6,6 +6,7 @@ using Intent.Modules.SqlServerImporter.Tasks.Helpers;
 using Intent.Modules.SqlServerImporter.Tasks.Models;
 using Intent.Modules.SqlServerImporter.Tasks.Mappers;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
+using Intent.IArchitect.CrossPlatform.IO;
 using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.RelationalDbSchemaImporter.Runner;
@@ -76,6 +77,12 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
         // Making required changes for the underlying CLI tool
         
         inputModel.PackageFileName = package.FileLocation;
+        
+        if (!string.IsNullOrWhiteSpace(inputModel.ImportFilterFilePath) &&
+            !Path.IsPathRooted(inputModel.ImportFilterFilePath))
+        {
+            inputModel.ImportFilterFilePath = Path.Combine(Path.GetDirectoryName(inputModel.PackageFileName)!, inputModel.ImportFilterFilePath);
+        }
 
         if (string.IsNullOrWhiteSpace(inputModel.StoredProcedureType))
         {

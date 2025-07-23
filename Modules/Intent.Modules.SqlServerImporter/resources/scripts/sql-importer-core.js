@@ -450,10 +450,24 @@ class DatabaseImportStrategy {
                     };
                 })
             };
+            const includeDependantTablesField = {
+                id: "includeDependantTables",
+                fieldType: "checkbox",
+                label: "Include Dependant Tables",
+                hint: "When including tables, also include tables that are referenced by foreign keys",
+                value: (existingFilter === null || existingFilter === void 0 ? void 0 : existingFilter.include_dependant_tables) ? "true" : "false",
+                isRequired: false
+            };
             const formConfig = {
                 title: "Manage Filters",
                 fields: [],
                 sections: [
+                    {
+                        name: "General Options",
+                        fields: [includeDependantTablesField],
+                        isCollapsed: false,
+                        isHidden: false
+                    },
                     {
                         name: "Inclusive Objects",
                         fields: [inclusiveSelection],
@@ -630,7 +644,7 @@ class DatabaseImportStrategy {
             const filterModel = {
                 schemas: [],
                 include_tables: [],
-                include_dependant_tables: false,
+                include_dependant_tables: formResult.includeDependantTables === "true",
                 include_views: [],
                 exclude_tables: [],
                 exclude_views: [],

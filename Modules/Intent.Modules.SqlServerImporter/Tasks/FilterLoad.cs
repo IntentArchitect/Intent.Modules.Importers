@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using Intent.Engine;
 using Intent.Modules.SqlServerImporter.Tasks.Helpers;
 using Intent.Modules.SqlServerImporter.Tasks.Models;
 using Intent.RelationalDbSchemaImporter.Contracts.FileStructures;
+using Intent.Utils;
 
 namespace Intent.Modules.SqlServerImporter.Tasks;
 
@@ -71,9 +73,9 @@ public class FilterLoad : ModuleTaskSingleInputBase<FilterLoadInputModel>
                 executionResult.Result = new ImportFilterSettings();
                 return executionResult;
             }
-
+            
             var filterModel = JsonSerializer.Deserialize<ImportFilterSettings>(jsonContent);
-
+            
             executionResult.Result = filterModel ?? new ImportFilterSettings();
         }
         catch (Exception ex)

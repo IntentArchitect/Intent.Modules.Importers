@@ -59,7 +59,7 @@ public class FilterSave : ModuleTaskSingleInputBase<FilterSaveInputModel>
                 var packageDirectory = Path.GetDirectoryName(package.FileLocation);
                 if (!string.IsNullOrWhiteSpace(packageDirectory))
                 {
-                    filePath = Path.Combine(packageDirectory, filePath);
+                    filePath = Path.GetFullPath(Path.Combine(packageDirectory, filePath));
                 }
             }
 

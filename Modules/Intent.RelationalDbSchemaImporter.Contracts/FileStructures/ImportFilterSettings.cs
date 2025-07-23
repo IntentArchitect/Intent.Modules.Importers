@@ -11,7 +11,7 @@ public class ImportFilterSettings
 	public List<ImportFilterTable> IncludeTables { get; set; } = [];
 
 	[JsonPropertyName("include_dependant_tables")]
-	public bool IncludeDependantTables = false;
+	public bool IncludeDependantTables { get; set; }
 
 	[JsonPropertyName("include_views")]
 	public List<ImportFilterTable> IncludeViews { get; set; } = [];
