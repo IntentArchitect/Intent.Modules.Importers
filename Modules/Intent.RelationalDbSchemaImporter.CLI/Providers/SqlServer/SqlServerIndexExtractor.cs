@@ -26,46 +26,11 @@ internal class SqlServerIndexExtractor : DefaultIndexExtractor
             return indexes;
         }
 
-        // Always try custom T-SQL query first for better metadata
         var sqlServerIndexes = await ExtractSqlServerIndexesAsync(table, connection);
-        
         if (sqlServerIndexes.Count > 0)
         {
             // Use custom query results which have proper column information
             indexes.AddRange(sqlServerIndexes);
-        }
-        else
-        {
-            // Fall back to DatabaseSchemaReader but enhance with SQL Server index columns
-            foreach (var index in table.Indexes ?? [])
-            {
-                // Skip primary key constraints - they are handled at column level, not as indexes
-                // Check both standard naming and auto-generated SQL Server naming patterns
-                if (index.Name?.StartsWith("PK_") == true || 
-                    index.Name?.StartsWith("PK__") == true)
-                    continue;
-                    
-                // Try to get SQL Server index columns, but fall back to DatabaseSchemaReader columns if needed
-                var indexColumns = await ExtractSqlServerIndexColumnsAsync(table, index.Name ?? "", connection);
-                
-                // If SQL Server query failed, use DatabaseSchemaReader column info
-                if (indexColumns.Count == 0)
-                {
-                    indexColumns = ExtractIndexColumns(index);
-                }
-
-                var indexSchema = new IndexSchema
-                {
-                    Name = index.Name ?? "",
-                    IsUnique = index.IsUnique,
-                    IsClustered = false, // DatabaseSchemaReader doesn't expose this directly for all databases
-                    HasFilter = false, // DatabaseSchemaReader doesn't expose filter information directly
-                    FilterDefinition = null,
-                    Columns = indexColumns
-                };
-
-                indexes.Add(indexSchema);
-            }
         }
 
         // Apply SQL Server specific filtering (migrated from DatabaseSchemaExtractor logic)
@@ -82,7 +47,8 @@ internal class SqlServerIndexExtractor : DefaultIndexExtractor
         var indexes = new List<IndexSchema>();
 
         // Enhanced T-SQL query to get comprehensive index metadata
-        const string sql = """
+        const string sql =
+            """
             SELECT 
                 i.name AS IndexName,
                 i.is_unique AS IsUnique,
@@ -102,28 +68,22 @@ internal class SqlServerIndexExtractor : DefaultIndexExtractor
             ORDER BY i.name
             """;
 
-        try
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+
+        // Add parameters
+        var schemaParam = command.CreateParameter();
+        schemaParam.ParameterName = "@SchemaName";
+        schemaParam.Value = table.SchemaOwner ?? "dbo";
+        command.Parameters.Add(schemaParam);
+
+        var tableParam = command.CreateParameter();
+        tableParam.ParameterName = "@TableName";
+        tableParam.Value = table.Name;
+        command.Parameters.Add(tableParam);
+
+        await using (var reader = await command.ExecuteReaderAsync())
         {
-            // Create a new connection to avoid "DataReader already open" conflicts
-            await using var newConnection = new Microsoft.Data.SqlClient.SqlConnection(connection.ConnectionString);
-            await newConnection.OpenAsync();
-            
-            await using var command = newConnection.CreateCommand();
-            command.CommandText = sql;
-
-            // Add parameters
-            var schemaParam = command.CreateParameter();
-            schemaParam.ParameterName = "@SchemaName";
-            schemaParam.Value = table.SchemaOwner ?? "dbo";
-            command.Parameters.Add(schemaParam);
-
-            var tableParam = command.CreateParameter();
-            tableParam.ParameterName = "@TableName";
-            tableParam.Value = table.Name;
-            command.Parameters.Add(tableParam);
-
-            await using var reader = await command.ExecuteReaderAsync();
-
             while (await reader.ReadAsync())
             {
                 var indexName = reader["IndexName"]?.ToString() ?? "";
@@ -131,7 +91,8 @@ internal class SqlServerIndexExtractor : DefaultIndexExtractor
                 var isClustered = Convert.ToBoolean(reader["IsClustered"]);
                 var hasFilter = Convert.ToBoolean(reader["HasFilter"]);
                 var filterDefinition = reader["FilterDefinition"]?.ToString();
-
+                filterDefinition = string.IsNullOrWhiteSpace(filterDefinition) ? null : filterDefinition;
+                
                 var indexSchema = new IndexSchema
                 {
                     Name = indexName,
@@ -139,16 +100,16 @@ internal class SqlServerIndexExtractor : DefaultIndexExtractor
                     IsClustered = isClustered,
                     HasFilter = hasFilter,
                     FilterDefinition = filterDefinition,
-                    Columns = await ExtractSqlServerIndexColumnsAsync(table, indexName, connection)
+                    // Don't set Columns here due to the need of another SQL Connection inside an existing one
                 };
 
                 indexes.Add(indexSchema);
             }
         }
-        catch (Exception ex)
+
+        foreach (var index in indexes)
         {
-            // If custom query fails, return empty list to fall back to base implementation
-            ConsoleOutput.WarnOutput($"Failed to extract SQL Server indexes for table {table.SchemaOwner}.{table.Name}: {ex.Message}");
+            index.Columns = await ExtractSqlServerIndexColumnsAsync(table, index.Name, connection);
         }
 
         return indexes;
@@ -162,7 +123,8 @@ internal class SqlServerIndexExtractor : DefaultIndexExtractor
         var columns = new List<IndexColumnSchema>();
 
         // T-SQL query to get index column details including sort order and included columns
-        const string sql = """
+        const string sql =
+            """
             SELECT 
                 c.name AS ColumnName,
                 ic.is_descending_key AS IsDescending,
@@ -179,55 +141,44 @@ internal class SqlServerIndexExtractor : DefaultIndexExtractor
             ORDER BY ic.key_ordinal, ic.index_column_id
             """;
 
-        try
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+
+        // Add parameters
+        var schemaParam = command.CreateParameter();
+        schemaParam.ParameterName = "@SchemaName";
+        schemaParam.Value = table.SchemaOwner ?? "dbo";
+        command.Parameters.Add(schemaParam);
+
+        var tableParam = command.CreateParameter();
+        tableParam.ParameterName = "@TableName";
+        tableParam.Value = table.Name;
+        command.Parameters.Add(tableParam);
+
+        var indexParam = command.CreateParameter();
+        indexParam.ParameterName = "@IndexName";
+        indexParam.Value = indexName;
+        command.Parameters.Add(indexParam);
+
+        await using var reader = await command.ExecuteReaderAsync();
+
+        while (await reader.ReadAsync())
         {
-            // Create a new connection to avoid "DataReader already open" conflicts
-            await using var newConnection = new Microsoft.Data.SqlClient.SqlConnection(connection.ConnectionString);
-            await newConnection.OpenAsync();
-            
-            await using var command = newConnection.CreateCommand();
-            command.CommandText = sql;
+            var columnName = reader["ColumnName"]?.ToString() ?? "";
+            var isDescending = Convert.ToBoolean(reader["IsDescending"]);
+            var isIncluded = Convert.ToBoolean(reader["IsIncluded"]);
 
-            // Add parameters
-            var schemaParam = command.CreateParameter();
-            schemaParam.ParameterName = "@SchemaName";
-            schemaParam.Value = table.SchemaOwner ?? "dbo";
-            command.Parameters.Add(schemaParam);
-
-            var tableParam = command.CreateParameter();
-            tableParam.ParameterName = "@TableName";
-            tableParam.Value = table.Name;
-            command.Parameters.Add(tableParam);
-
-            var indexParam = command.CreateParameter();
-            indexParam.ParameterName = "@IndexName";
-            indexParam.Value = indexName;
-            command.Parameters.Add(indexParam);
-
-            await using var reader = await command.ExecuteReaderAsync();
-
-            while (await reader.ReadAsync())
+            var columnSchema = new IndexColumnSchema
             {
-                var columnName = reader["ColumnName"]?.ToString() ?? "";
-                var isDescending = Convert.ToBoolean(reader["IsDescending"]);
-                var isIncluded = Convert.ToBoolean(reader["IsIncluded"]);
+                Name = columnName,
+                IsDescending = isDescending,
+                IsIncluded = isIncluded
+            };
 
-                var columnSchema = new IndexColumnSchema
-                {
-                    Name = columnName,
-                    IsDescending = isDescending,
-                    IsIncluded = isIncluded
-                };
+            columns.Add(columnSchema);
+        }
 
-                columns.Add(columnSchema);
-            }
-        }
-        catch (Exception ex)
-        {
-            // If column query fails, return empty list
-            ConsoleOutput.WarnOutput($"Failed to extract SQL Server index columns for {table.SchemaOwner}.{table.Name}.{indexName}: {ex.Message}");
-        }
 
         return columns;
     }
-} 
+}

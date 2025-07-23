@@ -70,7 +70,7 @@ internal class DefaultTableExtractor : TableExtractorBase
             {
                 Name = table.Name,
                 Schema = table.SchemaOwner,
-                Columns = columnExtractor.ExtractTableColumns(table, importFilterService, dataTypeMapper),
+                Columns = await columnExtractor.ExtractTableColumnsAsync(table, importFilterService, dataTypeMapper, connection),
                 Indexes = await indexExtractor.ExtractIndexesAsync(table, importFilterService, connection),
                 ForeignKeys = await foreignKeyExtractor.ExtractForeignKeysAsync(table, connection),
                 Triggers = triggerExtractor.ExtractTableTriggers(table)

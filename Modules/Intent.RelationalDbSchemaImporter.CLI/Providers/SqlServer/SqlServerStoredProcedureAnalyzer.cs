@@ -28,76 +28,71 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
     public async Task<List<ResultSetColumnSchema>> AnalyzeResultSetAsync(string procedureName, string schema, IEnumerable<StoredProcedureParameterSchema> parameters)
     {
         var resultColumns = new List<ResultSetColumnSchema>();
+        
+        // Use sp_describe_first_result_set to get result set metadata
+        // This is the T-SQL equivalent of the SMO approach from SqlServerStoredProcExtractor
+        var sql =
+            $"""
+             EXEC sp_describe_first_result_set 
+                 @tsql = N'EXEC [{schema}].[{procedureName}]',
+                 @params = N'',
+                 @browse_information_mode = 1
+             """;
 
-        try
+        await using var command = _connection.CreateCommand();
+        command.CommandText = sql;
+        command.CommandTimeout = 60;
+
+        await using var reader = await command.ExecuteReaderAsync();
+        var dataTable = new DataTable();
+        dataTable.Load(reader);
+
+        // Group by source table to handle table identification (migrated from SqlServerStoredProcExtractor logic)
+        var keyGroupedSourceRows = dataTable.Rows.Cast<DataRow>()
+            .GroupBy(BuildKey)
+            .ToArray();
+
+        // Get table IDs for source tables (migrated approach)
+        var tableIdLookup = new Dictionary<DataRow, int?>();
+
+        foreach (var group in keyGroupedSourceRows)
         {
-            // Use sp_describe_first_result_set to get result set metadata
-            // This is the T-SQL equivalent of the SMO approach from SqlServerStoredProcExtractor
-            var sql = $"""
-                EXEC sp_describe_first_result_set 
-                    @tsql = N'EXEC [{schema}].[{procedureName}]',
-                    @params = N'',
-                    @browse_information_mode = 1
-                """;
-
-            await using var command = _connection.CreateCommand();
-            command.CommandText = sql;
-            command.CommandTimeout = 60;
-
-            await using var reader = await command.ExecuteReaderAsync();
-            var dataTable = new DataTable();
-            dataTable.Load(reader);
-
-            // Group by source table to handle table identification (migrated from SqlServerStoredProcExtractor logic)
-            var keyGroupedSourceRows = dataTable.Rows.Cast<DataRow>()
-                .GroupBy(BuildKey)
-                .ToArray();
-
-            // Get table IDs for source tables (migrated approach)
-            var tableIdLookup = new Dictionary<DataRow, int?>();
-            
-            foreach (var group in keyGroupedSourceRows)
+            if (!string.IsNullOrEmpty(group.Key))
             {
-                if (!string.IsNullOrEmpty(group.Key))
+                var tableIdSql = $"SELECT OBJECT_ID('{group.Key}') AS TableID";
+                var tableId = await GetTableIdAsync(tableIdSql);
+
+                foreach (var row in group)
                 {
-                    var tableIdSql = $"SELECT OBJECT_ID('{group.Key}') AS TableID";
-                    var tableId = await GetTableIdAsync(tableIdSql);
-                    
-                    foreach (var row in group)
-                    {
-                        tableIdLookup[row] = tableId;
-                    }
-                }
-                else
-                {
-                    foreach (var row in group)
-                    {
-                        tableIdLookup[row] = null;
-                    }
+                    tableIdLookup[row] = tableId;
                 }
             }
-
-            // Convert DataTable rows to ResultSetColumnSchema (migrated from SqlServerStoredProcExtractor.ResultSetColumn)
-            foreach (DataRow row in dataTable.Rows)
+            else
             {
-                var columnSchema = new ResultSetColumnSchema
+                foreach (var row in group)
                 {
-                    Name = GetStringValue(row, "name") ?? "",
-                    DataType = SanitizeSystemTypeName(GetStringValue(row, "system_type_name")),
-                    NormalizedDataType = NormalizeDataType(GetStringValue(row, "system_type_name")),
-                    IsNullable = GetBoolValue(row, "is_nullable"),
-                    MaxLength = null, // sp_describe_first_result_set doesn't provide reliable length info
-                    NumericPrecision = null, // sp_describe_first_result_set doesn't provide reliable precision info  
-                    NumericScale = null // sp_describe_first_result_set doesn't provide reliable scale info
-                };
-
-                resultColumns.Add(columnSchema);
+                    tableIdLookup[row] = null;
+                }
             }
         }
-        catch (Exception ex)
+
+        // Convert DataTable rows to ResultSetColumnSchema (migrated from SqlServerStoredProcExtractor.ResultSetColumn)
+        foreach (DataRow row in dataTable.Rows)
         {
-            ConsoleOutput.WarnOutput($"Could not extract result set for stored procedure {schema}.{procedureName}: {ex.Message}");
+            var columnSchema = new ResultSetColumnSchema
+            {
+                Name = GetStringValue(row, "name") ?? "",
+                DataType = SanitizeSystemTypeName(GetStringValue(row, "system_type_name")),
+                NormalizedDataType = NormalizeDataType(GetStringValue(row, "system_type_name")),
+                IsNullable = GetBoolValue(row, "is_nullable"),
+                MaxLength = null, // sp_describe_first_result_set doesn't provide reliable length info
+                NumericPrecision = null, // sp_describe_first_result_set doesn't provide reliable precision info  
+                NumericScale = null // sp_describe_first_result_set doesn't provide reliable scale info
+            };
+
+            resultColumns.Add(columnSchema);
         }
+
 
         return resultColumns;
     }
@@ -126,7 +121,7 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
     private static string BuildKey(DataRow row)
     {
         var parts = new List<string>();
-        
+
         var db = GetStringValue(row, "source_database");
         if (!string.IsNullOrEmpty(db))
             parts.Add(db);
@@ -147,8 +142,8 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
     /// </summary>
     private static string? GetStringValue(DataRow row, string columnName)
     {
-        return row.Table.Columns.Contains(columnName) && row[columnName] != DBNull.Value 
-            ? row[columnName]?.ToString() 
+        return row.Table.Columns.Contains(columnName) && row[columnName] != DBNull.Value
+            ? row[columnName]?.ToString()
             : null;
     }
 
@@ -157,8 +152,8 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
     /// </summary>
     private static bool GetBoolValue(DataRow row, string columnName)
     {
-        return row.Table.Columns.Contains(columnName) && row[columnName] != DBNull.Value 
-            && Convert.ToBoolean(row[columnName]);
+        return row.Table.Columns.Contains(columnName) && row[columnName] != DBNull.Value
+                                                      && Convert.ToBoolean(row[columnName]);
     }
 
     /// <summary>
@@ -183,7 +178,7 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
             return "unknown";
 
         var cleanType = SanitizeSystemTypeName(systemTypeName);
-        
+
         return cleanType switch
         {
             // String types
@@ -191,7 +186,7 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
 
             // Integer types
             "int" => "int",
-            "bigint" => "long", 
+            "bigint" => "long",
             "smallint" => "short",
             "tinyint" => "byte",
 
@@ -212,9 +207,9 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
 
             // Binary types
             "varbinary" or "binary" or "image" or "timestamp" => "binary",
-            
+
             // Fallback
             _ => "string"
         };
     }
-} 
+}

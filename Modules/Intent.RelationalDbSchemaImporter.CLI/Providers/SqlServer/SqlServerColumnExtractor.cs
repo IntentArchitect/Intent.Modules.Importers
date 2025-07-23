@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -16,9 +17,13 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
 /// </summary>
 internal class SqlServerColumnExtractor : DefaultColumnExtractor
 {
-    public override List<ColumnSchema> ExtractTableColumns(DatabaseTable table, ImportFilterService importFilterService, DataTypeMapperBase typeMapper)
+    public override async Task<List<ColumnSchema>> ExtractTableColumnsAsync(DatabaseTable table, ImportFilterService importFilterService, DataTypeMapperBase typeMapper,
+        DbConnection connection)
     {
         var columns = new List<ColumnSchema>();
+
+        // Get computed column persistence information using T-SQL
+        var computedColumnInfo = await GetComputedColumnInfoAsync(table, connection);
 
         foreach (var col in table.Columns)
         {
@@ -39,7 +44,7 @@ internal class SqlServerColumnExtractor : DefaultColumnExtractor
                 NumericPrecision = GetSqlServerNumericPrecision(col),
                 NumericScale = GetSqlServerNumericScale(col),
                 DefaultConstraint = ExtractDefaultConstraint(col),
-                ComputedColumn = ExtractComputedColumn(col)
+                ComputedColumn = ExtractEnhancedComputedColumn(col, computedColumnInfo)
             };
 
             columns.Add(columnSchema);
@@ -91,39 +96,10 @@ internal class SqlServerColumnExtractor : DefaultColumnExtractor
             return column.Length;
         }
 
-        // For SQL Server, certain data types have implicit MaxLength that should be reported
-        // This matches the behavior of the old SMO-based DataType.MaximumLength
-        var dataTypeName = column.DbDataType?.ToLowerInvariant();
-        
-        return dataTypeName switch
-        {
-            "int" => 4,
-            "bigint" => 8,
-            "smallint" => 2,
-            "tinyint" => 1,
-            "bit" => 1,
-            "float" => 8,
-            "real" => 4,
-            "money" => 8,
-            "smallmoney" => 4,
-            "datetime" => 8,
-            "datetime2" => 8,
-            "smalldatetime" => 4,
-            "date" => 3,
-            "time" => 5,
-            "datetimeoffset" => 10,
-            "uniqueidentifier" => 16,
-            "timestamp" => 8,
-            "binary" => column.Length > 0 ? column.Length : null,
-            "varbinary" => column.Length > 0 ? column.Length : null,
-            "char" => column.Length > 0 ? column.Length : null,
-            "varchar" => column.Length > 0 ? column.Length : null,
-            "nchar" => column.Length > 0 ? column.Length : null,
-            "nvarchar" => column.Length > 0 ? column.Length : null,
-            "decimal" => null, // Decimal doesn't have MaxLength, uses Precision/Scale
-            "numeric" => null, // Numeric doesn't have MaxLength, uses Precision/Scale
-            _ => null
-        };
+        // I found that SMO and some DB Clients actually provide you with a Length for Decimal in SQL Server
+        // This is somehow calculated, and it is not important at all for what we want.
+        // We only want what SQL Server tells us.
+        return null;
     }
 
     /// <summary>
@@ -137,28 +113,7 @@ internal class SqlServerColumnExtractor : DefaultColumnExtractor
             return column.Precision;
         }
 
-        // For SQL Server, certain data types have implicit NumericPrecision that should be reported
-        // This matches the behavior of the old SMO-based DataType.NumericPrecision
-        var dataTypeName = column.DbDataType?.ToLowerInvariant();
-        
-        return dataTypeName switch
-        {
-            "tinyint" => 3,
-            "smallint" => 5,
-            "int" => 10,
-            "bigint" => 19,
-            "bit" => 1,
-            "decimal" => 18, // Default precision if not specified
-            "numeric" => 18, // Default precision if not specified
-            "money" => 19,
-            "smallmoney" => 10,
-            "float" => 53,
-            "real" => 24,
-            "datetime2" => 27,
-            "time" => 16,
-            "datetimeoffset" => 34,
-            _ => null
-        };
+        return null;
     }
 
     /// <summary>
@@ -172,21 +127,7 @@ internal class SqlServerColumnExtractor : DefaultColumnExtractor
             return column.Scale;
         }
 
-        // For SQL Server, certain data types have implicit NumericScale that should be reported
-        // This matches the behavior of the old SMO-based DataType.NumericScale
-        var dataTypeName = column.DbDataType?.ToLowerInvariant();
-        
-        return dataTypeName switch
-        {
-            "money" => 4,
-            "smallmoney" => 4,
-            "datetime2" => 7,
-            "time" => 7,
-            "datetimeoffset" => 7,
-            "decimal" => 0, // Default scale if not specified
-            "numeric" => 0, // Default scale if not specified
-            _ => null
-        };
+        return null;
     }
 
     /// <summary>
@@ -206,19 +147,68 @@ internal class SqlServerColumnExtractor : DefaultColumnExtractor
     }
 
     /// <summary>
-    /// Extracts computed column information from a database column
+    /// Extract computed column info with IsPersisted flag using T-SQL queries
     /// </summary>
-    private static ComputedColumnSchema? ExtractComputedColumn(DatabaseColumn column)
+    private static async Task<Dictionary<string, bool>> GetComputedColumnInfoAsync(DatabaseTable table, DbConnection connection)
+    {
+        var computedColumns = new Dictionary<string, bool>();
+
+        const string sql =
+            """
+            SELECT 
+                c.name AS ColumnName,
+                cc.is_persisted AS IsPersisted
+            FROM sys.columns c
+            INNER JOIN sys.tables t ON c.object_id = t.object_id
+            INNER JOIN sys.schemas s ON t.schema_id = s.schema_id
+            INNER JOIN sys.computed_columns cc ON cc.object_id = t.object_id
+            WHERE s.name = @SchemaName 
+              AND t.name = @TableName
+              AND c.is_computed = 1
+            """;
+
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+
+        // Add parameters
+        var schemaParam = command.CreateParameter();
+        schemaParam.ParameterName = "@SchemaName";
+        schemaParam.Value = table.SchemaOwner ?? "dbo";
+        command.Parameters.Add(schemaParam);
+
+        var tableParam = command.CreateParameter();
+        tableParam.ParameterName = "@TableName";
+        tableParam.Value = table.Name;
+        command.Parameters.Add(tableParam);
+
+        await using var reader = await command.ExecuteReaderAsync();
+
+        while (await reader.ReadAsync())
+        {
+            var columnName = reader.GetString(0); // ColumnName
+            var isPersisted = reader.GetBoolean(1); // IsPersisted
+            computedColumns[columnName] = isPersisted;
+        }
+
+        return computedColumns;
+    }
+
+    /// <summary>
+    /// Extract computed column with enhanced IsPersisted information
+    /// </summary>
+    private static ComputedColumnSchema? ExtractEnhancedComputedColumn(DatabaseColumn column, Dictionary<string, bool> computedColumnInfo)
     {
         if (column.ComputedDefinition is null)
         {
             return null;
         }
 
+        var isPersisted = computedColumnInfo.GetValueOrDefault(column.Name, false);
+
         return new ComputedColumnSchema
         {
             Expression = column.ComputedDefinition,
-            IsPersisted = false // DatabaseSchemaReader doesn't expose this, would need custom query
+            IsPersisted = isPersisted
         };
     }
-} 
+}

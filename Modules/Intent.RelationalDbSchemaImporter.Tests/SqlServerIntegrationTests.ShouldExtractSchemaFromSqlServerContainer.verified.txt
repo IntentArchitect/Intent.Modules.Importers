@@ -12,7 +12,6 @@
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -31,7 +30,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -66,7 +64,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -76,9 +73,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -137,7 +131,6 @@
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -165,7 +158,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -175,8 +167,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
             Text: ((1))
           }
@@ -188,9 +178,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -202,9 +189,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -250,7 +234,6 @@
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -260,7 +243,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -279,7 +261,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -289,7 +270,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 10,
           NumericScale: 2
         },
@@ -300,7 +280,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -319,9 +298,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -333,7 +309,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         }
       ],
@@ -396,7 +371,7 @@
       Columns: [
         {
           Name: optname,
-          DataType: sysname,
+          DataType: nvarchar,
           NormalizedDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
@@ -409,9 +384,7 @@
           NormalizedDataType: bool,
           IsNullable: false,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1
+          IsIdentity: false
         },
         {
           Name: major_version,
@@ -420,7 +393,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -430,7 +402,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -440,7 +411,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -450,7 +420,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         }
       ]
@@ -466,7 +435,6 @@
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -476,7 +444,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -486,7 +453,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -496,7 +462,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -506,7 +471,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 10,
           NumericScale: 2
         },
@@ -517,7 +481,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 5,
           NumericPrecision: 5,
           NumericScale: 2,
           DefaultConstraint: {
@@ -531,7 +494,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 13,
           NumericPrecision: 28,
           NumericScale: 4,
           ComputedColumn: {
@@ -618,7 +580,6 @@
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -628,7 +589,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -638,9 +598,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -651,10 +608,7 @@
           NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7
+          IsIdentity: false
         },
         {
           Name: ShippedDate,
@@ -662,10 +616,7 @@
           NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7
+          IsIdentity: false
         },
         {
           Name: ShippingAddressID,
@@ -674,7 +625,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -684,7 +634,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -694,7 +643,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 12,
           NumericScale: 2
         },
@@ -705,7 +653,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 12,
           NumericScale: 2,
           DefaultConstraint: {
@@ -719,7 +666,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 12,
           NumericScale: 2,
           DefaultConstraint: {
@@ -733,7 +679,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 12,
           NumericScale: 2
         },
@@ -881,7 +826,6 @@
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -891,7 +835,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -928,7 +871,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -938,7 +880,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -948,8 +889,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
             Text: ((0))
           }
@@ -961,8 +900,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
             Text: ((1))
           }
@@ -974,9 +911,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -1007,7 +941,6 @@
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1017,7 +950,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1027,7 +959,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1037,7 +968,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 12,
           NumericScale: 2
         },
@@ -1048,9 +978,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -1092,9 +1019,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -1136,7 +1060,6 @@
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1146,7 +1069,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1156,7 +1078,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1166,7 +1087,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1194,8 +1114,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
             Text: ((0))
           }
@@ -1207,7 +1125,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10,
           DefaultConstraint: {
             Text: ((0))
@@ -1220,9 +1137,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -1305,7 +1219,6 @@
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1342,7 +1255,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1352,7 +1264,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1362,7 +1273,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 10,
           NumericScale: 2
         },
@@ -1373,7 +1283,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10,
           DefaultConstraint: {
             Text: ((0))
@@ -1386,7 +1295,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10,
           DefaultConstraint: {
             Text: ((0))
@@ -1399,7 +1307,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10,
           DefaultConstraint: {
             Text: ((0))
@@ -1412,8 +1319,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
             Text: ((0))
           }
@@ -1425,7 +1330,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 5,
           NumericPrecision: 8,
           NumericScale: 2
         },
@@ -1454,9 +1358,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -1468,9 +1369,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -1600,7 +1498,6 @@
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1610,7 +1507,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1620,7 +1516,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1630,7 +1525,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10,
           DefaultConstraint: {
             Text: ((1))
@@ -1643,7 +1537,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 10,
           NumericScale: 2
         },
@@ -1654,9 +1547,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -1668,9 +1558,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -1748,10 +1635,7 @@
           NormalizedDataType: datetime,
           IsNullable: false,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 23,
-          NumericScale: 3
+          IsIdentity: false
         },
         {
           Name: xdttm_last_ins_upd,
@@ -1759,10 +1643,7 @@
           NormalizedDataType: datetime,
           IsNullable: false,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 23,
-          NumericScale: 3
+          IsIdentity: false
         },
         {
           Name: xfallback_dbid,
@@ -1771,7 +1652,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 2,
           NumericPrecision: 5
         },
         {
@@ -1790,7 +1670,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 2,
           NumericPrecision: 5
         },
         {
@@ -1800,7 +1679,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 2,
           NumericPrecision: 5
         },
         {
@@ -1810,7 +1688,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 2,
           NumericPrecision: 5
         }
       ]
@@ -1834,10 +1711,7 @@
           NormalizedDataType: datetime,
           IsNullable: false,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 23,
-          NumericScale: 3
+          IsIdentity: false
         },
         {
           Name: xdttm_last_ins_upd,
@@ -1845,10 +1719,7 @@
           NormalizedDataType: datetime,
           IsNullable: false,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 23,
-          NumericScale: 3
+          IsIdentity: false
         },
         {
           Name: xfallback_low,
@@ -1857,7 +1728,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1876,7 +1746,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1886,7 +1755,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1896,7 +1764,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 2,
           NumericPrecision: 5
         },
         {
@@ -1938,10 +1805,7 @@
           NormalizedDataType: datetime,
           IsNullable: false,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 23,
-          NumericScale: 3
+          IsIdentity: false
         },
         {
           Name: xdttm_last_ins_upd,
@@ -1949,10 +1813,7 @@
           NormalizedDataType: datetime,
           IsNullable: false,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 23,
-          NumericScale: 3
+          IsIdentity: false
         },
         {
           Name: xfallback_vstart,
@@ -1961,7 +1822,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1971,7 +1831,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 2,
           NumericPrecision: 5
         },
         {
@@ -1981,7 +1840,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -1991,7 +1849,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2001,7 +1858,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2011,7 +1867,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         }
       ]
@@ -2026,10 +1881,7 @@
           NormalizedDataType: datetime,
           IsNullable: false,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 23,
-          NumericScale: 3
+          IsIdentity: false
         },
         {
           Name: cpu_busy,
@@ -2038,7 +1890,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2048,7 +1899,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2058,7 +1908,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2068,7 +1917,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2078,7 +1926,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2088,7 +1935,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2098,7 +1944,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2108,7 +1953,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2118,7 +1962,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2128,7 +1971,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         }
       ]
@@ -2144,7 +1986,6 @@
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2238,8 +2079,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
             Text: ((1))
           }
@@ -2251,9 +2090,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -2271,7 +2107,6 @@
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2281,7 +2116,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2357,8 +2191,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
             Text: ((0))
           }
@@ -2370,9 +2202,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -2403,7 +2232,6 @@
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2457,9 +2285,7 @@
           NormalizedDataType: date,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 3,
-          NumericPrecision: 10
+          IsIdentity: false
         },
         {
           Name: PhoneNumber,
@@ -2477,8 +2303,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 1,
-          NumericPrecision: 1,
           DefaultConstraint: {
             Text: ((1))
           }
@@ -2490,9 +2314,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -2504,9 +2325,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7,
           DefaultConstraint: {
             Text: (getdate())
           }
@@ -2517,10 +2335,7 @@
           NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7
+          IsIdentity: false
         }
       ],
       Indexes: [
@@ -2592,13 +2407,13 @@
       ],
       Triggers: [
         {
-          Name: TR_Users_Audit,
+          Name: TR_Users_UpdateModifiedDate,
           ParentSchema: dbo,
           ParentName: Users,
           ParentType: Table
         },
         {
-          Name: TR_Users_UpdateModifiedDate,
+          Name: TR_Users_Audit,
           ParentSchema: dbo,
           ParentName: Users,
           ParentType: Table
@@ -2627,7 +2442,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2646,7 +2460,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2656,7 +2469,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2666,7 +2478,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         }
       ]
@@ -2682,7 +2493,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2691,10 +2501,7 @@
           NormalizedDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7
+          IsIdentity: false
         },
         {
           Name: OrderStatus,
@@ -2739,7 +2546,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2749,7 +2555,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 12,
           NumericScale: 2
         },
@@ -2775,7 +2580,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2812,7 +2616,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 9,
           NumericPrecision: 10,
           NumericScale: 2
         },
@@ -2823,7 +2626,6 @@
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         },
         {
@@ -2860,7 +2662,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 8,
           NumericPrecision: 53
         },
         {
@@ -2870,7 +2671,6 @@
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
-          MaxLength: 4,
           NumericPrecision: 10
         }
       ]
@@ -2886,24 +2686,24 @@
           DataType: int,
           NormalizedDataType: int,
           IsOutputParameter: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 10,
+          NumericScale: 0
         },
         {
           Name: @ProductID,
           DataType: int,
           NormalizedDataType: int,
           IsOutputParameter: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 10,
+          NumericScale: 0
         },
         {
           Name: @Quantity,
           DataType: int,
           NormalizedDataType: int,
           IsOutputParameter: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 10,
+          NumericScale: 0
         }
       ]
     },
@@ -2916,31 +2716,30 @@
           DataType: int,
           NormalizedDataType: int,
           IsOutputParameter: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 10,
+          NumericScale: 0
         },
         {
           Name: @ShippingAddressID,
           DataType: int,
           NormalizedDataType: int,
           IsOutputParameter: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 10,
+          NumericScale: 0
         },
         {
           Name: @BillingAddressID,
           DataType: int,
           NormalizedDataType: int,
           IsOutputParameter: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 10,
+          NumericScale: 0
         },
         {
           Name: @TaxAmount,
           DataType: decimal,
           NormalizedDataType: decimal,
           IsOutputParameter: false,
-          MaxLength: 9,
           NumericPrecision: 12,
           NumericScale: 2
         },
@@ -2949,7 +2748,6 @@
           DataType: decimal,
           NormalizedDataType: decimal,
           IsOutputParameter: false,
-          MaxLength: 9,
           NumericPrecision: 12,
           NumericScale: 2
         },
@@ -2958,8 +2756,8 @@
           DataType: int,
           NormalizedDataType: int,
           IsOutputParameter: true,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 10,
+          NumericScale: 0
         }
       ]
     },
@@ -2972,8 +2770,8 @@
           DataType: int,
           NormalizedDataType: int,
           IsOutputParameter: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 10,
+          NumericScale: 0
         }
       ],
       ResultSetColumns: [
@@ -3095,19 +2893,13 @@
           Name: @StartDate,
           DataType: datetime2,
           NormalizedDataType: datetime,
-          IsOutputParameter: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7
+          IsOutputParameter: false
         },
         {
           Name: @EndDate,
           DataType: datetime2,
           NormalizedDataType: datetime,
-          IsOutputParameter: false,
-          MaxLength: 8,
-          NumericPrecision: 27,
-          NumericScale: 7
+          IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
@@ -3170,8 +2962,8 @@
           DataType: int,
           NormalizedDataType: int,
           IsOutputParameter: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 10,
+          NumericScale: 0
         }
       ],
       ResultSetColumns: [
@@ -3238,14 +3030,6 @@
       ]
     },
     {
-      Name: sp_MScleanupmergepublisher,
-      Schema: dbo
-    },
-    {
-      Name: sp_MSrepl_startup,
-      Schema: dbo
-    },
-    {
       Name: sp_SearchProducts,
       Schema: dbo,
       Parameters: [
@@ -3261,15 +3045,14 @@
           DataType: int,
           NormalizedDataType: int,
           IsOutputParameter: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 10,
+          NumericScale: 0
         },
         {
           Name: @MinPrice,
           DataType: decimal,
           NormalizedDataType: decimal,
           IsOutputParameter: false,
-          MaxLength: 9,
           NumericPrecision: 10,
           NumericScale: 2
         },
@@ -3278,7 +3061,6 @@
           DataType: decimal,
           NormalizedDataType: decimal,
           IsOutputParameter: false,
-          MaxLength: 9,
           NumericPrecision: 10,
           NumericScale: 2
         },
@@ -3301,16 +3083,16 @@
           DataType: int,
           NormalizedDataType: int,
           IsOutputParameter: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 10,
+          NumericScale: 0
         },
         {
           Name: @PageSize,
           DataType: int,
           NormalizedDataType: int,
           IsOutputParameter: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 10,
+          NumericScale: 0
         }
       ],
       ResultSetColumns: [
@@ -3391,16 +3173,16 @@
           DataType: int,
           NormalizedDataType: int,
           IsOutputParameter: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 10,
+          NumericScale: 0
         },
         {
           Name: @Quantity,
           DataType: int,
           NormalizedDataType: int,
           IsOutputParameter: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 10,
+          NumericScale: 0
         },
         {
           Name: @TransactionType,
@@ -3414,7 +3196,6 @@
           DataType: decimal,
           NormalizedDataType: decimal,
           IsOutputParameter: false,
-          MaxLength: 9,
           NumericPrecision: 10,
           NumericScale: 2
         },
@@ -3430,8 +3211,8 @@
           DataType: int,
           NormalizedDataType: int,
           IsOutputParameter: false,
-          MaxLength: 4,
-          NumericPrecision: 10
+          NumericPrecision: 10,
+          NumericScale: 0
         }
       ]
     }

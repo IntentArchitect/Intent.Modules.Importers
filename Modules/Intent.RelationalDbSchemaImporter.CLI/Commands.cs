@@ -1,5 +1,6 @@
 using System;
 using System.CommandLine;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Intent.RelationalDbSchemaImporter.CLI.Providers;
@@ -30,7 +31,7 @@ internal static partial class Commands
                 {
                     return response;
                 }
-                
+
                 var importFilterService = new ImportFilterService(request);
                 if (!importFilterService.ValidateFilterFile(out var errors))
                 {
@@ -41,7 +42,7 @@ internal static partial class Commands
                 // Use the new provider-based architecture
                 var factory = new DatabaseProviderFactory();
                 var databaseType = request.DatabaseType;
-                
+
                 var provider = factory.CreateProvider(databaseType);
                 var databaseSchema = await provider.ExtractSchemaAsync(request.ConnectionString, importFilterService, cancellationToken);
 

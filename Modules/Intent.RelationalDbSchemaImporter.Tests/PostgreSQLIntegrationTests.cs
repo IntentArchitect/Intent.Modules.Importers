@@ -13,10 +13,6 @@ namespace Intent.RelationalDbSchemaImporter.Tests;
 public class PostgreSQLIntegrationTests : IAsyncLifetime
 {
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
-        .WithImage("postgres:15-alpine")
-        .WithDatabase("testdb")
-        .WithUsername("testuser")
-        .WithPassword("TestPassword123!")
         .WithCleanUp(true)
         .Build();
 

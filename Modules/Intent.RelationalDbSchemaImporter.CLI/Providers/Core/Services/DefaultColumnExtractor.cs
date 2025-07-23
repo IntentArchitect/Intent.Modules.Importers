@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Threading.Tasks;
 using DatabaseSchemaReader.DataSchema;
 using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
@@ -7,7 +9,8 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers.Core.Services;
 
 internal abstract class ColumnExtractorBase
 {
-    public abstract List<ColumnSchema> ExtractTableColumns(DatabaseTable table, ImportFilterService importFilterService, DataTypeMapperBase typeMapper);
+    public abstract Task<List<ColumnSchema>> ExtractTableColumnsAsync(DatabaseTable table, ImportFilterService importFilterService, DataTypeMapperBase typeMapper,
+        DbConnection connection);
     public abstract List<ColumnSchema> ExtractViewColumns(DatabaseView view, ImportFilterService importFilterService, DataTypeMapperBase typeMapper);
 }
 
@@ -16,7 +19,8 @@ internal class DefaultColumnExtractor : ColumnExtractorBase
     /// <summary>
     /// Extracts column schema information from a database table
     /// </summary>
-    public override List<ColumnSchema> ExtractTableColumns(DatabaseTable table, ImportFilterService importFilterService, DataTypeMapperBase typeMapper)
+    public override async Task<List<ColumnSchema>> ExtractTableColumnsAsync(DatabaseTable table, ImportFilterService importFilterService, DataTypeMapperBase typeMapper,
+        DbConnection connection)
     {
         var columns = new List<ColumnSchema>();
 

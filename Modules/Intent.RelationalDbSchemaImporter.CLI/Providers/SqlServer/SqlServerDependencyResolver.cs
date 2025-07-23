@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
 using System.Threading.Tasks;
 using Intent.RelationalDbSchemaImporter.CLI.Providers.Core;
 
@@ -45,7 +45,8 @@ internal class SqlServerDependencyResolver : IDependencyResolver
         var table = parts.Length > 1 ? parts[1] : parts[0];
 
         // Query to find tables that reference this table via foreign keys
-        const string sql = """
+        const string sql = 
+            """
             SELECT DISTINCT 
                 SCHEMA_NAME(t.schema_id) AS DependentSchema,
                 t.name AS DependentTable
@@ -88,10 +89,9 @@ internal class SqlServerDependencyResolver : IDependencyResolver
                 }
             }
         }
-        catch
+        catch (Exception ex)
         {
-            // If dependency resolution fails, return empty list
-            // This is not critical for the import process
+            ConsoleOutput.WarnOutput($"Failed to get SQL Server table dependencies for table {schema}.{table}: {ex.Message}");
         }
 
         return dependentTables;
