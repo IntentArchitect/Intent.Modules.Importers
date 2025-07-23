@@ -20,7 +20,8 @@ internal static partial class Commands
 {
     private static readonly JsonSerializerOptions DeserializationOptions = new()
     {
-        Converters = { new JsonStringEnumConverter() }
+        Converters = { new JsonStringEnumConverter() },
+        PropertyNameCaseInsensitive = true
     };
 
     private static string GetOptionName(string propertyName) => $"--{propertyName.ToKebabCase()}";
