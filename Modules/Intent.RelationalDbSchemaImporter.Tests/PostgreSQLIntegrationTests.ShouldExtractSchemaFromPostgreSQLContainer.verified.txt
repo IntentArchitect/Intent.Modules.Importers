@@ -7,8 +7,8 @@
       Columns: [
         {
           Name: audit_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -19,8 +19,8 @@
         },
         {
           Name: table_name,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -28,8 +28,8 @@
         },
         {
           Name: record_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -37,8 +37,8 @@
         },
         {
           Name: action,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -46,24 +46,24 @@
         },
         {
           Name: old_values,
-          DataType: jsonb,
-          NormalizedDataType: string,
+          DbDataType: jsonb,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
           Name: new_values,
-          DataType: jsonb,
-          NormalizedDataType: string,
+          DbDataType: jsonb,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
           Name: changed_by,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -71,8 +71,8 @@
         },
         {
           Name: change_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -146,8 +146,8 @@
       Columns: [
         {
           Name: category_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -158,8 +158,8 @@
         },
         {
           Name: category_name,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -167,16 +167,16 @@
         },
         {
           Name: description,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
           Name: parent_category_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -184,8 +184,8 @@
         },
         {
           Name: is_active,
-          DataType: bool,
-          NormalizedDataType: bool,
+          DbDataType: bool,
+          LanguageDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -195,8 +195,8 @@
         },
         {
           Name: created_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -206,8 +206,8 @@
         },
         {
           Name: modified_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -249,6 +249,7 @@
       ForeignKeys: [
         {
           Name: fk_categories_parent_category,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: categories,
           Columns: [
@@ -274,8 +275,8 @@
       Columns: [
         {
           Name: transaction_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -286,8 +287,8 @@
         },
         {
           Name: product_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -295,8 +296,8 @@
         },
         {
           Name: transaction_type,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -304,8 +305,8 @@
         },
         {
           Name: quantity,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -313,8 +314,8 @@
         },
         {
           Name: unit_price,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -323,8 +324,8 @@
         },
         {
           Name: reference_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -332,16 +333,16 @@
         },
         {
           Name: notes,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
           Name: created_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -351,8 +352,8 @@
         },
         {
           Name: created_by,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -406,6 +407,7 @@
       ForeignKeys: [
         {
           Name: fk_inventory_transactions_products,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: products,
           Columns: [
@@ -417,6 +419,7 @@
         },
         {
           Name: fk_inventory_transactions_users,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: users,
           Columns: [
@@ -434,8 +437,8 @@
       Columns: [
         {
           Name: order_detail_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -446,8 +449,8 @@
         },
         {
           Name: order_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -455,8 +458,8 @@
         },
         {
           Name: product_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -464,8 +467,8 @@
         },
         {
           Name: quantity,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -473,8 +476,8 @@
         },
         {
           Name: unit_price,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -483,8 +486,8 @@
         },
         {
           Name: discount,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -496,8 +499,8 @@
         },
         {
           Name: line_total,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -552,6 +555,7 @@
       ForeignKeys: [
         {
           Name: fk_order_details_orders,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: orders,
           Columns: [
@@ -563,6 +567,7 @@
         },
         {
           Name: fk_order_details_products,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: products,
           Columns: [
@@ -594,8 +599,8 @@
       Columns: [
         {
           Name: order_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -606,8 +611,8 @@
         },
         {
           Name: user_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -615,8 +620,8 @@
         },
         {
           Name: order_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -626,24 +631,24 @@
         },
         {
           Name: required_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
           Name: shipped_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
           Name: shipping_address_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -651,8 +656,8 @@
         },
         {
           Name: billing_address_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -660,8 +665,8 @@
         },
         {
           Name: sub_total,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -670,8 +675,8 @@
         },
         {
           Name: tax_amount,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -683,8 +688,8 @@
         },
         {
           Name: shipping_amount,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -696,8 +701,8 @@
         },
         {
           Name: total_amount,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -706,8 +711,8 @@
         },
         {
           Name: order_status,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -718,8 +723,8 @@
         },
         {
           Name: payment_status,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -730,8 +735,8 @@
         },
         {
           Name: tracking_number,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -739,8 +744,8 @@
         },
         {
           Name: notes,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -821,6 +826,7 @@
       ForeignKeys: [
         {
           Name: fk_orders_billing_address,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: user_addresses,
           Columns: [
@@ -832,6 +838,7 @@
         },
         {
           Name: fk_orders_shipping_address,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: user_addresses,
           Columns: [
@@ -843,6 +850,7 @@
         },
         {
           Name: fk_orders_users,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: users,
           Columns: [
@@ -860,8 +868,8 @@
       Columns: [
         {
           Name: payment_method_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -872,8 +880,8 @@
         },
         {
           Name: user_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -881,8 +889,8 @@
         },
         {
           Name: payment_type,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -890,8 +898,8 @@
         },
         {
           Name: card_number,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -899,8 +907,8 @@
         },
         {
           Name: card_holder_name,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -908,8 +916,8 @@
         },
         {
           Name: expiry_month,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -917,8 +925,8 @@
         },
         {
           Name: expiry_year,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -926,8 +934,8 @@
         },
         {
           Name: is_default,
-          DataType: bool,
-          NormalizedDataType: bool,
+          DbDataType: bool,
+          LanguageDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -937,8 +945,8 @@
         },
         {
           Name: is_active,
-          DataType: bool,
-          NormalizedDataType: bool,
+          DbDataType: bool,
+          LanguageDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -948,8 +956,8 @@
         },
         {
           Name: created_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -977,6 +985,7 @@
       ForeignKeys: [
         {
           Name: fk_payment_methods_users,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: users,
           Columns: [
@@ -994,8 +1003,8 @@
       Columns: [
         {
           Name: payment_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -1006,8 +1015,8 @@
         },
         {
           Name: order_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1015,8 +1024,8 @@
         },
         {
           Name: payment_method_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1024,8 +1033,8 @@
         },
         {
           Name: amount,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1034,8 +1043,8 @@
         },
         {
           Name: payment_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1045,8 +1054,8 @@
         },
         {
           Name: payment_status,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1057,8 +1066,8 @@
         },
         {
           Name: transaction_id,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1066,16 +1075,16 @@
         },
         {
           Name: processor_response,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
           Name: created_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1103,6 +1112,7 @@
       ForeignKeys: [
         {
           Name: fk_payments_orders,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: orders,
           Columns: [
@@ -1114,6 +1124,7 @@
         },
         {
           Name: fk_payments_payment_methods,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: payment_methods,
           Columns: [
@@ -1131,8 +1142,8 @@
       Columns: [
         {
           Name: review_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -1143,8 +1154,8 @@
         },
         {
           Name: product_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1152,8 +1163,8 @@
         },
         {
           Name: user_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1161,8 +1172,8 @@
         },
         {
           Name: rating,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1170,8 +1181,8 @@
         },
         {
           Name: title,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1179,16 +1190,16 @@
         },
         {
           Name: review_text,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
           Name: is_approved,
-          DataType: bool,
-          NormalizedDataType: bool,
+          DbDataType: bool,
+          LanguageDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1198,8 +1209,8 @@
         },
         {
           Name: helpful_count,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1210,8 +1221,8 @@
         },
         {
           Name: created_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1281,6 +1292,7 @@
       ForeignKeys: [
         {
           Name: fk_product_reviews_products,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: products,
           Columns: [
@@ -1292,6 +1304,7 @@
         },
         {
           Name: fk_product_reviews_users,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: users,
           Columns: [
@@ -1309,8 +1322,8 @@
       Columns: [
         {
           Name: product_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -1321,8 +1334,8 @@
         },
         {
           Name: product_name,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1330,16 +1343,16 @@
         },
         {
           Name: description,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
           Name: sku,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1347,8 +1360,8 @@
         },
         {
           Name: category_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1356,8 +1369,8 @@
         },
         {
           Name: supplier_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1365,8 +1378,8 @@
         },
         {
           Name: unit_price,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1375,8 +1388,8 @@
         },
         {
           Name: units_in_stock,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1387,8 +1400,8 @@
         },
         {
           Name: units_on_order,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1399,8 +1412,8 @@
         },
         {
           Name: reorder_level,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1411,8 +1424,8 @@
         },
         {
           Name: discontinued,
-          DataType: bool,
-          NormalizedDataType: bool,
+          DbDataType: bool,
+          LanguageDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1422,8 +1435,8 @@
         },
         {
           Name: weight,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1432,8 +1445,8 @@
         },
         {
           Name: dimensions,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1441,8 +1454,8 @@
         },
         {
           Name: image_url,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1450,8 +1463,8 @@
         },
         {
           Name: created_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1461,8 +1474,8 @@
         },
         {
           Name: modified_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1581,6 +1594,7 @@
       ForeignKeys: [
         {
           Name: fk_products_categories,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: categories,
           Columns: [
@@ -1592,6 +1606,7 @@
         },
         {
           Name: fk_products_suppliers,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: suppliers,
           Columns: [
@@ -1617,8 +1632,8 @@
       Columns: [
         {
           Name: cart_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -1629,8 +1644,8 @@
         },
         {
           Name: user_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1638,8 +1653,8 @@
         },
         {
           Name: product_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1647,8 +1662,8 @@
         },
         {
           Name: quantity,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1659,8 +1674,8 @@
         },
         {
           Name: unit_price,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1669,8 +1684,8 @@
         },
         {
           Name: created_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1680,8 +1695,8 @@
         },
         {
           Name: modified_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1737,6 +1752,7 @@
       ForeignKeys: [
         {
           Name: fk_shopping_cart_products,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: products,
           Columns: [
@@ -1748,6 +1764,7 @@
         },
         {
           Name: fk_shopping_cart_users,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: users,
           Columns: [
@@ -1773,8 +1790,8 @@
       Columns: [
         {
           Name: supplier_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -1785,8 +1802,8 @@
         },
         {
           Name: supplier_name,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1794,8 +1811,8 @@
         },
         {
           Name: contact_name,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1803,8 +1820,8 @@
         },
         {
           Name: email,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1812,8 +1829,8 @@
         },
         {
           Name: phone,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1821,8 +1838,8 @@
         },
         {
           Name: address,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1830,8 +1847,8 @@
         },
         {
           Name: city,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1839,8 +1856,8 @@
         },
         {
           Name: state,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1848,8 +1865,8 @@
         },
         {
           Name: zip_code,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1857,8 +1874,8 @@
         },
         {
           Name: country,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1869,8 +1886,8 @@
         },
         {
           Name: is_active,
-          DataType: bool,
-          NormalizedDataType: bool,
+          DbDataType: bool,
+          LanguageDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1880,8 +1897,8 @@
         },
         {
           Name: created_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1913,8 +1930,8 @@
       Columns: [
         {
           Name: address_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -1925,8 +1942,8 @@
         },
         {
           Name: user_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1934,8 +1951,8 @@
         },
         {
           Name: address_type,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1943,8 +1960,8 @@
         },
         {
           Name: address_line1,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1952,8 +1969,8 @@
         },
         {
           Name: address_line2,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1961,8 +1978,8 @@
         },
         {
           Name: city,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1970,8 +1987,8 @@
         },
         {
           Name: state,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1979,8 +1996,8 @@
         },
         {
           Name: zip_code,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -1988,8 +2005,8 @@
         },
         {
           Name: country,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2000,8 +2017,8 @@
         },
         {
           Name: is_default,
-          DataType: bool,
-          NormalizedDataType: bool,
+          DbDataType: bool,
+          LanguageDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2011,8 +2028,8 @@
         },
         {
           Name: created_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2040,6 +2057,7 @@
       ForeignKeys: [
         {
           Name: fk_user_addresses_users,
+          TableName: ,
           ReferencedTableSchema: public,
           ReferencedTableName: users,
           Columns: [
@@ -2057,8 +2075,8 @@
       Columns: [
         {
           Name: user_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: false,
           IsPrimaryKey: true,
           IsIdentity: true,
@@ -2069,8 +2087,8 @@
         },
         {
           Name: username,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2078,8 +2096,8 @@
         },
         {
           Name: email,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2087,8 +2105,8 @@
         },
         {
           Name: password_hash,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2096,8 +2114,8 @@
         },
         {
           Name: first_name,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2105,8 +2123,8 @@
         },
         {
           Name: last_name,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2114,16 +2132,16 @@
         },
         {
           Name: date_of_birth,
-          DataType: date,
-          NormalizedDataType: datetime,
+          DbDataType: date,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
           Name: phone_number,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2131,8 +2149,8 @@
         },
         {
           Name: is_active,
-          DataType: bool,
-          NormalizedDataType: bool,
+          DbDataType: bool,
+          LanguageDataType: bool,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2142,8 +2160,8 @@
         },
         {
           Name: created_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2153,8 +2171,8 @@
         },
         {
           Name: modified_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2164,8 +2182,8 @@
         },
         {
           Name: last_login_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
@@ -2280,8 +2298,8 @@
       Columns: [
         {
           Name: order_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2289,16 +2307,16 @@
         },
         {
           Name: order_date,
-          DataType: timestamp,
-          NormalizedDataType: datetime,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
           Name: order_status,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2306,8 +2324,8 @@
         },
         {
           Name: payment_status,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2315,16 +2333,16 @@
         },
         {
           Name: customer_name,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
           Name: customer_email,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2332,8 +2350,8 @@
         },
         {
           Name: item_count,
-          DataType: int8,
-          NormalizedDataType: long,
+          DbDataType: int8,
+          LanguageDataType: long,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2341,8 +2359,8 @@
         },
         {
           Name: total_amount,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2351,8 +2369,8 @@
         },
         {
           Name: tracking_number,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2366,8 +2384,8 @@
       Columns: [
         {
           Name: product_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2375,8 +2393,8 @@
         },
         {
           Name: product_name,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2384,16 +2402,16 @@
         },
         {
           Name: description,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false
         },
         {
           Name: sku,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2401,8 +2419,8 @@
         },
         {
           Name: unit_price,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2411,8 +2429,8 @@
         },
         {
           Name: units_in_stock,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2420,8 +2438,8 @@
         },
         {
           Name: image_url,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2429,8 +2447,8 @@
         },
         {
           Name: category_name,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2438,8 +2456,8 @@
         },
         {
           Name: supplier_name,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2447,8 +2465,8 @@
         },
         {
           Name: average_rating,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2457,8 +2475,8 @@
         },
         {
           Name: review_count,
-          DataType: int8,
-          NormalizedDataType: long,
+          DbDataType: int8,
+          LanguageDataType: long,
           IsNullable: true,
           IsPrimaryKey: false,
           IsIdentity: false,
@@ -2474,20 +2492,20 @@
       Parameters: [
         {
           Name: p_user_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_product_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_quantity,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsOutputParameter: false
         }
       ]
@@ -2498,16 +2516,16 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: armor,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -2518,28 +2536,28 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: _text,
-          NormalizedDataType: string,
+          DbDataType: _text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: _text,
-          NormalizedDataType: string,
+          DbDataType: _text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: armor,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -2550,8 +2568,8 @@
       ResultSetColumns: [
         {
           Name: audit_trigger_function,
-          DataType: trigger,
-          NormalizedDataType: string,
+          DbDataType: trigger,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -2562,8 +2580,8 @@
       ResultSetColumns: [
         {
           Name: calculate_line_total,
-          DataType: trigger,
-          NormalizedDataType: string,
+          DbDataType: trigger,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -2574,8 +2592,8 @@
       ResultSetColumns: [
         {
           Name: calculate_order_totals,
-          DataType: trigger,
-          NormalizedDataType: string,
+          DbDataType: trigger,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -2586,22 +2604,22 @@
       Parameters: [
         {
           Name: param1,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: crypt,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -2612,16 +2630,16 @@
       Parameters: [
         {
           Name: param1,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: dearmor,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -2632,28 +2650,28 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: decrypt,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -2664,34 +2682,34 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param4,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: decrypt_iv,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -2702,22 +2720,22 @@
       Parameters: [
         {
           Name: param1,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: digest,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -2728,22 +2746,22 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: digest,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -2754,28 +2772,28 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: encrypt,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -2786,34 +2804,34 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param4,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: encrypt_iv,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -2824,16 +2842,16 @@
       Parameters: [
         {
           Name: param1,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: gen_random_bytes,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -2844,8 +2862,8 @@
       ResultSetColumns: [
         {
           Name: gen_random_uuid,
-          DataType: uuid,
-          NormalizedDataType: guid,
+          DbDataType: uuid,
+          LanguageDataType: guid,
           IsNullable: true
         }
       ]
@@ -2856,16 +2874,16 @@
       Parameters: [
         {
           Name: param1,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: gen_salt,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -2876,22 +2894,22 @@
       Parameters: [
         {
           Name: param1,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: gen_salt,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -2902,28 +2920,28 @@
       Parameters: [
         {
           Name: p_start_date,
-          DataType: date,
-          NormalizedDataType: date,
+          DbDataType: date,
+          LanguageDataType: date,
           IsOutputParameter: false
         },
         {
           Name: p_end_date,
-          DataType: date,
-          NormalizedDataType: date,
+          DbDataType: date,
+          LanguageDataType: date,
           IsOutputParameter: false
         },
         {
           Name: p_category_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: result,
-          DataType: record,
-          NormalizedDataType: string,
+          DbDataType: record,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -2934,16 +2952,16 @@
       Parameters: [
         {
           Name: p_user_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: result,
-          DataType: record,
-          NormalizedDataType: string,
+          DbDataType: record,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -2954,28 +2972,28 @@
       Parameters: [
         {
           Name: param1,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: hmac,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -2986,28 +3004,28 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: hmac,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -3018,16 +3036,16 @@
       Parameters: [
         {
           Name: ,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: result,
-          DataType: record,
-          NormalizedDataType: string,
+          DbDataType: record,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -3038,16 +3056,16 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_key_id,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -3058,22 +3076,22 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_pub_decrypt,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -3084,28 +3102,28 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_pub_decrypt,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -3116,34 +3134,34 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param4,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_pub_decrypt,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -3154,22 +3172,22 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_pub_decrypt_bytea,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -3180,28 +3198,28 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_pub_decrypt_bytea,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -3212,34 +3230,34 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param4,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_pub_decrypt_bytea,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -3250,22 +3268,22 @@
       Parameters: [
         {
           Name: param1,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_pub_encrypt,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -3276,28 +3294,28 @@
       Parameters: [
         {
           Name: param1,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_pub_encrypt,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -3308,22 +3326,22 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_pub_encrypt_bytea,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -3334,28 +3352,28 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_pub_encrypt_bytea,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -3366,22 +3384,22 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_sym_decrypt,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -3392,28 +3410,28 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_sym_decrypt,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -3424,22 +3442,22 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_sym_decrypt_bytea,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -3450,28 +3468,28 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_sym_decrypt_bytea,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -3482,22 +3500,22 @@
       Parameters: [
         {
           Name: param1,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_sym_encrypt,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -3508,28 +3526,28 @@
       Parameters: [
         {
           Name: param1,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_sym_encrypt,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -3540,22 +3558,22 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_sym_encrypt_bytea,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -3566,28 +3584,28 @@
       Parameters: [
         {
           Name: param1,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
           Name: param2,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: param3,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: pgp_sym_encrypt_bytea,
-          DataType: bytea,
-          NormalizedDataType: binary,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsNullable: true
         }
       ]
@@ -3598,28 +3616,28 @@
       Parameters: [
         {
           Name: p_user_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_shipping_address_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_payment_method,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: process_order,
-          DataType: int4,
-          NormalizedDataType: string,
+          DbDataType: int4,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -3630,46 +3648,46 @@
       Parameters: [
         {
           Name: p_search_term,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: p_category_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_min_price,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsOutputParameter: false
         },
         {
           Name: p_max_price,
-          DataType: numeric,
-          NormalizedDataType: decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
           IsOutputParameter: false
         },
         {
           Name: p_limit,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_offset,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: result,
-          DataType: record,
-          NormalizedDataType: string,
+          DbDataType: record,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -3680,28 +3698,28 @@
       Parameters: [
         {
           Name: p_product_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_quantity_change,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_operation,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: update_inventory,
-          DataType: bool,
-          NormalizedDataType: string,
+          DbDataType: bool,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -3712,8 +3730,8 @@
       ResultSetColumns: [
         {
           Name: update_modified_date,
-          DataType: trigger,
-          NormalizedDataType: string,
+          DbDataType: trigger,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -3724,40 +3742,40 @@
       Parameters: [
         {
           Name: p_user_id,
-          DataType: int4,
-          NormalizedDataType: int,
+          DbDataType: int4,
+          LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_first_name,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: p_last_name,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: p_email,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: p_phone,
-          DataType: varchar,
-          NormalizedDataType: string,
+          DbDataType: varchar,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: update_user_profile,
-          DataType: bool,
-          NormalizedDataType: string,
+          DbDataType: bool,
+          LanguageDataType: string,
           IsNullable: true
         }
       ]
@@ -3768,8 +3786,8 @@
       ResultSetColumns: [
         {
           Name: uuid_generate_v1,
-          DataType: uuid,
-          NormalizedDataType: guid,
+          DbDataType: uuid,
+          LanguageDataType: guid,
           IsNullable: true
         }
       ]
@@ -3780,8 +3798,8 @@
       ResultSetColumns: [
         {
           Name: uuid_generate_v1mc,
-          DataType: uuid,
-          NormalizedDataType: guid,
+          DbDataType: uuid,
+          LanguageDataType: guid,
           IsNullable: true
         }
       ]
@@ -3792,22 +3810,22 @@
       Parameters: [
         {
           Name: namespace,
-          DataType: uuid,
-          NormalizedDataType: guid,
+          DbDataType: uuid,
+          LanguageDataType: guid,
           IsOutputParameter: false
         },
         {
           Name: name,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: uuid_generate_v3,
-          DataType: uuid,
-          NormalizedDataType: guid,
+          DbDataType: uuid,
+          LanguageDataType: guid,
           IsNullable: true
         }
       ]
@@ -3818,8 +3836,8 @@
       ResultSetColumns: [
         {
           Name: uuid_generate_v4,
-          DataType: uuid,
-          NormalizedDataType: guid,
+          DbDataType: uuid,
+          LanguageDataType: guid,
           IsNullable: true
         }
       ]
@@ -3830,22 +3848,22 @@
       Parameters: [
         {
           Name: namespace,
-          DataType: uuid,
-          NormalizedDataType: guid,
+          DbDataType: uuid,
+          LanguageDataType: guid,
           IsOutputParameter: false
         },
         {
           Name: name,
-          DataType: text,
-          NormalizedDataType: string,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         }
       ],
       ResultSetColumns: [
         {
           Name: uuid_generate_v5,
-          DataType: uuid,
-          NormalizedDataType: guid,
+          DbDataType: uuid,
+          LanguageDataType: guid,
           IsNullable: true
         }
       ]
@@ -3856,8 +3874,8 @@
       ResultSetColumns: [
         {
           Name: uuid_nil,
-          DataType: uuid,
-          NormalizedDataType: guid,
+          DbDataType: uuid,
+          LanguageDataType: guid,
           IsNullable: true
         }
       ]
@@ -3868,8 +3886,8 @@
       ResultSetColumns: [
         {
           Name: uuid_ns_dns,
-          DataType: uuid,
-          NormalizedDataType: guid,
+          DbDataType: uuid,
+          LanguageDataType: guid,
           IsNullable: true
         }
       ]
@@ -3880,8 +3898,8 @@
       ResultSetColumns: [
         {
           Name: uuid_ns_oid,
-          DataType: uuid,
-          NormalizedDataType: guid,
+          DbDataType: uuid,
+          LanguageDataType: guid,
           IsNullable: true
         }
       ]
@@ -3892,8 +3910,8 @@
       ResultSetColumns: [
         {
           Name: uuid_ns_url,
-          DataType: uuid,
-          NormalizedDataType: guid,
+          DbDataType: uuid,
+          LanguageDataType: guid,
           IsNullable: true
         }
       ]
@@ -3904,8 +3922,8 @@
       ResultSetColumns: [
         {
           Name: uuid_ns_x500,
-          DataType: uuid,
-          NormalizedDataType: guid,
+          DbDataType: uuid,
+          LanguageDataType: guid,
           IsNullable: true
         }
       ]
