@@ -411,4 +411,20 @@ internal static class RdbmsSchemaAnnotator
             stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirection, prop => prop.Name = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirectionName);
         }
     }
+    
+    public static void AddSchemaStereotype(ElementPersistable folder, string schemaName)
+    {
+        folder.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.Schema.DefinitionId, stereotype =>
+        {
+            stereotype.Name = Constants.Stereotypes.Rdbms.Schema.Name;
+            stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
+            stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Schema.PropertyId.Name,
+                prop =>
+                {
+                    prop.Name = Constants.Stereotypes.Rdbms.Schema.PropertyId.NameName;
+                    prop.Value = schemaName;
+                });
+        });
+    }
 }

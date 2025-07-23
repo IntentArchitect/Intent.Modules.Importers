@@ -37,7 +37,7 @@ internal static class Constants
         public static class Operation
         {
             public const string SpecializationType = "Operation";
-            public const string SpecializationTypeId = "e030c97a-e066-40a7-8188-808c275df3cb";
+            public const string SpecializationTypeId = "e042bb67-a1df-480c-9935-b26210f78591";
         }
 
         public static class DataContract
@@ -55,7 +55,7 @@ internal static class Constants
         public static class Parameter
         {
             public const string SpecializationType = "Parameter";
-            public const string SpecializationTypeId = "00208d20-469d-41cb-8501-768fd5eb796b";
+            public const string SpecializationTypeId = "c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b";
         }
 
         public static class Index
@@ -87,10 +87,14 @@ internal static class Constants
             public const string SpecializationType = "Association";
             public const string SpecializationTypeId = "eaf9ed4e-0b61-4ac1-ba88-09f912c12087";
         }
+    }
 
-        public static class Class
+    public static class Mapping
+    {
+        public static class Index
         {
-            public const string SpecializationType = "Class";
+            public const string MetadataId = "6ab29b31-27af-4f56-a67c-986d82097d63";
+            public const string MappingSettingsId = "30f4278f-1d74-4e7e-bfdb-39c8e120f24c";
         }
     }
 

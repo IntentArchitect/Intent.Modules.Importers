@@ -17,26 +17,38 @@ namespace Intent.Modules.SqlServerImporter.Tasks.Mappers;
 /// </summary>
 internal static class IntentModelMapper
 {
-    public static ElementPersistable MapTableToClass(TableSchema table, ImportConfiguration config, string? parentFolderId = null, DeduplicationContext? deduplicationContext = null)
+    public static ElementPersistable MapTableToClass(
+        TableSchema table, 
+        ImportConfiguration config, 
+        PackageModelPersistable package,
+        string? parentFolderId = null,
+        DeduplicationContext? deduplicationContext = null)
     {
         var className = ModelNamingUtilities.GetEntityName(table.Name, config.EntityNameConvention, table.Schema, deduplicationContext);
-        
         var classElement = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = className,
             SpecializationType = ClassModel.SpecializationType,
             SpecializationTypeId = ClassModel.SpecializationTypeId,
+            Name = className,
+            Display = className,
+            ExternalReference = ModelNamingUtilities.GetTableExternalReference(table.Name, table.Schema),
+            IsAbstract = false,
+            SortChildren = SortChildrenOptions.SortByTypeAndName,
+            GenericTypes = [],
+            IsMapped = false,
             ParentFolderId = parentFolderId, // Set parent folder for schema organization
-            ChildElements = [],
+            PackageId = package.Id,
+            PackageName = package.Name,
             Stereotypes = [],
-            ExternalReference = ModelNamingUtilities.GetTableExternalReference(table.Name, table.Schema)
+            Metadata = [],
+            ChildElements = []
         };
 
         // Map columns to attributes
         foreach (var column in table.Columns)
         {
-            var attribute = MapColumnToAttribute(column, table.Name, className, table.Schema, classElement.Id, deduplicationContext);
+            var attribute = MapColumnToAttribute(column, table.Name, className, table.Schema, package, classElement.Id, deduplicationContext);
             classElement.ChildElements.Add(attribute);
             
             // Apply stereotypes
@@ -54,33 +66,45 @@ internal static class IntentModelMapper
         // Map triggers to child elements
         foreach (var trigger in table.Triggers)
         {
-            var triggerElement = MapTriggerToElement(trigger, table.Name, table.Schema, classElement.Id);
+            var triggerElement = MapTriggerToElement(trigger, table.Name, table.Schema, classElement.Id, package);
             classElement.ChildElements.Add(triggerElement);
         }
 
         return classElement;
     }
 
-    public static ElementPersistable MapViewToClass(ViewSchema view, ImportConfiguration config, string? parentFolderId = null, DeduplicationContext? deduplicationContext = null)
+    public static ElementPersistable MapViewToClass(
+        ViewSchema view, 
+        ImportConfiguration config, 
+        PackageModelPersistable package,
+        string? parentFolderId = null, 
+        DeduplicationContext? deduplicationContext = null)
     {
         var className = ModelNamingUtilities.GetViewName(view.Name, config.EntityNameConvention, view.Schema, deduplicationContext);
-        
         var classElement = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = className,
             SpecializationType = ClassModel.SpecializationType,
             SpecializationTypeId = ClassModel.SpecializationTypeId,
+            Name = className,
+            Display = className,
+            ExternalReference = ModelNamingUtilities.GetViewExternalReference(view.Name, view.Schema),
+            IsAbstract = false,
+            SortChildren = SortChildrenOptions.SortByTypeAndName,
+            GenericTypes = [],
+            IsMapped = false,
             ParentFolderId = parentFolderId, // Set parent folder for schema organization
-            ChildElements = [],
+            PackageId = package.Id,
+            PackageName = package.Name,
             Stereotypes = [],
-            ExternalReference = ModelNamingUtilities.GetViewExternalReference(view.Name, view.Schema)
+            Metadata = [],
+            ChildElements = []
         };
 
         // Map columns to attributes
         foreach (var column in view.Columns)
         {
-            var attribute = MapColumnToAttribute(column, view.Name, className, view.Schema, classElement.Id, deduplicationContext);
+            var attribute = MapColumnToAttribute(column, view.Name, className, view.Schema, package, classElement.Id, deduplicationContext);
             classElement.ChildElements.Add(attribute);
             
             // Apply stereotypes (views don't have primary keys, defaults, or computed values)
@@ -98,78 +122,143 @@ internal static class IntentModelMapper
     /// <summary>
     /// Creates a repository element for containing stored procedures/operations
     /// </summary>
-    public static ElementPersistable CreateRepository(string repositoryName, string schemaFolderId)
+    public static ElementPersistable CreateRepository(string repositoryName, string schemaFolderId, PackageModelPersistable package)
     {
         return new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = repositoryName,
             SpecializationType = Constants.SpecializationTypes.Repository.SpecializationType,
             SpecializationTypeId = Constants.SpecializationTypes.Repository.SpecializationTypeId,
+            Name = repositoryName,
+            Display = repositoryName,
+            IsAbstract = false,
+            SortChildren = SortChildrenOptions.Manually,
+            GenericTypes = [],
+            TypeReference = new TypeReferencePersistable
+            {
+                Id = Guid.NewGuid().ToString(),
+                IsNavigable = true,
+                IsNullable = false,
+                IsCollection = false,
+                IsRequired = true,
+                Stereotypes = [],
+                GenericTypeParameters = []
+            },
+            IsMapped = false,
             ParentFolderId = schemaFolderId, // Repositories belong to schema folders
-            ChildElements = [],
-            Stereotypes = []
+            PackageId = package.Id,
+            PackageName = package.Name,
+            Stereotypes = [],
+            Metadata = [],
+            ChildElements = []
         };
     }
 
     /// <summary>
     /// Maps a stored procedure to an element (Element mode)
     /// </summary>
-    public static ElementPersistable MapStoredProcedureToElement(StoredProcedureSchema storedProc, string? repositoryId, ImportConfiguration config, DeduplicationContext? deduplicationContext = null)
+    public static ElementPersistable MapStoredProcedureToElement(
+        StoredProcedureSchema storedProc, 
+        string? repositoryId, 
+        PackageModelPersistable package, 
+        DeduplicationContext? deduplicationContext = null)
     {
         var procName = ModelNamingUtilities.GetStoredProcedureName(storedProc.Name, storedProc.Schema, deduplicationContext);
 
         var procElement = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = procName,
             SpecializationType = Constants.SpecializationTypes.StoredProcedure.SpecializationType,
             SpecializationTypeId = Constants.SpecializationTypes.StoredProcedure.SpecializationTypeId,
+            Name = procName,
+            Display = procName,
+            ExternalReference = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Name, storedProc.Schema),
+            IsAbstract = false,
+            GenericTypes = [],
+            TypeReference = new TypeReferencePersistable
+            {
+                Id = Guid.NewGuid().ToString(),
+                IsNavigable = true,
+                IsNullable = false,
+                IsCollection = false,
+                IsRequired = true,
+                Stereotypes = [],
+                GenericTypeParameters = []
+            },
+            IsMapped = false,
             ParentFolderId = repositoryId, // Stored procedures belong to repository
-            ChildElements = [],
+            PackageId = package.Id,
+            PackageName = package.Name,
             Stereotypes = [],
-            ExternalReference = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Name, storedProc.Schema)
+            Metadata = [],
+            ChildElements = []
         };
 
         // Map parameters
         foreach (var parameter in storedProc.Parameters)
         {
-            var paramElement = MapStoredProcParameterToElement(parameter, procElement.Id, storedProc.Schema);
+            var paramElement = MapStoredProcParameterToElement(parameter, procElement.Id, package);
             procElement.ChildElements.Add(paramElement);
         }
-
-        // TypeReference will be set later when data contract is created
-
+        
         return procElement;
     }
 
     /// <summary>
     /// Maps a stored procedure to an operation (Operation mode)
     /// </summary>
-    public static ElementPersistable MapStoredProcedureToOperation(StoredProcedureSchema storedProc, string repositoryId, ImportConfiguration config, DeduplicationContext? deduplicationContext = null)
+    public static ElementPersistable MapStoredProcedureToOperation(
+        StoredProcedureSchema storedProc, 
+        string repositoryId, 
+        PackageModelPersistable package, 
+        DeduplicationContext? deduplicationContext = null)
     {
         var procName = ModelNamingUtilities.GetStoredProcedureName(storedProc.Name, storedProc.Schema, deduplicationContext);
 
         var operationElement = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = procName,
             SpecializationType = Constants.SpecializationTypes.Operation.SpecializationType,
             SpecializationTypeId = Constants.SpecializationTypes.Operation.SpecializationTypeId,
+            Name = procName,
+            Display = procName,
+            ExternalReference = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Name, storedProc.Schema),
+            IsAbstract = false,
+            SortChildren = SortChildrenOptions.SortByTypeThenManually,
+            GenericTypes = [],
+            TypeReference = new TypeReferencePersistable
+            {
+                Id = Guid.NewGuid().ToString(),
+                IsNavigable = true,
+                IsNullable = false,
+                IsCollection = false,
+                IsRequired = true,
+                Stereotypes = [],
+                GenericTypeParameters = []
+            },
+            IsMapped = false,
             ParentFolderId = repositoryId, // Operations belong to repository
-            ChildElements = [],
+            PackageId = package.Id,
+            PackageName = package.Name,
+            Traits = 
+            [
+                new ImplementedTraitPersistable
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "[Invokable]"
+                }
+            ],
             Stereotypes = [],
-            ExternalReference = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Name, storedProc.Schema)
+            Metadata = [],
+            ChildElements = []
         };
 
         // Map parameters
         foreach (var parameter in storedProc.Parameters)
         {
-            var paramElement = MapStoredProcParameterToParameter(parameter, operationElement.Id, storedProc.Schema);
+            var paramElement = MapStoredProcParameterToOperation(parameter, operationElement.Id, package);
             operationElement.ChildElements.Add(paramElement);
         }
-
-        // TypeReference will be set later when data contract is created
 
         return operationElement;
     }
@@ -178,20 +267,28 @@ internal static class IntentModelMapper
     /// Creates a data contract for stored procedure result set
     /// Following the pattern from old DatabaseSchemaToModelMapper.GetOrCreateDataContractResponse
     /// </summary>
-    public static ElementPersistable CreateDataContractForStoredProcedure(StoredProcedureSchema storedProc, string schemaFolderId, string storedProcElementName)
+    public static ElementPersistable CreateDataContractForStoredProcedure(StoredProcedureSchema storedProc, string schemaFolderId, string storedProcElementName, PackageModelPersistable package)
     {
         var dataContractName = $"{storedProcElementName}Response";
         
         var dataContract = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = dataContractName,
             SpecializationType = Constants.SpecializationTypes.DataContract.SpecializationType,
             SpecializationTypeId = Constants.SpecializationTypes.DataContract.SpecializationTypeId,
+            Name = dataContractName,
+            Display = dataContractName,
+            ExternalReference = ModelNamingUtilities.GetDataContractExternalReference(storedProc.Name, storedProc.Schema),
+            IsAbstract = false,
+            SortChildren = SortChildrenOptions.SortByTypeThenManually,
+            GenericTypes = [],
+            IsMapped = false,
             ParentFolderId = schemaFolderId, // Data contracts belong to schema folder (same as stored proc)
-            ChildElements = [],
+            PackageId = package.Id,
+            PackageName = package.Name,
             Stereotypes = [],
-            ExternalReference = ModelNamingUtilities.GetDataContractExternalReference(storedProc.Name, storedProc.Schema)
+            Metadata = [],
+            ChildElements = []
         };
 
         // Map result set columns to attributes
@@ -212,23 +309,26 @@ internal static class IntentModelMapper
     /// <summary>
     /// Creates an index element with proper mapping to attributes
     /// </summary>
-    public static ElementPersistable CreateIndex(IndexSchema index, string classId, PackageModelPersistable package)
+    public static ElementPersistable CreateIndex(TableSchema table, IndexSchema index, string classId, PackageModelPersistable package)
     {
         var indexElement = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = index.Name,
             SpecializationType = Constants.SpecializationTypes.Index.SpecializationType,
             SpecializationTypeId = Constants.SpecializationTypes.Index.SpecializationTypeId,
-            ParentFolderId = classId, // Indexes belong to their parent class
-            ChildElements = [],
-            Stereotypes = [],
+            Name = index.Name,
+            Display = index.Name,
+            ExternalReference = ModelNamingUtilities.GetIndexExternalReference(table.Schema, table.Name, index.Name),
+            IsAbstract = false,
+            SortChildren = SortChildrenOptions.Manually,
+            GenericTypes = [],
             IsMapped = true,
             Mapping = new BasicMappingModelPersistable
             {
+                IsRootMapping = true,
                 ApplicationId = package.ApplicationId,
-                MappingSettingsId = "30f4278f-1d74-4e7e-bfdb-39c8e120f24c", // Column mapping settings ID
-                MetadataId = "6ab29b31-27af-4f56-a67c-986d82097d63", // Domain metadata ID
+                MetadataId = Constants.Mapping.Index.MetadataId, // Domain metadata ID
+                MappingSettingsId = Constants.Mapping.Index.MappingSettingsId, // Column mapping settings ID
                 AutoSyncTypeReference = false,
                 Path = new List<MappedPathTargetPersistable>
                 {
@@ -237,12 +337,17 @@ internal static class IntentModelMapper
                         Id = classId,
                         Name = GetClassNameById(classId, package),
                         Type = "Element",
-                        Specialization = "Class"
+                        Specialization = ClassModel.SpecializationType,
+                        SpecializationId = ClassModel.SpecializationTypeId
                     }
                 }
             },
+            ParentFolderId = classId, // Indexes belong to their parent class
             PackageId = package.Id,
-            PackageName = package.Name
+            PackageName = package.Name,
+            Stereotypes = [],
+            Metadata = [],
+            ChildElements = [],
         };
 
         // Apply index stereotypes
@@ -261,8 +366,8 @@ internal static class IntentModelMapper
         {
             mapping = new BasicMappingModelPersistable
             {
-                MappingSettingsId = "30f4278f-1d74-4e7e-bfdb-39c8e120f24c", // Column mapping settings ID
-                MetadataId = "6ab29b31-27af-4f56-a67c-986d82097d63", // Domain metadata ID
+                MappingSettingsId = Constants.Mapping.Index.MappingSettingsId, // Column mapping settings ID
+                MetadataId = Constants.Mapping.Index.MetadataId, // Domain metadata ID
                 AutoSyncTypeReference = false,
                 Path = new List<MappedPathTargetPersistable>
                 {
@@ -280,16 +385,20 @@ internal static class IntentModelMapper
         var columnIndex = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = indexColumn.Name,
             SpecializationType = Constants.SpecializationTypes.IndexColumn.SpecializationType,
             SpecializationTypeId = Constants.SpecializationTypes.IndexColumn.SpecializationTypeId,
+            Name = indexColumn.Name,
+            Display = indexColumn.Name,
+            IsAbstract = false,
+            GenericTypes = [],
             IsMapped = mapping != null,
             Mapping = mapping,
             ParentFolderId = indexId, // Index columns belong to their parent index
             PackageId = package.Id,
             PackageName = package.Name,
-            ChildElements = [],
-            Stereotypes = []
+            Stereotypes = [],
+            Metadata = [],
+            ChildElements = []
         };
 
         // Apply index column stereotypes
@@ -308,10 +417,10 @@ internal static class IntentModelMapper
         
         // Find target class by ExternalReference first, then by name
         var targetClass = package.Classes.FirstOrDefault(c => 
-            c.ExternalReference == targetTableExternalRef && c.SpecializationType == Constants.SpecializationTypes.Class.SpecializationType) ??
+            c.ExternalReference == targetTableExternalRef && c.SpecializationType == ClassModel.SpecializationType) ??
             package.Classes.FirstOrDefault(c => 
                 c.Name.Equals(ModelNamingUtilities.GetEntityName(foreignKey.ReferencedTableName, EntityNameConvention.SingularEntity, foreignKey.ReferencedTableSchema, null), StringComparison.OrdinalIgnoreCase) && 
-                c.SpecializationType == Constants.SpecializationTypes.Class.SpecializationType);
+                c.SpecializationType == ClassModel.SpecializationType);
 
         if (targetClass == null)
         {
@@ -416,74 +525,119 @@ internal static class IntentModelMapper
     /// <summary>
     /// Creates a folder element for schema organization
     /// </summary>
-    public static ElementPersistable CreateSchemaFolder(string schemaName, string packageId)
+    public static ElementPersistable CreateSchemaFolder(string schemaName, PackageModelPersistable package)
     {
-        return new ElementPersistable
+        var folderSchemaName = ModelNamingUtilities.NormalizeSchemaName(schemaName);
+        var folder = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = ModelNamingUtilities.NormalizeSchemaName(schemaName),
             SpecializationType = Constants.SpecializationTypes.Folder.SpecializationType,
             SpecializationTypeId = Constants.SpecializationTypes.Folder.SpecializationTypeId,
-            ParentFolderId = packageId,
-            ExternalReference = $"schema:[{schemaName.ToLower()}]"
+            Name = folderSchemaName,
+            Display = folderSchemaName,
+            ExternalReference = ModelNamingUtilities.GetSchemaExternalReference(schemaName),
+            IsAbstract = false,
+            SortChildren = SortChildrenOptions.SortByTypeAndName,
+            GenericTypes = [],
+            IsMapped = false,
+            ParentFolderId = package.Id,
+            PackageId = package.Id,
+            PackageName = package.Name,
+            Stereotypes = [],
+            Metadata = [],
+            ChildElements = []
         };
+
+        RdbmsSchemaAnnotator.AddSchemaStereotype(folder, schemaName);
+        
+        return folder;
     }
 
-    private static ElementPersistable MapColumnToAttribute(ColumnSchema column, string tableName, string className, string schema, string? parentClassId = null, DeduplicationContext? deduplicationContext = null)
+    private static ElementPersistable MapColumnToAttribute(
+        ColumnSchema column, 
+        string tableName, 
+        string className, 
+        string schema, 
+        PackageModelPersistable package,
+        string? parentClassId = null, 
+        DeduplicationContext? deduplicationContext = null)
     {
         var attributeName = ModelNamingUtilities.GetAttributeName(column.Name, tableName, className, schema, deduplicationContext);
         
         return new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = attributeName,
             SpecializationType = AttributeModel.SpecializationType,
             SpecializationTypeId = AttributeModel.SpecializationTypeId,
-            ParentFolderId = parentClassId, // Attributes belong to their parent class
+            Name = attributeName,
+            Display = attributeName,
+            ExternalReference = ModelNamingUtilities.GetColumnExternalReference(column.Name, tableName, schema),
+            IsAbstract = false,
+            GenericTypes = [],
             TypeReference = TypeReferenceMapper.MapColumnTypeToTypeReference(column),
-            ChildElements = [],
+            IsMapped = false,
+            ParentFolderId = parentClassId, // Attributes belong to their parent class
+            PackageId = package.Id,
+            PackageName = package.Name,
             Stereotypes = [],
-            ExternalReference = ModelNamingUtilities.GetColumnExternalReference(column.Name, tableName, schema)
+            Metadata = [],
+            ChildElements = []
         };
     }
 
     /// <summary>
-    /// Maps a stored procedure parameter to a stored procedure parameter element
+    /// Maps a stored procedure parameter to a stored procedure element
     /// </summary>
-    private static ElementPersistable MapStoredProcParameterToElement(StoredProcedureParameterSchema parameter, string storedProcId, string schema)
+    private static ElementPersistable MapStoredProcParameterToElement(StoredProcedureParameterSchema parameter, string storedProcId, PackageModelPersistable package)
     {
         var paramName = ModelNamingUtilities.GetParameterName(parameter.Name);
 
         return new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = paramName,
             SpecializationType = Constants.SpecializationTypes.StoredProcedureParameter.SpecializationType,
             SpecializationTypeId = Constants.SpecializationTypes.StoredProcedureParameter.SpecializationTypeId,
-            ParentFolderId = storedProcId, // Parameters belong to stored procedure
+            Name = paramName,
+            Display = paramName,
+            ExternalReference = paramName.ToLowerInvariant(),
+            IsAbstract = false,
+            GenericTypes = [],
             TypeReference = TypeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter),
-            ChildElements = [],
-            Stereotypes = []
+            IsMapped = false,
+            ParentFolderId = storedProcId, // Parameters belong to stored procedure
+            PackageId = package.Id,
+            PackageName = package.Name,
+            Stereotypes = [],
+            Metadata = [],
+            ChildElements = []
         };
     }
 
     /// <summary>
     /// Maps a stored procedure parameter to an operation parameter
     /// </summary>
-    private static ElementPersistable MapStoredProcParameterToParameter(StoredProcedureParameterSchema parameter, string operationId, string schema)
+    private static ElementPersistable MapStoredProcParameterToOperation(StoredProcedureParameterSchema parameter, string operationId, PackageModelPersistable package)
     {
         var paramName = ModelNamingUtilities.GetParameterName(parameter.Name);
 
         return new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = paramName,
             SpecializationType = Constants.SpecializationTypes.Parameter.SpecializationType,
             SpecializationTypeId = Constants.SpecializationTypes.Parameter.SpecializationTypeId,
-            ParentFolderId = operationId, // Parameters belong to operation
+            Name = paramName,
+            Display = paramName,
+            ExternalReference = paramName.ToLowerInvariant(),
+            IsAbstract = false,
+            GenericTypes = [],
             TypeReference = TypeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter),
-            ChildElements = [],
-            Stereotypes = []
+            IsMapped = false,
+            ParentFolderId = operationId, // Parameters belong to operation
+            PackageId = package.Id,
+            PackageName = package.Name,
+            Stereotypes = [],
+            Metadata = [],
+            ChildElements = []
         };
     }
 
@@ -497,14 +651,18 @@ internal static class IntentModelMapper
         return new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = attributeName,
             SpecializationType = AttributeModel.SpecializationType,
             SpecializationTypeId = AttributeModel.SpecializationTypeId,
-            ParentFolderId = dataContractId, // Attributes belong to their parent data contract
+            Name = attributeName,
+            ExternalReference = ModelNamingUtilities.GetResultSetColumnExternalReference(resultColumn.Name, procName, schema),
+            IsAbstract = false,
+            GenericTypes = [],
             TypeReference = TypeReferenceMapper.MapResultSetColumnTypeToTypeReference(resultColumn),
-            ChildElements = [],
+            IsMapped = false,
+            ParentFolderId = dataContractId, // Attributes belong to their parent data contract
             Stereotypes = [],
-            ExternalReference = ModelNamingUtilities.GetResultSetColumnExternalReference(resultColumn.Name, procName, schema)
+            Metadata = [],
+            ChildElements = []
         };
     }
 
@@ -559,19 +717,27 @@ internal static class IntentModelMapper
             existing.SourceEnd.TypeReference?.IsNavigable == true);
     }
 
-    private static ElementPersistable MapTriggerToElement(TriggerSchema trigger, string tableName, string schema, string parentClassId)
+    private static ElementPersistable MapTriggerToElement(TriggerSchema trigger, string tableName, string schema, string parentClassId, PackageModelPersistable package)
     {
         var triggerName = trigger.Name; // Names are typically unique and descriptive
         
         var triggerElement = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
-            Name = triggerName,
             SpecializationType = Constants.SpecializationTypes.Trigger.SpecializationType,
             SpecializationTypeId = Constants.SpecializationTypes.Trigger.SpecializationTypeId,
+            Name = triggerName,
+            Display = triggerName,
+            ExternalReference = ModelNamingUtilities.GetTriggerExternalReference(trigger.Name, tableName, schema),
+            IsAbstract = false,
+            GenericTypes = [],
+            IsMapped = false,
             ParentFolderId = parentClassId,
+            PackageId = package.Id,
+            PackageName = package.Name,
             Stereotypes = [],
-            ExternalReference = ModelNamingUtilities.GetTriggerExternalReference(trigger.Name, tableName, schema)
+            Metadata = [],
+            ChildElements = []
         };
         
         return triggerElement;

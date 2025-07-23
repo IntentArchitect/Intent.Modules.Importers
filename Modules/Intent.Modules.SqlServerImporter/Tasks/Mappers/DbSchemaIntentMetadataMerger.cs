@@ -85,7 +85,7 @@ internal class DbSchemaIntentMetadataMerger
             {
                 // Update existing class without moving it (keep existing ParentFolderId)
                 // Don't use deduplication context for updates to preserve existing names
-                var updatedClassElement = IntentModelMapper.MapTableToClass(table, _config, existingClass.ParentFolderId);
+                var updatedClassElement = IntentModelMapper.MapTableToClass(table, _config, package, existingClass.ParentFolderId);
                 UpdateExistingClass(existingClass, updatedClassElement);
                 result.UpdatedElements.Add(existingClass);
 
@@ -97,7 +97,7 @@ internal class DbSchemaIntentMetadataMerger
                 // Only create schema folder for new elements
                 var schemaFolder = GetOrCreateSchemaFolder(table.Schema, package);
                 // Use deduplication context for new elements only
-                var classElement = IntentModelMapper.MapTableToClass(table, _config, schemaFolder.Id, deduplicationContext);
+                var classElement = IntentModelMapper.MapTableToClass(table, _config, package, schemaFolder.Id, deduplicationContext);
 
                 package.Classes.Add(classElement);
                 result.AddedElements.Add(classElement);
@@ -127,7 +127,7 @@ internal class DbSchemaIntentMetadataMerger
             {
                 // Update existing class without moving it (keep existing ParentFolderId)
                 // Don't use deduplication context for updates to preserve existing names
-                var updatedClassElement = IntentModelMapper.MapViewToClass(view, _config, existingClass.ParentFolderId);
+                var updatedClassElement = IntentModelMapper.MapViewToClass(view, _config, package, existingClass.ParentFolderId);
                 UpdateExistingClass(existingClass, updatedClassElement);
                 result.UpdatedElements.Add(existingClass);
             }
@@ -136,7 +136,7 @@ internal class DbSchemaIntentMetadataMerger
                 // Only create schema folder for new elements
                 var schemaFolder = GetOrCreateSchemaFolder(view.Schema, package);
                 // Use deduplication context for new elements only
-                var classElement = IntentModelMapper.MapViewToClass(view, _config, schemaFolder.Id, deduplicationContext);
+                var classElement = IntentModelMapper.MapViewToClass(view, _config, package, schemaFolder.Id, deduplicationContext);
 
                 package.Classes.Add(classElement);
                 result.AddedElements.Add(classElement);
@@ -161,7 +161,7 @@ internal class DbSchemaIntentMetadataMerger
                 var repositoryElement = GetOrCreateRepository(_config.RepositoryElementId, storedProc.Schema, package);
 
                 // Create as stored procedure element
-                procElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, _config, deduplicationContext);
+                procElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, package, deduplicationContext);
                 repositoryElement.ChildElements.Add(procElement);
 
                 // Apply stored procedure stereotypes
@@ -175,7 +175,7 @@ internal class DbSchemaIntentMetadataMerger
                 var repositoryElement = GetOrCreateRepository(_config.RepositoryElementId, storedProc.Schema, package);
 
                 // Create as operation within repository
-                procElement = IntentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, _config, deduplicationContext);
+                procElement = IntentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, package, deduplicationContext);
                 repositoryElement.ChildElements.Add(procElement);
 
                 // Apply stored procedure stereotypes
@@ -199,7 +199,7 @@ internal class DbSchemaIntentMetadataMerger
     {
         foreach (var index in table.Indexes)
         {
-            var indexElement = IntentModelMapper.CreateIndex(index, classElement.Id, package);
+            var indexElement = IntentModelMapper.CreateIndex(table, index, classElement.Id, package);
             package.Classes.Add(indexElement);
 
             // Create index columns
@@ -261,7 +261,7 @@ internal class DbSchemaIntentMetadataMerger
 
         if (folder == null)
         {
-            folder = IntentModelMapper.CreateSchemaFolder(schemaName, package.Id);
+            folder = IntentModelMapper.CreateSchemaFolder(schemaName, package);
             package.Classes.Add(folder);
         }
 
@@ -291,7 +291,7 @@ internal class DbSchemaIntentMetadataMerger
         {
             // Get or create schema folder for repository organization
             var schemaFolder = GetOrCreateSchemaFolder(schemaName, package);
-            repository = IntentModelMapper.CreateRepository(repositoryName, schemaFolder.Id);
+            repository = IntentModelMapper.CreateRepository(repositoryName, schemaFolder.Id, package);
             package.Classes.Add(repository);
         }
 
@@ -382,7 +382,7 @@ internal class DbSchemaIntentMetadataMerger
         if (existingDataContract != null)
         {
             // Update existing data contract
-            dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name);
+            dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package);
             UpdateExistingClass(existingDataContract, dataContract);
             result.UpdatedElements.Add(existingDataContract);
             dataContract = existingDataContract; // Use the existing data contract for TypeReference
@@ -390,21 +390,13 @@ internal class DbSchemaIntentMetadataMerger
         else
         {
             // Create new data contract
-            dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name);
+            dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package);
             package.Classes.Add(dataContract);
             result.AddedElements.Add(dataContract);
         }
 
-        // Set the stored procedure's TypeReference to point to the data contract
-        procElement.TypeReference = new TypeReferencePersistable
-        {
-            Id = Guid.NewGuid().ToString(),
-            TypeId = dataContract.Id, // Point to the actual data contract element ID
-            IsNullable = false,
-            IsCollection = true, // Stored procedures typically return collections
-            Stereotypes = [],
-            GenericTypeParameters = []
-        };
+        procElement.TypeReference.TypeId = dataContract.Id; // Point to the data contract element ID
+        procElement.TypeReference.IsCollection = true; // Stored procedures typically return collections
     }
 }
 
