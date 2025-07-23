@@ -50,7 +50,7 @@ class DatabaseImportStrategy {
     }
     getDialogDefaults(element) {
         let domainPackage = element.getPackage();
-        let persistedValue = this.getSettingValue(domainPackage, "sql-import:typesToExport", "");
+        let persistedValue = this.getSettingValue(domainPackage, "rdbms-import:typesToExport", "");
         let includeTables = "true";
         let includeViews = "true";
         let includeStoredProcedures = "true";
@@ -80,17 +80,17 @@ class DatabaseImportStrategy {
             });
         }
         let result = {
-            entityNameConvention: this.getSettingValue(domainPackage, "sql-import:entityNameConvention", "SingularEntity"),
-            tableStereotypes: this.getSettingValue(domainPackage, "sql-import:tableStereotypes", "WhenDifferent"),
+            entityNameConvention: this.getSettingValue(domainPackage, "rdbms-import:entityNameConvention", "SingularEntity"),
+            tableStereotypes: this.getSettingValue(domainPackage, "rdbms-import:tableStereotypes", "WhenDifferent"),
             includeTables: includeTables,
             includeViews: includeViews,
             includeStoredProcedures: includeStoredProcedures,
             includeIndexes: includeIndexes,
-            importFilterFilePath: this.getSettingValue(domainPackage, "sql-import:importFilterFilePath", null),
-            connectionString: this.getSettingValue(domainPackage, "sql-import:connectionString", null),
-            storedProcedureType: this.getSettingValue(domainPackage, "sql-import:storedProcedureType", ""),
-            settingPersistence: this.getSettingValue(domainPackage, "sql-import:settingPersistence", "None"),
-            databaseType: this.getSettingValue(domainPackage, "sql-import:databaseType", "SqlServer")
+            importFilterFilePath: this.getSettingValue(domainPackage, "rdbms-import:importFilterFilePath", null),
+            connectionString: this.getSettingValue(domainPackage, "rdbms-import:connectionString", null),
+            storedProcedureType: this.getSettingValue(domainPackage, "rdbms-import:storedProcedureType", ""),
+            settingPersistence: this.getSettingValue(domainPackage, "rdbms-import:settingPersistence", "None"),
+            databaseType: this.getSettingValue(domainPackage, "rdbms-import:databaseType", "SqlServer")
         };
         return result;
     }
@@ -800,13 +800,13 @@ class StoredProceduresImportStrategy {
     getDialogDefaults(element) {
         let domainPackage = element.getPackage();
         let result = {
-            inheritedConnectionString: this.getSettingValue(domainPackage, "sql-import:connectionString", null),
-            inheritedDatabaseType: this.getSettingValue(domainPackage, "sql-import:databaseType", null),
-            connectionString: this.getSettingValue(domainPackage, "sql-import-repository:connectionString", null),
-            storedProcedureType: this.getSettingValue(domainPackage, "sql-import-repository:storedProcedureType", ""),
+            inheritedConnectionString: this.getSettingValue(domainPackage, "rdbms-import:connectionString", null),
+            inheritedDatabaseType: this.getSettingValue(domainPackage, "rdbms-import:databaseType", null),
+            connectionString: this.getSettingValue(domainPackage, "rdbms-import-repository:connectionString", null),
+            storedProcedureType: this.getSettingValue(domainPackage, "rdbms-import-repository:storedProcedureType", ""),
             storedProcNames: "",
-            settingPersistence: this.getSettingValue(domainPackage, "sql-import-repository:settingPersistence", "None"),
-            databaseType: this.getSettingValue(domainPackage, "sql-import-repository:databaseType", "")
+            settingPersistence: this.getSettingValue(domainPackage, "rdbms-import-repository:settingPersistence", "None"),
+            databaseType: this.getSettingValue(domainPackage, "rdbms-import-repository:databaseType", "")
         };
         return result;
     }

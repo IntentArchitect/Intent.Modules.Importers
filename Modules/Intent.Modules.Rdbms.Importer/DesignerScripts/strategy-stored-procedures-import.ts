@@ -27,13 +27,13 @@ class StoredProceduresImportStrategy {
         let domainPackage = element.getPackage();
 
         let result: ISqlStoredProceduresImportPackageSettings = {
-            inheritedConnectionString: this.getSettingValue(domainPackage, "sql-import:connectionString", null),
-            inheritedDatabaseType: this.getSettingValue(domainPackage, "sql-import:databaseType", null),
-            connectionString: this.getSettingValue(domainPackage, "sql-import-repository:connectionString", null),
-            storedProcedureType: this.getSettingValue(domainPackage, "sql-import-repository:storedProcedureType", ""),
+            inheritedConnectionString: this.getSettingValue(domainPackage, "rdbms-import:connectionString", null),
+            inheritedDatabaseType: this.getSettingValue(domainPackage, "rdbms-import:databaseType", null),
+            connectionString: this.getSettingValue(domainPackage, "rdbms-import-repository:connectionString", null),
+            storedProcedureType: this.getSettingValue(domainPackage, "rdbms-import-repository:storedProcedureType", ""),
             storedProcNames: "",
-            settingPersistence: this.getSettingValue(domainPackage, "sql-import-repository:settingPersistence", "None"),
-            databaseType: this.getSettingValue(domainPackage, "sql-import-repository:databaseType", "")       
+            settingPersistence: this.getSettingValue(domainPackage, "rdbms-import-repository:settingPersistence", "None"),
+            databaseType: this.getSettingValue(domainPackage, "rdbms-import-repository:databaseType", "")       
         };
         return result;
     }

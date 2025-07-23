@@ -21,25 +21,25 @@ internal static class SettingsHelper
         
         if (importModel.SettingPersistence != DatabaseSettingPersistence.None)
         {
-            package.AddMetadata("sql-import:entityNameConvention", importModel.EntityNameConvention);
-            package.AddMetadata("sql-import:tableStereotypes", importModel.TableStereotype);
-            package.AddMetadata("sql-import:typesToExport", importModel.TypesToExport.Any() ? string.Join(";", importModel.TypesToExport.Select(t => t.ToString())) : "");
-            package.AddMetadata("sql-import:importFilterFilePath", importModel.ImportFilterFilePath);
-            package.AddMetadata("sql-import:storedProcedureType", importModel.StoredProcedureType);
+            package.AddMetadata("rdbms-import:entityNameConvention", importModel.EntityNameConvention);
+            package.AddMetadata("rdbms-import:tableStereotypes", importModel.TableStereotype);
+            package.AddMetadata("rdbms-import:typesToExport", importModel.TypesToExport.Any() ? string.Join(";", importModel.TypesToExport.Select(t => t.ToString())) : "");
+            package.AddMetadata("rdbms-import:importFilterFilePath", importModel.ImportFilterFilePath);
+            package.AddMetadata("rdbms-import:storedProcedureType", importModel.StoredProcedureType);
             ProcessConnectionStringSetting(package, importModel);
-            package.AddMetadata("sql-import:settingPersistence", importModel.SettingPersistence.ToString());
-            package.AddMetadata("sql-import:databaseType", importModel.DatabaseType.ToString());
+            package.AddMetadata("rdbms-import:settingPersistence", importModel.SettingPersistence.ToString());
+            package.AddMetadata("rdbms-import:databaseType", importModel.DatabaseType.ToString());
         }
         else
         {
-            package.RemoveMetadata("sql-import:entityNameConvention");
-            package.RemoveMetadata("sql-import:tableStereotypes");
-            package.RemoveMetadata("sql-import:typesToExport");
-            package.RemoveMetadata("sql-import:importFilterFilePath");
-            package.RemoveMetadata("sql-import:storedProcedureType");
-            package.RemoveMetadata("sql-import:connectionString");
-            package.RemoveMetadata("sql-import:settingPersistence");
-            package.RemoveMetadata("sql-import:databaseType");
+            package.RemoveMetadata("rdbms-import:entityNameConvention");
+            package.RemoveMetadata("rdbms-import:tableStereotypes");
+            package.RemoveMetadata("rdbms-import:typesToExport");
+            package.RemoveMetadata("rdbms-import:importFilterFilePath");
+            package.RemoveMetadata("rdbms-import:storedProcedureType");
+            package.RemoveMetadata("rdbms-import:connectionString");
+            package.RemoveMetadata("rdbms-import:settingPersistence");
+            package.RemoveMetadata("rdbms-import:databaseType");
         }
         
         package.Save();
@@ -67,11 +67,11 @@ internal static class SettingsHelper
 
             if (config.SettingPersistence == DatabaseSettingPersistence.AllWithoutConnectionString)
             {
-                package.RemoveMetadata("sql-import:connectionString");
+                package.RemoveMetadata("rdbms-import:connectionString");
             }
             else
             {
-                package.AddMetadata("sql-import:connectionString", connectionString);
+                package.AddMetadata("rdbms-import:connectionString", connectionString);
             }
         }
     }
@@ -83,16 +83,16 @@ internal static class SettingsHelper
 
         if (importModel.SettingPersistence == RepositorySettingPersistence.None)
         {
-            package.RemoveMetadata("sql-import-repository:storedProcedureType");
-            package.RemoveMetadata("sql-import-repository:connectionString");
-            package.RemoveMetadata("sql-import-repository:settingPersistence");
-            package.RemoveMetadata("sql-import-repository:databaseType");
+            package.RemoveMetadata("rdbms-import-repository:storedProcedureType");
+            package.RemoveMetadata("rdbms-import-repository:connectionString");
+            package.RemoveMetadata("rdbms-import-repository:settingPersistence");
+            package.RemoveMetadata("rdbms-import-repository:databaseType");
         }
         else
         {
-            package.AddMetadata("sql-import-repository:storedProcedureType", importModel.StoredProcedureType);
+            package.AddMetadata("rdbms-import-repository:storedProcedureType", importModel.StoredProcedureType);
             ProcessConnectionStringSetting(package, importModel);
-            package.AddMetadata("sql-import-repository:settingPersistence", importModel.SettingPersistence.ToString());
+            package.AddMetadata("rdbms-import-repository:settingPersistence", importModel.SettingPersistence.ToString());
             ProcessDatabaseTypeStringSetting(package, importModel);
         }
         
@@ -103,11 +103,11 @@ internal static class SettingsHelper
         {
             if (settings.SettingPersistence == RepositorySettingPersistence.InheritDb)
             {
-                package.RemoveMetadata("sql-import-repository:databaseType");
+                package.RemoveMetadata("rdbms-import-repository:databaseType");
             }
             else
             {
-                package.AddMetadata("sql-import-repository:databaseType", settings.DatabaseType.ToString());
+                package.AddMetadata("rdbms-import-repository:databaseType", settings.DatabaseType.ToString());
             }
         }
         
@@ -133,16 +133,16 @@ internal static class SettingsHelper
 
             if (settings.SettingPersistence == RepositorySettingPersistence.AllWithoutConnectionString)
             {
-                package.RemoveMetadata("sql-import-repository:connectionString");
+                package.RemoveMetadata("rdbms-import-repository:connectionString");
             }
             else
             {
-                package.AddMetadata("sql-import-repository:connectionString", connectionString);
+                package.AddMetadata("rdbms-import-repository:connectionString", connectionString);
             }
 
             if (settings.SettingPersistence == RepositorySettingPersistence.InheritDb)
             {
-                package.RemoveMetadata("sql-import-repository:connectionString");
+                package.RemoveMetadata("rdbms-import-repository:connectionString");
             }
         }
     }
@@ -153,11 +153,11 @@ internal static class SettingsHelper
 
         if (string.IsNullOrWhiteSpace(importModel.StoredProcedureType))
         {
-            importModel.StoredProcedureType = package.GetMetadataValue("sql-import:storedProcedureType");
+            importModel.StoredProcedureType = package.GetMetadataValue("rdbms-import:storedProcedureType");
         }
 
-        importModel.ConnectionString = package.GetMetadataValue("sql-import:connectionString")!;
-        importModel.DatabaseType = Enum.TryParse<DatabaseType>(package.GetMetadataValue("sql-import:databaseType")!, out var databaseType) ? databaseType : DatabaseType.SqlServer;
+        importModel.ConnectionString = package.GetMetadataValue("rdbms-import:connectionString")!;
+        importModel.DatabaseType = Enum.TryParse<DatabaseType>(package.GetMetadataValue("rdbms-import:databaseType")!, out var databaseType) ? databaseType : DatabaseType.SqlServer;
     }
     
     // We can't use PackageModelPersistable.Load since it uses the underlying cached versions
