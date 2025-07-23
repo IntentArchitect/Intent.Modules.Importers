@@ -752,46 +752,29 @@ internal class IntentModelMapper
         var firstColumnName = foreignKey.Columns.First().Name;
 
         // Determine association target name based on column naming patterns
-        if (firstColumnName.IndexOf(singularTableName, StringComparison.OrdinalIgnoreCase) == 0)
+        // For multiple FKs to the same table, use the column name + target table name for uniqueness
+        if (firstColumnName.Equals($"{singularTableName}Id", StringComparison.OrdinalIgnoreCase))
         {
+            // Standard pattern: FKTableId -> FKTable
             targetName = singularTableName;
         }
-        else if (firstColumnName.IndexOf(foreignKey.ReferencedTableName, StringComparison.OrdinalIgnoreCase) == -1)
+        else if (firstColumnName.EndsWith("Id", StringComparison.OrdinalIgnoreCase))
         {
-            targetName = firstColumnName.Replace("ID", "", StringComparison.OrdinalIgnoreCase) + foreignKey.ReferencedTableName;
-        }
-        else if (firstColumnName.IndexOf(foreignKey.ReferencedTableName, StringComparison.OrdinalIgnoreCase) == 0)
-        {
-            targetName = singularTableName;
+            // Custom naming pattern: FKTableId1, FKWithTableId2, etc. -> FKTableId1FKTable, FKWithTableId2FKTable
+            var columnNameWithoutId = firstColumnName.Substring(0, firstColumnName.Length - 2);
+            targetName = $"{columnNameWithoutId}{singularTableName}";
         }
         else
         {
-            var index = firstColumnName.IndexOf(foreignKey.ReferencedTableName, StringComparison.OrdinalIgnoreCase);
-            targetName = firstColumnName.Substring(0, index + foreignKey.ReferencedTableName.Length);
+            // Fallback: use column name + table name
+            targetName = $"{firstColumnName}{singularTableName}";
         }
 
         // Generate external reference for foreign key
         var fkExternalRef = GetForeignKeyExternalReference(foreignKey.Name, sourceTable.Name, sourceTable.Schema);
 
-        // Check if association already exists
+        // Check if association already exists by foreign key external reference
         var association = package.Associations?.FirstOrDefault(a => a.ExternalReference == fkExternalRef);
-
-        if (association == null)
-        {
-            // Check for existing association by target/source types and target name
-            var existingAssociations = package.Associations?.Where(a =>
-                a.TargetEnd.TypeReference?.TypeId == targetClass.Id &&
-                a.SourceEnd.TypeReference?.TypeId == sourceClass.Id) ?? Enumerable.Empty<AssociationPersistable>();
-
-            if (existingAssociations.Count() == 1)
-            {
-                association = existingAssociations.First();
-            }
-            else
-            {
-                association = existingAssociations.FirstOrDefault(a => a.TargetEnd.Name == targetName);
-            }
-        }
 
         if (association == null)
         {
@@ -829,7 +812,8 @@ internal class IntentModelMapper
                         IsNullable = isNullable,
                         IsCollection = false
                     },
-                    Stereotypes = new List<StereotypePersistable>()
+                    Stereotypes = new List<StereotypePersistable>(),
+                    ExternalReference = fkExternalRef // Link target end to the foreign key
                 },
                 SourceEnd = new AssociationEndPersistable
                 {
