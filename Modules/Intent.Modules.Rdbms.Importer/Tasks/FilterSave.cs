@@ -17,7 +17,7 @@ public class FilterSave : ModuleTaskSingleInputBase<FilterSaveInputModel>
         _metadataManager = metadataManager;
     }
     
-    public override string TaskTypeId => "Intent.Modules.SqlServerImporter.Tasks.FilterSave";
+    public override string TaskTypeId => "Intent.Modules.Rdbms.Importer.Tasks.FilterSave";
     public override string TaskTypeName => "SqlServer Filter Save";
 
     protected override ValidationResult ValidateInputModel(FilterSaveInputModel inputModel)

@@ -37,7 +37,7 @@ class DatabaseImportStrategy {
             return;
         }
         let importModel = this.createImportModel(capturedInput);
-        let executionResult = await executeImporterModuleTask("Intent.Modules.SqlServerImporter.Tasks.DatabaseImport", importModel);
+        let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport", importModel);
         if (((_a = executionResult.errors) !== null && _a !== void 0 ? _a : []).length > 0) {
             await displayExecutionResultErrors(executionResult);
         }
@@ -96,7 +96,7 @@ class DatabaseImportStrategy {
     }
     async presentImportDialog(defaults, packageId) {
         let formConfig = {
-            title: "Sql Server Import",
+            title: "RDBMS Import",
             fields: [],
             sections: [
                 {
@@ -135,7 +135,7 @@ class DatabaseImportStrategy {
                                     connectionString: form.getField("connectionString").value,
                                     databaseType: form.getField("databaseType").value
                                 };
-                                let executionResult = await executeImporterModuleTask("Intent.Modules.SqlServerImporter.Tasks.TestConnection", testConnectionModel);
+                                let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.TestConnection", testConnectionModel);
                                 if (((_a = executionResult.errors) !== null && _a !== void 0 ? _a : []).length > 0) {
                                     form.getField("connectionStringTest").hint = "Failed to connect.";
                                     await displayExecutionResultErrors(executionResult);
@@ -248,7 +248,7 @@ class DatabaseImportStrategy {
                                     applicationId: application.id,
                                     packageId: packageId
                                 };
-                                const pathResolutionResult = await executeImporterModuleTask("Intent.Modules.SqlServerImporter.Tasks.PathResolution", pathResolutionModel);
+                                const pathResolutionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.PathResolution", pathResolutionModel);
                                 if (((_a = pathResolutionResult.errors) !== null && _a !== void 0 ? _a : []).length === 0 && ((_b = pathResolutionResult.result) === null || _b === void 0 ? void 0 : _b.resolvedPath)) {
                                     form.getField("importFilterFilePath").value = pathResolutionResult.result.resolvedPath;
                                 }
@@ -331,7 +331,7 @@ class DatabaseImportStrategy {
                     applicationId: application.id,
                     packageId: packageId
                 };
-                const filterLoadResult = await executeImporterModuleTask("Intent.Modules.SqlServerImporter.Tasks.FilterLoad", filterLoadModel);
+                const filterLoadResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.FilterLoad", filterLoadModel);
                 if (((_a = filterLoadResult.errors) !== null && _a !== void 0 ? _a : []).length === 0 && filterLoadResult.result) {
                     existingFilter = filterLoadResult.result;
                 }
@@ -510,7 +510,7 @@ class DatabaseImportStrategy {
             connectionString: connectionString,
             databaseType: databaseType
         };
-        const metadataExecutionResult = await executeImporterModuleTask("Intent.Modules.SqlServerImporter.Tasks.RetrieveDatabaseObjects", metadataModel);
+        const metadataExecutionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.RetrieveDatabaseObjects", metadataModel);
         if (((_a = metadataExecutionResult.errors) !== null && _a !== void 0 ? _a : []).length > 0) {
             await displayExecutionResultErrors(metadataExecutionResult);
             return null;
@@ -756,7 +756,7 @@ class DatabaseImportStrategy {
                 packageId: packageId,
                 filterData: filterModel
             };
-            const saveResult = await executeImporterModuleTask("Intent.Modules.SqlServerImporter.Tasks.FilterSave", saveModel);
+            const saveResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.FilterSave", saveModel);
             if (((_a = saveResult.errors) !== null && _a !== void 0 ? _a : []).length > 0) {
                 await displayExecutionResultErrors(saveResult);
                 return null;
@@ -786,7 +786,7 @@ class StoredProceduresImportStrategy {
         if (importModel == null) {
             return;
         }
-        let executionResult = await executeImporterModuleTask("Intent.Modules.SqlServerImporter.Tasks.StoredProcedureImport", importModel);
+        let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcedureImport", importModel);
         if (((_a = executionResult.errors) === null || _a === void 0 ? void 0 : _a.length) > 0) {
             await displayExecutionResultErrors(executionResult);
         }
@@ -812,7 +812,7 @@ class StoredProceduresImportStrategy {
     }
     async presentImportDialog(defaults) {
         let formConfig = {
-            title: "Sql Server Import",
+            title: "RDBMS Import",
             fields: [
                 {
                     id: "connectionString",
@@ -967,7 +967,7 @@ class StoredProceduresImportStrategy {
                 connectionString: connectionString,
                 databaseType: databaseType
             };
-            let executionResult = await executeImporterModuleTask("Intent.Modules.SqlServerImporter.Tasks.StoredProcList", input);
+            let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcList", input);
             if (((_a = executionResult.errors) === null || _a === void 0 ? void 0 : _a.length) > 0) {
                 await displayExecutionResultErrors(executionResult);
                 return [];
@@ -1029,7 +1029,7 @@ class StoredProceduresImportStrategy {
 }
 /// <reference path="./strategy-database-import.ts" />
 /// <reference path="./strategy-stored-procedures-import.ts" />
-let SqlServerImporterApi = {
+let RdbmsImporterApi = {
     importDatabase,
     importStoredProcedures
 };

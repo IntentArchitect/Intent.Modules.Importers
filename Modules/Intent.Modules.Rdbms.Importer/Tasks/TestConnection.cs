@@ -7,7 +7,7 @@ namespace Intent.Modules.Rdbms.Importer.Tasks;
 
 public class TestConnection : ModuleTaskSingleInputBase<TestConnectionInputModel>
 {
-    public override string TaskTypeId => "Intent.Modules.SqlServerImporter.Tasks.TestConnection";
+    public override string TaskTypeId => "Intent.Modules.Rdbms.Importer.Tasks.TestConnection";
     public override string TaskTypeName => "SqlServer Database Connection Tester";
 
     protected override ValidationResult ValidateInputModel(TestConnectionInputModel inputModel)

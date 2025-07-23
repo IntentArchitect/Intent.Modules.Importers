@@ -14,7 +14,7 @@
           <dependencies>
             <dependency name="SqlImporterCore" id="78a9a7f3-202a-425d-bacc-6ceec01a1cf7" />
           </dependencies>
-          <script>await SqlServerImporterApi.importDatabase(element);</script>
+          <script>await RdbmsImporterApi.importDatabase(element);</script>
         </runScript>
       </contextMenuOptions>
       <creationOptions />
@@ -25,7 +25,7 @@
           <dependencies>
             <dependency name="SqlImporterCore" id="78a9a7f3-202a-425d-bacc-6ceec01a1cf7" />
           </dependencies>
-          <script>await SqlServerImporterApi.importDatabase(element);</script>
+          <script>await RdbmsImporterApi.importDatabase(element);</script>
         </option>
       </scriptOptions>
       <typeOrder />
@@ -41,7 +41,7 @@
           <dependencies>
             <dependency name="SqlImporterCore" id="78a9a7f3-202a-425d-bacc-6ceec01a1cf7" />
           </dependencies>
-          <script>await SqlServerImporterApi.importStoredProcedures(element);</script>
+          <script>await RdbmsImporterApi.importStoredProcedures(element);</script>
         </runScript>
       </contextMenuOptions>
       <creationOptions />
@@ -52,7 +52,7 @@
           <dependencies>
             <dependency name="SqlImporterCore" id="78a9a7f3-202a-425d-bacc-6ceec01a1cf7" />
           </dependencies>
-          <script>await SqlServerImporterApi.importStoredProcedures(element);</script>
+          <script>await RdbmsImporterApi.importStoredProcedures(element);</script>
         </option>
       </scriptOptions>
       <mappingOptions />

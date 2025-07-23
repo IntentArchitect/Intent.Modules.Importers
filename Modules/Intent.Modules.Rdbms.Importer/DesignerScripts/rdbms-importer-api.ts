@@ -1,7 +1,7 @@
 /// <reference path="./strategy-database-import.ts" />
 /// <reference path="./strategy-stored-procedures-import.ts" />
 
-let SqlServerImporterApi = {
+let RdbmsImporterApi = {
     importDatabase,
     importStoredProcedures
 };

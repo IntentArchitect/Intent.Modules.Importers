@@ -20,7 +20,7 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
         _metadataManager = metadataManager;
     }
 
-    public override string TaskTypeId => "Intent.Modules.SqlServerImporter.Tasks.StoredProcedureImport";
+    public override string TaskTypeId => "Intent.Modules.Rdbms.Importer.Tasks.StoredProcedureImport";
     public override string TaskTypeName => "SqlServer Stored Procedure Import";
 
     protected override ValidationResult ValidateInputModel(RepositoryImportModel inputModel)

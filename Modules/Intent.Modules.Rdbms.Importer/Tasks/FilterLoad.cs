@@ -17,7 +17,7 @@ public class FilterLoad : ModuleTaskSingleInputBase<FilterLoadInputModel>
         _metadataManager = metadataManager;
     }
     
-    public override string TaskTypeId => "Intent.Modules.SqlServerImporter.Tasks.FilterLoad";
+    public override string TaskTypeId => "Intent.Modules.Rdbms.Importer.Tasks.FilterLoad";
     public override string TaskTypeName => "SqlServer Filter Load";
 
     protected override ValidationResult ValidateInputModel(FilterLoadInputModel inputModel)

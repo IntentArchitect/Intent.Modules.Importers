@@ -15,7 +15,7 @@ public class PathResolution : ModuleTaskSingleInputBase<PathResolutionInputModel
         _metadataManager = metadataManager;
     }
     
-    public override string TaskTypeId => "Intent.Modules.SqlServerImporter.Tasks.PathResolution";
+    public override string TaskTypeId => "Intent.Modules.Rdbms.Importer.Tasks.PathResolution";
     public override string TaskTypeName => "SqlServer Path Resolution";
 
     protected override ValidationResult ValidateInputModel(PathResolutionInputModel inputModel)

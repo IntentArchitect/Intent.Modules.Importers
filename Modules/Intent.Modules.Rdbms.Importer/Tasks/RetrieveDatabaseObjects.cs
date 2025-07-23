@@ -10,7 +10,7 @@ namespace Intent.Modules.Rdbms.Importer.Tasks;
 
 public class RetrieveDatabaseObjects : ModuleTaskSingleInputBase<DatabaseMetadataInputModel>
 {
-    public override string TaskTypeId => "Intent.Modules.SqlServerImporter.Tasks.RetrieveDatabaseObjects";
+    public override string TaskTypeId => "Intent.Modules.Rdbms.Importer.Tasks.RetrieveDatabaseObjects";
     public override string TaskTypeName => "Retrieve Database Objects";
 
     protected override ValidationResult ValidateInputModel(DatabaseMetadataInputModel inputModel)

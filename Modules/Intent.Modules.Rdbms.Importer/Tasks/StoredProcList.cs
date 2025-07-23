@@ -8,7 +8,7 @@ namespace Intent.Modules.Rdbms.Importer.Tasks;
 
 public class StoredProcList : ModuleTaskSingleInputBase<StoredProcListInputModel>
 {
-    public override string TaskTypeId => "Intent.Modules.SqlServerImporter.Tasks.StoredProcList";
+    public override string TaskTypeId => "Intent.Modules.Rdbms.Importer.Tasks.StoredProcList";
     public override string TaskTypeName => "SqlServer Stored Procedure List";
 
     protected override ValidationResult ValidateInputModel(StoredProcListInputModel inputModel)

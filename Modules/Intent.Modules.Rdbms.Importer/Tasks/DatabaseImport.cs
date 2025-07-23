@@ -21,7 +21,7 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
         _metadataManager = metadataManager;
     }
 
-    public override string TaskTypeId => "Intent.Modules.SqlServerImporter.Tasks.DatabaseImport";
+    public override string TaskTypeId => "Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport";
     public override string TaskTypeName => "SqlServer Database Import";
 
     protected override ValidationResult ValidateInputModel(DatabaseImportModel inputModel)

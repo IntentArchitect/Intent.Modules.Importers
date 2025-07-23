@@ -12,7 +12,7 @@ class StoredProceduresImportStrategy {
         if (importModel == null) {
             return;
         }
-        let executionResult = await executeImporterModuleTask("Intent.Modules.SqlServerImporter.Tasks.StoredProcedureImport", importModel);
+        let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcedureImport", importModel);
         
         if (executionResult.errors?.length > 0) {
             await displayExecutionResultErrors(executionResult);
@@ -40,7 +40,7 @@ class StoredProceduresImportStrategy {
 
     private async presentImportDialog(defaults: ISqlStoredProceduresImportPackageSettings): Promise<any> {
         let formConfig: MacroApi.Context.IDynamicFormConfig = {
-            title: "Sql Server Import",
+            title: "RDBMS Import",
             fields: [
                 {
                     id: "connectionString",
@@ -208,7 +208,7 @@ class StoredProceduresImportStrategy {
                 connectionString: connectionString,
                 databaseType: databaseType
             };
-            let executionResult = await executeImporterModuleTask("Intent.Modules.SqlServerImporter.Tasks.StoredProcList", input);
+            let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcList", input);
             
             if (executionResult.errors?.length > 0) {
                 await displayExecutionResultErrors(executionResult);

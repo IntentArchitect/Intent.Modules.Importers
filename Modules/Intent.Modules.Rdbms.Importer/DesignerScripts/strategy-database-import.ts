@@ -9,7 +9,7 @@ class DatabaseImportStrategy {
             return;
         }
         let importModel = this.createImportModel(capturedInput);
-        let executionResult = await executeImporterModuleTask("Intent.Modules.SqlServerImporter.Tasks.DatabaseImport", importModel);
+        let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport", importModel);
         
         if ((executionResult.errors ?? []).length > 0) {
             await displayExecutionResultErrors(executionResult);
@@ -69,7 +69,7 @@ class DatabaseImportStrategy {
 
     private async presentImportDialog(defaults: ISqlDatabaseImportPackageSettings, packageId: string): Promise<any> {
         let formConfig: MacroApi.Context.IDynamicFormConfig = {
-            title: "Sql Server Import",
+            title: "RDBMS Import",
             fields: [],
             sections: [
                 {
@@ -109,7 +109,7 @@ class DatabaseImportStrategy {
                                 };
                                 
                                 let executionResult = await executeImporterModuleTask(
-                                    "Intent.Modules.SqlServerImporter.Tasks.TestConnection",
+                                    "Intent.Modules.Rdbms.Importer.Tasks.TestConnection",
                                     testConnectionModel);
                                 
                                 if ((executionResult.errors ?? []).length > 0) {
@@ -225,7 +225,7 @@ class DatabaseImportStrategy {
                                 };
                                 
                                 const pathResolutionResult = await executeImporterModuleTask(
-                                    "Intent.Modules.SqlServerImporter.Tasks.PathResolution",
+                                    "Intent.Modules.Rdbms.Importer.Tasks.PathResolution",
                                     pathResolutionModel
                                 );
                                 
@@ -318,7 +318,7 @@ class DatabaseImportStrategy {
                     packageId: packageId
                 };
                 const filterLoadResult = await executeImporterModuleTask(
-                    "Intent.Modules.SqlServerImporter.Tasks.FilterLoad",
+                    "Intent.Modules.Rdbms.Importer.Tasks.FilterLoad",
                     filterLoadModel
                 );
                 
@@ -507,7 +507,7 @@ class DatabaseImportStrategy {
             databaseType: databaseType 
         };
         const metadataExecutionResult = await executeImporterModuleTask(
-            "Intent.Modules.SqlServerImporter.Tasks.RetrieveDatabaseObjects", 
+            "Intent.Modules.Rdbms.Importer.Tasks.RetrieveDatabaseObjects", 
             metadataModel);
         
         if ((metadataExecutionResult.errors ?? []).length > 0) {
@@ -825,7 +825,7 @@ class DatabaseImportStrategy {
             };
 
             const saveResult = await executeImporterModuleTask(
-                "Intent.Modules.SqlServerImporter.Tasks.FilterSave",
+                "Intent.Modules.Rdbms.Importer.Tasks.FilterSave",
                 saveModel
             );
 
