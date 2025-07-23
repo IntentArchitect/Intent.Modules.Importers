@@ -13,6 +13,10 @@ using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.Modules.SqlServerImporter.Tasks.Mappers;
 
+/// <summary>
+/// Maps the <see cref="Intent.RelationalDbSchemaImporter.Contracts.DbSchema.DatabaseSchema"/> types to 
+/// Intent Architect Persistence Model types.
+/// </summary>
 internal class IntentModelMapper
 {
     // Reserved C# keywords

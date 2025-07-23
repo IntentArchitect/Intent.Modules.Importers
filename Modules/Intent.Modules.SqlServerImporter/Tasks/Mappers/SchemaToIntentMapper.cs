@@ -9,7 +9,11 @@ using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.Modules.SqlServerImporter.Tasks.Mappers;
 
-internal class SchemaToIntentMapper
+/// <summary>
+/// Uses the <see cref="IntentModelMapper"/> to orchestrate the results 
+/// from the RelationalDbSchemaImporter and to merge it into the Intent Architect Persistence Model.
+/// </summary>
+internal class DbSchemaToIntentMapper
 {
     private readonly IntentModelMapper _intentModelMapper;
     private readonly ImportConfiguration _config;
@@ -17,13 +21,20 @@ internal class SchemaToIntentMapper
     // Track schema folders to avoid duplicates
     private readonly Dictionary<string, ElementPersistable> _schemaFolders = new();
 
-    public SchemaToIntentMapper(ImportConfiguration config)
+    public DbSchemaToIntentMapper(ImportConfiguration config)
     {
         _config = config;
         _intentModelMapper = new IntentModelMapper();
     }
 
-    public PackageUpdateResult MapSchemaToPackage(DatabaseSchema databaseSchema, PackageModelPersistable package, DeduplicationContext? deduplicationContext = null)
+    /// <summary>
+    /// Merge the <see cref="DatabaseSchema"/> into the <see cref="PackageModelPersistable"/> using the <see cref="IntentModelMapper"/>.
+    /// </summary>
+    /// <param name="databaseSchema">The <see cref="DatabaseSchema"/> to merge.</param>
+    /// <param name="package">The <see cref="PackageModelPersistable"/> to merge into.</param>
+    /// <param name="deduplicationContext">The <see cref="DeduplicationContext"/> to use for deduplication.</param>
+    /// <returns>A <see cref="PackageUpdateResult"/> containing the results of the merge.</returns>
+    public PackageUpdateResult MergeSchemaAndPackage(DatabaseSchema databaseSchema, PackageModelPersistable package, DeduplicationContext? deduplicationContext = null)
     {
         var result = new PackageUpdateResult();
 

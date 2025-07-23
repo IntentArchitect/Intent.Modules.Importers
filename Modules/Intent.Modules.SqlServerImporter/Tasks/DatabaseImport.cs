@@ -109,16 +109,16 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
             }
 
             // Create configuration for our mappers
-            var config = SchemaToIntentMapper.CreateImportConfiguration(importModel);
+            var config = DbSchemaToIntentMapper.CreateImportConfiguration(importModel);
 
             // Create the schema mapper
-            var schemaMapper = new SchemaToIntentMapper(config);
+            var schemaMapper = new DbSchemaToIntentMapper(config);
 
             // Create deduplication context for this import operation
             var deduplicationContext = new DeduplicationContext();
 
             // Apply the mapping using the schema data from the CLI
-            var mappingResult = schemaMapper.MapSchemaToPackage(importResult.SchemaData, package, deduplicationContext);
+            var mappingResult = schemaMapper.MergeSchemaAndPackage(importResult.SchemaData, package, deduplicationContext);
 
             // Save the package if mapping was successful
             if (mappingResult.IsSuccessful)
