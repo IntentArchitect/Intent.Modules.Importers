@@ -11,9 +11,6 @@ using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 
-/// <summary>
-/// PostgreSQL-specific stored procedure extractor with custom function overload handling
-/// </summary>
 internal class PostgreSQLStoredProcedureExtractor : DefaultStoredProcedureExtractor
 {
     public override async Task<List<StoredProcedureSchema>> ExtractStoredProceduresAsync(
@@ -50,21 +47,6 @@ internal class PostgreSQLStoredProcedureExtractor : DefaultStoredProcedureExtrac
         return storedProcedures;
     }
 
-    /// <summary>
-    /// Extract PostgreSQL functions directly from system catalogs to properly handle overloads.
-    /// 
-    /// REASON FOR CUSTOM IMPLEMENTATION:
-    /// DatabaseSchemaReader fails to correctly handle PostgreSQL function overloads because it
-    /// treats functions with the same name as duplicates, causing extraction errors or data loss.
-    /// PostgreSQL allows multiple functions with the same name but different parameter signatures,
-    /// which is a common and valid pattern.
-    /// 
-    /// This method queries pg_proc directly and uses the function OID to uniquely identify each
-    /// function variant, ensuring all overloads are properly extracted and processed.
-    /// 
-    /// Additionally, this single query approach prevents "A command is already in progress" errors
-    /// that would occur with nested database readers.
-    /// </summary>
     private async Task<List<PostgreSQLFunction>> ExtractPostgreSQLFunctionsAsync(
         DbConnection connection, 
         ImportFilterService importFilterService,
@@ -194,12 +176,6 @@ internal class PostgreSQLStoredProcedureExtractor : DefaultStoredProcedureExtrac
         return functionsDict.Values.ToList();
     }
 
-    /// <summary>
-    /// Extract result set for PostgreSQL function using the existing analyzer.
-    /// 
-    /// Note: We use the original function name here because the analyzer needs to work with
-    /// the actual function name as it appears in PostgreSQL, not our internal unique identifier.
-    /// </summary>
     private static async Task<List<ResultSetColumnSchema>> ExtractStoredProcedureResultSetAsync(
         PostgreSQLFunction function,
         DbConnection connection,

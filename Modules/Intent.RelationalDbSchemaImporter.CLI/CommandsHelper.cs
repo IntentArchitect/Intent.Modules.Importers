@@ -24,8 +24,20 @@ internal static partial class Commands
         PropertyNameCaseInsensitive = true
     };
 
+    /// <summary>
+    /// Converts a property name to a kebab-case string.
+    /// </summary>
+    /// <param name="propertyName">The property name to convert.</param>
+    /// <returns>The kebab-case string.</returns>
     private static string GetOptionName(string propertyName) => $"--{propertyName.ToKebabCase()}";
     
+    /// <summary>
+    /// Creates a standard command.
+    /// </summary>
+    /// <typeparam name="TResult">Type returned by the command implementation.</typeparam>
+    /// <param name="name">The name of the command.</param>
+    /// <param name="description">The description of the command.</param>
+    /// <param name="executeFunc">Command implementation passed through as a delegate.</param>
     private static Command CreateStandardCommand<TResult>(
         string name, 
         string description, 
@@ -75,6 +87,13 @@ internal static partial class Commands
         return option;
     }
 
+    /// <summary>
+    /// Deserializes a JSON payload into a request object.
+    /// </summary>
+    /// <typeparam name="TRequest">The type of the request object.</typeparam>
+    /// <param name="jsonPayload">The JSON payload to deserialize.</param>
+    /// <param name="response">The response object to add errors to.</param>
+    /// <returns>The deserialized request object.</returns>
     private static TRequest? DeserializeRequest<TRequest>(string jsonPayload, StandardResponse response) where TRequest : class
     {
         try
@@ -94,6 +113,12 @@ internal static partial class Commands
         }
     }
 
+    /// <summary>
+    /// Validates that the connection string is not null or empty.
+    /// </summary>
+    /// <param name="connectionString">The connection string to validate.</param>
+    /// <param name="response">The response object to add errors to.</param>
+    /// <returns>True if the connection string is valid, false otherwise.</returns>
     private static bool ValidateConnectionString(string? connectionString, StandardResponse response)
     {
         if (string.IsNullOrWhiteSpace(connectionString))
@@ -104,6 +129,12 @@ internal static partial class Commands
         return true;
     }
     
+    /// <summary>
+    /// Validates that the database type is specified and supported.
+    /// </summary>
+    /// <param name="databaseType">The database type to validate.</param>
+    /// <param name="response">The response object to add errors to.</param>
+    /// <returns>True if the database type is valid, false otherwise.</returns>
     private static bool ValidateDatabaseType(DatabaseType databaseType, StandardResponse response)
     {
         if (databaseType == DatabaseType.Unspecified)

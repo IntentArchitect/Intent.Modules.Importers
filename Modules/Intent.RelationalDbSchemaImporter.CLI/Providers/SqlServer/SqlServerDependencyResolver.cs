@@ -6,9 +6,6 @@ using Intent.RelationalDbSchemaImporter.CLI.Providers.Core;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
 
-/// <summary>
-/// SQL Server-specific dependency resolver using T-SQL queries to find table dependencies
-/// </summary>
 internal class SqlServerDependencyResolver : IDependencyResolver
 {
     private readonly DbConnection _connection;
@@ -34,10 +31,6 @@ internal class SqlServerDependencyResolver : IDependencyResolver
         return dependentTables;
     }
 
-    /// <summary>
-    /// Get tables that depend on the specified table through foreign key relationships
-    /// Uses T-SQL queries to sys.foreign_keys and related system views
-    /// </summary>
     private async Task<IEnumerable<string>> GetTableDependenciesAsync(string tableName)
     {
         var parts = tableName.Split('.');

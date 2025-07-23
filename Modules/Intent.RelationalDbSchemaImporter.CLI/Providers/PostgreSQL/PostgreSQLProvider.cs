@@ -14,13 +14,17 @@ using Npgsql;
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 
 /// <summary>
-/// PostgreSQL database provider implementation
+/// PostgreSQL database provider implementation for the Intent Architect RPC backend.
+/// This provider uses Npgsql which contains native library dependencies that cannot be
+/// included in Intent Architect modules, necessitating this separate executable.
+/// 
+/// Provides PostgreSQL-specific implementations for schema extraction, function analysis,
+/// and other database operations required by Intent Architect importer modules.
 /// </summary>
 internal class PostgreSQLProvider : BaseDatabaseProvider
 {
     public override DatabaseType SupportedType => DatabaseType.PostgreSQL;
 
-    // Override to use PostgreSQL-specific services
     protected override DataTypeMapperBase DataTypeMapper => new PostgreSqlDataTypeMapper();
     protected override SystemObjectFilterBase SystemObjectFilter => new PostgreSQLSystemObjectFilter();
     protected override IndexExtractorBase IndexExtractor => new PostgreSQLIndexExtractor();
@@ -41,6 +45,4 @@ internal class PostgreSQLProvider : BaseDatabaseProvider
     {
         return new PostgreSQLStoredProcedureAnalyzer(connection);
     }
-
-    // All extraction logic moved to PostgreSQL-specific services
 }

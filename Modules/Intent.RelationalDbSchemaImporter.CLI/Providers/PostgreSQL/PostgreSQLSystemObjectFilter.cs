@@ -4,14 +4,8 @@ using Intent.RelationalDbSchemaImporter.CLI.Providers.Core.Services;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 
-/// <summary>
-/// PostgreSQL-specific system object filter with additional PostgreSQL system schemas
-/// </summary>
 internal class PostgreSQLSystemObjectFilter : DefaultSystemObjectFilter
 {
-    /// <summary>
-    /// Override system object detection to include PostgreSQL-specific system schemas
-    /// </summary>
     public override bool IsSystemObject(string? schema, string? name)
     {
         if (string.IsNullOrEmpty(name)) return true;

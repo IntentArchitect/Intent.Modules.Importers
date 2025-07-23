@@ -11,10 +11,6 @@ using Microsoft.Data.SqlClient;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
 
-/// <summary>
-/// SQL Server-specific index extractor with enhanced metadata extraction using T-SQL queries
-/// Migrated from DatabaseSchemaExtractor with additional SQL Server-specific index features
-/// </summary>
 internal class SqlServerIndexExtractor : DefaultIndexExtractor
 {
     public override async Task<List<IndexSchema>> ExtractIndexesAsync(DatabaseTable table, ImportFilterService importFilterService, DbConnection connection)
@@ -38,10 +34,6 @@ internal class SqlServerIndexExtractor : DefaultIndexExtractor
         return indexes.Where(index => !index.IsClustered).ToList();
     }
 
-    /// <summary>
-    /// Extract SQL Server indexes using enhanced T-SQL queries for better metadata
-    /// This provides information that DatabaseSchemaReader might not capture correctly
-    /// </summary>
     private async Task<List<IndexSchema>> ExtractSqlServerIndexesAsync(DatabaseTable table, DbConnection connection)
     {
         var indexes = new List<IndexSchema>();
@@ -115,9 +107,6 @@ internal class SqlServerIndexExtractor : DefaultIndexExtractor
         return indexes;
     }
 
-    /// <summary>
-    /// Extract index columns using T-SQL queries for SQL Server-specific metadata
-    /// </summary>
     private async Task<List<IndexColumnSchema>> ExtractSqlServerIndexColumnsAsync(DatabaseTable table, string indexName, DbConnection connection)
     {
         var columns = new List<IndexColumnSchema>();

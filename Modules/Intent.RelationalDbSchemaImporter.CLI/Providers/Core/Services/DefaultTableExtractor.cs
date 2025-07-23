@@ -23,9 +23,6 @@ internal abstract class TableExtractorBase
         IDependencyResolver dependencyResolver);
 }
 
-/// <summary>
-/// Default implementation for table extraction from databases
-/// </summary>
 internal class DefaultTableExtractor : TableExtractorBase
 {
     public override async Task<List<TableSchema>> ExtractTablesAsync(

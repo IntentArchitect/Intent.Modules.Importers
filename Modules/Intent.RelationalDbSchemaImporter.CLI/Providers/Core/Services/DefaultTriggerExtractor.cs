@@ -11,14 +11,8 @@ internal abstract class TriggerExtractorBase
     public abstract List<TriggerSchema> ExtractViewTriggers(DatabaseView view);
 }
 
-/// <summary>
-/// Base implementation for trigger extraction from database objects
-/// </summary>
 internal class DefaultTriggerExtractor : TriggerExtractorBase
 {
-    /// <summary>
-    /// Extract trigger schema information from a database table
-    /// </summary>
     public override List<TriggerSchema> ExtractTableTriggers(DatabaseTable table)
     {
         var triggers = new HashSet<TriggerSchema>(EqualityComparer<TriggerSchema>.Create(
@@ -42,9 +36,6 @@ internal class DefaultTriggerExtractor : TriggerExtractorBase
         return triggers.ToList();
     }
 
-    /// <summary>
-    /// Extract trigger schema information from a database view
-    /// </summary>
     public override List<TriggerSchema> ExtractViewTriggers(DatabaseView view)
     {
         var triggers = new HashSet<TriggerSchema>(EqualityComparer<TriggerSchema>.Create(

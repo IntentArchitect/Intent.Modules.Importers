@@ -8,9 +8,6 @@ using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 
-/// <summary>
-/// PostgreSQL-specific stored procedure analyzer for functions
-/// </summary>
 internal class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
 {
     private readonly DbConnection _connection;
@@ -106,9 +103,6 @@ internal class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
         return resultColumns;
     }
 
-    /// <summary>
-    /// Maps PostgreSQL data types to fundamental types for Intent type mapping
-    /// </summary>
     private string NormalizePostgreSQLType(string? dataTypeName)
     {
         if (string.IsNullOrEmpty(dataTypeName))

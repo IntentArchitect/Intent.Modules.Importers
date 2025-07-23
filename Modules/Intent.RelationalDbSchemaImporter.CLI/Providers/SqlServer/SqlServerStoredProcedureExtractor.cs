@@ -10,10 +10,6 @@ using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
 
-/// <summary>
-/// SQL Server-specific stored procedure extractor using DatabaseSchemaReader + custom analysis
-/// Migrated from DatabaseSchemaExtractor to work with the new service architecture
-/// </summary>
 internal class SqlServerStoredProcedureExtractor : DefaultStoredProcedureExtractor
 {
     public override async Task<List<StoredProcedureSchema>> ExtractStoredProceduresAsync(
@@ -40,11 +36,10 @@ internal class SqlServerStoredProcedureExtractor : DefaultStoredProcedureExtract
 
             progressOutput.OutputNext($"{schema}.{name}");
 
-            // Apply system object filtering (migrated from DatabaseSchemaExtractor logic)
+            // Apply system object filtering
             if (systemObjectFilter.IsSystemObject(schema, name))
                 continue;
 
-            // Convert DatabaseSchemaReader parameters to contract parameters with SQL types
             var parameters = procedure.Arguments.Select(arg => new StoredProcedureParameterSchema
             {
                 Name = arg.Name,
@@ -56,7 +51,6 @@ internal class SqlServerStoredProcedureExtractor : DefaultStoredProcedureExtract
                 NumericScale = arg.Scale
             }).ToList();
 
-            // Use SQL Server-specific analyzer to get result set metadata
             var resultSetColumns = await analyzer.AnalyzeResultSetAsync(name, schema, parameters);
 
             var storedProcSchema = new StoredProcedureSchema

@@ -9,14 +9,8 @@ using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 
-/// <summary>
-/// PostgreSQL-specific index extractor with enhanced metadata extraction
-/// </summary>
 internal class PostgreSQLIndexExtractor : DefaultIndexExtractor
 {
-    /// <summary>
-    /// Enhanced index extraction with PostgreSQL-specific metadata
-    /// </summary>
     public override async Task<List<IndexSchema>> ExtractIndexesAsync(DatabaseTable table, ImportFilterService importFilterService, DbConnection connection)
     {
         var indexes = new List<IndexSchema>();
@@ -26,7 +20,6 @@ internal class PostgreSQLIndexExtractor : DefaultIndexExtractor
             return indexes;
         }
 
-        // Use a simplified query that works across all PostgreSQL versions
         const string sql =
             """
             SELECT 

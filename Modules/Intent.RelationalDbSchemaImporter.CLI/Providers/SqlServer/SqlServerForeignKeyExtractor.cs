@@ -10,10 +10,6 @@ using Microsoft.Data.SqlClient;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
 
-/// <summary>
-/// SQL Server-specific foreign key extractor with enhanced referenced column name extraction
-/// Uses T-SQL queries to get proper foreign key column mapping that DatabaseSchemaReader might miss
-/// </summary>
 internal class SqlServerForeignKeyExtractor : DefaultForeignKeyExtractor
 {
     public override async Task<List<ForeignKeySchema>> ExtractForeignKeysAsync(DatabaseTable table, DbConnection connection)
@@ -31,9 +27,6 @@ internal class SqlServerForeignKeyExtractor : DefaultForeignKeyExtractor
         return foreignKeys;
     }
 
-    /// <summary>
-    /// Extract SQL Server foreign keys using T-SQL queries for complete metadata
-    /// </summary>
     private static async Task<List<ForeignKeySchema>> ExtractSqlServerForeignKeysAsync(DatabaseTable table, DbConnection connection)
     {
         var foreignKeys = new List<ForeignKeySchema>();
@@ -96,10 +89,6 @@ internal class SqlServerForeignKeyExtractor : DefaultForeignKeyExtractor
         return foreignKeys;
     }
 
-    /// <summary>
-    /// Extract foreign key columns with proper source and referenced column names using T-SQL
-    /// This addresses the issue where DatabaseSchemaReader might not properly map column relationships
-    /// </summary>
     private static async Task<List<ForeignKeyColumnSchema>> ExtractSqlServerForeignKeyColumnsAsync(DatabaseTable table, string foreignKeyName, DbConnection connection)
     {
         var columns = new List<ForeignKeyColumnSchema>();

@@ -1,5 +1,8 @@
 namespace Intent.RelationalDbSchemaImporter.Contracts.Commands;
 
+/// <summary>
+/// Base class for standard responses.
+/// </summary>
 public abstract class StandardResponse
 {
     public List<string> Warnings { get; set; } = [];
@@ -16,6 +19,9 @@ public abstract class StandardResponse
     }
 }
 
+/// <summary>
+/// Response model for standard responses returned from Intent.RelationalDbSchemaImporter.CLI tool.
+/// </summary>
 public class StandardResponse<TResult> : StandardResponse
 {
     public TResult? Result { get; set; }

@@ -20,9 +20,6 @@ internal abstract class StoredProcedureExtractorBase
         IStoredProcedureAnalyzer analyzer);
 }
 
-/// <summary>
-/// Default implementation for stored procedure extraction from databases
-/// </summary>
 internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
 {
     public override async Task<List<StoredProcedureSchema>> ExtractStoredProceduresAsync(

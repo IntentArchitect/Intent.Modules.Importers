@@ -6,6 +6,9 @@ using Intent.Utils;
 
 namespace Intent.RelationalDbSchemaImporter.Runner;
 
+/// <summary>
+/// Wrapper for invoking the Intent.RelationalDbSchemaImporter.CLI tool.
+/// </summary>
 public static class ImporterTool
 {
     private static readonly JsonSerializerOptions SerializerOptions = new()
@@ -29,11 +32,22 @@ public static class ImporterTool
     
     private static string ToolExecutable => Path.Combine(ToolDirectory, "Intent.RelationalDbSchemaImporter.CLI.dll");
 
+    /// <summary>
+    /// Sets the directory containing the Intent.RelationalDbSchemaImporter.CLI tool.
+    /// </summary>
+    /// <param name="toolDirectory">The directory containing the Intent.RelationalDbSchemaImporter.CLI tool.</param>
     public static void SetToolDirectory(string toolDirectory)
     {
         ToolDirectory = toolDirectory;
     }
     
+    /// <summary>
+    /// Runs the specified command with the given payload object.
+    /// </summary>
+    /// <typeparam name="TResult">The type of the result.</typeparam>
+    /// <param name="command">The command to run.</param>
+    /// <param name="payloadObject">The payload object to send to the command.</param>
+    /// <returns>The result of the command.</returns>
     public static StandardResponse<TResult> Run<TResult>(string command, object payloadObject)
     {
         var payloadJson = JsonSerializer.Serialize(payloadObject, SerializerOptions);
@@ -58,7 +72,7 @@ public static class ImporterTool
             }))
             .WithStandardErrorPipe(PipeTarget.ToDelegate((line, ct) =>
             {
-                // Receive realtime updates through STD ERR.
+                // Receive realtime updates through STD ERR. (doesn't mean it's error feedback)
                 Logging.Log.Debug(line);
                 return Task.CompletedTask;
             }))

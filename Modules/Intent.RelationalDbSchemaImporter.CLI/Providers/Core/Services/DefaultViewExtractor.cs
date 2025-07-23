@@ -18,9 +18,6 @@ internal abstract class ViewExtractorBase
         DataTypeMapperBase dataTypeMapper);
 }
 
-/// <summary>
-/// Default implementation for view extraction from databases
-/// </summary>
 internal class DefaultViewExtractor : ViewExtractorBase
 {
     public override Task<List<ViewSchema>> ExtractViewsAsync(

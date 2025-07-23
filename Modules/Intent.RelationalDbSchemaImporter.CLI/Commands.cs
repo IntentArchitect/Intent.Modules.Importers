@@ -12,13 +12,18 @@ using Intent.Utils;
 
 namespace Intent.RelationalDbSchemaImporter.CLI;
 
+/// <summary>
+/// RPC-style command implementations for database schema extraction.
+/// These commands process JSON payloads from Intent Architect importer modules
+/// and return structured JSON responses.
+/// </summary>
 internal static partial class Commands
 {
     public static Command CreateImportSchemaCommand()
     {
         return CreateStandardCommand<ImportSchemaResult>(
             "import-schema",
-            "Imports database schema into Intent package",
+            "Extracts complete database schema for Intent Architect domain package creation",
             async (jsonPayload, response, cancellationToken) =>
             {
                 var request = DeserializeRequest<ImportSchemaRequest>(jsonPayload, response);
@@ -39,7 +44,6 @@ internal static partial class Commands
                     return response;
                 }
                 
-                // Use the new provider-based architecture
                 var factory = new DatabaseProviderFactory();
                 var databaseType = request.DatabaseType;
 
@@ -59,7 +63,7 @@ internal static partial class Commands
     {
         return CreateStandardCommand<StoredProceduresListResult>(
             "list-stored-procedures",
-            "Returns a list of stored procedures in the database",
+            "Returns list of stored procedures and functions for selection in Intent Architect",
             async (jsonPayload, response, cancellationToken) =>
             {
                 var request = DeserializeRequest<StoredProceduresListRequest>(jsonPayload, response);
@@ -96,7 +100,7 @@ internal static partial class Commands
     {
         return CreateStandardCommand<ConnectionTestResult>(
             "test-connection",
-            "Tests the connection to the database",
+            "Validates database connection for Intent Architect import operations",
             async (jsonPayload, response, cancellationToken) =>
             {
                 var request = DeserializeRequest<ConnectionTestRequest>(jsonPayload, response);
@@ -138,7 +142,7 @@ internal static partial class Commands
     {
         return CreateStandardCommand<DatabaseObjectsResult>(
             "retrieve-database-objects",
-            "Extracts database metadata (tables, views, stored procedures) as JSON",
+            "Retrieves database object names for Intent Architect selection interfaces",
             async (jsonPayload, response, cancellationToken) =>
             {
                 var request = DeserializeRequest<DatabaseObjectsRequest>(jsonPayload, response);

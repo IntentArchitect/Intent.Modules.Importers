@@ -1,27 +1,49 @@
-﻿# Intent SQL Schema Extractor
+﻿# Intent Relational Database Schema Importer
 
-The Intent SQL Schema Extractor CLI tool can be used to export SQL Server database schema's into an Intent Architect Domain package.
+This is an RPC-style backend tool for database schema extraction used by Intent Architect importer modules. It provides database schema extraction services for both SQL Server and PostgreSQL databases through JSON-based command interfaces.
 
-This tool can be useful for creating Intent Architect Domain Packages based on existing databases definitions.
+## Purpose
 
-## Pre-requisites
+This tool is **not intended for direct end-user interaction**. Instead, it serves as a backend service that Intent Architect importer modules communicate with to extract database schema information. The tool is separated into its own executable due to native library dependencies (`Microsoft.Data.SqlClient`) that cannot be included directly in Intent Architect modules.
 
-Latest Long Term Support (LTS) version of [.NET](https://dotnet.microsoft.com/download).
+## Architecture
 
-## Installation
+The tool operates as an RPC-style service that:
+- Accepts JSON payloads via command line arguments (`--payload` parameter)
+- Executes database operations using provider-specific implementations
+- Returns structured JSON responses with results or error information
+- Supports real-time progress updates through stderr
 
-The tool is available as a [.NET Tool](https://docs.microsoft.com/dotnet/core/tools/global-tools) and can be installed with the following command:
+## Supported Commands
 
-```powershell
-dotnet tool install Intent.SQLSchemaExtractor --global
+### `import-schema`
+Extracts complete database schema including tables, views, stored procedures, and relationships.
+
+### `test-connection`
+Validates database connectivity with the provided connection string.
+
+### `list-stored-procedures`
+Returns a list of stored procedures and functions in the database.
+
+### `retrieve-database-objects`
+Extracts metadata for database objects (tables, views, stored procedures) without full schema details.
+
+## Supported Databases
+
+- **SQL Server** - Full support including stored procedures, functions, and complex data types
+- **PostgreSQL** - Full support including functions, procedures, and PostgreSQL-specific features
+
+## Usage by Intent Architect Modules
+
+Intent Architect importer modules (such as `Intent.Modules.SqlServerImporter`) use the `Intent.RelationalDbSchemaImporter.Runner.ImporterTool` class to invoke this CLI tool programmatically:
+
+```csharp
+// Set the tool directory containing the CLI executable
+ImporterTool.SetToolDirectory(toolDirectory);
+
+// Execute a command with JSON payload
+var result = ImporterTool.Run<ImportSchemaResult>("import-schema", requestPayload);
 ```
 
-> [!NOTE]
-> If `dotnet tool install` fails with an error to the effect of `The required NuGet feed can't be accessed, perhaps because of an Internet connection problem.` and it shows a private NuGet feed URL, you can try add the `--ignore-failed-sources` command line option ([source](https://learn.microsoft.com/dotnet/core/tools/troubleshoot-usage-issues#nuget-feed-cant-be-accessed)).
+The tool is typically deployed as part of Intent Architect module packages in the `content/tool` directory.
 
-You should see output to the effect of:
-
-```text
-You can invoke the tool using the following command: intent-sqlschema-extractor
-Tool 'intent-sqlschema-extractor' (version 'x.x.x') was successfully installed.
-```

@@ -5,9 +5,6 @@ using Intent.RelationalDbSchemaImporter.CLI.Providers.Core;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 
-/// <summary>
-/// PostgreSQL-specific dependency resolver
-/// </summary>
 internal class PostgreSQLDependencyResolver : IDependencyResolver
 {
     private readonly DbConnection _connection;

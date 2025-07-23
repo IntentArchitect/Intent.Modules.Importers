@@ -14,8 +14,15 @@ using DatabaseSchema = Intent.RelationalDbSchemaImporter.Contracts.DbSchema.Data
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.Core;
 
 /// <summary>
-/// Base implementation for database providers using DatabaseSchemaReader with extensibility for custom implementations.
-/// This class is purely orchestration - all extraction logic is delegated to services.
+/// Base implementation for database providers in the Intent Architect RPC backend.
+/// This class provides database schema extraction capabilities that are isolated from Intent Architect
+/// due to native library dependencies (Microsoft.Data.SqlClient, Npgsql, etc.).
+/// 
+/// The provider pattern allows database-specific implementations while maintaining a consistent
+/// interface for Intent Architect importer modules to consume via the RPC layer.
+/// 
+/// All extraction logic is delegated to specialized services to ensure separation of concerns
+/// and enable database-specific customization where needed.
 /// </summary>
 internal abstract class BaseDatabaseProvider
 {
@@ -32,12 +39,27 @@ internal abstract class BaseDatabaseProvider
 
     public abstract DatabaseType SupportedType { get; }
     
+    /// <summary>
+    /// Creates a database-specific connection. Implementations must provide database-specific connection types
+    /// (SqlConnection, NpgsqlConnection, etc.) that include the native dependencies requiring this separation.
+    /// </summary>
     protected abstract DbConnection CreateConnection(string connectionString);
+    
+    /// <summary>
+    /// Creates a database-specific dependency resolver for handling table relationships and dependencies.
+    /// </summary>
     protected abstract IDependencyResolver CreateDependencyResolver(DbConnection connection);
+    
+    /// <summary>
+    /// Creates a database-specific stored procedure analyzer for extracting result set information.
+    /// Different databases have varying approaches to stored procedure/function analysis.
+    /// </summary>
     protected abstract IStoredProcedureAnalyzer CreateStoredProcedureAnalyzer(DbConnection connection);
 
     /// <summary>
-    /// Extracts the complete database schema. This method orchestrates all extraction through services.
+    /// Extracts the complete database schema for Intent Architect domain package creation.
+    /// This method orchestrates all extraction through specialized services and is the primary
+    /// entry point called by Intent Architect importer modules via the RPC interface.
     /// </summary>
     public async Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportFilterService importFilterService, CancellationToken cancellationToken)
     {
@@ -83,7 +105,8 @@ internal abstract class BaseDatabaseProvider
     }
 
     /// <summary>
-    /// Tests database connectivity. This method cannot be overridden to ensure consistent connection handling.
+    /// Tests database connectivity for Intent Architect import validation.
+    /// This method cannot be overridden to ensure consistent connection handling across all database types.
     /// </summary>
     public async Task TestConnectionAsync(string connectionString, CancellationToken cancellationToken)
     {
@@ -95,7 +118,8 @@ internal abstract class BaseDatabaseProvider
     }
 
     /// <summary>
-    /// Gets list of table names in the database. This method cannot be overridden to ensure consistent system object filtering.
+    /// Gets list of table names for Intent Architect selection interfaces.
+    /// This method cannot be overridden to ensure consistent system object filtering across database types.
     /// </summary>
     public async Task<List<string>> GetTableNamesAsync(string connectionString)
     {

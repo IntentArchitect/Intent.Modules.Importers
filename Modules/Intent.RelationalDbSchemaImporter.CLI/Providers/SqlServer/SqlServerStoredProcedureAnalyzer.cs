@@ -12,10 +12,6 @@ using Microsoft.Data.SqlClient;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
 
-/// <summary>
-/// SQL Server-specific stored procedure analyzer using T-SQL queries instead of SMO
-/// Migrated from SqlServerStoredProcExtractor to work with DatabaseSchemaReader
-/// </summary>
 internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
 {
     private readonly DbConnection _connection;
@@ -97,9 +93,6 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
         return resultColumns;
     }
 
-    /// <summary>
-    /// Get table ID for source table identification (migrated from SqlServerStoredProcExtractor)
-    /// </summary>
     private async Task<int?> GetTableIdAsync(string sql)
     {
         try
@@ -115,9 +108,6 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
         }
     }
 
-    /// <summary>
-    /// Build key for grouping source rows (migrated from SqlServerStoredProcExtractor.BuildKey)
-    /// </summary>
     private static string BuildKey(DataRow row)
     {
         var parts = new List<string>();
@@ -137,9 +127,6 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
         return string.Join(".", parts);
     }
 
-    /// <summary>
-    /// Get string value from DataRow with null handling
-    /// </summary>
     private static string? GetStringValue(DataRow row, string columnName)
     {
         return row.Table.Columns.Contains(columnName) && row[columnName] != DBNull.Value
@@ -147,18 +134,12 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
             : null;
     }
 
-    /// <summary>
-    /// Get boolean value from DataRow with null handling
-    /// </summary>
     private static bool GetBoolValue(DataRow row, string columnName)
     {
         return row.Table.Columns.Contains(columnName) && row[columnName] != DBNull.Value
                                                       && Convert.ToBoolean(row[columnName]);
     }
 
-    /// <summary>
-    /// Sanitize system type name (migrated from SqlServerStoredProcExtractor.ResultSetColumn.Sanitize)
-    /// </summary>
     private static string SanitizeSystemTypeName(string? systemTypeName)
     {
         if (string.IsNullOrEmpty(systemTypeName))
@@ -169,9 +150,6 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
         return sanitizeRegex.Replace(systemTypeName, string.Empty).ToLowerInvariant();
     }
 
-    /// <summary>
-    /// Normalize SQL Server data type to C# type (using SqlServerDataTypeMapper logic)
-    /// </summary>
     private static string NormalizeDataType(string? systemTypeName)
     {
         if (string.IsNullOrEmpty(systemTypeName))

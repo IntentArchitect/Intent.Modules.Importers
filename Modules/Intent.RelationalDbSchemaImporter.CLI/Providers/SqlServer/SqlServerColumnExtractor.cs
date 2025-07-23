@@ -10,11 +10,6 @@ using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
 
-/// <summary>
-/// SQL Server-specific column extractor that enhances column metadata using T-SQL queries
-/// This provides more accurate MaxLength, NumericPrecision, and NumericScale information
-/// than DatabaseSchemaReader might provide for SQL Server
-/// </summary>
 internal class SqlServerColumnExtractor : DefaultColumnExtractor
 {
     public override async Task<List<ColumnSchema>> ExtractTableColumnsAsync(DatabaseTable table, ImportFilterService importFilterService, DataTypeMapperBase typeMapper,

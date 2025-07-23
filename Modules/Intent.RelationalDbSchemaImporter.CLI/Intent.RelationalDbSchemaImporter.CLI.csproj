@@ -5,9 +5,9 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <PackageIcon>Resources\Intent Architect - Logo (color).png</PackageIcon>
-    <Authors>Joel Turner</Authors>
+    <Authors>Intent Architect</Authors>
     <Company>Intent Software (Pty) Ltd.</Company>
-    <Description>The Intent SQL Schema Extractor tool can be used to synchronize a SQL Server database into an Intent Architect domain package.</Description>
+    <Description>RPC-style backend tool for database schema extraction used by Intent Architect importer modules. Supports SQL Server and PostgreSQL database schema extraction through JSON-based commands. Separated due to native library dependencies that cannot be included in Intent Architect modules.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://intentarchitect.com/</PackageProjectUrl>
   </PropertyGroup>

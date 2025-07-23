@@ -7,18 +7,8 @@ using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 
-/// <summary>
-/// PostgreSQL-specific foreign key extractor with enhanced column mapping
-/// </summary>
 internal class PostgreSQLForeignKeyExtractor : DefaultForeignKeyExtractor
 {
-    /// <summary>
-    /// Override foreign key column extraction to populate ReferencedColumnName for PostgreSQL
-    /// 
-    /// CUSTOM IMPLEMENTATION REQUIRED: DatabaseSchemaReader doesn't provide the referenced column names
-    /// in foreign key relationships for PostgreSQL. This implementation uses direct queries to
-    /// information_schema to get the correct column mappings.
-    /// </summary>
     public override async Task<List<ForeignKeyColumnSchema>> ExtractForeignKeyColumnsAsync(DatabaseConstraint foreignKey, DbConnection connection)
     {
         var columns = new List<ForeignKeyColumnSchema>();

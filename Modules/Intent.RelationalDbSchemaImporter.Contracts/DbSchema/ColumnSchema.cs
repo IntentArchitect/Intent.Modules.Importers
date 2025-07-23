@@ -8,7 +8,7 @@ public class ColumnSchema
     /// </summary>
     public string DataType { get; set; } = string.Empty;
     /// <summary>
-    /// Normalized data type for Intent type mapping (e.g., "string", "int", "datetime")
+    /// Normalized to C# type representation (e.g., "string", "int", "datetime") for Intent type mapping.
     /// </summary>
     public string NormalizedDataType { get; set; } = string.Empty;
     public bool IsNullable { get; set; }

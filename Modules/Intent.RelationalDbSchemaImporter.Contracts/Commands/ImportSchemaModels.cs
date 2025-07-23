@@ -3,6 +3,9 @@ using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
 namespace Intent.RelationalDbSchemaImporter.Contracts.Commands;
 
+/// <summary>
+/// Request model for importing a database schema.
+/// </summary>
 public class ImportSchemaRequest
 {
     public string ConnectionString { get; set; } = string.Empty;
@@ -12,6 +15,9 @@ public class ImportSchemaRequest
     public DatabaseType DatabaseType { get; set; } = DatabaseType.Unspecified;
 }
 
+/// <summary>
+/// Response model for importing a database schema.
+/// </summary>
 public class ImportSchemaResult
 {
     public DatabaseSchema SchemaData { get; set; } = new();

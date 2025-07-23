@@ -4,15 +4,8 @@ using Intent.RelationalDbSchemaImporter.CLI.Providers.Core.Services;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
 
-/// <summary>
-/// SQL Server-specific data type mapper with custom type handling
-/// </summary>
 internal class SqlServerDataTypeMapper : DefaultDataTypeMapper
 {
-    /// <summary>
-    /// Gets the base SQL data type name without length/precision information
-    /// Handles SQL Server-specific type variations like MAX types
-    /// </summary>
     public override string GetDataTypeString(string? dataTypeName)
     {
         if (string.IsNullOrEmpty(dataTypeName))
@@ -28,9 +21,6 @@ internal class SqlServerDataTypeMapper : DefaultDataTypeMapper
         };
     }
 
-    /// <summary>
-    /// Maps SQL Server data types to fundamental C# types for Intent type mapping
-    /// </summary>
     public override string GetNormalizedDataTypeString(DataType? dataType, string dbDataType)
     {
         // Handle SQL Server-specific data types first
@@ -44,10 +34,6 @@ internal class SqlServerDataTypeMapper : DefaultDataTypeMapper
         return base.GetNormalizedDataTypeString(dataType, dbDataType);
     }
 
-    /// <summary>
-    /// Maps SQL Server data types to fundamental types for Intent type mapping
-    /// Migrated from DatabaseSchemaExtractor.NormalizeSqlServerDataType
-    /// </summary>
     private static string NormalizeSqlServerDataType(string dataTypeName)
     {
         if (string.IsNullOrEmpty(dataTypeName))
