@@ -215,7 +215,7 @@ internal static class ModelNamingUtilities
     /// <summary>
     /// Generates ExternalReference for table following [schema].[tablename] pattern
     /// </summary>
-    public static string GetTableExternalReference(string tableName, string schema)
+    public static string GetTableExternalReference(string schema, string tableName)
     {
         return $"[{schema.ToLowerInvariant()}].[{tableName.ToLowerInvariant()}]";
     }
@@ -223,7 +223,7 @@ internal static class ModelNamingUtilities
     /// <summary>
     /// Generates ExternalReference for view following [schema].[viewname] pattern
     /// </summary>
-    public static string GetViewExternalReference(string viewName, string schema)
+    public static string GetViewExternalReference(string schema, string viewName)
     {
         return $"[{schema.ToLowerInvariant()}].[{viewName.ToLowerInvariant()}]";
     }
@@ -231,7 +231,7 @@ internal static class ModelNamingUtilities
     /// <summary>
     /// Generates ExternalReference for column following [schema].[tablename].[columnname] pattern
     /// </summary>
-    public static string GetColumnExternalReference(string columnName, string tableName, string schema)
+    public static string GetColumnExternalReference(string schema, string tableName, string columnName)
     {
         return $"[{schema.ToLowerInvariant()}].[{tableName.ToLowerInvariant()}].[{columnName.ToLowerInvariant()}]";
     }
@@ -239,41 +239,41 @@ internal static class ModelNamingUtilities
     /// <summary>
     /// Generates ExternalReference for stored procedure following [schema].[procname] pattern
     /// </summary>
-    public static string GetStoredProcedureExternalReference(string procName, string schema)
+    public static string GetStoredProcedureExternalReference(string schema, string procName)
     {
-        return $"[{schema.ToLower()}].[{procName.ToLower()}]";
+        return $"[{schema.ToLowerInvariant()}].[{procName.ToLowerInvariant()}]";
     }
 
     /// <summary>
     /// Generates ExternalReference for data contract following stored procedure external ref + .Response pattern
     /// </summary>
-    public static string GetDataContractExternalReference(string procName, string schema)
+    public static string GetDataContractExternalReference(string schema, string procName)
     {
-        return $"{GetStoredProcedureExternalReference(procName, schema)}.response";
+        return $"{GetStoredProcedureExternalReference(schema, procName)}.Response";
     }
 
     /// <summary>
     /// Generates ExternalReference for foreign key following [schema].[tablename].[fkname] pattern
     /// </summary>
-    public static string GetForeignKeyExternalReference(string fkName, string tableName, string schema)
+    public static string GetForeignKeyExternalReference(string schema, string tableName, string fkName)
     {
-        return $"[{schema}].[{tableName}].[{fkName}]";
+        return $"[{schema.ToLowerInvariant()}].[{tableName.ToLowerInvariant()}].[{fkName.ToLowerInvariant()}]";
     }
 
     /// <summary>
     /// Generates ExternalReference for trigger following trigger:[schema].[tablename].[triggername] pattern
     /// </summary>
-    public static string GetTriggerExternalReference(string triggerName, string tableName, string schema)
+    public static string GetTriggerExternalReference(string schema, string tableName, string triggerName)
     {
-        return $"trigger:[{schema.ToLower()}].[{tableName.ToLower()}].[{triggerName.ToLower()}]";
+        return $"trigger:[{schema.ToLowerInvariant()}].[{tableName.ToLowerInvariant()}].[{triggerName.ToLowerInvariant()}]";
     }
 
     /// <summary>
     /// Generates ExternalReference for result set column following data contract external ref + .[columnname] pattern
     /// </summary>
-    public static string GetResultSetColumnExternalReference(string columnName, string procName, string schema)
+    public static string GetResultSetColumnExternalReference(string schema, string procName, string columnName)
     {
-        return $"[{GetDataContractExternalReference(procName, schema)}].[{columnName.ToLower()}]";
+        return $"[{GetDataContractExternalReference(schema, procName).ToLowerInvariant()}].[{columnName.ToLowerInvariant()}]";
     }
 
     public static string GetIndexExternalReference(string tableSchema, string tableName, string indexName)
@@ -283,6 +283,6 @@ internal static class ModelNamingUtilities
 
     public static string GetSchemaExternalReference(string schemaName)
     {
-        return $"schema:[{schemaName.ToLower()}]";
+        return $"schema:[{schemaName.ToLowerInvariant()}]";
     }
 } 

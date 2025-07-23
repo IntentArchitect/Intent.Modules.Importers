@@ -37,19 +37,17 @@ internal class DbSchemaIntentMetadataMerger
 
         try
         {
-            var existingElements = package.Classes.ToList();
-
             if (_config.ExportTables())
             {
-                ProcessTables(databaseSchema, package, deduplicationContext, existingElements, result);
+                ProcessTables(databaseSchema, package, deduplicationContext, result);
             }
             if (_config.ExportViews())
             {
-                ProcessViews(databaseSchema, package, deduplicationContext, existingElements, result);
+                ProcessViews(databaseSchema, package, deduplicationContext, result);
             }
             if (_config.ExportStoredProcedures())
             {
-                ProcessStoredProcedures(databaseSchema, package, deduplicationContext, existingElements, result);
+                ProcessStoredProcedures(databaseSchema, package, deduplicationContext, result);
             }
             ProcessForeignKeys(databaseSchema, package, result);
 
@@ -70,16 +68,14 @@ internal class DbSchemaIntentMetadataMerger
         DatabaseSchema databaseSchema, 
         PackageModelPersistable package, 
         DeduplicationContext? deduplicationContext, 
-        List<ElementPersistable> existingElements,
         PackageUpdateResult result)
     {
         foreach (var table in databaseSchema.Tables)
         {
             // Check if class already exists first (before creating folder structure)
             // Use ExternalReference for robust lookup first, then fallback to name-based
-            var tableExternalRef = ModelNamingUtilities.GetTableExternalReference(table.Name, table.Schema);
-            var existingClass = existingElements.FirstOrDefault(c => c.ExternalReference == tableExternalRef) 
-                                ?? existingElements.FirstOrDefault(c => IsTableMappedToClass(c, table));
+            var tableExternalRef = ModelNamingUtilities.GetTableExternalReference(table.Schema, table.Name);
+            var existingClass = package.Classes.FirstOrDefault(c => c.ExternalReference == tableExternalRef);
 
             if (existingClass is not null)
             {
@@ -112,16 +108,14 @@ internal class DbSchemaIntentMetadataMerger
         DatabaseSchema databaseSchema, 
         PackageModelPersistable package, 
         DeduplicationContext? deduplicationContext, 
-        List<ElementPersistable> existingElements,
         PackageUpdateResult result)
     {
         foreach (var view in databaseSchema.Views)
         {
             // Check if class already exists first (before creating folder structure)
             // Use ExternalReference for robust lookup first, then fallback to name-based
-            var viewExternalRef = ModelNamingUtilities.GetViewExternalReference(view.Name, view.Schema);
-            var existingClass = existingElements.FirstOrDefault(c => c.ExternalReference == viewExternalRef) 
-                                ?? existingElements.FirstOrDefault(c => IsViewMappedToClass(c, view));
+            var viewExternalRef = ModelNamingUtilities.GetViewExternalReference(view.Schema, view.Name);
+            var existingClass = package.Classes.FirstOrDefault(c => c.ExternalReference == viewExternalRef);
 
             if (existingClass != null)
             {
@@ -147,7 +141,6 @@ internal class DbSchemaIntentMetadataMerger
     private void ProcessStoredProcedures(DatabaseSchema databaseSchema,
         PackageModelPersistable package,
         DeduplicationContext? deduplicationContext,
-        List<ElementPersistable> existingElements,
         PackageUpdateResult result)
     {
         foreach (var storedProc in databaseSchema.StoredProcedures)
@@ -187,7 +180,7 @@ internal class DbSchemaIntentMetadataMerger
             // Create data contract if stored procedure has result set
             if (storedProc.ResultSetColumns.Count > 0)
             {
-                ProcessStoredProcedureDataContract(storedProc, procElement, package, existingElements, result, deduplicationContext);
+                ProcessStoredProcedureDataContract(storedProc, procElement, package, result, deduplicationContext);
             }
         }
     }
@@ -199,8 +192,18 @@ internal class DbSchemaIntentMetadataMerger
     {
         foreach (var index in table.Indexes)
         {
-            var indexElement = IntentModelMapper.CreateIndex(table, index, classElement.Id, package);
-            package.Classes.Add(indexElement);
+            var indexExternalRef = ModelNamingUtilities.GetIndexExternalReference(table.Schema, table.Name, index.Name);
+            var indexElement = package.Classes
+                                   .FirstOrDefault(x => x.ExternalReference == indexExternalRef &&
+                                                        x.SpecializationType == Constants.SpecializationTypes.Index.SpecializationType)
+                               ?? classElement.ChildElements
+                                   .FirstOrDefault(x => x.ExternalReference == indexExternalRef &&
+                                                        x.SpecializationType == Constants.SpecializationTypes.Index.SpecializationType);
+            if (indexElement is null)
+            {
+                indexElement = IntentModelMapper.CreateIndex(table, index, classElement.Id, package);
+                package.Classes.Add(indexElement);
+            }
 
             // Create index columns
             foreach (var indexColumn in index.Columns)
@@ -279,7 +282,7 @@ internal class DbSchemaIntentMetadataMerger
     /// </summary>
     private ElementPersistable GetOrCreateRepository(string? repositoryElementId, string schemaName, PackageModelPersistable package)
     {
-        var repositoryName = $"{GetNormalizedSchemaName(schemaName)}Repository";
+        var repositoryName = $"StoredProcedureRepository";
 
         // Check if repository already exists
         var repository = !string.IsNullOrWhiteSpace(repositoryElementId)
@@ -310,7 +313,7 @@ internal class DbSchemaIntentMetadataMerger
 
         foreach (var table in databaseSchema.Tables)
         {
-            var tableExternalRef = ModelNamingUtilities.GetTableExternalReference(table.Name, table.Schema);
+            var tableExternalRef = ModelNamingUtilities.GetTableExternalReference(table.Schema, table.Name);
             var classElement = package.Classes.FirstOrDefault(c => c.ExternalReference == tableExternalRef);
 
             if (classElement == null)
@@ -328,7 +331,7 @@ internal class DbSchemaIntentMetadataMerger
                 
                 foreach (var fkColumn in foreignKey.Columns)
                 {
-                    var columnExternalRef = ModelNamingUtilities.GetColumnExternalReference(fkColumn.Name, table.Name, table.Schema);
+                    var columnExternalRef = ModelNamingUtilities.GetColumnExternalReference(table.Schema, table.Name, fkColumn.Name);
                     var attribute = classElement.ChildElements.FirstOrDefault(attr =>
                         attr.ExternalReference == columnExternalRef);
 
@@ -364,7 +367,6 @@ internal class DbSchemaIntentMetadataMerger
         StoredProcedureSchema storedProc,
         ElementPersistable procElement,
         PackageModelPersistable package,
-        List<ElementPersistable> existingElements,
         PackageUpdateResult result,
         DeduplicationContext? deduplicationContext)
     {
@@ -372,10 +374,8 @@ internal class DbSchemaIntentMetadataMerger
         var schemaFolder = GetOrCreateSchemaFolder(storedProc.Schema, package);
 
         // Check if data contract already exists using ExternalReference first
-        var dataContractExternalRef = ModelNamingUtilities.GetDataContractExternalReference(storedProc.Name, storedProc.Schema);
-        var existingDataContract = existingElements.FirstOrDefault(c => c.ExternalReference == dataContractExternalRef && 
-                                                                        c.SpecializationType == Constants.SpecializationTypes.DataContract.SpecializationType) 
-                                   ?? package.Classes.FirstOrDefault(c => c.ExternalReference == dataContractExternalRef && 
+        var dataContractExternalRef = ModelNamingUtilities.GetDataContractExternalReference(storedProc.Schema, storedProc.Name);
+        var existingDataContract = package.Classes.FirstOrDefault(c => c.ExternalReference == dataContractExternalRef && 
                                                                           c.SpecializationType == Constants.SpecializationTypes.DataContract.SpecializationType);
 
         ElementPersistable dataContract;

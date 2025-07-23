@@ -32,7 +32,7 @@ internal static class IntentModelMapper
             SpecializationTypeId = ClassModel.SpecializationTypeId,
             Name = className,
             Display = className,
-            ExternalReference = ModelNamingUtilities.GetTableExternalReference(table.Name, table.Schema),
+            ExternalReference = ModelNamingUtilities.GetTableExternalReference(table.Schema, table.Name),
             IsAbstract = false,
             SortChildren = SortChildrenOptions.SortByTypeAndName,
             GenericTypes = [],
@@ -66,8 +66,15 @@ internal static class IntentModelMapper
         // Map triggers to child elements
         foreach (var trigger in table.Triggers)
         {
-            var triggerElement = MapTriggerToElement(trigger, table.Name, table.Schema, classElement.Id, package);
-            classElement.ChildElements.Add(triggerElement);
+            var triggerExternalRef = ModelNamingUtilities.GetTriggerExternalReference(table.Schema, table.Name, trigger.Name);
+            var triggerElement = package.Classes
+                .FirstOrDefault(x => x.ExternalReference == triggerExternalRef && 
+                                     x.SpecializationType == Constants.SpecializationTypes.Trigger.SpecializationType);
+            if (triggerElement is null)
+            {
+                triggerElement = MapTriggerToElement(trigger, table.Name, table.Schema, classElement.Id, package);
+                classElement.ChildElements.Add(triggerElement);
+            }
         }
 
         return classElement;
@@ -88,7 +95,7 @@ internal static class IntentModelMapper
             SpecializationTypeId = ClassModel.SpecializationTypeId,
             Name = className,
             Display = className,
-            ExternalReference = ModelNamingUtilities.GetViewExternalReference(view.Name, view.Schema),
+            ExternalReference = ModelNamingUtilities.GetViewExternalReference(view.Schema, view.Name),
             IsAbstract = false,
             SortChildren = SortChildrenOptions.SortByTypeAndName,
             GenericTypes = [],
@@ -172,7 +179,7 @@ internal static class IntentModelMapper
             SpecializationTypeId = Constants.SpecializationTypes.StoredProcedure.SpecializationTypeId,
             Name = procName,
             Display = procName,
-            ExternalReference = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Name, storedProc.Schema),
+            ExternalReference = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Schema, storedProc.Name),
             IsAbstract = false,
             GenericTypes = [],
             TypeReference = new TypeReferencePersistable
@@ -222,7 +229,7 @@ internal static class IntentModelMapper
             SpecializationTypeId = Constants.SpecializationTypes.Operation.SpecializationTypeId,
             Name = procName,
             Display = procName,
-            ExternalReference = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Name, storedProc.Schema),
+            ExternalReference = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Schema, storedProc.Name),
             IsAbstract = false,
             SortChildren = SortChildrenOptions.SortByTypeThenManually,
             GenericTypes = [],
@@ -278,7 +285,7 @@ internal static class IntentModelMapper
             SpecializationTypeId = Constants.SpecializationTypes.DataContract.SpecializationTypeId,
             Name = dataContractName,
             Display = dataContractName,
-            ExternalReference = ModelNamingUtilities.GetDataContractExternalReference(storedProc.Name, storedProc.Schema),
+            ExternalReference = ModelNamingUtilities.GetDataContractExternalReference(storedProc.Schema, storedProc.Name),
             IsAbstract = false,
             SortChildren = SortChildrenOptions.SortByTypeThenManually,
             GenericTypes = [],
@@ -413,7 +420,7 @@ internal static class IntentModelMapper
     /// </summary>
     public static AssociationPersistable? GetOrCreateAssociation(ForeignKeySchema foreignKey, TableSchema sourceTable, ElementPersistable sourceClass, PackageModelPersistable package)
     {
-        var targetTableExternalRef = ModelNamingUtilities.GetTableExternalReference(foreignKey.ReferencedTableName, foreignKey.ReferencedTableSchema);
+        var targetTableExternalRef = ModelNamingUtilities.GetTableExternalReference(foreignKey.ReferencedTableSchema, foreignKey.ReferencedTableName);
         
         // Find target class by ExternalReference first, then by name
         var targetClass = package.Classes.FirstOrDefault(c => 
@@ -452,7 +459,7 @@ internal static class IntentModelMapper
         }
 
         // Generate external reference for foreign key
-        var fkExternalRef = ModelNamingUtilities.GetForeignKeyExternalReference(foreignKey.Name, sourceTable.Name, sourceTable.Schema);
+        var fkExternalRef = ModelNamingUtilities.GetForeignKeyExternalReference(sourceTable.Schema, sourceTable.Name, foreignKey.Name);
 
         // Check if association already exists by foreign key external reference
         var association = package.Associations?.FirstOrDefault(a => a.ExternalReference == fkExternalRef);
@@ -571,7 +578,7 @@ internal static class IntentModelMapper
             SpecializationTypeId = AttributeModel.SpecializationTypeId,
             Name = attributeName,
             Display = attributeName,
-            ExternalReference = ModelNamingUtilities.GetColumnExternalReference(column.Name, tableName, schema),
+            ExternalReference = ModelNamingUtilities.GetColumnExternalReference(schema, tableName, column.Name),
             IsAbstract = false,
             GenericTypes = [],
             TypeReference = TypeReferenceMapper.MapColumnTypeToTypeReference(column),
@@ -654,7 +661,7 @@ internal static class IntentModelMapper
             SpecializationType = AttributeModel.SpecializationType,
             SpecializationTypeId = AttributeModel.SpecializationTypeId,
             Name = attributeName,
-            ExternalReference = ModelNamingUtilities.GetResultSetColumnExternalReference(resultColumn.Name, procName, schema),
+            ExternalReference = ModelNamingUtilities.GetResultSetColumnExternalReference(schema, procName, resultColumn.Name),
             IsAbstract = false,
             GenericTypes = [],
             TypeReference = TypeReferenceMapper.MapResultSetColumnTypeToTypeReference(resultColumn),
@@ -728,7 +735,7 @@ internal static class IntentModelMapper
             SpecializationTypeId = Constants.SpecializationTypes.Trigger.SpecializationTypeId,
             Name = triggerName,
             Display = triggerName,
-            ExternalReference = ModelNamingUtilities.GetTriggerExternalReference(trigger.Name, tableName, schema),
+            ExternalReference = ModelNamingUtilities.GetTriggerExternalReference(schema, tableName, trigger.Name),
             IsAbstract = false,
             GenericTypes = [],
             IsMapped = false,
