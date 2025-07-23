@@ -5,40 +5,37 @@ using Intent.RelationalDbSchemaImporter.Runner;
 using Intent.Utils;
 using Microsoft.Data.SqlClient;
 using Testcontainers.MsSql;
+using Testcontainers.Xunit;
 using Xunit.Abstractions;
 
 namespace Intent.RelationalDbSchemaImporter.Tests;
 
-public class SqlServerIntegrationTests : IAsyncLifetime
+public class SqlServerIntegrationTests : ContainerTest<MsSqlBuilder, MsSqlContainer>
 {
-    private readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
-        .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
-        .WithPassword("IntentTest123!")
-        .WithCleanUp(true)
-        .Build();
-
-    public SqlServerIntegrationTests(ITestOutputHelper outputHelper)
+    public SqlServerIntegrationTests(ITestOutputHelper outputHelper) : base(outputHelper)
     {
         Logging.SetTracing(new DummyTracer(outputHelper));
         ImporterTool.SetToolDirectory(Path.GetDirectoryName(typeof(SqlServerIntegrationTests).Assembly.Location)!);
     }
 
-    public async Task InitializeAsync()
+    protected override MsSqlBuilder Configure(MsSqlBuilder builder)
     {
-        await _dbContainer.StartAsync();
-        await SetupTestSchema();
+        return builder.WithImage("mcr.microsoft.com/mssql/server:2022-latest")
+            .WithPassword("IntentTest123!")
+            .WithCleanUp(true);
     }
 
-    public async Task DisposeAsync()
+    protected override async Task InitializeAsync()
     {
-        await _dbContainer.DisposeAsync();
+        await base.InitializeAsync();
+        await SetupTestSchema();
     }
 
     [Fact]
     public async Task ShouldExtractSchemaFromSqlServerContainer()
     {
         // Arrange
-        var connectionString = _dbContainer.GetConnectionString();
+        var connectionString = Container.GetConnectionString();
         
         var importRequest = new ImportSchemaRequest
         {
@@ -68,7 +65,7 @@ public class SqlServerIntegrationTests : IAsyncLifetime
         var location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
         var scriptLocation = Path.GetFullPath(Path.Combine(location, "TestData", "SqlServerTestSchema.sql"));
         var sqlScript = await File.ReadAllTextAsync(scriptLocation);
-        await ExecuteSqlScript(_dbContainer.GetConnectionString(), sqlScript);
+        await ExecuteSqlScript(Container.GetConnectionString(), sqlScript);
     }
     
     private static async Task ExecuteSqlScript(string connectionString, string sqlScript)

@@ -3,6 +3,8 @@ using Xunit.Abstractions;
 
 namespace Intent.RelationalDbSchemaImporter.Tests;
 
+// This is meant to run in a single-process environment, so if you need the correct output, you will need to run each container one at a time.
+
 public class DummyTracer : ITracing
 {
     private readonly ITestOutputHelper _outputHelper;

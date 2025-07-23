@@ -6,38 +6,35 @@ using Intent.RelationalDbSchemaImporter.Runner;
 using Intent.Utils;
 using Npgsql;
 using Testcontainers.PostgreSql;
+using Testcontainers.Xunit;
 using Xunit.Abstractions;
 
 namespace Intent.RelationalDbSchemaImporter.Tests;
 
-public class PostgreSQLIntegrationTests : IAsyncLifetime
+public class PostgreSQLIntegrationTests : ContainerTest<PostgreSqlBuilder, PostgreSqlContainer>
 {
-    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
-        .WithCleanUp(true)
-        .Build();
-
-    public PostgreSQLIntegrationTests(ITestOutputHelper outputHelper)
+    public PostgreSQLIntegrationTests(ITestOutputHelper outputHelper):base(outputHelper)
     {
         Logging.SetTracing(new DummyTracer(outputHelper));
         ImporterTool.SetToolDirectory(Path.GetDirectoryName(typeof(PostgreSQLIntegrationTests).Assembly.Location)!);
     }
-
-    public async Task InitializeAsync()
+    
+    protected override PostgreSqlBuilder Configure(PostgreSqlBuilder builder)
     {
-        await _dbContainer.StartAsync();
-        await SetupTestSchema();
+        return builder.WithCleanUp(true);
     }
 
-    public async Task DisposeAsync()
+    protected override async Task InitializeAsync()
     {
-        await _dbContainer.DisposeAsync();
+        await base.InitializeAsync();
+        await SetupTestSchema();
     }
 
     [Fact]
     public async Task ShouldExtractSchemaFromPostgreSQLContainer()
     {
         // Arrange
-        var connectionString = _dbContainer.GetConnectionString();
+        var connectionString = Container.GetConnectionString();
 
         var importRequest = new ImportSchemaRequest
         {
@@ -60,7 +57,7 @@ public class PostgreSQLIntegrationTests : IAsyncLifetime
         var location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
         var scriptLocation = Path.GetFullPath(Path.Combine(location, "TestData", "PostgreSQLTestSchema.sql"));
         var sqlScript = await File.ReadAllTextAsync(scriptLocation);
-        await ExecutePostgreSQLScript(_dbContainer.GetConnectionString(), sqlScript);
+        await ExecutePostgreSQLScript(Container.GetConnectionString(), sqlScript);
     }
 
     private static async Task ExecutePostgreSQLScript(string connectionString, string sqlScript)
