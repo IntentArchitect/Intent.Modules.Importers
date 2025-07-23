@@ -904,9 +904,6 @@ internal class IntentModelMapper
             ExternalReference = GetTriggerExternalReference(trigger.Name, tableName, schema)
         };
         
-        // Optionally, apply stereotypes to the trigger if it needs to hold more metadata
-        // RdbmsSchemaAnnotator.ApplyTriggerDetails(trigger, triggerElement);
-        
         return triggerElement;
     }
 

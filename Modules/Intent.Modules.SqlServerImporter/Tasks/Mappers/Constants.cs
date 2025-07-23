@@ -1,5 +1,8 @@
 namespace Intent.Modules.SqlServerImporter.Tasks.Mappers;
 
+/// <summary>
+/// One stop shop for all Names and IDs that represent Intent Metadata Model Elements.
+/// </summary>
 internal static class Constants
 {
     public static class Packages
