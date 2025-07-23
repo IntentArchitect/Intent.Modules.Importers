@@ -163,8 +163,8 @@ internal class PostgreSQLStoredProcedureExtractor : DefaultStoredProcedureExtrac
                 function.Parameters.Add(new StoredProcedureParameterSchema
                 {
                     Name = paramName,
-                    DataType = paramTypeName, // SQL type name (not C# type)
-                    NormalizedDataType = NormalizePostgreSQLType(paramTypeName), // C# type
+                    DbDataType = paramTypeName, // SQL type name (not C# type)
+                    LanguageDataType = NormalizePostgreSQLType(paramTypeName), // C# type
                     IsOutputParameter = isOutput,
                     MaxLength = null, // PostgreSQL system catalogs don't provide reliable length for function params
                     NumericPrecision = null,

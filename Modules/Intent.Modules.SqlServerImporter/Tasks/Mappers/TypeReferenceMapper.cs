@@ -13,7 +13,7 @@ internal static class TypeReferenceMapper
         return new TypeReferencePersistable
         {
             Id = Guid.NewGuid().ToString(),
-            TypeId = GetTypeId(column.NormalizedDataType),
+            TypeId = GetTypeId(column.LanguageDataType),
             IsNullable = column.IsNullable,
             IsCollection = false,
             Stereotypes = [],
@@ -26,9 +26,9 @@ internal static class TypeReferenceMapper
         return new TypeReferencePersistable
         {
             Id = Guid.NewGuid().ToString(),
-            TypeId = GetTypeId(parameter.NormalizedDataType),
+            TypeId = GetTypeId(parameter.LanguageDataType),
             IsNullable = !parameter.IsOutputParameter, // Input parameters can be nullable, output parameters typically aren't
-            IsCollection = parameter.DataType.ToLower() == "user-defined-table-type",
+            IsCollection = parameter.DbDataType.ToLower() == "user-defined-table-type",
             Stereotypes = [],
             GenericTypeParameters = []
         };
@@ -39,7 +39,7 @@ internal static class TypeReferenceMapper
         return new TypeReferencePersistable
         {
             Id = Guid.NewGuid().ToString(),
-            TypeId = GetTypeId(column.NormalizedDataType),
+            TypeId = GetTypeId(column.LanguageDataType),
             IsNullable = column.IsNullable,
             IsCollection = false,
             Stereotypes = [],

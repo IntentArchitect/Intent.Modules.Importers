@@ -93,8 +93,8 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
             var parameterSchema = new StoredProcedureParameterSchema
             {
                 Name = argument.Name ?? "",
-                DataType = dataTypeMapper.GetDataTypeString(argument.DatabaseDataType),
-                NormalizedDataType = dataTypeMapper.GetNormalizedDataTypeString(argument.DataType, argument.DatabaseDataType),
+                DbDataType = dataTypeMapper.GetDataTypeString(argument.DatabaseDataType),
+                LanguageDataType = dataTypeMapper.GetNormalizedDataTypeString(argument.DataType, argument.DatabaseDataType),
                 IsOutputParameter = argument.Out, // DatabaseSchemaReader exposes input/output information
                 MaxLength = argument.Length > 0 ? argument.Length : null,
                 NumericPrecision = argument.Precision > 0 ? argument.Precision : null,

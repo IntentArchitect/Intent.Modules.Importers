@@ -682,7 +682,7 @@ internal static class IntentModelMapper
         return new ColumnSchema
         {
             Name = resultColumn.Name,
-            DataType = resultColumn.DataType,
+            DbDataType = resultColumn.DbDataType,
             IsNullable = resultColumn.IsNullable,
             MaxLength = resultColumn.MaxLength,
             NumericPrecision = resultColumn.NumericPrecision,

@@ -30,8 +30,8 @@ internal class SqlServerColumnExtractor : DefaultColumnExtractor
             var columnSchema = new ColumnSchema
             {
                 Name = col.Name,
-                DataType = typeMapper.GetDataTypeString(col.DbDataType),
-                NormalizedDataType = typeMapper.GetNormalizedDataTypeString(col.DataType, col.DbDataType),
+                DbDataType = typeMapper.GetDataTypeString(col.DbDataType),
+                LanguageDataType = typeMapper.GetNormalizedDataTypeString(col.DataType, col.DbDataType),
                 IsNullable = col.Nullable,
                 IsPrimaryKey = col.IsPrimaryKey,
                 IsIdentity = col.IsAutoNumber,
@@ -62,8 +62,8 @@ internal class SqlServerColumnExtractor : DefaultColumnExtractor
             var columnSchema = new ColumnSchema
             {
                 Name = col.Name,
-                DataType = typeMapper.GetDataTypeString(col.DbDataType),
-                NormalizedDataType = typeMapper.GetNormalizedDataTypeString(col.DataType, col.DbDataType),
+                DbDataType = typeMapper.GetDataTypeString(col.DbDataType),
+                LanguageDataType = typeMapper.GetNormalizedDataTypeString(col.DataType, col.DbDataType),
                 IsNullable = col.Nullable,
                 IsPrimaryKey = false, // Views don't have primary keys
                 IsIdentity = false, // Views don't have identity columns

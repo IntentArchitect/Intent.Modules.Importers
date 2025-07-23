@@ -70,8 +70,8 @@ internal class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
                     resultColumns.Add(new ResultSetColumnSchema
                     {
                         Name = "result",
-                        DataType = returnType ?? "unknown", // Use raw PostgreSQL type
-                        NormalizedDataType = NormalizePostgreSQLType(returnType),
+                        DbDataType = returnType ?? "unknown", // Use raw PostgreSQL type
+                        LanguageDataType = NormalizePostgreSQLType(returnType),
                         IsNullable = true,
                         MaxLength = null,
                         NumericPrecision = null,
@@ -84,8 +84,8 @@ internal class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
                     resultColumns.Add(new ResultSetColumnSchema
                     {
                         Name = procedureName, // Function name as column name
-                        DataType = returnType ?? "unknown", // Use raw PostgreSQL type
-                        NormalizedDataType = NormalizePostgreSQLType(returnType),
+                        DbDataType = returnType ?? "unknown", // Use raw PostgreSQL type
+                        LanguageDataType = NormalizePostgreSQLType(returnType),
                         IsNullable = true,
                         MaxLength = null,
                         NumericPrecision = null,

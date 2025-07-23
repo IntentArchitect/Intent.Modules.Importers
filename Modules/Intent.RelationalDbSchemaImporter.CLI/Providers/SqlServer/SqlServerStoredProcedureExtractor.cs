@@ -43,8 +43,8 @@ internal class SqlServerStoredProcedureExtractor : DefaultStoredProcedureExtract
             var parameters = procedure.Arguments.Select(arg => new StoredProcedureParameterSchema
             {
                 Name = arg.Name,
-                DataType = dataTypeMapper.GetDataTypeString(arg.DataType?.TypeName), // Keep SQL type
-                NormalizedDataType = dataTypeMapper.GetNormalizedDataTypeString(arg.DataType, arg.DataType?.TypeName ?? ""),
+                DbDataType = dataTypeMapper.GetDataTypeString(arg.DataType?.TypeName), // Keep SQL type
+                LanguageDataType = dataTypeMapper.GetNormalizedDataTypeString(arg.DataType, arg.DataType?.TypeName ?? ""),
                 IsOutputParameter = arg.Out,
                 MaxLength = arg.Length,
                 NumericPrecision = arg.Precision,

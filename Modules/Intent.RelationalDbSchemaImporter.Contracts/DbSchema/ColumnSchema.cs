@@ -6,11 +6,11 @@ public class ColumnSchema
     /// <summary>
     /// Original SQL data type as-is from the database (e.g., "character varying", "nvarchar(255)")
     /// </summary>
-    public string DataType { get; set; } = string.Empty;
+    public string DbDataType { get; set; } = string.Empty;
     /// <summary>
     /// Normalized to C# type representation (e.g., "string", "int", "datetime") for Intent type mapping.
     /// </summary>
-    public string NormalizedDataType { get; set; } = string.Empty;
+    public string LanguageDataType { get; set; } = string.Empty;
     public bool IsNullable { get; set; }
     public bool IsPrimaryKey { get; set; }
     public bool IsIdentity { get; set; }

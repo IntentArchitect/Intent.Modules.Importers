@@ -78,8 +78,8 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
             var columnSchema = new ResultSetColumnSchema
             {
                 Name = GetStringValue(row, "name") ?? "",
-                DataType = SanitizeSystemTypeName(GetStringValue(row, "system_type_name")),
-                NormalizedDataType = NormalizeDataType(GetStringValue(row, "system_type_name")),
+                DbDataType = SanitizeSystemTypeName(GetStringValue(row, "system_type_name")),
+                LanguageDataType = NormalizeDataType(GetStringValue(row, "system_type_name")),
                 IsNullable = GetBoolValue(row, "is_nullable"),
                 MaxLength = null, // sp_describe_first_result_set doesn't provide reliable length info
                 NumericPrecision = null, // sp_describe_first_result_set doesn't provide reliable precision info  

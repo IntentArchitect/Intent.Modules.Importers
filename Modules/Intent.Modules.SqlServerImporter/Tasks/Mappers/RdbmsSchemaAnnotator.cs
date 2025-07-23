@@ -152,39 +152,39 @@ internal static class RdbmsSchemaAnnotator
             return attribute.TypeReference.TypeId switch
             {
                 Constants.TypeDefinitions.CommonTypes.String => true, // Column types for strings are handled by "Text Constraints" stereotype
-                Constants.TypeDefinitions.CommonTypes.Byte when column.DataType.ToLower() == "tinyint" => true,
-                Constants.TypeDefinitions.CommonTypes.Bool when column.DataType.ToLower() == "bit" => true,
-                Constants.TypeDefinitions.CommonTypes.Binary when column.DataType.ToLower() == "varbinary" => true,
-                Constants.TypeDefinitions.CommonTypes.Short when column.DataType.ToLower() == "smallint" => true,
-                Constants.TypeDefinitions.CommonTypes.Long when column.DataType.ToLower() == "bigint" => true,
-                Constants.TypeDefinitions.CommonTypes.Int when column.DataType.ToLower() == "int" => true,
-                Constants.TypeDefinitions.CommonTypes.Decimal when column.DataType.ToLower() == "decimal" => true,
-                Constants.TypeDefinitions.CommonTypes.Datetime when column.DataType.ToLower() == "datetime2" => true,
-                Constants.TypeDefinitions.CommonTypes.Date when column.DataType.ToLower() == "date" => true,
-                Constants.TypeDefinitions.CommonTypes.Guid when column.DataType.ToLower() == "uniqueidentifier" => true,
-                Constants.TypeDefinitions.CommonTypes.DatetimeOffset when column.DataType.ToLower() == "datetimeoffset" => true,
-                Constants.TypeDefinitions.CommonTypes.TimeSpan when column.DataType.ToLower() == "time" => true,
+                Constants.TypeDefinitions.CommonTypes.Byte when column.DbDataType.ToLower() == "tinyint" => true,
+                Constants.TypeDefinitions.CommonTypes.Bool when column.DbDataType.ToLower() == "bit" => true,
+                Constants.TypeDefinitions.CommonTypes.Binary when column.DbDataType.ToLower() == "varbinary" => true,
+                Constants.TypeDefinitions.CommonTypes.Short when column.DbDataType.ToLower() == "smallint" => true,
+                Constants.TypeDefinitions.CommonTypes.Long when column.DbDataType.ToLower() == "bigint" => true,
+                Constants.TypeDefinitions.CommonTypes.Int when column.DbDataType.ToLower() == "int" => true,
+                Constants.TypeDefinitions.CommonTypes.Decimal when column.DbDataType.ToLower() == "decimal" => true,
+                Constants.TypeDefinitions.CommonTypes.Datetime when column.DbDataType.ToLower() == "datetime2" => true,
+                Constants.TypeDefinitions.CommonTypes.Date when column.DbDataType.ToLower() == "date" => true,
+                Constants.TypeDefinitions.CommonTypes.Guid when column.DbDataType.ToLower() == "uniqueidentifier" => true,
+                Constants.TypeDefinitions.CommonTypes.DatetimeOffset when column.DbDataType.ToLower() == "datetimeoffset" => true,
+                Constants.TypeDefinitions.CommonTypes.TimeSpan when column.DbDataType.ToLower() == "time" => true,
                 _ => false
             };
         }
 
         static string GetColumnTypeString(ColumnSchema column)
         {
-            return column.DataType.ToLower() switch
+            return column.DbDataType.ToLower() switch
             {
                 "varbinary" when column.MaxLength == -1 => "varbinary(max)",
                 "varchar" when column.MaxLength == -1 => "varchar(max)",
                 "nvarchar" when column.MaxLength == -1 => "nvarchar(max)",
                 "varchar" or "nvarchar" or "varbinary" when column.MaxLength > 0 => 
-                    $"{column.DataType.ToLower()}({column.MaxLength})",
-                _ => column.DataType.ToLower()
+                    $"{column.DbDataType.ToLower()}({column.MaxLength})",
+                _ => column.DbDataType.ToLower()
             };
         }
     }
 
     public static void ApplyTextConstraint(ColumnSchema column, ElementPersistable attribute)
     {
-        var dataType = column.NormalizedDataType.ToLower();
+        var dataType = column.LanguageDataType.ToLower();
         if (dataType != "varchar" &&
             dataType != "nvarchar" &&
             dataType != "text" &&
@@ -213,7 +213,7 @@ internal static class RdbmsSchemaAnnotator
             stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
             stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.TextConstraints.PropertyId.SqlDataType, prop =>
             {
-                string value = column.DataType.ToUpper();
+                string value = column.DbDataType.ToUpper();
                 if (value.EndsWith("MAX")) { value = value.Substring(0, value.Length - 3); }                              
                 prop.Name = Constants.Stereotypes.Rdbms.TextConstraints.PropertyId.SqlDataTypeName;
                 prop.Value = value;
@@ -226,7 +226,7 @@ internal static class RdbmsSchemaAnnotator
             stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.TextConstraints.PropertyId.IsUnicode, prop =>
             {
                 prop.Name = Constants.Stereotypes.Rdbms.TextConstraints.PropertyId.IsUnicodeName;
-                var dataType = column.DataType.ToLower();
+                var dataType = column.DbDataType.ToLower();
                 prop.Value = dataType == "nvarchar" || dataType == "ntext" ? "true" : "false";
             });
         }
@@ -234,7 +234,7 @@ internal static class RdbmsSchemaAnnotator
 
     public static void ApplyDecimalConstraint(ColumnSchema column, ElementPersistable attribute)
     {
-        if (column.NormalizedDataType.ToLower() != "decimal")
+        if (column.LanguageDataType.ToLower() != "decimal")
         {
             return;
         }

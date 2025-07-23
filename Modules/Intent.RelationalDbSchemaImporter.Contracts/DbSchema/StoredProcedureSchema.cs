@@ -39,11 +39,11 @@ public class StoredProcedureParameterSchema
     /// <summary>
     /// The data type of the parameter.
     /// </summary>
-    public string DataType { get; set; } = string.Empty;
+    public string DbDataType { get; set; } = string.Empty;
     /// <summary>
     /// Normalized to C# type representation (e.g., "string", "int", "datetime") for Intent type mapping.
     /// </summary>
-    public string NormalizedDataType { get; set; } = string.Empty;
+    public string LanguageDataType { get; set; } = string.Empty;
     /// <summary>
     /// Whether the parameter is an output parameter.
     /// </summary>
@@ -78,11 +78,11 @@ public class ResultSetColumnSchema
     /// <summary>
     /// The data type of the column.
     /// </summary>
-    public string DataType { get; set; } = string.Empty;
+    public string DbDataType { get; set; } = string.Empty;
     /// <summary>
     /// Normalized to C# type representation (e.g., "string", "int", "datetime") for Intent type mapping.
     /// </summary>
-    public string NormalizedDataType { get; set; } = string.Empty;
+    public string LanguageDataType { get; set; } = string.Empty;
     /// <summary>
     /// Whether the column is nullable.
     /// </summary>
