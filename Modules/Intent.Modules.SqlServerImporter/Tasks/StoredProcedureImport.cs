@@ -42,31 +42,36 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
 
     protected override ExecuteResult ExecuteModuleTask(RepositoryImportModel importModel)
     {
-        PrepareInputModel(importModel);
-        
-        SettingsHelper.PersistSettings(importModel);
-
         var executionResult = new ExecuteResult();
-        var result = ImporterTool.Run<ImportSchemaResult>("import-schema", importModel);
+        try
+        {
+            PrepareInputModel(importModel);
+            
+            var result = ImporterTool.Run<ImportSchemaResult>("import-schema", importModel);
 
-        executionResult.Errors.AddRange(result.Errors);
-        executionResult.Warnings.AddRange(result.Warnings);
-        
-        if (executionResult.Errors.Count > 0 || result.Result?.SchemaData == null)
-        {
-            return executionResult;
-        }
+            executionResult.Errors.AddRange(result.Errors);
+            executionResult.Warnings.AddRange(result.Warnings);
 
-        var mappingResult = ApplySchemaMapping(importModel, result.Result);
-        if (mappingResult.IsSuccessful)
-        {
-            return executionResult;
+            if (executionResult.Errors.Count > 0 || result.Result?.SchemaData == null)
+            {
+                return executionResult;
+            }
+
+            var mappingResult = ApplySchemaMapping(importModel, result.Result);
+            if (mappingResult.IsSuccessful)
+            {
+                return executionResult;
+            }
+
+            executionResult.Errors.Add($"Schema mapping failed: {mappingResult.Message}");
+            if (mappingResult.Exception != null)
+            {
+                executionResult.Errors.Add($"Exception: {mappingResult.Exception.Message}");
+            }
         }
-        
-        executionResult.Errors.Add($"Schema mapping failed: {mappingResult.Message}");
-        if (mappingResult.Exception != null)
+        finally
         {
-            executionResult.Errors.Add($"Exception: {mappingResult.Exception.Message}");
+            SettingsHelper.PersistSettings(importModel);
         }
 
         return executionResult;
