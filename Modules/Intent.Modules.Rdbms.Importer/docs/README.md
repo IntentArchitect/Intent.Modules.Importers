@@ -1,6 +1,6 @@
-﻿# Intent.SqlServerImporter
+﻿# Intent.Rdbms.Importer
 
-This module added to the Domain Designer allowing you to import / reverse engineer domain models from SQl Server databases.
+This module adds to the Domain Designer the ability to import / reverse engineer domain models from relational databases such as SQL Server and PostgreSQL.
 
 ## Domain Designer
 
@@ -18,7 +18,7 @@ The dialog is organized into collapsible sections for a better user experience:
 
 #### Connection String
 
-The connection string for the SQL Server database you wish to import.
+The connection string for the database you wish to import. Supports both SQL Server and PostgreSQL databases.
 
 #### Test Connection
 
