@@ -12,5 +12,5 @@ public class StoredProcListInputModel
 
 public class StoredProcListResultModel
 {
-    public Dictionary<string, string[]> StoredProcs { get; set; }
+    public Dictionary<string, string[]> StoredProcs { get; set; } = [];
 }

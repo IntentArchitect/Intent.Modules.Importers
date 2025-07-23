@@ -3,7 +3,7 @@ using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
 namespace Intent.Modules.SqlServerImporter.Tasks.Mappers;
 
-public class ImportConfiguration
+internal class ImportConfiguration
 {
     public string? ApplicationId { get; set; }
     public EntityNameConvention EntityNameConvention { get; set; } = EntityNameConvention.SingularEntity;

@@ -20,6 +20,80 @@ internal static class Constants
         }
     }
 
+    public static class SpecializationTypes
+    {
+        public static class Repository
+        {
+            public const string SpecializationType = "Repository";
+            public const string SpecializationTypeId = "96ffceb2-a70a-4b69-869b-0df436c470c3";
+        }
+
+        public static class StoredProcedure
+        {
+            public const string SpecializationType = "Stored Procedure";
+            public const string SpecializationTypeId = "575edd35-9438-406d-b0a7-b99d6f29b560";
+        }
+
+        public static class Operation
+        {
+            public const string SpecializationType = "Operation";
+            public const string SpecializationTypeId = "e030c97a-e066-40a7-8188-808c275df3cb";
+        }
+
+        public static class DataContract
+        {
+            public const string SpecializationType = "Data Contract";
+            public const string SpecializationTypeId = "4464fabe-c59e-4d90-81fc-c9245bdd1afd";
+        }
+
+        public static class StoredProcedureParameter
+        {
+            public const string SpecializationType = "Stored Procedure Parameter";
+            public const string SpecializationTypeId = "5823b192-eb03-47c8-90d8-5501c922e9a5";
+        }
+
+        public static class Parameter
+        {
+            public const string SpecializationType = "Parameter";
+            public const string SpecializationTypeId = "00208d20-469d-41cb-8501-768fd5eb796b";
+        }
+
+        public static class Index
+        {
+            public const string SpecializationType = "Index";
+            public const string SpecializationTypeId = "436e3afe-b4ef-481c-b803-0d1e7d263561";
+        }
+
+        public static class IndexColumn
+        {
+            public const string SpecializationType = "Index Column";
+            public const string SpecializationTypeId = "c5ba925d-5c08-4809-a848-585a0cd4ddd3";
+        }
+
+        public static class Folder
+        {
+            public const string SpecializationType = "Folder";
+            public const string SpecializationTypeId = "4d95d53a-8855-4f35-9820-3106413fec04";
+        }
+
+        public static class Trigger
+        {
+            public const string SpecializationType = "Trigger";
+            public const string SpecializationTypeId = "5b7b5e77-e627-464b-a157-6d01f2042641";
+        }
+
+        public static class Association
+        {
+            public const string SpecializationType = "Association";
+            public const string SpecializationTypeId = "eaf9ed4e-0b61-4ac1-ba88-09f912c12087";
+        }
+
+        public static class Class
+        {
+            public const string SpecializationType = "Class";
+        }
+    }
+
     public static class TypeDefinitions
     {
         public static class CommonTypes

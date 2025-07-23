@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Intent.Engine;
 using Intent.Modules.SqlServerImporter.Tasks.Helpers;
 using Intent.Modules.SqlServerImporter.Tasks.Models;
 using Intent.Modules.SqlServerImporter.Tasks.Mappers;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.RelationalDbSchemaImporter.Contracts.Commands;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.RelationalDbSchemaImporter.Runner;
 
 namespace Intent.Modules.SqlServerImporter.Tasks;
@@ -109,10 +111,10 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
             }
 
             // Create configuration for our mappers
-            var config = DbSchemaToIntentMapper.CreateImportConfiguration(importModel);
+            var config = CreateImportConfiguration(importModel);
 
             // Create the schema mapper
-            var schemaMapper = new DbSchemaToIntentMapper(config);
+            var schemaMapper = new DbSchemaIntentMetadataMerger(config);
 
             // Create deduplication context for this import operation
             var deduplicationContext = new DeduplicationContext();
@@ -154,5 +156,23 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
         {
             inputModel.StoredProcedureType = "Default";
         }
+    }
+    
+    private static ImportConfiguration CreateImportConfiguration(DatabaseImportModel importModel)
+    {
+        return new ImportConfiguration
+        {
+            ApplicationId = importModel.ApplicationId,
+            ConnectionString = importModel.ConnectionString,
+            PackageFileName = importModel.PackageFileName,
+            ImportFilterFilePath = importModel.ImportFilterFilePath,
+            EntityNameConvention = Enum.Parse<EntityNameConvention>(importModel.EntityNameConvention),
+            TableStereotype = Enum.Parse<TableStereotype>(importModel.TableStereotype),
+            TypesToExport = importModel.TypesToExport.Select(Enum.Parse<ExportType>).ToHashSet(),
+            StoredProcedureType = string.IsNullOrWhiteSpace(importModel.StoredProcedureType)
+                ? StoredProcedureType.Default
+                : Enum.Parse<StoredProcedureType>(importModel.StoredProcedureType),
+            DatabaseType = importModel.DatabaseType
+        };
     }
 }

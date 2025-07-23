@@ -6,6 +6,7 @@ using Intent.Modules.SqlServerImporter.Tasks.Models;
 using Intent.Modules.SqlServerImporter.Tasks.Mappers;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.RelationalDbSchemaImporter.Contracts.Commands;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.RelationalDbSchemaImporter.Runner;
 
 namespace Intent.Modules.SqlServerImporter.Tasks;
@@ -117,10 +118,10 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
             }
 
             // Create configuration for our mappers
-            var config = DbSchemaToIntentMapper.CreateImportConfiguration(importModel);
+            var config = CreateImportConfiguration(importModel);
 
             // Create the schema mapper
-            var schemaMapper = new DbSchemaToIntentMapper(config);
+            var schemaMapper = new DbSchemaIntentMetadataMerger(config);
 
             // Create deduplication context for this import operation
             var deduplicationContext = new DeduplicationContext();
@@ -167,5 +168,24 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
         {
             importModel.StoredProcedureType = "Default";
         }
+    }
+    
+    private static ImportConfiguration CreateImportConfiguration(RepositoryImportModel importModel)
+    {
+        return new ImportConfiguration
+        {
+            ApplicationId = importModel.ApplicationId,
+            ConnectionString = importModel.ConnectionString,
+            PackageFileName = importModel.PackageFileName,
+            RepositoryElementId = importModel.RepositoryElementId,
+            StoredProcNames = importModel.StoredProcNames,
+            EntityNameConvention = Enum.Parse<EntityNameConvention>(importModel.EntityNameConvention),
+            TableStereotype = Enum.Parse<TableStereotype>(importModel.TableStereotype),
+            TypesToExport = importModel.TypesToExport.Select(Enum.Parse<ExportType>).ToHashSet(),
+            StoredProcedureType = string.IsNullOrWhiteSpace(importModel.StoredProcedureType)
+                ? StoredProcedureType.Default
+                : Enum.Parse<StoredProcedureType>(importModel.StoredProcedureType),
+            DatabaseType = importModel.DatabaseType ?? throw new Exception("Database type is required for repository import.")
+        };
     }
 }
