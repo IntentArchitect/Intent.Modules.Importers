@@ -124,7 +124,7 @@ internal class SchemaToIntentMapper
                         repositoryElement.ChildElements.Add(procElement);
 
                         // Apply stored procedure stereotypes
-                        RdbmsSchemaAnnotator.ApplyStoredProcedureSettings(storedProc, procElement);
+                        RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, procElement);
 
                         result.AddedElements.Add(procElement);
                     }
@@ -138,7 +138,7 @@ internal class SchemaToIntentMapper
                         repositoryElement.ChildElements.Add(procElement);
 
                         // Apply stored procedure stereotypes
-                        RdbmsSchemaAnnotator.ApplyStoredProcedureSettings(storedProc, procElement);
+                        RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, procElement);
 
                         result.AddedElements.Add(procElement);
                     }

@@ -335,7 +335,7 @@ internal static class RdbmsSchemaAnnotator
         }
     }
 
-    public static void ApplyStoredProcedureSettings(StoredProcedureSchema sqlStoredProc, ElementPersistable elementStoredProc)
+    public static void ApplyStoredProcedureElementSettings(StoredProcedureSchema sqlStoredProc, ElementPersistable elementStoredProc)
     {
         var stereotype = elementStoredProc.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedure.DefinitionId, InitStoredProcStereotype);
         if (sqlStoredProc.Name != elementStoredProc.Name)
@@ -368,5 +368,10 @@ internal static class RdbmsSchemaAnnotator
             stereotype.DefinitionPackageName = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageName;
             stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureParameter.PropertyId.IsOutputParam, prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureParameter.PropertyId.IsOutputParamName);
         }
+    }
+
+    public static void ApplyStoredProcedureOperationSettings(StoredProcedureSchema sqlStoredProc, ElementPersistable elementStoredProc)
+    {
+        // Nothing yet
     }
 }
