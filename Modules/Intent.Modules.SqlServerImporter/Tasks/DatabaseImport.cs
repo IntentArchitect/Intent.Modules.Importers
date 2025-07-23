@@ -37,42 +37,50 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
     protected override ExecuteResult ExecuteModuleTask(DatabaseImportModel importModel)
     {
         PrepareInputModel(importModel);
+        
+        SettingsHelper.PersistSettings(importModel);
 
         var executionResult = new ExecuteResult();
-        // Step 1: Run CLI tool to get both package and schema data
         var result = ImporterTool.Run<ImportSchemaResult>("import-schema", importModel);
-
-        if (result.Errors.Count > 0)
-        {
-            executionResult.Errors.AddRange(result.Errors);
-            executionResult.Warnings.AddRange(result.Warnings);
-            return executionResult;
-        }
-
-        // Step 2: If we have schema data, use our new mapping infrastructure
-        if (result.Result?.SchemaData != null)
-        {
-            var mappingResult = ApplySchemaMapping(importModel, result.Result);
-            if (!mappingResult.IsSuccessful)
-            {
-                executionResult.Errors.Add($"Schema mapping failed: {mappingResult.Message}");
-                if (mappingResult.Exception != null)
-                {
-                    executionResult.Errors.Add($"Exception: {mappingResult.Exception.Message}");
-                }
-            }
-        }
-
-        // Step 3: Persist settings if successful
-        if (result.Errors.Count == 0)
-        {
-            SettingsHelper.PersistSettings(importModel);
-        }
 
         executionResult.Errors.AddRange(result.Errors);
         executionResult.Warnings.AddRange(result.Warnings);
+        
+        if (executionResult.Errors.Count > 0 || result.Result?.SchemaData is null)
+        {
+            return executionResult;
+        }
+
+        var mappingResult = ApplySchemaMapping(importModel, result.Result);
+        if (mappingResult.IsSuccessful)
+        {
+            return executionResult;
+        }
+        
+        executionResult.Errors.Add($"Schema mapping failed: {mappingResult.Message}");
+        if (mappingResult.Exception != null)
+        {
+            executionResult.Errors.Add($"Exception: {mappingResult.Exception.Message}");
+        }
 
         return executionResult;
+    }
+    
+    private void PrepareInputModel(DatabaseImportModel inputModel)
+    {
+        if (!_metadataManager.TryGetApplicationPackage(inputModel.ApplicationId, inputModel.PackageId, out var package, out _))
+        {
+            return;
+        }
+
+        // Making required changes for the underlying CLI tool
+        
+        inputModel.PackageFileName = package.FileLocation;
+
+        if (string.IsNullOrWhiteSpace(inputModel.StoredProcedureType))
+        {
+            inputModel.StoredProcedureType = "Default";
+        }
     }
 
     private PackageUpdateResult ApplySchemaMapping(DatabaseImportModel importModel, ImportSchemaResult importResult)
@@ -138,23 +146,6 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
                 Message = $"Error during schema mapping: {ex.Message}",
                 Exception = ex
             };
-        }
-    }
-
-    private void PrepareInputModel(DatabaseImportModel inputModel)
-    {
-        if (!_metadataManager.TryGetApplicationPackage(inputModel.ApplicationId, inputModel.PackageId, out var package, out _))
-        {
-            return;
-        }
-
-        // Making required changes for the underlying CLI tool
-        
-        inputModel.PackageFileName = package.FileLocation;
-
-        if (string.IsNullOrWhiteSpace(inputModel.StoredProcedureType))
-        {
-            inputModel.StoredProcedureType = "Default";
         }
     }
     
