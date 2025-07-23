@@ -23,6 +23,17 @@ internal static class RdbmsSchemaAnnotator
         //For now always set this in case generated table names don't match the generated names due to things like pluralization
         stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Table.PropertyId.Name).Value = table.Name;
         return;
+        
+        static bool RequiresTableStereoType(ImportConfiguration config, TableSchema table, ElementPersistable @class)
+        {
+            return config.TableStereotype switch
+            {
+                TableStereotype.Always => true,
+                TableStereotype.WhenDifferent when config.EntityNameConvention is EntityNameConvention.MatchTable => @class.Name != table.Name,
+                TableStereotype.WhenDifferent when config.EntityNameConvention is EntityNameConvention.SingularEntity => @class.Name.Singularize() != table.Name,
+                _ => false
+            };
+        }
 
         static void InitTableStereotype(StereotypePersistable stereotype)
         {
@@ -38,17 +49,6 @@ internal static class RdbmsSchemaAnnotator
                 prop.Name = Constants.Stereotypes.Rdbms.Table.PropertyId.SchemaName;
             });
         }
-    }
-
-    private static bool RequiresTableStereoType(ImportConfiguration config, TableSchema table, ElementPersistable @class)
-    {
-        return config.TableStereotype switch
-        {
-            TableStereotype.Always => true,
-            TableStereotype.WhenDifferent when config.EntityNameConvention is EntityNameConvention.MatchTable => @class.Name != table.Name,
-            TableStereotype.WhenDifferent when config.EntityNameConvention is EntityNameConvention.SingularEntity => @class.Name.Pluralize() != table.Name,
-            _ => false
-        };
     }
 
     public static void ApplyViewDetails(ViewSchema view, ElementPersistable @class)
@@ -184,7 +184,7 @@ internal static class RdbmsSchemaAnnotator
 
     public static void ApplyTextConstraint(ColumnSchema column, ElementPersistable attribute)
     {
-        var dataType = column.DataType.ToLower();
+        var dataType = column.NormalizedDataType.ToLower();
         if (dataType != "varchar" &&
             dataType != "nvarchar" &&
             dataType != "text" &&
@@ -234,7 +234,7 @@ internal static class RdbmsSchemaAnnotator
 
     public static void ApplyDecimalConstraint(ColumnSchema column, ElementPersistable attribute)
     {
-        if (column.DataType.ToLower() != "decimal")
+        if (column.NormalizedDataType.ToLower() != "decimal")
         {
             return;
         }
