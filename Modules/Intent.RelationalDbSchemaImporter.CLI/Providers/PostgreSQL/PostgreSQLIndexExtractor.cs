@@ -55,8 +55,11 @@ internal class PostgreSQLIndexExtractor : DefaultIndexExtractor
             LEFT JOIN pg_attribute a ON a.attrelid = c.oid 
                 AND a.attnum = ANY(ix.indkey[0:array_length(ix.indkey,1)-1])
                 AND a.attnum > 0
+            LEFT JOIN pg_constraint con ON con.conindid = ix.indexrelid
             WHERE i.schemaname = @schemaName
               AND i.tablename = @tableName
+              AND ix.indisprimary = FALSE  -- Exclude primary key indexes
+              AND (con.contype IS NULL OR con.contype NOT IN ('p', 'f'))  -- Exclude PK and FK constraint indexes
             GROUP BY i.indexname, i.indexdef, ix.indisunique, ix.indisclustered, 
                      ix.indpred, ix.indkey, ix.indoption
             ORDER BY i.indexname;

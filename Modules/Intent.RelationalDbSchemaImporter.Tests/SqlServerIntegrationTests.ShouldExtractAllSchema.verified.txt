@@ -380,19 +380,6 @@
               IsIncluded: false
             }
           ]
-        },
-        {
-          Name: IX_InventoryTransactions_ProductID,
-          IsUnique: false,
-          IsClustered: false,
-          HasFilter: false,
-          Columns: [
-            {
-              Name: ProductID,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
         }
       ],
       ForeignKeys: [
@@ -557,34 +544,6 @@
             Expression: (([Quantity]*[UnitPrice])*((1)-[Discount])),
             IsPersisted: true
           }
-        }
-      ],
-      Indexes: [
-        {
-          Name: IX_OrderDetails_OrderID,
-          IsUnique: false,
-          IsClustered: false,
-          HasFilter: false,
-          Columns: [
-            {
-              Name: OrderID,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
-          Name: IX_OrderDetails_ProductID,
-          IsUnique: false,
-          IsClustered: false,
-          HasFilter: false,
-          Columns: [
-            {
-              Name: ProductID,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
         }
       ],
       ForeignKeys: [
@@ -819,19 +778,6 @@
           Columns: [
             {
               Name: TrackingNumber,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
-          Name: IX_Orders_UserID,
-          IsUnique: false,
-          IsClustered: false,
-          HasFilter: false,
-          Columns: [
-            {
-              Name: UserID,
               IsDescending: false,
               IsIncluded: false
             }
@@ -1340,19 +1286,6 @@
       ],
       Indexes: [
         {
-          Name: IX_ProductReviews_ProductID,
-          IsUnique: false,
-          IsClustered: false,
-          HasFilter: false,
-          Columns: [
-            {
-              Name: ProductID,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
           Name: IX_ProductReviews_Rating,
           IsUnique: false,
           IsClustered: false,
@@ -1360,19 +1293,6 @@
           Columns: [
             {
               Name: Rating,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
-          Name: IX_ProductReviews_UserID,
-          IsUnique: false,
-          IsClustered: false,
-          HasFilter: false,
-          Columns: [
-            {
-              Name: UserID,
               IsDescending: false,
               IsIncluded: false
             }
@@ -1574,19 +1494,6 @@
       ],
       Indexes: [
         {
-          Name: IX_Products_CategoryID,
-          IsUnique: false,
-          IsClustered: false,
-          HasFilter: false,
-          Columns: [
-            {
-              Name: CategoryID,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
           Name: IX_Products_Price,
           IsUnique: false,
           IsClustered: false,
@@ -1620,19 +1527,6 @@
           Columns: [
             {
               Name: UnitsInStock,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
-          Name: IX_Products_SupplierID,
-          IsUnique: false,
-          IsClustered: false,
-          HasFilter: false,
-          Columns: [
-            {
-              Name: SupplierID,
               IsDescending: false,
               IsIncluded: false
             }
@@ -1815,34 +1709,6 @@
           DefaultConstraint: {
             Text: (getdate())
           }
-        }
-      ],
-      Indexes: [
-        {
-          Name: IX_ShoppingCart_ProductID,
-          IsUnique: false,
-          IsClustered: false,
-          HasFilter: false,
-          Columns: [
-            {
-              Name: ProductID,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
-          Name: IX_ShoppingCart_UserID,
-          IsUnique: false,
-          IsClustered: false,
-          HasFilter: false,
-          Columns: [
-            {
-              Name: UserID,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
         }
       ],
       ForeignKeys: [

@@ -83,20 +83,6 @@
       ],
       Indexes: [
         {
-          Name: audit_log_pkey,
-          IsUnique: true,
-          IsClustered: false,
-          HasFilter: false,
-          FilterDefinition: ,
-          Columns: [
-            {
-              Name: audit_id,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
           Name: idx_audit_log_date,
           IsUnique: false,
           IsClustered: false,
@@ -175,7 +161,6 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
-          FilterDefinition: ,
           Columns: [
             {
               Name: id,
@@ -276,20 +261,6 @@
               IsIncluded: false
             }
           ]
-        },
-        {
-          Name: categories_pkey,
-          IsUnique: true,
-          IsClustered: false,
-          HasFilter: false,
-          FilterDefinition: ,
-          Columns: [
-            {
-              Name: category_id,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
         }
       ],
       ForeignKeys: [
@@ -347,7 +318,6 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
-          FilterDefinition: ,
           Columns: [
             {
               Name: fktableid,
@@ -473,20 +443,6 @@
           Columns: [
             {
               Name: product_id,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
-          Name: inventory_transactions_pkey,
-          IsUnique: true,
-          IsClustered: false,
-          HasFilter: false,
-          FilterDefinition: ,
-          Columns: [
-            {
-              Name: transaction_id,
               IsDescending: false,
               IsIncluded: false
             }
@@ -621,20 +577,6 @@
           Columns: [
             {
               Name: product_id,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
-          Name: order_details_pkey,
-          IsUnique: true,
-          IsClustered: false,
-          HasFilter: false,
-          FilterDefinition: ,
-          Columns: [
-            {
-              Name: order_detail_id,
               IsDescending: false,
               IsIncluded: false
             }
@@ -896,20 +838,6 @@
               IsIncluded: false
             }
           ]
-        },
-        {
-          Name: orders_pkey,
-          IsUnique: true,
-          IsClustered: false,
-          HasFilter: false,
-          FilterDefinition: ,
-          Columns: [
-            {
-              Name: order_id,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
         }
       ],
       ForeignKeys: [
@@ -1061,7 +989,6 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
-          FilterDefinition: ,
           Columns: [
             {
               Name: payment_method_id,
@@ -1188,7 +1115,6 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
-          FilterDefinition: ,
           Columns: [
             {
               Name: payment_id,
@@ -1302,7 +1228,6 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
-          FilterDefinition: ,
           Columns: [
             {
               Name: primarytableid,
@@ -1508,20 +1433,6 @@
           Columns: [
             {
               Name: user_id,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
-          Name: product_reviews_pkey,
-          IsUnique: true,
-          IsClustered: false,
-          HasFilter: false,
-          FilterDefinition: ,
-          Columns: [
-            {
-              Name: review_id,
               IsDescending: false,
               IsIncluded: false
             }
@@ -1802,20 +1713,6 @@
           ]
         },
         {
-          Name: products_pkey,
-          IsUnique: true,
-          IsClustered: false,
-          HasFilter: false,
-          FilterDefinition: ,
-          Columns: [
-            {
-              Name: product_id,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
           Name: products_sku_key,
           IsUnique: true,
           IsClustered: false,
@@ -1910,7 +1807,6 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
-          FilterDefinition: ,
           Columns: [
             {
               Name: id,
@@ -2038,20 +1934,6 @@
           Columns: [
             {
               Name: user_id,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
-          Name: shopping_cart_pkey,
-          IsUnique: true,
-          IsClustered: false,
-          HasFilter: false,
-          FilterDefinition: ,
-          Columns: [
-            {
-              Name: cart_id,
               IsDescending: false,
               IsIncluded: false
             }
@@ -2222,7 +2104,6 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
-          FilterDefinition: ,
           Columns: [
             {
               Name: supplier_id,
@@ -2353,7 +2234,6 @@
           IsUnique: true,
           IsClustered: false,
           HasFilter: false,
-          FilterDefinition: ,
           Columns: [
             {
               Name: address_id,
@@ -2550,20 +2430,6 @@
           Columns: [
             {
               Name: email,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
-          Name: users_pkey,
-          IsUnique: true,
-          IsClustered: false,
-          HasFilter: false,
-          FilterDefinition: ,
-          Columns: [
-            {
-              Name: user_id,
               IsDescending: false,
               IsIncluded: false
             }

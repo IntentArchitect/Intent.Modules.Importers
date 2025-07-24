@@ -42,22 +42,56 @@ internal class SqlServerIndexExtractor : DefaultIndexExtractor
         const string sql =
             """
             SELECT 
-                i.name AS IndexName,
-                i.is_unique AS IsUnique,
-                i.type_desc AS IndexType,
-                i.is_primary_key AS IsPrimaryKey,
-                i.has_filter AS HasFilter,
-                i.filter_definition AS FilterDefinition,
-                CASE WHEN i.type = 1 THEN 1 ELSE 0 END AS IsClustered
+                i.name AS IndexName,                    -- User-defined name of the index
+                i.is_unique AS IsUnique,                -- Whether index enforces uniqueness
+                i.type_desc AS IndexType,               -- Type: CLUSTERED, NONCLUSTERED, etc.
+                i.is_primary_key AS IsPrimaryKey,       -- Whether this supports a PK constraint
+                i.has_filter AS HasFilter,              -- Whether index has a filter condition
+                i.filter_definition AS FilterDefinition, -- The actual filter expression (if any)
+                CASE WHEN i.type = 1 THEN 1 ELSE 0 END AS IsClustered -- Boolean: 1=Clustered, 0=Non-clustered
             FROM sys.indexes i
-            INNER JOIN sys.tables t ON i.object_id = t.object_id
-            INNER JOIN sys.schemas s ON t.schema_id = s.schema_id
-            WHERE s.name = @SchemaName 
-              AND t.name = @TableName
-              AND i.index_id > 0  -- Exclude heap (index_id = 0)
-              AND i.name IS NOT NULL  -- Exclude unnamed indexes
-              AND i.is_primary_key = 0  -- Exclude primary key constraints (handled at column level)
-            ORDER BY i.name
+                -- Join to get table information
+                INNER JOIN sys.tables t ON i.object_id = t.object_id
+                -- Join to get schema information  
+                INNER JOIN sys.schemas s ON t.schema_id = s.schema_id
+            WHERE 
+                -- Filter to specific schema and table
+                s.name = @SchemaName 
+                AND t.name = @TableName
+                
+                -- Exclude heap structure (index_id = 0 represents table without clustered index)
+                AND i.index_id > 0  
+                
+                -- Exclude unnamed system indexes (statistics, etc.)
+                AND i.name IS NOT NULL  
+                
+                -- Exclude primary key constraint indexes (assuming these are handled elsewhere)
+                AND i.is_primary_key = 0  
+                
+                -- MAIN FILTER: Exclude indexes where ALL key columns are foreign key columns
+                AND NOT EXISTS (
+                    SELECT 1
+                    FROM sys.index_columns ic
+                        -- Join index columns to foreign key columns to identify FK relationships
+                        INNER JOIN sys.foreign_key_columns fkc 
+                            ON ic.object_id = fkc.parent_object_id     -- Same table
+                            AND ic.column_id = fkc.parent_column_id    -- Same column
+                    WHERE 
+                        ic.object_id = i.object_id      -- Current index's table
+                        AND ic.index_id = i.index_id    -- Current index
+                        AND ic.is_included_column = 0   -- Only key columns (not included columns)
+                    
+                    -- This HAVING clause ensures ALL key columns in the index are FK columns
+                    -- If count of FK columns = count of total key columns, then exclude this index
+                    HAVING COUNT(*) = (
+                        SELECT COUNT(*)
+                        FROM sys.index_columns ic2
+                        WHERE ic2.object_id = i.object_id 
+                            AND ic2.index_id = i.index_id
+                            AND ic2.is_included_column = 0  -- Only count key columns
+                    )
+                )
+            ORDER BY i.name;
             """;
 
         await using var command = connection.CreateCommand();
