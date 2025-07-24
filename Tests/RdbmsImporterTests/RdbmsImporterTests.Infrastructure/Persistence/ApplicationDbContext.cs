@@ -7,10 +7,12 @@ using RdbmsImporterTests.Application.Common.Interfaces;
 using RdbmsImporterTests.Domain.Common;
 using RdbmsImporterTests.Domain.Common.Interfaces;
 using RdbmsImporterTests.Domain.Contracts.Dbo;
+using RdbmsImporterTests.Domain.Contracts.Public;
 using RdbmsImporterTests.Domain.Entities.Dbo;
 using RdbmsImporterTests.Domain.Entities.Schema2;
 using RdbmsImporterTests.Domain.Entities.Views;
 using RdbmsImporterTests.Infrastructure.Persistence.Configurations.Dbo;
+using RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public;
 using RdbmsImporterTests.Infrastructure.Persistence.Configurations.Schema2;
 using RdbmsImporterTests.Infrastructure.Persistence.Configurations.Views;
 
@@ -31,6 +33,18 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
         public DbSet<GetCustomerOrdersResponse> GetCustomerOrdersResponses { get; set; }
 
         public DbSet<GetOrderItemDetailsResponse> GetOrderItemDetailsResponses { get; set; }
+        public DbSet<Domain.Contracts.Public.GetCustomerOrdersResponse> Domain.Contracts.Public.GetCustomerOrdersResponses { get; set; }
+        public DbSet<Domain.Contracts.Public.GetOrderItemDetailsResponse> Domain.Contracts.Public.GetOrderItemDetailsResponses { get; set; }
+        public DbSet<UuidGenerateV1Response> UuidGenerateV1Responses { get; set; }
+        public DbSet<UuidGenerateV1mcResponse> UuidGenerateV1mcResponses { get; set; }
+        public DbSet<UuidGenerateV3Response> UuidGenerateV3Responses { get; set; }
+        public DbSet<UuidGenerateV4Response> UuidGenerateV4Responses { get; set; }
+        public DbSet<UuidGenerateV5Response> UuidGenerateV5Responses { get; set; }
+        public DbSet<UuidNilResponse> UuidNilResponses { get; set; }
+        public DbSet<UuidNsDnsResponse> UuidNsDnsResponses { get; set; }
+        public DbSet<UuidNsOidResponse> UuidNsOidResponses { get; set; }
+        public DbSet<UuidNsUrlResponse> UuidNsUrlResponses { get; set; }
+        public DbSet<UuidNsX500Response> UuidNsX500Responses { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<AspNetRole> AspNetRoles { get; set; }
         public DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; }
@@ -75,23 +89,35 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
             ConfigureModel(modelBuilder);
             modelBuilder.ApplyConfiguration(new GetCustomerOrdersResponseConfiguration());
             modelBuilder.ApplyConfiguration(new GetOrderItemDetailsResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new AddressConfiguration());
-            modelBuilder.ApplyConfiguration(new AspNetRoleConfiguration());
-            modelBuilder.ApplyConfiguration(new AspNetRoleClaimConfiguration());
-            modelBuilder.ApplyConfiguration(new AspNetUserConfiguration());
-            modelBuilder.ApplyConfiguration(new AspNetUserClaimConfiguration());
-            modelBuilder.ApplyConfiguration(new AspNetUserLoginConfiguration());
-            modelBuilder.ApplyConfiguration(new AspNetUserRoleConfiguration());
-            modelBuilder.ApplyConfiguration(new AspNetUserTokenConfiguration());
-            modelBuilder.ApplyConfiguration(new BrandConfiguration());
-            modelBuilder.ApplyConfiguration(new ChildConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Public.GetCustomerOrdersResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Public.GetOrderItemDetailsResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new UuidGenerateV1ResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new UuidGenerateV1mcResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new UuidGenerateV3ResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new UuidGenerateV4ResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new UuidGenerateV5ResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new UuidNilResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new UuidNsDnsResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new UuidNsOidResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new UuidNsUrlResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new UuidNsX500ResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.AddressConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.AspNetRoleConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.AspNetRoleClaimConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.AspNetUserConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.AspNetUserClaimConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.AspNetUserLoginConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.AspNetUserRoleConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.AspNetUserTokenConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.BrandConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.ChildConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.Dbo.CustomerConfiguration());
-            modelBuilder.ApplyConfiguration(new LegacyTableConfiguration());
-            modelBuilder.ApplyConfiguration(new OrderConfiguration());
-            modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
-            modelBuilder.ApplyConfiguration(new ParentConfiguration());
-            modelBuilder.ApplyConfiguration(new PriceConfiguration());
-            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.LegacyTableConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.OrderItemConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.ParentConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.PriceConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.ProductConfiguration());
             modelBuilder.ApplyConfiguration(new BankConfiguration());
             modelBuilder.ApplyConfiguration(new BanksConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.Schema2.CustomerConfiguration());

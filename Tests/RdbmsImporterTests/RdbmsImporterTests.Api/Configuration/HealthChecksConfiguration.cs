@@ -19,6 +19,7 @@ namespace RdbmsImporterTests.Api.Configuration
         {
             var hcBuilder = services.AddHealthChecks();
             hcBuilder.AddSqlServer(configuration.GetConnectionString("DefaultConnection")!, name: "DefaultConnection", tags: new[] { "database", "SqlServer" });
+            hcBuilder.AddNpgSql(configuration.GetConnectionString("PostgresApp")!, name: "PostgresApp", tags: new[] { "database", "PostgreSql" });
 
             return services;
         }
