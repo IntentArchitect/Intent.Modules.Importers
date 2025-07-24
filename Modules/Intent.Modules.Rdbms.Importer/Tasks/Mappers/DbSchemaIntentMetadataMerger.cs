@@ -212,11 +212,17 @@ internal class DbSchemaIntentMetadataMerger
             foreach (var indexColumn in index.Columns)
             {
                 // Find the corresponding attribute in the class
-                var attribute = classElement.ChildElements.FirstOrDefault(attr =>
-                    attr.Name.Equals(indexColumn.Name, StringComparison.OrdinalIgnoreCase));
+                var attrColumnExternalRef = ModelNamingUtilities.GetColumnExternalReference(table.Schema, table.Name, indexColumn.Name);
+                var attribute = classElement.ChildElements.FirstOrDefault(attr => attr.ExternalReference == attrColumnExternalRef);
 
-                var indexColumnElement = IntentModelMapper.CreateIndexColumn(indexColumn, indexElement.Id, attribute?.Id, package);
-                indexElement.ChildElements.Add(indexColumnElement);
+                var indexColumnElement = indexElement.ChildElements
+                    .FirstOrDefault(x => x.ExternalReference == ModelNamingUtilities.GetIndexColumnExternalReference(indexColumn.Name)
+                                         || (x.Name == indexColumn.Name && x.SpecializationType == Constants.SpecializationTypes.IndexColumn.SpecializationType));
+                if (indexColumnElement is null)
+                {
+                    indexColumnElement = IntentModelMapper.CreateIndexColumn(indexColumn, indexElement.Id, attribute?.Id, package);
+                    indexElement.ChildElements.Add(indexColumnElement);
+                }
             }
         }
     }

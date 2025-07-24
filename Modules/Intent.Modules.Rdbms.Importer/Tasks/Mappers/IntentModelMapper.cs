@@ -464,6 +464,7 @@ internal static class IntentModelMapper
             SpecializationTypeId = Constants.SpecializationTypes.IndexColumn.SpecializationTypeId,
             Name = indexColumn.Name,
             Display = indexColumn.Name,
+            ExternalReference = ModelNamingUtilities.GetIndexColumnExternalReference(indexColumn.Name),
             IsAbstract = false,
             GenericTypes = [],
             IsMapped = mapping != null,

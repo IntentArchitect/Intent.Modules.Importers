@@ -309,4 +309,9 @@ internal static class ModelNamingUtilities
     {
         return $"schema:[{schemaName.ToLowerInvariant()}]";
     }
+
+    public static string GetIndexColumnExternalReference(string indexColumnName)
+    {
+        return indexColumnName.ToLowerInvariant();
+    }
 } 
