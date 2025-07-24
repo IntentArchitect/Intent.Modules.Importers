@@ -336,14 +336,14 @@ steps:
         Write-Host "Not applicable, skipped."
       }
 
-- task: DotNetCoreCLI@2
-  displayName: 'Push *.nupkg to nuget.org (Final Release)'
-  condition: and(succeeded(), in('True', variables.isMaster, variables.isHotfix))
-  inputs:
-    command: 'custom'
-    custom: 'nuget'
-    arguments: >
-      push $(Build.ArtifactStagingDirectory)/*.nupkg
-      -s https://api.nuget.org/v3/index.json
-      -k $(nuget-api-key-intentarchitect)
-      --skip-duplicate
+# - task: DotNetCoreCLI@2
+  # displayName: 'Push *.nupkg to nuget.org (Final Release)'
+  # condition: and(succeeded(), in('True', variables.isMaster, variables.isHotfix))
+  # inputs:
+    # command: 'custom'
+    # custom: 'nuget'
+    # arguments: >
+      # push $(Build.ArtifactStagingDirectory)/*.nupkg
+      # -s https://api.nuget.org/v3/index.json
+      # -k $(nuget-api-key-intentarchitect)
+      # --skip-duplicate
