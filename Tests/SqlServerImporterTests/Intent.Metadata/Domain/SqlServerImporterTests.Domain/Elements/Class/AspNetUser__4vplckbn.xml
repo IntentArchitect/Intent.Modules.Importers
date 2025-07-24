@@ -40,7 +40,6 @@
           <definitionPackageName>Intent.Metadata.RDBMS</definitionPackageName>
           <definitionPackageId>AF8F3810-745C-42A2-93C8-798860DC45B1</definitionPackageId>
           <properties>
-            <property name="4c1e3f7e-61d4-460d-bd20-c2edbc0c0e2e" display="Identity" value="false" isActive="true" />
             <property name="a7a5e921-18b9-43b4-8078-b4ac4e5dae6f" display="Data source" value="Default" isActive="true" />
           </properties>
         </stereotype>
@@ -571,7 +570,7 @@
         <mappingSettingsId>30f4278f-1d74-4e7e-bfdb-39c8e120f24c</mappingSettingsId>
         <autoSyncTypeReference>false</autoSyncTypeReference>
         <mappedPath>
-          <target id="114c5646-631e-4265-a4da-ac69fbae6566" name="AspNetUser" type="element" specialization="Class" />
+          <target id="114c5646-631e-4265-a4da-ac69fbae6566" name="AspNetUser" type="element" specialization="Class" specializationId="04e12b51-ed12-42a3-9667-a6aa81bb6d10" />
         </mappedPath>
       </mappedClass>
       <parentFolderId>114c5646-631e-4265-a4da-ac69fbae6566</parentFolderId>
@@ -604,7 +603,7 @@
             <mappingSettingsId>30f4278f-1d74-4e7e-bfdb-39c8e120f24c</mappingSettingsId>
             <autoSyncTypeReference>false</autoSyncTypeReference>
             <mappedPath>
-              <target id="94b8477e-2fa0-462d-b3d5-8a8728cd2068" name="NormalizedEmail" type="element" specialization="Attribute" />
+              <target id="94b8477e-2fa0-462d-b3d5-8a8728cd2068" name="NormalizedEmail" type="element" specialization="Attribute" specializationId="0090fb93-483e-41af-a11d-5ad2dc796adf" />
             </mappedPath>
           </mappedClass>
           <parentFolderId>ae2b5807-73b1-440b-8527-4a44a56916ec</parentFolderId>
@@ -640,7 +639,7 @@
         <mappingSettingsId>30f4278f-1d74-4e7e-bfdb-39c8e120f24c</mappingSettingsId>
         <autoSyncTypeReference>false</autoSyncTypeReference>
         <mappedPath>
-          <target id="114c5646-631e-4265-a4da-ac69fbae6566" name="AspNetUser" type="element" specialization="Class" />
+          <target id="114c5646-631e-4265-a4da-ac69fbae6566" name="AspNetUser" type="element" specialization="Class" specializationId="04e12b51-ed12-42a3-9667-a6aa81bb6d10" />
         </mappedPath>
       </mappedClass>
       <parentFolderId>114c5646-631e-4265-a4da-ac69fbae6566</parentFolderId>
@@ -673,7 +672,7 @@
             <mappingSettingsId>30f4278f-1d74-4e7e-bfdb-39c8e120f24c</mappingSettingsId>
             <autoSyncTypeReference>false</autoSyncTypeReference>
             <mappedPath>
-              <target id="f2938ebd-c95f-408c-92a9-9ad24f8afa38" name="NormalizedUserName" type="element" specialization="Attribute" />
+              <target id="f2938ebd-c95f-408c-92a9-9ad24f8afa38" name="NormalizedUserName" type="element" specialization="Attribute" specializationId="0090fb93-483e-41af-a11d-5ad2dc796adf" />
             </mappedPath>
           </mappedClass>
           <parentFolderId>083c5fe5-ca8e-419d-a9a5-103a99053b1e</parentFolderId>
