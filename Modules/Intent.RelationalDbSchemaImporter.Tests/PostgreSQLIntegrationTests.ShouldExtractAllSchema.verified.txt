@@ -2492,19 +2492,19 @@
       Parameters: [
         {
           Name: p_user_id,
-          DbDataType: int4,
+          DbDataType: integer,
           LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_product_id,
-          DbDataType: int4,
+          DbDataType: integer,
           LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_quantity,
-          DbDataType: int4,
+          DbDataType: integer,
           LanguageDataType: int,
           IsOutputParameter: false
         }
@@ -2515,9 +2515,21 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: bytea,
           LanguageDataType: binary,
+          IsOutputParameter: false
+        },
+        {
+          Name: arg1,
+          DbDataType: text[],
+          LanguageDataType: string[],
+          IsOutputParameter: false
+        },
+        {
+          Name: arg2,
+          DbDataType: text[],
+          LanguageDataType: string[],
           IsOutputParameter: false
         }
       ],
@@ -2525,74 +2537,6 @@
         {
           Name: armor,
           DbDataType: text,
-          LanguageDataType: string,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: armor,
-      Schema: public,
-      Parameters: [
-        {
-          Name: param1,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        },
-        {
-          Name: param2,
-          DbDataType: _text,
-          LanguageDataType: string,
-          IsOutputParameter: false
-        },
-        {
-          Name: param3,
-          DbDataType: _text,
-          LanguageDataType: string,
-          IsOutputParameter: false
-        }
-      ],
-      ResultSetColumns: [
-        {
-          Name: armor,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: audit_trigger_function,
-      Schema: public,
-      ResultSetColumns: [
-        {
-          Name: audit_trigger_function,
-          DbDataType: trigger,
-          LanguageDataType: string,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: calculate_line_total,
-      Schema: public,
-      ResultSetColumns: [
-        {
-          Name: calculate_line_total,
-          DbDataType: trigger,
-          LanguageDataType: string,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: calculate_order_totals,
-      Schema: public,
-      ResultSetColumns: [
-        {
-          Name: calculate_order_totals,
-          DbDataType: trigger,
           LanguageDataType: string,
           IsNullable: true
         }
@@ -2603,13 +2547,13 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
         },
         {
-          Name: param2,
+          Name: arg1,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -2629,7 +2573,7 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -2649,19 +2593,19 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param2,
+          Name: arg1,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param3,
+          Name: arg2,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -2681,25 +2625,25 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param2,
+          Name: arg1,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param3,
+          Name: arg2,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param4,
+          Name: arg3,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -2719,39 +2663,13 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
         },
         {
-          Name: param2,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsOutputParameter: false
-        }
-      ],
-      ResultSetColumns: [
-        {
-          Name: digest,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: digest,
-      Schema: public,
-      Parameters: [
-        {
-          Name: param1,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        },
-        {
-          Name: param2,
+          Name: arg1,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -2771,19 +2689,19 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param2,
+          Name: arg1,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param3,
+          Name: arg2,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -2803,25 +2721,25 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param2,
+          Name: arg1,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param3,
+          Name: arg2,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param4,
+          Name: arg3,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -2841,8 +2759,8 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
-          DbDataType: int4,
+          Name: arg0,
+          DbDataType: integer,
           LanguageDataType: int,
           IsOutputParameter: false
         }
@@ -2873,34 +2791,14 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsOutputParameter: false
-        }
-      ],
-      ResultSetColumns: [
-        {
-          Name: gen_salt,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: gen_salt,
-      Schema: public,
-      Parameters: [
-        {
-          Name: param1,
+          Name: arg0,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
         },
         {
-          Name: param2,
-          DbDataType: int4,
+          Name: arg1,
+          DbDataType: integer,
           LanguageDataType: int,
           IsOutputParameter: false
         }
@@ -2921,18 +2819,18 @@
         {
           Name: p_start_date,
           DbDataType: date,
-          LanguageDataType: date,
+          LanguageDataType: datetime,
           IsOutputParameter: false
         },
         {
           Name: p_end_date,
           DbDataType: date,
-          LanguageDataType: date,
+          LanguageDataType: datetime,
           IsOutputParameter: false
         },
         {
           Name: p_category_id,
-          DbDataType: int4,
+          DbDataType: integer,
           LanguageDataType: int,
           IsOutputParameter: false
         }
@@ -2952,7 +2850,7 @@
       Parameters: [
         {
           Name: p_user_id,
-          DbDataType: int4,
+          DbDataType: integer,
           LanguageDataType: int,
           IsOutputParameter: false
         }
@@ -2971,51 +2869,19 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsOutputParameter: false
-        },
-        {
-          Name: param2,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsOutputParameter: false
-        },
-        {
-          Name: param3,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsOutputParameter: false
-        }
-      ],
-      ResultSetColumns: [
-        {
-          Name: hmac,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: hmac,
-      Schema: public,
-      Parameters: [
-        {
-          Name: param1,
+          Name: arg0,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param2,
+          Name: arg1,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param3,
+          Name: arg2,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -3035,7 +2901,7 @@
       Schema: public,
       Parameters: [
         {
-          Name: ,
+          Name: arg0,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -3055,7 +2921,7 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
@@ -3075,83 +2941,25 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param2,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        }
-      ],
-      ResultSetColumns: [
-        {
-          Name: pgp_pub_decrypt,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: pgp_pub_decrypt,
-      Schema: public,
-      Parameters: [
-        {
-          Name: param1,
+          Name: arg1,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param2,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        },
-        {
-          Name: param3,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsOutputParameter: false
-        }
-      ],
-      ResultSetColumns: [
-        {
-          Name: pgp_pub_decrypt,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: pgp_pub_decrypt,
-      Schema: public,
-      Parameters: [
-        {
-          Name: param1,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        },
-        {
-          Name: param2,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        },
-        {
-          Name: param3,
+          Name: arg2,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
         },
         {
-          Name: param4,
+          Name: arg3,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -3171,83 +2979,25 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param2,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        }
-      ],
-      ResultSetColumns: [
-        {
-          Name: pgp_pub_decrypt_bytea,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: pgp_pub_decrypt_bytea,
-      Schema: public,
-      Parameters: [
-        {
-          Name: param1,
+          Name: arg1,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param2,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        },
-        {
-          Name: param3,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsOutputParameter: false
-        }
-      ],
-      ResultSetColumns: [
-        {
-          Name: pgp_pub_decrypt_bytea,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: pgp_pub_decrypt_bytea,
-      Schema: public,
-      Parameters: [
-        {
-          Name: param1,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        },
-        {
-          Name: param2,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        },
-        {
-          Name: param3,
+          Name: arg2,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
         },
         {
-          Name: param4,
+          Name: arg3,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -3267,45 +3017,19 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
         },
         {
-          Name: param2,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        }
-      ],
-      ResultSetColumns: [
-        {
-          Name: pgp_pub_encrypt,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: pgp_pub_encrypt,
-      Schema: public,
-      Parameters: [
-        {
-          Name: param1,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsOutputParameter: false
-        },
-        {
-          Name: param2,
+          Name: arg1,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param3,
+          Name: arg2,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -3325,45 +3049,19 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param2,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        }
-      ],
-      ResultSetColumns: [
-        {
-          Name: pgp_pub_encrypt_bytea,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: pgp_pub_encrypt_bytea,
-      Schema: public,
-      Parameters: [
-        {
-          Name: param1,
+          Name: arg1,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param2,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        },
-        {
-          Name: param3,
+          Name: arg2,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -3383,45 +3081,19 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param2,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsOutputParameter: false
-        }
-      ],
-      ResultSetColumns: [
-        {
-          Name: pgp_sym_decrypt,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: pgp_sym_decrypt,
-      Schema: public,
-      Parameters: [
-        {
-          Name: param1,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        },
-        {
-          Name: param2,
+          Name: arg1,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
         },
         {
-          Name: param3,
+          Name: arg2,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -3441,45 +3113,19 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param2,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsOutputParameter: false
-        }
-      ],
-      ResultSetColumns: [
-        {
-          Name: pgp_sym_decrypt_bytea,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: pgp_sym_decrypt_bytea,
-      Schema: public,
-      Parameters: [
-        {
-          Name: param1,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        },
-        {
-          Name: param2,
+          Name: arg1,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
         },
         {
-          Name: param3,
+          Name: arg2,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -3499,45 +3145,19 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
         },
         {
-          Name: param2,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsOutputParameter: false
-        }
-      ],
-      ResultSetColumns: [
-        {
-          Name: pgp_sym_encrypt,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: pgp_sym_encrypt,
-      Schema: public,
-      Parameters: [
-        {
-          Name: param1,
+          Name: arg1,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
         },
         {
-          Name: param2,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsOutputParameter: false
-        },
-        {
-          Name: param3,
+          Name: arg2,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -3557,45 +3177,19 @@
       Schema: public,
       Parameters: [
         {
-          Name: param1,
+          Name: arg0,
           DbDataType: bytea,
           LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
-          Name: param2,
-          DbDataType: text,
-          LanguageDataType: string,
-          IsOutputParameter: false
-        }
-      ],
-      ResultSetColumns: [
-        {
-          Name: pgp_sym_encrypt_bytea,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsNullable: true
-        }
-      ]
-    },
-    {
-      Name: pgp_sym_encrypt_bytea,
-      Schema: public,
-      Parameters: [
-        {
-          Name: param1,
-          DbDataType: bytea,
-          LanguageDataType: binary,
-          IsOutputParameter: false
-        },
-        {
-          Name: param2,
+          Name: arg1,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
         },
         {
-          Name: param3,
+          Name: arg2,
           DbDataType: text,
           LanguageDataType: string,
           IsOutputParameter: false
@@ -3616,19 +3210,19 @@
       Parameters: [
         {
           Name: p_user_id,
-          DbDataType: int4,
+          DbDataType: integer,
           LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_shipping_address_id,
-          DbDataType: int4,
+          DbDataType: integer,
           LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_payment_method,
-          DbDataType: varchar,
+          DbDataType: character varying,
           LanguageDataType: string,
           IsOutputParameter: false
         }
@@ -3648,13 +3242,13 @@
       Parameters: [
         {
           Name: p_search_term,
-          DbDataType: varchar,
+          DbDataType: character varying,
           LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: p_category_id,
-          DbDataType: int4,
+          DbDataType: integer,
           LanguageDataType: int,
           IsOutputParameter: false
         },
@@ -3672,13 +3266,13 @@
         },
         {
           Name: p_limit,
-          DbDataType: int4,
+          DbDataType: integer,
           LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_offset,
-          DbDataType: int4,
+          DbDataType: integer,
           LanguageDataType: int,
           IsOutputParameter: false
         }
@@ -3698,19 +3292,19 @@
       Parameters: [
         {
           Name: p_product_id,
-          DbDataType: int4,
+          DbDataType: integer,
           LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_quantity_change,
-          DbDataType: int4,
+          DbDataType: integer,
           LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_operation,
-          DbDataType: varchar,
+          DbDataType: character varying,
           LanguageDataType: string,
           IsOutputParameter: false
         }
@@ -3725,48 +3319,36 @@
       ]
     },
     {
-      Name: update_modified_date,
-      Schema: public,
-      ResultSetColumns: [
-        {
-          Name: update_modified_date,
-          DbDataType: trigger,
-          LanguageDataType: string,
-          IsNullable: true
-        }
-      ]
-    },
-    {
       Name: update_user_profile,
       Schema: public,
       Parameters: [
         {
           Name: p_user_id,
-          DbDataType: int4,
+          DbDataType: integer,
           LanguageDataType: int,
           IsOutputParameter: false
         },
         {
           Name: p_first_name,
-          DbDataType: varchar,
+          DbDataType: character varying,
           LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: p_last_name,
-          DbDataType: varchar,
+          DbDataType: character varying,
           LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: p_email,
-          DbDataType: varchar,
+          DbDataType: character varying,
           LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: p_phone,
-          DbDataType: varchar,
+          DbDataType: character varying,
           LanguageDataType: string,
           IsOutputParameter: false
         }

@@ -74,8 +74,7 @@ internal abstract class BaseDatabaseProvider
             DatabaseName = connection.Database,
             Tables = [],
             Views = [],
-            StoredProcedures = [],
-            UserDefinedTableTypes = []
+            StoredProcedures = []
         };
 
         if (importFilterService.ExportTables())

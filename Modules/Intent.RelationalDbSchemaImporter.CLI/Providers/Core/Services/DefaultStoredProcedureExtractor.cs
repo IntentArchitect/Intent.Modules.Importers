@@ -53,19 +53,31 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
             routines.AddRange(functionRoutines);
         }
 
+        // NOTE: PostgreSQL has Trigger functions which should be filtered out.
+        // You can identify them by the "RETURNS TRIGGER" keyword.
+
+        // KNOWN LIMITATION: DatabaseSchemaReader has a bug with procedure/function overloads
+        // (same name but different parameters). For now, we filter out duplicates by keeping only
+        // the first occurrence. This primarily affects PostgreSQL where function overloading is common.
+        // TODO: Implement custom PostgreSQL query solution if this becomes a reported issue (or ask the lib author to fix).
+        var uniqueRoutines = routines
+            .GroupBy(r => new { Schema = r.SchemaOwner, Name = r.Name })
+            .Select(g => g.First()) // Take first overload only
+            .ToList();
+
         // Apply additional filtering if specific stored procedure names are specified
         if (importFilterService.GetStoredProcedureNames().Count > 0)
         {
             var storedProcLookup = new HashSet<string>(importFilterService.GetStoredProcedureNames(), StringComparer.OrdinalIgnoreCase);
-            routines = routines.Where(routine => 
+            uniqueRoutines = uniqueRoutines.Where(routine => 
                 storedProcLookup.Contains(routine.Name) || 
                 storedProcLookup.Contains($"{routine.SchemaOwner}.{routine.Name}"))
                 .ToList();
         }
 
-        var progressOutput = ConsoleOutput.CreateSectionProgress("Stored Procedures", routines.Count);
+        var progressOutput = ConsoleOutput.CreateSectionProgress("Stored Procedures", uniqueRoutines.Count);
         
-        foreach (var routine in routines)
+        foreach (var routine in uniqueRoutines)
         {
             progressOutput.OutputNext(routine.Name);
             
@@ -88,23 +100,52 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
         var parameters = new List<StoredProcedureParameterSchema>();
 
         // DatabaseSchemaReader provides parameter information through Arguments
-        foreach (var argument in routine.Arguments ?? [])
+        foreach (var argument in routine.Arguments?.DistinctBy(x => x.Name) ?? [])
         {
+            var udt = ExtractUserDefinedTableType(argument, dataTypeMapper);
+            
             var parameterSchema = new StoredProcedureParameterSchema
             {
                 Name = argument.Name ?? "",
-                DbDataType = dataTypeMapper.GetDataTypeString(argument.DatabaseDataType),
-                LanguageDataType = dataTypeMapper.GetNormalizedDataTypeString(argument.DataType, argument.DatabaseDataType),
+                DbDataType = udt is not null ? argument.DatabaseDataType : dataTypeMapper.GetDbDataTypeString(argument.DatabaseDataType),
+                LanguageDataType = udt is not null ? "class" : dataTypeMapper.GetLanguageDataTypeString(argument.DataType, argument.DatabaseDataType),
                 IsOutputParameter = argument.Out, // DatabaseSchemaReader exposes input/output information
                 MaxLength = argument.Length > 0 ? argument.Length : null,
                 NumericPrecision = argument.Precision > 0 ? argument.Precision : null,
-                NumericScale = argument.Scale > 0 ? argument.Scale : null
+                NumericScale = argument.Scale > 0 ? argument.Scale : null,
+                UserDefinedTableType = udt
             };
 
             parameters.Add(parameterSchema);
         }
 
         return parameters;
+    }
+
+    private static UserDefinedTableTypeSchema? ExtractUserDefinedTableType(DatabaseArgument argument, DataTypeMapperBase dataTypeMapper)
+    {
+        if (argument.UserDefinedTable == null)
+            return null;
+
+        var udtSchema = new UserDefinedTableTypeSchema
+        {
+            Name = argument.UserDefinedTable.Name,
+            Schema = argument.UserDefinedTable.SchemaOwner ?? "",
+            Columns = argument.UserDefinedTable.Columns.Select(col => new ColumnSchema
+            {
+                Name = col.Name,
+                DbDataType = col.DbDataType,
+                LanguageDataType = dataTypeMapper.GetLanguageDataTypeString(col.DataType, col.DbDataType),
+                IsNullable = col.Nullable,
+                IsPrimaryKey = col.IsPrimaryKey,
+                IsIdentity = col.IsAutoNumber,
+                MaxLength = col.Length > 0 ? col.Length : null,
+                NumericPrecision = col.Precision > 0 ? col.Precision : null,
+                NumericScale = col.Scale > 0 ? col.Scale : null
+            }).ToList()
+        };
+
+        return udtSchema;
     }
 
     private static async Task<List<ResultSetColumnSchema>> ExtractStoredProcedureResultSetAsync(

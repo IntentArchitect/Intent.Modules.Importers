@@ -6,7 +6,7 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers.SqlServer;
 
 internal class SqlServerDataTypeMapper : DefaultDataTypeMapper
 {
-    public override string GetDataTypeString(string? dataTypeName)
+    public override string GetDbDataTypeString(string? dataTypeName)
     {
         if (string.IsNullOrEmpty(dataTypeName))
             return "unknown";
@@ -17,11 +17,11 @@ internal class SqlServerDataTypeMapper : DefaultDataTypeMapper
             "varbinary(max)" => "varbinary",
             "varchar(max)" => "varchar",
             "nvarchar(max)" => "nvarchar",
-            _ => base.GetDataTypeString(dataTypeName) // Use base logic for standard types
+            _ => base.GetDbDataTypeString(dataTypeName) // Use base logic for standard types
         };
     }
 
-    public override string GetNormalizedDataTypeString(DataType? dataType, string dbDataType)
+    public override string GetLanguageDataTypeString(DataType? dataType, string dbDataType)
     {
         // Handle SQL Server-specific data types first
         var normalizedType = NormalizeSqlServerDataType(dbDataType);
@@ -31,7 +31,7 @@ internal class SqlServerDataTypeMapper : DefaultDataTypeMapper
         }
 
         // Fall back to base implementation for standard types
-        return base.GetNormalizedDataTypeString(dataType, dbDataType);
+        return base.GetLanguageDataTypeString(dataType, dbDataType);
     }
 
     private static string NormalizeSqlServerDataType(string dataTypeName)

@@ -5,8 +5,8 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers.Core.Services;
 
 internal abstract class DataTypeMapperBase
 {
-    public abstract string GetDataTypeString(string? dataTypeName);
-    public abstract string GetNormalizedDataTypeString(DataType? dataType, string dbDataType);
+    public abstract string GetDbDataTypeString(string? dataTypeName);
+    public abstract string GetLanguageDataTypeString(DataType? dataType, string dbDataType);
 }
 
 /// <summary>
@@ -20,7 +20,7 @@ internal class DefaultDataTypeMapper : DataTypeMapperBase
     /// <remarks>
     /// PostgresSQL: SERIAL / BIGSERIAL aren't real datatypes - syntactic sugar for autoincrement columns - is actually INT4 / INT8. 
     /// </remarks>
-    public override string GetDataTypeString(string? dataTypeName)
+    public override string GetDbDataTypeString(string? dataTypeName)
     {
         if (string.IsNullOrEmpty(dataTypeName))
             return "unknown";
@@ -41,7 +41,7 @@ internal class DefaultDataTypeMapper : DataTypeMapperBase
     /// Then you will need to perform the "dbDataType" checks first to determine the appropriate C# type.
     /// After that call this base method.
     /// </remarks>
-    public override string GetNormalizedDataTypeString(DataType? dataType, string dbDataType)
+    public override string GetLanguageDataTypeString(DataType? dataType, string dbDataType)
     {
         return dataType?.NetDataTypeCSharpName?.ToLowerInvariant() ?? throw new InvalidOperationException($"Unable to extract normalized data type for database data type '{dbDataType}'");
     }

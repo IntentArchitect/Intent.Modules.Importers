@@ -34,8 +34,8 @@ internal class DefaultColumnExtractor : ColumnExtractorBase
             var columnSchema = new ColumnSchema
             {
                 Name = col.Name,
-                DbDataType = typeMapper.GetDataTypeString(col.DbDataType),
-                LanguageDataType = typeMapper.GetNormalizedDataTypeString(col.DataType, col.DbDataType),
+                DbDataType = typeMapper.GetDbDataTypeString(col.DbDataType),
+                LanguageDataType = typeMapper.GetLanguageDataTypeString(col.DataType, col.DbDataType),
                 IsNullable = col.Nullable,
                 IsPrimaryKey = col.IsPrimaryKey,
                 IsIdentity = col.IsAutoNumber,
@@ -69,8 +69,8 @@ internal class DefaultColumnExtractor : ColumnExtractorBase
             var columnSchema = new ColumnSchema
             {
                 Name = col.Name,
-                DbDataType = typeMapper.GetDataTypeString(col.DbDataType),
-                LanguageDataType = typeMapper.GetNormalizedDataTypeString(col.DataType, col.DbDataType),
+                DbDataType = typeMapper.GetDbDataTypeString(col.DbDataType),
+                LanguageDataType = typeMapper.GetLanguageDataTypeString(col.DataType, col.DbDataType),
                 IsNullable = col.Nullable,
                 IsPrimaryKey = false, // Views don't have primary keys
                 IsIdentity = false, // Views don't have identity columns

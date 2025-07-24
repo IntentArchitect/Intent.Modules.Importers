@@ -1,8 +1,12 @@
 {
   "profiles": {
-    "Intent.SQLSchemaExtractor": {
+    "SqlServer": {
       "commandName": "Project",
-      "commandLineArgs": "import-schema --payload \"{\"\"applicationId\"\":\"\"dae7a262-eb6f-4e8d-8593-52a996d3dadd\"\",\"\"packageId\"\":\"\"d32ce95c-e9e9-41cb-bb7a-2db1cf444da1\"\",\"\"packageFileName\"\":null,\"\"entityNameConvention\"\":\"\"SingularEntity\"\",\"\"tableStereotype\"\":\"\"WhenDifferent\"\",\"\"storedProcedureType\"\":\"\"\"\",\"\"settingPersistence\"\":\"\"None\"\",\"\"connectionString\"\":\"\"Server=.;Initial Catalog=FkTestDb;Integrated Security=true;MultipleActiveResultSets=True;TrustServerCertificate=true;\"\",\"\"importFilterFilePath\"\":null,\"\"typesToExport\"\":[\"\"Table\"\",\"\"View\"\",\"\"StoredProcedure\"\",\"\"Index\"\"],\"\"databaseType\"\":\"\"SqlServer\"\"}\""
+      "commandLineArgs": "import-schema --payload \"{\"\"applicationId\"\":\"\"dae7a262-eb6f-4e8d-8593-52a996d3dadd\"\",\"\"packageId\"\":\"\"d32ce95c-e9e9-41cb-bb7a-2db1cf444da1\"\",\"\"packageFileName\"\":null,\"\"entityNameConvention\"\":\"\"SingularEntity\"\",\"\"tableStereotype\"\":\"\"WhenDifferent\"\",\"\"storedProcedureType\"\":\"\"\"\",\"\"settingPersistence\"\":\"\"None\"\",\"\"connectionString\"\":\"\"Server=.;Initial Catalog=ECommerceDB;Integrated Security=true;MultipleActiveResultSets=True;TrustServerCertificate=true;\"\",\"\"importFilterFilePath\"\":null,\"\"typesToExport\"\":[\"\"Table\"\",\"\"View\"\",\"\"StoredProcedure\"\",\"\"Index\"\"],\"\"databaseType\"\":\"\"SqlServer\"\"}\""
+    },
+    "PostgreSQL": {
+      "commandName": "Project",
+      "commandLineArgs": "import-schema --payload \"{\"\"applicationId\"\":\"\"dae7a262-eb6f-4e8d-8593-52a996d3dadd\"\",\"\"packageId\"\":\"\"d32ce95c-e9e9-41cb-bb7a-2db1cf444da1\"\",\"\"packageFileName\"\":null,\"\"entityNameConvention\"\":\"\"SingularEntity\"\",\"\"tableStereotype\"\":\"\"WhenDifferent\"\",\"\"storedProcedureType\"\":\"\"\"\",\"\"settingPersistence\"\":\"\"None\"\",\"\"connectionString\"\":\"\"User ID=postgres; Password=password; Host=localhost; Database=ECommerceDB\"\",\"\"importFilterFilePath\"\":null,\"\"typesToExport\"\":[\"\"Table\"\",\"\"View\"\",\"\"StoredProcedure\"\",\"\"Index\"\"],\"\"databaseType\"\":\"\"PostgreSQL\"\"}\""
     }
   }
 }

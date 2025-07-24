@@ -61,6 +61,10 @@ public class StoredProcedureParameterSchema
     /// </summary>
     public int? NumericScale { get; set; }
     /// <summary>
+    /// User-defined table type information if this parameter is a table-valued parameter.
+    /// </summary>
+    public UserDefinedTableTypeSchema? UserDefinedTableType { get; set; }
+    /// <summary>
     /// Additional metadata about the parameter.
     /// </summary>
     public Dictionary<string, object> Metadata { get; set; } = new();

@@ -5,28 +5,37 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 
 internal class PostgreSqlDataTypeMapper : DefaultDataTypeMapper
 {
-    public override string GetNormalizedDataTypeString(DataType? dataType, string dbDataType)
+    public override string GetLanguageDataTypeString(DataType? dataType, string dbDataType)
     {
-        // NOTES:
-        // * SERIAL / BIGSERIAL aren't real datatypes - syntactic sugar for autoincrement columns - is actually INT4 / INT8.
-        switch (dbDataType.ToLowerInvariant())
+        // https://www.postgresql.org/docs/current/datatype.html
+        return dbDataType.ToLowerInvariant() switch
         {
-            case "uuid":
-                return "string";
-            case "bytea":
-                return "binary";
-            case "jsonb":
-            case "json":
-                return "string";
-            case "_text":
-            case "text[]":
-                return "string[]";
-            case "trigger":
-                return "object";
-            case "record":
-                return "object";
-            default:
-                return base.GetNormalizedDataTypeString(dataType, dbDataType);
-        }
+            "smallint" or "int2" => "short",
+            "integer" or "int" or "int4" => "int",
+            "bigint" or "int8" => "long",
+            "serial" or "serial4" => "int",
+            "bigserial" or "serial8" => "long",
+            "real" or "float4" => "float",
+            "double precision" or "float8" => "double",
+            "numeric" or "decimal" or "money" => "decimal",
+            "boolean" or "bool" => "bool",
+            "char" or "character" or "character varying" or "varchar" or "text" or "name" => "string",
+            "uuid" => "guid",
+            "date" or "timestamp" or "timestamp without time zone" or "timestamp with time zone" or "timestamptz" => "datetime",
+            "time" or "time without time zone" or "time with time zone" or "timetz" or "interval" => "timespan",
+            "bytea" => "binary",
+            "json" or "jsonb" or "xml" => "string",
+            "cidr" or "macaddr" => "string",
+            "point" or "line" or "lseg" or "box" or "path" or "polygon" or "circle" => "string", // or a custom geometry type
+            
+            // Arrays (e.g., int[], text[], etc.)
+            "int2[]" or "smallint[]" => "short[]",
+            "int4[]" or "integer[]" => "int[]",
+            "int8[]" or "bigint[]" => "long[]",
+            "text[]" or "varchar[]" or "character varying[]" => "string[]",
+            "uuid[]" => "Guid[]",
+            "bytea[]" => "byte[][]",
+            _ => base.GetLanguageDataTypeString(dataType, dbDataType)
+        };
     }
-} 
+}

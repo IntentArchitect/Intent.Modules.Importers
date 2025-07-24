@@ -2704,24 +2704,21 @@
           DbDataType: int,
           LanguageDataType: int,
           IsOutputParameter: false,
-          NumericPrecision: 10,
-          NumericScale: 0
+          NumericPrecision: 10
         },
         {
           Name: @ProductID,
           DbDataType: int,
           LanguageDataType: int,
           IsOutputParameter: false,
-          NumericPrecision: 10,
-          NumericScale: 0
+          NumericPrecision: 10
         },
         {
           Name: @Quantity,
           DbDataType: int,
           LanguageDataType: int,
           IsOutputParameter: false,
-          NumericPrecision: 10,
-          NumericScale: 0
+          NumericPrecision: 10
         }
       ]
     },
@@ -2734,24 +2731,21 @@
           DbDataType: int,
           LanguageDataType: int,
           IsOutputParameter: false,
-          NumericPrecision: 10,
-          NumericScale: 0
+          NumericPrecision: 10
         },
         {
           Name: @ShippingAddressID,
           DbDataType: int,
           LanguageDataType: int,
           IsOutputParameter: false,
-          NumericPrecision: 10,
-          NumericScale: 0
+          NumericPrecision: 10
         },
         {
           Name: @BillingAddressID,
           DbDataType: int,
           LanguageDataType: int,
           IsOutputParameter: false,
-          NumericPrecision: 10,
-          NumericScale: 0
+          NumericPrecision: 10
         },
         {
           Name: @TaxAmount,
@@ -2774,8 +2768,7 @@
           DbDataType: int,
           LanguageDataType: int,
           IsOutputParameter: true,
-          NumericPrecision: 10,
-          NumericScale: 0
+          NumericPrecision: 10
         }
       ]
     },
@@ -2788,8 +2781,7 @@
           DbDataType: int,
           LanguageDataType: int,
           IsOutputParameter: false,
-          NumericPrecision: 10,
-          NumericScale: 0
+          NumericPrecision: 10
         }
       ],
       ResultSetColumns: [
@@ -2980,8 +2972,7 @@
           DbDataType: int,
           LanguageDataType: int,
           IsOutputParameter: false,
-          NumericPrecision: 10,
-          NumericScale: 0
+          NumericPrecision: 10
         }
       ],
       ResultSetColumns: [
@@ -3063,8 +3054,7 @@
           DbDataType: int,
           LanguageDataType: int,
           IsOutputParameter: false,
-          NumericPrecision: 10,
-          NumericScale: 0
+          NumericPrecision: 10
         },
         {
           Name: @MinPrice,
@@ -3101,16 +3091,14 @@
           DbDataType: int,
           LanguageDataType: int,
           IsOutputParameter: false,
-          NumericPrecision: 10,
-          NumericScale: 0
+          NumericPrecision: 10
         },
         {
           Name: @PageSize,
           DbDataType: int,
           LanguageDataType: int,
           IsOutputParameter: false,
-          NumericPrecision: 10,
-          NumericScale: 0
+          NumericPrecision: 10
         }
       ],
       ResultSetColumns: [
@@ -3191,16 +3179,14 @@
           DbDataType: int,
           LanguageDataType: int,
           IsOutputParameter: false,
-          NumericPrecision: 10,
-          NumericScale: 0
+          NumericPrecision: 10
         },
         {
           Name: @Quantity,
           DbDataType: int,
           LanguageDataType: int,
           IsOutputParameter: false,
-          NumericPrecision: 10,
-          NumericScale: 0
+          NumericPrecision: 10
         },
         {
           Name: @TransactionType,
@@ -3229,8 +3215,7 @@
           DbDataType: int,
           LanguageDataType: int,
           IsOutputParameter: false,
-          NumericPrecision: 10,
-          NumericScale: 0
+          NumericPrecision: 10
         }
       ]
     }

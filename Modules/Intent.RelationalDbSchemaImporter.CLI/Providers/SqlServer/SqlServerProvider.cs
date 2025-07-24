@@ -26,7 +26,6 @@ internal class SqlServerProvider : BaseDatabaseProvider
     protected override ColumnExtractorBase ColumnExtractor => new SqlServerColumnExtractor();
     protected override IndexExtractorBase IndexExtractor => new SqlServerIndexExtractor();
     protected override ForeignKeyExtractorBase ForeignKeyExtractor => new SqlServerForeignKeyExtractor();
-    protected override StoredProcedureExtractorBase StoredProcedureExtractor => new SqlServerStoredProcedureExtractor();
 
     protected override DbConnection CreateConnection(string connectionString)
     {

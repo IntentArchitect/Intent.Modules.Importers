@@ -21,8 +21,4 @@ public class DatabaseSchema
     /// The stored procedures in the database.
     /// </summary>
     public List<StoredProcedureSchema> StoredProcedures { get; set; } = [];
-    /// <summary>
-    /// Identified custom types used by other Database objects.
-    /// </summary>
-    public List<UserDefinedTableTypeSchema> UserDefinedTableTypes { get; set; } = [];
 }
