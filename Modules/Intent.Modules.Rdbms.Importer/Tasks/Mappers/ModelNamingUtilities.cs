@@ -286,7 +286,7 @@ internal static class ModelNamingUtilities
 
     public static string GetIndexExternalReference(string tableSchema, string tableName, string indexName)
     {
-        return $"[{tableSchema.ToLowerInvariant()}].[{tableName.ToLowerInvariant()}].[{indexName.ToLowerInvariant()}]";
+        return $"index:[{tableSchema.ToLowerInvariant()}].[{tableName.ToLowerInvariant()}].[{indexName.ToLowerInvariant()}]";
     }
 
     /// <summary>

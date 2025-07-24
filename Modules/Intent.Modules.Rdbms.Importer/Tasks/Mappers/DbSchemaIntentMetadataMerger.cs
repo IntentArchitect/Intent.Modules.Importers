@@ -82,7 +82,7 @@ internal class DbSchemaIntentMetadataMerger
                 // Update existing class without moving it (keep existing ParentFolderId)
                 // Don't use deduplication context for updates to preserve existing names
                 var updatedClassElement = IntentModelMapper.MapTableToClass(table, _config, package, existingClass.ParentFolderId);
-                UpdateExistingClass(existingClass, updatedClassElement);
+                SyncElements(package, existingClass, updatedClassElement);
                 result.UpdatedElements.Add(existingClass);
 
                 // Process indexes for existing class
@@ -122,7 +122,7 @@ internal class DbSchemaIntentMetadataMerger
                 // Update existing class without moving it (keep existing ParentFolderId)
                 // Don't use deduplication context for updates to preserve existing names
                 var updatedClassElement = IntentModelMapper.MapViewToClass(view, _config, package, existingClass.ParentFolderId);
-                UpdateExistingClass(existingClass, updatedClassElement);
+                SyncElements(package, existingClass, updatedClassElement);
                 result.UpdatedElements.Add(existingClass);
             }
             else
@@ -221,34 +221,129 @@ internal class DbSchemaIntentMetadataMerger
         }
     }
 
-    private static bool IsTableMappedToClass(ElementPersistable classElement, TableSchema table)
+    /// <summary>
+    /// Synchronizes properties between existing and source elements using add-or-modify approach.
+    /// Overwrites TypeReference, syncs Stereotypes and ChildElements without destructive replacement.
+    /// </summary>
+    /// <param name="package">Container package</param>
+    /// <param name="existingElement">The existing element to be updated</param>
+    /// <param name="sourceElement">The source element containing new/updated data</param>
+    private static void SyncElements(PackageModelPersistable package, ElementPersistable existingElement, ElementPersistable sourceElement)
     {
-        // Check if class has table stereotype with matching table name
-        return classElement.Stereotypes?.Any(s =>
-            s.DefinitionId == Constants.Stereotypes.Rdbms.Table.DefinitionId &&
-            s.Properties?.Any(p => p.Value == table.Name) == true) == true;
-    }
-
-    private static bool IsViewMappedToClass(ElementPersistable classElement, ViewSchema view)
-    {
-        // Check if class has view stereotype with matching view name
-        return classElement.Stereotypes?.Any(s =>
-            s.DefinitionId == Constants.Stereotypes.Rdbms.View.DefinitionId &&
-            s.Properties?.Any(p => p.Value == view.Name) == true) == true;
-    }
-
-    private static void UpdateExistingClass(ElementPersistable existingClass, ElementPersistable newClass)
-    {
-        // Update stereotypes
-        existingClass.Stereotypes = newClass.Stereotypes;
-
-        // Update child elements (attributes)
-        existingClass.ChildElements = newClass.ChildElements;
-
-        // Update type reference if needed
-        if (newClass.TypeReference != null)
+        InternSyncElements(
+            packageElements: package.Classes.Where(p => !string.IsNullOrWhiteSpace(p.ExternalReference))
+                .ToDictionary(k => $"{k.ExternalReference}+{k.SpecializationType}"),
+            existingElement: existingElement,
+            sourceElement: sourceElement,
+            visitedElements: new HashSet<ElementPersistable>(EqualityComparer<ElementPersistable>.Create(
+                (a, b) =>
+                    (
+                        (
+                            (a?.ExternalReference is null || b?.ExternalReference is null) &&
+                            string.Equals(a?.Name, b?.Name, StringComparison.InvariantCultureIgnoreCase)
+                        )
+                        ||
+                        (
+                            (a?.ExternalReference is not null && b?.ExternalReference is not null) &&
+                            string.Equals(a.ExternalReference, b.ExternalReference, StringComparison.InvariantCultureIgnoreCase)
+                        )
+                    ) 
+                    && a?.SpecializationType == b?.SpecializationType,
+                x => x.ExternalReference?.GetHashCode() ?? x.Name?.GetHashCode() ?? 0)));
+        return;
+        
+        static void InternSyncElements(
+            Dictionary<string, ElementPersistable> packageElements, 
+            ElementPersistable existingElement, 
+            ElementPersistable sourceElement, 
+            HashSet<ElementPersistable> visitedElements)
         {
-            existingClass.TypeReference = newClass.TypeReference;
+            // Update type reference (existing behavior - direct overwrite)
+            if (sourceElement.TypeReference != null)
+            {
+                existingElement.TypeReference = sourceElement.TypeReference;
+            }
+            
+            // Sync stereotypes using the add-or-modify approach
+            existingElement.Stereotypes ??= [];
+            if (sourceElement.Stereotypes.Count > 0)
+            {
+                foreach (var sourceStereotype in sourceElement.Stereotypes)
+                {
+                    var existingStereotype = existingElement.Stereotypes
+                        .FirstOrDefault(s => s.DefinitionId == sourceStereotype.DefinitionId);
+                
+                    if (existingStereotype is null)
+                    {
+                        // Add new stereotype
+                        existingElement.Stereotypes.Add(sourceStereotype);
+                    }
+                    else
+                    {
+                        // Sync properties within existing stereotype
+                        SyncStereotypeProperties(existingStereotype, sourceStereotype);
+                    }
+                }
+            }
+            
+
+            // Sync child elements using the add-or-modify approach
+            existingElement.ChildElements ??= [];
+            if (sourceElement.ChildElements.Count > 0)
+            {
+                foreach (var sourceChild in sourceElement.ChildElements)
+                {
+                    if (!packageElements.TryGetValue($"{sourceChild.ExternalReference}+{sourceChild.SpecializationType}", out var existingChild))
+                    {
+                        existingChild = existingElement.ChildElements
+                            .FirstOrDefault(c => c.ExternalReference == sourceChild.ExternalReference &&
+                                                 c.SpecializationType == sourceChild.SpecializationType);
+                    } 
+                
+                    if (existingChild is null)
+                    {
+                        // Add a new child element
+                        existingElement.ChildElements.Add(sourceChild);
+                    }
+                    else if (visitedElements.Add(sourceChild))
+                    {
+                        // Recursively sync the child element
+                        InternSyncElements(packageElements, existingChild, sourceChild, visitedElements);
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Synchronizes properties between existing and source stereotypes using add-or-modify approach.
+    /// </summary>
+    /// <param name="existingStereotype">The existing stereotype to be updated</param>
+    /// <param name="sourceStereotype">The source stereotype containing new/updated properties</param>
+    private static void SyncStereotypeProperties(StereotypePersistable existingStereotype, StereotypePersistable sourceStereotype)
+    {
+        existingStereotype.Properties ??= [];
+        
+        if (sourceStereotype.Properties.Count == 0)
+        {
+            return;
+        }
+        
+        foreach (var sourceProperty in sourceStereotype.Properties)
+        {
+            var existingProperty = existingStereotype.Properties
+                .FirstOrDefault(p => p.DefinitionId == sourceProperty.DefinitionId);
+            
+            if (existingProperty == null)
+            {
+                // Add new property
+                existingStereotype.Properties.Add(sourceProperty);
+            }
+            else
+            {
+                // Update existing property values
+                existingProperty.Value = sourceProperty.Value;
+            }
         }
     }
 
@@ -262,7 +357,7 @@ internal class DbSchemaIntentMetadataMerger
 
         // Check if folder already exists in package
         var folder = package.Classes.FirstOrDefault(c =>
-            c.Name == GetNormalizedSchemaName(schemaName) &&
+            c.Name == ModelNamingUtilities.NormalizeSchemaName(schemaName) &&
             c.SpecializationType == Constants.SpecializationTypes.Folder.SpecializationType);
 
         if (folder == null)
@@ -273,11 +368,6 @@ internal class DbSchemaIntentMetadataMerger
 
         _schemaFolders[schemaName] = folder;
         return folder;
-    }
-
-    private static string GetNormalizedSchemaName(string schemaName)
-    {
-        return schemaName.Substring(0, 1).ToUpper() + schemaName.Substring(1);
     }
 
     /// <summary>
@@ -386,7 +476,7 @@ internal class DbSchemaIntentMetadataMerger
         {
             // Update existing data contract
             dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package);
-            UpdateExistingClass(existingDataContract, dataContract);
+            SyncElements(package, existingDataContract, dataContract);
             result.UpdatedElements.Add(existingDataContract);
             dataContract = existingDataContract; // Use the existing data contract for TypeReference
         }
@@ -452,7 +542,7 @@ internal class DbSchemaIntentMetadataMerger
                 // Update existing DataContract
                 var schemaFolder = GetOrCreateSchemaFolder(udtSchema.Schema, package);
                 dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, package);
-                UpdateExistingClass(existingDataContract, dataContract);
+                SyncElements(package, existingDataContract, dataContract);
                 result.UpdatedElements.Add(existingDataContract);
                 dataContract = existingDataContract; // Use existing for mapping
             }
