@@ -161,13 +161,26 @@ internal static class IntentModelMapper
     }
 
     /// <summary>
-    /// Maps a stored procedure to an element (Element mode)
+    /// Maps stored procedure to element in Repository
     /// </summary>
     public static ElementPersistable MapStoredProcedureToElement(
         StoredProcedureSchema storedProc, 
         string? repositoryId, 
         PackageModelPersistable package, 
         DeduplicationContext? deduplicationContext = null)
+    {
+        return MapStoredProcedureToElement(storedProc, repositoryId, package, deduplicationContext, null);
+    }
+
+    /// <summary>
+    /// Maps stored procedure to element in Repository with UserDefinedTable DataContract support
+    /// </summary>
+    public static ElementPersistable MapStoredProcedureToElement(
+        StoredProcedureSchema storedProc, 
+        string? repositoryId, 
+        PackageModelPersistable package, 
+        DeduplicationContext? deduplicationContext,
+        Dictionary<string, string>? udtDataContracts)
     {
         var procName = ModelNamingUtilities.GetStoredProcedureName(storedProc.Name, storedProc.Schema, deduplicationContext);
 
@@ -203,7 +216,7 @@ internal static class IntentModelMapper
         // Map parameters
         foreach (var parameter in storedProc.Parameters)
         {
-            var paramElement = MapStoredProcParameterToElement(parameter, procElement.Id, package);
+            var paramElement = MapStoredProcParameterToElement(parameter, procElement.Id, package, udtDataContracts);
             procElement.ChildElements.Add(paramElement);
         }
         
@@ -218,6 +231,19 @@ internal static class IntentModelMapper
         string repositoryId, 
         PackageModelPersistable package, 
         DeduplicationContext? deduplicationContext = null)
+    {
+        return MapStoredProcedureToOperation(storedProc, repositoryId, package, deduplicationContext, null);
+    }
+
+    /// <summary>
+    /// Maps a stored procedure to an operation (Operation mode) with UserDefinedTable DataContract support
+    /// </summary>
+    public static ElementPersistable MapStoredProcedureToOperation(
+        StoredProcedureSchema storedProc, 
+        string repositoryId, 
+        PackageModelPersistable package, 
+        DeduplicationContext? deduplicationContext,
+        Dictionary<string, string>? udtDataContracts)
     {
         var procName = ModelNamingUtilities.GetStoredProcedureName(storedProc.Name, storedProc.Schema, deduplicationContext);
 
@@ -262,7 +288,7 @@ internal static class IntentModelMapper
         // Map parameters
         foreach (var parameter in storedProc.Parameters)
         {
-            var paramElement = MapStoredProcParameterToOperation(parameter, operationElement.Id, package);
+            var paramElement = MapStoredProcParameterToOperation(parameter, operationElement.Id, package, udtDataContracts);
             operationElement.ChildElements.Add(paramElement);
         }
 
@@ -307,6 +333,49 @@ internal static class IntentModelMapper
             RdbmsSchemaAnnotator.ApplyColumnDetails(ConvertToColumnSchema(resultColumn), attribute);
             RdbmsSchemaAnnotator.ApplyTextConstraint(ConvertToColumnSchema(resultColumn), attribute);
             RdbmsSchemaAnnotator.ApplyDecimalConstraint(ConvertToColumnSchema(resultColumn), attribute);
+        }
+
+        return dataContract;
+    }
+
+    /// <summary>
+    /// Creates a data contract for UserDefinedTable type
+    /// Follows similar pattern to CreateDataContractForStoredProcedure but for UDT columns
+    /// </summary>
+    public static ElementPersistable CreateDataContractForUserDefinedTable(UserDefinedTableTypeSchema udtSchema, string schemaFolderId, PackageModelPersistable package)
+    {
+        var dataContractName = ModelNamingUtilities.NormalizeUserDefinedTableName(udtSchema.Name);
+        
+        var dataContract = new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            SpecializationType = Constants.SpecializationTypes.DataContract.SpecializationType,
+            SpecializationTypeId = Constants.SpecializationTypes.DataContract.SpecializationTypeId,
+            Name = dataContractName,
+            Display = dataContractName,
+            ExternalReference = ModelNamingUtilities.GetUserDefinedTableDataContractExternalReference(udtSchema.Schema, udtSchema.Name),
+            IsAbstract = false,
+            SortChildren = SortChildrenOptions.SortByTypeThenManually,
+            GenericTypes = [],
+            IsMapped = false,
+            ParentFolderId = schemaFolderId, // Data contracts belong to schema folder
+            PackageId = package.Id,
+            PackageName = package.Name,
+            Stereotypes = [],
+            Metadata = [],
+            ChildElements = []
+        };
+
+        // Map UDT columns to attributes
+        foreach (var column in udtSchema.Columns)
+        {
+            var attribute = MapUserDefinedTableColumnToAttribute(column, dataContract.Id, udtSchema.Name, udtSchema.Schema);
+            dataContract.ChildElements.Add(attribute);
+            
+            // Apply stereotypes to UDT columns
+            RdbmsSchemaAnnotator.ApplyColumnDetails(column, attribute);
+            RdbmsSchemaAnnotator.ApplyTextConstraint(column, attribute);
+            RdbmsSchemaAnnotator.ApplyDecimalConstraint(column, attribute);
         }
 
         return dataContract;
@@ -592,9 +661,39 @@ internal static class IntentModelMapper
     }
 
     /// <summary>
+    /// Gets the appropriate TypeReference for a stored procedure parameter, handling UserDefinedTable DataContracts
+    /// </summary>
+    private static TypeReferencePersistable GetParameterTypeReference(StoredProcedureParameterSchema parameter, Dictionary<string, string>? udtDataContracts)
+    {
+        // Check if this parameter uses a UserDefinedTable and we have a DataContract for it
+        if (parameter.UserDefinedTableType != null && udtDataContracts != null)
+        {
+            var udtExternalRef = ModelNamingUtilities.GetUserDefinedTableDataContractExternalReference(
+                parameter.UserDefinedTableType.Schema,
+                parameter.UserDefinedTableType.Name);
+            
+            if (udtDataContracts.TryGetValue(udtExternalRef, out var dataContractId))
+            {
+                return TypeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter, dataContractId);
+            }
+        }
+
+        // Fall back to standard mapping
+        return TypeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter);
+    }
+
+    /// <summary>
     /// Maps a stored procedure parameter to a stored procedure element
     /// </summary>
     private static ElementPersistable MapStoredProcParameterToElement(StoredProcedureParameterSchema parameter, string storedProcId, PackageModelPersistable package)
+    {
+        return MapStoredProcParameterToElement(parameter, storedProcId, package, null);
+    }
+
+    /// <summary>
+    /// Maps a stored procedure parameter to a stored procedure element with UserDefinedTable DataContract support
+    /// </summary>
+    private static ElementPersistable MapStoredProcParameterToElement(StoredProcedureParameterSchema parameter, string storedProcId, PackageModelPersistable package, Dictionary<string, string>? udtDataContracts)
     {
         var paramName = ModelNamingUtilities.GetParameterName(parameter.Name);
 
@@ -608,7 +707,7 @@ internal static class IntentModelMapper
             ExternalReference = paramName.ToLowerInvariant(),
             IsAbstract = false,
             GenericTypes = [],
-            TypeReference = TypeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter),
+            TypeReference = GetParameterTypeReference(parameter, udtDataContracts),
             IsMapped = false,
             ParentFolderId = storedProcId, // Parameters belong to stored procedure
             PackageId = package.Id,
@@ -624,6 +723,14 @@ internal static class IntentModelMapper
     /// </summary>
     private static ElementPersistable MapStoredProcParameterToOperation(StoredProcedureParameterSchema parameter, string operationId, PackageModelPersistable package)
     {
+        return MapStoredProcParameterToOperation(parameter, operationId, package, null);
+    }
+
+    /// <summary>
+    /// Maps a stored procedure parameter to an operation parameter with UserDefinedTable DataContract support
+    /// </summary>
+    private static ElementPersistable MapStoredProcParameterToOperation(StoredProcedureParameterSchema parameter, string operationId, PackageModelPersistable package, Dictionary<string, string>? udtDataContracts)
+    {
         var paramName = ModelNamingUtilities.GetParameterName(parameter.Name);
 
         return new ElementPersistable
@@ -636,7 +743,7 @@ internal static class IntentModelMapper
             ExternalReference = paramName.ToLowerInvariant(),
             IsAbstract = false,
             GenericTypes = [],
-            TypeReference = TypeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter),
+            TypeReference = GetParameterTypeReference(parameter, udtDataContracts),
             IsMapped = false,
             ParentFolderId = operationId, // Parameters belong to operation
             PackageId = package.Id,
@@ -664,6 +771,31 @@ internal static class IntentModelMapper
             IsAbstract = false,
             GenericTypes = [],
             TypeReference = TypeReferenceMapper.MapResultSetColumnTypeToTypeReference(resultColumn),
+            IsMapped = false,
+            ParentFolderId = dataContractId, // Attributes belong to their parent data contract
+            Stereotypes = [],
+            Metadata = [],
+            ChildElements = []
+        };
+    }
+
+    /// <summary>
+    /// Maps a UserDefinedTable ColumnSchema to an attribute element
+    /// </summary>
+    private static ElementPersistable MapUserDefinedTableColumnToAttribute(ColumnSchema column, string dataContractId, string udtName, string schema)
+    {
+        var attributeName = ModelNamingUtilities.NormalizeColumnName(column.Name, null); // No table name for UDT columns
+        
+        return new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            SpecializationType = AttributeModel.SpecializationType,
+            SpecializationTypeId = AttributeModel.SpecializationTypeId,
+            Name = attributeName,
+            ExternalReference = ModelNamingUtilities.GetUserDefinedTableColumnExternalReference(schema, udtName, column.Name),
+            IsAbstract = false,
+            GenericTypes = [],
+            TypeReference = TypeReferenceMapper.MapColumnTypeToTypeReference(column),
             IsMapped = false,
             ParentFolderId = dataContractId, // Attributes belong to their parent data contract
             Stereotypes = [],

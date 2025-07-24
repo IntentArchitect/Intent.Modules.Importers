@@ -13,7 +13,7 @@ internal static class TypeReferenceMapper
             Id = Guid.NewGuid().ToString(),
             TypeId = GetTypeId(column.LanguageDataType),
             IsNullable = column.IsNullable,
-            IsCollection = false,
+            IsCollection = column.LanguageDataType.EndsWith("[]"),
             Stereotypes = [],
             GenericTypeParameters = []
         };
@@ -26,10 +26,33 @@ internal static class TypeReferenceMapper
             Id = Guid.NewGuid().ToString(),
             TypeId = GetTypeId(parameter.LanguageDataType),
             IsNullable = !parameter.IsOutputParameter, // Input parameters can be nullable, output parameters typically aren't
-            IsCollection = parameter.DbDataType.ToLower() == "user-defined-table-type",
+            IsCollection = parameter.LanguageDataType.EndsWith("[]"),
             Stereotypes = [],
             GenericTypeParameters = []
         };
+    }
+
+    /// <summary>
+    /// Maps a stored procedure parameter to TypeReference when a UserDefinedTable DataContract is available
+    /// </summary>
+    public static TypeReferencePersistable MapStoredProcedureParameterTypeToTypeReference(StoredProcedureParameterSchema parameter, string? userDefinedTableDataContractId)
+    {
+        // If we have a UserDefinedTable DataContract, reference it
+        if (parameter.UserDefinedTableType != null && !string.IsNullOrEmpty(userDefinedTableDataContractId))
+        {
+            return new TypeReferencePersistable
+            {
+                Id = Guid.NewGuid().ToString(),
+                TypeId = userDefinedTableDataContractId,
+                IsNullable = !parameter.IsOutputParameter,
+                IsCollection = true, // UserDefinedTable parameters are collections
+                Stereotypes = [],
+                GenericTypeParameters = []
+            };
+        }
+
+        // Fall back to original behavior for non-UDT parameters
+        return MapStoredProcedureParameterTypeToTypeReference(parameter);
     }
 
     public static TypeReferencePersistable MapResultSetColumnTypeToTypeReference(ResultSetColumnSchema column)
@@ -39,7 +62,7 @@ internal static class TypeReferenceMapper
             Id = Guid.NewGuid().ToString(),
             TypeId = GetTypeId(column.LanguageDataType),
             IsNullable = column.IsNullable,
-            IsCollection = false,
+            IsCollection = column.LanguageDataType.EndsWith("[]"),
             Stereotypes = [],
             GenericTypeParameters = []
         };
@@ -64,6 +87,12 @@ internal static class TypeReferenceMapper
             "guid" => Constants.TypeDefinitions.CommonTypes.Guid,
             "binary" => Constants.TypeDefinitions.CommonTypes.Binary,
             "byte[]" => Constants.TypeDefinitions.CommonTypes.Binary,
+            "string[]" => Constants.TypeDefinitions.CommonTypes.String,
+            "short[]" => Constants.TypeDefinitions.CommonTypes.Short,
+            "int[]" => Constants.TypeDefinitions.CommonTypes.Int,
+            "long[]" => Constants.TypeDefinitions.CommonTypes.Long,
+            "guid[]" => Constants.TypeDefinitions.CommonTypes.Guid,
+            "byte[][]" => Constants.TypeDefinitions.CommonTypes.Binary,
             _ => null
         };
     }

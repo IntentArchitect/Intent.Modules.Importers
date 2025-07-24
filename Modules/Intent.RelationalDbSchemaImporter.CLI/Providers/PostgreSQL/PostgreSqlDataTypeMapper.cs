@@ -33,7 +33,7 @@ internal class PostgreSqlDataTypeMapper : DefaultDataTypeMapper
             "int4[]" or "integer[]" => "int[]",
             "int8[]" or "bigint[]" => "long[]",
             "text[]" or "varchar[]" or "character varying[]" => "string[]",
-            "uuid[]" => "Guid[]",
+            "uuid[]" => "guid[]",
             "bytea[]" => "byte[][]",
             _ => base.GetLanguageDataTypeString(dataType, dbDataType)
         };

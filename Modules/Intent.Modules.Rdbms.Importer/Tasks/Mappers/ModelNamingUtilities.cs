@@ -210,6 +210,15 @@ internal static class ModelNamingUtilities
         var normalized = schemaName;
         return normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
     }
+    
+    /// <summary>
+    /// Generates name for UserDefinedTable DataContract
+    /// </summary>
+    public static string NormalizeUserDefinedTableName(string udtName)
+    {
+        var normalized = udtName;
+        return normalized.Substring(0, 1).ToUpper() + normalized.Substring(1) + "Model";
+    }
 
     /// <summary>
     /// Generates ExternalReference for table following [schema].[tablename] pattern
@@ -278,6 +287,22 @@ internal static class ModelNamingUtilities
     public static string GetIndexExternalReference(string tableSchema, string tableName, string indexName)
     {
         return $"[{tableSchema.ToLowerInvariant()}].[{tableName.ToLowerInvariant()}].[{indexName.ToLowerInvariant()}]";
+    }
+
+    /// <summary>
+    /// Generates ExternalReference for UserDefinedTable DataContract following [schema].[udtname].UDT pattern
+    /// </summary>
+    public static string GetUserDefinedTableDataContractExternalReference(string schema, string udtName)
+    {
+        return $"[{schema.ToLowerInvariant()}].[{udtName.ToLowerInvariant()}].UDT";
+    }
+
+    /// <summary>
+    /// Generates ExternalReference for UserDefinedTable column following UDT external ref + .[columnname] pattern
+    /// </summary>
+    public static string GetUserDefinedTableColumnExternalReference(string schema, string udtName, string columnName)
+    {
+        return $"{GetUserDefinedTableDataContractExternalReference(schema, udtName)}.[{columnName.ToLowerInvariant()}]";
     }
 
     public static string GetSchemaExternalReference(string schemaName)

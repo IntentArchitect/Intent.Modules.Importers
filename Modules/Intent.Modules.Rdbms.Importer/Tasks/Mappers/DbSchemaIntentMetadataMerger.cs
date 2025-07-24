@@ -143,6 +143,9 @@ internal class DbSchemaIntentMetadataMerger
         DeduplicationContext? deduplicationContext,
         PackageUpdateResult result)
     {
+        // First pass: Create UserDefinedTable DataContracts for deduplication
+        var udtDataContracts = ProcessUserDefinedTableDataContracts(databaseSchema, package, result, deduplicationContext);
+
         foreach (var storedProc in databaseSchema.StoredProcedures)
         {
             ElementPersistable procElement;
@@ -154,7 +157,7 @@ internal class DbSchemaIntentMetadataMerger
                 var repositoryElement = GetOrCreateRepository(_config.RepositoryElementId, storedProc.Schema, package);
 
                 // Create as stored procedure element
-                procElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, package, deduplicationContext);
+                procElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
                 repositoryElement.ChildElements.Add(procElement);
 
                 // Apply stored procedure stereotypes
@@ -168,7 +171,7 @@ internal class DbSchemaIntentMetadataMerger
                 var repositoryElement = GetOrCreateRepository(_config.RepositoryElementId, storedProc.Schema, package);
 
                 // Create as operation within repository
-                procElement = IntentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, package, deduplicationContext);
+                procElement = IntentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
                 repositoryElement.ChildElements.Add(procElement);
 
                 // Apply stored procedure stereotypes
@@ -397,6 +400,75 @@ internal class DbSchemaIntentMetadataMerger
 
         procElement.TypeReference.TypeId = dataContract.Id; // Point to the data contract element ID
         procElement.TypeReference.IsCollection = true; // Stored procedures typically return collections
+    }
+
+    /// <summary>
+    /// Processes UserDefinedTable parameters from stored procedures and creates corresponding DataContracts
+    /// Returns a dictionary mapping UDT external references to their DataContract IDs for deduplication
+    /// </summary>
+    private Dictionary<string, string> ProcessUserDefinedTableDataContracts(
+        DatabaseSchema databaseSchema,
+        PackageModelPersistable package,
+        PackageUpdateResult result,
+        DeduplicationContext? deduplicationContext)
+    {
+        var udtDataContracts = new Dictionary<string, string>(); // External ref -> DataContract ID
+
+        // Collect all unique UserDefinedTables from stored procedure parameters
+        var uniqueUdts = new Dictionary<string, UserDefinedTableTypeSchema>();
+        
+        foreach (var storedProc in databaseSchema.StoredProcedures)
+        {
+            foreach (var parameter in storedProc.Parameters)
+            {
+                if (parameter.UserDefinedTableType != null)
+                {
+                    var udtExternalRef = ModelNamingUtilities.GetUserDefinedTableDataContractExternalReference(
+                        parameter.UserDefinedTableType.Schema, 
+                        parameter.UserDefinedTableType.Name);
+                    
+                    if (!uniqueUdts.ContainsKey(udtExternalRef))
+                    {
+                        uniqueUdts[udtExternalRef] = parameter.UserDefinedTableType;
+                    }
+                }
+            }
+        }
+
+        // Create DataContracts for each unique UDT
+        foreach (var kvp in uniqueUdts)
+        {
+            var udtExternalRef = kvp.Key;
+            var udtSchema = kvp.Value;
+
+            // Check if DataContract already exists
+            var existingDataContract = package.Classes.FirstOrDefault(c => 
+                c.ExternalReference == udtExternalRef && 
+                c.SpecializationType == Constants.SpecializationTypes.DataContract.SpecializationType);
+
+            ElementPersistable dataContract;
+            if (existingDataContract != null)
+            {
+                // Update existing DataContract
+                var schemaFolder = GetOrCreateSchemaFolder(udtSchema.Schema, package);
+                dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, package);
+                UpdateExistingClass(existingDataContract, dataContract);
+                result.UpdatedElements.Add(existingDataContract);
+                dataContract = existingDataContract; // Use existing for mapping
+            }
+            else
+            {
+                // Create new DataContract
+                var schemaFolder = GetOrCreateSchemaFolder(udtSchema.Schema, package);
+                dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, package);
+                package.Classes.Add(dataContract);
+                result.AddedElements.Add(dataContract);
+            }
+
+            udtDataContracts[udtExternalRef] = dataContract.Id;
+        }
+
+        return udtDataContracts;
     }
 }
 
