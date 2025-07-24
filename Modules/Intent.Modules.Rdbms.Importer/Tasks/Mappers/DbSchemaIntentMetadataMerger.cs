@@ -267,29 +267,19 @@ internal class DbSchemaIntentMetadataMerger
             // Update type reference (existing behavior - direct overwrite)
             if (sourceElement.TypeReference != null)
             {
-                existingElement.TypeReference = sourceElement.TypeReference;
+                existingElement.TypeReference ??= new TypeReferencePersistable();
+                existingElement.TypeReference.TypeId = sourceElement.TypeReference.TypeId;
+                existingElement.TypeReference.GenericTypeId = sourceElement.TypeReference.GenericTypeId;
+                existingElement.TypeReference.IsCollection = sourceElement.TypeReference.IsCollection;
+                existingElement.TypeReference.IsNullable = sourceElement.TypeReference.IsNullable;
+                SyncStereotypeCollection(existingElement.Stereotypes, sourceElement.Stereotypes);
             }
-            
+
             // Sync stereotypes using the add-or-modify approach
             existingElement.Stereotypes ??= [];
             if (sourceElement.Stereotypes.Count > 0)
             {
-                foreach (var sourceStereotype in sourceElement.Stereotypes)
-                {
-                    var existingStereotype = existingElement.Stereotypes
-                        .FirstOrDefault(s => s.DefinitionId == sourceStereotype.DefinitionId);
-                
-                    if (existingStereotype is null)
-                    {
-                        // Add new stereotype
-                        existingElement.Stereotypes.Add(sourceStereotype);
-                    }
-                    else
-                    {
-                        // Sync properties within existing stereotype
-                        SyncStereotypeProperties(existingStereotype, sourceStereotype);
-                    }
-                }
+                SyncStereotypeCollection(existingElement.Stereotypes, sourceElement.Stereotypes);
             }
             
 
@@ -317,6 +307,26 @@ internal class DbSchemaIntentMetadataMerger
                         InternSyncElements(packageElements, existingChild, sourceChild, visitedElements);
                     }
                 }
+            }
+        }
+    }
+
+    private static void SyncStereotypeCollection(List<StereotypePersistable> existingElementStereotypes, List<StereotypePersistable> sourceElementStereotypes)
+    {
+        foreach (var sourceStereotype in sourceElementStereotypes)
+        {
+            var existingStereotype = existingElementStereotypes
+                .FirstOrDefault(s => s.DefinitionId == sourceStereotype.DefinitionId);
+                
+            if (existingStereotype is null)
+            {
+                // Add new stereotype
+                existingElementStereotypes.Add(sourceStereotype);
+            }
+            else
+            {
+                // Sync properties within existing stereotype
+                SyncStereotypeProperties(existingStereotype, sourceStereotype);
             }
         }
     }
