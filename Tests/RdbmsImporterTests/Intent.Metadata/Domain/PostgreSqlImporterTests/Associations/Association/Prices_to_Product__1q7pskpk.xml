@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="3282da18-bf5c-4cb4-bbe4-ed840350c009">
+  <sourceEnd id="05798a79-be4c-49a5-9cbc-136525ba3d2f" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Prices</name>
+    <display>Prices: Price[*]</display>
+    <order>0</order>
+    <typeReference id="41e101d5-062d-4fee-88ff-b26674f0868c">
+      <typeId>2c98e22c-11ae-4896-b44c-4cb1f5a5b167</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>PostgreSqlImporterTests</typePackageName>
+      <typePackageId>5a5b2715-8ca3-407c-8914-c2478a684f5a</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="3282da18-bf5c-4cb4-bbe4-ed840350c009" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Product</name>
+    <display>Product: Product</display>
+    <order>4</order>
+    <typeReference id="16f61faf-3c92-4ff0-98b3-3838a4205c74">
+      <typeId>0d03a490-e007-4982-8b6f-abe56a3e0910</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>PostgreSqlImporterTests</typePackageName>
+      <typePackageId>5a5b2715-8ca3-407c-8914-c2478a684f5a</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>[public].[prices].[fk_prices_products_productid]</externalReference>
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <externalReference>[public].[prices].[fk_prices_products_productid]</externalReference>
+  <stereotypes />
+</association>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="0878a226-3bd1-4179-8b4c-9d8111a63019">
+  <sourceEnd id="bbbcf933-3818-4dc0-b043-25e74734ddbb" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>AspNetUserRoles</name>
+    <display>AspNetUserRoles: AspNetUserRole[*]</display>
+    <order>0</order>
+    <typeReference id="b677a0e4-7991-474b-82a3-130a88a0af63">
+      <typeId>01787c20-c27c-436e-96f4-b35418ce82ce</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>PostgreSqlImporterTests</typePackageName>
+      <typePackageId>5a5b2715-8ca3-407c-8914-c2478a684f5a</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="0878a226-3bd1-4179-8b4c-9d8111a63019" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>RoleAspNetRole</name>
+    <display>RoleAspNetRole: AspNetRole</display>
+    <order>3</order>
+    <typeReference id="a3011001-1845-49d3-aaec-c9f51874540b">
+      <typeId>200b5c64-b39d-4249-b35d-cfafcc2229f5</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>PostgreSqlImporterTests</typePackageName>
+      <typePackageId>5a5b2715-8ca3-407c-8914-c2478a684f5a</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>[public].[aspnetuserroles].[fk_aspnetuserroles_aspnetroles_roleid]</externalReference>
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <externalReference>[public].[aspnetuserroles].[fk_aspnetuserroles_aspnetroles_roleid]</externalReference>
+  <stereotypes />
+</association>

@@ -110,7 +110,8 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
             var parameterSchema = new StoredProcedureParameterSchema
             {
                 Name = argument.Name ?? "",
-                DbDataType = udt is not null ? argument.DatabaseDataType : dataTypeMapper.GetDbDataTypeString(argument.DatabaseDataType),
+                DbDataType = udt is not null ? argument.DatabaseDataType?.Replace("\"", string.Empty) 
+                                               ?? "" : dataTypeMapper.GetDbDataTypeString(argument.DatabaseDataType),
                 LanguageDataType = udt is not null ? "class" : dataTypeMapper.GetLanguageDataTypeString(argument.DataType, argument.DatabaseDataType),
                 IsOutputParameter = argument.Out, // DatabaseSchemaReader exposes input/output information
                 MaxLength = argument.Length > 0 ? argument.Length : null,
@@ -161,7 +162,7 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
             return true;
         }
 
-        udt = databaseSchema.UserDefinedTables.FirstOrDefault(x => argument.DatabaseDataType.StartsWith(x.Name));
+        udt = databaseSchema.UserDefinedTables.FirstOrDefault(x => argument.DatabaseDataType?.Replace("\"", string.Empty).StartsWith(x.Name) == true);
         return udt is not null;
     }
 

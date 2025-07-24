@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="6ac6b644-58b6-4f3e-814f-03a032b27725">
+  <sourceEnd id="58563ee2-40c1-4233-9730-5bfb27a0101a" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>OrderItems</name>
+    <display>OrderItems: OrderItem[*]</display>
+    <order>0</order>
+    <typeReference id="94e9e4c6-bdb6-48e0-b7fd-1beed9434e6b">
+      <typeId>c92eeee4-a6ae-45be-bf83-43c15fe81944</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>PostgreSqlImporterTests</typePackageName>
+      <typePackageId>5a5b2715-8ca3-407c-8914-c2478a684f5a</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="6ac6b644-58b6-4f3e-814f-03a032b27725" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Product</name>
+    <display>Product: Product</display>
+    <order>5</order>
+    <typeReference id="8e388dc3-5111-4882-9c49-514adb50901c">
+      <typeId>0d03a490-e007-4982-8b6f-abe56a3e0910</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>PostgreSqlImporterTests</typePackageName>
+      <typePackageId>5a5b2715-8ca3-407c-8914-c2478a684f5a</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>[public].[orderitems].[fk_orderitems_products_productid]</externalReference>
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <externalReference>[public].[orderitems].[fk_orderitems_products_productid]</externalReference>
+  <stereotypes />
+</association>

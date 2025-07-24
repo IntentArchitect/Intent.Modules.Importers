@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="fe5a4f32-a1c6-48e4-8e0f-7f8441af8fc1">
+  <sourceEnd id="e25b91b3-0bca-40fa-9fec-9205dd88ffe8" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Addresses</name>
+    <display>Addresses: Address[*]</display>
+    <order>0</order>
+    <typeReference id="69f3ca9e-8b42-47d0-b978-002acb7d2f52">
+      <typeId>2a0acd3b-6207-447b-bd79-122f36630aec</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>PostgreSqlImporterTests</typePackageName>
+      <typePackageId>5a5b2715-8ca3-407c-8914-c2478a684f5a</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="fe5a4f32-a1c6-48e4-8e0f-7f8441af8fc1" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Customer</name>
+    <display>Customer: Customer</display>
+    <order>7</order>
+    <typeReference id="6d889129-616f-4a9e-a5aa-0265bc1bc686">
+      <typeId>4670fa68-ccc1-4129-9ecf-aa037a83779e</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>PostgreSqlImporterTests</typePackageName>
+      <typePackageId>5a5b2715-8ca3-407c-8914-c2478a684f5a</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>[public].[addresses].[fk_addresses_customers_customerid]</externalReference>
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <externalReference>[public].[addresses].[fk_addresses_customers_customerid]</externalReference>
+  <stereotypes />
+</association>

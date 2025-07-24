@@ -5,10 +5,16 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers.PostgreSQL;
 
 internal class PostgreSqlDataTypeMapper : DefaultDataTypeMapper
 {
+    public override string GetDbDataTypeString(string? dataTypeName)
+    {
+        return base.GetDbDataTypeString(dataTypeName).Replace("\"", string.Empty);
+    }
+
     public override string GetLanguageDataTypeString(DataType? dataType, string dbDataType)
     {
+        var normalized = dbDataType.ToLowerInvariant().Replace("\"", string.Empty);
         // https://www.postgresql.org/docs/current/datatype.html
-        return dbDataType.ToLowerInvariant() switch
+        return normalized switch
         {
             "smallint" or "int2" => "short",
             "integer" or "int" or "int4" => "int",

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="ccad771a-5993-4b4c-b62d-fe15653b3b01">
+  <sourceEnd id="83e2a58e-4c6b-4d52-a4a7-6b9927b93f57" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>AspNetUserRoles</name>
+    <display>AspNetUserRoles: AspNetUserRole[*]</display>
+    <order>0</order>
+    <typeReference id="2cf4cd55-f54e-4050-b3ff-25ccf787f251">
+      <typeId>01787c20-c27c-436e-96f4-b35418ce82ce</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>PostgreSqlImporterTests</typePackageName>
+      <typePackageId>5a5b2715-8ca3-407c-8914-c2478a684f5a</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="ccad771a-5993-4b4c-b62d-fe15653b3b01" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>UserAspNetUser</name>
+    <display>UserAspNetUser: AspNetUser</display>
+    <order>2</order>
+    <typeReference id="c7e9c2c3-424b-4bda-8a15-6428a3336165">
+      <typeId>321ff40b-919b-4fb8-bb61-fbbadcaa2a8c</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>PostgreSqlImporterTests</typePackageName>
+      <typePackageId>5a5b2715-8ca3-407c-8914-c2478a684f5a</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>[public].[aspnetuserroles].[fk_aspnetuserroles_aspnetusers_userid]</externalReference>
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <externalReference>[public].[aspnetuserroles].[fk_aspnetuserroles_aspnetusers_userid]</externalReference>
+  <stereotypes />
+</association>
