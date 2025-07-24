@@ -26,7 +26,7 @@ internal static class RdbmsSchemaAnnotator
             {
                 TableStereotype.Always => true,
                 TableStereotype.WhenDifferent when config.EntityNameConvention is EntityNameConvention.MatchTable => @class.Name != table.Name,
-                TableStereotype.WhenDifferent when config.EntityNameConvention is EntityNameConvention.SingularEntity => @class.Name.Singularize() != table.Name,
+                TableStereotype.WhenDifferent when config.EntityNameConvention is EntityNameConvention.SingularEntity => @class.Name.Pluralize() != table.Name, // This assumes EF convention
                 _ => false
             };
         }
