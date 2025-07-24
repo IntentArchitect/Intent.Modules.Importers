@@ -121,6 +121,36 @@
       ]
     },
     {
+      Name: Brands,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: Id,
+          DbDataType: uniqueidentifier,
+          LanguageDataType: guid,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: Name,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: IsActive,
+          DbDataType: bit,
+          LanguageDataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ]
+    },
+    {
       Name: Categories,
       Schema: dbo,
       Columns: [
@@ -221,6 +251,30 @@
               ReferencedColumnName: CategoryID
             }
           ]
+        }
+      ]
+    },
+    {
+      Name: FKTable,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: FKTableId,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          NumericPrecision: 10
+        },
+        {
+          Name: Name,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
         }
       ]
     },
@@ -1061,6 +1115,137 @@
       ]
     },
     {
+      Name: PrimaryTable,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: PrimaryTableId,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          NumericPrecision: 10
+        },
+        {
+          Name: Name,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: FKTableId1,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 10
+        },
+        {
+          Name: FKWithTableId2,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 10
+        },
+        {
+          Name: FKAsTableId3,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 10
+        },
+        {
+          Name: FKTryTableId4,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 10
+        },
+        {
+          Name: FKThisTableId5,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 10
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: FK_PrimaryTable_FKAsTableId3,
+          TableName: ,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: FKTable,
+          Columns: [
+            {
+              Name: FKAsTableId3,
+              ReferencedColumnName: FKTableId
+            }
+          ]
+        },
+        {
+          Name: FK_PrimaryTable_FKTable1,
+          TableName: ,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: FKTable,
+          Columns: [
+            {
+              Name: FKTableId1,
+              ReferencedColumnName: FKTableId
+            }
+          ]
+        },
+        {
+          Name: FK_PrimaryTable_FKThisTableId5,
+          TableName: ,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: FKTable,
+          Columns: [
+            {
+              Name: FKThisTableId5,
+              ReferencedColumnName: FKTableId
+            }
+          ]
+        },
+        {
+          Name: FK_PrimaryTable_FKTryTableId4,
+          TableName: ,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: FKTable,
+          Columns: [
+            {
+              Name: FKTryTableId4,
+              ReferencedColumnName: FKTableId
+            }
+          ]
+        },
+        {
+          Name: FK_PrimaryTable_FKWithTableId2,
+          TableName: ,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: FKTable,
+          Columns: [
+            {
+              Name: FKWithTableId2,
+              ReferencedColumnName: FKTableId
+            }
+          ]
+        }
+      ]
+    },
+    {
       Name: ProductReviews,
       Schema: dbo,
       Columns: [
@@ -1499,6 +1684,60 @@
           ParentSchema: dbo,
           ParentName: Products,
           ParentType: Table
+        }
+      ]
+    },
+    {
+      Name: SelfReferenceTable,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: ID,
+          DbDataType: uniqueidentifier,
+          LanguageDataType: guid,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: Name,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: Email,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: ManagerId,
+          DbDataType: uniqueidentifier,
+          LanguageDataType: guid,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: FK_SelfReferenceTable_SelfReferenceTable,
+          TableName: ,
+          ReferencedTableSchema: dbo,
+          ReferencedTableName: SelfReferenceTable,
+          Columns: [
+            {
+              Name: ManagerId,
+              ReferencedColumnName: ID
+            }
+          ]
         }
       ]
     },
@@ -2695,6 +2934,42 @@
     }
   ],
   StoredProcedures: [
+    {
+      Name: InsertBrand,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @brand,
+          DbDataType: BrandType,
+          LanguageDataType: class,
+          IsOutputParameter: false,
+          UserDefinedTableType: {
+            Name: BrandType,
+            Schema: dbo,
+            Columns: [
+              {
+                Name: Name,
+                DbDataType: nvarchar,
+                LanguageDataType: string,
+                IsNullable: false,
+                IsPrimaryKey: false,
+                IsIdentity: false
+              },
+              {
+                Name: IsActive,
+                DbDataType: bit,
+                LanguageDataType: bool,
+                IsNullable: false,
+                IsPrimaryKey: false,
+                IsIdentity: false,
+                MaxLength: 1,
+                NumericPrecision: 1
+              }
+            ]
+          }
+        }
+      ]
+    },
     {
       Name: sp_AddToCart,
       Schema: dbo,

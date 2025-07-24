@@ -43,6 +43,6 @@ internal class DefaultDataTypeMapper : DataTypeMapperBase
     /// </remarks>
     public override string GetLanguageDataTypeString(DataType? dataType, string dbDataType)
     {
-        return dataType?.NetDataTypeCSharpName?.ToLowerInvariant() ?? throw new InvalidOperationException($"Unable to extract normalized data type for database data type '{dbDataType}'");
+        return dataType?.NetDataTypeCSharpName?.ToLowerInvariant() ?? "unknown";
     }
 } 

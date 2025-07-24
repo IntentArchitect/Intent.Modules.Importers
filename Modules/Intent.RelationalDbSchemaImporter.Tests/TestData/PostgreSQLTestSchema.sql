@@ -728,53 +728,61 @@ FROM orders o
 GROUP BY o.order_id, o.order_date, o.order_status, o.payment_status, u.first_name, u.last_name, u.email, o.total_amount, o.tracking_number;
 
 -- =============================================
--- SAMPLE DATA
+-- SPECIAL CASES
 -- =============================================
 
--- Insert sample categories
-INSERT INTO categories (category_name, description) VALUES
-                                                        ('Electronics', 'Electronic devices and accessories'),
-                                                        ('Books', 'Books and literature'),
-                                                        ('Clothing', 'Apparel and fashion'),
-                                                        ('Home & Garden', 'Home improvement and garden supplies'),
-                                                        ('Sports', 'Sports equipment and accessories');
+CREATE TABLE Brands (
+        Id UUID NOT NULL,
+        Name TEXT NOT NULL,
+        IsActive BOOLEAN NOT NULL,
+        CONSTRAINT PK_Brands PRIMARY KEY (Id)
+);
 
--- Insert sample suppliers
-INSERT INTO suppliers (supplier_name, contact_name, email, phone) VALUES
-                                                                      ('Tech Solutions Inc.', 'John Smith', 'john@techsolutions.com', '555-0101'),
-                                                                      ('BookWorld Publishing', 'Jane Doe', 'jane@bookworld.com', '555-0102'),
-                                                                      ('Fashion Forward', 'Mike Johnson', 'mike@fashionforward.com', '555-0103'),
-                                                                      ('Home Depot Supplies', 'Sarah Wilson', 'sarah@homedepot.com', '555-0104'),
-                                                                      ('Sports Central', 'Tom Brown', 'tom@sportscentral.com', '555-0105');
+CREATE TYPE BrandType AS (
+    Name TEXT,
+    IsActive BOOLEAN
+);
 
--- Insert sample users
-INSERT INTO users (username, email, password_hash, first_name, last_name, date_of_birth, phone_number) VALUES
-                                                                                                           ('jdoe', 'john.doe@email.com', 'hashed_password_123', 'John', 'Doe', '1985-03-15', '555-1001'),
-                                                                                                           ('asmith', 'alice.smith@email.com', 'hashed_password_456', 'Alice', 'Smith', '1990-07-22', '555-1002'),
-                                                                                                           ('bwilson', 'bob.wilson@email.com', 'hashed_password_789', 'Bob', 'Wilson', '1988-12-10', '555-1003');
+CREATE OR REPLACE FUNCTION InsertBrand(brand_data BrandType[])
+RETURNS VOID AS $$
+BEGIN
+INSERT INTO Brands (Id, Name, IsActive)
+SELECT
+    gen_random_uuid() AS Id,
+    (brand_item).Name,
+        (brand_item).IsActive
+FROM unnest(brand_data) AS brand_item;
+END;
+$$ 
+LANGUAGE plpgsql;
 
--- Insert sample addresses
-INSERT INTO user_addresses (user_id, address_type, address_line1, city, state, zip_code, is_default) VALUES
-                                                                                                         (1, 'Billing', '123 Main St', 'New York', 'NY', '10001', TRUE),
-                                                                                                         (1, 'Shipping', '123 Main St', 'New York', 'NY', '10001', TRUE),
-                                                                                                         (2, 'Billing', '456 Oak Ave', 'Los Angeles', 'CA', '90210', TRUE),
-                                                                                                         (2, 'Shipping', '456 Oak Ave', 'Los Angeles', 'CA', '90210', TRUE),
-                                                                                                         (3, 'Billing', '789 Pine Rd', 'Chicago', 'IL', '60601', TRUE),
-                                                                                                         (3, 'Shipping', '789 Pine Rd', 'Chicago', 'IL', '60601', TRUE);
+CREATE TABLE FKTable (
+         FKTableId SERIAL PRIMARY KEY,
+         Name VARCHAR(100) NOT NULL
+);
 
--- Insert sample products
-INSERT INTO products (product_name, description, sku, category_id, supplier_id, unit_price, units_in_stock, reorder_level) VALUES
-                                                                                                                               ('Laptop Computer', 'High-performance laptop for work and gaming', 'LAPTOP-001', 1, 1, 899.99, 25, 5),
-                                                                                                                               ('Programming Book', 'Complete guide to modern programming', 'BOOK-001', 2, 2, 49.99, 100, 10),
-                                                                                                                               ('T-Shirt', 'Comfortable cotton t-shirt', 'SHIRT-001', 3, 3, 19.99, 200, 20),
-                                                                                                                               ('Garden Hose', '50ft garden hose with nozzle', 'HOSE-001', 4, 4, 29.99, 50, 10),
-                                                                                                                               ('Basketball', 'Official size basketball', 'BALL-001', 5, 5, 24.99, 75, 15);
+CREATE TABLE PrimaryTable (
+          PrimaryTableId SERIAL PRIMARY KEY,
+          Name VARCHAR(100) NOT NULL,
+          FKTableId1 INT NOT NULL,
+          FKWithTableId2 INT NOT NULL,
+          FKAsTableId3 INT NOT NULL,
+          FKTryTableId4 INT NOT NULL,
+          FKThisTableId5 INT NOT NULL,
+          CONSTRAINT FK_PrimaryTable_FKTable1 FOREIGN KEY (FKTableId1) REFERENCES FKTable(FKTableId),
+          CONSTRAINT FK_PrimaryTable_FKWithTableId2 FOREIGN KEY (FKWithTableId2) REFERENCES FKTable(FKTableId),
+          CONSTRAINT FK_PrimaryTable_FKAsTableId3 FOREIGN KEY (FKAsTableId3) REFERENCES FKTable(FKTableId),
+          CONSTRAINT FK_PrimaryTable_FKTryTableId4 FOREIGN KEY (FKTryTableId4) REFERENCES FKTable(FKTableId),
+          CONSTRAINT FK_PrimaryTable_FKThisTableId5 FOREIGN KEY (FKThisTableId5) REFERENCES FKTable(FKTableId)
+);
 
--- Display summary
-SELECT 'Database schema created successfully!' AS message;
-SELECT 'Tables: 13' AS info;
-SELECT 'Indexes: 20+' AS info;
-SELECT 'Triggers: 7' AS info;
-SELECT 'Stored Procedures: 7' AS info;
-SELECT 'Views: 2' AS info;
-SELECT 'Sample data inserted.' AS info;
+CREATE TABLE SelfReferenceTable (
+        ID UUID NOT NULL,
+        Name VARCHAR(50) NOT NULL,
+        Email VARCHAR(50),
+        ManagerId UUID,
+        CONSTRAINT PK_SelfReferenceTable PRIMARY KEY (ID),
+        CONSTRAINT FK_SelfReferenceTable_SelfReferenceTable FOREIGN KEY (ManagerId) REFERENCES SelfReferenceTable(ID)
+);
+
+

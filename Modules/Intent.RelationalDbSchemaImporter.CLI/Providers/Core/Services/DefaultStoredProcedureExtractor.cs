@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using DatabaseSchemaReader.DataSchema;
 using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
+using DatabaseSchema = DatabaseSchemaReader.DataSchema.DatabaseSchema;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.Core.Services;
 
@@ -85,8 +87,8 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
             {
                 Name = routine.Name,
                 Schema = routine.SchemaOwner,
-                Parameters = ExtractStoredProcedureParameters(routine, dataTypeMapper),
-                ResultSetColumns = await ExtractStoredProcedureResultSetAsync(routine, connection, analyzer, dataTypeMapper)
+                Parameters = ExtractStoredProcedureParameters(databaseSchema, routine, dataTypeMapper),
+                ResultSetColumns = await ExtractStoredProcedureResultSetAsync(databaseSchema, routine, analyzer, dataTypeMapper)
             };
 
             storedProcedures.Add(storedProcSchema);
@@ -95,14 +97,15 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
         return storedProcedures;
     }
 
-    private static List<StoredProcedureParameterSchema> ExtractStoredProcedureParameters(DatabaseStoredProcedure routine, DataTypeMapperBase dataTypeMapper)
+    private static List<StoredProcedureParameterSchema> ExtractStoredProcedureParameters(DatabaseSchema databaseSchema, DatabaseStoredProcedure routine,
+        DataTypeMapperBase dataTypeMapper)
     {
         var parameters = new List<StoredProcedureParameterSchema>();
 
         // DatabaseSchemaReader provides parameter information through Arguments
         foreach (var argument in routine.Arguments?.DistinctBy(x => x.Name) ?? [])
         {
-            var udt = ExtractUserDefinedTableType(argument, dataTypeMapper);
+            var udt = ExtractUserDefinedTableType(databaseSchema, argument, dataTypeMapper);
             
             var parameterSchema = new StoredProcedureParameterSchema
             {
@@ -122,16 +125,18 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
         return parameters;
     }
 
-    private static UserDefinedTableTypeSchema? ExtractUserDefinedTableType(DatabaseArgument argument, DataTypeMapperBase dataTypeMapper)
+    private static UserDefinedTableTypeSchema? ExtractUserDefinedTableType(DatabaseSchema databaseSchema, DatabaseArgument argument, DataTypeMapperBase dataTypeMapper)
     {
-        if (argument.UserDefinedTable == null)
+        if (!TryGetUserDefinedTable(databaseSchema, argument, out var foundUdt))
+        {
             return null;
+        }
 
         var udtSchema = new UserDefinedTableTypeSchema
         {
-            Name = argument.UserDefinedTable.Name,
-            Schema = argument.UserDefinedTable.SchemaOwner ?? "",
-            Columns = argument.UserDefinedTable.Columns.Select(col => new ColumnSchema
+            Name = foundUdt.Name,
+            Schema = foundUdt.SchemaOwner ?? "",
+            Columns = foundUdt.Columns.Select(col => new ColumnSchema
             {
                 Name = col.Name,
                 DbDataType = col.DbDataType,
@@ -148,16 +153,26 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
         return udtSchema;
     }
 
-    private static async Task<List<ResultSetColumnSchema>> ExtractStoredProcedureResultSetAsync(
-        DatabaseStoredProcedure routine, 
-        DbConnection connection, 
+    private static bool TryGetUserDefinedTable(DatabaseSchema databaseSchema, DatabaseArgument argument, [NotNullWhen(true)] out UserDefinedTable? udt)
+    {
+        if (argument.UserDefinedTable is not null)
+        {
+            udt = argument.UserDefinedTable;
+            return true;
+        }
+
+        udt = databaseSchema.UserDefinedTables.FirstOrDefault(x => argument.DatabaseDataType.StartsWith(x.Name));
+        return udt is not null;
+    }
+
+    private static async Task<List<ResultSetColumnSchema>> ExtractStoredProcedureResultSetAsync(DatabaseSchema databaseSchema, DatabaseStoredProcedure routine,
         IStoredProcedureAnalyzer analyzer,
         DataTypeMapperBase dataTypeMapper)
     {
         var resultColumns = new List<ResultSetColumnSchema>();
 
         // Use the stored procedure analyzer for database-specific result set analysis
-        var parameters = ExtractStoredProcedureParameters(routine, dataTypeMapper);
+        var parameters = ExtractStoredProcedureParameters(databaseSchema, routine, dataTypeMapper);
         
         try
         {

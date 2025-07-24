@@ -141,6 +141,52 @@
       ]
     },
     {
+      Name: brands,
+      Schema: public,
+      Columns: [
+        {
+          Name: id,
+          DbDataType: uuid,
+          LanguageDataType: guid,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: name,
+          DbDataType: text,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: isactive,
+          DbDataType: bool,
+          LanguageDataType: bool,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ],
+      Indexes: [
+        {
+          Name: pk_brands,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          FilterDefinition: ,
+          Columns: [
+            {
+              Name: id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        }
+      ]
+    },
+    {
       Name: categories,
       Schema: public,
       Columns: [
@@ -266,6 +312,49 @@
           ParentSchema: public,
           ParentName: categories,
           ParentType: Table
+        }
+      ]
+    },
+    {
+      Name: fktable,
+      Schema: public,
+      Columns: [
+        {
+          Name: fktableid,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('fktable_fktableid_seq'::regclass)
+          }
+        },
+        {
+          Name: name,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        }
+      ],
+      Indexes: [
+        {
+          Name: fktable_pkey,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          FilterDefinition: ,
+          Columns: [
+            {
+              Name: fktableid,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ]
     },
@@ -1137,6 +1226,156 @@
       ]
     },
     {
+      Name: primarytable,
+      Schema: public,
+      Columns: [
+        {
+          Name: primarytableid,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('primarytable_primarytableid_seq'::regclass)
+          }
+        },
+        {
+          Name: name,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: fktableid1,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: fkwithtableid2,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: fkastableid3,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: fktrytableid4,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: fkthistableid5,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        }
+      ],
+      Indexes: [
+        {
+          Name: primarytable_pkey,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          FilterDefinition: ,
+          Columns: [
+            {
+              Name: primarytableid,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: fk_primarytable_fkastableid3,
+          TableName: ,
+          ReferencedTableSchema: public,
+          ReferencedTableName: fktable,
+          Columns: [
+            {
+              Name: fkastableid3,
+              ReferencedColumnName: fktableid
+            }
+          ]
+        },
+        {
+          Name: fk_primarytable_fktable1,
+          TableName: ,
+          ReferencedTableSchema: public,
+          ReferencedTableName: fktable,
+          Columns: [
+            {
+              Name: fktableid1,
+              ReferencedColumnName: fktableid
+            }
+          ]
+        },
+        {
+          Name: fk_primarytable_fkthistableid5,
+          TableName: ,
+          ReferencedTableSchema: public,
+          ReferencedTableName: fktable,
+          Columns: [
+            {
+              Name: fkthistableid5,
+              ReferencedColumnName: fktableid
+            }
+          ]
+        },
+        {
+          Name: fk_primarytable_fktrytableid4,
+          TableName: ,
+          ReferencedTableSchema: public,
+          ReferencedTableName: fktable,
+          Columns: [
+            {
+              Name: fktrytableid4,
+              ReferencedColumnName: fktableid
+            }
+          ]
+        },
+        {
+          Name: fk_primarytable_fkwithtableid2,
+          TableName: ,
+          ReferencedTableSchema: public,
+          ReferencedTableName: fktable,
+          Columns: [
+            {
+              Name: fkwithtableid2,
+              ReferencedColumnName: fktableid
+            }
+          ]
+        }
+      ]
+    },
+    {
       Name: product_reviews,
       Schema: public,
       Columns: [
@@ -1623,6 +1862,76 @@
           ParentSchema: public,
           ParentName: products,
           ParentType: Table
+        }
+      ]
+    },
+    {
+      Name: selfreferencetable,
+      Schema: public,
+      Columns: [
+        {
+          Name: id,
+          DbDataType: uuid,
+          LanguageDataType: guid,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: false
+        },
+        {
+          Name: name,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: email,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: managerid,
+          DbDataType: uuid,
+          LanguageDataType: guid,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ],
+      Indexes: [
+        {
+          Name: pk_selfreferencetable,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          FilterDefinition: ,
+          Columns: [
+            {
+              Name: id,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        }
+      ],
+      ForeignKeys: [
+        {
+          Name: fk_selfreferencetable_selfreferencetable,
+          TableName: ,
+          ReferencedTableSchema: public,
+          ReferencedTableName: selfreferencetable,
+          Columns: [
+            {
+              Name: managerid,
+              ReferencedColumnName: id
+            }
+          ]
         }
       ]
     },
@@ -2664,8 +2973,8 @@
       Parameters: [
         {
           Name: arg0,
-          DbDataType: text,
-          LanguageDataType: string,
+          DbDataType: bytea,
+          LanguageDataType: binary,
           IsOutputParameter: false
         },
         {
@@ -2870,14 +3179,14 @@
       Parameters: [
         {
           Name: arg0,
-          DbDataType: bytea,
-          LanguageDataType: binary,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
           Name: arg1,
-          DbDataType: bytea,
-          LanguageDataType: binary,
+          DbDataType: text,
+          LanguageDataType: string,
           IsOutputParameter: false
         },
         {
@@ -2893,6 +3202,40 @@
           DbDataType: bytea,
           LanguageDataType: binary,
           IsNullable: true
+        }
+      ]
+    },
+    {
+      Name: insertbrand,
+      Schema: public,
+      Parameters: [
+        {
+          Name: brand_data,
+          DbDataType: brandtype[],
+          LanguageDataType: class,
+          IsOutputParameter: false,
+          UserDefinedTableType: {
+            Name: brandtype,
+            Schema: public,
+            Columns: [
+              {
+                Name: name,
+                DbDataType: text,
+                LanguageDataType: string,
+                IsNullable: false,
+                IsPrimaryKey: false,
+                IsIdentity: false
+              },
+              {
+                Name: isactive,
+                DbDataType: boolean,
+                LanguageDataType: bool,
+                IsNullable: false,
+                IsPrimaryKey: false,
+                IsIdentity: false
+              }
+            ]
+          }
         }
       ]
     },

@@ -36,7 +36,7 @@ public class SqlServerIntegrationTests : ContainerTest<MsSqlBuilder, MsSqlContai
     {
         // Arrange
         var connectionString = Container.GetConnectionString();
-        
+
         var importRequest = new ImportSchemaRequest
         {
             ConnectionString = connectionString,
@@ -51,10 +51,10 @@ public class SqlServerIntegrationTests : ContainerTest<MsSqlBuilder, MsSqlContai
         Assert.NotNull(result);
         Assert.True(result.Errors.Count == 0, $"Import failed with errors: {string.Join(", ", result.Errors)}");
         Assert.NotNull(result.Result);
-        
+
         var schemaData = result.Result.SchemaData;
         Assert.NotNull(schemaData);
-        
+
         // Verify the schema data structure  
         await Verify(schemaData)
             .UseParameters(nameof(SqlServerIntegrationTests));
@@ -65,7 +65,7 @@ public class SqlServerIntegrationTests : ContainerTest<MsSqlBuilder, MsSqlContai
     {
         // Arrange
         var connectionString = Container.GetConnectionString();
-        
+
         var importRequest = new ImportSchemaRequest
         {
             ConnectionString = connectionString,
@@ -81,10 +81,10 @@ public class SqlServerIntegrationTests : ContainerTest<MsSqlBuilder, MsSqlContai
         Assert.NotNull(result);
         Assert.True(result.Errors.Count == 0, $"Import failed with errors: {string.Join(", ", result.Errors)}");
         Assert.NotNull(result.Result);
-        
+
         var schemaData = result.Result.SchemaData;
         Assert.NotNull(schemaData);
-        
+
         // Verify the schema data structure  
         await Verify(schemaData)
             .UseParameters(nameof(SqlServerIntegrationTests));
@@ -97,25 +97,39 @@ public class SqlServerIntegrationTests : ContainerTest<MsSqlBuilder, MsSqlContai
         var sqlScript = await File.ReadAllTextAsync(scriptLocation);
         await ExecuteSqlScript(Container.GetConnectionString(), sqlScript);
     }
-    
+
     private static async Task ExecuteSqlScript(string connectionString, string sqlScript)
     {
         await using var connection = new SqlConnection(connectionString);
         await connection.OpenAsync();
-        
+
         // Split script by GO statements and execute each batch
-        var batches = sqlScript.Split(new[] { "\nGO\n", "\nGO\r\n", "\r\nGO\r\n", "\r\nGO\n" }, 
+        var batches = sqlScript.Split(["\nGO\n", "\nGO\r\n", "\r\nGO\r\n", "\r\nGO\n"],
             StringSplitOptions.RemoveEmptyEntries);
-        
+
         foreach (var batch in batches)
         {
             var trimmedBatch = batch.Trim();
             if (string.IsNullOrEmpty(trimmedBatch) || trimmedBatch.Equals("GO", StringComparison.OrdinalIgnoreCase))
                 continue;
-                
-            await using var command = new SqlCommand(trimmedBatch, connection);
-            command.CommandTimeout = 60;
-            await command.ExecuteNonQueryAsync();
+            
+            try
+            {
+                await using var command = new SqlCommand(trimmedBatch, connection);
+                command.CommandTimeout = 60;
+                await command.ExecuteNonQueryAsync();
+            }
+            catch (SqlException exception)
+            {
+                throw new Exception(
+                    $"""
+                     Script execution error: {exception.Message}
+                     Line: {exception.LineNumber}
+                     Script:
+                     {trimmedBatch}
+                     """
+                );
+            }
         }
     }
-} 
+}

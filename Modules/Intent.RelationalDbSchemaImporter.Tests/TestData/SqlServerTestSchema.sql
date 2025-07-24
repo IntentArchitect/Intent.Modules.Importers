@@ -738,3 +738,61 @@ FROM Orders o
          INNER JOIN OrderDetails od ON o.OrderID = od.OrderID
 GROUP BY o.OrderID, o.OrderDate, o.OrderStatus, o.PaymentStatus, u.FirstName, u.LastName, u.Email, o.TotalAmount, o.TrackingNumber;
 GO
+
+-- =============================================
+-- SPECIAL CASES
+-- =============================================
+
+CREATE TABLE dbo.Brands (
+	Id uniqueidentifier NOT NULL,
+	Name nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	IsActive bit NOT NULL,
+	CONSTRAINT PK_Brands PRIMARY KEY (Id)
+);
+
+CREATE TYPE [dbo].[BrandType] AS TABLE(
+	[Name] [nvarchar](max) NOT NULL,
+	[IsActive] [bit] NOT NULL
+)
+GO
+
+CREATE PROCEDURE [dbo].[InsertBrand]
+	@brand BrandType READONLY
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	INSERT INTO dbo.Brands ([Id], [Name], [IsActive])
+	SELECT NEWID() AS [Id], [Name], [IsActive] FROM @brand
+END
+GO
+
+CREATE TABLE FKTable (
+    FKTableId INT PRIMARY KEY IDENTITY(1,1),
+    Name NVARCHAR(100) NOT NULL
+);
+
+CREATE TABLE PrimaryTable (
+    PrimaryTableId INT PRIMARY KEY IDENTITY(1,1),
+    Name NVARCHAR(100) NOT NULL,
+    FKTableId1 INT NOT NULL,
+    FKWithTableId2 INT NOT NULL,
+    FKAsTableId3 INT NOT NULL,
+    FKTryTableId4 INT NOT NULL,
+    FKThisTableId5 INT NOT NULL,
+    CONSTRAINT FK_PrimaryTable_FKTable1 FOREIGN KEY (FKTableId1) REFERENCES FKTable(FKTableId),
+    CONSTRAINT FK_PrimaryTable_FKWithTableId2 FOREIGN KEY (FKWithTableId2) REFERENCES FKTable(FKTableId),
+    CONSTRAINT FK_PrimaryTable_FKAsTableId3 FOREIGN KEY (FKAsTableId3) REFERENCES FKTable(FKTableId),
+    CONSTRAINT FK_PrimaryTable_FKTryTableId4 FOREIGN KEY (FKTryTableId4) REFERENCES FKTable(FKTableId),
+    CONSTRAINT FK_PrimaryTable_FKThisTableId5 FOREIGN KEY (FKThisTableId5) REFERENCES FKTable(FKTableId)
+);
+GO
+
+CREATE TABLE SelfReferenceTable (
+    ID uniqueidentifier NOT NULL,
+    Name nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+    Email nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+    ManagerId uniqueidentifier NULL,
+    CONSTRAINT PK_SelfReferenceTable PRIMARY KEY (ID),
+    CONSTRAINT FK_SelfReferenceTable_SelfReferenceTable FOREIGN KEY (ManagerId) REFERENCES SelfReferenceTable(ID)
+);
