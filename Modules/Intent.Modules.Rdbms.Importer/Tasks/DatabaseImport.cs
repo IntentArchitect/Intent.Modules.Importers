@@ -15,10 +15,12 @@ namespace Intent.Modules.Rdbms.Importer.Tasks;
 public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
 {
     private readonly IMetadataManager _metadataManager;
+    private readonly IApplicationConfigurationProvider _configurationProvider;
 
-    public DatabaseImport(IMetadataManager metadataManager)
+    public DatabaseImport(IMetadataManager metadataManager, IApplicationConfigurationProvider configurationProvider)
     {
         _metadataManager = metadataManager;
+        _configurationProvider = configurationProvider;
     }
 
     public override string TaskTypeId => "Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport";
@@ -140,7 +142,9 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
 
             // Apply the mapping using the schema data from the CLI
             var mappingResult = schemaMapper.MergeSchemaAndPackage(importResult.SchemaData, package, deduplicationContext);
-
+            
+            ModuleHelper.ApplyRelevantReferences(package, _configurationProvider);
+            
             // Save the package if mapping was successful
             if (mappingResult.IsSuccessful)
             {

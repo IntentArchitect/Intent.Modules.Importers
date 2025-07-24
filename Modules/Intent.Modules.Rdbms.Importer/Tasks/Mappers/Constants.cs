@@ -7,16 +7,32 @@ internal static class Constants
 {
     public static class Packages
     {
+        public static class CommonTypes
+        {
+            public const string DefinitionPackageId = "870ad967-cbd4-4ea9-b86d-9c3a5d55ea67";
+            public const string DefinitionPackageName = "Intent.Common.Types";
+            public const string ModuleName = "Intent.Common.Types";
+        }
+        
         public static class Rdbms
         {
             public const string DefinitionPackageId = "AF8F3810-745C-42A2-93C8-798860DC45B1";
             public const string DefinitionPackageName = "Intent.Metadata.RDBMS";
+            public const string ModuleName = "Intent.Metadata.RDBMS";
         }
 
+        public static class EntityFrameworkCore
+        {
+            public const string DefinitionPackageId = "a9d2a398-04e4-4300-9fbb-768568c65f9e";
+            public const string DefinitionPackageName = "Intent.EntityFrameworkCore";
+            public const string ModuleName = "Intent.EntityFrameworkCore";
+        }
+        
         public static class EntityFrameworkCoreRepository
         {
             public const string DefinitionPackageId = "5869084c-2a08-4e40-a5c9-ff26220470c8";
             public const string DefinitionPackageName = "Intent.EntityFrameworkCore.Repositories";
+            public const string ModuleName = "Intent.EntityFrameworkCore.Repositories";
         }
     }
 
