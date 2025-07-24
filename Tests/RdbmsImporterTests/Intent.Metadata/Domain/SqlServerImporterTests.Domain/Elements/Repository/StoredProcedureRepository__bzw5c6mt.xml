@@ -248,14 +248,14 @@
         </childElement>
       </childElements>
     </childElement>
-    <childElement id="93fe6b7e-a6c7-4642-b56d-88a8b04b6f33" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+    <childElement id="83c70340-69f7-40df-9fd4-ce570034e190" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
       <name>GetCustomerOrders</name>
       <display>GetCustomerOrders(customerId: guid?): GetCustomerOrdersResponse[*]</display>
       <externalReference>[dbo].[getcustomerorders]</externalReference>
       <isAbstract>false</isAbstract>
       <sort-children>by-type-then-manually</sort-children>
       <genericTypes />
-      <typeReference id="3fa28a23-fd18-4f07-a659-dcf0acc79085">
+      <typeReference id="491e1da9-36cc-43e4-ad85-bea63b1c7a57">
         <typeId>fbcb1b73-7a16-47d5-9512-481ac622fed3</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -276,13 +276,13 @@
       <stereotypes />
       <metadata />
       <childElements>
-        <childElement id="9ec76770-6a22-492e-b6b2-c057958ebf37" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+        <childElement id="cf4b898f-8d75-4602-b7dc-f63ed227dfc2" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
           <name>customerId</name>
           <display>in : customerId: guid?</display>
           <externalReference>customerid</externalReference>
           <isAbstract>false</isAbstract>
           <genericTypes />
-          <typeReference id="d181f026-2676-4cb4-b8ca-c05a0850c207">
+          <typeReference id="5e01954f-4856-4de3-8514-415284c658d1">
             <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
             <isNavigable>true</isNavigable>
             <isNullable>true</isNullable>
@@ -294,7 +294,7 @@
             <genericTypeParameters />
           </typeReference>
           <isMapped>false</isMapped>
-          <parentFolderId>93fe6b7e-a6c7-4642-b56d-88a8b04b6f33</parentFolderId>
+          <parentFolderId>83c70340-69f7-40df-9fd4-ce570034e190</parentFolderId>
           <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
           <packageName>SqlServerImporterTests</packageName>
           <stereotypes />
@@ -303,14 +303,14 @@
         </childElement>
       </childElements>
     </childElement>
-    <childElement id="e9fef33b-eb40-4385-bfe1-c29241408153" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+    <childElement id="261d898e-36a2-40ab-8c30-fbb5e6cb17b2" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
       <name>GetOrderItemDetails</name>
       <display>GetOrderItemDetails(orderId: guid?): GetOrderItemDetailsResponse[*]</display>
       <externalReference>[dbo].[getorderitemdetails]</externalReference>
       <isAbstract>false</isAbstract>
       <sort-children>by-type-then-manually</sort-children>
       <genericTypes />
-      <typeReference id="02dacda0-f564-4cbb-828f-6397ce8f0c23">
+      <typeReference id="33bf33af-16b7-4f65-9bc4-30cdff665211">
         <typeId>1a24dfe1-2760-406f-ae81-fe3d10be4918</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -331,13 +331,13 @@
       <stereotypes />
       <metadata />
       <childElements>
-        <childElement id="ec401efd-f9fd-495b-9852-4a46d1bd2619" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+        <childElement id="18bc38e2-7da9-4614-9d01-547928f24302" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
           <name>orderId</name>
           <display>in : orderId: guid?</display>
           <externalReference>orderid</externalReference>
           <isAbstract>false</isAbstract>
           <genericTypes />
-          <typeReference id="70976c87-bf06-4587-bd5f-927c86705972">
+          <typeReference id="44c6c7bc-82d4-4dc3-b85b-b1bad13d7afb">
             <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
             <isNavigable>true</isNavigable>
             <isNullable>true</isNullable>
@@ -349,7 +349,7 @@
             <genericTypeParameters />
           </typeReference>
           <isMapped>false</isMapped>
-          <parentFolderId>e9fef33b-eb40-4385-bfe1-c29241408153</parentFolderId>
+          <parentFolderId>261d898e-36a2-40ab-8c30-fbb5e6cb17b2</parentFolderId>
           <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
           <packageName>SqlServerImporterTests</packageName>
           <stereotypes />
@@ -358,14 +358,14 @@
         </childElement>
       </childElements>
     </childElement>
-    <childElement id="54e5f192-4648-4be1-be41-2c016ebe8f7b" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+    <childElement id="39f17bd5-1bc1-44f5-bd1a-73ad0522adda" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
       <name>InsertBrand</name>
       <display>InsertBrand(brand: BrandTypeModel[*]?): void</display>
       <externalReference>[dbo].[insertbrand]</externalReference>
       <isAbstract>false</isAbstract>
       <sort-children>by-type-then-manually</sort-children>
       <genericTypes />
-      <typeReference id="ce470c04-b2f5-4980-a996-7d45a5663cb1">
+      <typeReference id="07723a84-5a40-4814-b543-869289f0050a">
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
         <isCollection>false</isCollection>
@@ -383,13 +383,13 @@
       <stereotypes />
       <metadata />
       <childElements>
-        <childElement id="16c35c10-dbaa-4450-809e-31cb3bc205a1" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+        <childElement id="588477b8-1042-4e0c-8b5d-f5624190ac15" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
           <name>brand</name>
           <display>in : brand: BrandTypeModel[*]?</display>
           <externalReference>brand</externalReference>
           <isAbstract>false</isAbstract>
           <genericTypes />
-          <typeReference id="6f337d28-32ac-40d0-8ff3-537cf2fc06b7">
+          <typeReference id="353ee173-279e-4279-8f7f-1d98bd815fba">
             <typeId>2390f8ff-f66e-47c6-9128-9cb03a308eb3</typeId>
             <isNavigable>true</isNavigable>
             <isNullable>true</isNullable>
@@ -401,7 +401,7 @@
             <genericTypeParameters />
           </typeReference>
           <isMapped>false</isMapped>
-          <parentFolderId>54e5f192-4648-4be1-be41-2c016ebe8f7b</parentFolderId>
+          <parentFolderId>39f17bd5-1bc1-44f5-bd1a-73ad0522adda</parentFolderId>
           <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
           <packageName>SqlServerImporterTests</packageName>
           <stereotypes />
