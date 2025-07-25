@@ -60,7 +60,7 @@ public static class ImporterTool
             .WithStandardOutputPipe(PipeTarget.ToDelegate((line, ct) =>
             {
                 // Receive the JSON Payload in STD OUT.
-                Logging.Log.Debug($"Output: {line}");
+                //Logging.Log.Debug($"Output: {line}");
                 if (!line.StartsWith('{'))
                 {
                     return Task.CompletedTask;
