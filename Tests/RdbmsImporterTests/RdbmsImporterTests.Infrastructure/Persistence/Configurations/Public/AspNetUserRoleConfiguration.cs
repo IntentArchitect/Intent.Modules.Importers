@@ -21,12 +21,12 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
 
             builder.HasOne(x => x.UserAspNetUser)
                 .WithMany()
-                .HasForeignKey(x => x.UserAspNetUserId)
+                .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.RoleAspNetRole)
                 .WithMany()
-                .HasForeignKey(x => x.RoleAspNetRoleId)
+                .HasForeignKey(x => x.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Ignore(e => e.DomainEvents);
