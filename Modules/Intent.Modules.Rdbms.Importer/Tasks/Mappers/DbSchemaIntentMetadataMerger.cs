@@ -458,7 +458,7 @@ internal class DbSchemaIntentMetadataMerger
                 {
                     continue;
                 }
-                
+
                 foreach (var fkColumn in foreignKey.Columns)
                 {
                     var columnExternalRef = ModelNamingUtilities.GetColumnExternalReference(table.Schema, table.Name, fkColumn.Name);
@@ -470,23 +470,13 @@ internal class DbSchemaIntentMetadataMerger
                         continue;
                     }
                     var columnSchema = table.Columns.FirstOrDefault(c => c.Name == fkColumn.Name);
-                    if (columnSchema != null && ShouldApplyForeignKeyStereotype(columnSchema, foreignKey))
+                    if (columnSchema != null)
                     {
                         RdbmsSchemaAnnotator.ApplyForeignKey(columnSchema, attribute, association.TargetEnd.Id);
                     }
                 }
             }
         }
-    }
-    
-    /// <summary>
-    /// Determines if a column should get a Foreign Key stereotype
-    /// Excludes columns that are both Primary Key and Foreign Key (one-to-one relationships)
-    /// </summary>
-    private static bool ShouldApplyForeignKeyStereotype(ColumnSchema column, ForeignKeySchema foreignKey)
-    {
-        // Don't apply FK stereotype if the column is both PK and FK (one-to-one relationship)
-        return !column.IsPrimaryKey || foreignKey.Columns.All(fk => fk.Name != column.Name);
     }
 
     /// <summary>
