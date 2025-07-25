@@ -30,10 +30,8 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
             _domainEventService = domainEventService;
         }
 
-        public DbSet<GetCustomerOrdersResponse> GetCustomerOrdersResponses { get; set; }
-        public DbSet<GetOrderItemDetailsResponse> GetOrderItemDetailsResponses { get; set; }
-        public DbSet<Domain.Contracts.Public.GetCustomerOrdersResponse> Domain.Contracts.Public.GetCustomerOrdersResponses { get; set; }
-        public DbSet<Domain.Contracts.Public.GetOrderItemDetailsResponse> Domain.Contracts.Public.GetOrderItemDetailsResponses { get; set; }
+        public DbSet<Domain.Contracts.Public.GetCustomerOrdersResponse> DomainContractsPublicGetCustomerOrdersResponses { get; set; }
+        public DbSet<Domain.Contracts.Public.GetOrderItemDetailsResponse> DomainContractsPublicGetOrderItemDetailsResponses { get; set; }
         public DbSet<UuidGenerateV1Response> UuidGenerateV1Responses { get; set; }
         public DbSet<UuidGenerateV1mcResponse> UuidGenerateV1mcResponses { get; set; }
         public DbSet<UuidGenerateV3Response> UuidGenerateV3Responses { get; set; }
@@ -46,7 +44,7 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
         public DbSet<UuidNsX500Response> UuidNsX500Responses { get; set; }
         public DbSet<Bank> Banks { get; set; }
         public DbSet<Bank1> Bank1s { get; set; }
-        public DbSet<Customer> PsgSchema2Customers { get; set; }
+        public DbSet<Domain.Entities.PsgSchema2.Customer> PsgSchema2Customers { get; set; }
         public DbSet<VwOrder> VwOrders { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<AspNetRole> AspNetRoles { get; set; }
@@ -85,8 +83,6 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
             base.OnModelCreating(modelBuilder);
 
             ConfigureModel(modelBuilder);
-            modelBuilder.ApplyConfiguration(new GetCustomerOrdersResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new GetOrderItemDetailsResponseConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.Public.GetCustomerOrdersResponseConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.Public.GetOrderItemDetailsResponseConfiguration());
             modelBuilder.ApplyConfiguration(new UuidGenerateV1ResponseConfiguration());

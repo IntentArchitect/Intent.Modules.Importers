@@ -29,7 +29,7 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Public
             Guid? customer_id,
             CancellationToken cancellationToken = default)
         {
-            var results = await _dbContext.Domain.Contracts.Public.GetCustomerOrdersResponses
+            var results = await _dbContext.DomainContractsPublicGetCustomerOrdersResponses
                 .FromSqlInterpolated($"SELECT * FROM GetCustomerOrders({customer_id})")
                 .IgnoreQueryFilters()
                 .ToArrayAsync(cancellationToken);
@@ -41,7 +41,7 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Public
             Guid? order_id,
             CancellationToken cancellationToken = default)
         {
-            var results = await _dbContext.Domain.Contracts.Public.GetOrderItemDetailsResponses
+            var results = await _dbContext.DomainContractsPublicGetOrderItemDetailsResponses
                 .FromSqlInterpolated($"SELECT * FROM GetOrderItemDetails({order_id})")
                 .IgnoreQueryFilters()
                 .ToArrayAsync(cancellationToken);
@@ -56,7 +56,7 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Public
                 IsNullable = true,
                 NpgsqlDbType = NpgsqlDbType.Unknown,
                 Value = brands.ToDataTable(),
-                TypeName = "BrandTypeModel"
+                DataTypeName = "BrandTypeModel"
             };
 
             await _dbContext.Database.ExecuteSqlInterpolatedAsync($"CALL InsertBrand({brandsParameter})", cancellationToken);
@@ -93,7 +93,7 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Public
             CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.UuidGenerateV3Responses
-                .FromSqlInterpolated($"SELECT * FROM uuid_generate_v3({namespace}, {name})")
+                .FromSqlInterpolated($"SELECT * FROM uuid_generate_v3({@namespace}, {name})")
                 .IgnoreQueryFilters()
                 .ToArrayAsync(cancellationToken);
 
@@ -116,7 +116,7 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Public
             CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.UuidGenerateV5Responses
-                .FromSqlInterpolated($"SELECT * FROM uuid_generate_v5({namespace}, {name})")
+                .FromSqlInterpolated($"SELECT * FROM uuid_generate_v5({@namespace}, {name})")
                 .IgnoreQueryFilters()
                 .ToArrayAsync(cancellationToken);
 

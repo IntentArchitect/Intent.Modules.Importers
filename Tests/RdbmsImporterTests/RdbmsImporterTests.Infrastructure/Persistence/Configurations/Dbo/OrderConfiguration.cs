@@ -26,9 +26,9 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Dbo
                 .IsRequired()
                 .HasColumnType("nvarchar(450)");
 
-            builder.HasIndex(x => x.CustomerId)
-                .IncludeProperties(x => new { x.OrderDate })
-                .HasDatabaseName("IX_Orders_CustomerId");
+            SqlServerIndexBuilderExtensions
+                .IncludeProperties(builder.HasIndex(x => x.CustomerId)
+                    .HasDatabaseName("IX_Orders_CustomerId"), x => new { x.OrderDate });
 
             builder.HasIndex(x => x.RefNo)
                 .IsUnique()

@@ -30,11 +30,9 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
             _domainEventService = domainEventService;
         }
 
-        public DbSet<GetCustomerOrdersResponse> GetCustomerOrdersResponses { get; set; }
+        public DbSet<Domain.Contracts.Dbo.GetCustomerOrdersResponse> DomainContractsDboGetCustomerOrdersResponses { get; set; }
 
-        public DbSet<GetOrderItemDetailsResponse> GetOrderItemDetailsResponses { get; set; }
-        public DbSet<Domain.Contracts.Public.GetCustomerOrdersResponse> Domain.Contracts.Public.GetCustomerOrdersResponses { get; set; }
-        public DbSet<Domain.Contracts.Public.GetOrderItemDetailsResponse> Domain.Contracts.Public.GetOrderItemDetailsResponses { get; set; }
+        public DbSet<Domain.Contracts.Dbo.GetOrderItemDetailsResponse> DomainContractsDboGetOrderItemDetailsResponses { get; set; }
         public DbSet<UuidGenerateV1Response> UuidGenerateV1Responses { get; set; }
         public DbSet<UuidGenerateV1mcResponse> UuidGenerateV1mcResponses { get; set; }
         public DbSet<UuidGenerateV3Response> UuidGenerateV3Responses { get; set; }
@@ -87,20 +85,8 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
             base.OnModelCreating(modelBuilder);
 
             ConfigureModel(modelBuilder);
-            modelBuilder.ApplyConfiguration(new GetCustomerOrdersResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new GetOrderItemDetailsResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.GetCustomerOrdersResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.GetOrderItemDetailsResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new UuidGenerateV1ResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new UuidGenerateV1mcResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new UuidGenerateV3ResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new UuidGenerateV4ResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new UuidGenerateV5ResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new UuidNilResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new UuidNsDnsResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new UuidNsOidResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new UuidNsUrlResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new UuidNsX500ResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.GetCustomerOrdersResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.Dbo.GetOrderItemDetailsResponseConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.Dbo.AddressConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.Dbo.AspNetRoleConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.Dbo.AspNetRoleClaimConfiguration());
