@@ -1,5 +1,3 @@
-/// <reference path="../../TypescriptCore/elementmacro.context.api.d.ts" />
-
 interface IExecutionResult {
     result?: any;
     warnings: string[];

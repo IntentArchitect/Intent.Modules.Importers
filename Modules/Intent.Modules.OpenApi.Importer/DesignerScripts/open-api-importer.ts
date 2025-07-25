@@ -1,5 +1,3 @@
-/// <reference path="../../TypescriptCore/elementmacro.context.api.d.ts" />
-
 type IDynamicFormFieldConfig = MacroApi.Context.IDynamicFormFieldConfig;
 interface IOpenApiImporterSettings {
     openApiFile: string;

@@ -1,4 +1,3 @@
-/// <reference path="../../TypescriptCore/elementmacro.context.api.d.ts" />
 async function importOpenApi(element) {
     var defaults = getDialogDefaults(element);
     let openApiFile = {
@@ -52,7 +51,6 @@ async function importOpenApi(element) {
         ]
     };
     let inputs = await dialogService.openForm(formConfig);
-    const typesToExport = [];
     let importConfig = {
         openApiSpecificationFile: inputs.openApiFile,
         packageId: element.getPackage().id,
@@ -92,11 +90,3 @@ function getSettingValue(package, key, defaultValue) {
     let persistedValue = package.getMetadata(key);
     return persistedValue ? persistedValue : defaultValue;
 }
-/**
- * Used by Intent.Modules.NET\Modules\Intent.Modules.OpenApi.Imported
- *
- * Source code here:
- * https://github.com/IntentArchitect/Intent.Modules/blob/master/DesignerMacros/src/opem-api-importer/open-api-importer.ts
- */
-//Uncomment below
-//await importOpenApi(element);
