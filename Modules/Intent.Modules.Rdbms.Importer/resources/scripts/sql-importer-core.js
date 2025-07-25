@@ -1028,15 +1028,16 @@ class StoredProceduresImportStrategy {
 }
 /// <reference path="./strategy-database-import.ts" />
 /// <reference path="./strategy-stored-procedures-import.ts" />
+// noinspection JSUnusedGlobalSymbols
 let RdbmsImporterApi = {
     importDatabase,
     importStoredProcedures
 };
 async function importDatabase(packageElement) {
-    var strategy = new DatabaseImportStrategy();
+    const strategy = new DatabaseImportStrategy();
     await strategy.execute(packageElement);
 }
 async function importStoredProcedures(repositoryElement) {
-    var strategy = new StoredProceduresImportStrategy();
+    const strategy = new StoredProceduresImportStrategy();
     await strategy.execute(repositoryElement);
 }

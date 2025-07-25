@@ -18,6 +18,7 @@ interface IImportConfig {
     settingPersistence: string;
 }
 
+// noinspection JSUnusedGlobalSymbols
 async function importOpenApi(element: MacroApi.Context.IElementApi): Promise<void>{   
 
     var defaults = getDialogDefaults(element);

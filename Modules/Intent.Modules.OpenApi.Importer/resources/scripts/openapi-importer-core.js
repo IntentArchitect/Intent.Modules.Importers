@@ -1,3 +1,4 @@
+// noinspection JSUnusedGlobalSymbols
 async function importOpenApi(element) {
     var defaults = getDialogDefaults(element);
     let openApiFile = {
