@@ -28,7 +28,6 @@ internal class PostgreSQLProvider : BaseDatabaseProvider
     protected override DataTypeMapperBase DataTypeMapper => new PostgreSqlDataTypeMapper();
     protected override SystemObjectFilterBase SystemObjectFilter => new PostgreSQLSystemObjectFilter();
     protected override IndexExtractorBase IndexExtractor => new PostgreSQLIndexExtractor();
-    protected override ForeignKeyExtractorBase ForeignKeyExtractor => new PostgreSQLForeignKeyExtractor();
 
     protected override DbConnection CreateConnection(string connectionString)
     {

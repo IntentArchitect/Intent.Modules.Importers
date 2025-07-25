@@ -1,15 +1,17 @@
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using System.Threading.Tasks;
 using DatabaseSchemaReader.DataSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
+using DatabaseSchema = DatabaseSchemaReader.DataSchema.DatabaseSchema;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.Core.Services;
 
 internal abstract class ForeignKeyExtractorBase
 {
     public abstract Task<List<ForeignKeySchema>> ExtractForeignKeysAsync(DatabaseTable table, DbConnection connection);
-    public abstract Task<List<ForeignKeyColumnSchema>> ExtractForeignKeyColumnsAsync(DatabaseConstraint foreignKey, DbConnection connection);
+    protected abstract Task<List<ForeignKeyColumnSchema>> ExtractForeignKeyColumnsAsync(DatabaseSchema databaseSchema, DatabaseConstraint foreignKey, DbConnection connection);
 }
 
 /// <summary>
@@ -32,7 +34,7 @@ internal class DefaultForeignKeyExtractor : ForeignKeyExtractorBase
                 Name = foreignKey.Name ?? $"FK_{table.Name}",
                 ReferencedTableSchema = foreignKey.RefersToSchema ?? "",
                 ReferencedTableName = foreignKey.RefersToTable ?? "",
-                Columns = await ExtractForeignKeyColumnsAsync(foreignKey, connection)
+                Columns = await ExtractForeignKeyColumnsAsync(table.DatabaseSchema, foreignKey, connection)
             };
 
             foreignKeys.Add(fkSchema);
@@ -44,21 +46,19 @@ internal class DefaultForeignKeyExtractor : ForeignKeyExtractorBase
     /// <summary>
     /// Extract foreign key columns. Can be overridden for database-specific implementations to populate ReferencedColumnName
     /// </summary>
-    public override Task<List<ForeignKeyColumnSchema>> ExtractForeignKeyColumnsAsync(DatabaseConstraint foreignKey, DbConnection connection)
+    protected override Task<List<ForeignKeyColumnSchema>> ExtractForeignKeyColumnsAsync(DatabaseSchema databaseSchema, DatabaseConstraint foreignKey, DbConnection connection)
     {
+        var refCols = foreignKey.ReferencedColumns(databaseSchema).ToArray();
         var columns = new List<ForeignKeyColumnSchema>();
-
-        // DatabaseSchemaReader provides column mappings in foreign keys
-        foreach (var column in foreignKey.Columns ?? [])
+        for (var index = 0; index < foreignKey.Columns.Count; index++)
         {
+            var curTableColumn = foreignKey.Columns[index];
+            var refTableColumn = refCols.Length > index ? refCols[index] : string.Empty;
             var columnSchema = new ForeignKeyColumnSchema
             {
-                Name = column ?? "",
-                // ReferencedColumnName is not provided by DatabaseSchemaReader
-                // Database-specific implementations should override this method to populate it
-                ReferencedColumnName = ""
+                Name = curTableColumn,
+                ReferencedColumnName = refTableColumn
             };
-
             columns.Add(columnSchema);
         }
 
