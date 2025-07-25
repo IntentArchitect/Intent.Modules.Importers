@@ -25,11 +25,21 @@
       <HintPath>resources\tool\Microsoft.Data.SqlClient.dll</HintPath>
     </Reference>
   </ItemGroup>
+  
+  <PropertyGroup>
+    <CliProjectName>Intent.RelationalDbSchemaImporter.CLI</CliProjectName>
+  </PropertyGroup>
 
   <Target Name="CopyRelationalSchemaImporter" BeforeTargets="RunIntentArchitectPackager" AfterTargets="Build">
-    <Message Text="Copying over RelationalSchemaImporter..." Importance="high" />
+    <Message Text="Compiling $(CliProjectName)..." Importance="high" />
+    <MSBuild Projects="$(ProjectDir)../$(CliProjectName)/$(CliProjectName).csproj"
+             Properties="Configuration=$(Configuration);Platform=$(Platform)"
+             Targets="Build" />
+    
+    
+    <Message Text="Copying over $(CliProjectName)..." Importance="high" />
     <ItemGroup>
-      <SourceFiles Include="$(ProjectDir)../Intent.RelationalDbSchemaImporter.CLI/bin/$(Configuration)/net8.0/**/*.*" />
+      <SourceFiles Include="$(ProjectDir)../$(CliProjectName)/bin/$(Configuration)/net8.0/**/*.*" />
     </ItemGroup>
     <Copy SourceFiles="@(SourceFiles)"
           DestinationFiles="@(SourceFiles -> '$(ProjectDir)resources/tool/%(RecursiveDir)%(Filename)%(Extension)')" />
