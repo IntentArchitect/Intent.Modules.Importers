@@ -323,10 +323,28 @@ internal static class IntentModelMapper
             ChildElements = []
         };
 
+        // Track used column names for deduplication
+        var usedColumnNames = new Dictionary<string, int>();
+
         // Map result set columns to attributes
         foreach (var resultColumn in storedProc.ResultSetColumns)
         {
-            var attribute = MapResultSetColumnToAttribute(resultColumn, dataContract.Id, storedProc.Name, storedProc.Schema);
+            // Get the normalized column name
+            var normalizedName = ModelNamingUtilities.NormalizeColumnName(resultColumn.Name, null);
+            
+            // Handle duplicate names by appending a counter
+            string uniqueName = normalizedName;
+            if (usedColumnNames.ContainsKey(normalizedName))
+            {
+                usedColumnNames[normalizedName]++;
+                uniqueName = $"{normalizedName}{usedColumnNames[normalizedName]}";
+            }
+            else
+            {
+                usedColumnNames[normalizedName] = 1;
+            }
+
+            var attribute = MapResultSetColumnToAttribute(resultColumn, dataContract.Id, storedProc.Name, storedProc.Schema, uniqueName);
             dataContract.ChildElements.Add(attribute);
             
             // Apply stereotypes to result set columns
@@ -758,9 +776,9 @@ internal static class IntentModelMapper
     /// <summary>
     /// Maps a result set column to an attribute element
     /// </summary>
-    private static ElementPersistable MapResultSetColumnToAttribute(ResultSetColumnSchema resultColumn, string dataContractId, string procName, string schema)
+    private static ElementPersistable MapResultSetColumnToAttribute(ResultSetColumnSchema resultColumn, string dataContractId, string procName, string schema, string? uniqueName)
     {
-        var attributeName = ModelNamingUtilities.NormalizeColumnName(resultColumn.Name, null); // No table name for result sets
+        var attributeName = uniqueName ?? ModelNamingUtilities.NormalizeColumnName(resultColumn.Name, null);; // Use the unique name for the attribute
         
         return new ElementPersistable
         {
@@ -778,6 +796,15 @@ internal static class IntentModelMapper
             Metadata = [],
             ChildElements = []
         };
+    }
+
+    /// <summary>
+    /// Maps a result set column to an attribute element (backward-compatible overload)
+    /// </summary>
+    private static ElementPersistable MapResultSetColumnToAttribute(ResultSetColumnSchema resultColumn, string dataContractId, string procName, string schema)
+    {
+        var attributeName = ModelNamingUtilities.NormalizeColumnName(resultColumn.Name, null); // No table name for result sets
+        return MapResultSetColumnToAttribute(resultColumn, dataContractId, procName, schema, attributeName);
     }
 
     /// <summary>

@@ -34,6 +34,7 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
                  @params = N'',
                  @browse_information_mode = 1
              """;
+        // @browse_information_mode = 1 -- fetches the source tables
 
         await using var command = _connection.CreateCommand();
         command.CommandText = sql;
@@ -43,8 +44,10 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
         var dataTable = new DataTable();
         dataTable.Load(reader);
 
+        var filteredRows = dataTable.Rows.Cast<DataRow>().Where(p => GetBoolValue(p, "is_hidden") == false).ToList();
+        
         // Group by source table to handle table identification (migrated from SqlServerStoredProcExtractor logic)
-        var keyGroupedSourceRows = dataTable.Rows.Cast<DataRow>()
+        var keyGroupedSourceRows = filteredRows
             .GroupBy(BuildKey)
             .ToArray();
 
@@ -73,13 +76,15 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
         }
 
         // Convert DataTable rows to ResultSetColumnSchema (migrated from SqlServerStoredProcExtractor.ResultSetColumn)
-        foreach (DataRow row in dataTable.Rows)
+        foreach (var row in filteredRows)
         {
             var columnSchema = new ResultSetColumnSchema
             {
                 Name = GetStringValue(row, "name") ?? "",
                 DbDataType = SanitizeSystemTypeName(GetStringValue(row, "system_type_name")),
                 LanguageDataType = NormalizeDataType(GetStringValue(row, "system_type_name")),
+                SourceSchema = GetStringValue(row, "source_schema"),
+                SourceTable =  GetStringValue(row, "source_table"),
                 IsNullable = GetBoolValue(row, "is_nullable"),
                 MaxLength = null, // sp_describe_first_result_set doesn't provide reliable length info
                 NumericPrecision = null, // sp_describe_first_result_set doesn't provide reliable precision info  
@@ -93,6 +98,27 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
         return resultColumns;
     }
 
+    private static bool GetBoolValue(DataRow row, string columnName)
+    {
+        if (!row.Table.Columns.Contains(columnName))
+            return false;
+        
+        var value = row[columnName];
+    
+        if (value == null || value == DBNull.Value)
+            return false;
+        
+        // Handle different possible types
+        return value switch
+        {
+            bool boolValue => boolValue,
+            byte byteValue => byteValue != 0,
+            int intValue => intValue != 0,
+            string stringValue => bool.TryParse(stringValue, out var result) && result,
+            _ => false
+        };
+    }
+    
     private async Task<int?> GetTableIdAsync(string sql)
     {
         try
@@ -134,20 +160,15 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
             : null;
     }
 
-    private static bool GetBoolValue(DataRow row, string columnName)
-    {
-        return row.Table.Columns.Contains(columnName) && row[columnName] != DBNull.Value
-                                                      && Convert.ToBoolean(row[columnName]);
-    }
-
+    // Remove length/precision information like (255) or (18,2)
+    private static readonly Regex SanitizeRegex = new Regex(@"(\([^\)]+\))$", RegexOptions.Compiled);
+    
     private static string SanitizeSystemTypeName(string? systemTypeName)
     {
         if (string.IsNullOrEmpty(systemTypeName))
             return "unknown";
-
-        // Remove length/precision information like (255) or (18,2)
-        var sanitizeRegex = new Regex(@"(\([^\)]+\))$", RegexOptions.Compiled);
-        return sanitizeRegex.Replace(systemTypeName, string.Empty).ToLowerInvariant();
+        
+        return SanitizeRegex.Replace(systemTypeName, string.Empty).ToLowerInvariant();
     }
 
     private static string NormalizeDataType(string? systemTypeName)

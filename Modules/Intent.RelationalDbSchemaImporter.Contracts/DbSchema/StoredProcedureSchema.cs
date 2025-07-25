@@ -83,6 +83,9 @@ public class ResultSetColumnSchema
     /// The data type of the column.
     /// </summary>
     public string DbDataType { get; set; } = string.Empty;
+
+    public string? SourceSchema { get; set; } = string.Empty;
+    public string? SourceTable { get; set; } = string.Empty;
     /// <summary>
     /// Normalized to C# type representation (e.g., "string", "int", "datetime") for Intent type mapping.
     /// </summary>

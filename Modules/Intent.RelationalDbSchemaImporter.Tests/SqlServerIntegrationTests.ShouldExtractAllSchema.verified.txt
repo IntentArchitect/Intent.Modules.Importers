@@ -2929,54 +2929,72 @@
         {
           Name: OrderID,
           DbDataType: int,
+          SourceSchema: dbo,
+          SourceTable: Orders,
           LanguageDataType: int,
           IsNullable: false
         },
         {
           Name: OrderDate,
           DbDataType: datetime2,
+          SourceSchema: dbo,
+          SourceTable: Orders,
           LanguageDataType: datetime,
           IsNullable: true
         },
         {
           Name: OrderStatus,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Orders,
           LanguageDataType: string,
           IsNullable: false
         },
         {
           Name: PaymentStatus,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Orders,
           LanguageDataType: string,
           IsNullable: false
         },
         {
           Name: SubTotal,
           DbDataType: decimal,
+          SourceSchema: dbo,
+          SourceTable: Orders,
           LanguageDataType: decimal,
           IsNullable: false
         },
         {
           Name: TaxAmount,
           DbDataType: decimal,
+          SourceSchema: dbo,
+          SourceTable: Orders,
           LanguageDataType: decimal,
           IsNullable: false
         },
         {
           Name: ShippingAmount,
           DbDataType: decimal,
+          SourceSchema: dbo,
+          SourceTable: Orders,
           LanguageDataType: decimal,
           IsNullable: false
         },
         {
           Name: TotalAmount,
           DbDataType: decimal,
+          SourceSchema: dbo,
+          SourceTable: Orders,
           LanguageDataType: decimal,
           IsNullable: false
         },
         {
           Name: TrackingNumber,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Orders,
           LanguageDataType: string,
           IsNullable: true
         },
@@ -2989,49 +3007,49 @@
         {
           Name: CustomerEmail,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Users,
           LanguageDataType: string,
           IsNullable: false
         },
         {
           Name: ShippingAddress1,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: UserAddresses,
           LanguageDataType: string,
           IsNullable: false
         },
         {
           Name: ShippingAddress2,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: UserAddresses,
           LanguageDataType: string,
           IsNullable: true
         },
         {
           Name: ShippingCity,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: UserAddresses,
           LanguageDataType: string,
           IsNullable: false
         },
         {
           Name: ShippingState,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: UserAddresses,
           LanguageDataType: string,
           IsNullable: false
         },
         {
           Name: ShippingZip,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: UserAddresses,
           LanguageDataType: string,
-          IsNullable: false
-        },
-        {
-          Name: UserID,
-          DbDataType: int,
-          LanguageDataType: int,
-          IsNullable: false
-        },
-        {
-          Name: AddressID,
-          DbDataType: int,
-          LanguageDataType: int,
           IsNullable: false
         }
       ]
@@ -3057,24 +3075,32 @@
         {
           Name: ProductID,
           DbDataType: int,
+          SourceSchema: dbo,
+          SourceTable: Products,
           LanguageDataType: int,
           IsNullable: false
         },
         {
           Name: ProductName,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Products,
           LanguageDataType: string,
           IsNullable: false
         },
         {
           Name: SKU,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Products,
           LanguageDataType: string,
           IsNullable: false
         },
         {
           Name: CategoryName,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Categories,
           LanguageDataType: string,
           IsNullable: false
         },
@@ -3120,60 +3146,80 @@
         {
           Name: UserID,
           DbDataType: int,
+          SourceSchema: dbo,
+          SourceTable: Users,
           LanguageDataType: int,
           IsNullable: false
         },
         {
           Name: Username,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Users,
           LanguageDataType: string,
           IsNullable: false
         },
         {
           Name: Email,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Users,
           LanguageDataType: string,
           IsNullable: false
         },
         {
           Name: FirstName,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Users,
           LanguageDataType: string,
           IsNullable: false
         },
         {
           Name: LastName,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Users,
           LanguageDataType: string,
           IsNullable: false
         },
         {
           Name: DateOfBirth,
           DbDataType: date,
+          SourceSchema: dbo,
+          SourceTable: Users,
           LanguageDataType: date,
           IsNullable: true
         },
         {
           Name: PhoneNumber,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Users,
           LanguageDataType: string,
           IsNullable: true
         },
         {
           Name: IsActive,
           DbDataType: bit,
+          SourceSchema: dbo,
+          SourceTable: Users,
           LanguageDataType: bool,
           IsNullable: true
         },
         {
           Name: CreatedDate,
           DbDataType: datetime2,
+          SourceSchema: dbo,
+          SourceTable: Users,
           LanguageDataType: datetime,
           IsNullable: true
         },
         {
           Name: LastLoginDate,
           DbDataType: datetime2,
+          SourceSchema: dbo,
+          SourceTable: Users,
           LanguageDataType: datetime,
           IsNullable: true
         }
@@ -3246,54 +3292,72 @@
         {
           Name: ProductID,
           DbDataType: int,
+          SourceSchema: dbo,
+          SourceTable: Products,
           LanguageDataType: int,
           IsNullable: false
         },
         {
           Name: ProductName,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Products,
           LanguageDataType: string,
           IsNullable: false
         },
         {
           Name: Description,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Products,
           LanguageDataType: string,
           IsNullable: true
         },
         {
           Name: SKU,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Products,
           LanguageDataType: string,
           IsNullable: false
         },
         {
           Name: UnitPrice,
           DbDataType: decimal,
+          SourceSchema: dbo,
+          SourceTable: Products,
           LanguageDataType: decimal,
           IsNullable: false
         },
         {
           Name: UnitsInStock,
           DbDataType: int,
+          SourceSchema: dbo,
+          SourceTable: Products,
           LanguageDataType: int,
           IsNullable: false
         },
         {
           Name: ImageURL,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Products,
           LanguageDataType: string,
           IsNullable: true
         },
         {
           Name: CategoryName,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Categories,
           LanguageDataType: string,
           IsNullable: false
         },
         {
           Name: SupplierName,
           DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Suppliers,
           LanguageDataType: string,
           IsNullable: false
         },
