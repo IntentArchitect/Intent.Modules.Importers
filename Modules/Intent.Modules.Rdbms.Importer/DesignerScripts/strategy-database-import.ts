@@ -205,7 +205,7 @@ class DatabaseImportStrategy {
                             id: "importFilterFilePath",
                             fieldType: "open-file",
                             label: "Import Filter File",
-                            hint: "Path to import filter JSON file (see [documentation](https://docs.intentarchitect.com/articles/modules-dotnet/intent-sqlserverimporter/intent-sqlserverimporter.html#import-filter-file))",
+                            hint: "Path to import filter JSON file (see [documentation](https://docs.intentarchitect.com/articles/modules-importers/intent-rdbms-importer/intent-rdbms-importer.html#filter-file-structure))",
                             placeholder: "(optional)",
                             value: defaults.importFilterFilePath,
                             openFileOptions: {
