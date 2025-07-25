@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
+using Intent.Modelers.Domain.Api;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
@@ -75,7 +76,7 @@ internal class DbSchemaIntentMetadataMerger
             // Check if class already exists first (before creating folder structure)
             // Use ExternalReference for robust lookup first, then fallback to name-based
             var tableExternalRef = ModelNamingUtilities.GetTableExternalReference(table.Schema, table.Name);
-            var existingClass = package.Classes.FirstOrDefault(c => c.ExternalReference == tableExternalRef);
+            var existingClass = package.Classes.FirstOrDefault(c => c.ExternalReference == tableExternalRef && c.SpecializationType == ClassModel.SpecializationType);
 
             if (existingClass is not null)
             {
@@ -115,7 +116,7 @@ internal class DbSchemaIntentMetadataMerger
             // Check if class already exists first (before creating folder structure)
             // Use ExternalReference for robust lookup first, then fallback to name-based
             var viewExternalRef = ModelNamingUtilities.GetViewExternalReference(view.Schema, view.Name);
-            var existingClass = package.Classes.FirstOrDefault(c => c.ExternalReference == viewExternalRef);
+            var existingClass = package.Classes.FirstOrDefault(c => c.ExternalReference == viewExternalRef && c.SpecializationType == ClassModel.SpecializationType);
 
             if (existingClass != null)
             {
@@ -148,35 +149,55 @@ internal class DbSchemaIntentMetadataMerger
 
         foreach (var storedProc in databaseSchema.StoredProcedures)
         {
+            // Create repository first if it doesn't exist
+            var repositoryElement = GetOrCreateRepository(_config.RepositoryElementId, storedProc.Schema, package);
+
+            // Check if stored procedure already exists
+            var spExternalRef = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Schema, storedProc.Name);
+            var expectedSpecializationType = _config.StoredProcedureType == StoredProcedureType.StoredProcedureElement 
+                ? Constants.SpecializationTypes.StoredProcedure.SpecializationType 
+                : Constants.SpecializationTypes.Operation.SpecializationType;
+
+            var existingElement = repositoryElement.ChildElements.FirstOrDefault(c => 
+                c.ExternalReference == spExternalRef && 
+                c.SpecializationType == expectedSpecializationType);
+
             ElementPersistable procElement;
 
-            // Create stored procedure element based on configuration
-            if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
+            if (existingElement != null)
             {
-                // Create repository first if it doesn't exist
-                var repositoryElement = GetOrCreateRepository(_config.RepositoryElementId, storedProc.Schema, package);
-
-                // Create as stored procedure element
-                procElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
-                repositoryElement.ChildElements.Add(procElement);
-
-                // Apply stored procedure stereotypes
-                RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, procElement);
-
-                result.AddedElements.Add(procElement);
+                // Update existing stored procedure element
+                if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
+                {
+                    var updatedElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, package, null, udtDataContracts);
+                    SyncElements(package, existingElement, updatedElement);
+                    RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingElement);
+                }
+                else
+                {
+                    var updatedElement = IntentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, package, null, udtDataContracts);
+                    SyncElements(package, existingElement, updatedElement);
+                    RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingElement);
+                }
+                
+                procElement = existingElement;
+                result.UpdatedElements.Add(existingElement);
             }
             else
             {
-                // Create repository first if it doesn't exist
-                var repositoryElement = GetOrCreateRepository(_config.RepositoryElementId, storedProc.Schema, package);
-
-                // Create as operation within repository
-                procElement = IntentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
+                // Create new stored procedure element
+                if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
+                {
+                    procElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
+                    RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, procElement);
+                }
+                else
+                {
+                    procElement = IntentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
+                    RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, procElement);
+                }
+                
                 repositoryElement.ChildElements.Add(procElement);
-
-                // Apply stored procedure stereotypes
-                RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, procElement);
-
                 result.AddedElements.Add(procElement);
             }
 
@@ -213,10 +234,10 @@ internal class DbSchemaIntentMetadataMerger
             {
                 // Find the corresponding attribute in the class
                 var attrColumnExternalRef = ModelNamingUtilities.GetColumnExternalReference(table.Schema, table.Name, indexColumn.Name);
-                var attribute = classElement.ChildElements.FirstOrDefault(attr => attr.ExternalReference == attrColumnExternalRef);
+                var attribute = classElement.ChildElements.FirstOrDefault(attr => attr.ExternalReference == attrColumnExternalRef && attr.SpecializationType == AttributeModel.SpecializationType);
 
                 var indexColumnElement = indexElement.ChildElements
-                    .FirstOrDefault(x => x.ExternalReference == ModelNamingUtilities.GetIndexColumnExternalReference(indexColumn.Name)
+                    .FirstOrDefault(x => (x.ExternalReference == ModelNamingUtilities.GetIndexColumnExternalReference(indexColumn.Name) && x.SpecializationType == Constants.SpecializationTypes.IndexColumn.SpecializationType)
                                          || (x.Name == indexColumn.Name && x.SpecializationType == Constants.SpecializationTypes.IndexColumn.SpecializationType));
                 if (indexColumnElement is null)
                 {
@@ -423,7 +444,7 @@ internal class DbSchemaIntentMetadataMerger
         foreach (var table in databaseSchema.Tables)
         {
             var tableExternalRef = ModelNamingUtilities.GetTableExternalReference(table.Schema, table.Name);
-            var classElement = package.Classes.FirstOrDefault(c => c.ExternalReference == tableExternalRef);
+            var classElement = package.Classes.FirstOrDefault(c => c.ExternalReference == tableExternalRef && c.SpecializationType == ClassModel.SpecializationType);
 
             if (classElement == null)
             {
