@@ -1,3 +1,7 @@
+### Version 1.1.6
+
+- Fixed: Documentation URLs.
+
 ### Version 1.1.5
 
 - Improvement: Error messages spanning multiple lines will now be presented to the front-end.
