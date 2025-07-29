@@ -25,26 +25,26 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Public
             _dbContext = dbContext;
         }
 
-        public async Task<IReadOnlyCollection<GetCustomerOrdersResponse>> GetCustomerOrders(
+        public async Task<List<GetCustomerOrdersResponse>> GetCustomerOrders(
             Guid? customer_id,
             CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.DomainContractsPublicGetCustomerOrdersResponses
                 .FromSqlInterpolated($"SELECT * FROM GetCustomerOrders({customer_id})")
                 .IgnoreQueryFilters()
-                .ToArrayAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
 
             return results;
         }
 
-        public async Task<IReadOnlyCollection<GetOrderItemDetailsResponse>> GetOrderItemDetails(
+        public async Task<List<GetOrderItemDetailsResponse>> GetOrderItemDetails(
             Guid? order_id,
             CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.DomainContractsPublicGetOrderItemDetailsResponses
                 .FromSqlInterpolated($"SELECT * FROM GetOrderItemDetails({order_id})")
                 .IgnoreQueryFilters()
-                .ToArrayAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
 
             return results;
         }
@@ -67,27 +67,27 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Public
             await _dbContext.Database.ExecuteSqlInterpolatedAsync($"CALL InsertBrandFromTemp()", cancellationToken);
         }
 
-        public async Task<IReadOnlyCollection<UuidGenerateV1Response>> UuidGenerateV1(CancellationToken cancellationToken = default)
+        public async Task<List<UuidGenerateV1Response>> UuidGenerateV1(CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.UuidGenerateV1Responses
                 .FromSqlInterpolated($"SELECT * FROM uuid_generate_v1()")
                 .IgnoreQueryFilters()
-                .ToArrayAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
 
             return results;
         }
 
-        public async Task<IReadOnlyCollection<UuidGenerateV1mcResponse>> UuidGenerateV1mc(CancellationToken cancellationToken = default)
+        public async Task<List<UuidGenerateV1mcResponse>> UuidGenerateV1mc(CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.UuidGenerateV1mcResponses
                 .FromSqlInterpolated($"SELECT * FROM uuid_generate_v1mc()")
                 .IgnoreQueryFilters()
-                .ToArrayAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
 
             return results;
         }
 
-        public async Task<IReadOnlyCollection<UuidGenerateV3Response>> UuidGenerateV3(
+        public async Task<List<UuidGenerateV3Response>> UuidGenerateV3(
             Guid? @namespace,
             string? name,
             CancellationToken cancellationToken = default)
@@ -95,22 +95,22 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Public
             var results = await _dbContext.UuidGenerateV3Responses
                 .FromSqlInterpolated($"SELECT * FROM uuid_generate_v3({@namespace}, {name})")
                 .IgnoreQueryFilters()
-                .ToArrayAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
 
             return results;
         }
 
-        public async Task<IReadOnlyCollection<UuidGenerateV4Response>> UuidGenerateV4(CancellationToken cancellationToken = default)
+        public async Task<List<UuidGenerateV4Response>> UuidGenerateV4(CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.UuidGenerateV4Responses
                 .FromSqlInterpolated($"SELECT * FROM uuid_generate_v4()")
                 .IgnoreQueryFilters()
-                .ToArrayAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
 
             return results;
         }
 
-        public async Task<IReadOnlyCollection<UuidGenerateV5Response>> UuidGenerateV5(
+        public async Task<List<UuidGenerateV5Response>> UuidGenerateV5(
             Guid? @namespace,
             string? name,
             CancellationToken cancellationToken = default)
@@ -118,57 +118,57 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Public
             var results = await _dbContext.UuidGenerateV5Responses
                 .FromSqlInterpolated($"SELECT * FROM uuid_generate_v5({@namespace}, {name})")
                 .IgnoreQueryFilters()
-                .ToArrayAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
 
             return results;
         }
 
-        public async Task<IReadOnlyCollection<UuidNilResponse>> UuidNil(CancellationToken cancellationToken = default)
+        public async Task<List<UuidNilResponse>> UuidNil(CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.UuidNilResponses
                 .FromSqlInterpolated($"SELECT * FROM uuid_nil()")
                 .IgnoreQueryFilters()
-                .ToArrayAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
 
             return results;
         }
 
-        public async Task<IReadOnlyCollection<UuidNsDnsResponse>> UuidNsDns(CancellationToken cancellationToken = default)
+        public async Task<List<UuidNsDnsResponse>> UuidNsDns(CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.UuidNsDnsResponses
                 .FromSqlInterpolated($"SELECT * FROM uuid_ns_dns()")
                 .IgnoreQueryFilters()
-                .ToArrayAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
 
             return results;
         }
 
-        public async Task<IReadOnlyCollection<UuidNsOidResponse>> UuidNsOid(CancellationToken cancellationToken = default)
+        public async Task<List<UuidNsOidResponse>> UuidNsOid(CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.UuidNsOidResponses
                 .FromSqlInterpolated($"SELECT * FROM uuid_ns_oid()")
                 .IgnoreQueryFilters()
-                .ToArrayAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
 
             return results;
         }
 
-        public async Task<IReadOnlyCollection<UuidNsUrlResponse>> UuidNsUrl(CancellationToken cancellationToken = default)
+        public async Task<List<UuidNsUrlResponse>> UuidNsUrl(CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.UuidNsUrlResponses
                 .FromSqlInterpolated($"SELECT * FROM uuid_ns_url()")
                 .IgnoreQueryFilters()
-                .ToArrayAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
 
             return results;
         }
 
-        public async Task<IReadOnlyCollection<UuidNsX500Response>> UuidNsX500(CancellationToken cancellationToken = default)
+        public async Task<List<UuidNsX500Response>> UuidNsX500(CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.UuidNsX500Responses
                 .FromSqlInterpolated($"SELECT * FROM uuid_ns_x500()")
                 .IgnoreQueryFilters()
-                .ToArrayAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
 
             return results;
         }

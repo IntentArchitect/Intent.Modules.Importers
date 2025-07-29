@@ -12,19 +12,19 @@ namespace RdbmsImporterTests.Domain.Repositories.Public
 {
     public interface IStoredProcedureRepository
     {
-        Task<IReadOnlyCollection<GetCustomerOrdersResponse>> GetCustomerOrders(Guid? customer_id, CancellationToken cancellationToken = default);
-        Task<IReadOnlyCollection<GetOrderItemDetailsResponse>> GetOrderItemDetails(Guid? order_id, CancellationToken cancellationToken = default);
+        Task<List<GetCustomerOrdersResponse>> GetCustomerOrders(Guid? customer_id, CancellationToken cancellationToken = default);
+        Task<List<GetOrderItemDetailsResponse>> GetOrderItemDetails(Guid? order_id, CancellationToken cancellationToken = default);
         Task InsertBrand(IEnumerable<BrandTypeModel>? brands, CancellationToken cancellationToken = default);
         Task InsertBrandFromTemp(CancellationToken cancellationToken = default);
-        Task<IReadOnlyCollection<UuidGenerateV1Response>> UuidGenerateV1(CancellationToken cancellationToken = default);
-        Task<IReadOnlyCollection<UuidGenerateV1mcResponse>> UuidGenerateV1mc(CancellationToken cancellationToken = default);
-        Task<IReadOnlyCollection<UuidGenerateV3Response>> UuidGenerateV3(Guid? @namespace, string? name, CancellationToken cancellationToken = default);
-        Task<IReadOnlyCollection<UuidGenerateV4Response>> UuidGenerateV4(CancellationToken cancellationToken = default);
-        Task<IReadOnlyCollection<UuidGenerateV5Response>> UuidGenerateV5(Guid? @namespace, string? name, CancellationToken cancellationToken = default);
-        Task<IReadOnlyCollection<UuidNilResponse>> UuidNil(CancellationToken cancellationToken = default);
-        Task<IReadOnlyCollection<UuidNsDnsResponse>> UuidNsDns(CancellationToken cancellationToken = default);
-        Task<IReadOnlyCollection<UuidNsOidResponse>> UuidNsOid(CancellationToken cancellationToken = default);
-        Task<IReadOnlyCollection<UuidNsUrlResponse>> UuidNsUrl(CancellationToken cancellationToken = default);
-        Task<IReadOnlyCollection<UuidNsX500Response>> UuidNsX500(CancellationToken cancellationToken = default);
+        Task<List<UuidGenerateV1Response>> UuidGenerateV1(CancellationToken cancellationToken = default);
+        Task<List<UuidGenerateV1mcResponse>> UuidGenerateV1mc(CancellationToken cancellationToken = default);
+        Task<List<UuidGenerateV3Response>> UuidGenerateV3(Guid? @namespace, string? name, CancellationToken cancellationToken = default);
+        Task<List<UuidGenerateV4Response>> UuidGenerateV4(CancellationToken cancellationToken = default);
+        Task<List<UuidGenerateV5Response>> UuidGenerateV5(Guid? @namespace, string? name, CancellationToken cancellationToken = default);
+        Task<List<UuidNilResponse>> UuidNil(CancellationToken cancellationToken = default);
+        Task<List<UuidNsDnsResponse>> UuidNsDns(CancellationToken cancellationToken = default);
+        Task<List<UuidNsOidResponse>> UuidNsOid(CancellationToken cancellationToken = default);
+        Task<List<UuidNsUrlResponse>> UuidNsUrl(CancellationToken cancellationToken = default);
+        Task<List<UuidNsX500Response>> UuidNsX500(CancellationToken cancellationToken = default);
     }
 }

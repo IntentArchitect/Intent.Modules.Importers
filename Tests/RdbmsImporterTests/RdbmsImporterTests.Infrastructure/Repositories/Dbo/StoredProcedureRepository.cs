@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Intent.RoslynWeaver.Attributes;
@@ -25,14 +26,14 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Dbo
             _dbContext = dbContext;
         }
 
-        public async Task<IReadOnlyCollection<GetCustomerOrdersResponse>> GetCustomerOrders(
+        public async Task<List<GetCustomerOrdersResponse>> GetCustomerOrders(
             Guid customerId,
             CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.DomainContractsDboGetCustomerOrdersResponses
                 .FromSqlInterpolated($"EXECUTE GetCustomerOrders {customerId}")
                 .IgnoreQueryFilters()
-                .ToArrayAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
 
             return results;
         }
@@ -44,14 +45,14 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Dbo
             throw new NotImplementedException("Your implementation here...");
         }
 
-        public async Task<IReadOnlyCollection<GetOrderItemDetailsResponse>> GetOrderItemDetails(
+        public async Task<List<GetOrderItemDetailsResponse>> GetOrderItemDetails(
             Guid orderId,
             CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.DomainContractsDboGetOrderItemDetailsResponses
                 .FromSqlInterpolated($"EXECUTE GetOrderItemDetails {orderId}")
                 .IgnoreQueryFilters()
-                .ToArrayAsync(cancellationToken);
+                .ToListAsync(cancellationToken);
 
             return results;
         }
