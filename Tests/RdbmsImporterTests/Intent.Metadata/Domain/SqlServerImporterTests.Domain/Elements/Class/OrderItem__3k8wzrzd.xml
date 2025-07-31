@@ -79,8 +79,9 @@
         </stereotype>
       </stereotypes>
       <metadata>
-        <entry key="fk-original-name" value="OrderOrderId" />
+        <entry key="fk-original-name" value="OrderId" />
         <entry key="association" value="c806ea0c-a3ad-4f8d-a79f-f042097ae232" />
+        <entry key="is-managed-key" value="true" />
       </metadata>
       <childElements />
     </childElement>
@@ -176,8 +177,9 @@
         </stereotype>
       </stereotypes>
       <metadata>
-        <entry key="fk-original-name" value="ProductProductId" />
+        <entry key="fk-original-name" value="ProductId" />
         <entry key="association" value="2f761095-ef2d-44f6-8ed1-0c57a7bd1afb" />
+        <entry key="is-managed-key" value="true" />
       </metadata>
       <childElements />
     </childElement>

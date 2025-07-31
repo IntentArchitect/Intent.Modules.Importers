@@ -52,7 +52,11 @@
           </properties>
         </stereotype>
       </stereotypes>
-      <metadata />
+      <metadata>
+        <entry key="fk-original-name" value="UserId" />
+        <entry key="association" value="ccad771a-5993-4b4c-b62d-fe15653b3b01" />
+        <entry key="is-managed-key" value="true" />
+      </metadata>
       <childElements />
     </childElement>
     <childElement id="a8f6f0b2-acff-42fb-90af-1d5543954365" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
@@ -94,7 +98,11 @@
           </properties>
         </stereotype>
       </stereotypes>
-      <metadata />
+      <metadata>
+        <entry key="fk-original-name" value="RoleId" />
+        <entry key="association" value="0878a226-3bd1-4179-8b4c-9d8111a63019" />
+        <entry key="is-managed-key" value="true" />
+      </metadata>
       <childElements />
     </childElement>
     <childElement id="de10a8da-7121-4b95-abd7-d5cdd4bcc911" type="Index" typeId="436e3afe-b4ef-481c-b803-0d1e7d263561">

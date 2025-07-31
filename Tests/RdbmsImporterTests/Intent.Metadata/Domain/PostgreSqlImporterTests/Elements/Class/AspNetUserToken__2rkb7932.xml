@@ -52,7 +52,11 @@
           </properties>
         </stereotype>
       </stereotypes>
-      <metadata />
+      <metadata>
+        <entry key="fk-original-name" value="UserId" />
+        <entry key="association" value="b17bb9bc-a2e4-4cdd-aa9d-24fd730dd4cb" />
+        <entry key="is-managed-key" value="true" />
+      </metadata>
       <childElements />
     </childElement>
     <childElement id="edb6cc66-0261-4035-a6e1-183e2be31bf1" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">

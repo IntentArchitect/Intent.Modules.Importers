@@ -51,7 +51,7 @@
             <property name="30044760-ea18-480e-b840-e3cb7e7296d0" display="Name" isActive="true" />
             <property name="bc03d4fc-b9cc-4ac0-8869-b3e2cb18f1ef" display="Type" value="uuid" isActive="true" />
             <property name="94f5a58f-b340-4a8b-b5dd-b618ecd7fc95" display="Order" isActive="true" />
-            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" value="" isActive="true" />
+            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" value="" isActive="false" />
           </properties>
         </stereotype>
       </stereotypes>
@@ -88,7 +88,7 @@
             <property name="30044760-ea18-480e-b840-e3cb7e7296d0" display="Name" isActive="true" />
             <property name="bc03d4fc-b9cc-4ac0-8869-b3e2cb18f1ef" display="Type" value="uuid" isActive="true" />
             <property name="94f5a58f-b340-4a8b-b5dd-b618ecd7fc95" display="Order" isActive="true" />
-            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" value="" isActive="true" />
+            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" value="" isActive="false" />
           </properties>
         </stereotype>
         <stereotype stereotypeDefinitionId="793a5128-57a1-440b-a206-af5722b752a6" name="Foreign Key">
@@ -100,7 +100,11 @@
           </properties>
         </stereotype>
       </stereotypes>
-      <metadata />
+      <metadata>
+        <entry key="fk-original-name" value="OrderId" />
+        <entry key="association" value="848a23f0-4262-4e94-8c77-153c5c89925c" />
+        <entry key="is-managed-key" value="true" />
+      </metadata>
       <childElements />
     </childElement>
     <childElement id="cac56904-5fb8-4e23-a151-83efce4da64a" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
@@ -133,7 +137,7 @@
             <property name="30044760-ea18-480e-b840-e3cb7e7296d0" display="Name" isActive="true" />
             <property name="bc03d4fc-b9cc-4ac0-8869-b3e2cb18f1ef" display="Type" value="int4" isActive="true" />
             <property name="94f5a58f-b340-4a8b-b5dd-b618ecd7fc95" display="Order" isActive="true" />
-            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" value="" isActive="true" />
+            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" value="" isActive="false" />
           </properties>
         </stereotype>
       </stereotypes>
@@ -170,7 +174,7 @@
             <property name="30044760-ea18-480e-b840-e3cb7e7296d0" display="Name" isActive="true" />
             <property name="bc03d4fc-b9cc-4ac0-8869-b3e2cb18f1ef" display="Type" value="numeric" isActive="true" />
             <property name="94f5a58f-b340-4a8b-b5dd-b618ecd7fc95" display="Order" isActive="true" />
-            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" value="" isActive="true" />
+            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" value="" isActive="false" />
           </properties>
         </stereotype>
         <stereotype stereotypeDefinitionId="8775f4d0-7ffd-4678-a6a8-fd7e0c6fbc87" name="Decimal Constraints">
@@ -216,7 +220,7 @@
             <property name="30044760-ea18-480e-b840-e3cb7e7296d0" display="Name" isActive="true" />
             <property name="bc03d4fc-b9cc-4ac0-8869-b3e2cb18f1ef" display="Type" value="uuid" isActive="true" />
             <property name="94f5a58f-b340-4a8b-b5dd-b618ecd7fc95" display="Order" isActive="true" />
-            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" value="" isActive="true" />
+            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" value="" isActive="false" />
           </properties>
         </stereotype>
         <stereotype stereotypeDefinitionId="793a5128-57a1-440b-a206-af5722b752a6" name="Foreign Key">
@@ -228,7 +232,11 @@
           </properties>
         </stereotype>
       </stereotypes>
-      <metadata />
+      <metadata>
+        <entry key="fk-original-name" value="ProductId" />
+        <entry key="association" value="6ac6b644-58b6-4f3e-814f-03a032b27725" />
+        <entry key="is-managed-key" value="true" />
+      </metadata>
       <childElements />
     </childElement>
     <childElement id="357b130a-a054-40be-a3d5-ee5c446dfccd" type="Index" typeId="436e3afe-b4ef-481c-b803-0d1e7d263561">

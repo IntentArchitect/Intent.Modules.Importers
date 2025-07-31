@@ -137,7 +137,11 @@
           </properties>
         </stereotype>
       </stereotypes>
-      <metadata />
+      <metadata>
+        <entry key="fk-original-name" value="UserId" />
+        <entry key="association" value="e3112a80-4e4f-4f24-9f52-c72cc4980d96" />
+        <entry key="is-managed-key" value="true" />
+      </metadata>
       <childElements />
     </childElement>
     <childElement id="e49619e7-fedf-4a17-88a0-cc7ef1cc9f3a" type="Index" typeId="436e3afe-b4ef-481c-b803-0d1e7d263561">

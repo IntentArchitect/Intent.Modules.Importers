@@ -51,7 +51,7 @@
             <property name="30044760-ea18-480e-b840-e3cb7e7296d0" display="Name" isActive="true" />
             <property name="bc03d4fc-b9cc-4ac0-8869-b3e2cb18f1ef" display="Type" value="int4" isActive="true" />
             <property name="94f5a58f-b340-4a8b-b5dd-b618ecd7fc95" display="Order" isActive="true" />
-            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" value="" isActive="true" />
+            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" value="" isActive="false" />
           </properties>
         </stereotype>
         <stereotype stereotypeDefinitionId="f21339bf-9ce6-4584-828f-de82089e3b72" name="Default Constraint">
@@ -98,7 +98,11 @@
           </properties>
         </stereotype>
       </stereotypes>
-      <metadata />
+      <metadata>
+        <entry key="fk-original-name" value="UserId" />
+        <entry key="association" value="83de5a13-5fd5-428d-8b64-084e51b6caf0" />
+        <entry key="is-managed-key" value="true" />
+      </metadata>
       <childElements />
     </childElement>
     <childElement id="548fa802-3e81-48a4-a533-5a7392008b33" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
