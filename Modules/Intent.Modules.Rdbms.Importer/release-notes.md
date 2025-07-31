@@ -1,4 +1,4 @@
-### Versuib 1.0.1
+### Version 1.0.1
 
 - Improved: Foreign key handling in RdbmsSchemaAnnotator to manage metadata more effectively.
 
