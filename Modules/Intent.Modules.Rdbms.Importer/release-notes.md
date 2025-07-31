@@ -1,3 +1,7 @@
+### Versuib 1.0.1
+
+- Improved: Foreign key handling in RdbmsSchemaAnnotator to manage metadata more effectively.
+
 ### Version 1.0.0
 
 - New Feature: Module release supporting both SQL Server and PostgreSQL database imports. This module replaces the previous `Intent.SqlServerImporter` module with expanded database support.

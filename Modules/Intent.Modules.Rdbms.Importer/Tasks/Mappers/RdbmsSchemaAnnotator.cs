@@ -1,6 +1,7 @@
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.Modules.Common.Templates;
+using Intent.Modules.Rdbms.Importer.Tasks.Helpers;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
@@ -82,6 +83,8 @@ internal static class RdbmsSchemaAnnotator
 
         var stereotype = attribute.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.PrimaryKey.DefinitionId, InitPrimaryKeyStereotype);
         stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.PrimaryKey.PropertyId.DataSource).Value = GetDataSourceValue(column);
+        
+        attribute.SetElementMetadata("is-managed-key", "true");
         return;
 
         static void InitPrimaryKeyStereotype(StereotypePersistable stereotype)
@@ -197,7 +200,7 @@ internal static class RdbmsSchemaAnnotator
         var stereotype = attribute.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.TextConstraints.DefinitionId, ster => InitTextConstraintStereotype(ster, column));
         if (column.MaxLength != -1)
         {
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.TextConstraints.PropertyId.MaxLength).Value = column.MaxLength.ToString();
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.TextConstraints.PropertyId.MaxLength).Value = column.MaxLength?.ToString()!;
         }
 
         return;
@@ -209,7 +212,7 @@ internal static class RdbmsSchemaAnnotator
             stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
             stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.TextConstraints.PropertyId.SqlDataType, prop =>
             {
-                string value = column.DbDataType.ToUpper();
+                var value = column.DbDataType.ToUpper();
                 if (value.EndsWith("MAX")) { value = value.Substring(0, value.Length - 3); }                              
                 prop.Name = Constants.Stereotypes.Rdbms.TextConstraints.PropertyId.SqlDataTypeName;
                 prop.Value = value;
@@ -238,11 +241,11 @@ internal static class RdbmsSchemaAnnotator
         var stereotype = attribute.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.DecimalConstraints.DefinitionId, InitDecimalConstraintStereotype);
         if (column.NumericPrecision.HasValue)
         {
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.DecimalConstraints.PropertyId.Precision).Value = column.NumericPrecision.ToString();
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.DecimalConstraints.PropertyId.Precision).Value = column.NumericPrecision?.ToString()!;
         }
         if (column.NumericScale.HasValue)
         {
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.DecimalConstraints.PropertyId.Scale).Value = column.NumericScale.ToString();
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.DecimalConstraints.PropertyId.Scale).Value = column.NumericScale?.ToString()!;
         }
         return;
 
@@ -307,14 +310,24 @@ internal static class RdbmsSchemaAnnotator
         }
     }
 
-    public static void ApplyForeignKey(ColumnSchema column, ElementPersistable attribute, string? associationTargetEndId = null)
+    public static void ApplyForeignKey(ColumnSchema column, ElementPersistable attribute, string? associationTargetEndId)
     {
         var stereotype = attribute.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.ForeignKey.DefinitionId, InitForeignKeyStereotype);
         
-        // Link to association target end if provided
+        // Link to the association target end if provided
         if (!string.IsNullOrEmpty(associationTargetEndId))
         {
             stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.ForeignKey.PropertyId.Association).Value = associationTargetEndId;
+            
+            attribute.SetElementMetadata("fk-original-name", attribute.Name);
+            attribute.SetElementMetadata("association", associationTargetEndId);
+            attribute.SetElementMetadata("is-managed-key", "true");
+        }
+        else
+        {
+            attribute.RemoveElementMetadata("fk-original-name");
+            attribute.RemoveElementMetadata("association");
+            attribute.RemoveElementMetadata("is-managed-key");
         }
 
         return;

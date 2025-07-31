@@ -271,7 +271,7 @@ internal class DbSchemaIntentMetadataMerger
                         )
                         ||
                         (
-                            (a?.ExternalReference is not null && b?.ExternalReference is not null) &&
+                            a?.ExternalReference is not null && b?.ExternalReference is not null &&
                             string.Equals(a.ExternalReference, b.ExternalReference, StringComparison.InvariantCultureIgnoreCase)
                         )
                     ) 
@@ -412,12 +412,12 @@ internal class DbSchemaIntentMetadataMerger
     /// </summary>
     private ElementPersistable GetOrCreateRepository(string? repositoryElementId, string schemaName, PackageModelPersistable package)
     {
-        var repositoryName = $"StoredProcedureRepository";
+        var repositoryName = "StoredProcedureRepository";
 
         // Check if repository already exists
         var repository = !string.IsNullOrWhiteSpace(repositoryElementId)
             ? package.Classes.FirstOrDefault(x => x.Id == repositoryElementId) 
-              ?? throw new Exception($"Selected Repository could not be found. Did you save your designer before running the importer?")
+              ?? throw new Exception("Selected Repository could not be found. Did you save your designer before running the importer?")
             : package.Classes.FirstOrDefault(c => c.Name == repositoryName && c.SpecializationType == Constants.SpecializationTypes.Repository.SpecializationType);
 
         if (repository == null)
@@ -472,7 +472,7 @@ internal class DbSchemaIntentMetadataMerger
                     var columnSchema = table.Columns.FirstOrDefault(c => c.Name == fkColumn.Name);
                     if (columnSchema != null)
                     {
-                        RdbmsSchemaAnnotator.ApplyForeignKey(columnSchema, attribute, association.TargetEnd.Id);
+                        RdbmsSchemaAnnotator.ApplyForeignKey(columnSchema, attribute, association.TargetEnd?.Id);
                     }
                 }
             }
