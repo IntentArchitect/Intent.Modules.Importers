@@ -29,7 +29,7 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Dbo
             builder.Property(x => x.ClaimValue)
                 .HasColumnType("nvarchar(max)");
 
-            builder.HasOne(x => x.RoleIdAspNetRoles)
+            builder.HasOne(x => x.RoleIdAspNetRole)
                 .WithMany()
                 .HasForeignKey(x => x.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);

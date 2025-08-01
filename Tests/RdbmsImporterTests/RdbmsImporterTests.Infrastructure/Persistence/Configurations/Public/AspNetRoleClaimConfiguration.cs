@@ -30,7 +30,7 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
             builder.HasIndex(x => x.RoleId)
                 .HasDatabaseName("IX_AspNetRoleClaims_RoleId");
 
-            builder.HasOne(x => x.RoleAspNetRole)
+            builder.HasOne(x => x.RoleIdAspNetRole)
                 .WithMany()
                 .HasForeignKey(x => x.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);

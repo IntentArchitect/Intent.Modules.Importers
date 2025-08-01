@@ -11,7 +11,7 @@ namespace RdbmsImporterTests.Domain.Entities.Public
         public AspNetRoleClaim()
         {
             RoleId = null!;
-            RoleAspNetRole = null!;
+            RoleIdAspNetRole = null!;
         }
 
         public int Id { get; set; }
@@ -22,7 +22,7 @@ namespace RdbmsImporterTests.Domain.Entities.Public
 
         public string? ClaimValue { get; set; }
 
-        public virtual AspNetRole RoleAspNetRole { get; set; }
+        public virtual AspNetRole RoleIdAspNetRole { get; set; }
 
         public List<DomainEvent> DomainEvents { get; set; } = [];
     }
