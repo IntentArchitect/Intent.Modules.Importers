@@ -1,10 +1,29 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
 namespace Intent.Modules.Rdbms.Importer.Tasks.Models;
 
 public class DatabaseImportModel
 {
+	public DatabaseImportModel()
+	{
+	}
+	
+	public DatabaseImportModel(DatabaseImportModel other)
+	{
+		ApplicationId = other.ApplicationId;
+		PackageId = other.PackageId;
+		ConnectionString = other.ConnectionString;
+		PackageFileName = other.PackageFileName;
+		ImportFilterFilePath = other.ImportFilterFilePath;
+		StoredProcedureType = other.StoredProcedureType;
+		EntityNameConvention = other.EntityNameConvention;
+		TableStereotype = other.TableStereotype;
+		TypesToExport = other.TypesToExport?.ToList();
+		DatabaseType = other.DatabaseType;
+	}
+	
 	public string ApplicationId { get; set; } = null!;
 	public string PackageId { get; set; } = null!;
 	public string? PackageFileName { get; set; }

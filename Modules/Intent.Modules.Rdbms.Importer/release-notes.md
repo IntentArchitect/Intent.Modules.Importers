@@ -2,6 +2,7 @@
 
 - Improved: Foreign key handling in RdbmsSchemaAnnotator to manage metadata more effectively.
 - Improved: Unified lookup helper for element retrieval with 3-level precedence.
+- Fixed: Filter JSON file didn't handle relative paths well.
 
 ### Version 1.0.0
 

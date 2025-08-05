@@ -41,9 +41,8 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
         var executionResult = new ExecuteResult();
         try
         {
-            PrepareInputModel(importModel);
-            
-            var result = ImporterTool.Run<ImportSchemaResult>("import-schema", importModel);
+            var adaptedImportModel = PrepareInputModel(importModel);
+            var result = ImporterTool.Run<ImportSchemaResult>("import-schema", adaptedImportModel);
 
             executionResult.Errors.AddRange(result.Errors);
             executionResult.Warnings.AddRange(result.Warnings);
@@ -73,27 +72,30 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
         return executionResult;
     }
     
-    private void PrepareInputModel(DatabaseImportModel inputModel)
+    private DatabaseImportModel PrepareInputModel(DatabaseImportModel inputModel)
     {
-        if (!_metadataManager.TryGetApplicationPackage(inputModel.ApplicationId, inputModel.PackageId, out var package, out _))
-        {
-            return;
-        }
-
-        // Making required changes for the underlying CLI tool
-        
-        inputModel.PackageFileName = package.FileLocation;
-        
-        if (!string.IsNullOrWhiteSpace(inputModel.ImportFilterFilePath) &&
-            !Path.IsPathRooted(inputModel.ImportFilterFilePath))
-        {
-            inputModel.ImportFilterFilePath = Path.Combine(Path.GetDirectoryName(inputModel.PackageFileName)!, inputModel.ImportFilterFilePath);
-        }
-
         if (string.IsNullOrWhiteSpace(inputModel.StoredProcedureType))
         {
             inputModel.StoredProcedureType = "Default";
         }
+        
+        if (!_metadataManager.TryGetApplicationPackage(inputModel.ApplicationId, inputModel.PackageId, out var package, out _))
+        {
+            throw new Exception($"Package {inputModel.PackageId} for Application {inputModel.ApplicationId} doesn't exist");
+        }
+        
+        inputModel.PackageFileName = package.FileLocation;
+
+        // Making required changes for the underlying CLI tool
+        var adaptedModel = new DatabaseImportModel(inputModel);
+        
+        if (!string.IsNullOrWhiteSpace(adaptedModel.ImportFilterFilePath) &&
+            !Path.IsPathRooted(adaptedModel.ImportFilterFilePath))
+        {
+            adaptedModel.ImportFilterFilePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(adaptedModel.PackageFileName)!, adaptedModel.ImportFilterFilePath));
+        }
+
+        return adaptedModel;
     }
 
     private PackageUpdateResult ApplySchemaMapping(DatabaseImportModel importModel, ImportSchemaResult importResult)
