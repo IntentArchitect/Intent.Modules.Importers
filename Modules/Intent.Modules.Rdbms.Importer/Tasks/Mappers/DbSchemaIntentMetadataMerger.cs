@@ -73,10 +73,16 @@ internal class DbSchemaIntentMetadataMerger
     {
         foreach (var table in databaseSchema.Tables)
         {
-            // Check if class already exists first (before creating folder structure)
-            // Use ExternalReference for robust lookup first, then fallback to name-based
+            // Use unified lookup helper with 3-level precedence
             var tableExternalRef = ModelNamingUtilities.GetTableExternalReference(table.Schema, table.Name);
-            var existingClass = package.Classes.FirstOrDefault(c => c.ExternalReference == tableExternalRef && c.SpecializationType == ClassModel.SpecializationType);
+            var className = ModelNamingUtilities.GetEntityName(table.Name, _config.EntityNameConvention, table.Schema, null);
+            
+            var existingClass = IntentModelMapper.FindElementWithPrecedence(
+                package.Classes,
+                tableExternalRef,
+                className,
+                table.Schema,
+                ClassModel.SpecializationType);
 
             if (existingClass is not null)
             {
@@ -113,10 +119,16 @@ internal class DbSchemaIntentMetadataMerger
     {
         foreach (var view in databaseSchema.Views)
         {
-            // Check if class already exists first (before creating folder structure)
-            // Use ExternalReference for robust lookup first, then fallback to name-based
+            // Use unified lookup helper with 3-level precedence
             var viewExternalRef = ModelNamingUtilities.GetViewExternalReference(view.Schema, view.Name);
-            var existingClass = package.Classes.FirstOrDefault(c => c.ExternalReference == viewExternalRef && c.SpecializationType == ClassModel.SpecializationType);
+            var className = ModelNamingUtilities.GetViewName(view.Name, _config.EntityNameConvention, view.Schema, null);
+            
+            var existingClass = IntentModelMapper.FindElementWithPrecedence(
+                package.Classes,
+                viewExternalRef,
+                className,
+                view.Schema,
+                ClassModel.SpecializationType);
 
             if (existingClass != null)
             {
@@ -257,11 +269,14 @@ internal class DbSchemaIntentMetadataMerger
     /// <param name="sourceElement">The source element containing new/updated data</param>
     private static void SyncElements(PackageModelPersistable package, ElementPersistable existingElement, ElementPersistable sourceElement)
     {
+        // Extract parent element's schema for child element lookups
+        var parentSchema = IntentModelMapper.GetElementDbSchema(existingElement);
+        
         InternSyncElements(
-            packageElements: package.Classes.Where(p => !string.IsNullOrWhiteSpace(p.ExternalReference))
-                .ToDictionary(k => $"{k.ExternalReference}+{k.SpecializationType}"),
+            package: package,
             existingElement: existingElement,
             sourceElement: sourceElement,
+            parentSchema: parentSchema,
             visitedElements: new HashSet<ElementPersistable>(EqualityComparer<ElementPersistable>.Create(
                 (a, b) =>
                     (
@@ -280,9 +295,10 @@ internal class DbSchemaIntentMetadataMerger
         return;
         
         static void InternSyncElements(
-            Dictionary<string, ElementPersistable> packageElements, 
+            PackageModelPersistable package,
             ElementPersistable existingElement, 
-            ElementPersistable sourceElement, 
+            ElementPersistable sourceElement,
+            string? parentSchema,
             HashSet<ElementPersistable> visitedElements)
         {
             // Update type reference (existing behavior - direct overwrite)
@@ -296,6 +312,11 @@ internal class DbSchemaIntentMetadataMerger
                 SyncStereotypeCollection(existingElement.Stereotypes, sourceElement.Stereotypes);
             }
 
+            if (string.IsNullOrWhiteSpace(existingElement.ExternalReference))
+            {
+                existingElement.ExternalReference = sourceElement.ExternalReference;
+            }
+
             // Sync stereotypes using the add-or-modify approach
             existingElement.Stereotypes ??= [];
             if (sourceElement.Stereotypes.Count > 0)
@@ -304,18 +325,22 @@ internal class DbSchemaIntentMetadataMerger
             }
             
 
-            // Sync child elements using the add-or-modify approach
+            // Sync child elements using the unified lookup helper with 3-level precedence
             existingElement.ChildElements ??= [];
             if (sourceElement.ChildElements.Count > 0)
             {
                 foreach (var sourceChild in sourceElement.ChildElements)
                 {
-                    if (!packageElements.TryGetValue($"{sourceChild.ExternalReference}+{sourceChild.SpecializationType}", out var existingChild))
-                    {
-                        existingChild = existingElement.ChildElements
-                            .FirstOrDefault(c => c.ExternalReference == sourceChild.ExternalReference &&
-                                                 c.SpecializationType == sourceChild.SpecializationType);
-                    } 
+                    // Use unified lookup helper for child elements with 3-level precedence
+                    // 1. ExternalReference + SpecializationType
+                    // 2. Name + Parent Schema + SpecializationType  
+                    // 3. Name + SpecializationType
+                    var existingChild = IntentModelMapper.FindElementWithPrecedence(
+                        existingElement.ChildElements,
+                        sourceChild.ExternalReference,
+                        sourceChild.Name,
+                        parentSchema, // Use parent element's schema for context
+                        sourceChild.SpecializationType);
                 
                     if (existingChild is null)
                     {
@@ -324,8 +349,11 @@ internal class DbSchemaIntentMetadataMerger
                     }
                     else if (visitedElements.Add(sourceChild))
                     {
+                        // Extract child's schema for recursive calls
+                        var childSchema = IntentModelMapper.GetElementDbSchema(existingChild) ?? parentSchema;
+                        
                         // Recursively sync the child element
-                        InternSyncElements(packageElements, existingChild, sourceChild, visitedElements);
+                        InternSyncElements(package, existingChild, sourceChild, childSchema, visitedElements);
                     }
                 }
             }
@@ -493,10 +521,16 @@ internal class DbSchemaIntentMetadataMerger
         // Get schema folder for data contract placement (same as stored procedure)
         var schemaFolder = GetOrCreateSchemaFolder(storedProc.Schema, package);
 
-        // Check if data contract already exists using ExternalReference first
+        // Use unified lookup helper with 3-level precedence
         var dataContractExternalRef = ModelNamingUtilities.GetDataContractExternalReference(storedProc.Schema, storedProc.Name);
-        var existingDataContract = package.Classes.FirstOrDefault(c => c.ExternalReference == dataContractExternalRef && 
-                                                                          c.SpecializationType == Constants.SpecializationTypes.DataContract.SpecializationType);
+        var dataContractName = $"{procElement.Name}Response";
+        
+        var existingDataContract = IntentModelMapper.FindElementWithPrecedence(
+            package.Classes,
+            dataContractExternalRef,
+            dataContractName,
+            storedProc.Schema,
+            Constants.SpecializationTypes.DataContract.SpecializationType);
 
         ElementPersistable dataContract;
         if (existingDataContract != null)
@@ -558,10 +592,15 @@ internal class DbSchemaIntentMetadataMerger
             var udtExternalRef = kvp.Key;
             var udtSchema = kvp.Value;
 
-            // Check if DataContract already exists
-            var existingDataContract = package.Classes.FirstOrDefault(c => 
-                c.ExternalReference == udtExternalRef && 
-                c.SpecializationType == Constants.SpecializationTypes.DataContract.SpecializationType);
+            // Use unified lookup helper with 3-level precedence
+            var dataContractName = ModelNamingUtilities.NormalizeUserDefinedTableName(udtSchema.Name);
+            
+            var existingDataContract = IntentModelMapper.FindElementWithPrecedence(
+                package.Classes,
+                udtExternalRef,
+                dataContractName,
+                udtSchema.Schema,
+                Constants.SpecializationTypes.DataContract.SpecializationType);
 
             ElementPersistable dataContract;
             if (existingDataContract != null)

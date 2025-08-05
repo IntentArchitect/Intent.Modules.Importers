@@ -1,6 +1,7 @@
 ### Version 1.0.1
 
 - Improved: Foreign key handling in RdbmsSchemaAnnotator to manage metadata more effectively.
+- Improved: Unified lookup helper for element retrieval with 3-level precedence.
 
 ### Version 1.0.0
 

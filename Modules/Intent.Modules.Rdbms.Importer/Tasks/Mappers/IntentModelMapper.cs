@@ -16,6 +16,96 @@ namespace Intent.Modules.Rdbms.Importer.Tasks.Mappers;
 /// </summary>
 internal static class IntentModelMapper
 {
+    /// <summary>
+    /// Finds an element using 3-level precedence:
+    /// 1. ExternalReference + SpecializationType
+    /// 2. Name + DB Schema + SpecializationType (using stereotype extraction)
+    /// 3. Name + SpecializationType
+    /// </summary>
+    /// <param name="elements">Collection of elements to search</param>
+    /// <param name="externalReference">External reference to match (level 1)</param>
+    /// <param name="name">Element name to match (levels 2 and 3)</param>
+    /// <param name="dbSchema">Database schema name to match (level 2)</param>
+    /// <param name="specializationType">Specialization type to match (all levels)</param>
+    /// <returns>Found element or null</returns>
+    public static ElementPersistable? FindElementWithPrecedence(
+        IEnumerable<ElementPersistable> elements,
+        string? externalReference,
+        string? name,
+        string? dbSchema,
+        string specializationType)
+    {
+        var elementList = elements.ToList();
+
+        // Level 1: ExternalReference + SpecializationType
+        if (!string.IsNullOrWhiteSpace(externalReference))
+        {
+            var byExternalRef = elementList.FirstOrDefault(e => 
+                e.ExternalReference == externalReference && 
+                e.SpecializationType == specializationType);
+            if (byExternalRef != null)
+                return byExternalRef;
+        }
+
+        // Level 2: Name + DB Schema + SpecializationType (using stereotype extraction)
+        if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(dbSchema))
+        {
+            var byNameAndSchema = elementList.FirstOrDefault(e => 
+                e.Name.Equals(name, StringComparison.OrdinalIgnoreCase) &&
+                e.SpecializationType == specializationType &&
+                GetElementDbSchema(e) == dbSchema);
+            if (byNameAndSchema != null)
+                return byNameAndSchema;
+        }
+
+        // Level 3: Name + SpecializationType
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            var byName = elementList.FirstOrDefault(e => 
+                e.Name.Equals(name, StringComparison.OrdinalIgnoreCase) &&
+                e.SpecializationType == specializationType);
+            if (byName != null)
+                return byName;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Extracts the database schema from an element using stereotype properties
+    /// </summary>
+    internal static string? GetElementDbSchema(ElementPersistable element)
+    {
+        // Try Table stereotype first
+        if (element.TryGetStereotypeProperty(
+            Constants.Stereotypes.Rdbms.Table.DefinitionId,
+            Constants.Stereotypes.Rdbms.Table.PropertyId.Schema,
+            out var tableSchema))
+        {
+            return tableSchema;
+        }
+
+        // Try View stereotype
+        if (element.TryGetStereotypeProperty(
+            Constants.Stereotypes.Rdbms.View.DefinitionId,
+            Constants.Stereotypes.Rdbms.View.PropertyId.Schema,
+            out var viewSchema))
+        {
+            return viewSchema;
+        }
+
+        // Try Schema stereotype (for folders)
+        if (element.TryGetStereotypeProperty(
+            Constants.Stereotypes.Rdbms.Schema.DefinitionId,
+            Constants.Stereotypes.Rdbms.Schema.PropertyId.Name,
+            out var schemaName))
+        {
+            return schemaName;
+        }
+
+        return null;
+    }
+
     public static ElementPersistable MapTableToClass(
         TableSchema table, 
         ImportConfiguration config, 
@@ -484,15 +574,15 @@ internal static class IntentModelMapper
     public static AssociationPersistable? GetOrCreateAssociation(ForeignKeySchema foreignKey, TableSchema sourceTable, ElementPersistable sourceClass, PackageModelPersistable package)
     {
         var targetTableExternalRef = ModelNamingUtilities.GetTableExternalReference(foreignKey.ReferencedTableSchema, foreignKey.ReferencedTableName);
-
         var targetTableEntity = ModelNamingUtilities.GetEntityName(foreignKey.ReferencedTableName, EntityNameConvention.SingularEntity, foreignKey.ReferencedTableSchema, null);
         
-        // Find target class by ExternalReference first, then by name
-        var targetClass = package.Classes.FirstOrDefault(c =>
-                              c.ExternalReference == targetTableExternalRef && c.SpecializationType == ClassModel.SpecializationType) ??
-                          package.Classes.FirstOrDefault(c =>
-                              c.Name.Equals(targetTableEntity, StringComparison.OrdinalIgnoreCase) &&
-                              c.SpecializationType == ClassModel.SpecializationType);
+        // Use unified lookup helper with 3-level precedence
+        var targetClass = FindElementWithPrecedence(
+            package.Classes,
+            targetTableExternalRef,
+            targetTableEntity,
+            foreignKey.ReferencedTableSchema,
+            ClassModel.SpecializationType);
 
         if (targetClass == null)
         {
