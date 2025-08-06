@@ -199,8 +199,16 @@ internal static class ModelNamingUtilities
     {
         var normalized = ToCSharpIdentifier(storeProcName);
         normalized = normalized.RemovePrefix("prc")
-            .RemovePrefix("Prc")
-            .RemovePrefix("proc");
+            .RemovePrefix("Prc");
+        // We need to be careful with the "proc" prefix since a name could start with:
+        // procedure, procurement, process, etc.
+        // So what we can do is check if the letter after "proc" is a capital letter or a non-letter character.
+        if (normalized.StartsWith("proc") &&
+            (normalized.Length < 5 || !char.IsLetter(normalized[4]) || char.IsUpper(normalized[4])))
+        {
+            normalized = normalized.RemoveSuffix("proc");
+        }
+
         normalized = normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
         return normalized;
     }

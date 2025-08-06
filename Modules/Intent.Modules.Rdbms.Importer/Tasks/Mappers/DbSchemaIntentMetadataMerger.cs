@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
@@ -158,7 +159,6 @@ internal class DbSchemaIntentMetadataMerger
     {
         // First pass: Create UserDefinedTable DataContracts for deduplication
         var udtDataContracts = ProcessUserDefinedTableDataContracts(databaseSchema, package, result, deduplicationContext);
-
         foreach (var storedProc in databaseSchema.StoredProcedures)
         {
             // Create repository first if it doesn't exist
