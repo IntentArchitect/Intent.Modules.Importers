@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.Modules.Common.Templates;
@@ -150,7 +151,7 @@ internal static class RdbmsSchemaAnnotator
         {
             return attribute.TypeReference.TypeId switch
             {
-                Constants.TypeDefinitions.CommonTypes.String => true, // Column types for strings are handled by "Text Constraints" stereotype
+                Constants.TypeDefinitions.CommonTypes.String => ShouldUseTextConstraints(column), // Only implicit if handled by Text Constraints
                 Constants.TypeDefinitions.CommonTypes.Byte when column.DbDataType.ToLower() == "tinyint" => true,
                 Constants.TypeDefinitions.CommonTypes.Bool when column.DbDataType.ToLower() == "bit" => true,
                 Constants.TypeDefinitions.CommonTypes.Binary when column.DbDataType.ToLower() == "varbinary" => true,
@@ -180,19 +181,10 @@ internal static class RdbmsSchemaAnnotator
             };
         }
     }
-
+    
     public static void ApplyTextConstraint(ColumnSchema column, ElementPersistable attribute)
     {
-        var dataType = column.LanguageDataType.ToLower();
-        if (dataType != "varchar" &&
-            dataType != "nvarchar" &&
-            dataType != "text" &&
-            dataType != "ntext")
-        {
-            return;
-        }
-
-        if (column.MaxLength == 0)
+        if (!ShouldUseTextConstraints(column))
         {
             return;
         }
@@ -229,6 +221,23 @@ internal static class RdbmsSchemaAnnotator
                 prop.Value = dataType == "nvarchar" || dataType == "ntext" ? "true" : "false";
             });
         }
+    }
+    
+    private static bool ShouldUseTextConstraints(ColumnSchema column)
+    {
+        var dataType = column.LanguageDataType.ToLower();
+        if (dataType != "string")
+        {
+            return false;
+        }
+
+        if (column.MaxLength == 0)
+        {
+            return false;
+        }
+
+        var sqlType = column.DbDataType.ToLower();
+        return sqlType is "ntext" or "nvarchar" or "text" or "varchar";
     }
 
     public static void ApplyDecimalConstraint(ColumnSchema column, ElementPersistable attribute)
@@ -352,6 +361,12 @@ internal static class RdbmsSchemaAnnotator
             stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedure.PropertyId.NameInSchema).Value = sqlStoredProc.Name;
         }
 
+        // Apply schema stereotype to indicate which database schema this stored procedure belongs to
+        if (!string.IsNullOrWhiteSpace(sqlStoredProc.Schema))
+        {
+            AddSchemaStereotype(elementStoredProc, sqlStoredProc.Schema);
+        }
+
         for (var paramIndex = 0; paramIndex < sqlStoredProc.Parameters.Count && paramIndex < elementStoredProc.ChildElements.Count; paramIndex++)
         {
             var elementParam = elementStoredProc.ChildElements[paramIndex];
@@ -381,7 +396,7 @@ internal static class RdbmsSchemaAnnotator
 
     public static void ApplyStoredProcedureOperationSettings(StoredProcedureSchema sqlStoredProc, ElementPersistable elementStoredProc)
     {
-        // Nothing yet
+        
     }
 
     public static void ApplyIndexStereotype(ElementPersistable indexElement, IndexSchema index)

@@ -3,6 +3,8 @@
 - Improved: Foreign key handling in RdbmsSchemaAnnotator to manage metadata more effectively.
 - Improved: Unified lookup helper for element retrieval with 3-level precedence.
 - Fixed: Filter JSON file didn't handle relative paths well.
+- Fixed: StoredProcedureRepository is placed in the package level and not in the folder-schema level.
+- Fixed: Text constraints applied to attributes will now correctly apply to either a Column stereotype type or a Text Constraint stereotype type.
 
 ### Version 1.0.0
 

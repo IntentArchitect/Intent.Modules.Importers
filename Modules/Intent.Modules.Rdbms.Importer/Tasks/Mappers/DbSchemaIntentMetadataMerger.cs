@@ -162,7 +162,7 @@ internal class DbSchemaIntentMetadataMerger
         foreach (var storedProc in databaseSchema.StoredProcedures)
         {
             // Create repository first if it doesn't exist
-            var repositoryElement = GetOrCreateRepository(_config.RepositoryElementId, storedProc.Schema, package);
+            var repositoryElement = GetOrCreateRepository(_config.RepositoryElementId, package);
 
             // Check if stored procedure already exists
             var spExternalRef = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Schema, storedProc.Name);
@@ -438,7 +438,7 @@ internal class DbSchemaIntentMetadataMerger
     /// <summary>
     /// Gets or creates a repository element for stored procedure operations
     /// </summary>
-    private ElementPersistable GetOrCreateRepository(string? repositoryElementId, string schemaName, PackageModelPersistable package)
+    private ElementPersistable GetOrCreateRepository(string? repositoryElementId, PackageModelPersistable package)
     {
         var repositoryName = "StoredProcedureRepository";
 
@@ -450,9 +450,8 @@ internal class DbSchemaIntentMetadataMerger
 
         if (repository == null)
         {
-            // Get or create schema folder for repository organization
-            var schemaFolder = GetOrCreateSchemaFolder(schemaName, package);
-            repository = IntentModelMapper.CreateRepository(repositoryName, schemaFolder.Id, package);
+            // Create repository at package level (not inside schema folders)
+            repository = IntentModelMapper.CreateRepository(repositoryName, package.Id, package);
             package.Classes.Add(repository);
         }
 
