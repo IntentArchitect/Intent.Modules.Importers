@@ -28,7 +28,8 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
                 .HasColumnType("timestamp");
 
             builder.Property(x => x.RefNo)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("varchar(450)");
 
             builder.HasIndex(x => x.RefNo)
                 .IsUnique()

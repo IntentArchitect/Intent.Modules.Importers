@@ -20,13 +20,16 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.PsgSchema
                 .HasColumnType("uuid");
 
             builder.Property(x => x.Name)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("varchar(100)");
 
             builder.Property(x => x.Surname)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("text");
 
             builder.Property(x => x.Email)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("text");
 
             builder.Property(x => x.IsActive)
                 .IsRequired()

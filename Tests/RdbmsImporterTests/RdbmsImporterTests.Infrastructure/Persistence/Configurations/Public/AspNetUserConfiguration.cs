@@ -16,30 +16,39 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
 
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.RefreshToken);
+            builder.Property(x => x.RefreshToken)
+                .HasColumnType("text");
 
             builder.Property(x => x.RefreshTokenExpired)
                 .HasColumnType("timestamp");
 
-            builder.Property(x => x.UserName);
+            builder.Property(x => x.UserName)
+                .HasColumnType("varchar(256)");
 
-            builder.Property(x => x.NormalizedUserName);
+            builder.Property(x => x.NormalizedUserName)
+                .HasColumnType("varchar(256)");
 
-            builder.Property(x => x.Email);
+            builder.Property(x => x.Email)
+                .HasColumnType("varchar(256)");
 
-            builder.Property(x => x.NormalizedEmail);
+            builder.Property(x => x.NormalizedEmail)
+                .HasColumnType("varchar(256)");
 
             builder.Property(x => x.EmailConfirmed)
                 .IsRequired()
                 .HasColumnType("bool");
 
-            builder.Property(x => x.PasswordHash);
+            builder.Property(x => x.PasswordHash)
+                .HasColumnType("text");
 
-            builder.Property(x => x.SecurityStamp);
+            builder.Property(x => x.SecurityStamp)
+                .HasColumnType("text");
 
-            builder.Property(x => x.ConcurrencyStamp);
+            builder.Property(x => x.ConcurrencyStamp)
+                .HasColumnType("text");
 
-            builder.Property(x => x.PhoneNumber);
+            builder.Property(x => x.PhoneNumber)
+                .HasColumnType("text");
 
             builder.Property(x => x.PhoneNumberConfirmed)
                 .IsRequired()

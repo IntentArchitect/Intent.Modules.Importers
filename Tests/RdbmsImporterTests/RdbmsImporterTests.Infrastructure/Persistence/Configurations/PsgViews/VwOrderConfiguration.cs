@@ -25,7 +25,8 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.PsgViews
             builder.Property(x => x.OrderDate)
                 .HasColumnType("timestamp");
 
-            builder.Property(x => x.RefNo);
+            builder.Property(x => x.RefNo)
+                .HasColumnType("varchar(450)");
 
             builder.Ignore(e => e.DomainEvents);
         }

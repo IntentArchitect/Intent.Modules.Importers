@@ -21,11 +21,14 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
                 .ValueGeneratedOnAdd();
 
             builder.Property(x => x.RoleId)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("varchar(450)");
 
-            builder.Property(x => x.ClaimType);
+            builder.Property(x => x.ClaimType)
+                .HasColumnType("text");
 
-            builder.Property(x => x.ClaimValue);
+            builder.Property(x => x.ClaimValue)
+                .HasColumnType("text");
 
             builder.HasIndex(x => x.RoleId)
                 .HasDatabaseName("IX_AspNetRoleClaims_RoleId");

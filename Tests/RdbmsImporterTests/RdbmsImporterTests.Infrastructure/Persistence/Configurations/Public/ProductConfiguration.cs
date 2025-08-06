@@ -24,10 +24,12 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
                 .HasColumnType("uuid");
 
             builder.Property(x => x.Name)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("text");
 
             builder.Property(x => x.Description)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("text");
 
             builder.Property(x => x.IsActive)
                 .IsRequired()

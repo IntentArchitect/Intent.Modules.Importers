@@ -16,10 +16,12 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
 
             builder.HasKey(x => new { x.LoginProvider, x.ProviderKey });
 
-            builder.Property(x => x.ProviderDisplayName);
+            builder.Property(x => x.ProviderDisplayName)
+                .HasColumnType("text");
 
             builder.Property(x => x.UserId)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("varchar(450)");
 
             builder.HasIndex(x => x.UserId)
                 .HasDatabaseName("IX_AspNetUserLogins_UserId");

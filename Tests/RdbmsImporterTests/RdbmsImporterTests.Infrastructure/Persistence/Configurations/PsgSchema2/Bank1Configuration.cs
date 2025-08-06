@@ -20,7 +20,8 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.PsgSchema
                 .HasColumnType("uuid");
 
             builder.Property(x => x.Name)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("text");
 
             builder.Ignore(e => e.DomainEvents);
         }

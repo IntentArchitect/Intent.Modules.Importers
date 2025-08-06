@@ -16,7 +16,8 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
 
             builder.HasKey(x => new { x.UserId, x.LoginProvider, x.Name });
 
-            builder.Property(x => x.Value);
+            builder.Property(x => x.Value)
+                .HasColumnType("text");
 
             builder.HasIndex(x => new { x.UserId, x.LoginProvider, x.Name })
                 .IsUnique()

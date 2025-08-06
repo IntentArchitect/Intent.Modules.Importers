@@ -22,7 +22,8 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
                 .HasColumnName("LegacyID");
 
             builder.Property(x => x.LegacyColumn)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("varchar(100)");
 
             builder.Property(x => x.BadDate)
                 .IsRequired()

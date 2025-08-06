@@ -16,11 +16,14 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
 
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Name);
+            builder.Property(x => x.Name)
+                .HasColumnType("varchar(256)");
 
-            builder.Property(x => x.NormalizedName);
+            builder.Property(x => x.NormalizedName)
+                .HasColumnType("varchar(256)");
 
-            builder.Property(x => x.ConcurrencyStamp);
+            builder.Property(x => x.ConcurrencyStamp)
+                .HasColumnType("text");
 
             builder.HasIndex(x => x.NormalizedName)
                 .IsUnique()

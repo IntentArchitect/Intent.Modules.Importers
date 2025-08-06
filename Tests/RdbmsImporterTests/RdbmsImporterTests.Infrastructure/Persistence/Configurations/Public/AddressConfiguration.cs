@@ -24,16 +24,20 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
                 .HasColumnType("uuid");
 
             builder.Property(x => x.Line1)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("text");
 
             builder.Property(x => x.Line2)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("text");
 
             builder.Property(x => x.City)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("text");
 
             builder.Property(x => x.PostalCode)
-                .IsRequired();
+                .IsRequired()
+                .HasColumnType("text");
 
             builder.Property(x => x.AddressType)
                 .IsRequired()
