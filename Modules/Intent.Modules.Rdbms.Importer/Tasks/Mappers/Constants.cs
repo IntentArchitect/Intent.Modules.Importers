@@ -272,12 +272,6 @@ internal static class Constants
                 }
             }
 
-            public static class HasTrigger
-            {
-                public const string DefinitionId = "70bbade7-14c0-4b71-9c3b-3d3e9b0e4e3e"; // HasTrigger stereotype definition ID
-                public const string Name = "Has Trigger";
-            }
-
             public static class TextConstraints
             {
                 public const string DefinitionId = "6347286E-A637-44D6-A5D7-D9BE5789CA7A";
@@ -320,7 +314,7 @@ internal static class Constants
                 }
             }
 
-            public static class StoredProcedure
+            public static class StoredProcedureElement
             {
                 public const string DefinitionId = "8ca606b1-406a-4b16-a7e7-8ffe1a215ecf";
                 public const string Name = "Stored Procedure Settings";
@@ -332,7 +326,7 @@ internal static class Constants
                 }
             }
 
-            public static class StoredProcedureParameter
+            public static class StoredProcedureElementParameter
             {
                 public const string DefinitionId = "5332b774-6499-4b4b-9fdb-e3eef13bdee4";
                 public const string Name = "Stored Procedure Parameter Settings";
@@ -341,6 +335,32 @@ internal static class Constants
                 {
                     public const string IsOutputParam = "17aa77a0-c531-49ec-bed0-9cbb125f6ce3";
                     public const string IsOutputParamName = "Is Output Parameter";
+                }
+            }
+
+            public static class StoredProcedureOperation
+            {
+                public const string DefinitionId = "f40ff84c-68ad-405f-bda0-1237dd15fc92";
+                public const string Name = "Stored Procedure";
+
+                public static class PropertyId
+                {
+                    public const string NameInSchema = "4e2a3f58-6b6e-43c5-9398-f9c3fde593f6";
+                    public const string NameInSchemaName = "Name in Schema";
+                }
+            }
+            
+            public static class StoredProcedureOperationParameter
+            {
+                public const string DefinitionId = "6ac91fd5-206c-49da-b4a2-b6ea2cad11f7";
+                public const string Name = "Stored Procedure Parameter Settings";
+
+                public static class PropertyId
+                {
+                    public const string ParameterName = "714a95a6-c3ef-4117-a66c-24876c675cd5";
+                    public const string ParameterNameName = "Name";
+                    public const string Direction = "39491728-8327-4b94-b9a2-9851dd4b4a01";
+                    public const string DirectionName = "Direction";
                 }
             }
 

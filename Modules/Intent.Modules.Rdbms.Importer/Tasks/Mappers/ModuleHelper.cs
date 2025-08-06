@@ -6,6 +6,24 @@ namespace Intent.Modules.Rdbms.Importer.Tasks.Mappers;
 
 public static class ModuleHelper
 {
+    public static void ApplyPackageStereotypes(PackageModelPersistable package, IApplicationConfigurationProvider configurationProvider)
+    {
+        var moduleIds = configurationProvider.GetInstalledModules().Select(x => x.ModuleId).ToHashSet();
+
+        if (moduleIds.Contains(Constants.Packages.Rdbms.ModuleName))
+        {
+            var relationalDbStereotype = package.Stereotypes.FirstOrDefault(x => x.DefinitionId == Constants.Stereotypes.Rdbms.RelationalDatabase.DefinitionId);
+            if (relationalDbStereotype is null)
+            {
+                package.Stereotypes.Add(new StereotypePersistable
+                {
+                    DefinitionId = Constants.Stereotypes.Rdbms.RelationalDatabase.DefinitionId,
+                    Name = Constants.Stereotypes.Rdbms.RelationalDatabase.Name
+                });
+            }
+        }
+    }
+
     /// <summary>
     /// Apply the necessary package references.
     /// </summary>

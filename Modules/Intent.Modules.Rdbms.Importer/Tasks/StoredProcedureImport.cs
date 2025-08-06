@@ -126,6 +126,7 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
             // Apply the mapping using the schema data from the CLI
             var mappingResult = schemaMapper.MergeSchemaAndPackage(importResult.SchemaData, package, deduplicationContext);
 
+            ModuleHelper.ApplyPackageStereotypes(package, _configurationProvider);
             ModuleHelper.ApplyRelevantReferences(package, _configurationProvider);
             
             // Save the package if mapping was successful

@@ -62,8 +62,9 @@ internal static class ModelNamingUtilities
     public static string GetParameterName(string paramName)
     {
         // Remove @ prefix if present and convert to camelCase
-        var name = paramName.StartsWith("@") ? paramName.Substring(1) : paramName;
-        return name.ToCamelCase();
+        var normalized = paramName.StartsWith("@") ? paramName.Substring(1) : paramName;
+        normalized=ToCSharpIdentifier(normalized);
+        return normalized.ToCamelCase();
     }
 
     /// <summary>

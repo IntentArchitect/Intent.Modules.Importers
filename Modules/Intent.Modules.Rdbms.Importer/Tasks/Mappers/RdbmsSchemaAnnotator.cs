@@ -355,48 +355,95 @@ internal static class RdbmsSchemaAnnotator
 
     public static void ApplyStoredProcedureElementSettings(StoredProcedureSchema sqlStoredProc, ElementPersistable elementStoredProc)
     {
-        var stereotype = elementStoredProc.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedure.DefinitionId, InitStoredProcStereotype);
+        var stereotype = elementStoredProc.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedureElement.DefinitionId, InitStoredProcStereotype);
         if (sqlStoredProc.Name != elementStoredProc.Name)
         {
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedure.PropertyId.NameInSchema).Value = sqlStoredProc.Name;
-        }
-
-        // Apply schema stereotype to indicate which database schema this stored procedure belongs to
-        if (!string.IsNullOrWhiteSpace(sqlStoredProc.Schema))
-        {
-            AddSchemaStereotype(elementStoredProc, sqlStoredProc.Schema);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElement.PropertyId.NameInSchema).Value = GetSchemaStoredProcedureName(sqlStoredProc);
         }
 
         for (var paramIndex = 0; paramIndex < sqlStoredProc.Parameters.Count && paramIndex < elementStoredProc.ChildElements.Count; paramIndex++)
         {
             var elementParam = elementStoredProc.ChildElements[paramIndex];
             var sqlProcParam = sqlStoredProc.Parameters[paramIndex];
-            var paramStereotype = elementParam.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedureParameter.DefinitionId, InitStoredProcParamStereotype);
-            paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureParameter.PropertyId.IsOutputParam).Value = sqlProcParam.IsOutputParameter.ToString().ToLower();
+            var paramStereotype = elementParam.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.DefinitionId, InitStoredProcParamStereotype);
+            paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.IsOutputParam).Value = sqlProcParam.IsOutputParameter.ToString().ToLower();
         }
 
         return;
 
+        static string GetSchemaStoredProcedureName(StoredProcedureSchema sqlStoredProc)
+        {
+            if (sqlStoredProc.Schema is null or "dbo")
+            {
+                return sqlStoredProc.Name;
+            }
+
+            return $"{sqlStoredProc.Schema}.{sqlStoredProc.Name}";
+        }
+        
         static void InitStoredProcStereotype(StereotypePersistable stereotype)
         {
-            stereotype.Name = Constants.Stereotypes.Rdbms.StoredProcedure.Name;
+            stereotype.Name = Constants.Stereotypes.Rdbms.StoredProcedureElement.Name;
             stereotype.DefinitionPackageId = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedure.PropertyId.NameInSchema, prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedure.PropertyId.NameInSchemaName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElement.PropertyId.NameInSchema, prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureElement.PropertyId.NameInSchemaName);
         }
         
         static void InitStoredProcParamStereotype(StereotypePersistable stereotype)
         {
-            stereotype.Name = Constants.Stereotypes.Rdbms.StoredProcedureParameter.Name;
+            stereotype.Name = Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.Name;
             stereotype.DefinitionPackageId = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureParameter.PropertyId.IsOutputParam, prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureParameter.PropertyId.IsOutputParamName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.IsOutputParam, prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.IsOutputParamName);
         }
     }
 
     public static void ApplyStoredProcedureOperationSettings(StoredProcedureSchema sqlStoredProc, ElementPersistable elementStoredProc)
     {
+        var stereotype = elementStoredProc.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedureOperation.DefinitionId, InitStoredProcOperationStereotype);
+        if (sqlStoredProc.Name != elementStoredProc.Name)
+        {
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperation.PropertyId.NameInSchema).Value = GetSchemaStoredProcedureName(sqlStoredProc);
+        }
+
+        for (var paramIndex = 0; paramIndex < sqlStoredProc.Parameters.Count && paramIndex < elementStoredProc.ChildElements.Count; paramIndex++)
+        {
+            var elementParam = elementStoredProc.ChildElements[paramIndex];
+            var sqlProcParam = sqlStoredProc.Parameters[paramIndex];
+            var paramStereotype = elementParam.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.DefinitionId, InitStoredProcOperationParamStereotype);
+            
+            paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.ParameterName).Value = sqlProcParam.Name;
+            paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.Direction).Value = sqlProcParam.IsOutputParameter ? "Out" : "In";
+        }
+
+        return;
+
+        static string GetSchemaStoredProcedureName(StoredProcedureSchema sqlStoredProc)
+        {
+            if (sqlStoredProc.Schema is null or "dbo")
+            {
+                return sqlStoredProc.Name;
+            }
+
+            return $"{sqlStoredProc.Schema}.{sqlStoredProc.Name}";
+        }
         
+        static void InitStoredProcOperationStereotype(StereotypePersistable stereotype)
+        {
+            stereotype.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperation.Name;
+            stereotype.DefinitionPackageId = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageId;
+            stereotype.DefinitionPackageName = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageName;
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperation.PropertyId.NameInSchema, prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperation.PropertyId.NameInSchemaName);
+        }
+        
+        static void InitStoredProcOperationParamStereotype(StereotypePersistable stereotype)
+        {
+            stereotype.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.Name;
+            stereotype.DefinitionPackageId = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageId;
+            stereotype.DefinitionPackageName = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageName;
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.ParameterName, prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.ParameterNameName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.Direction, prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.DirectionName);
+        }
     }
 
     public static void ApplyIndexStereotype(ElementPersistable indexElement, IndexSchema index)
