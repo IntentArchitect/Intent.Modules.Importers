@@ -32,10 +32,10 @@ internal class DbSchemaIntentMetadataMerger
     /// <param name="databaseSchema">The <see cref="DatabaseSchema"/> to merge.</param>
     /// <param name="package">The <see cref="PackageModelPersistable"/> to merge into.</param>
     /// <param name="deduplicationContext">The <see cref="DeduplicationContext"/> to use for deduplication.</param>
-    /// <returns>A <see cref="PackageUpdateResult"/> containing the results of the merge.</returns>
-    public PackageUpdateResult MergeSchemaAndPackage(DatabaseSchema databaseSchema, PackageModelPersistable package, DeduplicationContext? deduplicationContext = null)
+    /// <returns>A <see cref="MergeResult"/> containing the results of the merge.</returns>
+    public MergeResult MergeSchemaAndPackage(DatabaseSchema databaseSchema, PackageModelPersistable package, DeduplicationContext? deduplicationContext = null)
     {
-        var result = new PackageUpdateResult();
+        var result = new MergeResult();
 
         try
         {
@@ -54,7 +54,6 @@ internal class DbSchemaIntentMetadataMerger
             ProcessForeignKeys(databaseSchema, package, result);
 
             result.IsSuccessful = true;
-            result.Message = $"Successfully mapped {result.AddedElements.Count} new elements and updated {result.UpdatedElements.Count} existing elements.";
         }
         catch (Exception ex)
         {
@@ -70,7 +69,7 @@ internal class DbSchemaIntentMetadataMerger
         DatabaseSchema databaseSchema, 
         PackageModelPersistable package, 
         DeduplicationContext? deduplicationContext, 
-        PackageUpdateResult result)
+        MergeResult result)
     {
         foreach (var table in databaseSchema.Tables)
         {
@@ -91,10 +90,9 @@ internal class DbSchemaIntentMetadataMerger
                 // Don't use deduplication context for updates to preserve existing names
                 var updatedClassElement = IntentModelMapper.MapTableToClass(table, _config, package, existingClass.ParentFolderId);
                 SyncElements(package, existingClass, updatedClassElement);
-                result.UpdatedElements.Add(existingClass);
 
                 // Process indexes for existing class
-                ProcessTableIndexes(table, existingClass, package);
+                ProcessTableIndexes(table, existingClass, package, result);
             }
             else
             {
@@ -104,10 +102,9 @@ internal class DbSchemaIntentMetadataMerger
                 var classElement = IntentModelMapper.MapTableToClass(table, _config, package, schemaFolder.Id, deduplicationContext);
 
                 package.Classes.Add(classElement);
-                result.AddedElements.Add(classElement);
 
                 // Process indexes for new class
-                ProcessTableIndexes(table, classElement, package);
+                ProcessTableIndexes(table, classElement, package, result);
             }
         }
     }
@@ -116,7 +113,7 @@ internal class DbSchemaIntentMetadataMerger
         DatabaseSchema databaseSchema, 
         PackageModelPersistable package, 
         DeduplicationContext? deduplicationContext, 
-        PackageUpdateResult result)
+        MergeResult result)
     {
         foreach (var view in databaseSchema.Views)
         {
@@ -137,7 +134,6 @@ internal class DbSchemaIntentMetadataMerger
                 // Don't use deduplication context for updates to preserve existing names
                 var updatedClassElement = IntentModelMapper.MapViewToClass(view, _config, package, existingClass.ParentFolderId);
                 SyncElements(package, existingClass, updatedClassElement);
-                result.UpdatedElements.Add(existingClass);
             }
             else
             {
@@ -147,7 +143,6 @@ internal class DbSchemaIntentMetadataMerger
                 var classElement = IntentModelMapper.MapViewToClass(view, _config, package, schemaFolder.Id, deduplicationContext);
 
                 package.Classes.Add(classElement);
-                result.AddedElements.Add(classElement);
             }
         }
     }
@@ -155,7 +150,7 @@ internal class DbSchemaIntentMetadataMerger
     private void ProcessStoredProcedures(DatabaseSchema databaseSchema,
         PackageModelPersistable package,
         DeduplicationContext? deduplicationContext,
-        PackageUpdateResult result)
+        MergeResult result)
     {
         // First pass: Create UserDefinedTable DataContracts for deduplication
         var udtDataContracts = ProcessUserDefinedTableDataContracts(databaseSchema, package, result, deduplicationContext);
@@ -193,7 +188,6 @@ internal class DbSchemaIntentMetadataMerger
                 }
                 
                 procElement = existingElement;
-                result.UpdatedElements.Add(existingElement);
             }
             else
             {
@@ -210,7 +204,6 @@ internal class DbSchemaIntentMetadataMerger
                 }
                 
                 repositoryElement.ChildElements.Add(procElement);
-                result.AddedElements.Add(procElement);
             }
 
             if (storedProc.ResultSetColumns.Count > 0)
@@ -223,7 +216,7 @@ internal class DbSchemaIntentMetadataMerger
     /// <summary>
     /// Processes table indexes and creates them in the package
     /// </summary>
-    private static void ProcessTableIndexes(TableSchema table, ElementPersistable classElement, PackageModelPersistable package)
+    private static void ProcessTableIndexes(TableSchema table, ElementPersistable classElement, PackageModelPersistable package, MergeResult result)
     {
         foreach (var index in table.Indexes)
         {
@@ -247,12 +240,18 @@ internal class DbSchemaIntentMetadataMerger
                 var attrColumnExternalRef = ModelNamingUtilities.GetColumnExternalReference(table.Schema, table.Name, indexColumn.Name);
                 var attribute = classElement.ChildElements.FirstOrDefault(attr => attr.ExternalReference == attrColumnExternalRef && attr.SpecializationType == AttributeModel.SpecializationType);
 
+                if (attribute is null)
+                {
+                    result.Warnings.Add($"Index column '{indexColumn.Name}' in index '{index.Name}' could not be mapped to an attribute in table '{table.Name}'.");
+                    continue;
+                }
+                
                 var indexColumnElement = indexElement.ChildElements
                     .FirstOrDefault(x => (x.ExternalReference == ModelNamingUtilities.GetIndexColumnExternalReference(indexColumn.Name) && x.SpecializationType == Constants.SpecializationTypes.IndexColumn.SpecializationType)
                                          || (x.Name == indexColumn.Name && x.SpecializationType == Constants.SpecializationTypes.IndexColumn.SpecializationType));
                 if (indexColumnElement is null)
                 {
-                    indexColumnElement = IntentModelMapper.CreateIndexColumn(indexColumn, indexElement.Id, attribute?.Id, package);
+                    indexColumnElement = IntentModelMapper.CreateIndexColumn(indexColumn, indexElement.Id, attribute.Id, package);
                     indexElement.ChildElements.Add(indexColumnElement);
                 }
             }
@@ -436,21 +435,31 @@ internal class DbSchemaIntentMetadataMerger
     /// <summary>
     /// Gets or creates a repository element for stored procedure operations
     /// </summary>
-    private ElementPersistable GetOrCreateRepository(string? repositoryElementId, PackageModelPersistable package)
+    private static ElementPersistable GetOrCreateRepository(string? repositoryElementId, PackageModelPersistable package)
     {
-        var repositoryName = "StoredProcedureRepository";
+        const string defaultRepositoryName = "StoredProcedureRepository";
 
-        // Check if repository already exists
-        var repository = !string.IsNullOrWhiteSpace(repositoryElementId)
-            ? package.Classes.FirstOrDefault(x => x.Id == repositoryElementId) 
-              ?? throw new Exception("Selected Repository could not be found. Did you save your designer before running the importer?")
-            : package.Classes.FirstOrDefault(c => c.Name == repositoryName && c.SpecializationType == Constants.SpecializationTypes.Repository.SpecializationType);
+        ElementPersistable? repository;
+        if (!string.IsNullOrWhiteSpace(repositoryElementId))
+        {
+            repository = package.Classes.FirstOrDefault(x => x.Id == repositoryElementId)
+                         ?? throw new Exception("Selected Repository could not be found. Did you save your designer before running the importer?");
+        }
+        else
+        {
+            repository = package.Classes.FirstOrDefault(x => x.ExternalReference == ModelNamingUtilities.GetStoredProcedureRepositoryExternalReference())
+                ?? package.Classes.FirstOrDefault(c => c.Name == defaultRepositoryName && c.SpecializationType == Constants.SpecializationTypes.Repository.SpecializationType);
+        }
 
         if (repository == null)
         {
             // Create repository at package level (not inside schema folders)
-            repository = IntentModelMapper.CreateRepository(repositoryName, package.Id, package);
+            repository = IntentModelMapper.CreateRepository(defaultRepositoryName, package.Id, package, ModelNamingUtilities.GetStoredProcedureRepositoryExternalReference());
             package.Classes.Add(repository);
+        }
+        else if (string.IsNullOrWhiteSpace(repository.ExternalReference))
+        {
+            repository.ExternalReference = ModelNamingUtilities.GetStoredProcedureRepositoryExternalReference();
         }
 
         return repository;
@@ -459,7 +468,7 @@ internal class DbSchemaIntentMetadataMerger
     /// <summary>
     /// Processes foreign keys to create associations and apply FK stereotypes
     /// </summary>
-    private void ProcessForeignKeys(DatabaseSchema databaseSchema, PackageModelPersistable package, PackageUpdateResult result)
+    private void ProcessForeignKeys(DatabaseSchema databaseSchema, PackageModelPersistable package, MergeResult result)
     {
         if (!_config.ExportTables())
         {
@@ -481,6 +490,7 @@ internal class DbSchemaIntentMetadataMerger
                 var association = IntentModelMapper.GetOrCreateAssociation(foreignKey, table, classElement, package);
                 if (association == null)
                 {
+                    result.Warnings.Add($"Could not create association for foreign key '{foreignKey.Name}' in table '{table.Name}'.");
                     continue;
                 }
 
@@ -492,6 +502,7 @@ internal class DbSchemaIntentMetadataMerger
 
                     if (attribute == null)
                     {
+                        result.Warnings.Add($"Could not find attribute '{fkColumn.Name}' in table '{table.Name}' for foreign key association.");
                         continue;
                     }
                     var columnSchema = table.Columns.FirstOrDefault(c => c.Name == fkColumn.Name);
@@ -512,7 +523,7 @@ internal class DbSchemaIntentMetadataMerger
         StoredProcedureSchema storedProc,
         ElementPersistable procElement,
         PackageModelPersistable package,
-        PackageUpdateResult result,
+        MergeResult result,
         DeduplicationContext? deduplicationContext)
     {
         if (storedProc.ResultSetColumns.Count > 0)
@@ -537,7 +548,6 @@ internal class DbSchemaIntentMetadataMerger
                 // Update existing data contract
                 dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package);
                 SyncElements(package, existingDataContract, dataContract);
-                result.UpdatedElements.Add(existingDataContract);
                 dataContract = existingDataContract; // Use the existing data contract for TypeReference
             }
             else
@@ -545,7 +555,6 @@ internal class DbSchemaIntentMetadataMerger
                 // Create new data contract
                 dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package);
                 package.Classes.Add(dataContract);
-                result.AddedElements.Add(dataContract);
             }
 
             procElement.TypeReference.TypeId = dataContract.Id; // Point to the data contract element ID
@@ -561,7 +570,7 @@ internal class DbSchemaIntentMetadataMerger
     private Dictionary<string, string> ProcessUserDefinedTableDataContracts(
         DatabaseSchema databaseSchema,
         PackageModelPersistable package,
-        PackageUpdateResult result,
+        MergeResult result,
         DeduplicationContext? deduplicationContext)
     {
         var udtDataContracts = new Dictionary<string, string>(); // External ref -> DataContract ID
@@ -610,7 +619,6 @@ internal class DbSchemaIntentMetadataMerger
                 var schemaFolder = GetOrCreateSchemaFolder(udtSchema.Schema, package);
                 dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, package);
                 SyncElements(package, existingDataContract, dataContract);
-                result.UpdatedElements.Add(existingDataContract);
                 dataContract = existingDataContract; // Use existing for mapping
             }
             else
@@ -619,7 +627,6 @@ internal class DbSchemaIntentMetadataMerger
                 var schemaFolder = GetOrCreateSchemaFolder(udtSchema.Schema, package);
                 dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, package);
                 package.Classes.Add(dataContract);
-                result.AddedElements.Add(dataContract);
             }
 
             udtDataContracts[udtExternalRef] = dataContract.Id;
@@ -627,14 +634,4 @@ internal class DbSchemaIntentMetadataMerger
 
         return udtDataContracts;
     }
-}
-
-internal class PackageUpdateResult
-{
-    public bool IsSuccessful { get; set; }
-    public string Message { get; set; } = string.Empty;
-    public Exception? Exception { get; set; }
-    public List<ElementPersistable> AddedElements { get; set; } = new();
-    public List<ElementPersistable> UpdatedElements { get; set; } = new();
-    public List<ElementPersistable> RemovedElements { get; set; } = new();
 }

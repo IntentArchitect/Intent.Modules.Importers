@@ -48,7 +48,7 @@ internal static partial class Commands
                 var databaseType = request.DatabaseType;
 
                 var provider = factory.CreateProvider(databaseType);
-                var databaseSchema = await provider.ExtractSchemaAsync(request.ConnectionString, importFilterService, cancellationToken);
+                var databaseSchema = await provider.ExtractSchemaAsync(request.ConnectionString, importFilterService, response.Warnings, cancellationToken);
 
                 response.SetResult(new ImportSchemaResult
                 {

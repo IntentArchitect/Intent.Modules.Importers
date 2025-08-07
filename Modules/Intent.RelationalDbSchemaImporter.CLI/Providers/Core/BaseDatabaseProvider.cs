@@ -61,7 +61,8 @@ internal abstract class BaseDatabaseProvider
     /// This method orchestrates all extraction through specialized services and is the primary
     /// entry point called by Intent Architect importer modules via the RPC interface.
     /// </summary>
-    public async Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportFilterService importFilterService, CancellationToken cancellationToken)
+    public async Task<DatabaseSchema> ExtractSchemaAsync(string connectionString, ImportFilterService importFilterService, List<string> responseWarnings,
+        CancellationToken cancellationToken)
     {
         await using var connection = CreateConnection(connectionString);
         await connection.OpenAsync(cancellationToken);
@@ -97,7 +98,8 @@ internal abstract class BaseDatabaseProvider
         {
             schema.StoredProcedures = await StoredProcedureExtractor.ExtractStoredProceduresAsync(
                 databaseSchema, importFilterService, connection,
-                SystemObjectFilter, DataTypeMapper, CreateStoredProcedureAnalyzer(connection));
+                SystemObjectFilter, DataTypeMapper, CreateStoredProcedureAnalyzer(connection),
+                responseWarnings);
         }
 
         return schema;

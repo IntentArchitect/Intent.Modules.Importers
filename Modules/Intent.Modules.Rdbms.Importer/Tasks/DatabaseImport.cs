@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Intent.Engine;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
@@ -53,6 +54,8 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
             }
 
             var mappingResult = ApplySchemaMapping(importModel, result.Result);
+            
+            executionResult.Warnings.AddRange(mappingResult.Warnings);
             if (mappingResult.IsSuccessful)
             {
                 return executionResult;
@@ -98,14 +101,14 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
         return adaptedModel;
     }
 
-    private PackageUpdateResult ApplySchemaMapping(DatabaseImportModel importModel, ImportSchemaResult importResult)
+    private MergeResult ApplySchemaMapping(DatabaseImportModel importModel, ImportSchemaResult importResult)
     {
         try
         {
             // Get the package file path from the metadata manager
             if (!_metadataManager.TryGetApplicationPackage(importModel.ApplicationId, importModel.PackageId, out var packageMetadata, out var errorMessage))
             {
-                return new PackageUpdateResult
+                return new MergeResult
                 {
                     IsSuccessful = false,
                     Message = $"Could not retrieve package metadata: {errorMessage}"
@@ -116,7 +119,7 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
             var packageFilePath = packageMetadata.FileLocation;
             if (string.IsNullOrEmpty(packageFilePath))
             {
-                return new PackageUpdateResult
+                return new MergeResult
                 {
                     IsSuccessful = false,
                     Message = "Package file location is not available"
@@ -126,7 +129,7 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
             var package = PackageModelPersistable.Load(packageFilePath);
             if (package == null)
             {
-                return new PackageUpdateResult
+                return new MergeResult
                 {
                     IsSuccessful = false,
                     Message = $"Could not load package from file: {packageFilePath}"
@@ -158,7 +161,7 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
         }
         catch (Exception ex)
         {
-            return new PackageUpdateResult
+            return new MergeResult
             {
                 IsSuccessful = false,
                 Message = $"Error during schema mapping: {ex.Message}",

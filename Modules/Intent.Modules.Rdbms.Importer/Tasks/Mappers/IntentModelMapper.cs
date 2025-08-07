@@ -218,13 +218,14 @@ internal static class IntentModelMapper
     /// <summary>
     /// Creates a repository element for containing stored procedures/operations
     /// </summary>
-    public static ElementPersistable CreateRepository(string repositoryName, string schemaFolderId, PackageModelPersistable package)
+    public static ElementPersistable CreateRepository(string repositoryName, string schemaFolderId, PackageModelPersistable package, string externalReference)
     {
         return new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
             SpecializationType = Constants.SpecializationTypes.Repository.SpecializationType,
             SpecializationTypeId = Constants.SpecializationTypes.Repository.SpecializationTypeId,
+            ExternalReference = externalReference,
             Name = repositoryName,
             Display = repositoryName,
             IsAbstract = false,
@@ -470,6 +471,7 @@ internal static class IntentModelMapper
     /// </summary>
     public static ElementPersistable CreateIndex(TableSchema table, IndexSchema index, string classId, PackageModelPersistable package)
     {
+        ArgumentException.ThrowIfNullOrEmpty(classId);
         var indexElement = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
@@ -518,28 +520,27 @@ internal static class IntentModelMapper
     /// <summary>
     /// Creates an index column element with mapping to the corresponding attribute
     /// </summary>
-    public static ElementPersistable CreateIndexColumn(IndexColumnSchema indexColumn, string indexId, string? attributeId, PackageModelPersistable package)
+    public static ElementPersistable CreateIndexColumn(IndexColumnSchema indexColumn, string indexId, string attributeId, PackageModelPersistable package)
     {
-        BasicMappingModelPersistable? mapping = null;
-        if (attributeId != null)
+        ArgumentException.ThrowIfNullOrEmpty(indexId);
+        ArgumentException.ThrowIfNullOrEmpty(attributeId);
+        
+        var mapping = new BasicMappingModelPersistable
         {
-            mapping = new BasicMappingModelPersistable
+            MappingSettingsId = Constants.Mapping.Index.MappingSettingsId, // Column mapping settings ID
+            MetadataId = Constants.Mapping.Index.MetadataId, // Domain metadata ID
+            AutoSyncTypeReference = false,
+            Path = new List<MappedPathTargetPersistable>
             {
-                MappingSettingsId = Constants.Mapping.Index.MappingSettingsId, // Column mapping settings ID
-                MetadataId = Constants.Mapping.Index.MetadataId, // Domain metadata ID
-                AutoSyncTypeReference = false,
-                Path = new List<MappedPathTargetPersistable>
+                new()
                 {
-                    new()
-                    {
-                        Id = attributeId,
-                        Name = GetAttributeNameById(attributeId, package),
-                        Type = "Element",
-                        Specialization = "Attribute"
-                    }
+                    Id = attributeId,
+                    Name = GetAttributeNameById(attributeId, package),
+                    Type = "Element",
+                    Specialization = "Attribute"
                 }
-            };
-        }
+            }
+        };
 
         var columnIndex = new ElementPersistable
         {
@@ -551,7 +552,7 @@ internal static class IntentModelMapper
             ExternalReference = ModelNamingUtilities.GetIndexColumnExternalReference(indexColumn.Name),
             IsAbstract = false,
             GenericTypes = [],
-            IsMapped = mapping != null,
+            IsMapped = true,
             Mapping = mapping,
             ParentFolderId = indexId, // Index columns belong to their parent index
             PackageId = package.Id,

@@ -14,24 +14,23 @@ namespace Intent.RelationalDbSchemaImporter.CLI.Providers.Core.Services;
 
 internal abstract class StoredProcedureExtractorBase
 {
-    public abstract Task<List<StoredProcedureSchema>> ExtractStoredProceduresAsync(
-        DatabaseSchemaReader.DataSchema.DatabaseSchema databaseSchema,
+    public abstract Task<List<StoredProcedureSchema>> ExtractStoredProceduresAsync(DatabaseSchema databaseSchema,
         ImportFilterService importFilterService,
         DbConnection connection,
         SystemObjectFilterBase systemObjectFilter,
         DataTypeMapperBase dataTypeMapper,
-        IStoredProcedureAnalyzer analyzer);
+        IStoredProcedureAnalyzer analyzer, List<string> responseWarnings);
 }
 
 internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
 {
-    public override async Task<List<StoredProcedureSchema>> ExtractStoredProceduresAsync(
-        DatabaseSchemaReader.DataSchema.DatabaseSchema databaseSchema,
+    public override async Task<List<StoredProcedureSchema>> ExtractStoredProceduresAsync(DatabaseSchema databaseSchema,
         ImportFilterService importFilterService,
         DbConnection connection,
         SystemObjectFilterBase systemObjectFilter,
         DataTypeMapperBase dataTypeMapper,
-        IStoredProcedureAnalyzer analyzer)
+        IStoredProcedureAnalyzer analyzer, 
+        List<string> responseWarnings)
     {
         var storedProcedures = new List<StoredProcedureSchema>();
         
@@ -92,7 +91,7 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
                 Parameters = ExtractStoredProcedureParameters(databaseSchema, routine, dataTypeMapper)
             };
 
-            storedProcSchema.ResultSetColumns = await ExtractStoredProcedureResultAsync(databaseSchema, routine, analyzer, dataTypeMapper);
+            storedProcSchema.ResultSetColumns = await ExtractStoredProcedureResultAsync(databaseSchema, routine, analyzer, dataTypeMapper, responseWarnings);
 
             storedProcedures.Add(storedProcSchema);
         }
@@ -173,9 +172,12 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
         return udt is not null;
     }
 
-    private static async Task<List<ResultSetColumnSchema>> ExtractStoredProcedureResultAsync(DatabaseSchema databaseSchema, DatabaseStoredProcedure routine,
+    private static async Task<List<ResultSetColumnSchema>> ExtractStoredProcedureResultAsync(
+        DatabaseSchema databaseSchema, 
+        DatabaseStoredProcedure routine,
         IStoredProcedureAnalyzer analyzer,
-        DataTypeMapperBase dataTypeMapper)
+        DataTypeMapperBase dataTypeMapper, 
+        List<string> responseWarnings)
     {
         // Use the stored procedure analyzer for database-specific result set analysis
         var parameters = ExtractStoredProcedureParameters(databaseSchema, routine, dataTypeMapper);
@@ -183,12 +185,13 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
         List<ResultSetColumnSchema> analysisResult;
         try
         {
-            analysisResult = await analyzer.AnalyzeResultSetAsync(routine.Name, routine.SchemaOwner, parameters);
+            analysisResult = await analyzer.AnalyzeResultSetAsync(routine.Name, routine.SchemaOwner, parameters, responseWarnings);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             // If analysis fails, return empty result set 
             // This is common for procedures that don't return result sets or require specific parameters
+            responseWarnings.Add($"Could not analyze result set for stored procedure '{routine.Name}' in schema '{routine.SchemaOwner}': {ex.Message}");
             return [];
         }
 

@@ -19,14 +19,20 @@ async function displayExecutionResultErrors(executionResult: IExecutionResult): 
     if (executionResult.errors.length === 0) {
         return;
     }
-    await dialogService.error(executionResult.errors.join("\r\n"));
-    console.error(executionResult.errors.join("\r\n"));
+    
+    let errorMessage = executionResult.errors.map(error => `⭕ ${error}`).join("\r\n");
+    await dialogService.error(errorMessage);
+    console.error(errorMessage);
 }
 
 async function displayExecutionResultWarnings(executionResult: IExecutionResult, title: string): Promise<void> {
     if (executionResult.warnings.length === 0) {
         return;
     }
-    await dialogService.warn(title + "\r\n\r\n" + executionResult.warnings.join("\r\n"));
-    console.warn(title + "\r\n\r\n" + executionResult.warnings.join("\r\n"));
+    if (title == null || title === "") {
+        title = "Warnings";
+    }
+    let warningMessage = executionResult.warnings.map(warning => `🟡 ${warning}`).join("\r\n");
+    await dialogService.warn(title + "\r\n\r\n" + warningMessage);
+    console.warn(title + "\r\n\r\n" + warningMessage);
 }

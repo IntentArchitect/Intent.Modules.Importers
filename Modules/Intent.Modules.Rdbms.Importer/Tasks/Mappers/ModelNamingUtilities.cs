@@ -368,4 +368,9 @@ internal static class ModelNamingUtilities
         ArgumentException.ThrowIfNullOrWhiteSpace(indexColumnName);
         return indexColumnName.ToLowerInvariant();
     }
+
+    public static string GetStoredProcedureRepositoryExternalReference()
+    {
+        return "StoredProcedureRepository";
+    }
 } 

@@ -21,7 +21,8 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
         _connection = connection;
     }
 
-    public async Task<List<ResultSetColumnSchema>> AnalyzeResultSetAsync(string procedureName, string schema, IEnumerable<StoredProcedureParameterSchema> parameters)
+    public async Task<List<ResultSetColumnSchema>> AnalyzeResultSetAsync(string procedureName, string schema, IEnumerable<StoredProcedureParameterSchema> parameters,
+        List<string> responseWarnings)
     {
         var resultColumns = new List<ResultSetColumnSchema>();
         
@@ -59,7 +60,7 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
             if (!string.IsNullOrEmpty(group.Key))
             {
                 var tableIdSql = $"SELECT OBJECT_ID('{group.Key}') AS TableID";
-                var tableId = await GetTableIdAsync(tableIdSql);
+                var tableId = await GetTableIdAsync(tableIdSql, procedureName, responseWarnings);
 
                 foreach (var row in group)
                 {
@@ -180,17 +181,18 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
         };
     }
     
-    private async Task<int?> GetTableIdAsync(string sql)
+    private async Task<int?> GetTableIdAsync(string tableIdSql, string storedProcName, List<string> responseWarnings)
     {
         try
         {
             await using var command = _connection.CreateCommand();
-            command.CommandText = sql;
+            command.CommandText = tableIdSql;
             var result = await command.ExecuteScalarAsync();
             return result is not DBNull ? (int?)result : null;
         }
-        catch
+        catch (Exception ex)
         {
+            responseWarnings.Add($"Could not retrieve table with ID '{tableIdSql}' to determine return type for Stored Procedure '{storedProcName}': {ex.Message}");
             return null;
         }
     }

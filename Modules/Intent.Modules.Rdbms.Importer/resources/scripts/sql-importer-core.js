@@ -10,15 +10,20 @@ async function displayExecutionResultErrors(executionResult) {
     if (executionResult.errors.length === 0) {
         return;
     }
-    await dialogService.error(executionResult.errors.join("\r\n"));
-    console.error(executionResult.errors.join("\r\n"));
+    let errorMessage = executionResult.errors.map(error => `⭕ ${error}`).join("\r\n");
+    await dialogService.error(errorMessage);
+    console.error(errorMessage);
 }
 async function displayExecutionResultWarnings(executionResult, title) {
     if (executionResult.warnings.length === 0) {
         return;
     }
-    await dialogService.warn(title + "\r\n\r\n" + executionResult.warnings.join("\r\n"));
-    console.warn(title + "\r\n\r\n" + executionResult.warnings.join("\r\n"));
+    if (title == null || title === "") {
+        title = "Warnings";
+    }
+    let warningMessage = executionResult.warnings.map(warning => `🟡 ${warning}`).join("\r\n");
+    await dialogService.warn(title + "\r\n\r\n" + warningMessage);
+    console.warn(title + "\r\n\r\n" + warningMessage);
 }
 class Icons {
 }
@@ -43,10 +48,10 @@ class DatabaseImportStrategy {
             await displayExecutionResultErrors(executionResult);
         }
         else if (((_b = executionResult.warnings) !== null && _b !== void 0 ? _b : []).length > 0) {
-            await displayExecutionResultWarnings(executionResult, "Import Complete.");
+            await displayExecutionResultWarnings(executionResult, "Import completed with warnings.");
         }
         else {
-            await dialogService.info("Import Complete.");
+            await dialogService.info("Import completed successfully.");
         }
     }
     getDialogDefaults(element) {
@@ -792,10 +797,10 @@ class StoredProceduresImportStrategy {
             await displayExecutionResultErrors(executionResult);
         }
         else if (((_b = executionResult.warnings) === null || _b === void 0 ? void 0 : _b.length) > 0) {
-            await displayExecutionResultWarnings(executionResult, "Import Complete.");
+            await displayExecutionResultWarnings(executionResult, "Import completed with warnings.");
         }
         else {
-            await dialogService.info("Import Complete.");
+            await dialogService.info("Import completed successfully.");
         }
     }
     getDialogDefaults(element) {

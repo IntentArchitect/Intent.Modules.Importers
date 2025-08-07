@@ -60,6 +60,8 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
             }
 
             var mappingResult = ApplySchemaMapping(importModel, result.Result);
+            
+            executionResult.Warnings.AddRange(mappingResult.Warnings);
             if (mappingResult.IsSuccessful)
             {
                 return executionResult;
@@ -79,14 +81,14 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
         return executionResult;
     }
 
-    private PackageUpdateResult ApplySchemaMapping(RepositoryImportModel importModel, ImportSchemaResult importResult)
+    private MergeResult ApplySchemaMapping(RepositoryImportModel importModel, ImportSchemaResult importResult)
     {
         try
         {
             // Get the package file path from the metadata manager
             if (!_metadataManager.TryGetApplicationPackage(importModel.ApplicationId, importModel.PackageId, out var packageMetadata, out var errorMessage))
             {
-                return new PackageUpdateResult
+                return new MergeResult
                 {
                     IsSuccessful = false,
                     Message = $"Could not retrieve package metadata: {errorMessage}"
@@ -97,7 +99,7 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
             var packageFilePath = packageMetadata.FileLocation;
             if (string.IsNullOrEmpty(packageFilePath))
             {
-                return new PackageUpdateResult
+                return new MergeResult
                 {
                     IsSuccessful = false,
                     Message = "Package file location is not available"
@@ -107,7 +109,7 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
             var package = PackageModelPersistable.Load(packageFilePath);
             if (package == null)
             {
-                return new PackageUpdateResult
+                return new MergeResult
                 {
                     IsSuccessful = false,
                     Message = $"Could not load package from file: {packageFilePath}"
@@ -139,7 +141,7 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
         }
         catch (Exception ex)
         {
-            return new PackageUpdateResult
+            return new MergeResult
             {
                 IsSuccessful = false,
                 Message = $"Error during schema mapping: {ex.Message}",

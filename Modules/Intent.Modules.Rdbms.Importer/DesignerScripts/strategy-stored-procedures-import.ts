@@ -17,9 +17,9 @@ class StoredProceduresImportStrategy {
         if (executionResult.errors?.length > 0) {
             await displayExecutionResultErrors(executionResult);
         } else if (executionResult.warnings?.length > 0) {
-            await displayExecutionResultWarnings(executionResult, "Import Complete.");
+            await displayExecutionResultWarnings(executionResult, "Import completed with warnings.");
         } else {
-            await dialogService.info("Import Complete.");
+            await dialogService.info("Import completed successfully.");
         }
     }
 

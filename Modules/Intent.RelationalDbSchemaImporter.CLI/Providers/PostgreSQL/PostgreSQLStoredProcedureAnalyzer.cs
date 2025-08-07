@@ -17,7 +17,8 @@ internal class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
         _connection = connection;
     }
 
-    public async Task<List<ResultSetColumnSchema>> AnalyzeResultSetAsync(string procedureName, string schema, IEnumerable<StoredProcedureParameterSchema> parameters)
+    public async Task<List<ResultSetColumnSchema>> AnalyzeResultSetAsync(string procedureName, string schema, IEnumerable<StoredProcedureParameterSchema> parameters,
+        List<string> responseWarnings)
     {
         var resultColumns = new List<ResultSetColumnSchema>();
 
