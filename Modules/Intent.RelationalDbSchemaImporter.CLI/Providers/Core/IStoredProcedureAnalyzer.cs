@@ -15,6 +15,6 @@ public interface IStoredProcedureAnalyzer
     /// <param name="procedureName">Name of the stored procedure</param>
     /// <param name="schema">Schema containing the procedure</param>
     /// <param name="parameters">Procedure parameters for analysis</param>
-    /// <returns>Result set column information</returns>
+    /// <returns>Result set analysis information including columns</returns>
     Task<List<ResultSetColumnSchema>> AnalyzeResultSetAsync(string procedureName, string schema, IEnumerable<StoredProcedureParameterSchema> parameters);
 }

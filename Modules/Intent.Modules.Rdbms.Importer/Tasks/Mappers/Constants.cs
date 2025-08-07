@@ -131,6 +131,7 @@ internal static class Constants
             public const string Guid = "6b649125-18ea-48fd-a6ba-0bfff0d8f488";
             public const string DatetimeOffset = "f1ba4df3-a5bc-427e-a591-4f6029f89bd7";
             public const string TimeSpan = "46dbdc6c-aaa7-4d2e-ba1f-81abdb87a888";
+            public const string Object = "341DD965-D06C-4A40-9437-9516ADA77FF5";
         }
     }
 
@@ -335,6 +336,14 @@ internal static class Constants
                 {
                     public const string IsOutputParam = "17aa77a0-c531-49ec-bed0-9cbb125f6ce3";
                     public const string IsOutputParamName = "Is Output Parameter";
+                    public const string SqlStringType = "dfa55cca-142e-4d76-b772-6f86a9c99b0f";
+                    public const string SqlStringTypeName = "SQL String Type";
+                    public const string Size = "febc9d55-6c43-4549-bef8-9f2aee7811c9";
+                    public const string SizeName = "Size";
+                    public const string Precision = "ccf2fa26-234b-49c9-ad0b-0e33d570f2df";
+                    public const string PrecisionName = "Precision";
+                    public const string Scale = "4ac97c2e-d789-4174-9343-47758b4f4938";
+                    public const string ScaleName = "Scale";
                 }
             }
 
@@ -361,6 +370,14 @@ internal static class Constants
                     public const string ParameterNameName = "Name";
                     public const string Direction = "39491728-8327-4b94-b9a2-9851dd4b4a01";
                     public const string DirectionName = "Direction";
+                    public const string SqlStringType = "8ba486d3-853c-42b8-acfb-bafb1e2cdb6e";
+                    public const string SqlStringTypeName = "SQL String Type";
+                    public const string Size = "a2df34af-2fb9-49e3-ab6e-caff7a27bf99";
+                    public const string SizeName = "Size";
+                    public const string Precision = "ed35ae5c-a708-457d-a22a-145b3b2f1148";
+                    public const string PrecisionName = "Precision";
+                    public const string Scale = "38d3c607-ac3b-41ea-86b2-b43fa81e101c";
+                    public const string ScaleName = "Scale";
                 }
             }
 

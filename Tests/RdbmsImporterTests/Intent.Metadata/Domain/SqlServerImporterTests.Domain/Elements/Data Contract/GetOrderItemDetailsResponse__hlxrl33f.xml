@@ -109,7 +109,17 @@
       <parentFolderId>1a24dfe1-2760-406f-ae81-fe3d10be4918</parentFolderId>
       <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
       <packageName>SqlServerImporterTests</packageName>
-      <stereotypes />
+      <stereotypes>
+        <stereotype stereotypeDefinitionId="8775f4d0-7ffd-4678-a6a8-fd7e0c6fbc87" name="Decimal Constraints">
+          <addedByDefault>false</addedByDefault>
+          <definitionPackageName>Intent.Metadata.RDBMS</definitionPackageName>
+          <definitionPackageId>AF8F3810-745C-42A2-93C8-798860DC45B1</definitionPackageId>
+          <properties>
+            <property name="849d8f6f-573f-428a-bc46-8db2614c47c9" display="Precision" value="16" isActive="true" />
+            <property name="ff13f032-826f-4ca3-9806-ea4f10b8d600" display="Scale" value="4" isActive="true" />
+          </properties>
+        </stereotype>
+      </stereotypes>
       <metadata />
       <childElements />
     </childElement>
@@ -167,6 +177,18 @@
           <properties>
             <property name="30044760-ea18-480e-b840-e3cb7e7296d0" display="Name" isActive="true" />
             <property name="bc03d4fc-b9cc-4ac0-8869-b3e2cb18f1ef" display="Type" value="nvarchar" isActive="true" />
+            <property name="94f5a58f-b340-4a8b-b5dd-b618ecd7fc95" display="Order" isActive="true" />
+            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" isActive="true" />
+          </properties>
+        </stereotype>
+        <stereotype stereotypeDefinitionId="6347286E-A637-44D6-A5D7-D9BE5789CA7A" name="Text Constraints">
+          <addedByDefault>false</addedByDefault>
+          <definitionPackageName>Intent.Metadata.RDBMS</definitionPackageName>
+          <definitionPackageId>AF8F3810-745C-42A2-93C8-798860DC45B1</definitionPackageId>
+          <properties>
+            <property name="1288cfcd-ee51-437e-9713-73b80118f026" display="SQL Data Type" value="NVARCHAR" isActive="true" />
+            <property name="A04CC24D-81FB-4EA2-A34A-B3C58E04DCFD" display="MaxLength" value="450" isActive="true" />
+            <property name="67EC4CF4-7706-4B39-BC7C-DF539EE2B0AF" display="IsUnicode" value="true" isActive="true" />
           </properties>
         </stereotype>
       </stereotypes>
@@ -202,6 +224,18 @@
           <properties>
             <property name="30044760-ea18-480e-b840-e3cb7e7296d0" display="Name" isActive="true" />
             <property name="bc03d4fc-b9cc-4ac0-8869-b3e2cb18f1ef" display="Type" value="nvarchar" isActive="true" />
+            <property name="94f5a58f-b340-4a8b-b5dd-b618ecd7fc95" display="Order" isActive="true" />
+            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" isActive="true" />
+          </properties>
+        </stereotype>
+        <stereotype stereotypeDefinitionId="6347286E-A637-44D6-A5D7-D9BE5789CA7A" name="Text Constraints">
+          <addedByDefault>false</addedByDefault>
+          <definitionPackageName>Intent.Metadata.RDBMS</definitionPackageName>
+          <definitionPackageId>AF8F3810-745C-42A2-93C8-798860DC45B1</definitionPackageId>
+          <properties>
+            <property name="1288cfcd-ee51-437e-9713-73b80118f026" display="SQL Data Type" value="NVARCHAR" isActive="true" />
+            <property name="A04CC24D-81FB-4EA2-A34A-B3C58E04DCFD" display="MaxLength" value="100" isActive="true" />
+            <property name="67EC4CF4-7706-4B39-BC7C-DF539EE2B0AF" display="IsUnicode" value="true" isActive="true" />
           </properties>
         </stereotype>
       </stereotypes>
@@ -237,6 +271,18 @@
           <properties>
             <property name="30044760-ea18-480e-b840-e3cb7e7296d0" display="Name" isActive="true" />
             <property name="bc03d4fc-b9cc-4ac0-8869-b3e2cb18f1ef" display="Type" value="nvarchar" isActive="true" />
+            <property name="94f5a58f-b340-4a8b-b5dd-b618ecd7fc95" display="Order" isActive="true" />
+            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" isActive="true" />
+          </properties>
+        </stereotype>
+        <stereotype stereotypeDefinitionId="6347286E-A637-44D6-A5D7-D9BE5789CA7A" name="Text Constraints">
+          <addedByDefault>false</addedByDefault>
+          <definitionPackageName>Intent.Metadata.RDBMS</definitionPackageName>
+          <definitionPackageId>AF8F3810-745C-42A2-93C8-798860DC45B1</definitionPackageId>
+          <properties>
+            <property name="1288cfcd-ee51-437e-9713-73b80118f026" display="SQL Data Type" value="NVARCHAR" isActive="true" />
+            <property name="A04CC24D-81FB-4EA2-A34A-B3C58E04DCFD" display="MaxLength" isActive="true" />
+            <property name="67EC4CF4-7706-4B39-BC7C-DF539EE2B0AF" display="IsUnicode" value="true" isActive="true" />
           </properties>
         </stereotype>
       </stereotypes>
@@ -272,6 +318,18 @@
           <properties>
             <property name="30044760-ea18-480e-b840-e3cb7e7296d0" display="Name" isActive="true" />
             <property name="bc03d4fc-b9cc-4ac0-8869-b3e2cb18f1ef" display="Type" value="nvarchar" isActive="true" />
+            <property name="94f5a58f-b340-4a8b-b5dd-b618ecd7fc95" display="Order" isActive="true" />
+            <property name="fae5d195-d9f0-498e-938b-922362d8c37c" display="Collation" isActive="true" />
+          </properties>
+        </stereotype>
+        <stereotype stereotypeDefinitionId="6347286E-A637-44D6-A5D7-D9BE5789CA7A" name="Text Constraints">
+          <addedByDefault>false</addedByDefault>
+          <definitionPackageName>Intent.Metadata.RDBMS</definitionPackageName>
+          <definitionPackageId>AF8F3810-745C-42A2-93C8-798860DC45B1</definitionPackageId>
+          <properties>
+            <property name="1288cfcd-ee51-437e-9713-73b80118f026" display="SQL Data Type" value="NVARCHAR" isActive="true" />
+            <property name="A04CC24D-81FB-4EA2-A34A-B3C58E04DCFD" display="MaxLength" isActive="true" />
+            <property name="67EC4CF4-7706-4B39-BC7C-DF539EE2B0AF" display="IsUnicode" value="true" isActive="true" />
           </properties>
         </stereotype>
       </stereotypes>

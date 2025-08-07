@@ -12,6 +12,6 @@ namespace RdbmsImporterTests.Domain.Repositories.Dbo
     {
         List<GetCustomerOrdersResponse> GetCustomerOrders(Guid customerId);
         List<GetOrderItemDetailsResponse> GetOrderItemDetails(Guid orderId);
-        void InsertBrand(IEnumerable<BrandType> brand);
+        void InsertBrand(IEnumerable<BrandTypeModel> brand);
     }
 }

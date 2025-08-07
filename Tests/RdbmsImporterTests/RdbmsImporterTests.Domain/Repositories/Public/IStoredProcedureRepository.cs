@@ -12,8 +12,8 @@ namespace RdbmsImporterTests.Domain.Repositories.Public
 {
     public interface IStoredProcedureRepository
     {
-        Task<List<GetCustomerOrdersResponse>> GetCustomerOrders(Guid? customer_id, CancellationToken cancellationToken = default);
-        Task<List<GetOrderItemDetailsResponse>> GetOrderItemDetails(Guid? order_id, CancellationToken cancellationToken = default);
+        Task<List<GetCustomerOrdersResponse>> GetCustomerOrders(Guid? customer_id, Guid? customerId, CancellationToken cancellationToken = default);
+        Task<List<GetOrderItemDetailsResponse>> GetOrderItemDetails(Guid? order_id, Guid? orderId, CancellationToken cancellationToken = default);
         Task InsertBrand(IEnumerable<BrandTypeModel>? brands, CancellationToken cancellationToken = default);
         Task InsertBrandFromTemp(CancellationToken cancellationToken = default);
         Task<List<UuidGenerateV1Response>> UuidGenerateV1(CancellationToken cancellationToken = default);

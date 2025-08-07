@@ -82,7 +82,7 @@ public class FilterSave : ModuleTaskSingleInputBase<FilterSaveInputModel>
         }
         catch (Exception ex)
         {
-            executionResult.Errors.Add($"Error saving filter file: {ex.Message}");
+            executionResult.Errors.Add($"Error saving filter file: {ex.ToString()}");
             executionResult.Result = new { Success = false };
         }
 

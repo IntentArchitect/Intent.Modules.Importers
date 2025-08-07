@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
@@ -21,14 +22,15 @@ internal static class RdbmsSchemaAnnotator
         //For now always set this in case generated table names don't match the generated names due to things like pluralization
         stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Table.PropertyId.Name).Value = table.Name;
         return;
-        
+
         static bool RequiresTableStereoType(ImportConfiguration config, TableSchema table, ElementPersistable @class)
         {
             return config.TableStereotype switch
             {
                 TableStereotype.Always => true,
                 TableStereotype.WhenDifferent when config.EntityNameConvention is EntityNameConvention.MatchTable => @class.Name != table.Name,
-                TableStereotype.WhenDifferent when config.EntityNameConvention is EntityNameConvention.SingularEntity => @class.Name.Pluralize() != table.Name, // This assumes EF convention
+                TableStereotype.WhenDifferent when config.EntityNameConvention is EntityNameConvention.SingularEntity => @class.Name.Pluralize() !=
+                    table.Name, // This assumes EF convention
                 _ => false
             };
         }
@@ -38,14 +40,8 @@ internal static class RdbmsSchemaAnnotator
             stereotype.Name = Constants.Stereotypes.Rdbms.Table.Name;
             stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Table.PropertyId.Name, prop => 
-            {
-                prop.Name = Constants.Stereotypes.Rdbms.Table.PropertyId.NameName;
-            });
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Table.PropertyId.Schema, prop => 
-            {
-                prop.Name = Constants.Stereotypes.Rdbms.Table.PropertyId.SchemaName;
-            });
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Table.PropertyId.Name, prop => { prop.Name = Constants.Stereotypes.Rdbms.Table.PropertyId.NameName; });
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Table.PropertyId.Schema, prop => { prop.Name = Constants.Stereotypes.Rdbms.Table.PropertyId.SchemaName; });
         }
     }
 
@@ -64,14 +60,8 @@ internal static class RdbmsSchemaAnnotator
             stereotype.Name = Constants.Stereotypes.Rdbms.View.Name;
             stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.View.PropertyId.Name, prop => 
-            {
-                prop.Name = Constants.Stereotypes.Rdbms.View.PropertyId.NameName;
-            });
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.View.PropertyId.Schema, prop => 
-            {
-                prop.Name = Constants.Stereotypes.Rdbms.View.PropertyId.SchemaName;
-            });
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.View.PropertyId.Name, prop => { prop.Name = Constants.Stereotypes.Rdbms.View.PropertyId.NameName; });
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.View.PropertyId.Schema, prop => { prop.Name = Constants.Stereotypes.Rdbms.View.PropertyId.SchemaName; });
         }
     }
 
@@ -84,7 +74,7 @@ internal static class RdbmsSchemaAnnotator
 
         var stereotype = attribute.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.PrimaryKey.DefinitionId, InitPrimaryKeyStereotype);
         stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.PrimaryKey.PropertyId.DataSource).Value = GetDataSourceValue(column);
-        
+
         attribute.SetElementMetadata("is-managed-key", "true");
         return;
 
@@ -93,12 +83,10 @@ internal static class RdbmsSchemaAnnotator
             stereotype.Name = Constants.Stereotypes.Rdbms.PrimaryKey.Name;
             stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.PrimaryKey.PropertyId.DataSource, prop => 
-            {
-                prop.Name = Constants.Stereotypes.Rdbms.PrimaryKey.PropertyId.DataSourceName;
-            });
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.PrimaryKey.PropertyId.DataSource,
+                prop => { prop.Name = Constants.Stereotypes.Rdbms.PrimaryKey.PropertyId.DataSourceName; });
         }
-        
+
         static string GetDataSourceValue(ColumnSchema column)
         {
             if (column.IsIdentity)
@@ -137,14 +125,8 @@ internal static class RdbmsSchemaAnnotator
             stereotype.Name = Constants.Stereotypes.Rdbms.Column.Name;
             stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Column.PropertyId.Name, prop => 
-            {
-                prop.Name = Constants.Stereotypes.Rdbms.Column.PropertyId.NameName;
-            });
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Column.PropertyId.Type, prop => 
-            {
-                prop.Name = Constants.Stereotypes.Rdbms.Column.PropertyId.TypeName;
-            });
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Column.PropertyId.Name, prop => { prop.Name = Constants.Stereotypes.Rdbms.Column.PropertyId.NameName; });
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Column.PropertyId.Type, prop => { prop.Name = Constants.Stereotypes.Rdbms.Column.PropertyId.TypeName; });
         }
 
         static bool IsImplicitColumnType(ColumnSchema column, ElementPersistable attribute)
@@ -175,13 +157,13 @@ internal static class RdbmsSchemaAnnotator
                 "varbinary" when column.MaxLength == -1 => "varbinary(max)",
                 "varchar" when column.MaxLength == -1 => "varchar(max)",
                 "nvarchar" when column.MaxLength == -1 => "nvarchar(max)",
-                "varchar" or "nvarchar" or "varbinary" when column.MaxLength > 0 => 
+                "varchar" or "nvarchar" or "varbinary" when column.MaxLength > 0 =>
                     $"{column.DbDataType.ToLower()}({column.MaxLength})",
                 _ => column.DbDataType.ToLower()
             };
         }
     }
-    
+
     public static void ApplyTextConstraint(ColumnSchema column, ElementPersistable attribute)
     {
         if (!ShouldUseTextConstraints(column))
@@ -205,7 +187,11 @@ internal static class RdbmsSchemaAnnotator
             stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.TextConstraints.PropertyId.SqlDataType, prop =>
             {
                 var value = column.DbDataType.ToUpper();
-                if (value.EndsWith("MAX")) { value = value.Substring(0, value.Length - 3); }                              
+                if (value.EndsWith("MAX"))
+                {
+                    value = value.Substring(0, value.Length - 3);
+                }
+
                 prop.Name = Constants.Stereotypes.Rdbms.TextConstraints.PropertyId.SqlDataTypeName;
                 prop.Value = value;
             });
@@ -222,23 +208,6 @@ internal static class RdbmsSchemaAnnotator
             });
         }
     }
-    
-    private static bool ShouldUseTextConstraints(ColumnSchema column)
-    {
-        var dataType = column.LanguageDataType.ToLower();
-        if (dataType != "string")
-        {
-            return false;
-        }
-
-        if (column.MaxLength == 0)
-        {
-            return false;
-        }
-
-        var sqlType = column.DbDataType.ToLower();
-        return sqlType is "ntext" or "nvarchar" or "text" or "varchar";
-    }
 
     public static void ApplyDecimalConstraint(ColumnSchema column, ElementPersistable attribute)
     {
@@ -252,10 +221,12 @@ internal static class RdbmsSchemaAnnotator
         {
             stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.DecimalConstraints.PropertyId.Precision).Value = column.NumericPrecision?.ToString()!;
         }
+
         if (column.NumericScale.HasValue)
         {
             stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.DecimalConstraints.PropertyId.Scale).Value = column.NumericScale?.ToString()!;
         }
+
         return;
 
         static void InitDecimalConstraintStereotype(StereotypePersistable stereotype)
@@ -263,8 +234,10 @@ internal static class RdbmsSchemaAnnotator
             stereotype.Name = Constants.Stereotypes.Rdbms.DecimalConstraints.Name;
             stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.DecimalConstraints.PropertyId.Precision, prop => prop.Name = Constants.Stereotypes.Rdbms.DecimalConstraints.PropertyId.PrecisionName);
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.DecimalConstraints.PropertyId.Scale, prop => prop.Name = Constants.Stereotypes.Rdbms.DecimalConstraints.PropertyId.ScaleName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.DecimalConstraints.PropertyId.Precision,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.DecimalConstraints.PropertyId.PrecisionName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.DecimalConstraints.PropertyId.Scale,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.DecimalConstraints.PropertyId.ScaleName);
         }
     }
 
@@ -284,7 +257,8 @@ internal static class RdbmsSchemaAnnotator
             stereotype.Name = Constants.Stereotypes.Rdbms.DefaultConstraint.Name;
             stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.DefaultConstraint.PropertyId.Value, prop => prop.Name = Constants.Stereotypes.Rdbms.DefaultConstraint.PropertyId.ValueName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.DefaultConstraint.PropertyId.Value,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.DefaultConstraint.PropertyId.ValueName);
             stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.DefaultConstraint.PropertyId.TreatAsSqlExpression, prop =>
             {
                 prop.Name = Constants.Stereotypes.Rdbms.DefaultConstraint.PropertyId.TreatAsSqlExpressionName;
@@ -310,7 +284,8 @@ internal static class RdbmsSchemaAnnotator
             stereotype.Name = Constants.Stereotypes.Rdbms.ComputedValue.Name;
             stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.ComputedValue.PropertyId.Sql, prop => prop.Name = Constants.Stereotypes.Rdbms.ComputedValue.PropertyId.SqlName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.ComputedValue.PropertyId.Sql,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.ComputedValue.PropertyId.SqlName);
             stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.ComputedValue.PropertyId.Stored, prop =>
             {
                 prop.Name = Constants.Stereotypes.Rdbms.ComputedValue.PropertyId.StoredName;
@@ -322,12 +297,12 @@ internal static class RdbmsSchemaAnnotator
     public static void ApplyForeignKey(ColumnSchema column, ElementPersistable attribute, string? associationTargetEndId)
     {
         var stereotype = attribute.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.ForeignKey.DefinitionId, InitForeignKeyStereotype);
-        
+
         // Link to the association target end if provided
         if (!string.IsNullOrEmpty(associationTargetEndId))
         {
             stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.ForeignKey.PropertyId.Association).Value = associationTargetEndId;
-            
+
             attribute.SetElementMetadata("fk-original-name", attribute.Name);
             attribute.SetElementMetadata("association", associationTargetEndId);
             attribute.SetElementMetadata("is-managed-key", "true");
@@ -346,10 +321,8 @@ internal static class RdbmsSchemaAnnotator
             stereotype.Name = Constants.Stereotypes.Rdbms.ForeignKey.Name;
             stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.ForeignKey.PropertyId.Association, prop =>
-            {
-                prop.Name = Constants.Stereotypes.Rdbms.ForeignKey.PropertyId.AssociationName;
-            });
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.ForeignKey.PropertyId.Association,
+                prop => { prop.Name = Constants.Stereotypes.Rdbms.ForeignKey.PropertyId.AssociationName; });
         }
     }
 
@@ -366,7 +339,44 @@ internal static class RdbmsSchemaAnnotator
             var elementParam = elementStoredProc.ChildElements[paramIndex];
             var sqlProcParam = sqlStoredProc.Parameters[paramIndex];
             var paramStereotype = elementParam.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.DefinitionId, InitStoredProcParamStereotype);
-            paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.IsOutputParam).Value = sqlProcParam.IsOutputParameter.ToString().ToLower();
+            paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.IsOutputParam).Value =
+                sqlProcParam.Direction == StoredProcedureParameterDirection.Out ? "true" : "false";
+
+            switch (sqlProcParam.Direction)
+            {
+                case StoredProcedureParameterDirection.Out or StoredProcedureParameterDirection.Both when
+                    sqlProcParam.LanguageDataType == "string":
+                {
+                    paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.SqlStringType).Value =
+                        MapToSqlStringTypeValue(sqlProcParam.DbDataType)!;
+                    if (sqlProcParam.MaxLength.HasValue)
+                    {
+                        paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.Size).Value =
+                            sqlProcParam.MaxLength.Value.ToString();
+                    }
+
+                    break;
+                }
+                case StoredProcedureParameterDirection.Out or StoredProcedureParameterDirection.Both when
+                    sqlProcParam.LanguageDataType == "decimal":
+                {
+                    paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.SqlStringType).Value =
+                        MapToSqlStringTypeValue(sqlProcParam.DbDataType)!;
+                    if (sqlProcParam.NumericPrecision.HasValue)
+                    {
+                        paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.Precision).Value =
+                            sqlProcParam.NumericPrecision.Value.ToString();
+                    }
+
+                    if (sqlProcParam.NumericScale.HasValue)
+                    {
+                        paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.Scale).Value =
+                            sqlProcParam.NumericScale.Value.ToString();
+                    }
+
+                    break;
+                }
+            }
         }
 
         return;
@@ -380,21 +390,31 @@ internal static class RdbmsSchemaAnnotator
 
             return $"{sqlStoredProc.Schema}.{sqlStoredProc.Name}";
         }
-        
+
         static void InitStoredProcStereotype(StereotypePersistable stereotype)
         {
             stereotype.Name = Constants.Stereotypes.Rdbms.StoredProcedureElement.Name;
             stereotype.DefinitionPackageId = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElement.PropertyId.NameInSchema, prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureElement.PropertyId.NameInSchemaName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElement.PropertyId.NameInSchema,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureElement.PropertyId.NameInSchemaName);
         }
-        
+
         static void InitStoredProcParamStereotype(StereotypePersistable stereotype)
         {
             stereotype.Name = Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.Name;
             stereotype.DefinitionPackageId = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.IsOutputParam, prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.IsOutputParamName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.IsOutputParam,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.IsOutputParamName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.SqlStringType,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.SqlStringTypeName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.Size,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.SizeName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.Precision,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.PrecisionName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.Scale,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.ScaleName);
         }
     }
 
@@ -410,10 +430,53 @@ internal static class RdbmsSchemaAnnotator
         {
             var elementParam = elementStoredProc.ChildElements[paramIndex];
             var sqlProcParam = sqlStoredProc.Parameters[paramIndex];
-            var paramStereotype = elementParam.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.DefinitionId, InitStoredProcOperationParamStereotype);
-            
+            var paramStereotype =
+                elementParam.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.DefinitionId, InitStoredProcOperationParamStereotype);
+
             paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.ParameterName).Value = sqlProcParam.Name;
-            paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.Direction).Value = sqlProcParam.IsOutputParameter ? "Out" : "In";
+            paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.Direction).Value = sqlProcParam.Direction switch
+            {
+                StoredProcedureParameterDirection.In => "In",
+                StoredProcedureParameterDirection.Out => "Out",
+                StoredProcedureParameterDirection.Both => "Both",
+                _ => throw new ArgumentOutOfRangeException(nameof(sqlProcParam.Direction), sqlProcParam.Direction, null)
+            };
+
+            switch (sqlProcParam.Direction)
+            {
+                case StoredProcedureParameterDirection.Out or StoredProcedureParameterDirection.Both when
+                    sqlProcParam.LanguageDataType == "string":
+                {
+                    paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.SqlStringType).Value =
+                        MapToSqlStringTypeValue(sqlProcParam.DbDataType)!;
+                    if (sqlProcParam.MaxLength.HasValue)
+                    {
+                        paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.Size).Value =
+                            sqlProcParam.MaxLength.Value.ToString();
+                    }
+
+                    break;
+                }
+                case StoredProcedureParameterDirection.Out or StoredProcedureParameterDirection.Both when
+                    sqlProcParam.LanguageDataType == "decimal":
+                {
+                    paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.SqlStringType).Value =
+                        MapToSqlStringTypeValue(sqlProcParam.DbDataType)!;
+                    if (sqlProcParam.NumericPrecision.HasValue)
+                    {
+                        paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.Precision).Value =
+                            sqlProcParam.NumericPrecision.Value.ToString();
+                    }
+
+                    if (sqlProcParam.NumericScale.HasValue)
+                    {
+                        paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.Scale).Value =
+                            sqlProcParam.NumericScale.Value.ToString();
+                    }
+
+                    break;
+                }
+            }
         }
 
         return;
@@ -427,22 +490,33 @@ internal static class RdbmsSchemaAnnotator
 
             return $"{sqlStoredProc.Schema}.{sqlStoredProc.Name}";
         }
-        
+
         static void InitStoredProcOperationStereotype(StereotypePersistable stereotype)
         {
             stereotype.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperation.Name;
             stereotype.DefinitionPackageId = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperation.PropertyId.NameInSchema, prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperation.PropertyId.NameInSchemaName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperation.PropertyId.NameInSchema,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperation.PropertyId.NameInSchemaName);
         }
-        
+
         static void InitStoredProcOperationParamStereotype(StereotypePersistable stereotype)
         {
             stereotype.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.Name;
             stereotype.DefinitionPackageId = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.EntityFrameworkCoreRepository.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.ParameterName, prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.ParameterNameName);
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.Direction, prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.DirectionName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.ParameterName,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.ParameterNameName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.Direction,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.DirectionName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.SqlStringType,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.SqlStringTypeName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.Size,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.SizeName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.Precision,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.PrecisionName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.Scale,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.ScaleName);
         }
     }
 
@@ -459,9 +533,12 @@ internal static class RdbmsSchemaAnnotator
             stereotype.Name = Constants.Stereotypes.Rdbms.Index.Settings.Name;
             stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UseDefaultName, prop => prop.Name = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UseDefaultNameName);
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.Unique, prop => prop.Name = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UniqueName);
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.Filter, prop => prop.Name = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.FilterName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UseDefaultName,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UseDefaultNameName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.Unique,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UniqueName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.Filter,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.FilterName);
         }
     }
 
@@ -470,7 +547,8 @@ internal static class RdbmsSchemaAnnotator
         // Should follow same GetOrCreateStereotype pattern here:
         var stereotype = columnIndex.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.DefinitionId, InitIndexColumnStereotype);
         stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.Type).Value = indexColumn.IsIncluded ? "Included" : "Key";
-        stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirection).Value = indexColumn.IsDescending ? "Descending" : "Ascending";
+        stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirection).Value =
+            indexColumn.IsDescending ? "Descending" : "Ascending";
         return;
 
         static void InitIndexColumnStereotype(StereotypePersistable stereotype)
@@ -478,11 +556,13 @@ internal static class RdbmsSchemaAnnotator
             stereotype.Name = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.Name;
             stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
             stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.Type, prop => prop.Name = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.TypeName);
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirection, prop => prop.Name = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirectionName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.Type,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.TypeName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirection,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirectionName);
         }
     }
-    
+
     public static void AddSchemaStereotype(ElementPersistable folder, string schemaName)
     {
         folder.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.Schema.DefinitionId, stereotype =>
@@ -497,5 +577,41 @@ internal static class RdbmsSchemaAnnotator
                     prop.Value = schemaName;
                 });
         });
+    }
+    
+    private static bool ShouldUseTextConstraints(ColumnSchema column)
+    {
+        var dataType = column.LanguageDataType.ToLower();
+        if (dataType != "string")
+        {
+            return false;
+        }
+
+        if (column.MaxLength == 0)
+        {
+            return false;
+        }
+
+        var sqlType = column.DbDataType.ToLower();
+        return sqlType is "ntext" or "nvarchar" or "text" or "varchar";
+    }
+    
+    private static string? MapToSqlStringTypeValue(string? dbDataType)
+    {
+        if (dbDataType is null)
+        {
+            return null;
+        }
+
+        return dbDataType.ToLowerInvariant() switch
+        {
+            "varchar" => "VarChar",
+            "nvarchar" => "NVarChar",
+            "char" => "Char",
+            "nchar" => "NChar",
+            "text" => "Text",
+            "ntext" => "NText",
+            _ => null
+        };
     }
 }

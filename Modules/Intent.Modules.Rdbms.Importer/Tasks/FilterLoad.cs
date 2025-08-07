@@ -78,7 +78,7 @@ public class FilterLoad : ModuleTaskSingleInputBase<FilterLoadInputModel>
         }
         catch (Exception ex)
         {
-            executionResult.Errors.Add($"Error loading filter file: {ex.Message}");
+            executionResult.Errors.Add($"Error loading filter file: {ex.ToString()}");
             executionResult.Result = new ImportFilterSettings();
         }
 

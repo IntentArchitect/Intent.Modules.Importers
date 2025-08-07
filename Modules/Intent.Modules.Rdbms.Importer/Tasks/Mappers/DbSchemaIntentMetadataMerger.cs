@@ -213,7 +213,6 @@ internal class DbSchemaIntentMetadataMerger
                 result.AddedElements.Add(procElement);
             }
 
-            // Create data contract if stored procedure has result set
             if (storedProc.ResultSetColumns.Count > 0)
             {
                 ProcessStoredProcedureDataContract(storedProc, procElement, package, result, deduplicationContext);
@@ -323,7 +322,6 @@ internal class DbSchemaIntentMetadataMerger
             {
                 SyncStereotypeCollection(existingElement.Stereotypes, sourceElement.Stereotypes);
             }
-            
 
             // Sync child elements using the unified lookup helper with 3-level precedence
             existingElement.ChildElements ??= [];
@@ -517,39 +515,43 @@ internal class DbSchemaIntentMetadataMerger
         PackageUpdateResult result,
         DeduplicationContext? deduplicationContext)
     {
-        // Get schema folder for data contract placement (same as stored procedure)
-        var schemaFolder = GetOrCreateSchemaFolder(storedProc.Schema, package);
-
-        // Use unified lookup helper with 3-level precedence
-        var dataContractExternalRef = ModelNamingUtilities.GetDataContractExternalReference(storedProc.Schema, storedProc.Name);
-        var dataContractName = $"{procElement.Name}Response";
-        
-        var existingDataContract = IntentModelMapper.FindElementWithPrecedence(
-            package.Classes,
-            dataContractExternalRef,
-            dataContractName,
-            storedProc.Schema,
-            Constants.SpecializationTypes.DataContract.SpecializationType);
-
-        ElementPersistable dataContract;
-        if (existingDataContract != null)
+        if (storedProc.ResultSetColumns.Count > 0)
         {
-            // Update existing data contract
-            dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package);
-            SyncElements(package, existingDataContract, dataContract);
-            result.UpdatedElements.Add(existingDataContract);
-            dataContract = existingDataContract; // Use the existing data contract for TypeReference
-        }
-        else
-        {
-            // Create new data contract
-            dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package);
-            package.Classes.Add(dataContract);
-            result.AddedElements.Add(dataContract);
-        }
+            // Get schema folder for data contract placement (same as stored procedure)
+            var schemaFolder = GetOrCreateSchemaFolder(storedProc.Schema, package);
 
-        procElement.TypeReference.TypeId = dataContract.Id; // Point to the data contract element ID
-        procElement.TypeReference.IsCollection = true; // Stored procedures typically return collections
+            // Use unified lookup helper with 3-level precedence
+            var dataContractExternalRef = ModelNamingUtilities.GetDataContractExternalReference(storedProc.Schema, storedProc.Name);
+            var dataContractName = $"{procElement.Name}Response";
+            
+            var existingDataContract = IntentModelMapper.FindElementWithPrecedence(
+                package.Classes,
+                dataContractExternalRef,
+                dataContractName,
+                storedProc.Schema,
+                Constants.SpecializationTypes.DataContract.SpecializationType);
+
+            ElementPersistable dataContract;
+            if (existingDataContract != null)
+            {
+                // Update existing data contract
+                dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package);
+                SyncElements(package, existingDataContract, dataContract);
+                result.UpdatedElements.Add(existingDataContract);
+                dataContract = existingDataContract; // Use the existing data contract for TypeReference
+            }
+            else
+            {
+                // Create new data contract
+                dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package);
+                package.Classes.Add(dataContract);
+                result.AddedElements.Add(dataContract);
+            }
+
+            procElement.TypeReference.TypeId = dataContract.Id; // Point to the data contract element ID
+            procElement.TypeReference.IsCollection = true; // Result sets are collections
+            procElement.TypeReference.IsNullable = false; // Collections themselves are typically not nullable
+        }
     }
 
     /// <summary>

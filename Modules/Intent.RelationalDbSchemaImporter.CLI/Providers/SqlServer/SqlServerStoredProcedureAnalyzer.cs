@@ -75,27 +75,88 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
             }
         }
 
-        // Convert DataTable rows to ResultSetColumnSchema (migrated from SqlServerStoredProcExtractor.ResultSetColumn)
+        var anonymousColumnCounter = 0;
+        
         foreach (var row in filteredRows)
         {
             var columnSchema = new ResultSetColumnSchema
             {
-                Name = GetStringValue(row, "name") ?? "",
+                Name = GetStringValue(row, "name") ?? $"Column{++anonymousColumnCounter}",
                 DbDataType = SanitizeSystemTypeName(GetStringValue(row, "system_type_name")),
                 LanguageDataType = NormalizeDataType(GetStringValue(row, "system_type_name")),
                 SourceSchema = GetStringValue(row, "source_schema"),
                 SourceTable =  GetStringValue(row, "source_table"),
                 IsNullable = GetBoolValue(row, "is_nullable"),
-                MaxLength = null, // sp_describe_first_result_set doesn't provide reliable length info
-                NumericPrecision = null, // sp_describe_first_result_set doesn't provide reliable precision info  
-                NumericScale = null // sp_describe_first_result_set doesn't provide reliable scale info
+                MaxLength = GetMaxLengthFromDbType(row, "system_type_name"),
+                NumericPrecision = GetIntValue(row, "precision"),  
+                NumericScale = GetIntValue(row, "scale")
             };
 
             resultColumns.Add(columnSchema);
         }
 
-
         return resultColumns;
+    }
+
+    private static readonly Regex ValueInParenthesesRegex = new Regex(@"\(([^\)]+)\)", RegexOptions.Compiled);
+    private static int? GetMaxLengthFromDbType(DataRow row, string columnName)
+    {
+        // If the type is like "varchar(255)" we want to extract the number
+        if (!row.Table.Columns.Contains(columnName))
+            return null;
+        
+        object? value = row[columnName];
+        
+        if (value == null || value == DBNull.Value)
+            return null;
+        
+        if (value is string strValue)
+        {
+            var match = ValueInParenthesesRegex.Match(strValue);
+            if (!match.Success)
+            {
+                return null;
+            }
+            if (match.Value.Equals("max", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return -1;
+            }
+            if (int.TryParse(match.Groups[1].Value, out var length))
+            {
+                return length;
+            }
+        }
+
+        return null;
+    }
+
+    private static int? GetIntValue(DataRow row, string columnName, bool zeroIsNull = true)
+    {
+        if (!row.Table.Columns.Contains(columnName))
+            return null;
+
+        object? value = row[columnName];
+
+        if (value == null || value == DBNull.Value)
+            return null;
+
+        // Handle different possible types
+        int? intResult = value switch
+        {
+            int intValue => intValue,
+            byte byteValue => byteValue,
+            short shortValue => shortValue,
+            long longValue => (int)longValue, // Cast long to int if necessary
+            string stringValue when int.TryParse(stringValue, out var result) => result,
+            _ => null
+        };
+
+        if (intResult == 0 && zeroIsNull)
+        {
+            return null;
+        }
+
+        return intResult;
     }
 
     private static bool GetBoolValue(DataRow row, string columnName)
@@ -103,7 +164,7 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
         if (!row.Table.Columns.Contains(columnName))
             return false;
         
-        var value = row[columnName];
+        object? value = row[columnName];
     
         if (value == null || value == DBNull.Value)
             return false;
@@ -161,14 +222,14 @@ internal class SqlServerStoredProcedureAnalyzer : IStoredProcedureAnalyzer
     }
 
     // Remove length/precision information like (255) or (18,2)
-    private static readonly Regex SanitizeRegex = new Regex(@"(\([^\)]+\))$", RegexOptions.Compiled);
+    private static readonly Regex ParenthesesWithValueRegex = new Regex(@"(\([^\)]+\))$", RegexOptions.Compiled);
     
     private static string SanitizeSystemTypeName(string? systemTypeName)
     {
         if (string.IsNullOrEmpty(systemTypeName))
             return "unknown";
         
-        return SanitizeRegex.Replace(systemTypeName, string.Empty).ToLowerInvariant();
+        return ParenthesesWithValueRegex.Replace(systemTypeName, string.Empty).ToLowerInvariant();
     }
 
     private static string NormalizeDataType(string? systemTypeName)

@@ -34,7 +34,7 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Dbo
         }
 
         [IntentManaged(Mode.Fully, Body = Mode.Merge)]
-        public void InsertBrand(IEnumerable<BrandType> brand)
+        public void InsertBrand(IEnumerable<BrandTypeModel> brand)
         {
             // TODO: Implement InsertBrand (OperationRepository) functionality
             throw new NotImplementedException("Your implementation here...");

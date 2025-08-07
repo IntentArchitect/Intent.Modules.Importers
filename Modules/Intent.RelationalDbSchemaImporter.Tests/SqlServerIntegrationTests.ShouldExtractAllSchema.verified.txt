@@ -252,6 +252,14 @@
             }
           ]
         }
+      ],
+      Triggers: [
+        {
+          Name: TR_Categories_UpdateModifiedDate,
+          ParentSchema: dbo,
+          ParentName: Categories,
+          ParentType: Table
+        }
       ]
     },
     {
@@ -1578,6 +1586,12 @@
           ParentSchema: dbo,
           ParentName: Products,
           ParentType: Table
+        },
+        {
+          Name: TR_Products_Audit,
+          ParentSchema: dbo,
+          ParentName: Products,
+          ParentType: Table
         }
       ]
     },
@@ -1735,6 +1749,14 @@
               ReferencedColumnName: UserID
             }
           ]
+        }
+      ],
+      Triggers: [
+        {
+          Name: TR_ShoppingCart_UpdateModifiedDate,
+          ParentSchema: dbo,
+          ParentName: ShoppingCart,
+          ParentType: Table
         }
       ]
     },
@@ -2808,7 +2830,7 @@
           Name: @brand,
           DbDataType: BrandType,
           LanguageDataType: class,
-          IsOutputParameter: false,
+          Direction: In,
           UserDefinedTableType: {
             Name: BrandType,
             Schema: dbo,
@@ -2819,7 +2841,8 @@
                 LanguageDataType: string,
                 IsNullable: false,
                 IsPrimaryKey: false,
-                IsIdentity: false
+                IsIdentity: false,
+                MaxLength: -1
               },
               {
                 Name: IsActive,
@@ -2844,21 +2867,21 @@
           Name: @UserID,
           DbDataType: int,
           LanguageDataType: int,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10
         },
         {
           Name: @ProductID,
           DbDataType: int,
           LanguageDataType: int,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10
         },
         {
           Name: @Quantity,
           DbDataType: int,
           LanguageDataType: int,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10
         }
       ]
@@ -2871,28 +2894,28 @@
           Name: @UserID,
           DbDataType: int,
           LanguageDataType: int,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10
         },
         {
           Name: @ShippingAddressID,
           DbDataType: int,
           LanguageDataType: int,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10
         },
         {
           Name: @BillingAddressID,
           DbDataType: int,
           LanguageDataType: int,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10
         },
         {
           Name: @TaxAmount,
           DbDataType: decimal,
           LanguageDataType: decimal,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 12,
           NumericScale: 2
         },
@@ -2900,7 +2923,7 @@
           Name: @ShippingAmount,
           DbDataType: decimal,
           LanguageDataType: decimal,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 12,
           NumericScale: 2
         },
@@ -2908,7 +2931,7 @@
           Name: @OrderID,
           DbDataType: int,
           LanguageDataType: int,
-          IsOutputParameter: true,
+          Direction: Both,
           NumericPrecision: 10
         }
       ]
@@ -2921,7 +2944,7 @@
           Name: @OrderID,
           DbDataType: int,
           LanguageDataType: int,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10
         }
       ],
@@ -2932,7 +2955,8 @@
           SourceSchema: dbo,
           SourceTable: Orders,
           LanguageDataType: int,
-          IsNullable: false
+          IsNullable: false,
+          NumericPrecision: 10
         },
         {
           Name: OrderDate,
@@ -2940,7 +2964,10 @@
           SourceSchema: dbo,
           SourceTable: Orders,
           LanguageDataType: datetime,
-          IsNullable: true
+          IsNullable: true,
+          MaxLength: 7,
+          NumericPrecision: 27,
+          NumericScale: 7
         },
         {
           Name: OrderStatus,
@@ -2948,7 +2975,8 @@
           SourceSchema: dbo,
           SourceTable: Orders,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 20
         },
         {
           Name: PaymentStatus,
@@ -2956,7 +2984,8 @@
           SourceSchema: dbo,
           SourceTable: Orders,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 20
         },
         {
           Name: SubTotal,
@@ -2964,7 +2993,9 @@
           SourceSchema: dbo,
           SourceTable: Orders,
           LanguageDataType: decimal,
-          IsNullable: false
+          IsNullable: false,
+          NumericPrecision: 12,
+          NumericScale: 2
         },
         {
           Name: TaxAmount,
@@ -2972,7 +3003,9 @@
           SourceSchema: dbo,
           SourceTable: Orders,
           LanguageDataType: decimal,
-          IsNullable: false
+          IsNullable: false,
+          NumericPrecision: 12,
+          NumericScale: 2
         },
         {
           Name: ShippingAmount,
@@ -2980,7 +3013,9 @@
           SourceSchema: dbo,
           SourceTable: Orders,
           LanguageDataType: decimal,
-          IsNullable: false
+          IsNullable: false,
+          NumericPrecision: 12,
+          NumericScale: 2
         },
         {
           Name: TotalAmount,
@@ -2988,7 +3023,9 @@
           SourceSchema: dbo,
           SourceTable: Orders,
           LanguageDataType: decimal,
-          IsNullable: false
+          IsNullable: false,
+          NumericPrecision: 12,
+          NumericScale: 2
         },
         {
           Name: TrackingNumber,
@@ -2996,13 +3033,15 @@
           SourceSchema: dbo,
           SourceTable: Orders,
           LanguageDataType: string,
-          IsNullable: true
+          IsNullable: true,
+          MaxLength: 50
         },
         {
           Name: CustomerName,
           DbDataType: nvarchar,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 101
         },
         {
           Name: CustomerEmail,
@@ -3010,7 +3049,8 @@
           SourceSchema: dbo,
           SourceTable: Users,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 100
         },
         {
           Name: ShippingAddress1,
@@ -3018,7 +3058,8 @@
           SourceSchema: dbo,
           SourceTable: UserAddresses,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 255
         },
         {
           Name: ShippingAddress2,
@@ -3026,7 +3067,8 @@
           SourceSchema: dbo,
           SourceTable: UserAddresses,
           LanguageDataType: string,
-          IsNullable: true
+          IsNullable: true,
+          MaxLength: 255
         },
         {
           Name: ShippingCity,
@@ -3034,7 +3076,8 @@
           SourceSchema: dbo,
           SourceTable: UserAddresses,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 100
         },
         {
           Name: ShippingState,
@@ -3042,7 +3085,8 @@
           SourceSchema: dbo,
           SourceTable: UserAddresses,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 50
         },
         {
           Name: ShippingZip,
@@ -3050,7 +3094,8 @@
           SourceSchema: dbo,
           SourceTable: UserAddresses,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 10
         }
       ]
     },
@@ -3062,13 +3107,13 @@
           Name: @StartDate,
           DbDataType: datetime2,
           LanguageDataType: datetime,
-          IsOutputParameter: false
+          Direction: In
         },
         {
           Name: @EndDate,
           DbDataType: datetime2,
           LanguageDataType: datetime,
-          IsOutputParameter: false
+          Direction: In
         }
       ],
       ResultSetColumns: [
@@ -3078,7 +3123,8 @@
           SourceSchema: dbo,
           SourceTable: Products,
           LanguageDataType: int,
-          IsNullable: false
+          IsNullable: false,
+          NumericPrecision: 10
         },
         {
           Name: ProductName,
@@ -3086,7 +3132,8 @@
           SourceSchema: dbo,
           SourceTable: Products,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 255
         },
         {
           Name: SKU,
@@ -3094,7 +3141,8 @@
           SourceSchema: dbo,
           SourceTable: Products,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 50
         },
         {
           Name: CategoryName,
@@ -3102,31 +3150,98 @@
           SourceSchema: dbo,
           SourceTable: Categories,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 100
         },
         {
           Name: TotalQuantitySold,
           DbDataType: int,
           LanguageDataType: int,
-          IsNullable: true
+          IsNullable: true,
+          NumericPrecision: 10
         },
         {
           Name: TotalRevenue,
           DbDataType: decimal,
           LanguageDataType: decimal,
-          IsNullable: true
+          IsNullable: true,
+          NumericPrecision: 38,
+          NumericScale: 4
         },
         {
           Name: AverageSellingPrice,
           DbDataType: decimal,
           LanguageDataType: decimal,
-          IsNullable: true
+          IsNullable: true,
+          NumericPrecision: 38,
+          NumericScale: 6
         },
         {
           Name: NumberOfOrders,
           DbDataType: int,
           LanguageDataType: int,
-          IsNullable: true
+          IsNullable: true,
+          NumericPrecision: 10
+        }
+      ]
+    },
+    {
+      Name: sp_GetUserCart,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @UserID,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: In,
+          NumericPrecision: 10
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: ProductID,
+          DbDataType: int,
+          SourceSchema: dbo,
+          SourceTable: Products,
+          LanguageDataType: int,
+          IsNullable: false,
+          NumericPrecision: 10
+        },
+        {
+          Name: ProductName,
+          DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Products,
+          LanguageDataType: string,
+          IsNullable: false,
+          MaxLength: 255
+        },
+        {
+          Name: UnitPrice,
+          DbDataType: decimal,
+          SourceSchema: dbo,
+          SourceTable: Products,
+          LanguageDataType: decimal,
+          IsNullable: false,
+          NumericPrecision: 10,
+          NumericScale: 2
+        },
+        {
+          Name: Quantity,
+          DbDataType: int,
+          SourceSchema: dbo,
+          SourceTable: ShoppingCart,
+          LanguageDataType: int,
+          IsNullable: false,
+          NumericPrecision: 10
+        },
+        {
+          Name: Subtotal,
+          DbDataType: decimal,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          NumericPrecision: 21,
+          NumericScale: 2
         }
       ]
     },
@@ -3138,7 +3253,7 @@
           Name: @UserID,
           DbDataType: int,
           LanguageDataType: int,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10
         }
       ],
@@ -3149,7 +3264,8 @@
           SourceSchema: dbo,
           SourceTable: Users,
           LanguageDataType: int,
-          IsNullable: false
+          IsNullable: false,
+          NumericPrecision: 10
         },
         {
           Name: Username,
@@ -3157,7 +3273,8 @@
           SourceSchema: dbo,
           SourceTable: Users,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 50
         },
         {
           Name: Email,
@@ -3165,7 +3282,8 @@
           SourceSchema: dbo,
           SourceTable: Users,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 100
         },
         {
           Name: FirstName,
@@ -3173,7 +3291,8 @@
           SourceSchema: dbo,
           SourceTable: Users,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 50
         },
         {
           Name: LastName,
@@ -3181,7 +3300,8 @@
           SourceSchema: dbo,
           SourceTable: Users,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 50
         },
         {
           Name: DateOfBirth,
@@ -3189,7 +3309,8 @@
           SourceSchema: dbo,
           SourceTable: Users,
           LanguageDataType: date,
-          IsNullable: true
+          IsNullable: true,
+          NumericPrecision: 10
         },
         {
           Name: PhoneNumber,
@@ -3197,7 +3318,8 @@
           SourceSchema: dbo,
           SourceTable: Users,
           LanguageDataType: string,
-          IsNullable: true
+          IsNullable: true,
+          MaxLength: 15
         },
         {
           Name: IsActive,
@@ -3205,7 +3327,8 @@
           SourceSchema: dbo,
           SourceTable: Users,
           LanguageDataType: bool,
-          IsNullable: true
+          IsNullable: true,
+          NumericPrecision: 1
         },
         {
           Name: CreatedDate,
@@ -3213,7 +3336,10 @@
           SourceSchema: dbo,
           SourceTable: Users,
           LanguageDataType: datetime,
-          IsNullable: true
+          IsNullable: true,
+          MaxLength: 7,
+          NumericPrecision: 27,
+          NumericScale: 7
         },
         {
           Name: LastLoginDate,
@@ -3221,7 +3347,37 @@
           SourceSchema: dbo,
           SourceTable: Users,
           LanguageDataType: datetime,
-          IsNullable: true
+          IsNullable: true,
+          MaxLength: 7,
+          NumericPrecision: 27,
+          NumericScale: 7
+        }
+      ]
+    },
+    {
+      Name: sp_ProcessOrder,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @UserID,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: In,
+          NumericPrecision: 10
+        },
+        {
+          Name: @ShippingAddressID,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: In,
+          NumericPrecision: 10
+        },
+        {
+          Name: @PaymentMethod,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: 20
         }
       ]
     },
@@ -3233,21 +3389,21 @@
           Name: @SearchTerm,
           DbDataType: nvarchar,
           LanguageDataType: string,
-          IsOutputParameter: false,
+          Direction: In,
           MaxLength: 255
         },
         {
           Name: @CategoryID,
           DbDataType: int,
           LanguageDataType: int,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10
         },
         {
           Name: @MinPrice,
           DbDataType: decimal,
           LanguageDataType: decimal,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10,
           NumericScale: 2
         },
@@ -3255,7 +3411,7 @@
           Name: @MaxPrice,
           DbDataType: decimal,
           LanguageDataType: decimal,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10,
           NumericScale: 2
         },
@@ -3263,28 +3419,28 @@
           Name: @SortBy,
           DbDataType: nvarchar,
           LanguageDataType: string,
-          IsOutputParameter: false,
+          Direction: In,
           MaxLength: 20
         },
         {
           Name: @SortOrder,
           DbDataType: nvarchar,
           LanguageDataType: string,
-          IsOutputParameter: false,
+          Direction: In,
           MaxLength: 4
         },
         {
           Name: @PageNumber,
           DbDataType: int,
           LanguageDataType: int,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10
         },
         {
           Name: @PageSize,
           DbDataType: int,
           LanguageDataType: int,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10
         }
       ],
@@ -3295,7 +3451,8 @@
           SourceSchema: dbo,
           SourceTable: Products,
           LanguageDataType: int,
-          IsNullable: false
+          IsNullable: false,
+          NumericPrecision: 10
         },
         {
           Name: ProductName,
@@ -3303,7 +3460,8 @@
           SourceSchema: dbo,
           SourceTable: Products,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 255
         },
         {
           Name: Description,
@@ -3311,7 +3469,8 @@
           SourceSchema: dbo,
           SourceTable: Products,
           LanguageDataType: string,
-          IsNullable: true
+          IsNullable: true,
+          MaxLength: 1000
         },
         {
           Name: SKU,
@@ -3319,7 +3478,8 @@
           SourceSchema: dbo,
           SourceTable: Products,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 50
         },
         {
           Name: UnitPrice,
@@ -3327,7 +3487,9 @@
           SourceSchema: dbo,
           SourceTable: Products,
           LanguageDataType: decimal,
-          IsNullable: false
+          IsNullable: false,
+          NumericPrecision: 10,
+          NumericScale: 2
         },
         {
           Name: UnitsInStock,
@@ -3335,7 +3497,8 @@
           SourceSchema: dbo,
           SourceTable: Products,
           LanguageDataType: int,
-          IsNullable: false
+          IsNullable: false,
+          NumericPrecision: 10
         },
         {
           Name: ImageURL,
@@ -3343,7 +3506,8 @@
           SourceSchema: dbo,
           SourceTable: Products,
           LanguageDataType: string,
-          IsNullable: true
+          IsNullable: true,
+          MaxLength: 500
         },
         {
           Name: CategoryName,
@@ -3351,7 +3515,8 @@
           SourceSchema: dbo,
           SourceTable: Categories,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 100
         },
         {
           Name: SupplierName,
@@ -3359,19 +3524,49 @@
           SourceSchema: dbo,
           SourceTable: Suppliers,
           LanguageDataType: string,
-          IsNullable: false
+          IsNullable: false,
+          MaxLength: 100
         },
         {
           Name: AverageRating,
           DbDataType: float,
           LanguageDataType: decimal,
-          IsNullable: true
+          IsNullable: true,
+          NumericPrecision: 53
         },
         {
           Name: ReviewCount,
           DbDataType: int,
           LanguageDataType: int,
-          IsNullable: true
+          IsNullable: true,
+          NumericPrecision: 10
+        }
+      ]
+    },
+    {
+      Name: sp_UpdateInventory,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @ProductID,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: In,
+          NumericPrecision: 10
+        },
+        {
+          Name: @QuantityChange,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: In,
+          NumericPrecision: 10
+        },
+        {
+          Name: @Operation,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: 10
         }
       ]
     },
@@ -3383,28 +3578,28 @@
           Name: @ProductID,
           DbDataType: int,
           LanguageDataType: int,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10
         },
         {
           Name: @Quantity,
           DbDataType: int,
           LanguageDataType: int,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10
         },
         {
           Name: @TransactionType,
           DbDataType: nvarchar,
           LanguageDataType: string,
-          IsOutputParameter: false,
+          Direction: In,
           MaxLength: 20
         },
         {
           Name: @UnitPrice,
           DbDataType: decimal,
           LanguageDataType: decimal,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10,
           NumericScale: 2
         },
@@ -3412,15 +3607,56 @@
           Name: @Notes,
           DbDataType: nvarchar,
           LanguageDataType: string,
-          IsOutputParameter: false,
+          Direction: In,
           MaxLength: 500
         },
         {
           Name: @UserID,
           DbDataType: int,
           LanguageDataType: int,
-          IsOutputParameter: false,
+          Direction: In,
           NumericPrecision: 10
+        }
+      ]
+    },
+    {
+      Name: sp_UpdateUserProfile,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @UserID,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: In,
+          NumericPrecision: 10
+        },
+        {
+          Name: @FirstName,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: 50
+        },
+        {
+          Name: @LastName,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: 50
+        },
+        {
+          Name: @Email,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: 100
+        },
+        {
+          Name: @Phone,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: 15
         }
       ]
     }

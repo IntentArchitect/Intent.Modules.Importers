@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DatabaseSchemaReader.DataSchema;
 using Intent.RelationalDbSchemaImporter.CLI.Services;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using DatabaseSchema = DatabaseSchemaReader.DataSchema.DatabaseSchema;
 
 namespace Intent.RelationalDbSchemaImporter.CLI.Providers.Core.Services;
@@ -62,6 +63,7 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
         // (same name but different parameters). For now, we filter out duplicates by keeping only
         // the first occurrence. This primarily affects PostgreSQL where function overloading is common.
         // TODO: Implement custom PostgreSQL query solution if this becomes a reported issue (or ask the lib author to fix).
+        // Issue is logged here: https://github.com/martinjw/dbschemareader/issues/207.
         var uniqueRoutines = routines
             .GroupBy(r => new { Schema = r.SchemaOwner, Name = r.Name })
             .Select(g => g.First()) // Take first overload only
@@ -87,9 +89,10 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
             {
                 Name = routine.Name,
                 Schema = routine.SchemaOwner,
-                Parameters = ExtractStoredProcedureParameters(databaseSchema, routine, dataTypeMapper),
-                ResultSetColumns = await ExtractStoredProcedureResultSetAsync(databaseSchema, routine, analyzer, dataTypeMapper)
+                Parameters = ExtractStoredProcedureParameters(databaseSchema, routine, dataTypeMapper)
             };
+
+            storedProcSchema.ResultSetColumns = await ExtractStoredProcedureResultAsync(databaseSchema, routine, analyzer, dataTypeMapper);
 
             storedProcedures.Add(storedProcSchema);
         }
@@ -102,21 +105,25 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
     {
         var parameters = new List<StoredProcedureParameterSchema>();
 
-        // DatabaseSchemaReader provides parameter information through Arguments
+        // KNOWN BUG: DatabaseSchemaReader does not handle OUT parameters in PostgreSQL so it never shows them.
+        // I have logged a bug regarding this: https://github.com/martinjw/dbschemareader/issues/206.
         foreach (var argument in routine.Arguments?.DistinctBy(x => x.Name) ?? [])
         {
             var udt = ExtractUserDefinedTableType(databaseSchema, argument, dataTypeMapper);
-            
+
             var parameterSchema = new StoredProcedureParameterSchema
             {
-                Name = argument.Name ?? "",
-                DbDataType = udt is not null ? argument.DatabaseDataType?.Replace("\"", string.Empty) 
-                                               ?? "" : dataTypeMapper.GetDbDataTypeString(argument.DatabaseDataType),
+                Name = argument.Name,
+                DbDataType = udt is not null
+                    ? argument.DatabaseDataType?.Replace("\"", string.Empty) ?? ""
+                    : dataTypeMapper.GetDbDataTypeString(argument.DatabaseDataType),
                 LanguageDataType = udt is not null ? "class" : dataTypeMapper.GetLanguageDataTypeString(argument.DataType, argument.DatabaseDataType),
-                IsOutputParameter = argument.Out, // DatabaseSchemaReader exposes input/output information
-                MaxLength = argument.Length > 0 ? argument.Length : null,
-                NumericPrecision = argument.Precision > 0 ? argument.Precision : null,
-                NumericScale = argument.Scale > 0 ? argument.Scale : null,
+                Direction = argument is { In: true, Out: true } ? StoredProcedureParameterDirection.Both
+                    : argument.Out ? StoredProcedureParameterDirection.Out
+                    : StoredProcedureParameterDirection.In,
+                MaxLength = argument.Length != 0 ? argument.Length : null,
+                NumericPrecision = argument.Precision != 0 ? argument.Precision : null,
+                NumericScale = argument.Scale != 0 ? argument.Scale : null,
                 UserDefinedTableType = udt
             };
 
@@ -136,7 +143,7 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
         var udtSchema = new UserDefinedTableTypeSchema
         {
             Name = foundUdt.Name,
-            Schema = foundUdt.SchemaOwner ?? "",
+            Schema = foundUdt.SchemaOwner,
             Columns = foundUdt.Columns.Select(col => new ColumnSchema
             {
                 Name = col.Name,
@@ -145,9 +152,9 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
                 IsNullable = col.Nullable,
                 IsPrimaryKey = col.IsPrimaryKey,
                 IsIdentity = col.IsAutoNumber,
-                MaxLength = col.Length > 0 ? col.Length : null,
-                NumericPrecision = col.Precision > 0 ? col.Precision : null,
-                NumericScale = col.Scale > 0 ? col.Scale : null
+                MaxLength = col.Length != 0 ? col.Length : null,
+                NumericPrecision = col.Precision != 0 ? col.Precision : null,
+                NumericScale = col.Scale != 0 ? col.Scale : null
             }).ToList()
         };
 
@@ -166,25 +173,45 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
         return udt is not null;
     }
 
-    private static async Task<List<ResultSetColumnSchema>> ExtractStoredProcedureResultSetAsync(DatabaseSchema databaseSchema, DatabaseStoredProcedure routine,
+    private static async Task<List<ResultSetColumnSchema>> ExtractStoredProcedureResultAsync(DatabaseSchema databaseSchema, DatabaseStoredProcedure routine,
         IStoredProcedureAnalyzer analyzer,
         DataTypeMapperBase dataTypeMapper)
     {
-        var resultColumns = new List<ResultSetColumnSchema>();
-
         // Use the stored procedure analyzer for database-specific result set analysis
         var parameters = ExtractStoredProcedureParameters(databaseSchema, routine, dataTypeMapper);
-        
+
+        List<ResultSetColumnSchema> analysisResult;
         try
         {
-            resultColumns = await analyzer.AnalyzeResultSetAsync(routine.Name, routine.SchemaOwner, parameters);
+            analysisResult = await analyzer.AnalyzeResultSetAsync(routine.Name, routine.SchemaOwner, parameters);
         }
         catch (Exception)
         {
-            // If analysis fails, return empty result set
+            // If analysis fails, return empty result set 
             // This is common for procedures that don't return result sets or require specific parameters
+            return [];
         }
 
-        return resultColumns;
+        ValidateAnalysisResult(analysisResult, databaseSchema, routine);
+
+        return analysisResult;
     }
-} 
+
+    private static void ValidateAnalysisResult(List<ResultSetColumnSchema> analysisResult, DatabaseSchema databaseSchema, DatabaseStoredProcedure routine)
+    {
+        // If columns are returned, but they don't have a name or data type we need to throw an exception.
+        if (analysisResult.Count == 0)
+        {
+            return;
+        }
+
+        if (analysisResult.Any(col => string.IsNullOrWhiteSpace(col.Name) || 
+                                      string.IsNullOrWhiteSpace(col.LanguageDataType) || 
+                                      string.IsNullOrWhiteSpace(col.DbDataType)))
+        {
+            throw new InvalidOperationException(
+                $"Stored procedure '{routine.Name}' in schema '{routine.SchemaOwner}' returned columns without valid names or data types. " +
+                "This indicates a potential issue with the stored procedure definition or the database schema.");
+        }
+    }
+}

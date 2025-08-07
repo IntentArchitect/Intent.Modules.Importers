@@ -22,7 +22,7 @@
   <childElements>
     <childElement id="25c2cd48-bca2-40a2-a6d1-6d64d25bd5a7" type="Stored Procedure" typeId="575edd35-9438-406d-b0a7-b99d6f29b560">
       <name>GetCustomerOrders</name>
-      <display>GetCustomerOrders(customerId: guid): GetCustomerOrdersResponse[*]</display>
+      <display>GetCustomerOrders(customerId: guid?): GetCustomerOrdersResponse[*]</display>
       <externalReference>[dbo].[getcustomerorders]</externalReference>
       <isAbstract>false</isAbstract>
       <sort-children>manually</sort-children>
@@ -59,14 +59,14 @@
       <childElements>
         <childElement id="4422a5f5-43d8-40a5-b281-4abfbbf3bcc8" type="Stored Procedure Parameter" typeId="5823b192-eb03-47c8-90d8-5501c922e9a5">
           <name>customerId</name>
-          <display>customerId: guid</display>
+          <display>customerId: guid?</display>
           <externalReference>@customerid</externalReference>
           <isAbstract>false</isAbstract>
           <genericTypes />
           <typeReference id="9899ae14-b8e6-4fb0-9143-a91a2bb13097">
             <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
             <isNavigable>true</isNavigable>
-            <isNullable>false</isNullable>
+            <isNullable>true</isNullable>
             <isCollection>false</isCollection>
             <isRequired>true</isRequired>
             <typePackageName>Intent.Common.Types</typePackageName>
@@ -99,7 +99,7 @@
     </childElement>
     <childElement id="d96cdf1c-8319-4168-9a3e-b988ad513b53" type="Stored Procedure" typeId="575edd35-9438-406d-b0a7-b99d6f29b560">
       <name>GetOrderItemDetails</name>
-      <display>GetOrderItemDetails(orderId: guid): GetOrderItemDetailsResponse[*]</display>
+      <display>GetOrderItemDetails(orderId: guid?): GetOrderItemDetailsResponse[*]</display>
       <externalReference>[dbo].[getorderitemdetails]</externalReference>
       <isAbstract>false</isAbstract>
       <sort-children>manually</sort-children>
@@ -136,14 +136,14 @@
       <childElements>
         <childElement id="e52d69c4-770d-4342-8936-03bf58e929fc" type="Stored Procedure Parameter" typeId="5823b192-eb03-47c8-90d8-5501c922e9a5">
           <name>orderId</name>
-          <display>orderId: guid</display>
+          <display>orderId: guid?</display>
           <externalReference>@orderid</externalReference>
           <isAbstract>false</isAbstract>
           <genericTypes />
           <typeReference id="820df75b-5816-45ea-9170-0cef9f03f2e9">
             <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
             <isNavigable>true</isNavigable>
-            <isNullable>false</isNullable>
+            <isNullable>true</isNullable>
             <isCollection>false</isCollection>
             <isRequired>true</isRequired>
             <typePackageName>Intent.Common.Types</typePackageName>
@@ -176,7 +176,7 @@
     </childElement>
     <childElement id="b318391b-7090-4c0f-a3ce-8b3e591c9af7" type="Stored Procedure" typeId="575edd35-9438-406d-b0a7-b99d6f29b560">
       <name>InsertBrand</name>
-      <display>InsertBrand(brand: BrandType[*]): void</display>
+      <display>InsertBrand(brand: BrandTypeModel[*]?): void</display>
       <externalReference>[dbo].[insertbrand]</externalReference>
       <isAbstract>false</isAbstract>
       <sort-children>manually</sort-children>
@@ -210,14 +210,14 @@
       <childElements>
         <childElement id="e2725975-a19a-4a88-b2f8-af1f7f13597c" type="Stored Procedure Parameter" typeId="5823b192-eb03-47c8-90d8-5501c922e9a5">
           <name>brand</name>
-          <display>brand: BrandType[*]</display>
+          <display>brand: BrandTypeModel[*]?</display>
           <externalReference>@brand</externalReference>
           <isAbstract>false</isAbstract>
           <genericTypes />
           <typeReference id="9ac2777e-8078-4631-8565-ac2443fb047c">
             <typeId>a7488f8b-653a-41fc-b9ab-8611d6cc08a9</typeId>
             <isNavigable>true</isNavigable>
-            <isNullable>false</isNullable>
+            <isNullable>true</isNullable>
             <isCollection>true</isCollection>
             <isRequired>true</isRequired>
             <typePackageName>SqlServerImporterTests</typePackageName>
@@ -243,168 +243,6 @@
               </properties>
             </stereotype>
           </stereotypes>
-          <metadata />
-          <childElements />
-        </childElement>
-      </childElements>
-    </childElement>
-    <childElement id="83c70340-69f7-40df-9fd4-ce570034e190" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
-      <name>GetCustomerOrders</name>
-      <display>GetCustomerOrders(customerId: guid?): GetCustomerOrdersResponse[*]</display>
-      <externalReference>[dbo].[getcustomerorders]</externalReference>
-      <isAbstract>false</isAbstract>
-      <sort-children>by-type-then-manually</sort-children>
-      <genericTypes />
-      <typeReference id="491e1da9-36cc-43e4-ad85-bea63b1c7a57">
-        <typeId>fbcb1b73-7a16-47d5-9512-481ac622fed3</typeId>
-        <isNavigable>true</isNavigable>
-        <isNullable>false</isNullable>
-        <isCollection>true</isCollection>
-        <isRequired>true</isRequired>
-        <typePackageName>SqlServerImporterTests</typePackageName>
-        <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
-        <stereotypes />
-        <genericTypeParameters />
-      </typeReference>
-      <isMapped>false</isMapped>
-      <parentFolderId>6c5c1a9f-f4a2-40fe-8bd8-13ee7e3c11bf</parentFolderId>
-      <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
-      <packageName>SqlServerImporterTests</packageName>
-      <traits>
-        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
-      </traits>
-      <stereotypes />
-      <metadata />
-      <childElements>
-        <childElement id="cf4b898f-8d75-4602-b7dc-f63ed227dfc2" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
-          <name>customerId</name>
-          <display>in : customerId: guid?</display>
-          <externalReference>customerid</externalReference>
-          <isAbstract>false</isAbstract>
-          <genericTypes />
-          <typeReference id="5e01954f-4856-4de3-8514-415284c658d1">
-            <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
-            <isNavigable>true</isNavigable>
-            <isNullable>true</isNullable>
-            <isCollection>false</isCollection>
-            <isRequired>true</isRequired>
-            <typePackageName>Intent.Common.Types</typePackageName>
-            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
-            <stereotypes />
-            <genericTypeParameters />
-          </typeReference>
-          <isMapped>false</isMapped>
-          <parentFolderId>83c70340-69f7-40df-9fd4-ce570034e190</parentFolderId>
-          <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
-          <packageName>SqlServerImporterTests</packageName>
-          <stereotypes />
-          <metadata />
-          <childElements />
-        </childElement>
-      </childElements>
-    </childElement>
-    <childElement id="261d898e-36a2-40ab-8c30-fbb5e6cb17b2" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
-      <name>GetOrderItemDetails</name>
-      <display>GetOrderItemDetails(orderId: guid?): GetOrderItemDetailsResponse[*]</display>
-      <externalReference>[dbo].[getorderitemdetails]</externalReference>
-      <isAbstract>false</isAbstract>
-      <sort-children>by-type-then-manually</sort-children>
-      <genericTypes />
-      <typeReference id="33bf33af-16b7-4f65-9bc4-30cdff665211">
-        <typeId>1a24dfe1-2760-406f-ae81-fe3d10be4918</typeId>
-        <isNavigable>true</isNavigable>
-        <isNullable>false</isNullable>
-        <isCollection>true</isCollection>
-        <isRequired>true</isRequired>
-        <typePackageName>SqlServerImporterTests</typePackageName>
-        <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
-        <stereotypes />
-        <genericTypeParameters />
-      </typeReference>
-      <isMapped>false</isMapped>
-      <parentFolderId>6c5c1a9f-f4a2-40fe-8bd8-13ee7e3c11bf</parentFolderId>
-      <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
-      <packageName>SqlServerImporterTests</packageName>
-      <traits>
-        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
-      </traits>
-      <stereotypes />
-      <metadata />
-      <childElements>
-        <childElement id="18bc38e2-7da9-4614-9d01-547928f24302" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
-          <name>orderId</name>
-          <display>in : orderId: guid?</display>
-          <externalReference>orderid</externalReference>
-          <isAbstract>false</isAbstract>
-          <genericTypes />
-          <typeReference id="44c6c7bc-82d4-4dc3-b85b-b1bad13d7afb">
-            <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
-            <isNavigable>true</isNavigable>
-            <isNullable>true</isNullable>
-            <isCollection>false</isCollection>
-            <isRequired>true</isRequired>
-            <typePackageName>Intent.Common.Types</typePackageName>
-            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
-            <stereotypes />
-            <genericTypeParameters />
-          </typeReference>
-          <isMapped>false</isMapped>
-          <parentFolderId>261d898e-36a2-40ab-8c30-fbb5e6cb17b2</parentFolderId>
-          <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
-          <packageName>SqlServerImporterTests</packageName>
-          <stereotypes />
-          <metadata />
-          <childElements />
-        </childElement>
-      </childElements>
-    </childElement>
-    <childElement id="39f17bd5-1bc1-44f5-bd1a-73ad0522adda" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
-      <name>InsertBrand</name>
-      <display>InsertBrand(brand: BrandTypeModel[*]?): void</display>
-      <externalReference>[dbo].[insertbrand]</externalReference>
-      <isAbstract>false</isAbstract>
-      <sort-children>by-type-then-manually</sort-children>
-      <genericTypes />
-      <typeReference id="07723a84-5a40-4814-b543-869289f0050a">
-        <isNavigable>true</isNavigable>
-        <isNullable>false</isNullable>
-        <isCollection>false</isCollection>
-        <isRequired>true</isRequired>
-        <stereotypes />
-        <genericTypeParameters />
-      </typeReference>
-      <isMapped>false</isMapped>
-      <parentFolderId>6c5c1a9f-f4a2-40fe-8bd8-13ee7e3c11bf</parentFolderId>
-      <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
-      <packageName>SqlServerImporterTests</packageName>
-      <traits>
-        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
-      </traits>
-      <stereotypes />
-      <metadata />
-      <childElements>
-        <childElement id="588477b8-1042-4e0c-8b5d-f5624190ac15" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
-          <name>brand</name>
-          <display>in : brand: BrandTypeModel[*]?</display>
-          <externalReference>brand</externalReference>
-          <isAbstract>false</isAbstract>
-          <genericTypes />
-          <typeReference id="353ee173-279e-4279-8f7f-1d98bd815fba">
-            <typeId>2390f8ff-f66e-47c6-9128-9cb03a308eb3</typeId>
-            <isNavigable>true</isNavigable>
-            <isNullable>true</isNullable>
-            <isCollection>true</isCollection>
-            <isRequired>true</isRequired>
-            <typePackageName>SqlServerImporterTests</typePackageName>
-            <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
-            <stereotypes />
-            <genericTypeParameters />
-          </typeReference>
-          <isMapped>false</isMapped>
-          <parentFolderId>39f17bd5-1bc1-44f5-bd1a-73ad0522adda</parentFolderId>
-          <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
-          <packageName>SqlServerImporterTests</packageName>
-          <stereotypes />
           <metadata />
           <childElements />
         </childElement>

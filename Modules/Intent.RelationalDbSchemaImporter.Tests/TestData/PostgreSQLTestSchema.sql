@@ -448,10 +448,93 @@ CREATE TRIGGER tr_users_audit
     FOR EACH ROW
     EXECUTE FUNCTION audit_trigger_function();
 
+CREATE TRIGGER tr_products_audit
+    AFTER INSERT OR UPDATE OR DELETE ON products
+    FOR EACH ROW
+    EXECUTE FUNCTION audit_trigger_function();
+
+CREATE TRIGGER tr_orders_audit
+    AFTER INSERT OR UPDATE OR DELETE ON orders
+    FOR EACH ROW
+    EXECUTE FUNCTION audit_trigger_function();
+
+-- Inventory update trigger (equivalent to SQL Server)
+CREATE OR REPLACE FUNCTION update_inventory_on_order()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Update product stock
+    UPDATE products
+    SET units_in_stock = units_in_stock - NEW.quantity
+    WHERE product_id = NEW.product_id;
+
+    -- Log inventory transaction
+    INSERT INTO inventory_transactions (product_id, transaction_type, quantity, unit_price, reference_id, created_by)
+    SELECT
+        NEW.product_id,
+        'Sale',
+        -NEW.quantity,
+        NEW.unit_price,
+        NEW.order_id,
+        o.user_id
+    FROM orders o
+    WHERE o.order_id = NEW.order_id;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER tr_order_details_update_inventory
+    AFTER INSERT ON order_details
+    FOR EACH ROW
+    EXECUTE FUNCTION update_inventory_on_order();
+
 -- =============================================
 -- CORRECTED STORED PROCEDURES
 -- =============================================
 
+-- Create New Order Function
+CREATE OR REPLACE FUNCTION create_order(
+    p_UserID INTEGER,
+    p_ShippingAddressID INTEGER,
+    p_BillingAddressID INTEGER,
+    p_TaxAmount DECIMAL(12,2) DEFAULT 0,
+    p_ShippingAmount DECIMAL(12,2) DEFAULT 0,
+    OUT p_OrderID INTEGER
+)
+RETURNS INTEGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Start transaction (implicit in function)
+    
+    -- Create the order
+    INSERT INTO Orders (UserID, ShippingAddressID, BillingAddressID, SubTotal, TaxAmount, ShippingAmount, TotalAmount)
+    VALUES (p_UserID, p_ShippingAddressID, p_BillingAddressID, 0, p_TaxAmount, p_ShippingAmount, p_TaxAmount + p_ShippingAmount)
+        RETURNING OrderID INTO p_OrderID;
+    
+    -- Move items from shopping cart to order details
+    INSERT INTO OrderDetails (OrderID, ProductID, Quantity, UnitPrice)
+    SELECT
+        p_OrderID,
+        sc.ProductID,
+        sc.Quantity,
+        sc.UnitPrice
+    FROM ShoppingCart sc
+    WHERE sc.UserID = p_UserID;
+    
+    -- Clear shopping cart
+    DELETE FROM ShoppingCart WHERE UserID = p_UserID;
+    
+    -- Transaction commits automatically on successful completion
+    -- Rolls back automatically on exception
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+            -- Re-raise the exception (transaction will be rolled back automatically)
+            RAISE;
+END;
+$$;
+    
 -- Fix: Add Product to Cart (corrected parameter defaults)
 CREATE OR REPLACE FUNCTION add_to_cart(
     p_user_id INTEGER,
@@ -462,15 +545,15 @@ BEGIN
     -- Check if item already exists in cart
     IF EXISTS (SELECT 1 FROM shopping_cart WHERE user_id = p_user_id AND product_id = p_product_id) THEN
         -- Update quantity
-UPDATE shopping_cart
-SET quantity = quantity + p_quantity,
-    modified_date = CURRENT_TIMESTAMP
-WHERE user_id = p_user_id AND product_id = p_product_id;
-ELSE
+        UPDATE shopping_cart
+        SET quantity = quantity + p_quantity,
+            modified_date = CURRENT_TIMESTAMP
+        WHERE user_id = p_user_id AND product_id = p_product_id;
+    ELSE
         -- Add new item
         INSERT INTO shopping_cart (user_id, product_id, quantity)
         VALUES (p_user_id, p_product_id, p_quantity);
-END IF;
+    END IF;
 END;
 
 $$
@@ -523,27 +606,27 @@ $$
 
 BEGIN
 RETURN QUERY
-SELECT
-    p.product_id,
-    p.product_name,
-    p.description,
-    p.unit_price,
-    c.category_name,
-    s.supplier_name,
-    p.units_in_stock
-FROM products p
-         INNER JOIN categories c ON p.category_id = c.category_id
-         INNER JOIN suppliers s ON p.supplier_id = s.supplier_id
-WHERE
-    p.discontinued = FALSE
-  AND (p_search_term IS NULL OR
-       p.product_name ILIKE '%' || p_search_term || '%' OR 
-             p.description ILIKE '%' || p_search_term || '%')
-  AND (p_category_id IS NULL OR p.category_id = p_category_id)
-  AND (p_min_price IS NULL OR p.unit_price >= p_min_price)
-  AND (p_max_price IS NULL OR p.unit_price <= p_max_price)
-ORDER BY p.product_name
-    LIMIT p_limit OFFSET p_offset;
+    SELECT
+        p.product_id,
+        p.product_name,
+        p.description,
+        p.unit_price,
+        c.category_name,
+        s.supplier_name,
+        p.units_in_stock
+    FROM products p
+             INNER JOIN categories c ON p.category_id = c.category_id
+             INNER JOIN suppliers s ON p.supplier_id = s.supplier_id
+    WHERE
+        p.discontinued = FALSE
+      AND (p_search_term IS NULL OR
+           p.product_name ILIKE '%' || p_search_term || '%' OR 
+                 p.description ILIKE '%' || p_search_term || '%')
+      AND (p_category_id IS NULL OR p.category_id = p_category_id)
+      AND (p_min_price IS NULL OR p.unit_price >= p_min_price)
+      AND (p_max_price IS NULL OR p.unit_price <= p_max_price)
+    ORDER BY p.product_name
+        LIMIT p_limit OFFSET p_offset;
 END;
 
 $$
@@ -566,24 +649,24 @@ $$
 
 BEGIN
 RETURN QUERY
-SELECT
-    p.product_id,
-    p.product_name,
-    c.category_name,
-    SUM(od.quantity) as total_quantity,
-    SUM(od.unit_price * od.quantity) as total_revenue,
-    COUNT(DISTINCT o.order_id) as order_count
-FROM products p
-         INNER JOIN categories c ON p.category_id = c.category_id
-         INNER JOIN order_details od ON p.product_id = od.product_id
-         INNER JOIN orders o ON od.order_id = o.order_id
-WHERE
-    o.order_status = 'Completed'
-  AND (p_start_date IS NULL OR o.order_date >= p_start_date)
-  AND (p_end_date IS NULL OR o.order_date <= p_end_date)
-  AND (p_category_id IS NULL OR p.category_id = p_category_id)
-GROUP BY p.product_id, p.product_name, c.category_name
-ORDER BY total_revenue DESC;
+    SELECT
+        p.product_id,
+        p.product_name,
+        c.category_name,
+        SUM(od.quantity) as total_quantity,
+        SUM(od.unit_price * od.quantity) as total_revenue,
+        COUNT(DISTINCT o.order_id) as order_count
+    FROM products p
+             INNER JOIN categories c ON p.category_id = c.category_id
+             INNER JOIN order_details od ON p.product_id = od.product_id
+             INNER JOIN orders o ON od.order_id = o.order_id
+    WHERE
+        o.order_status = 'Completed'
+      AND (p_start_date IS NULL OR o.order_date >= p_start_date)
+      AND (p_end_date IS NULL OR o.order_date <= p_end_date)
+      AND (p_category_id IS NULL OR p.category_id = p_category_id)
+    GROUP BY p.product_id, p.product_name, c.category_name
+    ORDER BY total_revenue DESC;
 END;
 
 $$
@@ -603,30 +686,30 @@ v_order_id INTEGER;
     cart_item RECORD;
 BEGIN
     -- Create order
-INSERT INTO orders (user_id, order_date, order_status, payment_method, payment_status)
-VALUES (p_user_id, CURRENT_TIMESTAMP, 'Pending', p_payment_method, 'Pending')
-    RETURNING order_id INTO v_order_id;
-
--- Add order details from cart
-FOR cart_item IN
-SELECT sc.product_id, sc.quantity, p.unit_price
-FROM shopping_cart sc
-         INNER JOIN products p ON sc.product_id = p.product_id
-WHERE sc.user_id = p_user_id
-    LOOP
-INSERT INTO order_details (order_id, product_id, quantity, unit_price)
-VALUES (v_order_id, cart_item.product_id, cart_item.quantity, cart_item.unit_price);
-
-v_total_amount := v_total_amount + (cart_item.quantity * cart_item.unit_price);
-END LOOP;
+    INSERT INTO orders (user_id, order_date, order_status, payment_method, payment_status)
+    VALUES (p_user_id, CURRENT_TIMESTAMP, 'Pending', p_payment_method, 'Pending')
+        RETURNING order_id INTO v_order_id;
     
-    -- Update order total
-UPDATE orders SET total_amount = v_total_amount WHERE order_id = v_order_id;
-
--- Clear cart
-DELETE FROM shopping_cart WHERE user_id = p_user_id;
-
-RETURN v_order_id;
+    -- Add order details from cart
+    FOR cart_item IN
+    SELECT sc.product_id, sc.quantity, p.unit_price
+    FROM shopping_cart sc
+             INNER JOIN products p ON sc.product_id = p.product_id
+    WHERE sc.user_id = p_user_id
+        LOOP
+    INSERT INTO order_details (order_id, product_id, quantity, unit_price)
+    VALUES (v_order_id, cart_item.product_id, cart_item.quantity, cart_item.unit_price);
+    
+    v_total_amount := v_total_amount + (cart_item.quantity * cart_item.unit_price);
+    END LOOP;
+        
+        -- Update order total
+    UPDATE orders SET total_amount = v_total_amount WHERE order_id = v_order_id;
+    
+    -- Clear cart
+    DELETE FROM shopping_cart WHERE user_id = p_user_id;
+    
+    RETURN v_order_id;
 END;
 
 $$
@@ -642,17 +725,17 @@ $$
 
 BEGIN
     IF p_operation = 'ADD' THEN
-UPDATE products
-SET units_in_stock = units_in_stock + p_quantity_change,
-    modified_date = CURRENT_TIMESTAMP
-WHERE product_id = p_product_id;
-ELSIF p_operation = 'SUBTRACT' THEN
-UPDATE products
-SET units_in_stock = units_in_stock - p_quantity_change,
-    modified_date = CURRENT_TIMESTAMP
-WHERE product_id = p_product_id AND units_in_stock >= p_quantity_change;
-END IF;
-    
+        UPDATE products
+        SET units_in_stock = units_in_stock + p_quantity_change,
+            modified_date = CURRENT_TIMESTAMP
+        WHERE product_id = p_product_id;
+    ELSIF p_operation = 'SUBTRACT' THEN
+        UPDATE products
+        SET units_in_stock = units_in_stock - p_quantity_change,
+            modified_date = CURRENT_TIMESTAMP
+        WHERE product_id = p_product_id AND units_in_stock >= p_quantity_change;
+    END IF;
+        
     RETURN FOUND;
 END;
 
@@ -672,15 +755,15 @@ $$
 
 BEGIN
 RETURN QUERY
-SELECT
-    p.product_id,
-    p.product_name,
-    p.unit_price,
-    sc.quantity,
-    (p.unit_price * sc.quantity) as subtotal
-FROM shopping_cart sc
-         INNER JOIN products p ON sc.product_id = p.product_id
-WHERE sc.user_id = p_user_id;
+    SELECT
+        p.product_id,
+        p.product_name,
+        p.unit_price,
+        sc.quantity,
+        (p.unit_price * sc.quantity) as subtotal
+    FROM shopping_cart sc
+             INNER JOIN products p ON sc.product_id = p.product_id
+    WHERE sc.user_id = p_user_id;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -785,4 +868,166 @@ CREATE TABLE SelfReferenceTable (
         CONSTRAINT FK_SelfReferenceTable_SelfReferenceTable FOREIGN KEY (ManagerId) REFERENCES SelfReferenceTable(ID)
 );
 
+-- Add expiry month constraint to payment_methods
+ALTER TABLE payment_methods 
+ADD CONSTRAINT chk_payment_methods_expiry_month 
+CHECK (expiry_month BETWEEN 1 AND 12);
 
+-- Get User Profile (equivalent to SQL Server procedure)
+CREATE OR REPLACE FUNCTION get_user_profile(p_user_id INTEGER)
+RETURNS TABLE (
+    user_id INTEGER,
+    username VARCHAR(50),
+    email VARCHAR(100),
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    date_of_birth DATE,
+    phone_number VARCHAR(15),
+    is_active BOOLEAN,
+    created_date TIMESTAMP,
+    last_login_date TIMESTAMP
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        u.user_id,
+        u.username,
+        u.email,
+        u.first_name,
+        u.last_name,
+        u.date_of_birth,
+        u.phone_number,
+        u.is_active,
+        u.created_date,
+        u.last_login_date
+    FROM users u
+    WHERE u.user_id = p_user_id AND u.is_active = TRUE;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Get User Addresses (companion function)
+CREATE OR REPLACE FUNCTION get_user_addresses(p_user_id INTEGER)
+RETURNS TABLE (
+    address_id INTEGER,
+    address_type VARCHAR(20),
+    address_line1 VARCHAR(255),
+    address_line2 VARCHAR(255),
+    city VARCHAR(100),
+    state VARCHAR(50),
+    zip_code VARCHAR(10),
+    country VARCHAR(50),
+    is_default BOOLEAN
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        ua.address_id,
+        ua.address_type,
+        ua.address_line1,
+        ua.address_line2,
+        ua.city,
+        ua.state,
+        ua.zip_code,
+        ua.country,
+        ua.is_default
+    FROM user_addresses ua
+    WHERE ua.user_id = p_user_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Get Order Details (equivalent to SQL Server procedure)
+CREATE OR REPLACE FUNCTION get_order_details(p_order_id INTEGER)
+RETURNS TABLE (
+    order_id INTEGER,
+    order_date TIMESTAMP,
+    order_status VARCHAR(20),
+    payment_status VARCHAR(20),
+    sub_total DECIMAL(12,2),
+    tax_amount DECIMAL(12,2),
+    shipping_amount DECIMAL(12,2),
+    total_amount DECIMAL(12,2),
+    tracking_number VARCHAR(50),
+    customer_name TEXT,
+    customer_email VARCHAR(100),
+    shipping_address1 VARCHAR(255),
+    shipping_address2 VARCHAR(255),
+    shipping_city VARCHAR(100),
+    shipping_state VARCHAR(50),
+    shipping_zip VARCHAR(10)
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        o.order_id,
+        o.order_date,
+        o.order_status,
+        o.payment_status,
+        o.sub_total,
+        o.tax_amount,
+        o.shipping_amount,
+        o.total_amount,
+        o.tracking_number,
+        (u.first_name || ' ' || u.last_name) AS customer_name,
+        u.email AS customer_email,
+        sa.address_line1 AS shipping_address1,
+        sa.address_line2 AS shipping_address2,
+        sa.city AS shipping_city,
+        sa.state AS shipping_state,
+        sa.zip_code AS shipping_zip
+    FROM orders o
+    INNER JOIN users u ON o.user_id = u.user_id
+    INNER JOIN user_addresses sa ON o.shipping_address_id = sa.address_id
+    WHERE o.order_id = p_order_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Get Order Line Items (companion function)
+CREATE OR REPLACE FUNCTION get_order_line_items(p_order_id INTEGER)
+RETURNS TABLE (
+    order_detail_id INTEGER,
+    product_id INTEGER,
+    product_name VARCHAR(255),
+    sku VARCHAR(50),
+    quantity INTEGER,
+    unit_price DECIMAL(10,2),
+    discount DECIMAL(5,2),
+    line_total DECIMAL(12,2)
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        od.order_detail_id,
+        od.product_id,
+        p.product_name,
+        p.sku,
+        od.quantity,
+        od.unit_price,
+        od.discount,
+        od.line_total
+    FROM order_details od
+    INNER JOIN products p ON od.product_id = p.product_id
+    WHERE od.order_id = p_order_id;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Update Product Stock (equivalent to SQL Server procedure)
+CREATE OR REPLACE FUNCTION update_product_stock(
+    p_product_id INTEGER,
+    p_quantity INTEGER,
+    p_transaction_type VARCHAR(20),
+    p_user_id INTEGER,
+    p_unit_price DECIMAL(10,2) DEFAULT NULL,
+    p_notes TEXT DEFAULT NULL
+) RETURNS VOID AS $$
+BEGIN
+    -- Update product stock
+    UPDATE products
+    SET units_in_stock = units_in_stock + p_quantity,
+        modified_date = CURRENT_TIMESTAMP
+    WHERE product_id = p_product_id;
+
+    -- Log inventory transaction
+    INSERT INTO inventory_transactions (product_id, transaction_type, quantity, unit_price, notes, created_by)
+    VALUES (p_product_id, p_transaction_type, p_quantity, p_unit_price, p_notes, p_user_id);
+END;
+$$ LANGUAGE plpgsql;

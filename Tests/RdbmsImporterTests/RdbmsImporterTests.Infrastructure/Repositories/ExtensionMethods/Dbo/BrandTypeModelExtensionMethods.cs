@@ -8,15 +8,15 @@ using RdbmsImporterTests.Domain.Contracts.Dbo;
 
 namespace RdbmsImporterTests.Infrastructure.Repositories.ExtensionMethods.Dbo
 {
-    internal static class BrandTypeExtensionMethods
+    internal static class BrandTypeModelExtensionMethods
     {
-        public static DataTable ToDataTable(this IEnumerable<BrandType> brandTypes)
+        public static DataTable ToDataTable(this IEnumerable<BrandTypeModel> brandTypeModels)
         {
             var dataTable = new DataTable();
             dataTable.Columns.Add("Name", typeof(string));
             dataTable.Columns.Add("IsActive", typeof(bool));
 
-            foreach (var item in brandTypes)
+            foreach (var item in brandTypeModels)
             {
                 dataTable.Rows.Add(item.Name, item.IsActive);
             }

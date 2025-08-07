@@ -13,7 +13,7 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Dbo
         public void Configure(EntityTypeBuilder<GetOrderItemDetailsResponse> builder)
         {
             builder.HasNoKey().ToView(null);
-            builder.Property(x => x.Amount).HasPrecision(18, 2);
+            builder.Property(x => x.Amount).HasPrecision(16, 4);
         }
     }
 }

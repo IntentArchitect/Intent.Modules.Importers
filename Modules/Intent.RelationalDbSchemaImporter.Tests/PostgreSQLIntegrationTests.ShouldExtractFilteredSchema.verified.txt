@@ -196,6 +196,14 @@
             }
           ]
         }
+      ],
+      Triggers: [
+        {
+          Name: tr_orders_audit,
+          ParentSchema: public,
+          ParentName: orders,
+          ParentType: Table
+        }
       ]
     },
     {

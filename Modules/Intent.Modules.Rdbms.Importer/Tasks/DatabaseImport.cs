@@ -61,7 +61,7 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
             executionResult.Errors.Add($"Schema mapping failed: {mappingResult.Message}");
             if (mappingResult.Exception != null)
             {
-                executionResult.Errors.Add($"Exception: {mappingResult.Exception.Message}");
+                executionResult.Errors.Add($"Exception: {mappingResult.Exception.ToString()}");
             }
         }
         finally

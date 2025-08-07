@@ -22,7 +22,7 @@
   <childElements>
     <childElement id="35ceb7a7-2db7-4a96-b684-3e3cb8b25766" type="Stored Procedure" typeId="575edd35-9438-406d-b0a7-b99d6f29b560">
       <name>GetCustomerOrders</name>
-      <display>GetCustomerOrders(customer_id: guid?): GetCustomerOrdersResponse[*]</display>
+      <display>GetCustomerOrders(customer_id: guid?, customerId: guid?): GetCustomerOrdersResponse[*]</display>
       <externalReference>[public].[getcustomerorders]</externalReference>
       <isAbstract>false</isAbstract>
       <sort-children>manually</sort-children>
@@ -103,11 +103,49 @@
           <metadata />
           <childElements />
         </childElement>
+        <childElement id="16c4a883-d4ac-4068-b723-d66aa12622cd" type="Stored Procedure Parameter" typeId="5823b192-eb03-47c8-90d8-5501c922e9a5">
+          <name>customerId</name>
+          <display>customerId: guid?</display>
+          <externalReference>customerid</externalReference>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="629cafb8-fe5a-4fb3-a832-7c36ec0c90d0">
+            <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>true</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>Intent.Common.Types</typePackageName>
+            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>35ceb7a7-2db7-4a96-b684-3e3cb8b25766</parentFolderId>
+          <packageId>5a5b2715-8ca3-407c-8914-c2478a684f5a</packageId>
+          <packageName>PostgreSqlImporterTests</packageName>
+          <stereotypes>
+            <stereotype stereotypeDefinitionId="5332b774-6499-4b4b-9fdb-e3eef13bdee4" name="Stored Procedure Parameter Settings">
+              <addedByDefault>true</addedByDefault>
+              <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
+              <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
+              <properties>
+                <property name="17aa77a0-c531-49ec-bed0-9cbb125f6ce3" display="Is Output Parameter" value="false" isActive="true" />
+                <property name="dfa55cca-142e-4d76-b772-6f86a9c99b0f" display="SQL String Type" value="VarChar" isActive="false" />
+                <property name="febc9d55-6c43-4549-bef8-9f2aee7811c9" display="Size" value="255" isActive="false" />
+                <property name="ccf2fa26-234b-49c9-ad0b-0e33d570f2df" display="Precision" isActive="false" />
+                <property name="4ac97c2e-d789-4174-9343-47758b4f4938" display="Scale" isActive="false" />
+              </properties>
+            </stereotype>
+          </stereotypes>
+          <metadata />
+          <childElements />
+        </childElement>
       </childElements>
     </childElement>
     <childElement id="634d224f-f2df-4d2c-8d67-b7a711843e67" type="Stored Procedure" typeId="575edd35-9438-406d-b0a7-b99d6f29b560">
       <name>GetOrderItemDetails</name>
-      <display>GetOrderItemDetails(order_id: guid?): GetOrderItemDetailsResponse[*]</display>
+      <display>GetOrderItemDetails(order_id: guid?, orderId: guid?): GetOrderItemDetailsResponse[*]</display>
       <externalReference>[public].[getorderitemdetails]</externalReference>
       <isAbstract>false</isAbstract>
       <sort-children>manually</sort-children>
@@ -174,6 +212,44 @@
           <stereotypes>
             <stereotype stereotypeDefinitionId="5332b774-6499-4b4b-9fdb-e3eef13bdee4" name="Stored Procedure Parameter Settings">
               <addedByDefault>false</addedByDefault>
+              <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
+              <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
+              <properties>
+                <property name="17aa77a0-c531-49ec-bed0-9cbb125f6ce3" display="Is Output Parameter" value="false" isActive="true" />
+                <property name="dfa55cca-142e-4d76-b772-6f86a9c99b0f" display="SQL String Type" value="VarChar" isActive="false" />
+                <property name="febc9d55-6c43-4549-bef8-9f2aee7811c9" display="Size" value="255" isActive="false" />
+                <property name="ccf2fa26-234b-49c9-ad0b-0e33d570f2df" display="Precision" isActive="false" />
+                <property name="4ac97c2e-d789-4174-9343-47758b4f4938" display="Scale" isActive="false" />
+              </properties>
+            </stereotype>
+          </stereotypes>
+          <metadata />
+          <childElements />
+        </childElement>
+        <childElement id="43813cdc-22ca-49ef-a754-8a4367148112" type="Stored Procedure Parameter" typeId="5823b192-eb03-47c8-90d8-5501c922e9a5">
+          <name>orderId</name>
+          <display>orderId: guid?</display>
+          <externalReference>orderid</externalReference>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="8373e25f-f8d1-4c2b-ab4b-3ca28053398c">
+            <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>true</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>Intent.Common.Types</typePackageName>
+            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>634d224f-f2df-4d2c-8d67-b7a711843e67</parentFolderId>
+          <packageId>5a5b2715-8ca3-407c-8914-c2478a684f5a</packageId>
+          <packageName>PostgreSqlImporterTests</packageName>
+          <stereotypes>
+            <stereotype stereotypeDefinitionId="5332b774-6499-4b4b-9fdb-e3eef13bdee4" name="Stored Procedure Parameter Settings">
+              <addedByDefault>true</addedByDefault>
               <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
               <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
               <properties>

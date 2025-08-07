@@ -24,6 +24,8 @@ internal static class ModelNamingUtilities
 
     public static string GetEntityName(string tableName, EntityNameConvention convention, string schema, DeduplicationContext? deduplicationContext)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(tableName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
         var normalized = convention switch
         {
             EntityNameConvention.MatchTable => NormalizeTableName(tableName),
@@ -35,6 +37,8 @@ internal static class ModelNamingUtilities
 
     public static string GetViewName(string viewName, EntityNameConvention convention, string schema, DeduplicationContext? deduplicationContext)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(viewName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
         var normalized = convention switch
         {
             EntityNameConvention.MatchTable => NormalizeTableName(viewName),
@@ -46,6 +50,9 @@ internal static class ModelNamingUtilities
 
     public static string GetAttributeName(string columnName, string? tableName, string className, string schema, DeduplicationContext? deduplicationContext)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(columnName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(className);
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
         // Normalize column name
         var normalized = NormalizeColumnName(columnName, tableName);
         return deduplicationContext?.DeduplicateColumn(normalized, className, schema) ?? normalized;
@@ -53,6 +60,8 @@ internal static class ModelNamingUtilities
 
     public static string GetStoredProcedureName(string procName, string schema, DeduplicationContext? deduplicationContext)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(procName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
         // Remove schema prefix if present and convert to PascalCase
         var name = procName.Contains('.') ? procName.Split('.').Last() : procName;
         var normalized = NormalizeStoredProcName(name);
@@ -61,6 +70,7 @@ internal static class ModelNamingUtilities
 
     public static string GetParameterName(string paramName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(paramName);
         // Remove @ prefix if present and convert to camelCase
         var normalized = paramName.StartsWith("@") ? paramName.Substring(1) : paramName;
         normalized=ToCSharpIdentifier(normalized);
@@ -70,7 +80,7 @@ internal static class ModelNamingUtilities
     /// <summary>
     /// Converts database identifier to valid C# identifier following C# naming conventions
     /// </summary>
-    public static string ToCSharpIdentifier(string identifier, string prefixValue = "Db")
+    public static string ToCSharpIdentifier(string? identifier, string? prefixValue = "Db")
     {
         if (string.IsNullOrWhiteSpace(identifier))
         {
@@ -175,6 +185,7 @@ internal static class ModelNamingUtilities
 
     public static string NormalizeTableName(string tableName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(tableName);
         var normalized = tableName.RemovePrefix("tbl");
         normalized = ToCSharpIdentifier(normalized, "Db");
         normalized = normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
@@ -183,6 +194,7 @@ internal static class ModelNamingUtilities
 
     public static string NormalizeColumnName(string colName, string? tableOrViewName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(colName);
         var normalized = colName != tableOrViewName ? colName : colName + "Value";
         normalized = ToCSharpIdentifier(normalized, "db");
         normalized = normalized.RemovePrefix("col").RemovePrefix("pk");
@@ -198,6 +210,7 @@ internal static class ModelNamingUtilities
 
     public static string NormalizeStoredProcName(string storeProcName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(storeProcName);
         var normalized = ToCSharpIdentifier(storeProcName);
         normalized = normalized.RemovePrefix("prc")
             .RemovePrefix("Prc");
@@ -216,6 +229,7 @@ internal static class ModelNamingUtilities
 
     public static string NormalizeSchemaName(string schemaName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schemaName);
         var normalized = schemaName;
         return normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
     }
@@ -225,6 +239,7 @@ internal static class ModelNamingUtilities
     /// </summary>
     public static string NormalizeUserDefinedTableName(string udtName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(udtName);
         var normalized = udtName;
         return normalized.Substring(0, 1).ToUpper() + normalized.Substring(1) + "Model";
     }
@@ -234,6 +249,8 @@ internal static class ModelNamingUtilities
     /// </summary>
     public static string GetTableExternalReference(string schema, string tableName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
+        ArgumentException.ThrowIfNullOrWhiteSpace(tableName);
         return $"[{schema.ToLowerInvariant()}].[{tableName.ToLowerInvariant()}]";
     }
 
@@ -242,6 +259,8 @@ internal static class ModelNamingUtilities
     /// </summary>
     public static string GetViewExternalReference(string schema, string viewName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
+        ArgumentException.ThrowIfNullOrWhiteSpace(viewName);
         return $"[{schema.ToLowerInvariant()}].[{viewName.ToLowerInvariant()}]";
     }
 
@@ -250,6 +269,9 @@ internal static class ModelNamingUtilities
     /// </summary>
     public static string GetColumnExternalReference(string schema, string tableName, string columnName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
+        ArgumentException.ThrowIfNullOrWhiteSpace(tableName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(columnName);
         return $"[{schema.ToLowerInvariant()}].[{tableName.ToLowerInvariant()}].[{columnName.ToLowerInvariant()}]";
     }
 
@@ -258,6 +280,8 @@ internal static class ModelNamingUtilities
     /// </summary>
     public static string GetStoredProcedureExternalReference(string schema, string procName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
+        ArgumentException.ThrowIfNullOrWhiteSpace(procName);
         return $"[{schema.ToLowerInvariant()}].[{procName.ToLowerInvariant()}]";
     }
 
@@ -266,6 +290,8 @@ internal static class ModelNamingUtilities
     /// </summary>
     public static string GetDataContractExternalReference(string schema, string procName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
+        ArgumentException.ThrowIfNullOrWhiteSpace(procName);
         return $"{GetStoredProcedureExternalReference(schema, procName)}.Response";
     }
 
@@ -274,6 +300,9 @@ internal static class ModelNamingUtilities
     /// </summary>
     public static string GetForeignKeyExternalReference(string schema, string tableName, string fkName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
+        ArgumentException.ThrowIfNullOrWhiteSpace(tableName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(fkName);
         return $"[{schema.ToLowerInvariant()}].[{tableName.ToLowerInvariant()}].[{fkName.ToLowerInvariant()}]";
     }
 
@@ -282,6 +311,9 @@ internal static class ModelNamingUtilities
     /// </summary>
     public static string GetTriggerExternalReference(string schema, string tableName, string triggerName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
+        ArgumentException.ThrowIfNullOrWhiteSpace(tableName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(triggerName);
         return $"trigger:[{schema.ToLowerInvariant()}].[{tableName.ToLowerInvariant()}].[{triggerName.ToLowerInvariant()}]";
     }
 
@@ -290,11 +322,17 @@ internal static class ModelNamingUtilities
     /// </summary>
     public static string GetResultSetColumnExternalReference(string schema, string procName, string columnName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
+        ArgumentException.ThrowIfNullOrWhiteSpace(procName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(columnName);
         return $"[{GetDataContractExternalReference(schema, procName).ToLowerInvariant()}].[{columnName.ToLowerInvariant()}]";
     }
 
     public static string GetIndexExternalReference(string tableSchema, string tableName, string indexName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(tableSchema);
+        ArgumentException.ThrowIfNullOrWhiteSpace(tableName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(indexName);
         return $"index:[{tableSchema.ToLowerInvariant()}].[{tableName.ToLowerInvariant()}].[{indexName.ToLowerInvariant()}]";
     }
 
@@ -303,6 +341,8 @@ internal static class ModelNamingUtilities
     /// </summary>
     public static string GetUserDefinedTableDataContractExternalReference(string schema, string udtName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
+        ArgumentException.ThrowIfNullOrWhiteSpace(udtName);
         return $"[{schema.ToLowerInvariant()}].[{udtName.ToLowerInvariant()}].UDT";
     }
 
@@ -311,16 +351,21 @@ internal static class ModelNamingUtilities
     /// </summary>
     public static string GetUserDefinedTableColumnExternalReference(string schema, string udtName, string columnName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
+        ArgumentException.ThrowIfNullOrWhiteSpace(udtName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(columnName);
         return $"{GetUserDefinedTableDataContractExternalReference(schema, udtName)}.[{columnName.ToLowerInvariant()}]";
     }
 
     public static string GetSchemaExternalReference(string schemaName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schemaName);
         return $"schema:[{schemaName.ToLowerInvariant()}]";
     }
 
     public static string GetIndexColumnExternalReference(string indexColumnName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(indexColumnName);
         return indexColumnName.ToLowerInvariant();
     }
 } 

@@ -79,7 +79,7 @@ public class PathResolution : ModuleTaskSingleInputBase<PathResolutionInputModel
         }
         catch (Exception ex)
         {
-            executionResult.Errors.Add($"Error resolving path: {ex.Message}");
+            executionResult.Errors.Add($"Error resolving path: {ex.ToString()}");
             executionResult.Result = new { ResolvedPath = inputModel.SelectedFilePath, IsRelative = false };
         }
 

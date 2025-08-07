@@ -1,3 +1,5 @@
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
+
 namespace Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 
 /// <summary>
@@ -45,9 +47,9 @@ public class StoredProcedureParameterSchema
     /// </summary>
     public string LanguageDataType { get; set; } = string.Empty;
     /// <summary>
-    /// Whether the parameter is an output parameter.
+    /// Parameter direction.
     /// </summary>
-    public bool IsOutputParameter { get; set; }
+    public StoredProcedureParameterDirection Direction { get; set; } = StoredProcedureParameterDirection.In;
     /// <summary>
     /// The maximum length of the parameter.
     /// </summary>
@@ -78,7 +80,7 @@ public class ResultSetColumnSchema
     /// <summary>
     /// The name of the column.
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } = null!;
     /// <summary>
     /// The data type of the column.
     /// </summary>

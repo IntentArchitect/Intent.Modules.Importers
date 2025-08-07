@@ -132,7 +132,7 @@
     </childElement>
     <childElement id="296e77ad-3578-453a-8669-32b889c05840" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
       <name>InsertBrand</name>
-      <display>InsertBrand(brand: BrandType[*]): void</display>
+      <display>InsertBrand(brand: BrandTypeModel[*]): void</display>
       <externalReference>[dbo].[insertbrand]</externalReference>
       <isAbstract>false</isAbstract>
       <sort-children>by-type-then-manually</sort-children>
@@ -157,7 +157,7 @@
       <childElements>
         <childElement id="4773c34d-02b0-4b02-8f20-279b878d4066" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
           <name>brand</name>
-          <display>in : brand: BrandType[*]</display>
+          <display>in : brand: BrandTypeModel[*]</display>
           <externalReference>@brand</externalReference>
           <isAbstract>false</isAbstract>
           <genericTypes />

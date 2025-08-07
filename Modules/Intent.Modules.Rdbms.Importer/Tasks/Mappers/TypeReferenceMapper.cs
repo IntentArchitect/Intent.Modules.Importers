@@ -1,6 +1,7 @@
 using System;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 
 namespace Intent.Modules.Rdbms.Importer.Tasks.Mappers;
 
@@ -25,7 +26,7 @@ internal static class TypeReferenceMapper
         {
             Id = Guid.NewGuid().ToString(),
             TypeId = GetTypeId(parameter.LanguageDataType),
-            IsNullable = !parameter.IsOutputParameter, // Input parameters can be nullable, output parameters typically aren't
+            IsNullable = parameter.Direction != StoredProcedureParameterDirection.Out, // Input parameters can be nullable, output parameters typically aren't
             IsCollection = parameter.LanguageDataType.EndsWith("[]"),
             Stereotypes = [],
             GenericTypeParameters = []
@@ -44,7 +45,7 @@ internal static class TypeReferenceMapper
             {
                 Id = Guid.NewGuid().ToString(),
                 TypeId = userDefinedTableDataContractId,
-                IsNullable = !parameter.IsOutputParameter,
+                IsNullable = parameter.Direction != StoredProcedureParameterDirection.Out,
                 IsCollection = true, // UserDefinedTable parameters are collections
                 Stereotypes = [],
                 GenericTypeParameters = []
@@ -93,7 +94,7 @@ internal static class TypeReferenceMapper
             "long[]" => Constants.TypeDefinitions.CommonTypes.Long,
             "guid[]" => Constants.TypeDefinitions.CommonTypes.Guid,
             "byte[][]" => Constants.TypeDefinitions.CommonTypes.Binary,
-            _ => null
+            _ => Constants.TypeDefinitions.CommonTypes.Object
         };
     }
 }

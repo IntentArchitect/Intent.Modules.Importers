@@ -36,7 +36,8 @@ CREATE TABLE UserAddresses (
                                ZipCode NVARCHAR(10) NOT NULL,
                                Country NVARCHAR(50) NOT NULL DEFAULT 'USA',
                                IsDefault BIT DEFAULT 0,
-                               CreatedDate DATETIME2 DEFAULT GETDATE()
+                               CreatedDate DATETIME2 DEFAULT GETDATE(),
+                               CONSTRAINT CK_UserAddresses_AddressType CHECK (AddressType IN ('Billing', 'Shipping'))
 );
 
 -- Categories
@@ -153,7 +154,9 @@ CREATE TABLE PaymentMethods (
                                 ExpiryYear INT,
                                 IsDefault BIT DEFAULT 0,
                                 IsActive BIT DEFAULT 1,
-                                CreatedDate DATETIME2 DEFAULT GETDATE()
+                                CreatedDate DATETIME2 DEFAULT GETDATE(),
+                                CONSTRAINT CK_PaymentMethods_PaymentType CHECK (PaymentType IN ('Credit Card', 'PayPal', 'Bank Transfer')),
+                                CONSTRAINT CK_PaymentMethods_ExpiryMonth CHECK (ExpiryMonth BETWEEN 1 AND 12)
 );
 
 -- Payments
@@ -179,7 +182,8 @@ CREATE TABLE InventoryTransactions (
                                        ReferenceID INT, -- Could be OrderID, PurchaseOrderID, etc.
                                        Notes NVARCHAR(500),
                                        CreatedDate DATETIME2 DEFAULT GETDATE(),
-                                       CreatedBy INT NOT NULL
+                                       CreatedBy INT NOT NULL,
+                                       CONSTRAINT CK_InventoryTransactions_TransactionType CHECK (TransactionType IN ('Purchase', 'Sale', 'Return', 'Adjustment'))
 );
 
 -- Audit Log
@@ -191,8 +195,9 @@ CREATE TABLE AuditLog (
                           OldValues NVARCHAR(MAX),
                           NewValues NVARCHAR(MAX),
                           ChangedBy INT,
-                          ChangeDate DATETIME2 DEFAULT GETDATE()
-);
+                          ChangeDate DATETIME2 DEFAULT GETDATE(),
+                          CONSTRAINT CK_AuditLog_Action CHECK (Action IN ('INSERT', 'UPDATE', 'DELETE'))
+    );
 
 -- =============================================
 -- FOREIGN KEY CONSTRAINTS
@@ -325,6 +330,36 @@ SET ModifiedDate = GETDATE()
 END;
 GO
 
+-- Trigger to update ModifiedDate on Categories
+CREATE TRIGGER TR_Categories_UpdateModifiedDate
+    ON Categories
+    AFTER UPDATE
+              AS
+BEGIN
+    SET NOCOUNT ON;
+
+UPDATE Categories
+SET ModifiedDate = GETDATE()
+    FROM Categories c
+    INNER JOIN inserted i ON c.CategoryID = i.CategoryID;
+END;
+GO
+
+-- Trigger to update ModifiedDate on ShoppingCart
+CREATE TRIGGER TR_ShoppingCart_UpdateModifiedDate
+    ON ShoppingCart
+    AFTER UPDATE
+              AS
+BEGIN
+    SET NOCOUNT ON;
+
+UPDATE ShoppingCart
+SET ModifiedDate = GETDATE()
+    FROM ShoppingCart sc
+    INNER JOIN inserted i ON sc.CartID = i.CartID;
+END;
+GO
+
 -- Trigger to update inventory when order is placed
 CREATE TRIGGER TR_OrderDetails_UpdateInventory
     ON OrderDetails
@@ -350,6 +385,64 @@ SELECT
     o.UserID
 FROM inserted i
          INNER JOIN Orders o ON i.OrderID = o.OrderID;
+END;
+GO
+
+-- Trigger to automatically calculate order totals
+CREATE TRIGGER TR_Orders_CalculateTotals
+    ON OrderDetails
+    AFTER INSERT, UPDATE, DELETE
+    AS
+BEGIN
+    SET NOCOUNT ON;
+
+UPDATE Orders
+SET SubTotal = (
+    SELECT SUM(LineTotal)
+    FROM OrderDetails
+    WHERE OrderID = Orders.OrderID
+),
+    TotalAmount = SubTotal + TaxAmount + ShippingAmount
+    FROM Orders
+WHERE OrderID IN (
+    SELECT DISTINCT OrderID FROM inserted
+    UNION
+    SELECT DISTINCT OrderID FROM deleted
+    );
+END;
+GO
+
+-- Add audit triggers for more tables (similar to PostgreSQL)
+CREATE TRIGGER TR_Products_Audit
+    ON Products
+    AFTER INSERT, UPDATE, DELETE
+    AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    DECLARE @Action NVARCHAR(10);
+    
+    IF EXISTS (SELECT * FROM inserted) AND EXISTS (SELECT * FROM deleted)
+        SET @Action = 'UPDATE';
+ELSE IF EXISTS (SELECT * FROM inserted)
+        SET @Action = 'INSERT';
+ELSE
+        SET @Action = 'DELETE';
+
+INSERT INTO AuditLog (TableName, RecordID, Action, OldValues, NewValues, ChangedBy)
+SELECT
+    'Products',
+    ISNULL(i.ProductID, d.ProductID),
+    @Action,
+    CASE WHEN @Action IN ('UPDATE', 'DELETE') THEN
+             (SELECT d.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER)
+END,
+        CASE WHEN @Action IN ('UPDATE', 'INSERT') THEN 
+            (SELECT i.* FOR JSON PATH, WITHOUT_ARRAY_WRAPPER)
+END,
+        USER_ID()
+    FROM inserted i
+    FULL OUTER JOIN deleted d ON i.ProductID = d.ProductID
 END;
 GO
 
@@ -383,31 +476,7 @@ END,
 END,
         USER_ID()
     FROM inserted i
-    FULL OUTER JOIN deleted d ON i.UserID = d.UserID;
-END;
-GO
-
--- Trigger to automatically calculate order totals
-CREATE TRIGGER TR_Orders_CalculateTotals
-    ON OrderDetails
-    AFTER INSERT, UPDATE, DELETE
-    AS
-BEGIN
-    SET NOCOUNT ON;
-
-UPDATE Orders
-SET SubTotal = (
-    SELECT SUM(LineTotal)
-    FROM OrderDetails
-    WHERE OrderID = Orders.OrderID
-),
-    TotalAmount = SubTotal + TaxAmount + ShippingAmount
-    FROM Orders
-WHERE OrderID IN (
-    SELECT DISTINCT OrderID FROM inserted
-    UNION
-    SELECT DISTINCT OrderID FROM deleted
-    );
+    FULL OUTER JOIN deleted d ON i.UserID = d.UserID
 END;
 GO
 
@@ -582,7 +651,7 @@ ORDER BY
     CASE WHEN @SortBy = 'Rating' AND @SortOrder = 'ASC' THEN AverageRating END ASC,
     CASE WHEN @SortBy = 'Rating' AND @SortOrder = 'DESC' THEN AverageRating END DESC
 OFFSET @Offset ROWS
-    FETCH NEXT @PageSize ROWS ONLY;
+    FETCH NEXT @PageSize ROWS ONLY
 END;
 GO
 
@@ -693,6 +762,132 @@ ORDER BY TotalRevenue DESC;
 END;
 GO
 
+-- Update User Profile (equivalent to PostgreSQL function)
+CREATE PROCEDURE sp_UpdateUserProfile
+    @UserID INT,
+    @FirstName NVARCHAR(50) = NULL,
+    @LastName NVARCHAR(50) = NULL,
+    @Email NVARCHAR(100) = NULL,
+    @Phone NVARCHAR(15) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+UPDATE Users
+SET
+    FirstName = ISNULL(@FirstName, FirstName),
+    LastName = ISNULL(@LastName, LastName),
+    Email = ISNULL(@Email, Email),
+    PhoneNumber = ISNULL(@Phone, PhoneNumber),
+    ModifiedDate = GETDATE()
+WHERE UserID = @UserID;
+
+RETURN @@ROWCOUNT;
+END;
+GO
+
+-- Process Order (equivalent to PostgreSQL function)
+CREATE PROCEDURE sp_ProcessOrder
+    @UserID INT,
+    @ShippingAddressID INT,
+    @PaymentMethod NVARCHAR(20) = 'Credit Card'
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    DECLARE @OrderID INT;
+    DECLARE @TotalAmount DECIMAL(10,2) = 0;
+
+BEGIN TRANSACTION;
+
+BEGIN TRY
+        -- Create order
+INSERT INTO Orders (UserID, OrderDate, OrderStatus, PaymentStatus, ShippingAddressID, BillingAddressID, SubTotal, TotalAmount)
+        VALUES (@UserID, GETDATE(), 'Pending', 'Pending', @ShippingAddressID, @ShippingAddressID, 0, 0);
+        
+        SET @OrderID = SCOPE_IDENTITY();
+        
+        -- Add order details from cart
+INSERT INTO OrderDetails (OrderID, ProductID, Quantity, UnitPrice)
+SELECT
+    @OrderID,
+    sc.ProductID,
+    sc.Quantity,
+    p.UnitPrice
+FROM ShoppingCart sc
+         INNER JOIN Products p ON sc.ProductID = p.ProductID
+WHERE sc.UserID = @UserID;
+
+-- Calculate total
+SELECT @TotalAmount = SUM(LineTotal)
+FROM OrderDetails
+WHERE OrderID = @OrderID;
+
+-- Update order total
+UPDATE Orders
+SET SubTotal = @TotalAmount, TotalAmount = @TotalAmount
+WHERE OrderID = @OrderID;
+
+-- Clear cart
+DELETE FROM ShoppingCart WHERE UserID = @UserID;
+
+COMMIT TRANSACTION;
+RETURN @OrderID;
+END TRY
+BEGIN CATCH
+ROLLBACK TRANSACTION;
+        THROW;
+END CATCH;
+END;
+GO
+
+-- Update Inventory (equivalent to PostgreSQL function)
+CREATE PROCEDURE sp_UpdateInventory
+    @ProductID INT,
+    @QuantityChange INT,
+    @Operation NVARCHAR(10) = 'ADD'
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    IF @Operation = 'ADD'
+BEGIN
+UPDATE Products
+SET UnitsInStock = UnitsInStock + @QuantityChange,
+    ModifiedDate = GETDATE()
+WHERE ProductID = @ProductID;
+END
+ELSE IF @Operation = 'SUBTRACT'
+BEGIN
+UPDATE Products
+SET UnitsInStock = UnitsInStock - @QuantityChange,
+    ModifiedDate = GETDATE()
+WHERE ProductID = @ProductID AND UnitsInStock >= @QuantityChange;
+END;
+
+RETURN @@ROWCOUNT;
+END;
+GO
+
+-- Get User Cart (equivalent to PostgreSQL function)
+CREATE PROCEDURE sp_GetUserCart
+    @UserID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+SELECT
+    p.ProductID,
+    p.ProductName,
+    p.UnitPrice,
+    sc.Quantity,
+    (p.UnitPrice * sc.Quantity) as Subtotal
+FROM ShoppingCart sc
+         INNER JOIN Products p ON sc.ProductID = p.ProductID
+WHERE sc.UserID = @UserID;
+END;
+GO
+
 -- =============================================
 -- VIEWS
 -- =============================================
@@ -744,16 +939,16 @@ GO
 -- =============================================
 
 CREATE TABLE dbo.Brands (
-	Id uniqueidentifier NOT NULL,
-	Name nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	IsActive bit NOT NULL,
-	CONSTRAINT PK_Brands PRIMARY KEY (Id)
+                            Id uniqueidentifier NOT NULL,
+                            Name nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+                            IsActive bit NOT NULL,
+                            CONSTRAINT PK_Brands PRIMARY KEY (Id)
 );
 
 CREATE TYPE [dbo].[BrandType] AS TABLE(
-	[Name] [nvarchar](max) NOT NULL,
-	[IsActive] [bit] NOT NULL
-)
+    [Name] [nvarchar](max) NOT NULL,
+    [IsActive] [bit] NOT NULL
+    )
 GO
 
 CREATE PROCEDURE [dbo].[InsertBrand]
@@ -762,37 +957,37 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	INSERT INTO dbo.Brands ([Id], [Name], [IsActive])
-	SELECT NEWID() AS [Id], [Name], [IsActive] FROM @brand
+INSERT INTO dbo.Brands ([Id], [Name], [IsActive])
+SELECT NEWID() AS [Id], [Name], [IsActive] FROM @brand
 END
 GO
 
 CREATE TABLE FKTable (
-    FKTableId INT PRIMARY KEY IDENTITY(1,1),
-    Name NVARCHAR(100) NOT NULL
+                         FKTableId INT PRIMARY KEY IDENTITY(1,1),
+                         Name NVARCHAR(100) NOT NULL
 );
 
 CREATE TABLE PrimaryTable (
-    PrimaryTableId INT PRIMARY KEY IDENTITY(1,1),
-    Name NVARCHAR(100) NOT NULL,
-    FKTableId1 INT NOT NULL,
-    FKWithTableId2 INT NOT NULL,
-    FKAsTableId3 INT NOT NULL,
-    FKTryTableId4 INT NOT NULL,
-    FKThisTableId5 INT NOT NULL,
-    CONSTRAINT FK_PrimaryTable_FKTable1 FOREIGN KEY (FKTableId1) REFERENCES FKTable(FKTableId),
-    CONSTRAINT FK_PrimaryTable_FKWithTableId2 FOREIGN KEY (FKWithTableId2) REFERENCES FKTable(FKTableId),
-    CONSTRAINT FK_PrimaryTable_FKAsTableId3 FOREIGN KEY (FKAsTableId3) REFERENCES FKTable(FKTableId),
-    CONSTRAINT FK_PrimaryTable_FKTryTableId4 FOREIGN KEY (FKTryTableId4) REFERENCES FKTable(FKTableId),
-    CONSTRAINT FK_PrimaryTable_FKThisTableId5 FOREIGN KEY (FKThisTableId5) REFERENCES FKTable(FKTableId)
+                              PrimaryTableId INT PRIMARY KEY IDENTITY(1,1),
+                              Name NVARCHAR(100) NOT NULL,
+                              FKTableId1 INT NOT NULL,
+                              FKWithTableId2 INT NOT NULL,
+                              FKAsTableId3 INT NOT NULL,
+                              FKTryTableId4 INT NOT NULL,
+                              FKThisTableId5 INT NOT NULL,
+                              CONSTRAINT FK_PrimaryTable_FKTable1 FOREIGN KEY (FKTableId1) REFERENCES FKTable(FKTableId),
+                              CONSTRAINT FK_PrimaryTable_FKWithTableId2 FOREIGN KEY (FKWithTableId2) REFERENCES FKTable(FKTableId),
+                              CONSTRAINT FK_PrimaryTable_FKAsTableId3 FOREIGN KEY (FKAsTableId3) REFERENCES FKTable(FKTableId),
+                              CONSTRAINT FK_PrimaryTable_FKTryTableId4 FOREIGN KEY (FKTryTableId4) REFERENCES FKTable(FKTableId),
+                              CONSTRAINT FK_PrimaryTable_FKThisTableId5 FOREIGN KEY (FKThisTableId5) REFERENCES FKTable(FKTableId)
 );
 GO
 
 CREATE TABLE SelfReferenceTable (
-    ID uniqueidentifier NOT NULL,
-    Name nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-    Email nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-    ManagerId uniqueidentifier NULL,
-    CONSTRAINT PK_SelfReferenceTable PRIMARY KEY (ID),
-    CONSTRAINT FK_SelfReferenceTable_SelfReferenceTable FOREIGN KEY (ManagerId) REFERENCES SelfReferenceTable(ID)
+                                    ID uniqueidentifier NOT NULL,
+                                    Name nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+                                    Email nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+                                    ManagerId uniqueidentifier NULL,
+                                    CONSTRAINT PK_SelfReferenceTable PRIMARY KEY (ID),
+                                    CONSTRAINT FK_SelfReferenceTable_SelfReferenceTable FOREIGN KEY (ManagerId) REFERENCES SelfReferenceTable(ID)
 );

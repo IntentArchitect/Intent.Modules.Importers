@@ -2,7 +2,7 @@ async function executeImporterModuleTask(taskTypeId, input) {
     let inputJsonString = JSON.stringify(input);
     console.log(`Executing Module Task ${taskTypeId} => ${inputJsonString}`);
     let moduleTaskResultString = await executeModuleTask(taskTypeId, inputJsonString);
-    console.log(`Module Task ${taskTypeId} Completed => ${moduleTaskResultString}`);
+    console.log(`Module Task ${taskTypeId} Completed`);
     let executionResult = JSON.parse(moduleTaskResultString);
     return executionResult;
 }
@@ -11,12 +11,14 @@ async function displayExecutionResultErrors(executionResult) {
         return;
     }
     await dialogService.error(executionResult.errors.join("\r\n"));
+    console.error(executionResult.errors.join("\r\n"));
 }
 async function displayExecutionResultWarnings(executionResult, title) {
     if (executionResult.warnings.length === 0) {
         return;
     }
     await dialogService.warn(title + "\r\n\r\n" + executionResult.warnings.join("\r\n"));
+    console.warn(title + "\r\n\r\n" + executionResult.warnings.join("\r\n"));
 }
 class Icons {
 }

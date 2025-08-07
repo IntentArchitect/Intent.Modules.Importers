@@ -392,7 +392,7 @@ internal static class IntentModelMapper
         // Track used column names for deduplication
         var usedColumnNames = new Dictionary<string, int>();
 
-        // Map result set columns to attributes
+        // Handle result set columns
         foreach (var resultColumn in storedProc.ResultSetColumns)
         {
             // Get the normalized column name
@@ -886,6 +886,7 @@ internal static class IntentModelMapper
         return new ColumnSchema
         {
             Name = resultColumn.Name,
+            LanguageDataType = resultColumn.LanguageDataType,
             DbDataType = resultColumn.DbDataType,
             IsNullable = resultColumn.IsNullable,
             MaxLength = resultColumn.MaxLength,

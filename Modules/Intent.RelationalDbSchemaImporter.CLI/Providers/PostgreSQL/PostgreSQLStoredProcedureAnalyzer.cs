@@ -21,86 +21,85 @@ internal class PostgreSQLStoredProcedureAnalyzer : IStoredProcedureAnalyzer
     {
         var resultColumns = new List<ResultSetColumnSchema>();
 
-        try
+        // PostgreSQL uses functions instead of traditional stored procedures
+        // Query the PostgreSQL system catalogs to get function return type information
+        var sql =
+            """
+            SELECT 
+                p.proname as function_name,
+                t.typname as return_type,
+                CASE 
+                    WHEN p.proretset THEN 'table'
+                    ELSE 'scalar'
+                END as return_kind,
+                p.prorettype,
+                ns.nspname as schema_name
+            FROM pg_proc p
+            JOIN pg_namespace ns ON p.pronamespace = ns.oid
+            JOIN pg_type t ON p.prorettype = t.oid
+            WHERE p.proname = @procedureName 
+              AND ns.nspname = @schema
+              AND p.prokind IN ('f', 'p') -- functions and procedures
+            """;
+
+        await using var command = _connection.CreateCommand();
+        command.CommandText = sql;
+
+        var procParam = command.CreateParameter();
+        procParam.ParameterName = "@procedureName";
+        procParam.Value = procedureName;
+        command.Parameters.Add(procParam);
+
+        var schemaParam = command.CreateParameter();
+        schemaParam.ParameterName = "@schema";
+        schemaParam.Value = schema ?? "public";
+        command.Parameters.Add(schemaParam);
+
+        await using var reader = await command.ExecuteReaderAsync();
+        if (await reader.ReadAsync())
         {
-            // PostgreSQL uses functions instead of traditional stored procedures
-            // Query the PostgreSQL system catalogs to get function return type information
-            var sql =
-                """
-                SELECT 
-                    p.proname as function_name,
-                    t.typname as return_type,
-                    CASE 
-                        WHEN p.proretset THEN 'table'
-                        ELSE 'scalar'
-                    END as return_kind,
-                    p.prorettype,
-                    ns.nspname as schema_name
-                FROM pg_proc p
-                JOIN pg_namespace ns ON p.pronamespace = ns.oid
-                JOIN pg_type t ON p.prorettype = t.oid
-                WHERE p.proname = @procedureName 
-                  AND ns.nspname = @schema
-                  AND p.prokind IN ('f', 'p') -- functions and procedures
-                """;
+            var returnType = reader["return_type"].ToString();
+            var returnKind = reader["return_kind"].ToString();
 
-            await using var command = _connection.CreateCommand();
-            command.CommandText = sql;
-
-            var procParam = command.CreateParameter();
-            procParam.ParameterName = "@procedureName";
-            procParam.Value = procedureName;
-            command.Parameters.Add(procParam);
-
-            var schemaParam = command.CreateParameter();
-            schemaParam.ParameterName = "@schema";
-            schemaParam.Value = schema ?? "public";
-            command.Parameters.Add(schemaParam);
-
-            await using var reader = await command.ExecuteReaderAsync();
-            if (await reader.ReadAsync())
+            if (returnKind == "table")
             {
-                var returnType = reader["return_type"].ToString();
-                var returnKind = reader["return_kind"].ToString();
+                // For table-returning functions, we could query pg_get_function_result_name/type
+                // For now, create a generic result column
+                resultColumns.Add(new ResultSetColumnSchema
+                {
+                    Name = "result",
+                    DbDataType = returnType ?? "unknown", // Use raw PostgreSQL type
+                    LanguageDataType = NormalizePostgreSQLType(returnType),
+                    IsNullable = true,
+                    MaxLength = null,
+                    NumericPrecision = null,
+                    NumericScale = null
+                });
 
-                if (returnKind == "table")
-                {
-                    // For table-returning functions, we could query pg_get_function_result_name/type
-                    // For now, create a generic result column
-                    resultColumns.Add(new ResultSetColumnSchema
-                    {
-                        Name = "result",
-                        DbDataType = returnType ?? "unknown", // Use raw PostgreSQL type
-                        LanguageDataType = NormalizePostgreSQLType(returnType),
-                        IsNullable = true,
-                        MaxLength = null,
-                        NumericPrecision = null,
-                        NumericScale = null
-                    });
-                }
-                else if (returnType != "void")
-                {
-                    // Scalar returning function
-                    resultColumns.Add(new ResultSetColumnSchema
-                    {
-                        Name = procedureName, // Function name as column name
-                        DbDataType = returnType ?? "unknown", // Use raw PostgreSQL type
-                        LanguageDataType = NormalizePostgreSQLType(returnType),
-                        IsNullable = true,
-                        MaxLength = null,
-                        NumericPrecision = null,
-                        NumericScale = null
-                    });
-                }
+                // Table-returning functions are not scalar
+                return resultColumns;
+            }
+            else if (returnType != "void")
+            {
+                // Scalar returning function
+                // resultColumns.Add(new ResultSetColumnSchema
+                // {
+                //     Name = procedureName, // Function name as column name
+                //     DbDataType = returnType ?? "unknown", // Use raw PostgreSQL type
+                //     LanguageDataType = NormalizePostgreSQLType(returnType),
+                //     IsNullable = true,
+                //     MaxLength = null,
+                //     NumericPrecision = null,
+                //     NumericScale = null
+                // });
+
+                // Single return value is scalar
+                return [];
             }
         }
-        catch (Exception)
-        {
-            // If analysis fails, return empty result set
-            // This is common for functions that don't return result sets or require specific parameters
-        }
 
-        return resultColumns;
+        // Return empty result set (void functions or analysis failed)
+        return [];
     }
 
     private string NormalizePostgreSQLType(string? dataTypeName)

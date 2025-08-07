@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using CliWrap;
 using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.Utils;
@@ -13,7 +14,9 @@ public static class ImporterTool
 {
     private static readonly JsonSerializerOptions SerializerOptions = new()
     {
-        WriteIndented = false
+        WriteIndented = false,
+        Converters = { new JsonStringEnumConverter() },
+        PropertyNameCaseInsensitive = true
     };
 
     private static string? _toolDirectory;
@@ -73,7 +76,7 @@ public static class ImporterTool
             .WithStandardErrorPipe(PipeTarget.ToDelegate((line, ct) =>
             {
                 // Receive realtime updates through STD ERR. (doesn't mean it's error feedback)
-                Logging.Log.Debug(line);
+                Logging.Log.Info(line);
                 return Task.CompletedTask;
             }))
             .WithEnvironmentVariables(new Dictionary<string, string?>

@@ -10,7 +10,7 @@ async function executeImporterModuleTask(taskTypeId: string, input: any): Promis
     
     let moduleTaskResultString = await executeModuleTask(taskTypeId, inputJsonString);
     
-    console.log(`Module Task ${taskTypeId} Completed => ${moduleTaskResultString}`);
+    console.log(`Module Task ${taskTypeId} Completed`);
     let executionResult = JSON.parse(moduleTaskResultString) as IExecutionResult;
     return executionResult;
 }
@@ -20,6 +20,7 @@ async function displayExecutionResultErrors(executionResult: IExecutionResult): 
         return;
     }
     await dialogService.error(executionResult.errors.join("\r\n"));
+    console.error(executionResult.errors.join("\r\n"));
 }
 
 async function displayExecutionResultWarnings(executionResult: IExecutionResult, title: string): Promise<void> {
@@ -27,4 +28,5 @@ async function displayExecutionResultWarnings(executionResult: IExecutionResult,
         return;
     }
     await dialogService.warn(title + "\r\n\r\n" + executionResult.warnings.join("\r\n"));
+    console.warn(title + "\r\n\r\n" + executionResult.warnings.join("\r\n"));
 }

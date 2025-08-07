@@ -27,7 +27,7 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Dbo
         }
 
         public async Task<List<GetCustomerOrdersResponse>> GetCustomerOrders(
-            Guid customerId,
+            Guid? customerId,
             CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.DomainContractsDboGetCustomerOrdersResponses
@@ -38,15 +38,8 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Dbo
             return results;
         }
 
-        [IntentManaged(Mode.Fully, Body = Mode.Merge)]
-        public List<GetCustomerOrdersResponse> GetCustomerOrders(Guid? customerId)
-        {
-            // TODO: Implement GetCustomerOrders (StoredProcedureRepository) functionality
-            throw new NotImplementedException("Your implementation here...");
-        }
-
         public async Task<List<GetOrderItemDetailsResponse>> GetOrderItemDetails(
-            Guid orderId,
+            Guid? orderId,
             CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.DomainContractsDboGetOrderItemDetailsResponses
@@ -57,31 +50,17 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Dbo
             return results;
         }
 
-        [IntentManaged(Mode.Fully, Body = Mode.Merge)]
-        public List<GetOrderItemDetailsResponse> GetOrderItemDetails(Guid? orderId)
-        {
-            // TODO: Implement GetOrderItemDetails (StoredProcedureRepository) functionality
-            throw new NotImplementedException("Your implementation here...");
-        }
-
-        public async Task InsertBrand(IEnumerable<BrandType> brand, CancellationToken cancellationToken = default)
+        public async Task InsertBrand(IEnumerable<BrandTypeModel>? brand, CancellationToken cancellationToken = default)
         {
             var brandParameter = new SqlParameter
             {
-                IsNullable = false,
+                IsNullable = true,
                 SqlDbType = SqlDbType.Structured,
                 Value = brand.ToDataTable(),
-                TypeName = "BrandType"
+                TypeName = "BrandTypeModel"
             };
 
             await _dbContext.Database.ExecuteSqlInterpolatedAsync($"EXECUTE InsertBrand {brandParameter}", cancellationToken);
-        }
-
-        [IntentManaged(Mode.Fully, Body = Mode.Merge)]
-        public void InsertBrand(IEnumerable<BrandTypeModel>? brand)
-        {
-            // TODO: Implement InsertBrand (StoredProcedureRepository) functionality
-            throw new NotImplementedException("Your implementation here...");
         }
     }
 }
