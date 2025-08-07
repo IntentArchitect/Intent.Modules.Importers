@@ -92,7 +92,7 @@ internal class DbSchemaIntentMetadataMerger
                 SyncElements(package, existingClass, updatedClassElement);
 
                 // Re-evaluate stereotypes on existing class after sync to ensure renamed attributes get proper Column stereotypes
-                ReEvaluateTableStereotypes(table, existingClass, _config);
+                ApplyTableStereotypes(table, existingClass, _config);
 
                 // Process indexes for existing class
                 ProcessTableIndexes(table, existingClass, package, result);
@@ -137,6 +137,9 @@ internal class DbSchemaIntentMetadataMerger
                 // Don't use deduplication context for updates to preserve existing names
                 var updatedClassElement = IntentModelMapper.MapViewToClass(view, _config, package, existingClass.ParentFolderId);
                 SyncElements(package, existingClass, updatedClassElement);
+                
+                // Apply view stereotypes after sync
+                ApplyViewStereotypes(view, existingClass);
             }
             else
             {
@@ -146,6 +149,9 @@ internal class DbSchemaIntentMetadataMerger
                 var classElement = IntentModelMapper.MapViewToClass(view, _config, package, schemaFolder.Id, deduplicationContext);
 
                 package.Classes.Add(classElement);
+                
+                // Apply view stereotypes for new elements
+                ApplyViewStereotypes(view, classElement);
             }
         }
     }
@@ -427,6 +433,9 @@ internal class DbSchemaIntentMetadataMerger
             folder = IntentModelMapper.CreateSchemaFolder(schemaName, package);
             package.Classes.Add(folder);
         }
+        
+        // Apply schema stereotypes for existing folders that might be missing them
+        ApplySchemaFolderStereotypes(schemaName, folder);
 
         _schemaFolders[schemaName] = folder;
         return folder;
@@ -556,6 +565,9 @@ internal class DbSchemaIntentMetadataMerger
                 dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package);
                 package.Classes.Add(dataContract);
             }
+            
+            // Apply data contract stereotypes after sync
+            ApplyDataContractStereotypes(storedProc, dataContract);
 
             procElement.TypeReference.TypeId = dataContract.Id; // Point to the data contract element ID
             procElement.TypeReference.IsCollection = true; // Result sets are collections
@@ -577,7 +589,7 @@ internal class DbSchemaIntentMetadataMerger
 
         // Collect all unique UserDefinedTables from stored procedure parameters
         var uniqueUdts = new Dictionary<string, UserDefinedTableTypeSchema>();
-        
+
         foreach (var storedProc in databaseSchema.StoredProcedures)
         {
             foreach (var parameter in storedProc.Parameters)
@@ -585,9 +597,9 @@ internal class DbSchemaIntentMetadataMerger
                 if (parameter.UserDefinedTableType != null)
                 {
                     var udtExternalRef = ModelNamingUtilities.GetUserDefinedTableDataContractExternalReference(
-                        parameter.UserDefinedTableType.Schema, 
+                        parameter.UserDefinedTableType.Schema,
                         parameter.UserDefinedTableType.Name);
-                    
+
                     if (!uniqueUdts.ContainsKey(udtExternalRef))
                     {
                         uniqueUdts[udtExternalRef] = parameter.UserDefinedTableType;
@@ -604,7 +616,7 @@ internal class DbSchemaIntentMetadataMerger
 
             // Use unified lookup helper with 3-level precedence
             var dataContractName = ModelNamingUtilities.NormalizeUserDefinedTableName(udtSchema.Name);
-            
+
             var existingDataContract = IntentModelMapper.FindElementWithPrecedence(
                 package.Classes,
                 udtExternalRef,
@@ -628,6 +640,9 @@ internal class DbSchemaIntentMetadataMerger
                 dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, package);
                 package.Classes.Add(dataContract);
             }
+            
+            // Apply UDT stereotypes after sync
+            ApplyUserDefinedTableStereotypes(udtSchema, dataContract);
 
             udtDataContracts[udtExternalRef] = dataContract.Id;
         }
@@ -642,7 +657,7 @@ internal class DbSchemaIntentMetadataMerger
     /// <param name="table">The table schema from the database</param>
     /// <param name="existingClass">The existing class element to re-evaluate</param>
     /// <param name="config">Import configuration</param>
-    private static void ReEvaluateTableStereotypes(TableSchema table, ElementPersistable existingClass, ImportConfiguration config)
+    private static void ApplyTableStereotypes(TableSchema table, ElementPersistable existingClass, ImportConfiguration config)
     {
         // Re-apply table-level stereotypes
         RdbmsSchemaAnnotator.ApplyTableDetails(config, table, existingClass);
@@ -652,7 +667,7 @@ internal class DbSchemaIntentMetadataMerger
         {
             // Find the existing attribute by external reference
             var columnExternalRef = ModelNamingUtilities.GetColumnExternalReference(table.Schema, table.Name, column.Name);
-            var existingAttribute = existingClass.ChildElements?.FirstOrDefault(attr => 
+            var existingAttribute = existingClass.ChildElements?.FirstOrDefault(attr =>
                 attr.ExternalReference == columnExternalRef && 
                 attr.SpecializationType == AttributeModel.SpecializationType);
 
@@ -668,4 +683,128 @@ internal class DbSchemaIntentMetadataMerger
             }
         }
     }
+
+    private static void ApplyViewStereotypes(ViewSchema view, ElementPersistable existingClass)
+    {
+        // Apply view-level stereotypes
+        RdbmsSchemaAnnotator.ApplyViewDetails(view, existingClass);
+
+        // Apply column-level stereotypes for views (views don't have primary keys, defaults, or computed values)
+        foreach (var column in view.Columns)
+        {
+            // Find the corresponding attribute in the class
+            var columnExternalRef = ModelNamingUtilities.GetColumnExternalReference(view.Schema, view.Name, column.Name);
+            var existingAttribute = existingClass.ChildElements?.FirstOrDefault(attr =>
+                attr.ExternalReference == columnExternalRef && 
+                attr.SpecializationType == AttributeModel.SpecializationType);
+
+            if (existingAttribute != null)
+            {
+                // Apply column stereotypes for views (limited set compared to tables)
+                RdbmsSchemaAnnotator.ApplyColumnDetails(column, existingAttribute);
+                RdbmsSchemaAnnotator.ApplyTextConstraint(column, existingAttribute);
+                RdbmsSchemaAnnotator.ApplyDecimalConstraint(column, existingAttribute);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Applies stereotypes to stored procedure data contract elements after sync
+    /// </summary>
+    private static void ApplyDataContractStereotypes(StoredProcedureSchema storedProc, ElementPersistable dataContract)
+    {
+        // Apply stereotypes to result set columns
+        foreach (var resultColumn in storedProc.ResultSetColumns)
+        {
+            var columnExternalRef = ModelNamingUtilities.GetResultSetColumnExternalReference(storedProc.Schema, storedProc.Name, resultColumn.Name);
+            var existingAttribute = dataContract.ChildElements?.FirstOrDefault(attr =>
+                attr.ExternalReference == columnExternalRef && 
+                attr.SpecializationType == AttributeModel.SpecializationType);
+
+            if (existingAttribute != null)
+            {
+                // Convert result set column to column schema for stereotype application
+                var columnSchema = ConvertToColumnSchema(resultColumn);
+                RdbmsSchemaAnnotator.ApplyColumnDetails(columnSchema, existingAttribute);
+                RdbmsSchemaAnnotator.ApplyTextConstraint(columnSchema, existingAttribute);
+                RdbmsSchemaAnnotator.ApplyDecimalConstraint(columnSchema, existingAttribute);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Applies stereotypes to UserDefinedTable data contract elements after sync
+    /// </summary>
+    private static void ApplyUserDefinedTableStereotypes(UserDefinedTableTypeSchema udtSchema, ElementPersistable dataContract)
+    {
+        // Apply stereotypes to UDT columns
+        foreach (var column in udtSchema.Columns)
+        {
+            var columnExternalRef = ModelNamingUtilities.GetUserDefinedTableColumnExternalReference(udtSchema.Schema, udtSchema.Name, column.Name);
+            var existingAttribute = dataContract.ChildElements?.FirstOrDefault(attr =>
+                attr.ExternalReference == columnExternalRef && 
+                attr.SpecializationType == AttributeModel.SpecializationType);
+
+            if (existingAttribute != null)
+            {
+                // Apply column stereotypes to UDT columns
+                RdbmsSchemaAnnotator.ApplyColumnDetails(column, existingAttribute);
+                RdbmsSchemaAnnotator.ApplyTextConstraint(column, existingAttribute);
+                RdbmsSchemaAnnotator.ApplyDecimalConstraint(column, existingAttribute);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Applies stereotypes to schema folder elements after sync
+    /// </summary>
+    private static void ApplySchemaFolderStereotypes(string schemaName, ElementPersistable folder)
+    {
+        RdbmsSchemaAnnotator.AddSchemaStereotype(folder, schemaName);
+    }
+
+    /// <summary>
+    /// Applies stereotypes to index elements after sync
+    /// </summary>
+    private static void ApplyIndexStereotypes(TableSchema table, IndexSchema index, ElementPersistable indexElement)
+    {
+        RdbmsSchemaAnnotator.ApplyIndexStereotype(indexElement, index);
+
+        // Apply stereotypes to index columns
+        foreach (var indexColumn in index.Columns)
+        {
+            var indexColumnExternalRef = ModelNamingUtilities.GetIndexColumnExternalReference(indexColumn.Name);
+            var existingIndexColumn = indexElement.ChildElements?.FirstOrDefault(elem =>
+                elem.ExternalReference == indexColumnExternalRef && 
+                elem.SpecializationType == Constants.SpecializationTypes.IndexColumn.SpecializationType);
+
+            if (existingIndexColumn != null)
+            {
+                RdbmsSchemaAnnotator.ApplyIndexColumnStereotype(existingIndexColumn, indexColumn);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Converts ResultSetColumnSchema to ColumnSchema for stereotype application
+    /// This allows reuse of existing stereotype logic
+    /// </summary>
+    private static ColumnSchema ConvertToColumnSchema(ResultSetColumnSchema resultColumn)
+    {
+        return new ColumnSchema
+        {
+            Name = resultColumn.Name,
+            LanguageDataType = resultColumn.LanguageDataType,
+            DbDataType = resultColumn.DbDataType,
+            IsNullable = resultColumn.IsNullable,
+            MaxLength = resultColumn.MaxLength,
+            NumericPrecision = resultColumn.NumericPrecision,
+            NumericScale = resultColumn.NumericScale,
+            IsPrimaryKey = false, // Result set columns are never primary keys
+            IsIdentity = false,   // Result set columns are never identity
+            DefaultConstraint = null, // Result set columns don't have defaults
+            ComputedColumn = null     // Result set columns aren't computed
+        };
+    }
 }
+

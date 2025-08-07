@@ -139,19 +139,12 @@ internal static class IntentModelMapper
         {
             var attribute = MapColumnToAttribute(column, table.Name, className, table.Schema, package, classElement.Id, deduplicationContext);
             classElement.ChildElements.Add(attribute);
-            
-            // Apply stereotypes
-            RdbmsSchemaAnnotator.ApplyPrimaryKey(column, attribute);
-            RdbmsSchemaAnnotator.ApplyColumnDetails(column, attribute);
-            RdbmsSchemaAnnotator.ApplyTextConstraint(column, attribute);
-            RdbmsSchemaAnnotator.ApplyDecimalConstraint(column, attribute);
-            RdbmsSchemaAnnotator.ApplyDefaultConstraint(column, attribute);
-            RdbmsSchemaAnnotator.ApplyComputedValue(column, attribute);
+
+            // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
         }
 
-        // Apply table stereotypes
-        RdbmsSchemaAnnotator.ApplyTableDetails(config, table, classElement);
-        
+        // Table stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
+
         // Map triggers to child elements
         foreach (var trigger in table.Triggers)
         {
@@ -202,15 +195,11 @@ internal static class IntentModelMapper
         {
             var attribute = MapColumnToAttribute(column, view.Name, className, view.Schema, package, classElement.Id, deduplicationContext);
             classElement.ChildElements.Add(attribute);
-            
-            // Apply stereotypes (views don't have primary keys, defaults, or computed values)
-            RdbmsSchemaAnnotator.ApplyColumnDetails(column, attribute);
-            RdbmsSchemaAnnotator.ApplyTextConstraint(column, attribute);
-            RdbmsSchemaAnnotator.ApplyDecimalConstraint(column, attribute);
+
+            // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
         }
 
-        // Apply view stereotypes
-        RdbmsSchemaAnnotator.ApplyViewDetails(view, classElement);
+        // View stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
 
         return classElement;
     }
@@ -413,11 +402,8 @@ internal static class IntentModelMapper
 
             var attribute = MapResultSetColumnToAttribute(resultColumn, dataContract.Id, storedProc.Name, storedProc.Schema, uniqueName);
             dataContract.ChildElements.Add(attribute);
-            
-            // Apply stereotypes to result set columns
-            RdbmsSchemaAnnotator.ApplyColumnDetails(ConvertToColumnSchema(resultColumn), attribute);
-            RdbmsSchemaAnnotator.ApplyTextConstraint(ConvertToColumnSchema(resultColumn), attribute);
-            RdbmsSchemaAnnotator.ApplyDecimalConstraint(ConvertToColumnSchema(resultColumn), attribute);
+
+            // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
         }
 
         return dataContract;
@@ -456,11 +442,8 @@ internal static class IntentModelMapper
         {
             var attribute = MapUserDefinedTableColumnToAttribute(column, dataContract.Id, udtSchema.Name, udtSchema.Schema);
             dataContract.ChildElements.Add(attribute);
-            
-            // Apply stereotypes to UDT columns
-            RdbmsSchemaAnnotator.ApplyColumnDetails(column, attribute);
-            RdbmsSchemaAnnotator.ApplyTextConstraint(column, attribute);
-            RdbmsSchemaAnnotator.ApplyDecimalConstraint(column, attribute);
+
+            // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
         }
 
         return dataContract;
@@ -511,8 +494,7 @@ internal static class IntentModelMapper
             ChildElements = []
         };
 
-        // Apply index stereotypes
-        RdbmsSchemaAnnotator.ApplyIndexStereotype(indexElement, index);
+        // Index stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
 
         return indexElement;
     }
@@ -562,8 +544,7 @@ internal static class IntentModelMapper
             ChildElements = []
         };
 
-        // Apply index column stereotypes
-        RdbmsSchemaAnnotator.ApplyIndexColumnStereotype(columnIndex, indexColumn);
+        // Index column stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
 
         return columnIndex;
     }
@@ -713,7 +694,7 @@ internal static class IntentModelMapper
             ChildElements = []
         };
 
-        RdbmsSchemaAnnotator.AddSchemaStereotype(folder, schemaName);
+        // Schema stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
         
         return folder;
     }

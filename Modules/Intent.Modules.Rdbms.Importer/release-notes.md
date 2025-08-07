@@ -9,6 +9,7 @@
 - Fixed: StoredProcedureRepository is placed in the package level and not in the folder-schema level.
 - Fixed: Text constraints applied to attributes will now correctly apply to either a Column stereotype type or a Text Constraint stereotype type.
 - Fixed: Stored Procedure operations and parameters are now correctly decorated with the correct stereotype information.
+- Fixed: Re-evaluate stereotypes for existing class elements after synchronization.
 
 ### Version 1.0.0
 

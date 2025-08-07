@@ -110,7 +110,9 @@
           </properties>
         </stereotype>
       </stereotypes>
-      <metadata />
+      <metadata>
+        <entry key="is-managed-key" value="true" />
+      </metadata>
       <childElements />
     </childElement>
     <childElement id="9b0501a5-6b36-457c-91d1-77c4951f9eb3" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
@@ -154,7 +156,9 @@
           </properties>
         </stereotype>
       </stereotypes>
-      <metadata />
+      <metadata>
+        <entry key="is-managed-key" value="true" />
+      </metadata>
       <childElements />
     </childElement>
     <childElement id="961d9c91-913d-4ea3-a136-d6432ec4b88f" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
