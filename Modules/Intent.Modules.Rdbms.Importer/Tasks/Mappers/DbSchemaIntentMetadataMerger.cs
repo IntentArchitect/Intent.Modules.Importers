@@ -766,24 +766,24 @@ internal class DbSchemaIntentMetadataMerger
     /// <summary>
     /// Applies stereotypes to index elements after sync
     /// </summary>
-    private static void ApplyIndexStereotypes(TableSchema table, IndexSchema index, ElementPersistable indexElement)
-    {
-        RdbmsSchemaAnnotator.ApplyIndexStereotype(indexElement, index);
-
-        // Apply stereotypes to index columns
-        foreach (var indexColumn in index.Columns)
-        {
-            var indexColumnExternalRef = ModelNamingUtilities.GetIndexColumnExternalReference(indexColumn.Name);
-            var existingIndexColumn = indexElement.ChildElements?.FirstOrDefault(elem =>
-                elem.ExternalReference == indexColumnExternalRef && 
-                elem.SpecializationType == Constants.SpecializationTypes.IndexColumn.SpecializationType);
-
-            if (existingIndexColumn != null)
-            {
-                RdbmsSchemaAnnotator.ApplyIndexColumnStereotype(existingIndexColumn, indexColumn);
-            }
-        }
-    }
+    // private static void ApplyIndexStereotypes(TableSchema table, IndexSchema index, ElementPersistable indexElement)
+    // {
+    //     RdbmsSchemaAnnotator.ApplyIndexStereotype(indexElement, index);
+    //
+    //     // Apply stereotypes to index columns
+    //     foreach (var indexColumn in index.Columns)
+    //     {
+    //         var indexColumnExternalRef = ModelNamingUtilities.GetIndexColumnExternalReference(indexColumn.Name);
+    //         var existingIndexColumn = indexElement.ChildElements?.FirstOrDefault(elem =>
+    //             elem.ExternalReference == indexColumnExternalRef && 
+    //             elem.SpecializationType == Constants.SpecializationTypes.IndexColumn.SpecializationType);
+    //
+    //         if (existingIndexColumn != null)
+    //         {
+    //             RdbmsSchemaAnnotator.ApplyIndexColumnStereotype(existingIndexColumn, indexColumn);
+    //         }
+    //     }
+    // }
 
     /// <summary>
     /// Converts ResultSetColumnSchema to ColumnSchema for stereotype application

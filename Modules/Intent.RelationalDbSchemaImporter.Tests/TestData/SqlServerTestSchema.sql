@@ -263,7 +263,6 @@ CREATE NONCLUSTERED INDEX IX_Users_LastLoginDate ON Users(LastLoginDate);
 -- Products
 CREATE NONCLUSTERED INDEX IX_Products_CategoryID ON Products(CategoryID);
 CREATE NONCLUSTERED INDEX IX_Products_SupplierID ON Products(SupplierID);
-CREATE NONCLUSTERED INDEX IX_Products_SKU ON Products(SKU);
 CREATE NONCLUSTERED INDEX IX_Products_Price ON Products(UnitPrice);
 CREATE NONCLUSTERED INDEX IX_Products_Stock ON Products(UnitsInStock);
 

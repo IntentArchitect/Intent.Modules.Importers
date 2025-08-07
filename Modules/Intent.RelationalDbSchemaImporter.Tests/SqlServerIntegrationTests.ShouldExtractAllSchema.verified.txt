@@ -1515,19 +1515,6 @@
           ]
         },
         {
-          Name: IX_Products_SKU,
-          IsUnique: false,
-          IsClustered: false,
-          HasFilter: false,
-          Columns: [
-            {
-              Name: SKU,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
           Name: IX_Products_Stock,
           IsUnique: false,
           IsClustered: false,

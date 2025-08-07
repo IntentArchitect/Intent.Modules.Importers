@@ -1685,20 +1685,6 @@
           ]
         },
         {
-          Name: idx_products_sku,
-          IsUnique: false,
-          IsClustered: false,
-          HasFilter: false,
-          FilterDefinition: ,
-          Columns: [
-            {
-              Name: sku,
-              IsDescending: false,
-              IsIncluded: false
-            }
-          ]
-        },
-        {
           Name: idx_products_stock,
           IsUnique: false,
           IsClustered: false,
