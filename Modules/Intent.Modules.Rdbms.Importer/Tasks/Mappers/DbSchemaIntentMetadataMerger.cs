@@ -91,6 +91,9 @@ internal class DbSchemaIntentMetadataMerger
                 var updatedClassElement = IntentModelMapper.MapTableToClass(table, _config, package, existingClass.ParentFolderId);
                 SyncElements(package, existingClass, updatedClassElement);
 
+                // Re-evaluate stereotypes on existing class after sync to ensure renamed attributes get proper Column stereotypes
+                ReEvaluateTableStereotypes(table, existingClass, _config);
+
                 // Process indexes for existing class
                 ProcessTableIndexes(table, existingClass, package, result);
             }
@@ -324,34 +327,31 @@ internal class DbSchemaIntentMetadataMerger
 
             // Sync child elements using the unified lookup helper with 3-level precedence
             existingElement.ChildElements ??= [];
-            if (sourceElement.ChildElements.Count > 0)
+            foreach (var sourceChild in sourceElement.ChildElements)
             {
-                foreach (var sourceChild in sourceElement.ChildElements)
-                {
-                    // Use unified lookup helper for child elements with 3-level precedence
-                    // 1. ExternalReference + SpecializationType
-                    // 2. Name + Parent Schema + SpecializationType  
-                    // 3. Name + SpecializationType
-                    var existingChild = IntentModelMapper.FindElementWithPrecedence(
-                        existingElement.ChildElements,
-                        sourceChild.ExternalReference,
-                        sourceChild.Name,
-                        parentSchema, // Use parent element's schema for context
-                        sourceChild.SpecializationType);
+                // Use unified lookup helper for child elements with 3-level precedence
+                // 1. ExternalReference + SpecializationType
+                // 2. Name + Parent Schema + SpecializationType  
+                // 3. Name + SpecializationType
+                var existingChild = IntentModelMapper.FindElementWithPrecedence(
+                    existingElement.ChildElements,
+                    sourceChild.ExternalReference,
+                    sourceChild.Name,
+                    parentSchema, // Use parent element's schema for context
+                    sourceChild.SpecializationType);
                 
-                    if (existingChild is null)
-                    {
-                        // Add a new child element
-                        existingElement.ChildElements.Add(sourceChild);
-                    }
-                    else if (visitedElements.Add(sourceChild))
-                    {
-                        // Extract child's schema for recursive calls
-                        var childSchema = IntentModelMapper.GetElementDbSchema(existingChild) ?? parentSchema;
+                if (existingChild is null)
+                {
+                    // Add a new child element
+                    existingElement.ChildElements.Add(sourceChild);
+                }
+                else if (visitedElements.Add(sourceChild))
+                {
+                    // Extract child's schema for recursive calls
+                    var childSchema = IntentModelMapper.GetElementDbSchema(existingChild) ?? parentSchema;
                         
-                        // Recursively sync the child element
-                        InternSyncElements(package, existingChild, sourceChild, childSchema, visitedElements);
-                    }
+                    // Recursively sync the child element
+                    InternSyncElements(package, existingChild, sourceChild, childSchema, visitedElements);
                 }
             }
         }
@@ -633,5 +633,39 @@ internal class DbSchemaIntentMetadataMerger
         }
 
         return udtDataContracts;
+    }
+
+    /// <summary>
+    /// Re-evaluates stereotypes on an existing table class element after synchronization.
+    /// This ensures that renamed attributes get proper Column stereotypes applied based on their current state.
+    /// </summary>
+    /// <param name="table">The table schema from the database</param>
+    /// <param name="existingClass">The existing class element to re-evaluate</param>
+    /// <param name="config">Import configuration</param>
+    private static void ReEvaluateTableStereotypes(TableSchema table, ElementPersistable existingClass, ImportConfiguration config)
+    {
+        // Re-apply table-level stereotypes
+        RdbmsSchemaAnnotator.ApplyTableDetails(config, table, existingClass);
+
+        // Re-apply column-level stereotypes for each attribute
+        foreach (var column in table.Columns)
+        {
+            // Find the existing attribute by external reference
+            var columnExternalRef = ModelNamingUtilities.GetColumnExternalReference(table.Schema, table.Name, column.Name);
+            var existingAttribute = existingClass.ChildElements?.FirstOrDefault(attr => 
+                attr.ExternalReference == columnExternalRef && 
+                attr.SpecializationType == AttributeModel.SpecializationType);
+
+            if (existingAttribute != null)
+            {
+                // Re-apply all column stereotypes based on current state of the existing attribute
+                RdbmsSchemaAnnotator.ApplyPrimaryKey(column, existingAttribute);
+                RdbmsSchemaAnnotator.ApplyColumnDetails(column, existingAttribute);
+                RdbmsSchemaAnnotator.ApplyTextConstraint(column, existingAttribute);
+                RdbmsSchemaAnnotator.ApplyDecimalConstraint(column, existingAttribute);
+                RdbmsSchemaAnnotator.ApplyDefaultConstraint(column, existingAttribute);
+                RdbmsSchemaAnnotator.ApplyComputedValue(column, existingAttribute);
+            }
+        }
     }
 }
