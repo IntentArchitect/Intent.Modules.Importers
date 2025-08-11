@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <deviationsLog>
-  <files />
+  <files>
+    <file>
+      <correlationId>Intent.EntityFrameworkCore.EntityTypeConfiguration#db54401b-3d65-48d0-9186-31d3c997f2b4</correlationId>
+      <path>RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/OrderConfiguration.cs</path>
+      <count>1</count>
+      <updatedByAccountName>dandre.jvv@intentarchitect.com</updatedByAccountName>
+      <updatedByDisplayName>Dandre Jansen van Vuuren</updatedByDisplayName>
+      <updatedAt>2025-08-08T15:18:06.0309071Z</updatedAt>
+      <approvedByAccountName>dandre.jvv@intentarchitect.com</approvedByAccountName>
+      <approvedByDisplayName>Dandre Jansen van Vuuren</approvedByDisplayName>
+      <approvedAt>2025-08-11T09:13:12.2394243Z</approvedAt>
+      <notes><![CDATA[Getting an ambiguous match error when using the `IncludeProperties` extension method because SQL Server and PostgreSQL is installed.
+We can look at fixing this once someone really needs it.]]></notes>
+      <deviationsHash>6C0CC2D5D61C847BFA502B68D6BA8C9C8C7F6CD6D66149F8EDEE47DFACB97D73</deviationsHash>
+      <fileHash>EFB7CA13D6ED25F21A9CFB25B005FB60915992F49108637EC02380C5CA0756E7</fileHash>
+    </file>
+  </files>
 </deviationsLog>

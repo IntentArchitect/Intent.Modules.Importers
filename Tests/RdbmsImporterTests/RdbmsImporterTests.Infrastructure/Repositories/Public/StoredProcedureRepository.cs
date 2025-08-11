@@ -30,7 +30,7 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Public
             Guid? customerId,
             CancellationToken cancellationToken = default)
         {
-            var results = await _dbContext.DomainContractsPublicGetCustomerOrdersResponses
+            var results = await _dbContext.GetCustomerOrdersResponses
                 .FromSqlInterpolated($"SELECT * FROM GetCustomerOrders({customer_id}, {customerId})")
                 .IgnoreQueryFilters()
                 .ToListAsync(cancellationToken);
@@ -43,7 +43,7 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Public
             Guid? orderId,
             CancellationToken cancellationToken = default)
         {
-            var results = await _dbContext.DomainContractsPublicGetOrderItemDetailsResponses
+            var results = await _dbContext.GetOrderItemDetailsResponses
                 .FromSqlInterpolated($"SELECT * FROM GetOrderItemDetails({order_id}, {orderId})")
                 .IgnoreQueryFilters()
                 .ToListAsync(cancellationToken);

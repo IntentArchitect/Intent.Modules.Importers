@@ -25,7 +25,11 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Dbo
             builder.Property(x => x.RefNo)
                 .IsRequired()
                 .HasColumnType("nvarchar(450)");
-
+            
+            // Getting an ambiguous match error when using the IncludeProperties extension method
+            // because SQL Server and PostgreSQL is installed.
+            // We can look at fixing this once someone really needs it.
+            // IntentIgnore(Match="builder.HasIndex(x => x.CustomerId)")
             SqlServerIndexBuilderExtensions
                 .IncludeProperties(builder.HasIndex(x => x.CustomerId)
                     .HasDatabaseName("IX_Orders_CustomerId"), x => new { x.OrderDate });

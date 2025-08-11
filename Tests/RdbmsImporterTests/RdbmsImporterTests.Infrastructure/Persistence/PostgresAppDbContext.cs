@@ -6,12 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using RdbmsImporterTests.Application.Common.Interfaces;
 using RdbmsImporterTests.Domain.Common;
 using RdbmsImporterTests.Domain.Common.Interfaces;
-using RdbmsImporterTests.Domain.Contracts.Dbo;
 using RdbmsImporterTests.Domain.Contracts.Public;
 using RdbmsImporterTests.Domain.Entities.PsgSchema2;
 using RdbmsImporterTests.Domain.Entities.PsgViews;
 using RdbmsImporterTests.Domain.Entities.Public;
-using RdbmsImporterTests.Infrastructure.Persistence.Configurations.Dbo;
 using RdbmsImporterTests.Infrastructure.Persistence.Configurations.PsgSchema2;
 using RdbmsImporterTests.Infrastructure.Persistence.Configurations.PsgViews;
 using RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public;
@@ -30,8 +28,8 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
             _domainEventService = domainEventService;
         }
 
-        public DbSet<Domain.Contracts.Public.GetCustomerOrdersResponse> DomainContractsPublicGetCustomerOrdersResponses { get; set; }
-        public DbSet<Domain.Contracts.Public.GetOrderItemDetailsResponse> DomainContractsPublicGetOrderItemDetailsResponses { get; set; }
+        public DbSet<GetCustomerOrdersResponse> GetCustomerOrdersResponses { get; set; }
+        public DbSet<GetOrderItemDetailsResponse> GetOrderItemDetailsResponses { get; set; }
         public DbSet<UuidGenerateV1Response> UuidGenerateV1Responses { get; set; }
         public DbSet<UuidGenerateV1mcResponse> UuidGenerateV1mcResponses { get; set; }
         public DbSet<UuidGenerateV3Response> UuidGenerateV3Responses { get; set; }
@@ -83,8 +81,8 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
             base.OnModelCreating(modelBuilder);
 
             ConfigureModel(modelBuilder);
-            modelBuilder.ApplyConfiguration(new Configurations.Public.GetCustomerOrdersResponseConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.GetOrderItemDetailsResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new GetCustomerOrdersResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new GetOrderItemDetailsResponseConfiguration());
             modelBuilder.ApplyConfiguration(new UuidGenerateV1ResponseConfiguration());
             modelBuilder.ApplyConfiguration(new UuidGenerateV1mcResponseConfiguration());
             modelBuilder.ApplyConfiguration(new UuidGenerateV3ResponseConfiguration());
@@ -99,23 +97,23 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
             modelBuilder.ApplyConfiguration(new Bank1Configuration());
             modelBuilder.ApplyConfiguration(new Configurations.PsgSchema2.CustomerConfiguration());
             modelBuilder.ApplyConfiguration(new VwOrderConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.AddressConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.AspNetRoleConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.AspNetRoleClaimConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.AspNetUserConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.AspNetUserClaimConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.AspNetUserLoginConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.AspNetUserRoleConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.AspNetUserTokenConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.BrandConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.ChildConfiguration());
+            modelBuilder.ApplyConfiguration(new AddressConfiguration());
+            modelBuilder.ApplyConfiguration(new AspNetRoleConfiguration());
+            modelBuilder.ApplyConfiguration(new AspNetRoleClaimConfiguration());
+            modelBuilder.ApplyConfiguration(new AspNetUserConfiguration());
+            modelBuilder.ApplyConfiguration(new AspNetUserClaimConfiguration());
+            modelBuilder.ApplyConfiguration(new AspNetUserLoginConfiguration());
+            modelBuilder.ApplyConfiguration(new AspNetUserRoleConfiguration());
+            modelBuilder.ApplyConfiguration(new AspNetUserTokenConfiguration());
+            modelBuilder.ApplyConfiguration(new BrandConfiguration());
+            modelBuilder.ApplyConfiguration(new ChildConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.Public.CustomerConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.LegacyTableConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.OrderConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.OrderItemConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.ParentConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.PriceConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.Public.ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new LegacyTableConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
+            modelBuilder.ApplyConfiguration(new ParentConfiguration());
+            modelBuilder.ApplyConfiguration(new PriceConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
         }
 
         [IntentManaged(Mode.Ignore)]
