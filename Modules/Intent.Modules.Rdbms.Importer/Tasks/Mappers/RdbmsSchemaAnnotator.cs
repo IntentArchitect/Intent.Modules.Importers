@@ -520,48 +520,48 @@ internal static class RdbmsSchemaAnnotator
         }
     }
 
-    // public static void ApplyIndexStereotype(ElementPersistable indexElement, IndexSchema index)
-    // {
-    //     var stereotype = indexElement.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.Index.Settings.DefinitionId, InitIndexStereotype);
-    //     stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UseDefaultName).Value = "false";
-    //     stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.Unique).Value = index.IsUnique.ToString().ToLower();
-    //     stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.Filter).Value = "Default";
-    //     return;
-    //
-    //     static void InitIndexStereotype(StereotypePersistable stereotype)
-    //     {
-    //         stereotype.Name = Constants.Stereotypes.Rdbms.Index.Settings.Name;
-    //         stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
-    //         stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
-    //         stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UseDefaultName,
-    //             prop => prop.Name = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UseDefaultNameName);
-    //         stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.Unique,
-    //             prop => prop.Name = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UniqueName);
-    //         stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.Filter,
-    //             prop => prop.Name = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.FilterName);
-    //     }
-    // }
-    //
-    // public static void ApplyIndexColumnStereotype(ElementPersistable columnIndex, IndexColumnSchema indexColumn)
-    // {
-    //     // Should follow same GetOrCreateStereotype pattern here:
-    //     var stereotype = columnIndex.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.DefinitionId, InitIndexColumnStereotype);
-    //     stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.Type).Value = indexColumn.IsIncluded ? "Included" : "Key";
-    //     stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirection).Value =
-    //         indexColumn.IsDescending ? "Descending" : "Ascending";
-    //     return;
-    //
-    //     static void InitIndexColumnStereotype(StereotypePersistable stereotype)
-    //     {
-    //         stereotype.Name = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.Name;
-    //         stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
-    //         stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
-    //         stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.Type,
-    //             prop => prop.Name = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.TypeName);
-    //         stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirection,
-    //             prop => prop.Name = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirectionName);
-    //     }
-    // }
+    public static void ApplyIndexStereotype(ElementPersistable indexElement, IndexSchema index)
+    {
+        var stereotype = indexElement.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.Index.Settings.DefinitionId, InitIndexStereotype);
+        stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UseDefaultName).Value = "false";
+        stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.Unique).Value = index.IsUnique.ToString().ToLower();
+        stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.Filter).Value = "Default";
+        return;
+    
+        static void InitIndexStereotype(StereotypePersistable stereotype)
+        {
+            stereotype.Name = Constants.Stereotypes.Rdbms.Index.Settings.Name;
+            stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
+            stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UseDefaultName,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UseDefaultNameName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.Unique,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.UniqueName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.Filter,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.Index.Settings.PropertyId.FilterName);
+        }
+    }
+    
+    public static void ApplyIndexColumnStereotype(ElementPersistable columnIndex, IndexColumnSchema indexColumn)
+    {
+        // Should follow same GetOrCreateStereotype pattern here:
+        var stereotype = columnIndex.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.DefinitionId, InitIndexColumnStereotype);
+        stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.Type).Value = indexColumn.IsIncluded ? "Included" : "Key";
+        stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirection).Value =
+            indexColumn.IsDescending ? "Descending" : "Ascending";
+        return;
+    
+        static void InitIndexColumnStereotype(StereotypePersistable stereotype)
+        {
+            stereotype.Name = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.Name;
+            stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
+            stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.Type,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.TypeName);
+            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirection,
+                prop => prop.Name = Constants.Stereotypes.Rdbms.Index.IndexColumn.Settings.PropertyId.SortDirectionName);
+        }
+    }
 
     public static void AddSchemaStereotype(ElementPersistable folder, string schemaName)
     {

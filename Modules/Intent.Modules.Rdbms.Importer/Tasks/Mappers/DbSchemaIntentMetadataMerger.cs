@@ -241,6 +241,8 @@ internal class DbSchemaIntentMetadataMerger
                 indexElement = IntentModelMapper.CreateIndex(table, index, classElement.Id, package);
                 package.Classes.Add(indexElement);
             }
+            
+            RdbmsSchemaAnnotator.ApplyIndexStereotype(indexElement, index);
 
             // Create index columns
             foreach (var indexColumn in index.Columns)
@@ -263,6 +265,8 @@ internal class DbSchemaIntentMetadataMerger
                     indexColumnElement = IntentModelMapper.CreateIndexColumn(indexColumn, indexElement.Id, attribute.Id, package);
                     indexElement.ChildElements.Add(indexColumnElement);
                 }
+                
+                RdbmsSchemaAnnotator.ApplyIndexColumnStereotype(indexColumnElement, indexColumn);
             }
         }
     }
