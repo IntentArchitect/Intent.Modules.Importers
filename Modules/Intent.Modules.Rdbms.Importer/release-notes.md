@@ -6,6 +6,7 @@
 - Improved: Stored procedure parameter (and result-set) handling.
 - Improved: Error and warning messages for better clarity during import.
 - Fixed: Filter JSON file didn't handle relative paths well.
+- Fixed: Filter JSON fields not supported in UI will be retained.
 - Fixed: StoredProcedureRepository is placed in the package level and not in the folder-schema level.
 - Fixed: Text constraints applied to attributes will now correctly apply to either a Column stereotype type or a Text Constraint stereotype type.
 - Fixed: Stored Procedure operations and parameters are now correctly decorated with the correct stereotype information.

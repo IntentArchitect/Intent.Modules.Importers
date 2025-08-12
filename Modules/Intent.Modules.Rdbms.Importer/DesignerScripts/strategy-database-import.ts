@@ -483,7 +483,7 @@ class DatabaseImportStrategy {
                 const result = await dialogService.openForm(formConfig);
                 if (result) {
                     // Handle the save operation when dialog is closed with OK
-                    let returnedImportFilterFilePath = await this.saveFilterData(result, packageId, importFilterFilePath);
+                    let returnedImportFilterFilePath = await this.saveFilterData(result, existingFilter, packageId, importFilterFilePath);
                     if (returnedImportFilterFilePath != null) {
                         return returnedImportFilterFilePath;
                     }
@@ -700,7 +700,7 @@ class DatabaseImportStrategy {
         }
     }
 
-    private async saveFilterData(formResult: any, packageId: string, importFilterFilePath: string): Promise<string | null> {
+    private async saveFilterData(formResult: any, existingFilter: ImportFilterModel | null, packageId: string, importFilterFilePath: string): Promise<string | null> {
         try {
             // Extract selections from form result
             const inclusiveSelections = formResult.inclusiveSelection || [];
@@ -720,6 +720,12 @@ class DatabaseImportStrategy {
                 exclude_table_columns: [],
                 exclude_view_columns: []
             };
+            
+            // Until we have UI support for this, we will do this
+            if (existingFilter) {
+                filterModel.exclude_table_columns = [...existingFilter.exclude_table_columns];
+                filterModel.exclude_view_columns = [...existingFilter.exclude_view_columns];
+            }
 
             // Process inclusive selections
             inclusiveSelections.forEach((selection: string) => {
@@ -734,7 +740,12 @@ class DatabaseImportStrategy {
                         const schemaName = parts[0];
                         const tableName = parts[2];
                         const fullTableName = `${schemaName}.${tableName}`;
-                        const filterTableModel: FilterTableModel = { name: fullTableName, exclude_columns: [] };
+                        const filterTableModel: FilterTableModel = { 
+                            name: fullTableName, 
+                            exclude_columns: existingFilter 
+                                ? existingFilter.include_tables.filter(x => x.name === fullTableName)[0]?.exclude_columns ?? [] 
+                                : []
+                        };
                         filterModel.include_tables.push(filterTableModel);
                     }
                 } else if (selection.includes('.views.')) {
@@ -744,7 +755,13 @@ class DatabaseImportStrategy {
                         const schemaName = parts[0];
                         const viewName = parts[2];
                         const fullViewName = `${schemaName}.${viewName}`;
-                        filterModel.include_views.push({ name: fullViewName, exclude_columns: [] });
+                        const filterTableModel: FilterTableModel = {
+                            name: fullViewName,
+                            exclude_columns: existingFilter
+                                ? existingFilter.include_views.filter(x => x.name === fullViewName)[0]?.exclude_columns ?? []
+                                : []
+                        };
+                        filterModel.include_views.push(filterTableModel);
                     }
                 } else if (selection.includes('.storedProcedures.')) {
                     // Extract schema and stored procedure name from ID like "schema.storedProcedures.spName"

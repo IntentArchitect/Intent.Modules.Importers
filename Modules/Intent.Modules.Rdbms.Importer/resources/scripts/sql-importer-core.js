@@ -492,7 +492,7 @@ class DatabaseImportStrategy {
                 const result = await dialogService.openForm(formConfig);
                 if (result) {
                     // Handle the save operation when dialog is closed with OK
-                    let returnedImportFilterFilePath = await this.saveFilterData(result, packageId, importFilterFilePath);
+                    let returnedImportFilterFilePath = await this.saveFilterData(result, existingFilter, packageId, importFilterFilePath);
                     if (returnedImportFilterFilePath != null) {
                         return returnedImportFilterFilePath;
                     }
@@ -640,7 +640,7 @@ class DatabaseImportStrategy {
             }
         }
     }
-    async saveFilterData(formResult, packageId, importFilterFilePath) {
+    async saveFilterData(formResult, existingFilter, packageId, importFilterFilePath) {
         var _a;
         try {
             // Extract selections from form result
@@ -659,8 +659,14 @@ class DatabaseImportStrategy {
                 exclude_table_columns: [],
                 exclude_view_columns: []
             };
+            // Until we have UI support for this, we will do this
+            if (existingFilter) {
+                filterModel.exclude_table_columns = [...existingFilter.exclude_table_columns];
+                filterModel.exclude_view_columns = [...existingFilter.exclude_view_columns];
+            }
             // Process inclusive selections
             inclusiveSelections.forEach((selection) => {
+                var _a, _b, _c, _d;
                 if (selection.startsWith('schema.')) {
                     const schemaName = selection.replace('schema.', '');
                     filterModel.schemas.push(schemaName);
@@ -673,7 +679,12 @@ class DatabaseImportStrategy {
                         const schemaName = parts[0];
                         const tableName = parts[2];
                         const fullTableName = `${schemaName}.${tableName}`;
-                        const filterTableModel = { name: fullTableName, exclude_columns: [] };
+                        const filterTableModel = {
+                            name: fullTableName,
+                            exclude_columns: existingFilter
+                                ? (_b = (_a = existingFilter.include_tables.filter(x => x.name === fullTableName)[0]) === null || _a === void 0 ? void 0 : _a.exclude_columns) !== null && _b !== void 0 ? _b : []
+                                : []
+                        };
                         filterModel.include_tables.push(filterTableModel);
                     }
                 }
@@ -684,7 +695,13 @@ class DatabaseImportStrategy {
                         const schemaName = parts[0];
                         const viewName = parts[2];
                         const fullViewName = `${schemaName}.${viewName}`;
-                        filterModel.include_views.push({ name: fullViewName, exclude_columns: [] });
+                        const filterTableModel = {
+                            name: fullViewName,
+                            exclude_columns: existingFilter
+                                ? (_d = (_c = existingFilter.include_views.filter(x => x.name === fullViewName)[0]) === null || _c === void 0 ? void 0 : _c.exclude_columns) !== null && _d !== void 0 ? _d : []
+                                : []
+                        };
+                        filterModel.include_views.push(filterTableModel);
                     }
                 }
                 else if (selection.includes('.storedProcedures.')) {
