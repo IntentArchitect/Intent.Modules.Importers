@@ -47,7 +47,8 @@
           LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false
+          IsIdentity: false,
+          MaxLength: -1
         },
         {
           Name: NewValues,
@@ -55,7 +56,8 @@
           LanguageDataType: string,
           IsNullable: true,
           IsPrimaryKey: false,
-          IsIdentity: false
+          IsIdentity: false,
+          MaxLength: -1
         },
         {
           Name: ChangedBy,
@@ -138,7 +140,8 @@
           LanguageDataType: string,
           IsNullable: false,
           IsPrimaryKey: false,
-          IsIdentity: false
+          IsIdentity: false,
+          MaxLength: -1
         },
         {
           Name: IsActive,
@@ -259,6 +262,576 @@
           ParentSchema: dbo,
           ParentName: Categories,
           ParentType: Table
+        }
+      ]
+    },
+    {
+      Name: DataTypesTestTable,
+      Schema: dbo,
+      Columns: [
+        {
+          Name: ID,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          NumericPrecision: 10
+        },
+        {
+          Name: BitColumn,
+          DbDataType: bit,
+          LanguageDataType: bool,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: TinyIntColumn,
+          DbDataType: tinyint,
+          LanguageDataType: byte,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 3
+        },
+        {
+          Name: SmallIntColumn,
+          DbDataType: smallint,
+          LanguageDataType: short,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 5
+        },
+        {
+          Name: IntColumn,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 10
+        },
+        {
+          Name: BigIntColumn,
+          DbDataType: bigint,
+          LanguageDataType: long,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 19
+        },
+        {
+          Name: DecimalColumn,
+          DbDataType: decimal,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 18,
+          NumericScale: 2
+        },
+        {
+          Name: NumericColumn,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 10,
+          NumericScale: 4
+        },
+        {
+          Name: SmallMoneyColumn,
+          DbDataType: smallmoney,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 10,
+          NumericScale: 4
+        },
+        {
+          Name: MoneyColumn,
+          DbDataType: money,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 19,
+          NumericScale: 4
+        },
+        {
+          Name: FloatColumn,
+          DbDataType: float,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 53
+        },
+        {
+          Name: RealColumn,
+          DbDataType: real,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 24
+        },
+        {
+          Name: DateColumn,
+          DbDataType: date,
+          LanguageDataType: date,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: TimeColumn,
+          DbDataType: time,
+          LanguageDataType: time,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: DateTimeColumn,
+          DbDataType: datetime,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: DateTime2Column,
+          DbDataType: datetime2,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: SmallDateTimeColumn,
+          DbDataType: smalldatetime,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: DateTimeOffsetColumn,
+          DbDataType: datetimeoffset,
+          LanguageDataType: datetimeoffset,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: CharColumn,
+          DbDataType: char,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 10
+        },
+        {
+          Name: VarCharColumn,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 255
+        },
+        {
+          Name: VarCharMaxColumn,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: -1
+        },
+        {
+          Name: TextColumn,
+          DbDataType: text,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: NCharColumn,
+          DbDataType: nchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 10
+        },
+        {
+          Name: NVarCharColumn,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 255
+        },
+        {
+          Name: NVarCharMaxColumn,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: -1
+        },
+        {
+          Name: NTextColumn,
+          DbDataType: ntext,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: BinaryColumn,
+          DbDataType: binary,
+          LanguageDataType: binary,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 16
+        },
+        {
+          Name: VarBinaryColumn,
+          DbDataType: varbinary,
+          LanguageDataType: binary,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 255
+        },
+        {
+          Name: VarBinaryMaxColumn,
+          DbDataType: varbinary,
+          LanguageDataType: binary,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: -1
+        },
+        {
+          Name: ImageColumn,
+          DbDataType: image,
+          LanguageDataType: binary,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: UniqueIdentifierColumn,
+          DbDataType: uniqueidentifier,
+          LanguageDataType: guid,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          DefaultConstraint: {
+            Text: (newid())
+          }
+        },
+        {
+          Name: SqlVariantColumn,
+          DbDataType: sql_variant,
+          LanguageDataType: system.object,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: XmlColumn,
+          DbDataType: xml,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: -1
+        },
+        {
+          Name: GeographyColumn,
+          DbDataType: geography,
+          LanguageDataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: -1
+        },
+        {
+          Name: GeometryColumn,
+          DbDataType: geometry,
+          LanguageDataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: -1
+        },
+        {
+          Name: HierarchyIdColumn,
+          DbDataType: hierarchyid,
+          LanguageDataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 892
+        },
+        {
+          Name: JsonColumn,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: -1
+        },
+        {
+          Name: FullName,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 513,
+          ComputedColumn: {
+            Expression: (([NVarCharColumn]+' - ')+[VarCharColumn]),
+            IsPersisted: false
+          }
+        },
+        {
+          Name: TotalAmount,
+          DbDataType: decimal,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 21,
+          NumericScale: 4,
+          ComputedColumn: {
+            Expression: ([DecimalColumn]+[MoneyColumn]),
+            IsPersisted: false
+          }
+        },
+        {
+          Name: EmailColumn,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: AgeColumn,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 10
+        },
+        {
+          Name: StatusColumn,
+          DbDataType: char,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 1,
+          DefaultConstraint: {
+            Text: ('A')
+          }
+        },
+        {
+          Name: RequiredText,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: OptionalText,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: CreatedDate,
+          DbDataType: datetime2,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          DefaultConstraint: {
+            Text: (getdate())
+          }
+        },
+        {
+          Name: IsActive,
+          DbDataType: bit,
+          LanguageDataType: bool,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          DefaultConstraint: {
+            Text: ((1))
+          }
+        },
+        {
+          Name: Version,
+          DbDataType: timestamp,
+          LanguageDataType: binary,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: BigDecimalColumn,
+          DbDataType: decimal,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 38,
+          NumericScale: 10
+        },
+        {
+          Name: PreciseNumericColumn,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 28,
+          NumericScale: 8
+        },
+        {
+          Name: CaseSensitiveColumn,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: CaseInsensitiveColumn,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        }
+      ],
+      Indexes: [
+        {
+          Name: IX_DataTypesTestTable_DateTimeColumn,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: DateTimeColumn,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_DataTypesTestTable_IsActive,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: IsActive,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_DataTypesTestTable_StatusColumn,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: StatusColumn,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: IX_DataTypesTestTable_VarCharColumn,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: VarCharColumn,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: SIDX_DataTypesTestTable_Geography,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: GeographyColumn,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: SIDX_DataTypesTestTable_Geometry,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: GeometryColumn,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: UQ_DataTypesTestTable_UniqueIdentifier,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          Columns: [
+            {
+              Name: UniqueIdentifierColumn,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
         }
       ]
     },
@@ -2874,6 +3447,324 @@
       ]
     },
     {
+      Name: sp_ComplexDataProcessing,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @LocationPoint,
+          DbDataType: geography,
+          LanguageDataType: unknown,
+          Direction: In,
+          MaxLength: -1
+        },
+        {
+          Name: @SearchRadius,
+          DbDataType: float,
+          LanguageDataType: decimal,
+          Direction: In,
+          NumericPrecision: 53
+        },
+        {
+          Name: @ConfigXml,
+          DbDataType: xml,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: -1
+        },
+        {
+          Name: @MetadataJson,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: -1
+        },
+        {
+          Name: @Description,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: -1
+        },
+        {
+          Name: @Notes,
+          DbDataType: text,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: 2147483647
+        },
+        {
+          Name: @ImageData,
+          DbDataType: varbinary,
+          LanguageDataType: binary,
+          Direction: In,
+          MaxLength: -1
+        },
+        {
+          Name: @ProcessedRecords,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: Both,
+          NumericPrecision: 10
+        },
+        {
+          Name: @ErrorMessage,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: Both,
+          MaxLength: 1000
+        },
+        {
+          Name: @ProcessingTime,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: Both,
+          NumericPrecision: 10
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: ProcessedRecords,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: true,
+          NumericPrecision: 10
+        },
+        {
+          Name: ErrorMessage,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          MaxLength: 1000
+        },
+        {
+          Name: ProcessingTimeMs,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: true,
+          NumericPrecision: 10
+        },
+        {
+          Name: ErrorNumber,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: true,
+          NumericPrecision: 10
+        },
+        {
+          Name: Status,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          MaxLength: 7
+        }
+      ]
+    },
+    {
+      Name: sp_ComprehensiveParameterTypes,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @InputInt,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: In,
+          NumericPrecision: 10
+        },
+        {
+          Name: @InputBigInt,
+          DbDataType: bigint,
+          LanguageDataType: long,
+          Direction: In,
+          NumericPrecision: 19
+        },
+        {
+          Name: @InputDecimal,
+          DbDataType: decimal,
+          LanguageDataType: decimal,
+          Direction: In,
+          NumericPrecision: 18,
+          NumericScale: 2
+        },
+        {
+          Name: @InputFloat,
+          DbDataType: float,
+          LanguageDataType: decimal,
+          Direction: In,
+          NumericPrecision: 53
+        },
+        {
+          Name: @InputBit,
+          DbDataType: bit,
+          LanguageDataType: bool,
+          Direction: In
+        },
+        {
+          Name: @InputVarChar,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: 100
+        },
+        {
+          Name: @InputNVarChar,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: 255
+        },
+        {
+          Name: @InputChar,
+          DbDataType: char,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: 5
+        },
+        {
+          Name: @InputDate,
+          DbDataType: date,
+          LanguageDataType: date,
+          Direction: In
+        },
+        {
+          Name: @InputDateTime,
+          DbDataType: datetime2,
+          LanguageDataType: datetime,
+          Direction: In
+        },
+        {
+          Name: @InputTime,
+          DbDataType: time,
+          LanguageDataType: time,
+          Direction: In
+        },
+        {
+          Name: @InputUniqueId,
+          DbDataType: uniqueidentifier,
+          LanguageDataType: guid,
+          Direction: In
+        },
+        {
+          Name: @InputXml,
+          DbDataType: xml,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: -1
+        },
+        {
+          Name: @InputJson,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: -1
+        },
+        {
+          Name: @InputBrandTable,
+          DbDataType: BrandType,
+          LanguageDataType: class,
+          Direction: In,
+          UserDefinedTableType: {
+            Name: BrandType,
+            Schema: dbo,
+            Columns: [
+              {
+                Name: Name,
+                DbDataType: nvarchar,
+                LanguageDataType: string,
+                IsNullable: false,
+                IsPrimaryKey: false,
+                IsIdentity: false,
+                MaxLength: -1
+              },
+              {
+                Name: IsActive,
+                DbDataType: bit,
+                LanguageDataType: bool,
+                IsNullable: false,
+                IsPrimaryKey: false,
+                IsIdentity: false,
+                MaxLength: 1,
+                NumericPrecision: 1
+              }
+            ]
+          }
+        },
+        {
+          Name: @OutputInt,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: Both,
+          NumericPrecision: 10
+        },
+        {
+          Name: @OutputString,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: Both,
+          MaxLength: 500
+        },
+        {
+          Name: @OutputDecimal,
+          DbDataType: decimal,
+          LanguageDataType: decimal,
+          Direction: Both,
+          NumericPrecision: 18,
+          NumericScale: 4
+        },
+        {
+          Name: @OutputDate,
+          DbDataType: datetime2,
+          LanguageDataType: datetime,
+          Direction: Both
+        },
+        {
+          Name: @OutputUniqueId,
+          DbDataType: uniqueidentifier,
+          LanguageDataType: guid,
+          Direction: Both
+        },
+        {
+          Name: @OutputRowCount,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: Both,
+          NumericPrecision: 10
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: ProcessedInt,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: true,
+          NumericPrecision: 10
+        },
+        {
+          Name: ResultString,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          MaxLength: 500
+        },
+        {
+          Name: CalculatedValue,
+          DbDataType: decimal,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          NumericPrecision: 18,
+          NumericScale: 4
+        },
+        {
+          Name: ProcessedDate,
+          DbDataType: datetime2,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          MaxLength: 7,
+          NumericPrecision: 27,
+          NumericScale: 7
+        }
+      ]
+    },
+    {
       Name: sp_CreateOrder,
       Schema: dbo,
       Parameters: [
@@ -2920,6 +3811,71 @@
           LanguageDataType: int,
           Direction: Both,
           NumericPrecision: 10
+        }
+      ]
+    },
+    {
+      Name: sp_DynamicReporting,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @TableName,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: 128
+        },
+        {
+          Name: @ColumnName,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: 128
+        },
+        {
+          Name: @StartDate,
+          DbDataType: datetime2,
+          LanguageDataType: datetime,
+          Direction: In
+        },
+        {
+          Name: @EndDate,
+          DbDataType: datetime2,
+          LanguageDataType: datetime,
+          Direction: In
+        },
+        {
+          Name: @SortOrder,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: 4
+        },
+        {
+          Name: @RecordCount,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: Both,
+          NumericPrecision: 10
+        },
+        {
+          Name: @MinDate,
+          DbDataType: datetime2,
+          LanguageDataType: datetime,
+          Direction: Both
+        },
+        {
+          Name: @MaxDate,
+          DbDataType: datetime2,
+          LanguageDataType: datetime,
+          Direction: Both
+        },
+        {
+          Name: @ExecutedSQL,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: Both,
+          MaxLength: -1
         }
       ]
     },
@@ -3338,6 +4294,184 @@
           MaxLength: 7,
           NumericPrecision: 27,
           NumericScale: 7
+        }
+      ]
+    },
+    {
+      Name: sp_InOutParameterExample,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @Value,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: Both,
+          NumericPrecision: 10
+        },
+        {
+          Name: @Multiplier,
+          DbDataType: decimal,
+          LanguageDataType: decimal,
+          Direction: In,
+          NumericPrecision: 5,
+          NumericScale: 2
+        },
+        {
+          Name: @Operation,
+          DbDataType: char,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: 1
+        },
+        {
+          Name: @OperationCount,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: Both,
+          NumericPrecision: 10
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: OriginalValue,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: true,
+          NumericPrecision: 10
+        },
+        {
+          Name: NewValue,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: true,
+          NumericPrecision: 10
+        },
+        {
+          Name: Operation,
+          DbDataType: char,
+          LanguageDataType: string,
+          IsNullable: true,
+          MaxLength: 1
+        },
+        {
+          Name: OperationValue,
+          DbDataType: decimal,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          NumericPrecision: 5,
+          NumericScale: 2
+        },
+        {
+          Name: TotalOperations,
+          DbDataType: int,
+          LanguageDataType: int,
+          IsNullable: true,
+          NumericPrecision: 10
+        }
+      ]
+    },
+    {
+      Name: sp_MultipleResultSets,
+      Schema: dbo,
+      Parameters: [
+        {
+          Name: @CategoryFilter,
+          DbDataType: nvarchar,
+          LanguageDataType: string,
+          Direction: In,
+          MaxLength: 100
+        },
+        {
+          Name: @IncludeInactive,
+          DbDataType: bit,
+          LanguageDataType: bool,
+          Direction: In
+        },
+        {
+          Name: @TopCount,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: In,
+          NumericPrecision: 10
+        },
+        {
+          Name: @TotalProductCount,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: Both,
+          NumericPrecision: 10
+        },
+        {
+          Name: @TotalCategories,
+          DbDataType: int,
+          LanguageDataType: int,
+          Direction: Both,
+          NumericPrecision: 10
+        },
+        {
+          Name: @AveragePrice,
+          DbDataType: decimal,
+          LanguageDataType: decimal,
+          Direction: Both,
+          NumericPrecision: 10,
+          NumericScale: 2
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: ProductID,
+          DbDataType: int,
+          SourceSchema: dbo,
+          SourceTable: Products,
+          LanguageDataType: int,
+          IsNullable: false,
+          NumericPrecision: 10
+        },
+        {
+          Name: ProductName,
+          DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Products,
+          LanguageDataType: string,
+          IsNullable: false,
+          MaxLength: 255
+        },
+        {
+          Name: UnitPrice,
+          DbDataType: decimal,
+          SourceSchema: dbo,
+          SourceTable: Products,
+          LanguageDataType: decimal,
+          IsNullable: false,
+          NumericPrecision: 10,
+          NumericScale: 2
+        },
+        {
+          Name: CategoryName,
+          DbDataType: nvarchar,
+          SourceSchema: dbo,
+          SourceTable: Categories,
+          LanguageDataType: string,
+          IsNullable: false,
+          MaxLength: 100
+        },
+        {
+          Name: UnitsInStock,
+          DbDataType: int,
+          SourceSchema: dbo,
+          SourceTable: Products,
+          LanguageDataType: int,
+          IsNullable: false,
+          NumericPrecision: 10
+        },
+        {
+          Name: Discontinued,
+          DbDataType: bit,
+          SourceSchema: dbo,
+          SourceTable: Products,
+          LanguageDataType: bool,
+          IsNullable: true,
+          NumericPrecision: 1
         }
       ]
     },

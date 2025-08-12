@@ -85,8 +85,15 @@ internal class SqlServerColumnExtractor : DefaultColumnExtractor
     /// </summary>
     private static int? GetSqlServerMaxLength(DatabaseColumn column)
     {
-        // First try the DatabaseSchemaReader value
-        if (column.Length > 0)
+        // Sometimes with Text and NText a large length is provided but that is meaningless
+        // and will only skew the final output. Let's omit this.
+        if (column.DbDataType is "text" or "ntext" or "image")
+        {
+            return null;
+        }
+        
+        // Don't record 0. -1 means MAX.
+        if (column.Length != 0)
         {
             return column.Length;
         }

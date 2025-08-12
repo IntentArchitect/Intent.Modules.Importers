@@ -1030,3 +1030,570 @@ BEGIN
     VALUES (p_product_id, p_transaction_type, p_quantity, p_unit_price, p_notes, p_user_id);
 END;
 $$ LANGUAGE plpgsql;
+
+-- =============================================
+-- COMPREHENSIVE DATA TYPES TEST TABLE
+-- =============================================
+
+CREATE TABLE data_types_test_table (
+    -- Primary Key
+    id SERIAL PRIMARY KEY,
+    
+    -- Numeric Types
+    boolean_column BOOLEAN,
+    smallint_column SMALLINT,
+    integer_column INTEGER,
+    bigint_column BIGINT,
+    decimal_column DECIMAL(18,2),
+    numeric_column NUMERIC(10,4),
+    real_column REAL,
+    double_precision_column DOUBLE PRECISION,
+    
+    -- Serial Types (Auto-incrementing)
+    smallserial_column SMALLSERIAL,
+    serial_column SERIAL,
+    bigserial_column BIGSERIAL,
+    
+    -- Monetary Type
+    money_column MONEY,
+    
+    -- Character Types
+    char_column CHAR(10),
+    varchar_column VARCHAR(255),
+    text_column TEXT,
+    
+    -- Binary Data Types
+    bytea_column BYTEA,
+    
+    -- Date/Time Types
+    date_column DATE,
+    time_column TIME,
+    time_with_tz_column TIME WITH TIME ZONE,
+    timestamp_column TIMESTAMP,
+    timestamp_with_tz_column TIMESTAMP WITH TIME ZONE,
+    interval_column INTERVAL,
+    
+    -- Network Address Types
+    inet_column INET,
+    cidr_column CIDR,
+    macaddr_column MACADDR,
+    macaddr8_column MACADDR8,
+    
+    -- Bit String Types
+    bit_column BIT(8),
+    bit_varying_column BIT VARYING(64),
+    
+    -- UUID Type
+    uuid_column UUID DEFAULT gen_random_uuid(),
+    
+    -- JSON Types
+    json_column JSON,
+    jsonb_column JSONB,
+    
+    -- XML Type
+    xml_column XML,
+    
+    -- Geometric Types
+    point_column POINT,
+    line_column LINE,
+    lseg_column LSEG,
+    box_column BOX,
+    path_column PATH,
+    polygon_column POLYGON,
+    circle_column CIRCLE,
+    
+    -- Range Types
+    int4range_column INT4RANGE,
+    int8range_column INT8RANGE,
+    numrange_column NUMRANGE,
+    tsrange_column TSRANGE,
+    tstzrange_column TSTZRANGE,
+    daterange_column DATERANGE,
+    
+    -- Array Types
+    integer_array_column INTEGER[],
+    text_array_column TEXT[],
+    varchar_array_column VARCHAR(50)[],
+    
+    -- Composite Types
+    -- We'll create a custom type first
+    
+    -- Special PostgreSQL Types
+    tsvector_column TSVECTOR,
+    tsquery_column TSQUERY,
+    
+    -- Constraints and Defaults
+    email_column VARCHAR(100) CHECK (email_column ~ '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+    age_column INTEGER CHECK (age_column >= 0 AND age_column <= 150),
+    status_column CHAR(1) DEFAULT 'A' CHECK (status_column IN ('A', 'I', 'P')),
+    
+    -- Nullable and Non-nullable variants
+    required_text VARCHAR(50) NOT NULL,
+    optional_text VARCHAR(50),
+    
+    -- Columns with Default Values
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_active BOOLEAN DEFAULT TRUE,
+    
+    -- Large precision types
+    big_decimal_column DECIMAL(38,10),
+    precise_numeric_column NUMERIC(28,8),
+    
+    -- Computed/Generated columns (PostgreSQL 12+)
+    full_name TEXT GENERATED ALWAYS AS (varchar_column || ' - ' || text_column) STORED,
+    
+    -- Unique constraints
+    CONSTRAINT uq_data_types_test_table_uuid UNIQUE (uuid_column)
+);
+
+-- Create a custom composite type for demonstration
+CREATE TYPE address_type AS (
+    street VARCHAR(100),
+    city VARCHAR(50),
+    state VARCHAR(50),
+    zip_code VARCHAR(10),
+    country VARCHAR(50)
+);
+
+-- Add a column using the composite type
+ALTER TABLE data_types_test_table ADD COLUMN address_composite address_type;
+
+-- Create indexes for the comprehensive table
+CREATE INDEX idx_data_types_test_table_timestamp ON data_types_test_table(timestamp_column);
+CREATE INDEX idx_data_types_test_table_varchar ON data_types_test_table(varchar_column);
+CREATE INDEX idx_data_types_test_table_status ON data_types_test_table(status_column);
+CREATE INDEX idx_data_types_test_table_is_active ON data_types_test_table(is_active);
+
+-- GIN indexes for arrays and JSON
+CREATE INDEX idx_data_types_test_table_integer_array ON data_types_test_table USING GIN(integer_array_column);
+CREATE INDEX idx_data_types_test_table_jsonb ON data_types_test_table USING GIN(jsonb_column);
+CREATE INDEX idx_data_types_test_table_tsvector ON data_types_test_table USING GIN(tsvector_column);
+
+-- GiST indexes for geometric types
+CREATE INDEX idx_data_types_test_table_point ON data_types_test_table USING GIST(point_column);
+CREATE INDEX idx_data_types_test_table_box ON data_types_test_table USING GIST(box_column);
+
+-- =============================================
+-- COMPREHENSIVE PARAMETER TYPES FUNCTIONS
+-- =============================================
+
+-- Function with various input parameter types and OUT parameters
+CREATE OR REPLACE FUNCTION comprehensive_parameter_types(
+    -- Required input parameters (no defaults)
+    input_int INTEGER,
+    input_decimal DECIMAL(18,2),
+    input_varchar VARCHAR(100),
+    
+    -- Optional input parameters (all have defaults)
+    input_bigint BIGINT DEFAULT NULL,
+    input_real REAL DEFAULT 0.0,
+    input_boolean BOOLEAN DEFAULT TRUE,
+    input_text TEXT DEFAULT 'Default Value',
+    input_char CHAR(5) DEFAULT 'DEFLT',
+    input_date DATE DEFAULT NULL,
+    input_timestamp TIMESTAMP DEFAULT NULL,
+    input_time TIME DEFAULT NULL,
+    input_interval INTERVAL DEFAULT NULL,
+    input_uuid UUID DEFAULT NULL,
+    input_json JSON DEFAULT NULL,
+    input_jsonb JSONB DEFAULT NULL,
+    input_xml XML DEFAULT NULL,
+    input_integer_array INTEGER[] DEFAULT NULL,
+    input_text_array TEXT[] DEFAULT NULL,
+    input_address address_type DEFAULT NULL,
+    input_inet INET DEFAULT NULL,
+    input_cidr CIDR DEFAULT NULL,
+    input_point POINT DEFAULT NULL,
+    input_box BOX DEFAULT NULL,
+    
+    -- OUT parameters of various types
+    OUT output_int INTEGER,
+    OUT output_text TEXT,
+    OUT output_decimal DECIMAL(18,4),
+    OUT output_timestamp TIMESTAMP,
+    OUT output_uuid UUID,
+    OUT output_json JSONB,
+    OUT output_array INTEGER[],
+    OUT output_row_count INTEGER
+)
+RETURNS RECORD
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    temp_record RECORD;
+BEGIN
+    -- Set output values based on inputs
+    output_int := input_int * 2;
+    output_text := 'Processed: ' || input_varchar || ' - ' || input_text;
+    output_decimal := input_decimal * input_real;
+    output_timestamp := CURRENT_TIMESTAMP;
+    output_uuid := gen_random_uuid();
+    
+    -- Process JSON input
+    IF input_jsonb IS NOT NULL THEN
+        output_json := jsonb_build_object(
+            'original', input_jsonb,
+            'processed_at', CURRENT_TIMESTAMP,
+            'input_int', input_int
+        );
+    ELSE
+        output_json := jsonb_build_object('status', 'no_json_input');
+    END IF;
+    
+    -- Process array input
+    IF input_integer_array IS NOT NULL THEN
+        output_array := array(SELECT unnest(input_integer_array) * 2);
+    ELSE
+        output_array := ARRAY[input_int, input_int * 2, input_int * 3];
+    END IF;
+    
+    -- Count something for demonstration
+    SELECT COUNT(*) INTO output_row_count FROM users WHERE is_active = input_boolean;
+    
+    -- Insert test data if address provided
+    IF input_address IS NOT NULL THEN
+        INSERT INTO data_types_test_table (
+            varchar_column, 
+            address_composite, 
+            integer_column
+        ) VALUES (
+            'Test from function',
+            input_address,
+            input_int
+        );
+        GET DIAGNOSTICS output_row_count = ROW_COUNT;
+    END IF;
+END;
+$$;
+
+-- Function demonstrating multiple result sets (using SETOF)
+CREATE OR REPLACE FUNCTION multiple_result_sets(
+    category_filter VARCHAR(100) DEFAULT NULL,
+    include_inactive BOOLEAN DEFAULT FALSE,
+    top_count INTEGER DEFAULT 10
+)
+RETURNS TABLE (
+    product_id INTEGER,
+    product_name VARCHAR(255),
+    unit_price DECIMAL(10,2),
+    category_name VARCHAR(100),
+    units_in_stock INTEGER,
+    discontinued BOOLEAN,
+    -- Summary fields (will be the same for all rows)
+    total_product_count BIGINT,
+    total_categories BIGINT,
+    average_price DECIMAL(10,2)
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_total_product_count BIGINT;
+    v_total_categories BIGINT;
+    v_average_price DECIMAL(10,2);
+BEGIN
+    -- Calculate summary statistics first
+    SELECT COUNT(*) INTO v_total_product_count
+    FROM products p
+    INNER JOIN categories c ON p.category_id = c.category_id
+    WHERE (category_filter IS NULL OR c.category_name ILIKE '%' || category_filter || '%')
+      AND (include_inactive = TRUE OR p.discontinued = FALSE);
+      
+    SELECT COUNT(DISTINCT c.category_id) INTO v_total_categories
+    FROM categories c
+    WHERE (category_filter IS NULL OR c.category_name ILIKE '%' || category_filter || '%');
+    
+    SELECT AVG(p.unit_price) INTO v_average_price
+    FROM products p
+    INNER JOIN categories c ON p.category_id = c.category_id
+    WHERE (category_filter IS NULL OR c.category_name ILIKE '%' || category_filter || '%')
+      AND (include_inactive = TRUE OR p.discontinued = FALSE);
+    
+    -- Return product records with summary data
+    RETURN QUERY
+    SELECT 
+        p.product_id,
+        p.product_name,
+        p.unit_price,
+        c.category_name,
+        p.units_in_stock,
+        p.discontinued,
+        v_total_product_count,
+        v_total_categories,
+        v_average_price
+    FROM products p
+    INNER JOIN categories c ON p.category_id = c.category_id
+    WHERE (category_filter IS NULL OR c.category_name ILIKE '%' || category_filter || '%')
+      AND (include_inactive = TRUE OR p.discontinued = FALSE)
+    ORDER BY p.unit_price DESC
+    LIMIT top_count;
+END;
+$$;
+
+-- Function with complex data types and error handling
+CREATE OR REPLACE FUNCTION complex_data_processing(
+    -- Geometric parameters
+    location_point POINT DEFAULT NULL,
+    search_area BOX DEFAULT NULL,
+    
+    -- JSON parameter for complex input
+    config_json JSONB DEFAULT NULL,
+    metadata_json JSON DEFAULT NULL,
+    
+    -- Large text parameters
+    description_text TEXT DEFAULT NULL,
+    notes_text TEXT DEFAULT NULL,
+    
+    -- Binary parameter
+    image_data BYTEA DEFAULT NULL,
+    
+    -- Array parameters
+    tag_array TEXT[] DEFAULT NULL,
+    id_array INTEGER[] DEFAULT NULL,
+    
+    -- Network parameters
+    client_ip INET DEFAULT NULL,
+    
+    -- Range parameters
+    date_range DATERANGE DEFAULT NULL,
+    price_range NUMRANGE DEFAULT NULL,
+    
+    -- OUT parameters
+    OUT processed_records INTEGER,
+    OUT error_message TEXT,
+    OUT processing_time_ms INTEGER,
+    OUT result_data JSONB
+)
+RETURNS RECORD
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    start_time TIMESTAMP;
+    config_value TEXT;
+    temp_count INTEGER;
+BEGIN
+    start_time := clock_timestamp();
+    processed_records := 0;
+    error_message := NULL;
+    
+    BEGIN
+        -- Validate JSON if provided
+        IF metadata_json IS NOT NULL THEN
+            -- Try to extract a value to validate JSON structure
+            SELECT metadata_json->>'status' INTO config_value;
+        END IF;
+        
+        -- Process JSONB configuration if provided
+        IF config_json IS NOT NULL THEN
+            SELECT config_json->>'processing_mode' INTO config_value;
+            
+            -- Simulate processing based on config
+            CASE config_value
+                WHEN 'batch' THEN
+                    processed_records := processed_records + 100;
+                WHEN 'single' THEN
+                    processed_records := processed_records + 1;
+                ELSE
+                    processed_records := processed_records + 10;
+            END CASE;
+        END IF;
+        
+        -- Process geometric data if provided
+        IF location_point IS NOT NULL THEN
+            -- Count products within a certain distance (simplified example)
+            SELECT COUNT(*) INTO temp_count
+            FROM products p
+            WHERE TRUE; -- Placeholder for actual geometric query
+            processed_records := processed_records + temp_count;
+        END IF;
+        
+        -- Process array data if provided
+        IF tag_array IS NOT NULL THEN
+            processed_records := processed_records + array_length(tag_array, 1);
+        END IF;
+        
+        -- Process binary data if provided
+        IF image_data IS NOT NULL THEN
+            CASE 
+                WHEN octet_length(image_data) > 1000000 THEN
+                    processed_records := processed_records + 10; -- Large image
+                WHEN octet_length(image_data) > 100000 THEN
+                    processed_records := processed_records + 5;  -- Medium image
+                ELSE
+                    processed_records := processed_records + 1;  -- Small image
+            END CASE;
+        END IF;
+        
+        -- Process date range if provided
+        IF date_range IS NOT NULL THEN
+            SELECT COUNT(*) INTO temp_count
+            FROM orders o
+            WHERE o.order_date::DATE <@ date_range;
+            processed_records := processed_records + temp_count;
+        END IF;
+        
+        -- Build result data
+        result_data := jsonb_build_object(
+            'config_mode', config_value,
+            'location_provided', (location_point IS NOT NULL),
+            'arrays_processed', (tag_array IS NOT NULL OR id_array IS NOT NULL),
+            'image_size_bytes', CASE WHEN image_data IS NOT NULL THEN octet_length(image_data) ELSE NULL END,
+            'client_ip', client_ip::TEXT,
+            'processing_timestamp', start_time
+        );
+        
+        -- Calculate processing time
+        processing_time_ms := EXTRACT(EPOCH FROM (clock_timestamp() - start_time)) * 1000;
+        
+    EXCEPTION
+        WHEN OTHERS THEN
+            error_message := SQLERRM;
+            processed_records := -1;
+            processing_time_ms := EXTRACT(EPOCH FROM (clock_timestamp() - start_time)) * 1000;
+            result_data := jsonb_build_object('error', error_message);
+    END;
+END;
+$$;
+
+-- Function demonstrating INOUT pattern using composite types
+CREATE OR REPLACE FUNCTION inout_parameter_example(
+    INOUT value_data RECORD,
+    multiplier DECIMAL(5,2) DEFAULT 2.0,
+    operation CHAR(1) DEFAULT 'M' -- 'M'ultiply, 'A'dd, 'S'ubtract
+)
+RETURNS RECORD
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    original_value INTEGER;
+    new_value INTEGER;
+    operation_count INTEGER;
+BEGIN
+    -- Extract values from the input record
+    original_value := (value_data).original_value;
+    operation_count := COALESCE((value_data).operation_count, 0) + 1;
+    
+    -- Perform operation based on operation parameter
+    CASE operation
+        WHEN 'M' THEN
+            new_value := original_value * multiplier;
+        WHEN 'A' THEN
+            new_value := original_value + multiplier;
+        WHEN 'S' THEN
+            new_value := original_value - multiplier;
+        ELSE
+            RAISE EXCEPTION 'Invalid operation. Use M, A, or S.';
+    END CASE;
+    
+    -- Build the return record
+    value_data := ROW(
+        original_value,
+        new_value,
+        operation,
+        multiplier,
+        operation_count
+    );
+END;
+$$;
+
+-- Function with table-valued parameters (using arrays and custom types)
+CREATE OR REPLACE FUNCTION bulk_insert_with_arrays(
+    names TEXT[],
+    emails TEXT[],
+    active_flags BOOLEAN[],
+    OUT inserted_count INTEGER,
+    OUT failed_count INTEGER,
+    OUT error_details TEXT[]
+)
+RETURNS RECORD
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    i INTEGER;
+    temp_errors TEXT[] := ARRAY[]::TEXT[];
+BEGIN
+    inserted_count := 0;
+    failed_count := 0;
+    
+    -- Validate array lengths match
+    IF array_length(names, 1) != array_length(emails, 1) OR 
+       array_length(names, 1) != array_length(active_flags, 1) THEN
+        RAISE EXCEPTION 'Array lengths must match';
+    END IF;
+    
+    -- Process each element
+    FOR i IN 1..array_length(names, 1) LOOP
+        BEGIN
+            INSERT INTO data_types_test_table (
+                varchar_column,
+                email_column,
+                is_active,
+                text_column
+            ) VALUES (
+                names[i],
+                emails[i],
+                active_flags[i],
+                'Bulk inserted record'
+            );
+            inserted_count := inserted_count + 1;
+            
+        EXCEPTION
+            WHEN OTHERS THEN
+                failed_count := failed_count + 1;
+                temp_errors := array_append(temp_errors, 
+                    'Row ' || i || ': ' || SQLERRM);
+        END;
+    END LOOP;
+    
+    error_details := temp_errors;
+END;
+$$;
+
+-- Function returning a table with various column types
+CREATE OR REPLACE FUNCTION get_comprehensive_report(
+    start_date DATE DEFAULT NULL,
+    end_date DATE DEFAULT NULL,
+    include_arrays BOOLEAN DEFAULT FALSE
+)
+RETURNS TABLE (
+    record_id INTEGER,
+    summary_text TEXT,
+    calculated_decimal DECIMAL(12,2),
+    timestamp_value TIMESTAMP,
+    json_data JSONB,
+    array_data INTEGER[],
+    geometric_data POINT,
+    network_info INET,
+    uuid_value UUID,
+    range_data DATERANGE
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        dt.id,
+        dt.varchar_column || ' - Report Generated',
+        dt.decimal_column * 1.15,
+        dt.created_date,
+        jsonb_build_object(
+            'id', dt.id,
+            'status', dt.status_column,
+            'active', dt.is_active,
+            'generated_at', CURRENT_TIMESTAMP
+        ),
+        CASE WHEN include_arrays THEN 
+            ARRAY[dt.id, dt.integer_column, dt.age_column]
+        ELSE NULL END,
+        dt.point_column,
+        dt.inet_column,
+        dt.uuid_column,
+        CASE WHEN start_date IS NOT NULL AND end_date IS NOT NULL THEN
+            daterange(start_date, end_date)
+        ELSE NULL END
+    FROM data_types_test_table dt
+    WHERE (start_date IS NULL OR dt.created_date::DATE >= start_date)
+      AND (end_date IS NULL OR dt.created_date::DATE <= end_date)
+      AND dt.is_active = TRUE
+    ORDER BY dt.created_date DESC;
+END;
+$$;

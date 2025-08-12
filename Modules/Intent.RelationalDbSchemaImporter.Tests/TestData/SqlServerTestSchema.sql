@@ -990,3 +990,452 @@ CREATE TABLE SelfReferenceTable (
                                     CONSTRAINT PK_SelfReferenceTable PRIMARY KEY (ID),
                                     CONSTRAINT FK_SelfReferenceTable_SelfReferenceTable FOREIGN KEY (ManagerId) REFERENCES SelfReferenceTable(ID)
 );
+GO
+
+-- =============================================
+-- COMPREHENSIVE DATA TYPES TEST TABLE
+-- =============================================
+
+CREATE TABLE DataTypesTestTable (
+    -- Primary Key
+                                    ID INT IDENTITY(1,1) PRIMARY KEY,
+
+    -- Exact Numeric Types
+                                    BitColumn BIT,
+                                    TinyIntColumn TINYINT,
+                                    SmallIntColumn SMALLINT,
+                                    IntColumn INT,
+                                    BigIntColumn BIGINT,
+                                    DecimalColumn DECIMAL(18,2),
+                                    NumericColumn NUMERIC(10,4),
+                                    SmallMoneyColumn SMALLMONEY,
+                                    MoneyColumn MONEY,
+
+    -- Approximate Numeric Types
+                                    FloatColumn FLOAT(53),
+                                    RealColumn REAL,
+
+    -- Date and Time Types
+                                    DateColumn DATE,
+                                    TimeColumn TIME(7),
+                                    DateTimeColumn DATETIME,
+                                    DateTime2Column DATETIME2(7),
+                                    SmallDateTimeColumn SMALLDATETIME,
+                                    DateTimeOffsetColumn DATETIMEOFFSET(7),
+
+    -- Character String Types
+                                    CharColumn CHAR(10),
+                                    VarCharColumn VARCHAR(255),
+                                    VarCharMaxColumn VARCHAR(MAX),
+    TextColumn TEXT,
+    
+    -- Unicode Character String Types
+    NCharColumn NCHAR(10),
+    NVarCharColumn NVARCHAR(255),
+    NVarCharMaxColumn NVARCHAR(MAX),
+    NTextColumn NTEXT,
+    
+    -- Binary String Types
+    BinaryColumn BINARY(16),
+    VarBinaryColumn VARBINARY(255),
+    VarBinaryMaxColumn VARBINARY(MAX),
+    ImageColumn IMAGE,
+    
+    -- Other Data Types
+    UniqueIdentifierColumn UNIQUEIDENTIFIER DEFAULT NEWID(),
+    SqlVariantColumn SQL_VARIANT,
+    XmlColumn XML,
+    
+    -- Spatial Data Types
+    GeographyColumn GEOGRAPHY,
+    GeometryColumn GEOMETRY,
+    
+    -- Hierarchical Data Type
+    HierarchyIdColumn HIERARCHYID,
+    
+    -- JSON (SQL Server 2016+)
+    JsonColumn NVARCHAR(MAX) CHECK (ISJSON(JsonColumn) = 1),
+    
+    -- Computed Columns
+    FullName AS (NVarCharColumn + ' - ' + VarCharColumn) PERSISTED,
+    TotalAmount AS (DecimalColumn + MoneyColumn),
+    
+    -- Columns with Constraints
+    EmailColumn NVARCHAR(100) CHECK (EmailColumn LIKE '%@%.%'),
+    AgeColumn INT CHECK (AgeColumn >= 0 AND AgeColumn <= 150),
+    StatusColumn CHAR(1) DEFAULT 'A' CHECK (StatusColumn IN ('A', 'I', 'P')),
+    
+    -- Nullable and Non-nullable variants
+    RequiredText NVARCHAR(50) NOT NULL,
+    OptionalText NVARCHAR(50) NULL,
+    
+    -- Columns with Default Values
+    CreatedDate DATETIME2 DEFAULT GETDATE(),
+    IsActive BIT DEFAULT 1,
+    Version ROWVERSION,
+    
+    -- Large precision types
+    BigDecimalColumn DECIMAL(38,10),
+    PreciseNumericColumn NUMERIC(28,8),
+    
+    -- Collation-specific columns
+    CaseSensitiveColumn NVARCHAR(100) COLLATE SQL_Latin1_General_CP1_CS_AS,
+    CaseInsensitiveColumn NVARCHAR(100) COLLATE SQL_Latin1_General_CP1_CI_AS,
+    
+    -- Index and constraint examples
+    CONSTRAINT UQ_DataTypesTestTable_UniqueIdentifier UNIQUE (UniqueIdentifierColumn),
+    CONSTRAINT CK_DataTypesTestTable_StatusValid CHECK (StatusColumn IN ('A', 'I', 'P', 'D'))
+);
+GO
+
+-- Add indexes for the comprehensive table
+CREATE NONCLUSTERED INDEX IX_DataTypesTestTable_DateTimeColumn ON DataTypesTestTable(DateTimeColumn);
+CREATE NONCLUSTERED INDEX IX_DataTypesTestTable_VarCharColumn ON DataTypesTestTable(VarCharColumn);
+CREATE NONCLUSTERED INDEX IX_DataTypesTestTable_StatusColumn ON DataTypesTestTable(StatusColumn);
+CREATE NONCLUSTERED INDEX IX_DataTypesTestTable_IsActive ON DataTypesTestTable(IsActive);
+
+-- Spatial indexes (if spatial data is used)
+CREATE SPATIAL INDEX SIDX_DataTypesTestTable_Geography ON DataTypesTestTable(GeographyColumn)
+USING GEOGRAPHY_GRID
+WITH (
+    GRIDS = (LEVEL_1 = MEDIUM, LEVEL_2 = MEDIUM, LEVEL_3 = MEDIUM, LEVEL_4 = MEDIUM),
+    CELLS_PER_OBJECT = 16
+);
+
+CREATE SPATIAL INDEX SIDX_DataTypesTestTable_Geometry ON DataTypesTestTable(GeometryColumn)
+USING GEOMETRY_GRID
+WITH (
+    BOUNDING_BOX = (XMIN = -180, YMIN = -90, XMAX = 180, YMAX = 90),
+    GRIDS = (LEVEL_1 = MEDIUM, LEVEL_2 = MEDIUM, LEVEL_3 = MEDIUM, LEVEL_4 = MEDIUM),
+    CELLS_PER_OBJECT = 16
+);
+GO
+
+-- =============================================
+-- COMPREHENSIVE PARAMETER TYPES STORED PROCEDURES
+-- =============================================
+
+-- Procedure with various input parameter types and OUTPUT parameters
+CREATE PROCEDURE sp_ComprehensiveParameterTypes
+    -- Basic input parameters
+    @InputInt INT,
+    @InputBigInt BIGINT = NULL,
+    @InputDecimal DECIMAL(18,2),
+    @InputFloat FLOAT = 0.0,
+    @InputBit BIT = 1,
+    
+    -- String parameters
+    @InputVarChar VARCHAR(100),
+    @InputNVarChar NVARCHAR(255) = N'Default Value',
+    @InputChar CHAR(5) = 'DEFLT',
+    
+    -- Date/Time parameters
+    @InputDate DATE = NULL,
+    @InputDateTime DATETIME2 = NULL,
+    @InputTime TIME = NULL,
+    
+    -- Binary and special types
+    @InputUniqueId UNIQUEIDENTIFIER = NULL,
+    @InputXml XML = NULL,
+    @InputJson NVARCHAR(MAX) = NULL,
+    
+    -- Table-valued parameter
+    @InputBrandTable BrandType READONLY,
+    
+    -- OUTPUT parameters of various types
+    @OutputInt INT OUTPUT,
+    @OutputString NVARCHAR(500) OUTPUT,
+    @OutputDecimal DECIMAL(18,4) OUTPUT,
+    @OutputDate DATETIME2 OUTPUT,
+    @OutputUniqueId UNIQUEIDENTIFIER OUTPUT,
+    @OutputRowCount INT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    -- Set output values based on inputs
+    SET @OutputInt = @InputInt * 2;
+    SET @OutputString = 'Processed: ' + @InputVarChar + ' - ' + @InputNVarChar;
+    SET @OutputDecimal = @InputDecimal * @InputFloat;
+    SET @OutputDate = GETDATE();
+    SET @OutputUniqueId = NEWID();
+    
+    -- Process table-valued parameter
+INSERT INTO Brands (Id, Name, IsActive)
+SELECT NEWID(), Name, IsActive
+FROM @InputBrandTable;
+
+SET @OutputRowCount = @@ROWCOUNT;
+    
+    -- Return result set
+SELECT
+    @InputInt as ProcessedInt,
+    @OutputString as ResultString,
+    @OutputDecimal as CalculatedValue,
+    @OutputDate as ProcessedDate;
+
+-- Return status code
+RETURN 1; -- Success
+END;
+GO
+
+-- Procedure demonstrating cursor output and multiple result sets
+CREATE PROCEDURE sp_MultipleResultSets
+    @CategoryFilter NVARCHAR(100) = NULL,
+    @IncludeInactive BIT = 0,
+    @TopCount INT = 10,
+    
+    -- OUTPUT parameters
+    @TotalProductCount INT OUTPUT,
+    @TotalCategories INT OUTPUT,
+    @AveragePrice DECIMAL(10,2) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    -- First result set: Product summary
+SELECT TOP (@TopCount)
+    p.ProductID,
+    p.ProductName,
+       p.UnitPrice,
+       c.CategoryName,
+       p.UnitsInStock,
+       p.Discontinued
+FROM Products p
+         INNER JOIN Categories c ON p.CategoryID = c.CategoryID
+WHERE (@CategoryFilter IS NULL OR c.CategoryName LIKE '%' + @CategoryFilter + '%')
+  AND (@IncludeInactive = 1 OR p.Discontinued = 0)
+ORDER BY p.UnitPrice DESC;
+
+-- Second result set: Category statistics
+SELECT
+    c.CategoryID,
+    c.CategoryName,
+    COUNT(p.ProductID) as ProductCount,
+    AVG(p.UnitPrice) as AveragePrice,
+    SUM(p.UnitsInStock) as TotalStock
+FROM Categories c
+         LEFT JOIN Products p ON c.CategoryID = p.CategoryID
+WHERE (@CategoryFilter IS NULL OR c.CategoryName LIKE '%' + @CategoryFilter + '%')
+GROUP BY c.CategoryID, c.CategoryName
+ORDER BY ProductCount DESC;
+
+-- Set output parameters
+SELECT @TotalProductCount = COUNT(*)
+FROM Products p
+         INNER JOIN Categories c ON p.CategoryID = c.CategoryID
+WHERE (@CategoryFilter IS NULL OR c.CategoryName LIKE '%' + @CategoryFilter + '%')
+  AND (@IncludeInactive = 1 OR p.Discontinued = 0);
+
+SELECT @TotalCategories = COUNT(DISTINCT c.CategoryID)
+FROM Categories c
+WHERE (@CategoryFilter IS NULL OR c.CategoryName LIKE '%' + @CategoryFilter + '%');
+
+SELECT @AveragePrice = AVG(p.UnitPrice)
+FROM Products p
+         INNER JOIN Categories c ON p.CategoryID = c.CategoryID
+WHERE (@CategoryFilter IS NULL OR c.CategoryName LIKE '%' + @CategoryFilter + '%')
+  AND (@IncludeInactive = 1 OR p.Discontinued = 0);
+
+RETURN 0; -- Success
+END;
+GO
+
+-- Procedure with dynamic SQL and various parameter directions
+CREATE PROCEDURE sp_DynamicReporting
+    @TableName NVARCHAR(128),
+    @ColumnName NVARCHAR(128) = 'CreatedDate',
+    @StartDate DATETIME2 = NULL,
+    @EndDate DATETIME2 = NULL,
+    @SortOrder NVARCHAR(4) = 'ASC',
+    
+    -- OUTPUT parameters
+    @RecordCount INT OUTPUT,
+    @MinDate DATETIME2 OUTPUT,
+    @MaxDate DATETIME2 OUTPUT,
+    @ExecutedSQL NVARCHAR(MAX) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    DECLARE @SQL NVARCHAR(MAX);
+    DECLARE @WhereClause NVARCHAR(500) = '';
+    DECLARE @ParamDef NVARCHAR(500);
+    
+    -- Validate inputs
+    IF @TableName NOT IN ('Users', 'Products', 'Orders', 'Categories', 'Suppliers')
+BEGIN
+        RAISERROR('Invalid table name specified', 16, 1);
+RETURN -1;
+END;
+    
+    -- Build WHERE clause
+    IF @StartDate IS NOT NULL OR @EndDate IS NOT NULL
+BEGIN
+        SET @WhereClause = ' WHERE ';
+        
+        IF @StartDate IS NOT NULL AND @EndDate IS NOT NULL
+            SET @WhereClause = @WhereClause + @ColumnName + ' BETWEEN @pStartDate AND @pEndDate';
+ELSE IF @StartDate IS NOT NULL
+            SET @WhereClause = @WhereClause + @ColumnName + ' >= @pStartDate';
+ELSE IF @EndDate IS NOT NULL
+            SET @WhereClause = @WhereClause + @ColumnName + ' <= @pEndDate';
+END;
+    
+    -- Build dynamic SQL
+    SET @SQL = 'SELECT COUNT(*) as RecordCount, MIN(' + @ColumnName + ') as MinDate, MAX(' + @ColumnName + ') as MaxDate FROM ' + @TableName + @WhereClause;
+    SET @ExecutedSQL = @SQL;
+    
+    -- Define parameters for sp_executesql
+    SET @ParamDef = '@pStartDate DATETIME2, @pEndDate DATETIME2, @pRecordCount INT OUTPUT, @pMinDate DATETIME2 OUTPUT, @pMaxDate DATETIME2 OUTPUT';
+    
+    -- Execute dynamic SQL with OUTPUT parameters
+EXEC sp_executesql @SQL, @ParamDef, 
+        @pStartDate = @StartDate, 
+        @pEndDate = @EndDate,
+        @pRecordCount = @RecordCount OUTPUT,
+        @pMinDate = @MinDate OUTPUT,
+        @pMaxDate = @MaxDate OUTPUT;
+    
+    -- Also return a result set with the same data
+EXEC sp_executesql @SQL, '@pStartDate DATETIME2, @pEndDate DATETIME2', @StartDate, @EndDate;
+
+RETURN 0;
+END;
+GO
+
+-- Procedure with complex data types and error handling
+CREATE PROCEDURE sp_ComplexDataProcessing
+    -- Geography/Geometry parameters (if spatial features are needed)
+    @LocationPoint GEOGRAPHY = NULL,
+    @SearchRadius FLOAT = 1000.0, -- meters
+    
+    -- XML parameter for complex input
+    @ConfigXml XML = NULL,
+    
+    -- JSON parameter
+    @MetadataJson NVARCHAR(MAX) = NULL,
+    
+    -- Large text parameters
+    @Description NVARCHAR(MAX) = NULL,
+    @Notes TEXT = NULL,
+    
+    -- Binary parameter
+    @ImageData VARBINARY(MAX) = NULL,
+    
+    -- OUTPUT parameters
+    @ProcessedRecords INT OUTPUT,
+    @ErrorMessage NVARCHAR(1000) OUTPUT,
+    @ProcessingTime INT OUTPUT -- milliseconds
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    DECLARE @StartTime DATETIME2 = GETDATE();
+    DECLARE @ErrorNumber INT = 0;
+
+BEGIN TRY
+SET @ProcessedRecords = 0;
+        SET @ErrorMessage = NULL;
+        
+        -- Validate JSON if provided
+        IF @MetadataJson IS NOT NULL AND ISJSON(@MetadataJson) = 0
+BEGIN
+            SET @ErrorMessage = 'Invalid JSON format provided';
+RETURN -1;
+END;
+        
+        -- Process XML configuration if provided
+        IF @ConfigXml IS NOT NULL
+BEGIN
+            DECLARE @ConfigValue NVARCHAR(100);
+
+SELECT @ConfigValue = @ConfigXml.value('(/config/setting[@name="processingMode"]/@value)[1]', 'NVARCHAR(100)');
+
+-- Simulate processing based on config
+IF @ConfigValue = 'batch'
+                SET @ProcessedRecords = @ProcessedRecords + 100;
+ELSE IF @ConfigValue = 'single'
+                SET @ProcessedRecords = @ProcessedRecords + 1;
+END;
+        
+        -- Simulate spatial processing if location provided
+        IF @LocationPoint IS NOT NULL
+BEGIN
+            -- Find products within radius (example)
+SELECT @ProcessedRecords = @ProcessedRecords + COUNT(*)
+FROM Products p
+WHERE 1=1; -- Placeholder for actual spatial query
+END;
+        
+        -- Process image data if provided
+        IF @ImageData IS NOT NULL
+BEGIN
+            DECLARE @ImageSize INT = DATALENGTH(@ImageData);
+            SET @ProcessedRecords = @ProcessedRecords + CASE 
+                WHEN @ImageSize > 1000000 THEN 10 -- Large image
+                WHEN @ImageSize > 100000 THEN 5  -- Medium image
+                ELSE 1                            -- Small image
+END;
+END;
+        
+        -- Calculate processing time
+        SET @ProcessingTime = DATEDIFF(MILLISECOND, @StartTime, GETDATE());
+
+END TRY
+BEGIN CATCH
+SET @ErrorNumber = ERROR_NUMBER();
+        SET @ErrorMessage = ERROR_MESSAGE();
+        SET @ProcessedRecords = -1;
+        SET @ProcessingTime = DATEDIFF(MILLISECOND, @StartTime, GETDATE());
+END CATCH
+    
+    -- Return summary result set
+SELECT
+    @ProcessedRecords as ProcessedRecords,
+    @ErrorMessage as ErrorMessage,
+    @ProcessingTime as ProcessingTimeMs,
+    @ErrorNumber as ErrorNumber,
+    CASE WHEN @ErrorNumber = 0 THEN 'Success' ELSE 'Error' END as Status
+
+    RETURN @ErrorNumber
+END
+GO
+
+-- Procedure demonstrating INOUT pattern (using single parameter for both input and output)
+CREATE PROCEDURE sp_InOutParameterExample
+    @Value INT OUTPUT,          -- Acts as both input and output
+    @Multiplier DECIMAL(5,2) = 2.0,
+    @Operation CHAR(1) = 'M',   -- 'M'ultiply, 'A'dd, 'S'ubtract
+    @OperationCount INT OUTPUT  -- Tracks how many operations performed
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    DECLARE @OriginalValue INT = @Value;
+    SET @OperationCount = ISNULL(@OperationCount, 0) + 1;
+    
+    -- Perform operation based on @Operation parameter
+    IF @Operation = 'M'
+        SET @Value = @Value * @Multiplier;
+ELSE IF @Operation = 'A'
+        SET @Value = @Value + @Multiplier;
+ELSE IF @Operation = 'S'
+        SET @Value = @Value - @Multiplier;
+ELSE
+BEGIN
+        RAISERROR('Invalid operation. Use M, A, or S.', 16, 1);
+RETURN -1;
+END;
+    
+    -- Return information about the operation
+SELECT
+    @OriginalValue as OriginalValue,
+    @Value as NewValue,
+    @Operation as Operation,
+    @Multiplier as OperationValue,
+    @OperationCount as TotalOperations;
+
+RETURN 0;
+END;
+GO

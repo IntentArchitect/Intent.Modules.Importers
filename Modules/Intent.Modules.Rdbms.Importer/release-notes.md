@@ -5,6 +5,7 @@
 - Improved: Enhance system object filtering for PostgreSQL and SQL Server.
 - Improved: Stored procedure parameter (and result-set) handling.
 - Improved: Error and warning messages for better clarity during import.
+- Improved: SQL Server and PostgreSQL metadata extraction to handle more cases.
 - Fixed: Filter JSON file didn't handle relative paths well.
 - Fixed: Filter JSON fields not supported in UI will be retained.
 - Fixed: StoredProcedureRepository is placed in the package level and not in the folder-schema level.

@@ -287,6 +287,700 @@
       ]
     },
     {
+      Name: data_types_test_table,
+      Schema: public,
+      Columns: [
+        {
+          Name: id,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('data_types_test_table_id_seq'::regclass)
+          }
+        },
+        {
+          Name: boolean_column,
+          DbDataType: bool,
+          LanguageDataType: bool,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: smallint_column,
+          DbDataType: int2,
+          LanguageDataType: short,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 16
+        },
+        {
+          Name: integer_column,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: bigint_column,
+          DbDataType: int8,
+          LanguageDataType: long,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 64
+        },
+        {
+          Name: decimal_column,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 18,
+          NumericScale: 2
+        },
+        {
+          Name: numeric_column,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 10,
+          NumericScale: 4
+        },
+        {
+          Name: real_column,
+          DbDataType: float4,
+          LanguageDataType: float,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 24
+        },
+        {
+          Name: double_precision_column,
+          DbDataType: float8,
+          LanguageDataType: double,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 53
+        },
+        {
+          Name: smallserial_column,
+          DbDataType: int2,
+          LanguageDataType: short,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          NumericPrecision: 16,
+          DefaultConstraint: {
+            Text: nextval('data_types_test_table_smallserial_column_seq'::regclass)
+          }
+        },
+        {
+          Name: serial_column,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          NumericPrecision: 32,
+          DefaultConstraint: {
+            Text: nextval('data_types_test_table_serial_column_seq'::regclass)
+          }
+        },
+        {
+          Name: bigserial_column,
+          DbDataType: int8,
+          LanguageDataType: long,
+          IsNullable: false,
+          IsPrimaryKey: true,
+          IsIdentity: true,
+          NumericPrecision: 64,
+          DefaultConstraint: {
+            Text: nextval('data_types_test_table_bigserial_column_seq'::regclass)
+          }
+        },
+        {
+          Name: money_column,
+          DbDataType: money,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: char_column,
+          DbDataType: bpchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 10
+        },
+        {
+          Name: varchar_column,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 255
+        },
+        {
+          Name: text_column,
+          DbDataType: text,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: bytea_column,
+          DbDataType: bytea,
+          LanguageDataType: binary,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: date_column,
+          DbDataType: date,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: time_column,
+          DbDataType: time,
+          LanguageDataType: time,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: time_with_tz_column,
+          DbDataType: timetz,
+          LanguageDataType: datetimeoffset,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: timestamp_column,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: timestamp_with_tz_column,
+          DbDataType: timestamptz,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: interval_column,
+          DbDataType: interval,
+          LanguageDataType: time,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: inet_column,
+          DbDataType: inet,
+          LanguageDataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: cidr_column,
+          DbDataType: cidr,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: macaddr_column,
+          DbDataType: macaddr,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: macaddr8_column,
+          DbDataType: macaddr8,
+          LanguageDataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: bit_column,
+          DbDataType: bit,
+          LanguageDataType: long,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 8
+        },
+        {
+          Name: bit_varying_column,
+          DbDataType: varbit,
+          LanguageDataType: long,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 64
+        },
+        {
+          Name: uuid_column,
+          DbDataType: uuid,
+          LanguageDataType: guid,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          DefaultConstraint: {
+            Text: gen_random_uuid()
+          }
+        },
+        {
+          Name: json_column,
+          DbDataType: json,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: jsonb_column,
+          DbDataType: jsonb,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: xml_column,
+          DbDataType: xml,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: point_column,
+          DbDataType: point,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: line_column,
+          DbDataType: line,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: lseg_column,
+          DbDataType: lseg,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: box_column,
+          DbDataType: box,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: path_column,
+          DbDataType: path,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: polygon_column,
+          DbDataType: polygon,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: circle_column,
+          DbDataType: circle,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: int4range_column,
+          DbDataType: int4range,
+          LanguageDataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: int8range_column,
+          DbDataType: int8range,
+          LanguageDataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: numrange_column,
+          DbDataType: numrange,
+          LanguageDataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tsrange_column,
+          DbDataType: tsrange,
+          LanguageDataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tstzrange_column,
+          DbDataType: tstzrange,
+          LanguageDataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: daterange_column,
+          DbDataType: daterange,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: integer_array_column,
+          DbDataType: _int4,
+          LanguageDataType: int[],
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: text_array_column,
+          DbDataType: _text,
+          LanguageDataType: string[],
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: varchar_array_column,
+          DbDataType: _varchar,
+          LanguageDataType: string[],
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tsvector_column,
+          DbDataType: tsvector,
+          LanguageDataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: tsquery_column,
+          DbDataType: tsquery,
+          LanguageDataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: email_column,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 100
+        },
+        {
+          Name: age_column,
+          DbDataType: int4,
+          LanguageDataType: int,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 32
+        },
+        {
+          Name: status_column,
+          DbDataType: bpchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 1,
+          DefaultConstraint: {
+            Text: 'A'::bpchar
+          }
+        },
+        {
+          Name: required_text,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: false,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: optional_text,
+          DbDataType: varchar,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          MaxLength: 50
+        },
+        {
+          Name: created_date,
+          DbDataType: timestamp,
+          LanguageDataType: datetime,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          DefaultConstraint: {
+            Text: CURRENT_TIMESTAMP
+          }
+        },
+        {
+          Name: is_active,
+          DbDataType: bool,
+          LanguageDataType: bool,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          DefaultConstraint: {
+            Text: true
+          }
+        },
+        {
+          Name: big_decimal_column,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 38,
+          NumericScale: 10
+        },
+        {
+          Name: precise_numeric_column,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false,
+          NumericPrecision: 28,
+          NumericScale: 8
+        },
+        {
+          Name: full_name,
+          DbDataType: text,
+          LanguageDataType: string,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        },
+        {
+          Name: address_composite,
+          DbDataType: address_type,
+          LanguageDataType: unknown,
+          IsNullable: true,
+          IsPrimaryKey: false,
+          IsIdentity: false
+        }
+      ],
+      Indexes: [
+        {
+          Name: idx_data_types_test_table_box,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          FilterDefinition: ,
+          Columns: [
+            {
+              Name: box_column,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_data_types_test_table_integer_array,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          FilterDefinition: ,
+          Columns: [
+            {
+              Name: integer_array_column,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_data_types_test_table_is_active,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          FilterDefinition: ,
+          Columns: [
+            {
+              Name: is_active,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_data_types_test_table_jsonb,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          FilterDefinition: ,
+          Columns: [
+            {
+              Name: jsonb_column,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_data_types_test_table_point,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          FilterDefinition: ,
+          Columns: [
+            {
+              Name: point_column,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_data_types_test_table_status,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          FilterDefinition: ,
+          Columns: [
+            {
+              Name: status_column,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_data_types_test_table_timestamp,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          FilterDefinition: ,
+          Columns: [
+            {
+              Name: timestamp_column,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_data_types_test_table_tsvector,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          FilterDefinition: ,
+          Columns: [
+            {
+              Name: tsvector_column,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: idx_data_types_test_table_varchar,
+          IsUnique: false,
+          IsClustered: false,
+          HasFilter: false,
+          FilterDefinition: ,
+          Columns: [
+            {
+              Name: varchar_column,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        },
+        {
+          Name: uq_data_types_test_table_uuid,
+          IsUnique: true,
+          IsClustered: false,
+          HasFilter: false,
+          FilterDefinition: ,
+          Columns: [
+            {
+              Name: uuid_column,
+              IsDescending: false,
+              IsIncluded: false
+            }
+          ]
+        }
+      ]
+    },
+    {
       Name: fktable,
       Schema: public,
       Columns: [
@@ -2692,6 +3386,303 @@
       ]
     },
     {
+      Name: bulk_insert_with_arrays,
+      Schema: public,
+      Parameters: [
+        {
+          Name: names,
+          DbDataType: text[],
+          LanguageDataType: string[],
+          Direction: In
+        },
+        {
+          Name: emails,
+          DbDataType: text[],
+          LanguageDataType: string[],
+          Direction: In
+        },
+        {
+          Name: active_flags,
+          DbDataType: boolean[],
+          LanguageDataType: bool,
+          Direction: In
+        }
+      ]
+    },
+    {
+      Name: complex_data_processing,
+      Schema: public,
+      Parameters: [
+        {
+          Name: location_point,
+          DbDataType: point,
+          LanguageDataType: string,
+          Direction: In
+        },
+        {
+          Name: search_area,
+          DbDataType: box,
+          LanguageDataType: string,
+          Direction: In
+        },
+        {
+          Name: config_json,
+          DbDataType: jsonb,
+          LanguageDataType: string,
+          Direction: In
+        },
+        {
+          Name: metadata_json,
+          DbDataType: json,
+          LanguageDataType: string,
+          Direction: In
+        },
+        {
+          Name: description_text,
+          DbDataType: text,
+          LanguageDataType: string,
+          Direction: In
+        },
+        {
+          Name: notes_text,
+          DbDataType: text,
+          LanguageDataType: string,
+          Direction: In
+        },
+        {
+          Name: image_data,
+          DbDataType: bytea,
+          LanguageDataType: binary,
+          Direction: In
+        },
+        {
+          Name: tag_array,
+          DbDataType: text[],
+          LanguageDataType: string[],
+          Direction: In
+        },
+        {
+          Name: id_array,
+          DbDataType: integer[],
+          LanguageDataType: int[],
+          Direction: In
+        },
+        {
+          Name: client_ip,
+          DbDataType: inet,
+          LanguageDataType: unknown,
+          Direction: In
+        },
+        {
+          Name: date_range,
+          DbDataType: daterange,
+          LanguageDataType: datetime,
+          Direction: In
+        },
+        {
+          Name: price_range,
+          DbDataType: numrange,
+          LanguageDataType: unknown,
+          Direction: In
+        }
+      ]
+    },
+    {
+      Name: comprehensive_parameter_types,
+      Schema: public,
+      Parameters: [
+        {
+          Name: input_int,
+          DbDataType: integer,
+          LanguageDataType: int,
+          Direction: In
+        },
+        {
+          Name: input_decimal,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
+          Direction: In
+        },
+        {
+          Name: input_varchar,
+          DbDataType: character varying,
+          LanguageDataType: string,
+          Direction: In
+        },
+        {
+          Name: input_bigint,
+          DbDataType: bigint,
+          LanguageDataType: long,
+          Direction: In
+        },
+        {
+          Name: input_real,
+          DbDataType: real,
+          LanguageDataType: float,
+          Direction: In
+        },
+        {
+          Name: input_boolean,
+          DbDataType: boolean,
+          LanguageDataType: bool,
+          Direction: In
+        },
+        {
+          Name: input_text,
+          DbDataType: text,
+          LanguageDataType: string,
+          Direction: In
+        },
+        {
+          Name: input_char,
+          DbDataType: character,
+          LanguageDataType: string,
+          Direction: In
+        },
+        {
+          Name: input_date,
+          DbDataType: date,
+          LanguageDataType: datetime,
+          Direction: In
+        },
+        {
+          Name: input_timestamp,
+          DbDataType: timestamp without time zone,
+          LanguageDataType: datetime,
+          Direction: In
+        },
+        {
+          Name: input_time,
+          DbDataType: time without time zone,
+          LanguageDataType: system.timespan,
+          Direction: In
+        },
+        {
+          Name: input_interval,
+          DbDataType: interval,
+          LanguageDataType: time,
+          Direction: In
+        },
+        {
+          Name: input_uuid,
+          DbDataType: uuid,
+          LanguageDataType: guid,
+          Direction: In
+        },
+        {
+          Name: input_json,
+          DbDataType: json,
+          LanguageDataType: string,
+          Direction: In
+        },
+        {
+          Name: input_jsonb,
+          DbDataType: jsonb,
+          LanguageDataType: string,
+          Direction: In
+        },
+        {
+          Name: input_xml,
+          DbDataType: xml,
+          LanguageDataType: string,
+          Direction: In
+        },
+        {
+          Name: input_integer_array,
+          DbDataType: integer[],
+          LanguageDataType: int[],
+          Direction: In
+        },
+        {
+          Name: input_text_array,
+          DbDataType: text[],
+          LanguageDataType: string[],
+          Direction: In
+        },
+        {
+          Name: input_address,
+          DbDataType: address_type,
+          LanguageDataType: class,
+          Direction: In,
+          UserDefinedTableType: {
+            Name: address_type,
+            Schema: public,
+            Columns: [
+              {
+                Name: street,
+                DbDataType: character varying(100),
+                LanguageDataType: string,
+                IsNullable: false,
+                IsPrimaryKey: false,
+                IsIdentity: false,
+                MaxLength: 100
+              },
+              {
+                Name: city,
+                DbDataType: character varying(50),
+                LanguageDataType: string,
+                IsNullable: false,
+                IsPrimaryKey: false,
+                IsIdentity: false,
+                MaxLength: 50
+              },
+              {
+                Name: state,
+                DbDataType: character varying(50),
+                LanguageDataType: string,
+                IsNullable: false,
+                IsPrimaryKey: false,
+                IsIdentity: false,
+                MaxLength: 50
+              },
+              {
+                Name: zip_code,
+                DbDataType: character varying(10),
+                LanguageDataType: string,
+                IsNullable: false,
+                IsPrimaryKey: false,
+                IsIdentity: false,
+                MaxLength: 10
+              },
+              {
+                Name: country,
+                DbDataType: character varying(50),
+                LanguageDataType: string,
+                IsNullable: false,
+                IsPrimaryKey: false,
+                IsIdentity: false,
+                MaxLength: 50
+              }
+            ]
+          }
+        },
+        {
+          Name: input_inet,
+          DbDataType: inet,
+          LanguageDataType: unknown,
+          Direction: In
+        },
+        {
+          Name: input_cidr,
+          DbDataType: cidr,
+          LanguageDataType: string,
+          Direction: In
+        },
+        {
+          Name: input_point,
+          DbDataType: point,
+          LanguageDataType: string,
+          Direction: In
+        },
+        {
+          Name: input_box,
+          DbDataType: box,
+          LanguageDataType: string,
+          Direction: In
+        }
+      ]
+    },
+    {
       Name: create_order,
       Schema: public,
       Parameters: [
@@ -2724,6 +3715,38 @@
           DbDataType: numeric,
           LanguageDataType: decimal,
           Direction: In
+        }
+      ]
+    },
+    {
+      Name: get_comprehensive_report,
+      Schema: public,
+      Parameters: [
+        {
+          Name: start_date,
+          DbDataType: date,
+          LanguageDataType: datetime,
+          Direction: In
+        },
+        {
+          Name: end_date,
+          DbDataType: date,
+          LanguageDataType: datetime,
+          Direction: In
+        },
+        {
+          Name: include_arrays,
+          DbDataType: boolean,
+          LanguageDataType: bool,
+          Direction: In
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: result,
+          DbDataType: record,
+          LanguageDataType: string,
+          IsNullable: true
         }
       ]
     },
@@ -2860,6 +3883,30 @@
       ]
     },
     {
+      Name: inout_parameter_example,
+      Schema: public,
+      Parameters: [
+        {
+          Name: value_data,
+          DbDataType: record,
+          LanguageDataType: unknown,
+          Direction: In
+        },
+        {
+          Name: multiplier,
+          DbDataType: numeric,
+          LanguageDataType: decimal,
+          Direction: In
+        },
+        {
+          Name: operation,
+          DbDataType: character,
+          LanguageDataType: string,
+          Direction: In
+        }
+      ]
+    },
+    {
       Name: insertbrand,
       Schema: public,
       Parameters: [
@@ -2890,6 +3937,38 @@
               }
             ]
           }
+        }
+      ]
+    },
+    {
+      Name: multiple_result_sets,
+      Schema: public,
+      Parameters: [
+        {
+          Name: category_filter,
+          DbDataType: character varying,
+          LanguageDataType: string,
+          Direction: In
+        },
+        {
+          Name: include_inactive,
+          DbDataType: boolean,
+          LanguageDataType: bool,
+          Direction: In
+        },
+        {
+          Name: top_count,
+          DbDataType: integer,
+          LanguageDataType: int,
+          Direction: In
+        }
+      ],
+      ResultSetColumns: [
+        {
+          Name: result,
+          DbDataType: record,
+          LanguageDataType: string,
+          IsNullable: true
         }
       ]
     },

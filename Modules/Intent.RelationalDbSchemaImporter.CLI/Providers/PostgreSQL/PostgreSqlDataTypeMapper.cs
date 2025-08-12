@@ -28,7 +28,8 @@ internal class PostgreSqlDataTypeMapper : DefaultDataTypeMapper
             "char" or "character" or "character varying" or "varchar" or "text" or "name" => "string",
             "uuid" => "guid",
             "date" or "timestamp" or "timestamp without time zone" or "timestamp with time zone" or "timestamptz" => "datetime",
-            "time" or "time without time zone" or "time with time zone" or "timetz" or "interval" => "timespan",
+            "time with time zone" or "timetz" => "datetimeoffset",
+            "time" or "interval" => "time",
             "bytea" => "binary",
             "json" or "jsonb" or "xml" => "string",
             "cidr" or "macaddr" => "string",
@@ -41,6 +42,11 @@ internal class PostgreSqlDataTypeMapper : DefaultDataTypeMapper
             "text[]" or "varchar[]" or "character varying[]" => "string[]",
             "uuid[]" => "guid[]",
             "bytea[]" => "byte[][]",
+            "_int4" or "_integer" => "int[]",
+            "_int8" or "_bigint" => "long[]",
+            "_text" or "_varchar" or "_character varying" => "string[]",
+            "_uuid" => "guid[]",
+            "_bytea" => "byte[][]",
             _ => base.GetLanguageDataTypeString(dataType, dbDataType)
         };
     }

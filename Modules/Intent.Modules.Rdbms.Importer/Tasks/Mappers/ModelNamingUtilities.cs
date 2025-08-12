@@ -80,6 +80,9 @@ internal static class ModelNamingUtilities
     /// <summary>
     /// Converts database identifier to valid C# identifier following C# naming conventions
     /// </summary>
+    /// <param name="identifier">The database identifier to convert</param>
+    /// <param name="prefixValue">Optional prefix to add if the identifier starts with a digit or is a reserved word</param>
+    /// <returns>A valid C# identifier</returns>
     public static string ToCSharpIdentifier(string? identifier, string? prefixValue = "Db")
     {
         if (string.IsNullOrWhiteSpace(identifier))
@@ -197,7 +200,17 @@ internal static class ModelNamingUtilities
         ArgumentException.ThrowIfNullOrWhiteSpace(colName);
         var normalized = colName != tableOrViewName ? colName : colName + "Value";
         normalized = ToCSharpIdentifier(normalized, "db");
-        normalized = normalized.RemovePrefix("col").RemovePrefix("pk");
+        normalized = normalized.RemovePrefix("pk");
+
+        // We need to be careful with the "col" prefix since a name could start with:
+        // column, collection, color, etc.
+        // So what we can do is check if the letter after "col" is a capital letter or a non-letter character.
+        if (normalized.StartsWith("col") && 
+            (normalized.Length < 4 || !char.IsLetter(normalized[3]) || char.IsUpper(normalized[3])))
+        {
+            normalized = normalized.RemovePrefix("col");
+        }
+        
         normalized = normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
 
         if (normalized.EndsWith("ID"))
@@ -220,7 +233,7 @@ internal static class ModelNamingUtilities
         if (normalized.StartsWith("proc") &&
             (normalized.Length < 5 || !char.IsLetter(normalized[4]) || char.IsUpper(normalized[4])))
         {
-            normalized = normalized.RemoveSuffix("proc");
+            normalized = normalized.RemovePrefix("proc");
         }
 
         normalized = normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
