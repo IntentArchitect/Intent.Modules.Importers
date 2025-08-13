@@ -1,3 +1,7 @@
+### Version 1.0.2
+
+- Fixed: Stereotypes not adequately applied to Tables.
+
 ### Version 1.0.1
 
 - Improved: Foreign key handling in RdbmsSchemaAnnotator to manage metadata more effectively.

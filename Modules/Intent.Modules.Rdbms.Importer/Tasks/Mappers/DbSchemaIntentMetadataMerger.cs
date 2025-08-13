@@ -106,6 +106,9 @@ internal class DbSchemaIntentMetadataMerger
 
                 package.Classes.Add(classElement);
 
+                // Re-evaluate stereotypes on existing class after sync to ensure renamed attributes get proper Column stereotypes
+                ApplyTableStereotypes(table, classElement, _config);
+                
                 // Process indexes for new class
                 ProcessTableIndexes(table, classElement, package, result);
             }
