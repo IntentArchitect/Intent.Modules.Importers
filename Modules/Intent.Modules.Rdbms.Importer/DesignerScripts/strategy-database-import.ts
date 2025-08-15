@@ -3,21 +3,15 @@
 
 class DatabaseImportStrategy {
     public async execute(packageElement: MacroApi.Context.IElementApi): Promise<void> {
-        let defaults = this.getDialogDefaults(packageElement);
-        let capturedInput = await this.presentImportDialog(defaults, packageElement.id);
+        const defaults = this.getDialogDefaults(packageElement);
+
+        const capturedInput = await this.presentImportDialog(defaults, packageElement.id);
         if (capturedInput == null) {
             return;
         }
-        let importModel = this.createImportModel(capturedInput);
-        let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport", importModel);
-        
-        if ((executionResult.errors ?? []).length > 0) {
-            await displayExecutionResultErrors(executionResult);
-        } else if ((executionResult.warnings ?? []).length > 0) {
-            await displayExecutionResultWarnings(executionResult, "Import completed with warnings.");
-        } else {
-            await dialogService.info("Import completed successfully.");
-        }
+
+        let importModel = JSON.stringify(this.createImportModel(capturedInput));
+        launchHostedModuleTask("Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport", [importModel]);
     }
 
     private getDialogDefaults(element: MacroApi.Context.IElementApi): ISqlDatabaseImportPackageSettings {
@@ -107,11 +101,11 @@ class DatabaseImportStrategy {
                                     connectionString: form.getField("connectionString").value as string,
                                     databaseType: form.getField("databaseType").value as string
                                 };
-                                
+
                                 let executionResult = await executeImporterModuleTask(
                                     "Intent.Modules.Rdbms.Importer.Tasks.TestConnection",
                                     testConnectionModel);
-                                
+
                                 if ((executionResult.errors ?? []).length > 0) {
                                     form.getField("connectionStringTest").hint = "Failed to connect.";
                                     await displayExecutionResultErrors(executionResult);
@@ -223,12 +217,12 @@ class DatabaseImportStrategy {
                                     applicationId: application.id,
                                     packageId: packageId
                                 };
-                                
+
                                 const pathResolutionResult = await executeImporterModuleTask(
                                     "Intent.Modules.Rdbms.Importer.Tasks.PathResolution",
                                     pathResolutionModel
                                 );
-                                
+
                                 if ((pathResolutionResult.errors ?? []).length === 0 && pathResolutionResult.result?.resolvedPath) {
                                     form.getField("importFilterFilePath").value = pathResolutionResult.result.resolvedPath;
                                 } else if ((pathResolutionResult.errors ?? []).length > 0) {
@@ -249,7 +243,7 @@ class DatabaseImportStrategy {
                                 }
                                 const databaseType = form.getField("databaseType").value as string;
                                 let importFilterFilePath = form.getField("importFilterFilePath").value as string;
-                                
+
                                 let returnedImportFilterFilePath = await this.presentManageFiltersDialog(connectionString, databaseType, packageId, importFilterFilePath);
                                 if (returnedImportFilterFilePath != null) {
                                     form.getField("importFilterFilePath").value = returnedImportFilterFilePath;
@@ -263,7 +257,7 @@ class DatabaseImportStrategy {
             ],
             height: "70%"
         }
-        
+
         let capturedInput = await dialogService.openForm(formConfig);
         return capturedInput;
     }
@@ -321,7 +315,7 @@ class DatabaseImportStrategy {
                     "Intent.Modules.Rdbms.Importer.Tasks.FilterLoad",
                     filterLoadModel
                 );
-                
+
                 if ((filterLoadResult.errors ?? []).length === 0 && filterLoadResult.result) {
                     existingFilter = filterLoadResult.result as ImportFilterModel;
                 } else if ((filterLoadResult.errors ?? []).length > 0) {
@@ -471,14 +465,14 @@ class DatabaseImportStrategy {
                         isHidden: false
                     },
                     {
-                        name: "Exclusive Objects", 
+                        name: "Exclusive Objects",
                         fields: [exclusiveSelection],
                         isCollapsed: true,
                         isHidden: false
                     }
                 ]
             };
-            
+
             try {
                 const result = await dialogService.openForm(formConfig);
                 if (result) {
@@ -500,21 +494,21 @@ class DatabaseImportStrategy {
         return importFilterFilePath;
     }
 
-    private async fetchDatabaseMetadata(connectionString: string, databaseType: string): Promise<IDatabaseMetadata|null> {
+    private async fetchDatabaseMetadata(connectionString: string, databaseType: string): Promise<IDatabaseMetadata | null> {
         // Get database metadata
-        const metadataModel: IRetrieveDatabaseObjectsModel = { 
+        const metadataModel: IRetrieveDatabaseObjectsModel = {
             connectionString: connectionString,
-            databaseType: databaseType 
+            databaseType: databaseType
         };
         const metadataExecutionResult = await executeImporterModuleTask(
-            "Intent.Modules.Rdbms.Importer.Tasks.RetrieveDatabaseObjects", 
+            "Intent.Modules.Rdbms.Importer.Tasks.RetrieveDatabaseObjects",
             metadataModel);
-        
+
         if ((metadataExecutionResult.errors ?? []).length > 0) {
             await displayExecutionResultErrors(metadataExecutionResult);
             return null;
         }
-        
+
         const metadata = metadataExecutionResult.result as IDatabaseMetadata;
         if (!metadata) {
             await dialogService.error("No database metadata received.");
@@ -525,11 +519,11 @@ class DatabaseImportStrategy {
     }
 
     private createSchemaTreeNodes(
-        schemaName: string, 
-        metadata: { 
-            tables: Record<string, string[]>, 
-            storedProcedures: Record<string, string[]>, 
-            views: Record<string, string[]> 
+        schemaName: string,
+        metadata: {
+            tables: Record<string, string[]>,
+            storedProcedures: Record<string, string[]>,
+            views: Record<string, string[]>
         },
         existingFilter: ImportFilterModel | null = null,
         filterType: "include" | "exclude"
@@ -629,8 +623,8 @@ class DatabaseImportStrategy {
 
     private isCategorySelected(
         schemaName: string,
-        category: string, 
-        existingFilter: ImportFilterModel, 
+        category: string,
+        existingFilter: ImportFilterModel,
         filterType: "include" | "exclude"
     ): boolean {
         if (!existingFilter) {
@@ -663,10 +657,10 @@ class DatabaseImportStrategy {
     }
 
     private isItemSelected(
-        schemaName: string, 
-        category: string, 
-        item: string, 
-        existingFilter: ImportFilterModel | null, 
+        schemaName: string,
+        category: string,
+        item: string,
+        existingFilter: ImportFilterModel | null,
         filterType: "include" | "exclude"
     ): boolean {
         if (!existingFilter) {
@@ -720,7 +714,7 @@ class DatabaseImportStrategy {
                 exclude_table_columns: [],
                 exclude_view_columns: []
             };
-            
+
             // Until we have UI support for this, we will do this
             if (existingFilter) {
                 filterModel.exclude_table_columns = [...existingFilter.exclude_table_columns];
@@ -740,10 +734,10 @@ class DatabaseImportStrategy {
                         const schemaName = parts[0];
                         const tableName = parts[2];
                         const fullTableName = `${schemaName}.${tableName}`;
-                        const filterTableModel: FilterTableModel = { 
-                            name: fullTableName, 
-                            exclude_columns: existingFilter 
-                                ? existingFilter.include_tables.filter(x => x.name === fullTableName)[0]?.exclude_columns ?? [] 
+                        const filterTableModel: FilterTableModel = {
+                            name: fullTableName,
+                            exclude_columns: existingFilter
+                                ? existingFilter.include_tables.filter(x => x.name === fullTableName)[0]?.exclude_columns ?? []
                                 : []
                         };
                         filterModel.include_tables.push(filterTableModel);
@@ -824,7 +818,7 @@ class DatabaseImportStrategy {
                         }
                     ]
                 };
-                
+
                 const fileNameResult = await dialogService.openForm(fileNameConfig);
                 if (!fileNameResult || !fileNameResult.fileName) {
                     return null;

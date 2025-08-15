@@ -8,7 +8,7 @@ using Intent.Modules.Rdbms.Importer.Tasks.Models;
 
 namespace Intent.Modules.Rdbms.Importer.Tasks;
 
-public class FilterSave : ModuleTaskSingleInputBase<FilterSaveInputModel>
+public class FilterSave : ModuleTaskBase<FilterSaveInputModel>
 {
     private readonly IMetadataManager _metadataManager;
 

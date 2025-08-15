@@ -1,16 +1,17 @@
+/// <reference path="../../TypescriptCore/elementmacro.context.api.d.ts" />
 async function executeImporterModuleTask(taskTypeId, input) {
-    let inputJsonString = JSON.stringify(input);
+    const inputJsonString = JSON.stringify(input);
     console.log(`Executing Module Task ${taskTypeId} => ${inputJsonString}`);
-    let moduleTaskResultString = await executeModuleTask(taskTypeId, inputJsonString);
+    const moduleTaskResultString = await executeModuleTask(taskTypeId, inputJsonString);
     console.log(`Module Task ${taskTypeId} Completed`);
-    let executionResult = JSON.parse(moduleTaskResultString);
+    const executionResult = JSON.parse(moduleTaskResultString);
     return executionResult;
 }
 async function displayExecutionResultErrors(executionResult) {
     if (executionResult.errors.length === 0) {
         return;
     }
-    let errorMessage = executionResult.errors.map(error => `⭕ ${error}`).join("\r\n");
+    const errorMessage = executionResult.errors.map(error => `⭕ ${error}`).join("\r\n");
     await dialogService.error(errorMessage);
     console.error(errorMessage);
 }
@@ -21,7 +22,7 @@ async function displayExecutionResultWarnings(executionResult, title) {
     if (title == null || title === "") {
         title = "Warnings";
     }
-    let warningMessage = executionResult.warnings.map(warning => `🟡 ${warning}`).join("\r\n");
+    const warningMessage = executionResult.warnings.map(warning => `🟡 ${warning}`).join("\r\n");
     await dialogService.warn(title + "\r\n\r\n" + warningMessage);
     console.warn(title + "\r\n\r\n" + warningMessage);
 }
@@ -36,23 +37,13 @@ Icons.viewIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACO
 /// <reference path="./icons.ts" />
 class DatabaseImportStrategy {
     async execute(packageElement) {
-        var _a, _b;
-        let defaults = this.getDialogDefaults(packageElement);
-        let capturedInput = await this.presentImportDialog(defaults, packageElement.id);
+        const defaults = this.getDialogDefaults(packageElement);
+        const capturedInput = await this.presentImportDialog(defaults, packageElement.id);
         if (capturedInput == null) {
             return;
         }
-        let importModel = this.createImportModel(capturedInput);
-        let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport", importModel);
-        if (((_a = executionResult.errors) !== null && _a !== void 0 ? _a : []).length > 0) {
-            await displayExecutionResultErrors(executionResult);
-        }
-        else if (((_b = executionResult.warnings) !== null && _b !== void 0 ? _b : []).length > 0) {
-            await displayExecutionResultWarnings(executionResult, "Import completed with warnings.");
-        }
-        else {
-            await dialogService.info("Import completed successfully.");
-        }
+        let importModel = JSON.stringify(this.createImportModel(capturedInput));
+        launchHostedModuleTask("Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport", [importModel]);
     }
     getDialogDefaults(element) {
         let domainPackage = element.getPackage();
@@ -799,7 +790,6 @@ class DatabaseImportStrategy {
 /// <reference path="./icons.ts" />
 class StoredProceduresImportStrategy {
     async execute(repositoryElement) {
-        var _a, _b;
         let defaults = this.getDialogDefaults(repositoryElement);
         let capturedInput = await this.presentImportDialog(defaults);
         if (capturedInput == null) {
@@ -809,16 +799,7 @@ class StoredProceduresImportStrategy {
         if (importModel == null) {
             return;
         }
-        let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcedureImport", importModel);
-        if (((_a = executionResult.errors) === null || _a === void 0 ? void 0 : _a.length) > 0) {
-            await displayExecutionResultErrors(executionResult);
-        }
-        else if (((_b = executionResult.warnings) === null || _b === void 0 ? void 0 : _b.length) > 0) {
-            await displayExecutionResultWarnings(executionResult, "Import completed with warnings.");
-        }
-        else {
-            await dialogService.info("Import completed successfully.");
-        }
+        launchHostedModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcedureImport", [JSON.stringify(importModel)]);
     }
     getDialogDefaults(element) {
         let domainPackage = element.getPackage();

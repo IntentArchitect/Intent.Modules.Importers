@@ -5,7 +5,7 @@ using Intent.RelationalDbSchemaImporter.Runner;
 
 namespace Intent.Modules.Rdbms.Importer.Tasks;
 
-public class TestConnection : ModuleTaskSingleInputBase<TestConnectionInputModel>
+public class TestConnection : ModuleTaskBase<TestConnectionInputModel>
 {
     public override string TaskTypeId => "Intent.Modules.Rdbms.Importer.Tasks.TestConnection";
     public override string TaskTypeName => "SqlServer Database Connection Tester";

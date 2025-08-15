@@ -1,18 +1,22 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Text.Json;
 using Intent.Engine;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.IArchitect.CrossPlatform.IO;
 using Intent.Modules.Rdbms.Importer.Tasks.Helpers;
 using Intent.Modules.Rdbms.Importer.Tasks.Mappers;
 using Intent.Modules.Rdbms.Importer.Tasks.Models;
+using Intent.Plugins;
 using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.RelationalDbSchemaImporter.Runner;
+using Intent.Utils;
 
 namespace Intent.Modules.Rdbms.Importer.Tasks;
 
-public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
+public class DatabaseImport : IModuleTask
 {
     private readonly IMetadataManager _metadataManager;
     private readonly IApplicationConfigurationProvider _configurationProvider;
@@ -23,47 +27,68 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
         _configurationProvider = configurationProvider;
     }
 
-    public override string TaskTypeId => "Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport";
-    public override string TaskTypeName => "SqlServer Database Import";
+    public string TaskTypeId => "Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport";
+    public string TaskTypeName => "SqlServer Database Import";
+    public int Order => 0;
 
-    protected override ValidationResult ValidateInputModel(DatabaseImportModel inputModel)
+    public string? Execute(params string[] args)
     {
-        if (!_metadataManager.TryGetApplicationPackage(inputModel.ApplicationId, inputModel.PackageId, out _, out var errorMessage))
+        var importModel = JsonSerializer.Deserialize<DatabaseImportModel>(args[0], SerializationHelper.SerializerOptions);
+        if (importModel == null)
         {
-            return ValidationResult.ErrorResult(errorMessage);
+            throw new Exception(
+                $"""
+                 Deserialization of the following returned null:
+                 
+                 {args[0]}
+                 """);
+        }
+        if (!_metadataManager.TryGetApplicationPackage(importModel.ApplicationId, importModel.PackageId, out _, out var errorMessage))
+        {
+            throw new Exception(errorMessage);
         }
 
-        return ValidationResult.SuccessResult();
-    }
+        ImporterTool.SetToolDirectory(Path.GetFullPath(Path.Combine(
+            Path.GetDirectoryName(typeof(ImporterTool).Assembly.Location)!,
+            "../content/tool")));
 
-    protected override ExecuteResult ExecuteModuleTask(DatabaseImportModel importModel)
-    {
-        var executionResult = new ExecuteResult();
         try
         {
             var adaptedImportModel = PrepareInputModel(importModel);
             var result = ImporterTool.Run<ImportSchemaResult>("import-schema", adaptedImportModel);
 
-            executionResult.Errors.AddRange(result.Errors);
-            executionResult.Warnings.AddRange(result.Warnings);
+            Debugger.Launch();
 
-            if (executionResult.Errors.Count > 0 || result.Result?.SchemaData is null)
+            foreach (var message in result.Errors)
             {
-                return executionResult;
+                Logging.Log.Failure(message);
+            }
+
+            foreach (var message in result.Warnings)
+            {
+                Logging.Log.Warning(message);
+            }
+
+            if (result.Errors.Count > 0 || result.Result?.SchemaData is null)
+            {
+                throw new Exception("One or more errors occurred, review previous log entries");
             }
 
             var mappingResult = ApplySchemaMapping(importModel, result.Result);
-            
-            executionResult.Warnings.AddRange(mappingResult.Warnings);
-            if (mappingResult.IsSuccessful)
+
+            foreach (var message in mappingResult.Warnings)
             {
-                return executionResult;
+                Logging.Log.Warning(message);
             }
 
-            executionResult.Errors.Add($"Schema mapping failed: {mappingResult.Message}");
             if (mappingResult.Exception != null)
             {
-                executionResult.Errors.Add($"Exception: {mappingResult.Exception.ToString()}");
+                throw new Exception($"Schema mapping failed: {mappingResult.Message}", mappingResult.Exception);
+            }
+
+            if (!mappingResult.IsSuccessful)
+            {
+                throw new Exception("When applying schema mapping a non-success result was received.");
             }
         }
         finally
@@ -71,26 +96,26 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
             SettingsHelper.PersistSettings(importModel);
         }
 
-        return executionResult;
+        return null;
     }
-    
+
     private DatabaseImportModel PrepareInputModel(DatabaseImportModel inputModel)
     {
         if (string.IsNullOrWhiteSpace(inputModel.StoredProcedureType))
         {
             inputModel.StoredProcedureType = "Default";
         }
-        
+
         if (!_metadataManager.TryGetApplicationPackage(inputModel.ApplicationId, inputModel.PackageId, out var package, out _))
         {
             throw new Exception($"Package {inputModel.PackageId} for Application {inputModel.ApplicationId} doesn't exist");
         }
-        
+
         inputModel.PackageFileName = package.FileLocation;
 
         // Making required changes for the underlying CLI tool
         var adaptedModel = new DatabaseImportModel(inputModel);
-        
+
         if (!string.IsNullOrWhiteSpace(adaptedModel.ImportFilterFilePath) &&
             !Path.IsPathRooted(adaptedModel.ImportFilterFilePath))
         {
@@ -146,10 +171,10 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
 
             // Apply the mapping using the schema data from the CLI
             var mappingResult = schemaMapper.MergeSchemaAndPackage(importResult.SchemaData, package, deduplicationContext);
-            
+
             ModuleHelper.ApplyPackageStereotypes(package, _configurationProvider);
             ModuleHelper.ApplyRelevantReferences(package, _configurationProvider);
-            
+
             // Save the package if mapping was successful
             if (mappingResult.IsSuccessful)
             {
@@ -168,7 +193,7 @@ public class DatabaseImport : ModuleTaskSingleInputBase<DatabaseImportModel>
             };
         }
     }
-    
+
     private static ImportConfiguration CreateImportConfiguration(DatabaseImportModel importModel)
     {
         return new ImportConfiguration

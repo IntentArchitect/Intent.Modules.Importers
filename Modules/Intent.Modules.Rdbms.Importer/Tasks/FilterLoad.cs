@@ -8,7 +8,7 @@ using Intent.RelationalDbSchemaImporter.Contracts.FileStructures;
 
 namespace Intent.Modules.Rdbms.Importer.Tasks;
 
-public class FilterLoad : ModuleTaskSingleInputBase<FilterLoadInputModel>
+public class FilterLoad : ModuleTaskBase<FilterLoadInputModel>
 {
     private readonly IMetadataManager _metadataManager;
 

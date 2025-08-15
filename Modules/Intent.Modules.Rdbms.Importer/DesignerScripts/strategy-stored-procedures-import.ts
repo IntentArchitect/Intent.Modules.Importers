@@ -8,19 +8,13 @@ class StoredProceduresImportStrategy {
         if (capturedInput == null) {
             return;
         }
+
         let importModel = await this.createImportModel(capturedInput);
         if (importModel == null) {
             return;
         }
-        let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcedureImport", importModel);
-        
-        if (executionResult.errors?.length > 0) {
-            await displayExecutionResultErrors(executionResult);
-        } else if (executionResult.warnings?.length > 0) {
-            await displayExecutionResultWarnings(executionResult, "Import completed with warnings.");
-        } else {
-            await dialogService.info("Import completed successfully.");
-        }
+
+        launchHostedModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcedureImport", [JSON.stringify(importModel)]);
     }
 
     private getDialogDefaults(element: MacroApi.Context.IElementApi): ISqlStoredProceduresImportPackageSettings {
@@ -33,8 +27,9 @@ class StoredProceduresImportStrategy {
             storedProcedureType: this.getSettingValue(domainPackage, "rdbms-import-repository:storedProcedureType", ""),
             storedProcNames: "",
             settingPersistence: this.getSettingValue(domainPackage, "rdbms-import-repository:settingPersistence", "None"),
-            databaseType: this.getSettingValue(domainPackage, "rdbms-import-repository:databaseType", "")       
+            databaseType: this.getSettingValue(domainPackage, "rdbms-import-repository:databaseType", "")
         };
+
         return result;
     }
 
@@ -138,12 +133,12 @@ class StoredProceduresImportStrategy {
         return capturedInput;
     }
 
-    private async createImportModel(capturedInput: any): Promise<IStoredProceduresImportModel|null> {
+    private async createImportModel(capturedInput: any): Promise<IStoredProceduresImportModel | null> {
         if (capturedInput.settingPersistence != "InheritDb" && (!capturedInput.connectionString || capturedInput.connectionString?.trim() === "")) {
             await dialogService.error("Connection String was not set.");
             return null;
         }
-        
+
         if (capturedInput.settingPersistence != "InheritDb" && (!capturedInput.databaseType || capturedInput.databaseType?.trim() === "")) {
             await dialogService.error("Database Type was not set.");
             return null;
@@ -209,12 +204,12 @@ class StoredProceduresImportStrategy {
                 databaseType: databaseType
             };
             let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcList", input);
-            
+
             if (executionResult.errors?.length > 0) {
                 await displayExecutionResultErrors(executionResult);
                 return [];
             }
-            
+
             let spListResult = executionResult.result as IStoredProcListResultModel;
 
             storedProcSelection.treeViewOptions.rootNode = {
@@ -241,7 +236,7 @@ class StoredProceduresImportStrategy {
                     } as MacroApi.Context.ISelectableTreeNode;
                 })
             };
-            
+
         } catch (e) {
             await dialogService.error(e);
             return [];

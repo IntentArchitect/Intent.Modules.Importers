@@ -6,7 +6,7 @@ using Intent.RelationalDbSchemaImporter.Runner;
 
 namespace Intent.Modules.Rdbms.Importer.Tasks;
 
-public class StoredProcList : ModuleTaskSingleInputBase<StoredProcListInputModel>
+public class StoredProcList : ModuleTaskBase<StoredProcListInputModel>
 {
     public override string TaskTypeId => "Intent.Modules.Rdbms.Importer.Tasks.StoredProcList";
     public override string TaskTypeName => "SqlServer Stored Procedure List";

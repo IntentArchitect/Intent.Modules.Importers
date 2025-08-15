@@ -6,7 +6,7 @@ using Intent.Modules.Rdbms.Importer.Tasks.Models;
 
 namespace Intent.Modules.Rdbms.Importer.Tasks;
 
-public class PathResolution : ModuleTaskSingleInputBase<PathResolutionInputModel>
+public class PathResolution : ModuleTaskBase<PathResolutionInputModel>
 {
     private readonly IMetadataManager _metadataManager;
 

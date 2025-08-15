@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Intent.Modules.Rdbms.Importer.Tasks.Models;
 using Intent.Plugins;
 using Intent.RelationalDbSchemaImporter.Runner;
@@ -9,16 +8,9 @@ using Intent.Utils;
 
 namespace Intent.Modules.Rdbms.Importer.Tasks.Helpers;
 
-public abstract class ModuleTaskSingleInputBase<TInputModel> : IModuleTask
+public abstract class ModuleTaskBase<TInputModel> : IModuleTask
     where TInputModel : class
 {
-    protected static readonly JsonSerializerOptions SerializerOptions = new()
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
     public abstract string TaskTypeId { get; }
     public abstract string TaskTypeName { get; }
     public virtual int Order => 0;
@@ -36,13 +28,13 @@ public abstract class ModuleTaskSingleInputBase<TInputModel> : IModuleTask
             {
                 return Fail("Problem validating request model.");
             }
-            
-            Logging.Log.Info($"Executing: {TaskTypeId}; Input: {JsonSerializer.Serialize(inputModel, SerializerOptions)}");
+
+            Logging.Log.Info($"Executing: {TaskTypeId}; Input: {JsonSerializer.Serialize(inputModel, SerializationHelper.SerializerOptions)}");
 
             ImporterTool.SetToolDirectory(Path.GetFullPath(Path.Combine(
-                Path.GetDirectoryName(typeof(ImporterTool).Assembly.Location)!, 
+                Path.GetDirectoryName(typeof(ImporterTool).Assembly.Location)!,
                 "../content/tool")));
-            
+
             var executeResult = ExecuteModuleTask(inputModel);
             if (executeResult is null)
             {
@@ -62,7 +54,7 @@ public abstract class ModuleTaskSingleInputBase<TInputModel> : IModuleTask
 
     protected abstract ValidationResult ValidateInputModel(TInputModel inputModel);
     protected abstract ExecuteResult ExecuteModuleTask(TInputModel importModel);
-    
+
     protected record ValidationResult
     {
         private ValidationResult(bool success, string? errorMessage)
@@ -70,15 +62,15 @@ public abstract class ModuleTaskSingleInputBase<TInputModel> : IModuleTask
             Success = success;
             ErrorMessage = errorMessage;
         }
-        
+
         public bool Success { get; }
         public string? ErrorMessage { get; }
-        
+
         public static ValidationResult SuccessResult()
         {
             return new ValidationResult(true, null);
         }
-        
+
         public static ValidationResult ErrorResult(string errorMessage)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(errorMessage);
@@ -97,7 +89,7 @@ public abstract class ModuleTaskSingleInputBase<TInputModel> : IModuleTask
             return false;
         }
 
-        var settings = JsonSerializer.Deserialize<TInputModel>(args[0], SerializerOptions);
+        var settings = JsonSerializer.Deserialize<TInputModel>(args[0], SerializationHelper.SerializerOptions);
         if (settings == null)
         {
             errorMessage = $"Unable to deserialize : {args[0]}";
@@ -116,13 +108,13 @@ public abstract class ModuleTaskSingleInputBase<TInputModel> : IModuleTask
             errorMessage = validationResult.ErrorMessage;
             return false;
         }
-        
+
         return true;
     }
-    
+
     private static string GetResultString(ExecuteResult executeResult)
     {
-        return JsonSerializer.Serialize(executeResult, SerializerOptions);
+        return JsonSerializer.Serialize(executeResult, SerializationHelper.SerializerOptions);
     }
 
     private string Fail(string reason)

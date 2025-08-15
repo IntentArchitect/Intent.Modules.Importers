@@ -1,3 +1,7 @@
+### Version 1.0.3
+
+- Improvement: Switched to use a module task to show progress more explicitly.
+
 ### Version 1.0.2
 
 - Fixed: Stereotypes not adequately applied to Tables.

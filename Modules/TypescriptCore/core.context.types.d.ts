@@ -8,6 +8,7 @@ type IAssociationApi = MacroApi.Context.IAssociationApi;
 type IPackageApi = MacroApi.Context.IPackageApi;
 type IDialogService = MacroApi.Context.IDialogService;
 type IDiagramApi = MacroApi.Context.IDiagramApi;
+type IElementToElementMappingApi = MacroApi.Context.IElementToElementMappingApi;
 
 declare namespace MacroApi.Context {
     interface IDialogService {
@@ -63,7 +64,14 @@ declare namespace MacroApi.Context {
     }
 
     interface IDynamicFormConfig {
+        /**
+         * Sets the title of the dialog.
+         */
         title: string;
+        /**
+         * Sets the icon of the dialog, which is provided as a string. Can be, for example, a valid URL, a font-awesome icon (e.g. 'fa-code') or a base64 encoded PNG / SVG.
+         */
+        icon?: string;
         /**
          * Sets the primary button text. Defaults to "Done" if not set.
          **/
@@ -84,7 +92,9 @@ declare namespace MacroApi.Context {
          * The field configurations for the fields to be added to the form.
          **/
         fields: IDynamicFormFieldConfig[];
-
+        /**
+         * An array of sections that should contain their own set of fields. Can be collapsed or hidden.
+         */
         sections?: IDynamicFormSectionConfig[];
     }
 
@@ -97,7 +107,7 @@ declare namespace MacroApi.Context {
 
     interface IDynamicFormFieldConfig {
         id: string;
-        fieldType: "text" | "select" | "checkbox" | "textarea" | "tree-view" | "tiles" | "open-file" | "button"
+        fieldType: "text" | "select" | "multi-select" | "checkbox" | "textarea" | "tree-view" | "tiles" | "open-file" | "button"
         label: string;
         isRequired?: boolean;
         isHidden?: boolean;
@@ -109,7 +119,7 @@ declare namespace MacroApi.Context {
         selectOptions?: IDynamicFormFieldSelectOption[];
         treeViewOptions?: ISelectableTreeViewOptions;
         openFileOptions?: IDynamicFormOpenFileOptions
-        onClick?: (formApi: IDynamicFormApi) => void;
+        onClick?: (formApi: IDynamicFormApi) => Promise<void>;
         onChange?: (formApi: IDynamicFormApi) => void;
     }
 
@@ -219,6 +229,7 @@ declare namespace MacroApi.Context {
         getType(): IElementReadOnlyApi;
         getIsNullable(): boolean;
         getIsCollection(): boolean;
+        getIsNavigable(): boolean;
         getDisplayTextComponents(): IDisplayTextComponent[]
         isNavigable: boolean;
         isNullable: boolean;
@@ -232,6 +243,7 @@ declare namespace MacroApi.Context {
         setType(typeIdOrModel: string | ITypeReferenceData, genericTypeParameters?: ITypeReferenceData[]): void;
         setIsNullable(value: boolean): void;
         setIsCollection(value: boolean): void;
+        setIsNavigable(value: boolean): void;
     }
 
     interface IElementToElementMappingApi {
@@ -366,8 +378,17 @@ declare namespace MacroApi.Context {
 
     interface IPackageReadOnlyApi {
         id: string;
+        specializationId: string;
         specialization: string;
         name: string;
+        /**
+         * The identifier of the designer that "owns" this package
+         */
+        designerId: string;
+        /**
+         * The identifier of the application that "owns" this package
+         */
+        applicationId: string;
         /**
          * Returns true if the package implements a trait identified by the provided traitId
          */
@@ -380,6 +401,7 @@ declare namespace MacroApi.Context {
         getMetadata(key: string): string;
         hasMetadata(key: string): boolean;
         getParent(): IPackageReadOnlyApi;
+        getParents(): IPackageReadOnlyApi[];
         getPackage(): IPackageReadOnlyApi;
         /**
          * Expands this package in the designer model.
@@ -480,16 +502,19 @@ declare namespace MacroApi.Context {
         findEmptySpace: (point: IPoint, size?: ISize, increment?: number) => IPoint;
 
         /**
-         * Will select and center the diagram on the visuals for the provided visualIds.
+         * Will select and center the diagram on the visuals for the provided visualIds. 
+         * Note that this method accepts the visual identifiers, and not the element identifiers.
          * @param visualIds
+         * @param centerDiagramOnSelection
          */
-        selectVisuals: (visualIds: string | string[]) => void;
+        selectVisuals: (visualIds: string | string[], centerDiagramOnSelection?: boolean) => void;
 
         /**
          * Will select and center the diagram on the visuals for the provided elements with elementIds.
          * @param elementIds
+         * @param centerDiagramOnSelection
          */
-        selectVisualsForElements: (elementIds: string | string[]) => void;
+        selectVisualsForElements: (elementIds: string | string[], centerDiagramOnSelection?: boolean) => void;
 
         /**
          * Returns the dimensions of the diagram's view port
@@ -506,6 +531,11 @@ declare namespace MacroApi.Context {
         getSize(): ISize;
         getDimensions(): MacroApi.Context.IDimensions;
         isAutoResizeEnabled(): boolean;
+        select(): void;
+        /**
+         * Return the backing element for this visual.
+         */
+        getElement(): IElementApi;
     }
 
     interface IDisplayTextComponent {
@@ -713,6 +743,10 @@ declare namespace MacroApi.Context {
          */
         setName(value: string, ensureUnique: boolean): void;
         /**
+         * Returns the previous name of the this element before the last `setName` invocation.
+         */
+        getPreviousName(): string;
+        /**
          * Sets the comment of the element.
          */
         setComment(value: string): void;
@@ -735,7 +769,7 @@ declare namespace MacroApi.Context {
         /**
          * Opens the diagram that this element represents, if it configured to support a diagram.
          */
-        loadDiagram(): void;
+        loadDiagram(): Promise<void>;
         /**
          * Sets this element's parent.
          */
@@ -753,6 +787,12 @@ declare namespace MacroApi.Context {
          * be filtered to those that match on specialization. 
          */
         getChildren(type?: string | string[]): IElementApi[];
+        /**
+         * Adds a new child element to this element. If the specified child's specialization is not allowed this will not create the element and return null.
+         * @param specialization
+         * @param name
+         */
+        addChild(specialization: string, name: string): IElementApi;
         /**
          * Returns this element's parent
          */
@@ -1027,6 +1067,10 @@ declare namespace MacroApi.Context {
          * Activates the editing mode for this association end.
          */
         enableEditing(): Promise<void>;
+        /**
+         * Activates the user association control in the diagram for this association end.
+         */
+        enableUserControlInDiagram(): void;// Promise<void>; TODO: implement as promise which returns when the user exists this control state.
         /**
          * Gets the metadata value for the specified key.
          */

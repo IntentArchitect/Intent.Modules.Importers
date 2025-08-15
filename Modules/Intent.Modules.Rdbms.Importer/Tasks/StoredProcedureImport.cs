@@ -1,17 +1,21 @@
 using System;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
 using Intent.Engine;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.Modules.Rdbms.Importer.Tasks.Helpers;
 using Intent.Modules.Rdbms.Importer.Tasks.Mappers;
 using Intent.Modules.Rdbms.Importer.Tasks.Models;
+using Intent.Plugins;
 using Intent.RelationalDbSchemaImporter.Contracts.Commands;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Intent.RelationalDbSchemaImporter.Runner;
+using Intent.Utils;
 
 namespace Intent.Modules.Rdbms.Importer.Tasks;
 
-public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
+public class RepositoryImport : IModuleTask
 {
     private readonly IMetadataManager _metadataManager;
     private readonly IApplicationConfigurationProvider _configurationProvider;
@@ -22,55 +26,75 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
         _configurationProvider = configurationProvider;
     }
 
-    public override string TaskTypeId => "Intent.Modules.Rdbms.Importer.Tasks.StoredProcedureImport";
-    public override string TaskTypeName => "SqlServer Stored Procedure Import";
+    public string TaskTypeId => "Intent.Modules.Rdbms.Importer.Tasks.StoredProcedureImport";
+    public string TaskTypeName => "SqlServer Stored Procedure Import";
+    public int Order => 0;
 
-    protected override ValidationResult ValidateInputModel(RepositoryImportModel inputModel)
+    public string? Execute(params string[] args)
     {
-        var designer = _metadataManager.GetDesigner(inputModel.ApplicationId, "Domain");
+        var importModel = JsonSerializer.Deserialize<RepositoryImportModel>(args[0], SerializationHelper.SerializerOptions);
+        if (importModel == null)
+        {
+            throw new Exception(
+                $"""
+                 Deserialization of the following returned null:
+
+                 {args[0]}
+                 """);
+        }
+
+        var designer = _metadataManager.GetDesigner(importModel.ApplicationId, "Domain");
         if (designer == null)
         {
-            return ValidationResult.ErrorResult("Unable to find domain designer in application");
+            throw new Exception("Unable to find domain designer in application");
         }
 
-        var package = designer.Packages.FirstOrDefault(p => p.Id == inputModel.PackageId);
+        var package = designer.Packages.FirstOrDefault(p => p.Id == importModel.PackageId);
         if (package == null)
         {
-            return ValidationResult.ErrorResult($"Unable to find package with Id : {inputModel.PackageId}");
+            throw new Exception($"Unable to find package with Id : {importModel.PackageId}");
         }
 
-        return ValidationResult.SuccessResult();
-    }
+        ImporterTool.SetToolDirectory(Path.GetFullPath(Path.Combine(
+            Path.GetDirectoryName(typeof(ImporterTool).Assembly.Location)!,
+            "../content/tool")));
 
-    protected override ExecuteResult ExecuteModuleTask(RepositoryImportModel importModel)
-    {
-        var executionResult = new ExecuteResult();
         try
         {
             PrepareInputModel(importModel);
-            
+
             var result = ImporterTool.Run<ImportSchemaResult>("import-schema", importModel);
 
-            executionResult.Errors.AddRange(result.Errors);
-            executionResult.Warnings.AddRange(result.Warnings);
-
-            if (executionResult.Errors.Count > 0 || result.Result?.SchemaData == null)
+            foreach (var message in result.Errors)
             {
-                return executionResult;
+                Logging.Log.Failure(message);
+            }
+
+            foreach (var message in result.Warnings)
+            {
+                Logging.Log.Warning(message);
+            }
+
+            if (result.Errors.Count > 0 || result.Result?.SchemaData is null)
+            {
+                throw new Exception("One or more errors occurred, review previous log entries");
             }
 
             var mappingResult = ApplySchemaMapping(importModel, result.Result);
-            
-            executionResult.Warnings.AddRange(mappingResult.Warnings);
-            if (mappingResult.IsSuccessful)
+
+            foreach (var message in mappingResult.Warnings)
             {
-                return executionResult;
+                Logging.Log.Warning(message);
             }
 
-            executionResult.Errors.Add($"Schema mapping failed: {mappingResult.Message}");
             if (mappingResult.Exception != null)
             {
-                executionResult.Errors.Add($"Exception: {mappingResult.Exception.ToString()}");
+                throw new Exception($"Schema mapping failed: {mappingResult.Message}", mappingResult.Exception);
+            }
+
+            if (!mappingResult.IsSuccessful)
+            {
+                throw new Exception("When applying schema mapping a non-success result was received.");
             }
         }
         finally
@@ -78,7 +102,7 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
             SettingsHelper.PersistSettings(importModel);
         }
 
-        return executionResult;
+        return null;
     }
 
     private MergeResult ApplySchemaMapping(RepositoryImportModel importModel, ImportSchemaResult importResult)
@@ -130,7 +154,7 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
 
             ModuleHelper.ApplyPackageStereotypes(package, _configurationProvider);
             ModuleHelper.ApplyRelevantReferences(package, _configurationProvider);
-            
+
             // Save the package if mapping was successful
             if (mappingResult.IsSuccessful)
             {
@@ -171,7 +195,7 @@ public class RepositoryImport : ModuleTaskSingleInputBase<RepositoryImportModel>
             importModel.StoredProcedureType = "Default";
         }
     }
-    
+
     private static ImportConfiguration CreateImportConfiguration(RepositoryImportModel importModel)
     {
         return new ImportConfiguration
