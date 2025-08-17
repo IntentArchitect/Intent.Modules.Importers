@@ -91,14 +91,45 @@ declare namespace MacroApi.Context {
         /**
          * The field configurations for the fields to be added to the form.
          **/
-        fields: IDynamicFormFieldConfig[];
+        fields?: IDynamicFormFieldConfig[];
         /**
          * An array of sections that should contain their own set of fields. Can be collapsed or hidden.
          */
         sections?: IDynamicFormSectionConfig[];
+        /**
+         * Pages in this wizard. If `fields` or `section` fields are set, then these pages will show subsequently.
+         */
+        pages?: IDynamicFormWizardPageConfig[];
+    }
+
+    interface IDynamicFormWizardPageConfig {
+        /**
+         * A function to run on initalizing this page.
+         **/
+        initialize?: (form: IDynamicFormApi) => Promise<void>;
+        /**
+         * Sets the primary button text. If not set, defaults to "Done" if this is the final page, and "Next" if there are subsequent pages.
+         **/
+        submitButtonText?: string;
+        /**
+         * The field configurations for the fields to be added to the form.
+         **/
+        fields?: IDynamicFormFieldConfig[];
+        /**
+         * An array of sections that should contain their own set of fields. Can be collapsed or hidden.
+         */
+        sections?: IDynamicFormSectionConfig[];
+        /**
+         * Executes when the "Next" or "Done" button is clicked. The button will remain in progress until the promise returns.
+         * If the promise is rejected, the wizard will not continue.
+         * @param form
+         * @returns
+         */
+        onContinue?: (form: IDynamicFormApi) => Promise<void>;
     }
 
     interface IDynamicFormSectionConfig {
+        id?: string;
         name: string;
         isHidden: boolean;
         isCollapsed: boolean;
@@ -132,6 +163,8 @@ declare namespace MacroApi.Context {
 
     interface IDynamicFormApi {
         getField(id: string): IDynamicFormFieldConfig;
+        getSection(id: string): IDynamicFormSectionConfig;
+        getValues(): any;
     }
 
     interface IDynamicFormOpenFileOptions {

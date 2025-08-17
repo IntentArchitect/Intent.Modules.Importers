@@ -70,8 +70,7 @@ internal class ImportFilterService
 			return false;
 		}
 		
-		return settings.IncludeTables.Count == 0 || 
-		       settings.IncludeTables.Any(x => x.Name == tableName || x.Name == $"{schema}.{tableName}");
+		return settings.IncludeTables.Any(x => x.Name == tableName || x.Name == $"{schema}.{tableName}");
 	}
 
 	public bool ExportView(string schema, string viewName)
@@ -87,8 +86,7 @@ internal class ImportFilterService
 			return false;
 		}
 		
-		return settings.IncludeViews.Count == 0 || 
-		       settings.IncludeViews.Any(x => x.Name == viewName || x.Name == $"{schema}.{viewName}");
+		return settings.IncludeViews.Any(x => x.Name == viewName || x.Name == $"{schema}.{viewName}");
 	}
 
 	public bool ExportStoredProcedure(string schema, string storedProcedureName)
@@ -104,8 +102,7 @@ internal class ImportFilterService
 			return false;
 		}
 
-		return settings.IncludeStoredProcedures.Count == 0 ||
-		       settings.IncludeStoredProcedures.Contains(storedProcedureName) ||
+		return settings.IncludeStoredProcedures.Contains(storedProcedureName) ||
 		       settings.IncludeStoredProcedures.Contains($"{schema}.{storedProcedureName}");
 	}
 	

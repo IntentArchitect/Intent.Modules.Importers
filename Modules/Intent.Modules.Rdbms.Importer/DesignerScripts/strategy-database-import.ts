@@ -5,12 +5,15 @@ class DatabaseImportStrategy {
     public async execute(packageElement: MacroApi.Context.IElementApi): Promise<void> {
         const defaults = this.getDialogDefaults(packageElement);
 
-        const capturedInput = await this.presentImportDialog(defaults, packageElement.id);
-        if (capturedInput == null) {
+        const result = await this.presentImportDialog(defaults, packageElement.id);
+        if (result == null) {
             return;
         }
 
-        let importModel = JSON.stringify(this.createImportModel(capturedInput));
+        console.warn(JSON.stringify(result));
+
+        // Handle the save operation when dialog is closed with OK:
+        let importModel = JSON.stringify(this.createImportModel(result));
         launchHostedModuleTask("Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport", [importModel]);
     }
 
@@ -45,6 +48,7 @@ class DatabaseImportStrategy {
                 }
             });
         }
+
         let result: ISqlDatabaseImportPackageSettings = {
             entityNameConvention: this.getSettingValue(domainPackage, "rdbms-import:entityNameConvention", "SingularEntity"),
             tableStereotypes: this.getSettingValue(domainPackage, "rdbms-import:tableStereotypes", "WhenDifferent"),
@@ -52,7 +56,7 @@ class DatabaseImportStrategy {
             includeViews: includeViews,
             includeStoredProcedures: includeStoredProcedures,
             includeIndexes: includeIndexes,
-            importFilterFilePath: this.getSettingValue(domainPackage, "rdbms-import:importFilterFilePath", null),
+            importFilterFilePath: this.getSettingValue(domainPackage, "rdbms-import:importFilterFilePath", "db-import-filter.json"),
             connectionString: this.getSettingValue(domainPackage, "rdbms-import:connectionString", null),
             storedProcedureType: this.getSettingValue(domainPackage, "rdbms-import:storedProcedureType", ""),
             settingPersistence: this.getSettingValue(domainPackage, "rdbms-import:settingPersistence", "None"),
@@ -61,9 +65,11 @@ class DatabaseImportStrategy {
         return result;
     }
 
-    private async presentImportDialog(defaults: ISqlDatabaseImportPackageSettings, packageId: string): Promise<any> {
+    private async presentImportDialog(defaults: ISqlDatabaseImportPackageSettings, packageId: string): Promise<IFormResult> {
         let formConfig: MacroApi.Context.IDynamicFormConfig = {
             title: "RDBMS Import",
+            minWidth: "600px",
+            height: "80%",
             fields: [],
             sections: [
                 {
@@ -118,11 +124,11 @@ class DatabaseImportStrategy {
                         {
                             id: "settingPersistence",
                             fieldType: "select",
-                            label: "Persist Settings",
+                            label: "Remember Settings",
                             hint: "Remember these settings for next time you run the import",
                             value: defaults.settingPersistence,
                             selectOptions: [
-                                { id: "None", description: "(None)" },
+                                { id: "None", description: "Don't Remember" },
                                 { id: "All", description: "All Settings" },
                                 { id: "AllSanitisedConnectionString", description: "All (with Sanitized connection string, no password))" },
                                 { id: "AllWithoutConnectionString", description: "All (without connection string))" }
@@ -169,7 +175,7 @@ class DatabaseImportStrategy {
                     isHidden: false
                 },
                 {
-                    name: 'Filtering',
+                    name: 'Filtering Options',
                     fields: [
                         {
                             id: "includeTables",
@@ -231,38 +237,38 @@ class DatabaseImportStrategy {
                                 }
                             }
                         },
-                        {
-                            id: "manageIncludeFilters",
-                            fieldType: "button",
-                            label: "Manage Filters",
-                            onClick: async (form: MacroApi.Context.IDynamicFormApi) => {
-                                const connectionString = form.getField("connectionString").value as string;
-                                if (!connectionString) {
-                                    await dialogService.error("Please enter a connection string first.");
-                                    return;
-                                }
-                                const databaseType = form.getField("databaseType").value as string;
-                                let importFilterFilePath = form.getField("importFilterFilePath").value as string;
+                        // {
+                        //     id: "manageIncludeFilters",
+                        //     fieldType: "button",
+                        //     label: "Manage Filters",
+                        //     onClick: async (form: MacroApi.Context.IDynamicFormApi) => {
+                        //         const connectionString = form.getField("connectionString").value as string;
+                        //         if (!connectionString) {
+                        //             await dialogService.error("Please enter a connection string first.");
+                        //             return;
+                        //         }
+                        //         const databaseType = form.getField("databaseType").value as string;
+                        //         let importFilterFilePath = form.getField("importFilterFilePath").value as string;
 
-                                let returnedImportFilterFilePath = await this.presentManageFiltersDialog(connectionString, databaseType, packageId, importFilterFilePath);
-                                if (returnedImportFilterFilePath != null) {
-                                    form.getField("importFilterFilePath").value = returnedImportFilterFilePath;
-                                }
-                            }
-                        }
+                        //         let returnedImportFilterFilePath = await this.presentManageFiltersDialog(connectionString, databaseType, packageId, importFilterFilePath);
+                        //         if (returnedImportFilterFilePath != null) {
+                        //             form.getField("importFilterFilePath").value = returnedImportFilterFilePath;
+                        //         }
+                        //     }
+                        // }
                     ],
                     isCollapsed: true,
                     isHidden: false
                 }
             ],
-            height: "70%"
+            pages: [this.presentManageFiltersDialog(packageId, )],
         }
 
         let capturedInput = await dialogService.openForm(formConfig);
         return capturedInput;
     }
 
-    private createImportModel(capturedInput: any): IDatabaseImportModel {
+    private createImportModel(capturedInput: IFormResult): IDatabaseImportModel {
         const typesToExport: string[] = [];
         if (capturedInput.includeTables == "true") {
             typesToExport.push("Table");
@@ -296,34 +302,7 @@ class DatabaseImportStrategy {
         return importConfig;
     }
 
-    private async presentManageFiltersDialog(connectionString: string, databaseType: string, packageId: string, importFilterFilePath: string): Promise<string | null> {
-        try {
-            const metadata = await this.fetchDatabaseMetadata(connectionString, databaseType);
-            if (!metadata) {
-                return null;
-            }
-
-            // Load existing filter data if file path exists
-            let existingFilter: ImportFilterModel | null = null;
-            if (importFilterFilePath) {
-                const filterLoadModel = {
-                    importFilterFilePath: importFilterFilePath,
-                    applicationId: application.id,
-                    packageId: packageId
-                };
-                const filterLoadResult = await executeImporterModuleTask(
-                    "Intent.Modules.Rdbms.Importer.Tasks.FilterLoad",
-                    filterLoadModel
-                );
-
-                if ((filterLoadResult.errors ?? []).length === 0 && filterLoadResult.result) {
-                    existingFilter = filterLoadResult.result as ImportFilterModel;
-                } else if ((filterLoadResult.errors ?? []).length > 0) {
-                    await displayExecutionResultErrors(filterLoadResult);
-                    return null;
-                }
-            }
-
+    private presentManageFiltersDialog(packageId: string): MacroApi.Context.IDynamicFormWizardPageConfig {
             const inclusiveSelection: MacroApi.Context.IDynamicFormFieldConfig = {
                 id: "inclusiveSelection",
                 fieldType: "tree-view",
@@ -340,22 +319,22 @@ class DatabaseImportStrategy {
                         {
                             specializationId: "Schema",
                             autoExpand: true,
-                            autoSelectChildren: false,
-                            isSelectable: (x) => true
+                            autoSelectChildren: true,
+                            isSelectable: (x) => true,
                         },
                         {
                             specializationId: "Table",
-                            autoSelectChildren: false,
+                            autoSelectChildren: true,
                             isSelectable: (x) => true
                         },
                         {
                             specializationId: "Stored-Procedure",
-                            autoSelectChildren: false,
+                            autoSelectChildren: true,
                             isSelectable: (x) => true
                         },
                         {
                             specializationId: "View",
-                            autoSelectChildren: false,
+                            autoSelectChildren: true,
                             isSelectable: (x) => true
                         }
                     ]
@@ -378,120 +357,198 @@ class DatabaseImportStrategy {
                         {
                             specializationId: "Schema",
                             autoExpand: true,
-                            autoSelectChildren: false,
+                            autoSelectChildren: true,
                             isSelectable: (x) => true
                         },
                         {
                             specializationId: "Table",
-                            autoSelectChildren: false,
+                            autoSelectChildren: true,
                             isSelectable: (x) => true
                         },
                         {
                             specializationId: "Stored-Procedure",
-                            autoSelectChildren: false,
+                            autoSelectChildren: true,
                             isSelectable: (x) => true
                         },
                         {
                             specializationId: "View",
-                            autoSelectChildren: false,
+                            autoSelectChildren: true,
                             isSelectable: (x) => true
                         }
                     ]
                 }
             };
 
-            let allSchemas = [...Object.keys(metadata.tables), ...Object.keys(metadata.storedProcedures), ...Object.keys(metadata.views)]
-            let distinctSchemas = [...new Set(allSchemas)];
-
-            // Create tree nodes with pre-selected states for inclusive filter
-            inclusiveSelection.treeViewOptions.rootNode = {
-                id: "Database",
-                label: "Database",
-                specializationId: "Database",
-                icon: Icons.databaseIcon,
-                children: distinctSchemas.map(schemaName => {
-                    return {
-                        id: `schema.${schemaName}`,
-                        label: schemaName,
-                        specializationId: "Schema",
-                        icon: Icons.schemaIcon,
-                        isSelected: this.isSchemaIncluded(schemaName, existingFilter),
-                        children: this.createSchemaTreeNodes(schemaName, metadata, existingFilter, "include")
-                    };
-                })
-            };
-
-            // Create tree nodes with pre-selected states for exclusive filter
-            exclusiveSelection.treeViewOptions.rootNode = {
-                id: "Database",
-                label: "Database",
-                specializationId: "Database",
-                icon: Icons.databaseIcon,
-                children: distinctSchemas.map(schemaName => {
-                    return {
-                        id: `schema.${schemaName}`,
-                        label: schemaName,
-                        specializationId: "Schema",
-                        icon: Icons.schemaIcon,
-                        isSelected: this.isSchemaExcluded(schemaName, existingFilter),
-                        children: this.createSchemaTreeNodes(schemaName, metadata, existingFilter, "exclude")
-                    };
-                })
-            };
+            
 
             const includeDependantTablesField: MacroApi.Context.IDynamicFormFieldConfig = {
                 id: "includeDependantTables",
                 fieldType: "checkbox",
                 label: "Include Dependant Tables",
                 hint: "When including tables, also include tables that are referenced by foreign keys",
-                value: existingFilter?.include_dependant_tables ? "true" : "false",
+                value: "false",
                 isRequired: false
             };
 
-            const formConfig: MacroApi.Context.IDynamicFormConfig = {
-                title: "Manage Filters",
-                fields: [],
+            const formConfig: MacroApi.Context.IDynamicFormWizardPageConfig = {
+                initialize: async (form) => {
+                    try {
+                        const connectionString = form.getField("connectionString").value as string;
+                        if (!connectionString) {
+                            await dialogService.error("Please enter a connection string first.");
+                            return;
+                        }
+                        const databaseType = form.getField("databaseType").value as string;
+                        const metadata = await this.fetchDatabaseMetadata(connectionString, databaseType);
+                        if (!metadata) {
+                            return null;
+                        }
+
+                        // Load existing filter data if file path exists
+                        let existingFilter: ImportFilterModel | null = null;
+                        let importFilterFilePath = form.getField("importFilterFilePath").value as string;
+                        if (importFilterFilePath) {
+                            const filterLoadModel = {
+                                importFilterFilePath: importFilterFilePath,
+                                applicationId: application.id,
+                                packageId: packageId
+                            };
+                            const filterLoadResult = await executeImporterModuleTask(
+                                "Intent.Modules.Rdbms.Importer.Tasks.FilterLoad",
+                                filterLoadModel
+                            );
+
+                            if ((filterLoadResult.errors ?? []).length === 0 && filterLoadResult.result) {
+                                existingFilter = filterLoadResult.result as ImportFilterModel;
+                                // Set this to hidden field, since we will need it later.
+                                form.getField("existingImportFilter").value = JSON.stringify(filterLoadResult.result as ImportFilterModel);
+                            } else if ((filterLoadResult.errors ?? []).length > 0) {
+                                await displayExecutionResultErrors(filterLoadResult);
+                                return null;
+                            }
+                        }
+                        let allSchemas = [...Object.keys(metadata.tables), ...Object.keys(metadata.storedProcedures), ...Object.keys(metadata.views)]
+                        let distinctSchemas = [...new Set(allSchemas)];
+
+                        // Create tree nodes with pre-selected states for inclusive filter
+                        inclusiveSelection.treeViewOptions.rootNode = {
+                            id: "Database",
+                            label: "Database",
+                            specializationId: "Database",
+                            icon: Icons.databaseIcon,
+                            children: distinctSchemas.map(schemaName => {
+                                return {
+                                    id: `schema.${schemaName}`,
+                                    label: schemaName,
+                                    specializationId: "Schema",
+                                    icon: Icons.schemaIcon,
+                                    isSelected: this.isSchemaIncluded(schemaName, existingFilter),
+                                    children: this.createSchemaTreeNodes(schemaName, metadata, existingFilter, "include")
+                                };
+                            })
+                        };
+
+                        // Create tree nodes with pre-selected states for exclusive filter
+                        exclusiveSelection.treeViewOptions.rootNode = {
+                            id: "Database",
+                            label: "Database",
+                            specializationId: "Database",
+                            icon: Icons.databaseIcon,
+                            children: distinctSchemas.map(schemaName => {
+                                return {
+                                    id: `schema.${schemaName}`,
+                                    label: schemaName,
+                                    specializationId: "Schema",
+                                    icon: Icons.schemaIcon,
+                                    isSelected: this.isSchemaExcluded(schemaName, existingFilter),
+                                    children: this.createSchemaTreeNodes(schemaName, metadata, existingFilter, "exclude")
+                                };
+                            })
+                        };
+
+                        includeDependantTablesField.value = existingFilter?.include_dependant_tables ? "true" : "false";
+
+                    } catch (error) {
+                        await dialogService.error(`Error loading database metadata: ${error}`);
+                        return null;
+                    }
+                },
+                fields: [{
+                    id: "existingImportFilter",
+                    label: "Hidden Field",
+                    fieldType: "text",
+                    isHidden: true
+                }],
                 sections: [
                     {
+                        id: "General Options",
                         name: "General Options",
-                        fields: [includeDependantTablesField],
+                        fields: [includeDependantTablesField, {
+                            id: "filterType",
+                            fieldType: "select",
+                            label: "Filter Type",
+                            value: "include",
+                            selectOptions: [
+                                {
+                                    id: "include",
+                                    description: "Include Selected",
+                                },
+                                {
+                                    id: "exclude",
+                                    description: "Exclude Selected",
+                                }
+                            ],
+                            onChange: (api) => {
+                                const include = api.getField("filterType").value == "include";
+                                api.getSection("inclusive-objects").isHidden = !include;
+                                api.getSection("exclusive-objects").isHidden = include;
+                            }
+                        }],
                         isCollapsed: false,
                         isHidden: false
                     },
                     {
+                        id: "inclusive-objects",
                         name: "Inclusive Objects",
                         fields: [inclusiveSelection],
                         isCollapsed: false,
                         isHidden: false
                     },
                     {
+                        id: "exclusive-objects",
                         name: "Exclusive Objects",
                         fields: [exclusiveSelection],
-                        isCollapsed: true,
-                        isHidden: false
+                        isCollapsed: false,
+                        isHidden: true
                     }
-                ]
-            };
-
-            try {
-                const result = await dialogService.openForm(formConfig);
-                if (result) {
-                    // Handle the save operation when dialog is closed with OK
-                    let returnedImportFilterFilePath = await this.saveFilterData(result, existingFilter, packageId, importFilterFilePath);
+                ],
+                onContinue: async (form) => {
+                    const result = form.getValues();
+                    let returnedImportFilterFilePath = await this.saveFilterData(result, JSON.parse(result.existingImportFilter), packageId, result.importFilterFilePath);
                     if (returnedImportFilterFilePath != null) {
-                        return returnedImportFilterFilePath;
+                        console.warn(returnedImportFilterFilePath)
+                        form.getField("importFilterFilePath").value = returnedImportFilterFilePath;
                     }
                 }
-            } catch (error) {
-                console.error("Error in filter selection dialog:", error);
-                return null;
-            }
-        } catch (error) {
-            await dialogService.error(`Error loading database metadata: ${error}`);
-            return null;
-        }
+            };
 
-        return importFilterFilePath;
+            return formConfig;
+
+        //     try {
+        //         const result = await dialogService.openForm(formConfig);
+        //         if (result) {
+        //             // Handle the save operation when dialog is closed with OK
+        //             let returnedImportFilterFilePath = await this.saveFilterData(result, existingFilter, packageId, importFilterFilePath);
+        //             if (returnedImportFilterFilePath != null) {
+        //                 return returnedImportFilterFilePath;
+        //             }
+        //         }
+        //     } catch (error) {
+        //         console.error("Error in filter selection dialog:", error);
+        //         return null;
+        //     }
+
+        // return importFilterFilePath;
     }
 
     private async fetchDatabaseMetadata(connectionString: string, databaseType: string): Promise<IDatabaseMetadata | null> {
@@ -593,6 +650,7 @@ class DatabaseImportStrategy {
                 label: item,
                 specializationId: specializationId,
                 icon: icon,
+                isExpanded: this.isItemSelected(schemaName, category, item, existingFilter, filterType),
                 isSelected: this.isItemSelected(schemaName, category, item, existingFilter, filterType)
             } as MacroApi.Context.ISelectableTreeNode))
         };
@@ -694,13 +752,13 @@ class DatabaseImportStrategy {
         }
     }
 
-    private async saveFilterData(formResult: any, existingFilter: ImportFilterModel | null, packageId: string, importFilterFilePath: string): Promise<string | null> {
+    private async saveFilterData(formResult: IFormResult, existingFilter: ImportFilterModel | null, packageId: string, importFilterFilePath: string): Promise<string | null> {
         try {
             // Extract selections from form result
-            const inclusiveSelections = formResult.inclusiveSelection || [];
-            const exclusiveSelections = formResult.exclusiveSelection || [];
+            const inclusiveSelections = formResult.filterType == "include" ? formResult.inclusiveSelection ?? [] : [];
+            const exclusiveSelections = formResult.filterType == "exclude" ? formResult.exclusiveSelections ?? [] : [];
 
-
+            console.debug(JSON.stringify(inclusiveSelections));
             // Create filter model from selections
             const filterModel: ImportFilterModel = {
                 schemas: [],
@@ -921,4 +979,23 @@ interface FilterTableModel {
 interface FilterViewModel {
     name: string;
     exclude_columns: string[];
+}
+
+interface IFormResult {
+    existingImportFilter: string;
+    filterType: "include" | "exclude"
+    exclusiveSelections: any[];
+    inclusiveSelection: any[];
+    includeDependantTables: string;
+    databaseType: string;
+    settingPersistence: string;
+    connectionString: string;
+    storedProcedureType: string;
+    importFilterFilePath: string;
+    tableStereotypes: string;
+    entityNameConvention: string;
+    includeIndexes: string;
+    includeStoredProcedures: string;
+    includeViews: string;
+    includeTables: string;
 }
