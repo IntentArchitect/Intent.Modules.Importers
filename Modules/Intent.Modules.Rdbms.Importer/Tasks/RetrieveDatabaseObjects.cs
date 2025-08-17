@@ -34,12 +34,32 @@ public class RetrieveDatabaseObjects : ModuleTaskBase<DatabaseMetadataInputModel
             {
                 throw new InvalidOperationException("Result was expected");
             }
-            
+
+            var tables = GetGroupedSchemaElements(result.Result.Tables);
+            var storedProcedures = GetGroupedSchemaElements(result.Result.StoredProcedures);
+            var views = GetGroupedSchemaElements(result.Result.Views);
+
+            var schemas = new Dictionary<string, DatabaseMetadataSchema>();
+            foreach (var table in tables)
+            {
+                schemas.TryAdd(table.Key, new DatabaseMetadataSchema() { SchemaName = table.Key });
+                schemas[table.Key].Tables.AddRange(table.Value);
+            }
+            foreach (var table in storedProcedures)
+            {
+                schemas.TryAdd(table.Key, new DatabaseMetadataSchema() { SchemaName = table.Key });
+                schemas[table.Key].StoredProcedures.AddRange(table.Value);
+            }
+
+            foreach (var table in views)
+            {
+                schemas.TryAdd(table.Key, new DatabaseMetadataSchema() { SchemaName = table.Key });
+                schemas[table.Key].Views.AddRange(table.Value);
+            }
+
             executionResult.Result = new DatabaseMetadataResultModel
             {
-                Tables = GetGroupedSchemaElements(result.Result.Tables),
-                StoredProcedures = GetGroupedSchemaElements(result.Result.StoredProcedures),
-                Views = GetGroupedSchemaElements(result.Result.Views)
+                Schemas = schemas.Values.ToArray()
             };
         }
         executionResult.Errors.AddRange(result.Errors);

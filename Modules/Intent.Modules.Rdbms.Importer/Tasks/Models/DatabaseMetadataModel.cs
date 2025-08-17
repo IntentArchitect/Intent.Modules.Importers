@@ -11,7 +11,13 @@ public class DatabaseMetadataInputModel
 
 public class DatabaseMetadataResultModel
 {
-    public Dictionary<string, string[]> Tables { get; set; } = [];
-    public Dictionary<string, string[]> Views { get; set; } = [];
-    public Dictionary<string, string[]> StoredProcedures { get; set; } = [];
-} 
+    public DatabaseMetadataSchema[] Schemas { get; set; } = [];
+}
+
+public class DatabaseMetadataSchema
+{
+    public string SchemaName { get; set; }
+    public List<string> Tables { get; set; } = [];
+    public List<string> Views { get; set; } = [];
+    public List<string> StoredProcedures { get; set; } = [];
+}

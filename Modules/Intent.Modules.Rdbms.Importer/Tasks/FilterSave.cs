@@ -43,7 +43,7 @@ public class FilterSave : ModuleTaskBase<FilterSaveInputModel>
     protected override ExecuteResult ExecuteModuleTask(FilterSaveInputModel inputModel)
     {
         var executionResult = new ExecuteResult();
-        
+
         if (!_metadataManager.TryGetApplicationPackage(inputModel.ApplicationId, inputModel.PackageId, out var package, out _))
         {
             return executionResult;

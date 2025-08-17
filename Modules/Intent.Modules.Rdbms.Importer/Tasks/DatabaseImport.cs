@@ -57,8 +57,6 @@ public class DatabaseImport : IModuleTask
             var adaptedImportModel = PrepareInputModel(importModel);
             var result = ImporterTool.Run<ImportSchemaResult>("import-schema", adaptedImportModel);
 
-            Debugger.Launch();
-
             foreach (var message in result.Errors)
             {
                 Logging.Log.Failure(message);

@@ -346,6 +346,7 @@ class DatabaseImportStrategy {
                 fieldType: "tree-view",
                 label: "Objects to Exclude from Import",
                 isRequired: false,
+                isHidden: true, // hidden by default
                 treeViewOptions: {
                     isMultiSelect: true,
                     selectableTypes: [
@@ -394,15 +395,14 @@ class DatabaseImportStrategy {
                 initialize: async (form) => {
                     try {
                         const connectionString = form.getField("connectionString").value as string;
-                        if (!connectionString) {
-                            await dialogService.error("Please enter a connection string first.");
-                            return;
-                        }
                         const databaseType = form.getField("databaseType").value as string;
                         const metadata = await this.fetchDatabaseMetadata(connectionString, databaseType);
                         if (!metadata) {
                             return null;
                         }
+
+                        console.warn("metadata:")
+                        console.warn(JSON.stringify(metadata))
 
                         // Load existing filter data if file path exists
                         let existingFilter: ImportFilterModel | null = null;
@@ -422,13 +422,17 @@ class DatabaseImportStrategy {
                                 existingFilter = filterLoadResult.result as ImportFilterModel;
                                 // Set this to hidden field, since we will need it later.
                                 form.getField("existingImportFilter").value = JSON.stringify(filterLoadResult.result as ImportFilterModel);
+                                form.getField("filterType").value = existingFilter.filter_type ?? "include";
+                                const include = form.getField("filterType").value == "include";
+                                form.getField("inclusiveSelection").isHidden = !include;
+                                form.getField("exclusiveSelection").isHidden = include;
+
                             } else if ((filterLoadResult.errors ?? []).length > 0) {
                                 await displayExecutionResultErrors(filterLoadResult);
                                 return null;
                             }
                         }
-                        let allSchemas = [...Object.keys(metadata.tables), ...Object.keys(metadata.storedProcedures), ...Object.keys(metadata.views)]
-                        let distinctSchemas = [...new Set(allSchemas)];
+                        let distinctSchemas = metadata.schemas;
 
                         // Create tree nodes with pre-selected states for inclusive filter
                         inclusiveSelection.treeViewOptions.rootNode = {
@@ -436,14 +440,14 @@ class DatabaseImportStrategy {
                             label: "Database",
                             specializationId: "Database",
                             icon: Icons.databaseIcon,
-                            children: distinctSchemas.map(schemaName => {
+                            children: distinctSchemas.map(schema => {
                                 return {
-                                    id: `schema.${schemaName}`,
-                                    label: schemaName,
+                                    id: `schema.${schema.schemaName}`,
+                                    label: schema.schemaName,
                                     specializationId: "Schema",
                                     icon: Icons.schemaIcon,
-                                    isSelected: this.isSchemaIncluded(schemaName, existingFilter),
-                                    children: this.createSchemaTreeNodes(schemaName, metadata, existingFilter, "include")
+                                    isSelected: this.isSchemaIncluded(schema.schemaName, existingFilter),
+                                    children: this.createSchemaTreeNodes(schema, existingFilter, "include")
                                 };
                             })
                         };
@@ -454,14 +458,14 @@ class DatabaseImportStrategy {
                             label: "Database",
                             specializationId: "Database",
                             icon: Icons.databaseIcon,
-                            children: distinctSchemas.map(schemaName => {
+                            children: distinctSchemas.map(schema => {
                                 return {
-                                    id: `schema.${schemaName}`,
-                                    label: schemaName,
+                                    id: `schema.${schema.schemaName}`,
+                                    label: schema.schemaName,
                                     specializationId: "Schema",
                                     icon: Icons.schemaIcon,
-                                    isSelected: this.isSchemaExcluded(schemaName, existingFilter),
-                                    children: this.createSchemaTreeNodes(schemaName, metadata, existingFilter, "exclude")
+                                    isSelected: this.isSchemaExcluded(schema.schemaName, existingFilter),
+                                    children: this.createSchemaTreeNodes(schema, existingFilter, "exclude")
                                 };
                             })
                         };
@@ -469,58 +473,41 @@ class DatabaseImportStrategy {
                         includeDependantTablesField.value = existingFilter?.include_dependant_tables ? "true" : "false";
 
                     } catch (error) {
-                        await dialogService.error(`Error loading database metadata: ${error}`);
-                        return null;
+                        //await dialogService.error(`Error loading database metadata: ${error}`);
+                        throw error;
                     }
                 },
-                fields: [{
-                    id: "existingImportFilter",
-                    label: "Hidden Field",
-                    fieldType: "text",
-                    isHidden: true
-                }],
-                sections: [
+                fields: [
                     {
-                        id: "General Options",
-                        name: "General Options",
-                        fields: [includeDependantTablesField, {
-                            id: "filterType",
-                            fieldType: "select",
-                            label: "Filter Type",
-                            value: "include",
-                            selectOptions: [
-                                {
-                                    id: "include",
-                                    description: "Include Selected",
-                                },
-                                {
-                                    id: "exclude",
-                                    description: "Exclude Selected",
-                                }
-                            ],
-                            onChange: (api) => {
-                                const include = api.getField("filterType").value == "include";
-                                api.getSection("inclusive-objects").isHidden = !include;
-                                api.getSection("exclusive-objects").isHidden = include;
-                            }
-                        }],
-                        isCollapsed: false,
-                        isHidden: false
-                    },
-                    {
-                        id: "inclusive-objects",
-                        name: "Inclusive Objects",
-                        fields: [inclusiveSelection],
-                        isCollapsed: false,
-                        isHidden: false
-                    },
-                    {
-                        id: "exclusive-objects",
-                        name: "Exclusive Objects",
-                        fields: [exclusiveSelection],
-                        isCollapsed: false,
+                        id: "existingImportFilter",
+                        label: "Hidden Field",
+                        fieldType: "text",
                         isHidden: true
-                    }
+                    }, 
+                    {
+                        id: "filterType",
+                        fieldType: "select",
+                        label: "Filter Type",
+                        value: "include",
+                        selectOptions: [
+                            {
+                                id: "include",
+                                description: "Include Selected",
+                            },
+                            {
+                                id: "exclude",
+                                description: "Exclude Selected",
+                            }
+                        ],
+                        onChange: (api) => {
+                            const include = api.getField("filterType").value == "include";
+                            api.getField("inclusiveSelection").isHidden = !include;
+                            api.getField("exclusiveSelection").isHidden = include;
+                        }
+                    },
+                    includeDependantTablesField, 
+                    inclusiveSelection,
+                    exclusiveSelection
                 ],
                 onContinue: async (form) => {
                     const result = form.getValues();
@@ -560,7 +547,6 @@ class DatabaseImportStrategy {
         const metadataExecutionResult = await executeImporterModuleTask(
             "Intent.Modules.Rdbms.Importer.Tasks.RetrieveDatabaseObjects",
             metadataModel);
-
         if ((metadataExecutionResult.errors ?? []).length > 0) {
             await displayExecutionResultErrors(metadataExecutionResult);
             return null;
@@ -576,51 +562,46 @@ class DatabaseImportStrategy {
     }
 
     private createSchemaTreeNodes(
-        schemaName: string,
-        metadata: {
-            tables: Record<string, string[]>,
-            storedProcedures: Record<string, string[]>,
-            views: Record<string, string[]>
-        },
+        metadata: IDatabaseSchema,
         existingFilter: ImportFilterModel | null = null,
         filterType: "include" | "exclude"
     ): MacroApi.Context.ISelectableTreeNode[] {
         const nodes: MacroApi.Context.ISelectableTreeNode[] = [];
 
-        if (metadata.tables[schemaName]?.some(x => x)) {
+        if (metadata.tables.some(x => x)) {
             nodes.push(this.createCategoryNode(
-                schemaName,
+                metadata.schemaName,
                 "tables",
                 "Tables",
                 "Table",
                 Icons.tableIcon,
-                metadata.tables[schemaName],
+                metadata.tables,
                 existingFilter,
                 filterType
             ));
         }
 
-        if (metadata.storedProcedures[schemaName]?.some(x => x)) {
+        if (metadata.storedProcedures.some(x => x)) {
             nodes.push(this.createCategoryNode(
-                schemaName,
+                metadata.schemaName,
                 "storedProcedures",
                 "Stored Procedures",
                 "Stored-Procedure",
                 Icons.storedProcIcon,
-                metadata.storedProcedures[schemaName],
+                metadata.storedProcedures,
                 existingFilter,
                 filterType
             ));
         }
 
-        if (metadata.views[schemaName]?.some(x => x)) {
+        if (metadata.views.some(x => x)) {
             nodes.push(this.createCategoryNode(
-                schemaName,
+                metadata.schemaName,
                 "views",
                 "Views",
                 "View",
                 Icons.viewIcon,
-                metadata.views[schemaName],
+                metadata.views,
                 existingFilter,
                 filterType
             ));
@@ -755,12 +736,12 @@ class DatabaseImportStrategy {
     private async saveFilterData(formResult: IFormResult, existingFilter: ImportFilterModel | null, packageId: string, importFilterFilePath: string): Promise<string | null> {
         try {
             // Extract selections from form result
-            const inclusiveSelections = formResult.filterType == "include" ? formResult.inclusiveSelection ?? [] : [];
-            const exclusiveSelections = formResult.filterType == "exclude" ? formResult.exclusiveSelections ?? [] : [];
+            const inclusiveSelection = formResult.filterType == "include" ? formResult.inclusiveSelection ?? [] : [];
+            const exclusiveSelection = formResult.filterType == "exclude" ? formResult.exclusiveSelection ?? [] : [];
 
-            console.debug(JSON.stringify(inclusiveSelections));
             // Create filter model from selections
             const filterModel: ImportFilterModel = {
+                filter_type: formResult.filterType,
                 schemas: [],
                 include_tables: [],
                 include_dependant_tables: formResult.includeDependantTables === "true",
@@ -780,7 +761,7 @@ class DatabaseImportStrategy {
             }
 
             // Process inclusive selections
-            inclusiveSelections.forEach((selection: string) => {
+            inclusiveSelection.forEach((selection: string) => {
                 if (selection.startsWith('schema.')) {
                     const schemaName = selection.replace('schema.', '');
                     filterModel.schemas.push(schemaName);
@@ -828,7 +809,7 @@ class DatabaseImportStrategy {
             });
 
             // Process exclusive selections
-            exclusiveSelections.forEach((selection: string) => {
+            exclusiveSelection.forEach((selection: string) => {
                 if (selection.includes('.tables.')) {
                     // Extract schema and table name from ID like "schema.tables.tableName"
                     const parts = selection.split('.');
@@ -902,12 +883,13 @@ class DatabaseImportStrategy {
                 await displayExecutionResultErrors(saveResult);
                 return null;
             } else {
-                await dialogService.info("Filters saved successfully.");
+                //await dialogService.info("Filters saved successfully.");
             }
 
             return savePath;
         } catch (error) {
-            await dialogService.error(`Error saving filters: ${error}`);
+            throw new Error(`Error saving filters: ${error}`);
+            //await dialogService.error(`Error saving filters: ${error}`);
             return null;
         }
     }
@@ -953,12 +935,18 @@ interface IRetrieveDatabaseObjectsModel {
 }
 
 interface IDatabaseMetadata {
-    tables: { [key: string]: string[] };
-    views: { [key: string]: string[] };
-    storedProcedures: { [key: string]: string[] };
+    schemas: IDatabaseSchema[];
+}
+
+interface IDatabaseSchema {
+    schemaName: string;
+    tables: string[];
+    views: string[];
+    storedProcedures: string[];
 }
 
 interface ImportFilterModel {
+    filter_type: "include" | "exclude",
     schemas: string[];
     include_tables: FilterTableModel[];
     include_dependant_tables: boolean;
@@ -984,7 +972,7 @@ interface FilterViewModel {
 interface IFormResult {
     existingImportFilter: string;
     filterType: "include" | "exclude"
-    exclusiveSelections: any[];
+    exclusiveSelection: any[];
     inclusiveSelection: any[];
     includeDependantTables: string;
     databaseType: string;

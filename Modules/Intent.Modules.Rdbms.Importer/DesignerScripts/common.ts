@@ -22,8 +22,8 @@ async function displayExecutionResultErrors(executionResult: IExecutionResult): 
         return;
     }
 
-    const errorMessage = executionResult.errors.map(error => `⭕ ${error}`).join("\r\n");
-    await dialogService.error(errorMessage);
+    const errorMessage = executionResult.errors.map(error => `${error}`).join("\r\n");
+    throw new Error(errorMessage);
     console.error(errorMessage);
 }
 

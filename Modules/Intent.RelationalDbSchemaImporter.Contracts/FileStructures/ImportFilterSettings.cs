@@ -4,8 +4,17 @@ namespace Intent.RelationalDbSchemaImporter.Contracts.FileStructures;
 
 public class ImportFilterSettings
 {
+    public class FilterTypes
+    {
+        public const string Include = "include";
+        public const string Exclude = "exclude";
+    }
+
+    [JsonPropertyName("filter_type")]
+	public string FilterType { get; set; } = FilterTypes.Include;
+
 	[JsonPropertyName("schemas")]
-	public HashSet<string> Schemas { get; set; } = [];
+    public HashSet<string> Schemas { get; set; } = [];
 
 	[JsonPropertyName("include_tables")]
 	public List<ImportFilterTable> IncludeTables { get; set; } = [];

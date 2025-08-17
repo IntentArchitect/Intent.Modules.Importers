@@ -3,6 +3,9 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
+    "filter_type": {
+      "type": "string"
+    },
     "schemas": {
       "type": "array",
       "items": { "type": "string" },

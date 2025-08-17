@@ -52,9 +52,11 @@ internal class ImportFilterService
 	}
 
 	public bool ExportSchema(string schema)
-	{
-		var settings = GetImportFilterSettings();
-		return settings.Schemas.Count == 0 || settings.Schemas.Contains(schema);
+    {
+        return true;
+		// GCB - This doesn't seem to actually provide any value to the filtering...
+		//var settings = GetImportFilterSettings();
+		//return settings.FilterType == ImportFilterSettings.FilterTypes.Exclude || settings.Schemas.Contains(schema);
 	}
 
 	public bool ExportTable(string schema, string tableName)
@@ -70,7 +72,8 @@ internal class ImportFilterService
 			return false;
 		}
 		
-		return settings.IncludeTables.Any(x => x.Name == tableName || x.Name == $"{schema}.{tableName}");
+		return settings.FilterType == ImportFilterSettings.FilterTypes.Exclude || 
+               settings.IncludeTables.Any(x => x.Name == tableName || x.Name == $"{schema}.{tableName}");
 	}
 
 	public bool ExportView(string schema, string viewName)
@@ -86,7 +89,8 @@ internal class ImportFilterService
 			return false;
 		}
 		
-		return settings.IncludeViews.Any(x => x.Name == viewName || x.Name == $"{schema}.{viewName}");
+		return settings.FilterType == ImportFilterSettings.FilterTypes.Exclude || 
+               settings.IncludeViews.Any(x => x.Name == viewName || x.Name == $"{schema}.{viewName}");
 	}
 
 	public bool ExportStoredProcedure(string schema, string storedProcedureName)
@@ -102,8 +106,9 @@ internal class ImportFilterService
 			return false;
 		}
 
-		return settings.IncludeStoredProcedures.Contains(storedProcedureName) ||
-		       settings.IncludeStoredProcedures.Contains($"{schema}.{storedProcedureName}");
+		return settings.FilterType == ImportFilterSettings.FilterTypes.Exclude || 
+               settings.IncludeStoredProcedures.Contains(storedProcedureName) ||
+               settings.IncludeStoredProcedures.Contains($"{schema}.{storedProcedureName}");
 	}
 	
 	public bool ExportDependantTable(string schema, string tableName)
