@@ -14,7 +14,10 @@ class DatabaseImportStrategy {
 
         // Handle the save operation when dialog is closed with OK:
         let importModel = JSON.stringify(this.createImportModel(result));
-        launchHostedModuleTask("Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport", [importModel]);
+        launchHostedModuleTask("Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport", [importModel], {
+            taskName: "Database Import",
+            openWindow: true
+        });
     }
 
     private getDialogDefaults(element: MacroApi.Context.IElementApi): ISqlDatabaseImportPackageSettings {
@@ -392,7 +395,7 @@ class DatabaseImportStrategy {
             };
 
             const formConfig: MacroApi.Context.IDynamicFormWizardPageConfig = {
-                initialize: async (form) => {
+                onInitialize: async (form) => {
                     try {
                         const connectionString = form.getField("connectionString").value as string;
                         const databaseType = form.getField("databaseType").value as string;

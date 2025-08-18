@@ -106,7 +106,7 @@ declare namespace MacroApi.Context {
         /**
          * A function to run on initalizing this page.
          **/
-        initialize?: (form: IDynamicFormApi) => Promise<void>;
+        onInitialize?: (form: IDynamicFormApi) => Promise<void>;
         /**
          * Sets the primary button text. If not set, defaults to "Done" if this is the final page, and "Next" if there are subsequent pages.
          **/

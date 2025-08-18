@@ -45,7 +45,10 @@ class DatabaseImportStrategy {
         console.warn(JSON.stringify(result));
         // Handle the save operation when dialog is closed with OK:
         let importModel = JSON.stringify(this.createImportModel(result));
-        launchHostedModuleTask("Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport", [importModel]);
+        launchHostedModuleTask("Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport", [importModel], {
+            taskName: "Database Import",
+            openWindow: true
+        });
     }
     getDialogDefaults(element) {
         let domainPackage = element.getPackage();
@@ -402,7 +405,7 @@ class DatabaseImportStrategy {
             isRequired: false
         };
         const formConfig = {
-            initialize: async (form) => {
+            onInitialize: async (form) => {
                 var _a, _b, _c;
                 try {
                     const connectionString = form.getField("connectionString").value;
