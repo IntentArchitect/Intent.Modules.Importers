@@ -11,7 +11,7 @@ public class ImportFilterSettings
     }
 
     [JsonPropertyName("filter_type")]
-	public string FilterType { get; set; } = FilterTypes.Include;
+	public string FilterType { get; set; } = FilterTypes.Exclude;
 
 	[JsonPropertyName("schemas")]
     public HashSet<string> Schemas { get; set; } = [];
