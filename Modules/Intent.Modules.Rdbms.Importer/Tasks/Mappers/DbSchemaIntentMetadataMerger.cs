@@ -503,11 +503,24 @@ internal class DbSchemaIntentMetadataMerger
 
             foreach (var foreignKey in table.ForeignKeys)
             {
-                var association = IntentModelMapper.GetOrCreateAssociation(foreignKey, table, classElement, package);
-                if (association == null)
+                var associationResult = IntentModelMapper.GetOrCreateAssociation(foreignKey, table, classElement, package);
+                
+                switch (associationResult.Status)
                 {
-                    result.Warnings.Add($"Could not create association for foreign key '{foreignKey.Name}' in table '{table.Name}'.");
-                    continue;
+                    case AssociationCreationStatus.Success:
+                        // Association was created successfully, continue to apply FK stereotypes
+                        break;
+                        
+                    case AssociationCreationStatus.TargetClassNotFound:
+                        result.Warnings.Add($"Could not create association for foreign key '{foreignKey.Name}' in table '{table.Name}': {associationResult.Reason}");
+                        continue;
+                        
+                    case AssociationCreationStatus.DuplicateSkipped:
+                        result.Warnings.Add($"Skipped creating association for foreign key '{foreignKey.Name}' in table '{table.Name}': {associationResult.Reason}");
+                        continue;
+                        
+                    default:
+                        throw new InvalidOperationException("Unexpected association creation status: " + associationResult.Status);
                 }
 
                 foreach (var fkColumn in foreignKey.Columns)
@@ -524,7 +537,7 @@ internal class DbSchemaIntentMetadataMerger
                     var columnSchema = table.Columns.FirstOrDefault(c => c.Name == fkColumn.Name);
                     if (columnSchema != null)
                     {
-                        RdbmsSchemaAnnotator.ApplyForeignKey(columnSchema, attribute, association.TargetEnd?.Id);
+                        RdbmsSchemaAnnotator.ApplyForeignKey(columnSchema, attribute, associationResult.Association!.TargetEnd?.Id);
                     }
                 }
             }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
@@ -553,7 +554,16 @@ internal static class IntentModelMapper
     /// Gets or creates an association based on foreign key information
     /// Ported from original DatabaseSchemaToModelMapper.GetOrCreateAssociation
     /// </summary>
-    public static AssociationPersistable? GetOrCreateAssociation(ForeignKeySchema foreignKey, TableSchema sourceTable, ElementPersistable sourceClass, PackageModelPersistable package)
+    /// <param name="foreignKey">The foreign key to create an association for</param>
+    /// <param name="sourceTable">The source table schema</param>
+    /// <param name="sourceClass">The source class element</param>
+    /// <param name="package">The package to add the association to</param>
+    /// <returns>Status indicating the outcome of the association creation attempt</returns>
+    public static AssociationCreationResult GetOrCreateAssociation(
+        ForeignKeySchema foreignKey, 
+        TableSchema sourceTable, 
+        ElementPersistable sourceClass, 
+        PackageModelPersistable package)
     {
         var targetTableExternalRef = ModelNamingUtilities.GetTableExternalReference(foreignKey.ReferencedTableSchema, foreignKey.ReferencedTableName);
         var targetTableEntity = ModelNamingUtilities.GetEntityName(foreignKey.ReferencedTableName, EntityNameConvention.SingularEntity, foreignKey.ReferencedTableSchema, null);
@@ -568,7 +578,7 @@ internal static class IntentModelMapper
 
         if (targetClass == null)
         {
-            return null; // Target class not found, skip association creation
+            return AssociationCreationResult.TargetClassNotFound(foreignKey);
         }
 
         // Generate a target name based on foreign key column naming
@@ -601,9 +611,9 @@ internal static class IntentModelMapper
         var fkExternalRef = ModelNamingUtilities.GetForeignKeyExternalReference(sourceTable.Schema, sourceTable.Name, foreignKey.Name);
 
         // Check if the association already exists by foreign key external reference
-        var association = package.Associations?.FirstOrDefault(a => a.ExternalReference == fkExternalRef);
+        var existingAssociation = package.Associations?.FirstOrDefault(a => a.ExternalReference == fkExternalRef);
 
-        if (association == null)
+        if (existingAssociation == null)
         {
             // Determine if this is a one-to-one relationship (FK columns are all primary keys)
             var sourcePkColumns = sourceTable.Columns.Where(c => c.IsPrimaryKey).Select(c => c.Name).ToHashSet();
@@ -615,13 +625,23 @@ internal static class IntentModelMapper
             var isNullable = foreignKey.Columns.Any(fkCol => 
                 sourceTable.Columns.Any(col => col.Name == fkCol.Name && col.IsNullable));
 
-            // Avoid naming conflicts
+            // Avoid naming conflicts with source table name
             var finalTargetName = targetName.Equals(sourceTable.Name.Singularize(), StringComparison.OrdinalIgnoreCase) 
                 ? $"{targetName}Reference" 
                 : targetName;
 
+            // Check if an association with the same source and target already exists
+            var duplicateAssociation = package.Associations?.FirstOrDefault(a =>
+                a.SourceEnd.TypeReference?.TypeId == sourceClass.Id &&
+                a.TargetEnd.TypeReference?.TypeId == targetClass.Id);
+
+            if (duplicateAssociation != null)
+            {
+                return AssociationCreationResult.DuplicateSkipped(sourceClass, targetClass);
+            }
+
             var associationId = Guid.NewGuid().ToString();
-            association = new AssociationPersistable
+            var newAssociation = new AssociationPersistable
             {
                 Id = associationId,
                 ExternalReference = fkExternalRef,
@@ -658,14 +678,16 @@ internal static class IntentModelMapper
             };
 
             // Check for reverse ownership (manually modeled associations)
-            if (!SameAssociationExistsWithReverseOwnership(package.Associations?.ToList(), association))
+            if (!SameAssociationExistsWithReverseOwnership(package.Associations?.ToList(), newAssociation))
             {
                 package.Associations ??= new List<AssociationPersistable>();
-                package.Associations.Add(association);
+                package.Associations.Add(newAssociation);
             }
+            
+            return AssociationCreationResult.Success(newAssociation);
         }
-
-        return association;
+        
+        return AssociationCreationResult.Success(existingAssociation);
     }
     
     /// <summary>
