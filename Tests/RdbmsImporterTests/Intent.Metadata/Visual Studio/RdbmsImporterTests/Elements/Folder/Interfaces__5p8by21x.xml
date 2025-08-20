@@ -101,5 +101,20 @@
       </metadata>
       <childElements />
     </childElement>
+    <childElement id="e9766c55-6559-475d-9d78-76ee3bd1fa0f" type="Template Output" typeId="d421c322-7a51-4094-89fa-e5d8a0a97b27">
+      <name>Intent.Application.Identity.CurrentUserInterface</name>
+      <externalReference>Intent.Application.Identity</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <isMapped>false</isMapped>
+      <parentFolderId>3bee4552-c75f-4741-8ecb-72ac0b1bb5ef</parentFolderId>
+      <packageId>5d4ef18b-edf8-4bc4-86e0-5ada087f73d9</packageId>
+      <packageName>RdbmsImporterTests</packageName>
+      <stereotypes />
+      <metadata>
+        <entry key="status" value="assigned" />
+      </metadata>
+      <childElements />
+    </childElement>
   </childElements>
 </class>

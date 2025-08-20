@@ -196,6 +196,14 @@
     </FileLog>
     <FileLog>
       <ProjectId>3bee4552-c75f-4741-8ecb-72ac0b1bb5ef</ProjectId>
+      <CorrelationId>Intent.Application.Identity.CurrentUserInterface</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>RdbmsImporterTests.Application/Common/Interfaces/ICurrentUser.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>ICurrentUser.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>3bee4552-c75f-4741-8ecb-72ac0b1bb5ef</ProjectId>
       <CorrelationId>Intent.Application.Identity.CurrentUserServiceInterface</CorrelationId>
       <OverwriteBehaviour>always</OverwriteBehaviour>
       <ApplicationRelativeFilePath>RdbmsImporterTests.Application/Common/Interfaces/ICurrentUserService.cs</ApplicationRelativeFilePath>
@@ -1884,18 +1892,18 @@
     </FileLog>
     <FileLog>
       <ProjectId>55ad405c-f4dc-40f6-b3fe-3ba4c59fd293</ProjectId>
-      <CorrelationId>Intent.EntityFrameworkCore.DbMigrationsReadMe</CorrelationId>
-      <OverwriteBehaviour>always</OverwriteBehaviour>
-      <ApplicationRelativeFilePath>RdbmsImporterTests.Infrastructure/Persistence/MIGRATION_README.txt</ApplicationRelativeFilePath>
-      <ProjectRelativeFilePath>MIGRATION_README.txt</ProjectRelativeFilePath>
-      <IsIgnored>false</IsIgnored>
-    </FileLog>
-    <FileLog>
-      <ProjectId>55ad405c-f4dc-40f6-b3fe-3ba4c59fd293</ProjectId>
       <CorrelationId>Intent.EntityFrameworkCore.DbContext#PostgresApp</CorrelationId>
       <OverwriteBehaviour>always</OverwriteBehaviour>
       <ApplicationRelativeFilePath>RdbmsImporterTests.Infrastructure/Persistence/PostgresAppDbContext.cs</ApplicationRelativeFilePath>
       <ProjectRelativeFilePath>PostgresAppDbContext.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>55ad405c-f4dc-40f6-b3fe-3ba4c59fd293</ProjectId>
+      <CorrelationId>Intent.EntityFrameworkCore.DbMigrationsReadMe</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>RdbmsImporterTests.Infrastructure/Persistence/readme.md</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>readme.md</ProjectRelativeFilePath>
       <IsIgnored>false</IsIgnored>
     </FileLog>
     <FileLog>
