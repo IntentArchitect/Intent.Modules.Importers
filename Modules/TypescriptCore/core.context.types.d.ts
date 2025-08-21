@@ -138,15 +138,17 @@ declare namespace MacroApi.Context {
 
     interface IDynamicFormFieldConfig {
         id: string;
-        fieldType: "text" | "select" | "multi-select" | "checkbox" | "textarea" | "tree-view" | "tiles" | "open-file" | "button"
+        fieldType: "text" | "select" | "multi-select" | "checkbox" | "textarea" | "tree-view" | "tiles" | "open-file" | "button" | "alert"
         label: string;
         isRequired?: boolean;
         isHidden?: boolean;
         isDisabled?: boolean;
         placeholder?: string,
         hint?: string,
+        hintType?: "success" | "danger";
         value?: string | string[];
         errorMessage?: string;
+        columns?: number;
         selectOptions?: IDynamicFormFieldSelectOption[];
         treeViewOptions?: ISelectableTreeViewOptions;
         openFileOptions?: IDynamicFormOpenFileOptions

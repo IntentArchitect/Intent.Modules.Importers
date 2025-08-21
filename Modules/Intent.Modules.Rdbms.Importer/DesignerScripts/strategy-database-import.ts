@@ -117,10 +117,11 @@ class DatabaseImportStrategy {
 
                                 if ((executionResult.errors ?? []).length > 0) {
                                     form.getField("connectionStringTest").hint = "Failed to connect.";
+                                    form.getField("connectionStringTest").hintType = "danger";
                                     await displayExecutionResultErrors(executionResult);
                                 } else {
                                     form.getField("connectionStringTest").hint = "Connection established successfully.";
-                                    await dialogService.info("Connection established successfully.");
+                                    form.getField("connectionStringTest").hintType = "success";
                                 }
                             }
                         },
