@@ -503,7 +503,7 @@ internal class DbSchemaIntentMetadataMerger
 
             foreach (var foreignKey in table.ForeignKeys)
             {
-                var associationResult = IntentModelMapper.GetOrCreateAssociation(foreignKey, table, classElement, package);
+                var associationResult = IntentModelMapper.GetOrCreateAssociation(foreignKey, table, classElement, package, databaseSchema);
                 
                 switch (associationResult.Status)
                 {
@@ -517,6 +517,10 @@ internal class DbSchemaIntentMetadataMerger
                         
                     case AssociationCreationStatus.DuplicateSkipped:
                         result.Warnings.Add($"Skipped creating association for foreign key '{foreignKey.Name}' in table '{table.Name}': {associationResult.Reason}");
+                        continue;
+                        
+                    case AssociationCreationStatus.UnsupportedForeignKey:
+                        result.Warnings.Add($"Foreign key '{foreignKey.Name}' in table '{table.Name}' is not supported for association creation: {associationResult.Reason}");
                         continue;
                         
                     default:
@@ -782,28 +786,6 @@ internal class DbSchemaIntentMetadataMerger
     {
         RdbmsSchemaAnnotator.AddSchemaStereotype(folder, schemaName);
     }
-
-    /// <summary>
-    /// Applies stereotypes to index elements after sync
-    /// </summary>
-    // private static void ApplyIndexStereotypes(TableSchema table, IndexSchema index, ElementPersistable indexElement)
-    // {
-    //     RdbmsSchemaAnnotator.ApplyIndexStereotype(indexElement, index);
-    //
-    //     // Apply stereotypes to index columns
-    //     foreach (var indexColumn in index.Columns)
-    //     {
-    //         var indexColumnExternalRef = ModelNamingUtilities.GetIndexColumnExternalReference(indexColumn.Name);
-    //         var existingIndexColumn = indexElement.ChildElements?.FirstOrDefault(elem =>
-    //             elem.ExternalReference == indexColumnExternalRef && 
-    //             elem.SpecializationType == Constants.SpecializationTypes.IndexColumn.SpecializationType);
-    //
-    //         if (existingIndexColumn != null)
-    //         {
-    //             RdbmsSchemaAnnotator.ApplyIndexColumnStereotype(existingIndexColumn, indexColumn);
-    //         }
-    //     }
-    // }
 
     /// <summary>
     /// Converts ResultSetColumnSchema to ColumnSchema for stereotype application

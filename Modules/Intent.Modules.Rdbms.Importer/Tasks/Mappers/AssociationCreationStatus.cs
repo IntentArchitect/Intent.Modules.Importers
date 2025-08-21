@@ -18,5 +18,10 @@ public enum AssociationCreationStatus
     /// <summary>
     /// Association already exists and duplicate was skipped
     /// </summary>
-    DuplicateSkipped
+    DuplicateSkipped,
+
+    /// <summary>
+    /// Foreign key structure is not supported for association creation
+    /// </summary>
+    UnsupportedForeignKey
 }

@@ -49,4 +49,10 @@ public class AssociationCreationResult
     /// </summary>
     public static AssociationCreationResult DuplicateSkipped(ElementPersistable sourceClass, ElementPersistable targetClass)
         => new(AssociationCreationStatus.DuplicateSkipped, reason: $"Association from '{sourceClass.Name}' to '{targetClass.Name}' already exists");
+
+    /// <summary>
+    /// Creates a result indicating the foreign key structure is not supported for association creation
+    /// </summary>
+    public static AssociationCreationResult UnsupportedForeignKey(ForeignKeySchema foreignKey, string reason)
+        => new(AssociationCreationStatus.UnsupportedForeignKey, reason: $"Foreign key '{foreignKey.Name}' on table '{foreignKey.TableName}' is not supported: {reason}");
 }

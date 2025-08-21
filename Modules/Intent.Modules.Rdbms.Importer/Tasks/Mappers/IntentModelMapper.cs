@@ -558,12 +558,14 @@ internal static class IntentModelMapper
     /// <param name="sourceTable">The source table schema</param>
     /// <param name="sourceClass">The source class element</param>
     /// <param name="package">The package to add the association to</param>
+    /// <param name="databaseSchema">The complete database schema for validation</param>
     /// <returns>Status indicating the outcome of the association creation attempt</returns>
     public static AssociationCreationResult GetOrCreateAssociation(
         ForeignKeySchema foreignKey, 
         TableSchema sourceTable, 
         ElementPersistable sourceClass, 
-        PackageModelPersistable package)
+        PackageModelPersistable package,
+        DatabaseSchema databaseSchema)
     {
         var targetTableExternalRef = ModelNamingUtilities.GetTableExternalReference(foreignKey.ReferencedTableSchema, foreignKey.ReferencedTableName);
         var targetTableEntity = ModelNamingUtilities.GetEntityName(foreignKey.ReferencedTableName, EntityNameConvention.SingularEntity, foreignKey.ReferencedTableSchema, null);
@@ -579,6 +581,13 @@ internal static class IntentModelMapper
         if (targetClass == null)
         {
             return AssociationCreationResult.TargetClassNotFound(foreignKey);
+        }
+
+        // Validate foreign key structure for association support
+        var validationResult = ValidateForeignKeyForAssociation(foreignKey, sourceTable, databaseSchema);
+        if (validationResult != null)
+        {
+            return validationResult;
         }
 
         // Generate a target name based on foreign key column naming
@@ -957,5 +966,68 @@ internal static class IntentModelMapper
         };
         
         return triggerElement;
+    }
+
+    /// <summary>
+    /// Validates whether a foreign key structure is supported for association creation
+    /// </summary>
+    /// <param name="foreignKey">The foreign key to validate</param>
+    /// <param name="sourceTable">The source table containing the foreign key</param>
+    /// <param name="databaseSchema">The complete database schema for validation</param>
+    /// <returns>AssociationCreationResult with error details if validation fails, null if validation passes</returns>
+    private static AssociationCreationResult? ValidateForeignKeyForAssociation(
+        ForeignKeySchema foreignKey, 
+        TableSchema sourceTable, 
+        DatabaseSchema databaseSchema)
+    {
+        // Find the referenced table from the database schema
+        var referencedTable = databaseSchema.Tables.FirstOrDefault(t => 
+            string.Equals(t.Name, foreignKey.ReferencedTableName, StringComparison.OrdinalIgnoreCase));
+
+        if (referencedTable == null)
+        {
+            return AssociationCreationResult.UnsupportedForeignKey(foreignKey, 
+                "Referenced table not found in database schema");
+        }
+
+        // Get primary key columns of the referenced table
+        var referencedTablePrimaryKeys = referencedTable.Columns
+            .Where(c => c.IsPrimaryKey)
+            .Select(c => c.Name)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        if (referencedTablePrimaryKeys.Count == 0)
+        {
+            return AssociationCreationResult.UnsupportedForeignKey(foreignKey,
+                "Referenced table has no primary key defined");
+        }
+
+        // Check if foreign key references all and only the primary key columns
+        var foreignKeyReferencedColumns = foreignKey.Columns
+            .Select(c => c.ReferencedColumnName)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        
+        if (!foreignKeyReferencedColumns.SetEquals(referencedTablePrimaryKeys))
+        {
+            return AssociationCreationResult.UnsupportedForeignKey(foreignKey,
+                $"Foreign key references non-primary key columns. " +
+                $"FK references: [{string.Join(", ", foreignKey.Columns.Select(c => c.ReferencedColumnName))}], " +
+                $"PK columns: [{string.Join(", ", referencedTablePrimaryKeys)}]");
+        }
+
+        // If we reach here, the foreign key is valid for association creation
+        return null;
+    }
+
+    /// <summary>
+    /// Finds the referenced table schema from the current database schema being imported
+    /// </summary>
+    private static TableSchema? FindReferencedTable(ForeignKeySchema foreignKey, PackageModelPersistable package)
+    {
+        // We need to find the referenced table in the current import context
+        // Since we don't have direct access to the DatabaseSchema here, we'll need to pass it
+        // For now, we'll implement a more lenient validation that focuses on multi-column FKs
+        // TODO: Enhance this when we have access to the full database schema context
+        return null;
     }
 }
