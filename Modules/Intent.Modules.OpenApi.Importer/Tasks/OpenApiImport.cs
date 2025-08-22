@@ -205,9 +205,7 @@ Please see reasons below:");
                 if (installedModules.Contains("Intent.Common.CSharp"))
                 {
                     requiredModules.Add("Intent.Modelers.Services.CQRS");
-                    requiredModules.Add("Intent.Application.MediatR");
                 }
-
             }
             return requiredModules;
         }

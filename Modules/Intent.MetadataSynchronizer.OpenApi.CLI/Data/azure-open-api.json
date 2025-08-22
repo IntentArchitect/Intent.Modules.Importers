@@ -83,7 +83,7 @@
                 }
             }
         },
-        "/customers/{customerid}/orders": {
+        "/customers/{customerId}/orders": {
             "post": {
                 "tags": [
                     "Customers"
@@ -289,7 +289,7 @@
                 }
             }
         },
-        "/customers/{customerid}/orders/{id}": {
+        "/customers/{customerId}/orders/{id}": {
             "delete": {
                 "tags": [
                     "Customers"

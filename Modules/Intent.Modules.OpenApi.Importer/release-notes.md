@@ -1,3 +1,7 @@
+### Version 1.1.7
+
+- Improvement: Removed dependency on MediatR
+
 ### Version 1.1.6
 
 - Fixed: Documentation URLs.
