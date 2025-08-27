@@ -51,3 +51,8 @@ The dialog can remember your configuration for the next time you want to run it.
 
 - `(None)`,  settings will not be persisted and remembered. Previously saved configuration will be deleted.
 - `All`, All settings will be persisted.
+
+## Importer Usage
+
+[This article](
+https://docs.intentarchitect.com/articles/application-development/modelling/services-designer/invoking-http-endpoints/invoking-http-endpoints.html#service-proxy-for-a-3rd-party-service) describes how to import and model a 3rd party service, and how it can be invoked from within your application.
