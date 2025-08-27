@@ -16,7 +16,11 @@ Selecting this option will provide you with the following dialog:
 
 #### OpenApiFile
 
-File path to the OpenApi document to import. Note this document needs to be at least version 3.x, if you are working with an older version document you can potentially use tools like `https://editor.swagger.io/` to upgrade older format files to the new standard.
+File path to the OpenApi document to import. This can be a path to the document stored locally (e.g. `C:\Dev\swagger-sample.json`) OR a URL to the document (e.g. `https://petstore.swagger.io/v2/swagger.json`)
+
+> [!NOTE]
+>
+> This document needs to be at least version 3.x, if you are working with an older version document you can potentially use tools like `https://editor.swagger.io/` to upgrade older format files to the new standard.
 
 The importer allows for `"` around the file name, these are not required. The Windows `Copy as Path` feature puts `"` around the file name so we support this for ease of use.
 
