@@ -76,185 +76,17 @@ internal static class ModelNamingUtilities
         normalized=ToCSharpIdentifier(normalized);
         return normalized.ToCamelCase();
     }
-
-    /// <summary>
-    /// Converts database identifier to valid C# identifier following C# naming conventions
-    /// </summary>
-    /// <param name="identifier">The database identifier to convert</param>
-    /// <param name="prefixValue">Optional prefix to add if the identifier starts with a digit or is a reserved word</param>
-    /// <returns>A valid C# identifier</returns>
-    public static string ToCSharpIdentifier(string? identifier, string? prefixValue = "Db")
-    {
-        if (string.IsNullOrWhiteSpace(identifier))
-        {
-            return string.Empty;
-        }
-
-        // https://docs.microsoft.com/dotnet/csharp/fundamentals/coding-style/identifier-names
-        // - Identifiers must start with a letter, or _.
-        // - Identifiers may contain Unicode letter characters, decimal digit characters,
-        //   Unicode connecting characters, Unicode combining characters, or Unicode formatting
-        //   characters. For more information on Unicode categories, see the Unicode Category
-        //   Database. You can declare identifiers that match C# keywords by using the @ prefix
-        //   on the identifier. The @ is not part of the identifier name. For example, @if
-        //   declares an identifier named if. These verbatim identifiers are primarily for
-        //   interoperability with identifiers declared in other languages.
-        
-        identifier = identifier
-            .Replace("#", "Sharp")
-            .Replace("&", "And");
-
-        var asCharArray = identifier.ToCharArray();
-        for (var i = 0; i < asCharArray.Length; i++)
-        {
-            // Underscore character conversion to space for processing
-            if (asCharArray[i] == '_')
-            {
-                asCharArray[i] = ' ';
-                continue;
-            }
-
-            switch (char.GetUnicodeCategory(asCharArray[i]))
-            {
-                case UnicodeCategory.DecimalDigitNumber:
-                case UnicodeCategory.LetterNumber:
-                case UnicodeCategory.LowercaseLetter:
-                case UnicodeCategory.ModifierLetter:
-                case UnicodeCategory.OtherLetter:
-                case UnicodeCategory.TitlecaseLetter:
-                case UnicodeCategory.UppercaseLetter:
-                case UnicodeCategory.Format:
-                    break;
-                case UnicodeCategory.ClosePunctuation:
-                case UnicodeCategory.ConnectorPunctuation:
-                case UnicodeCategory.Control:
-                case UnicodeCategory.CurrencySymbol:
-                case UnicodeCategory.DashPunctuation:
-                case UnicodeCategory.EnclosingMark:
-                case UnicodeCategory.FinalQuotePunctuation:
-                case UnicodeCategory.InitialQuotePunctuation:
-                case UnicodeCategory.LineSeparator:
-                case UnicodeCategory.MathSymbol:
-                case UnicodeCategory.ModifierSymbol:
-                case UnicodeCategory.NonSpacingMark:
-                case UnicodeCategory.OpenPunctuation:
-                case UnicodeCategory.OtherNotAssigned:
-                case UnicodeCategory.OtherNumber:
-                case UnicodeCategory.OtherPunctuation:
-                case UnicodeCategory.OtherSymbol:
-                case UnicodeCategory.ParagraphSeparator:
-                case UnicodeCategory.PrivateUse:
-                case UnicodeCategory.SpaceSeparator:
-                case UnicodeCategory.SpacingCombiningMark:
-                case UnicodeCategory.Surrogate:
-                    asCharArray[i] = ' ';
-                    break;
-                default:
-                    asCharArray[i] = ' ';
-                    break;
-            }
-        }
-
-        identifier = new string(asCharArray);
-
-        // Replace double spaces
-        while (identifier.Contains("  "))
-        {
-            identifier = identifier.Replace("  ", " ");
-        }
-
-        // Convert to PascalCase
-        identifier = string.Concat(identifier
-            .Split(' ')
-            .Where(element => !string.IsNullOrWhiteSpace(element))
-            .Select((element, index) => index == 0
-                ? element
-                : element.ToPascalCase()));
-
-        // Ensure identifier starts with letter
-        if (char.IsNumber(identifier[0]))
-        {
-            identifier = $"{prefixValue}{identifier}";
-        }
-
-        // Handle reserved words
-        if (ReservedWords.Contains(identifier))
-        {
-            identifier = $"{prefixValue}{identifier}";
-        }
-
-        return identifier;
-    }
-
-    public static string NormalizeTableName(string tableName)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(tableName);
-        var normalized = tableName.RemovePrefix("tbl");
-        normalized = ToCSharpIdentifier(normalized, "Db");
-        normalized = normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
-        return normalized;
-    }
-
-    public static string NormalizeColumnName(string colName, string? tableOrViewName)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(colName);
-        var normalized = colName != tableOrViewName ? colName : colName + "Value";
-        normalized = ToCSharpIdentifier(normalized, "db");
-        normalized = normalized.RemovePrefix("pk");
-
-        // We need to be careful with the "col" prefix since a name could start with:
-        // column, collection, color, etc.
-        // So what we can do is check if the letter after "col" is a capital letter or a non-letter character.
-        if (normalized.StartsWith("col") && 
-            (normalized.Length < 4 || !char.IsLetter(normalized[3]) || char.IsUpper(normalized[3])))
-        {
-            normalized = normalized.RemovePrefix("col");
-        }
-        
-        normalized = normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
-
-        if (normalized.EndsWith("ID"))
-        {
-            normalized = normalized.RemoveSuffix("ID") + "Id";
-        }
-
-        return normalized;
-    }
-
-    public static string NormalizeStoredProcName(string storeProcName)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(storeProcName);
-        var normalized = ToCSharpIdentifier(storeProcName);
-        normalized = normalized.RemovePrefix("prc")
-            .RemovePrefix("Prc");
-        // We need to be careful with the "proc" prefix since a name could start with:
-        // procedure, procurement, process, etc.
-        // So what we can do is check if the letter after "proc" is a capital letter or a non-letter character.
-        if (normalized.StartsWith("proc") &&
-            (normalized.Length < 5 || !char.IsLetter(normalized[4]) || char.IsUpper(normalized[4])))
-        {
-            normalized = normalized.RemovePrefix("proc");
-        }
-
-        normalized = normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
-        return normalized;
-    }
-
-    public static string NormalizeSchemaName(string schemaName)
+    
+    public static string GetFolderName(string schemaName)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(schemaName);
-        var normalized = schemaName;
-        return normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
+        return NormalizeSchemaName(schemaName);
     }
     
-    /// <summary>
-    /// Generates name for UserDefinedTable DataContract
-    /// </summary>
-    public static string NormalizeUserDefinedTableName(string udtName)
+    public static string GetDataContractName(string udtTableName)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(udtName);
-        var normalized = udtName;
-        return normalized.Substring(0, 1).ToUpper() + normalized.Substring(1) + "Model";
+        ArgumentException.ThrowIfNullOrWhiteSpace(udtTableName);
+        return NormalizeUserDefinedTableName(udtTableName);
     }
 
     /// <summary>
@@ -385,5 +217,183 @@ internal static class ModelNamingUtilities
     public static string GetStoredProcedureRepositoryExternalReference()
     {
         return "StoredProcedureRepository";
+    }
+    
+    /// <summary>
+    /// Converts database identifier to valid C# identifier following C# naming conventions
+    /// </summary>
+    /// <param name="identifier">The database identifier to convert</param>
+    /// <param name="prefixValue">Optional prefix to add if the identifier starts with a digit or is a reserved word</param>
+    /// <returns>A valid C# identifier</returns>
+    private static string ToCSharpIdentifier(string? identifier, string? prefixValue = "Db")
+    {
+        if (string.IsNullOrWhiteSpace(identifier))
+        {
+            return string.Empty;
+        }
+
+        // https://docs.microsoft.com/dotnet/csharp/fundamentals/coding-style/identifier-names
+        // - Identifiers must start with a letter, or _.
+        // - Identifiers may contain Unicode letter characters, decimal digit characters,
+        //   Unicode connecting characters, Unicode combining characters, or Unicode formatting
+        //   characters. For more information on Unicode categories, see the Unicode Category
+        //   Database. You can declare identifiers that match C# keywords by using the @ prefix
+        //   on the identifier. The @ is not part of the identifier name. For example, @if
+        //   declares an identifier named if. These verbatim identifiers are primarily for
+        //   interoperability with identifiers declared in other languages.
+        
+        identifier = identifier
+            .Replace("#", "Sharp")
+            .Replace("&", "And");
+
+        var asCharArray = identifier.ToCharArray();
+        for (var i = 0; i < asCharArray.Length; i++)
+        {
+            // Underscore character conversion to space for processing
+            if (asCharArray[i] == '_')
+            {
+                asCharArray[i] = ' ';
+                continue;
+            }
+
+            switch (char.GetUnicodeCategory(asCharArray[i]))
+            {
+                case UnicodeCategory.DecimalDigitNumber:
+                case UnicodeCategory.LetterNumber:
+                case UnicodeCategory.LowercaseLetter:
+                case UnicodeCategory.ModifierLetter:
+                case UnicodeCategory.OtherLetter:
+                case UnicodeCategory.TitlecaseLetter:
+                case UnicodeCategory.UppercaseLetter:
+                case UnicodeCategory.Format:
+                    break;
+                case UnicodeCategory.ClosePunctuation:
+                case UnicodeCategory.ConnectorPunctuation:
+                case UnicodeCategory.Control:
+                case UnicodeCategory.CurrencySymbol:
+                case UnicodeCategory.DashPunctuation:
+                case UnicodeCategory.EnclosingMark:
+                case UnicodeCategory.FinalQuotePunctuation:
+                case UnicodeCategory.InitialQuotePunctuation:
+                case UnicodeCategory.LineSeparator:
+                case UnicodeCategory.MathSymbol:
+                case UnicodeCategory.ModifierSymbol:
+                case UnicodeCategory.NonSpacingMark:
+                case UnicodeCategory.OpenPunctuation:
+                case UnicodeCategory.OtherNotAssigned:
+                case UnicodeCategory.OtherNumber:
+                case UnicodeCategory.OtherPunctuation:
+                case UnicodeCategory.OtherSymbol:
+                case UnicodeCategory.ParagraphSeparator:
+                case UnicodeCategory.PrivateUse:
+                case UnicodeCategory.SpaceSeparator:
+                case UnicodeCategory.SpacingCombiningMark:
+                case UnicodeCategory.Surrogate:
+                default:
+                    asCharArray[i] = ' ';
+                    break;
+            }
+        }
+
+        identifier = new string(asCharArray);
+
+        // Replace double spaces
+        while (identifier.Contains("  "))
+        {
+            identifier = identifier.Replace("  ", " ");
+        }
+
+        // Convert to PascalCase
+        identifier = string.Concat(identifier
+            .Split(' ')
+            .Where(element => !string.IsNullOrWhiteSpace(element))
+            .Select((element, index) => index == 0
+                ? element
+                : element.ToPascalCase()));
+
+        // Ensure identifier starts with letter
+        if (char.IsNumber(identifier[0]))
+        {
+            identifier = $"{prefixValue}{identifier}";
+        }
+
+        // Handle reserved words
+        if (ReservedWords.Contains(identifier))
+        {
+            identifier = $"{prefixValue}{identifier}";
+        }
+
+        return identifier;
+    }
+
+    private static string NormalizeTableName(string tableName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(tableName);
+        var normalized = tableName.RemovePrefix("tbl");
+        normalized = ToCSharpIdentifier(normalized, "Db");
+        normalized = normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
+        return normalized;
+    }
+
+    private static string NormalizeColumnName(string colName, string? tableOrViewName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(colName);
+        var normalized = colName != tableOrViewName ? colName : colName + "Value";
+        normalized = ToCSharpIdentifier(normalized, "db");
+        normalized = normalized.RemovePrefix("pk");
+
+        // We need to be careful with the "col" prefix since a name could start with:
+        // column, collection, color, etc.
+        // So what we can do is check if the letter after "col" is a capital letter or a non-letter character.
+        if (normalized.StartsWith("col") && 
+            (normalized.Length < 4 || !char.IsLetter(normalized[3]) || char.IsUpper(normalized[3])))
+        {
+            normalized = normalized.RemovePrefix("col");
+        }
+        
+        normalized = normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
+
+        if (normalized.EndsWith("ID"))
+        {
+            normalized = normalized.RemoveSuffix("ID") + "Id";
+        }
+
+        return normalized;
+    }
+
+    private static string NormalizeStoredProcName(string storeProcName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(storeProcName);
+        var normalized = ToCSharpIdentifier(storeProcName);
+        normalized = normalized.RemovePrefix("prc")
+            .RemovePrefix("Prc");
+        // We need to be careful with the "proc" prefix since a name could start with:
+        // procedure, procurement, process, etc.
+        // So what we can do is check if the letter after "proc" is a capital letter or a non-letter character.
+        if (normalized.StartsWith("proc") &&
+            (normalized.Length < 5 || !char.IsLetter(normalized[4]) || char.IsUpper(normalized[4])))
+        {
+            normalized = normalized.RemovePrefix("proc");
+        }
+
+        normalized = normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
+        return normalized;
+    }
+
+    private static string NormalizeSchemaName(string schemaName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schemaName);
+        var normalized = schemaName;
+        return normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
+    }
+    
+    /// <summary>
+    /// Generates name for UserDefinedTable DataContract
+    /// </summary>
+    private static string NormalizeUserDefinedTableName(string udtName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(udtName);
+        var normalized = udtName;
+        return normalized.Substring(0, 1).ToUpper() + normalized.Substring(1) + "Model";
     }
 } 

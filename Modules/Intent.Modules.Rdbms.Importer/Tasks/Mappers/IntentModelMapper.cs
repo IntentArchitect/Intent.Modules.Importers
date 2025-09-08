@@ -356,7 +356,7 @@ internal static class IntentModelMapper
     /// Creates a data contract for stored procedure result set
     /// Following the pattern from old DatabaseSchemaToModelMapper.GetOrCreateDataContractResponse
     /// </summary>
-    public static ElementPersistable CreateDataContractForStoredProcedure(StoredProcedureSchema storedProc, string schemaFolderId, string storedProcElementName, PackageModelPersistable package)
+    public static ElementPersistable CreateDataContractForStoredProcedure(StoredProcedureSchema storedProc, string schemaFolderId, string storedProcElementName, PackageModelPersistable package, DeduplicationContext? deduplicationContext)
     {
         var dataContractName = $"{storedProcElementName}Response";
         
@@ -380,28 +380,10 @@ internal static class IntentModelMapper
             ChildElements = []
         };
 
-        // Track used column names for deduplication
-        var usedColumnNames = new Dictionary<string, int>();
-
         // Handle result set columns
         foreach (var resultColumn in storedProc.ResultSetColumns)
         {
-            // Get the normalized column name
-            var normalizedName = ModelNamingUtilities.NormalizeColumnName(resultColumn.Name, null);
-            
-            // Handle duplicate names by appending a counter
-            string uniqueName = normalizedName;
-            if (usedColumnNames.ContainsKey(normalizedName))
-            {
-                usedColumnNames[normalizedName]++;
-                uniqueName = $"{normalizedName}{usedColumnNames[normalizedName]}";
-            }
-            else
-            {
-                usedColumnNames[normalizedName] = 1;
-            }
-
-            var attribute = MapResultSetColumnToAttribute(resultColumn, dataContract.Id, storedProc.Name, storedProc.Schema, uniqueName);
+            var attribute = MapResultSetColumnToAttribute(resultColumn, dataContract.Id, storedProc.Name, storedProc.Schema, resultColumn.Name, deduplicationContext);
             dataContract.ChildElements.Add(attribute);
 
             // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
@@ -414,9 +396,13 @@ internal static class IntentModelMapper
     /// Creates a data contract for UserDefinedTable type
     /// Follows a similar pattern to CreateDataContractForStoredProcedure but for UDT columns
     /// </summary>
-    public static ElementPersistable CreateDataContractForUserDefinedTable(UserDefinedTableTypeSchema udtSchema, string schemaFolderId, PackageModelPersistable package)
+    public static ElementPersistable CreateDataContractForUserDefinedTable(
+        UserDefinedTableTypeSchema udtSchema, 
+        string schemaFolderId, 
+        PackageModelPersistable package, 
+        DeduplicationContext? deduplicationContext)
     {
-        var dataContractName = ModelNamingUtilities.NormalizeUserDefinedTableName(udtSchema.Name);
+        var dataContractName = ModelNamingUtilities.GetDataContractName(udtSchema.Name);
         
         var dataContract = new ElementPersistable
         {
@@ -441,7 +427,7 @@ internal static class IntentModelMapper
         // Map UDT columns to attributes
         foreach (var column in udtSchema.Columns)
         {
-            var attribute = MapUserDefinedTableColumnToAttribute(column, dataContract.Id, udtSchema.Name, udtSchema.Schema);
+            var attribute = MapUserDefinedTableColumnToAttribute(column, dataContract.Id, udtSchema.Name, udtSchema.Schema, column.Name, deduplicationContext);
             dataContract.ChildElements.Add(attribute);
 
             // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
@@ -704,7 +690,7 @@ internal static class IntentModelMapper
     /// </summary>
     public static ElementPersistable CreateSchemaFolder(string schemaName, PackageModelPersistable package)
     {
-        var folderSchemaName = ModelNamingUtilities.NormalizeSchemaName(schemaName);
+        var folderSchemaName = ModelNamingUtilities.GetFolderName(schemaName);
         var folder = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
@@ -843,9 +829,9 @@ internal static class IntentModelMapper
     /// <summary>
     /// Maps a result set column to an attribute element
     /// </summary>
-    private static ElementPersistable MapResultSetColumnToAttribute(ResultSetColumnSchema resultColumn, string dataContractId, string procName, string schema, string? uniqueName)
+    private static ElementPersistable MapResultSetColumnToAttribute(ResultSetColumnSchema resultColumn, string dataContractId, string procName, string schema, string resultColumnName, DeduplicationContext? deduplicationContext)
     {
-        var attributeName = uniqueName ?? ModelNamingUtilities.NormalizeColumnName(resultColumn.Name, null); // Use the unique name for the attribute
+        var attributeName = ModelNamingUtilities.GetAttributeName(resultColumnName, null, procName, schema, deduplicationContext);
         
         return new ElementPersistable
         {
@@ -868,9 +854,9 @@ internal static class IntentModelMapper
     /// <summary>
     /// Maps a UserDefinedTable ColumnSchema to an attribute element
     /// </summary>
-    private static ElementPersistable MapUserDefinedTableColumnToAttribute(ColumnSchema column, string dataContractId, string udtName, string schema)
+    private static ElementPersistable MapUserDefinedTableColumnToAttribute(ColumnSchema column, string dataContractId, string udtName, string schema, string columnName, DeduplicationContext? deduplicationContext)
     {
-        var attributeName = ModelNamingUtilities.NormalizeColumnName(column.Name, null); // No table name for UDT columns
+        var attributeName = ModelNamingUtilities.GetAttributeName(columnName, null, udtName, schema, deduplicationContext);
         
         return new ElementPersistable
         {
@@ -887,28 +873,6 @@ internal static class IntentModelMapper
             Stereotypes = [],
             Metadata = [],
             ChildElements = []
-        };
-    }
-
-    /// <summary>
-    /// Converts ResultSetColumnSchema to ColumnSchema for stereotype application
-    /// This allows reuse of existing stereotype logic
-    /// </summary>
-    private static ColumnSchema ConvertToColumnSchema(ResultSetColumnSchema resultColumn)
-    {
-        return new ColumnSchema
-        {
-            Name = resultColumn.Name,
-            LanguageDataType = resultColumn.LanguageDataType,
-            DbDataType = resultColumn.DbDataType,
-            IsNullable = resultColumn.IsNullable,
-            MaxLength = resultColumn.MaxLength,
-            NumericPrecision = resultColumn.NumericPrecision,
-            NumericScale = resultColumn.NumericScale,
-            IsPrimaryKey = false, // Result set columns are never primary keys
-            IsIdentity = false,   // Result set columns are never identity
-            DefaultConstraint = null, // Result set columns don't have defaults
-            ComputedColumn = null     // Result set columns aren't computed
         };
     }
     
@@ -1016,18 +980,6 @@ internal static class IntentModelMapper
         }
 
         // If we reach here, the foreign key is valid for association creation
-        return null;
-    }
-
-    /// <summary>
-    /// Finds the referenced table schema from the current database schema being imported
-    /// </summary>
-    private static TableSchema? FindReferencedTable(ForeignKeySchema foreignKey, PackageModelPersistable package)
-    {
-        // We need to find the referenced table in the current import context
-        // Since we don't have direct access to the DatabaseSchema here, we'll need to pass it
-        // For now, we'll implement a more lenient validation that focuses on multi-column FKs
-        // TODO: Enhance this when we have access to the full database schema context
         return null;
     }
 }

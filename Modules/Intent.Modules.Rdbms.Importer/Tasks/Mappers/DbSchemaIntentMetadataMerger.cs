@@ -432,7 +432,7 @@ internal class DbSchemaIntentMetadataMerger
 
         // Check if folder already exists in package
         var folder = package.Classes.FirstOrDefault(c =>
-            c.Name == ModelNamingUtilities.NormalizeSchemaName(schemaName) &&
+            c.Name == ModelNamingUtilities.GetFolderName(schemaName) &&
             c.SpecializationType == Constants.SpecializationTypes.Folder.SpecializationType);
 
         if (folder == null)
@@ -579,14 +579,14 @@ internal class DbSchemaIntentMetadataMerger
             if (existingDataContract != null)
             {
                 // Update existing data contract
-                dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package);
+                dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package, deduplicationContext);
                 SyncElements(package, existingDataContract, dataContract);
                 dataContract = existingDataContract; // Use the existing data contract for TypeReference
             }
             else
             {
                 // Create new data contract
-                dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package);
+                dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package, deduplicationContext);
                 package.Classes.Add(dataContract);
             }
             
@@ -639,7 +639,7 @@ internal class DbSchemaIntentMetadataMerger
             var udtSchema = kvp.Value;
 
             // Use unified lookup helper with 3-level precedence
-            var dataContractName = ModelNamingUtilities.NormalizeUserDefinedTableName(udtSchema.Name);
+            var dataContractName = ModelNamingUtilities.GetDataContractName(udtSchema.Name);
 
             var existingDataContract = IntentModelMapper.FindElementWithPrecedence(
                 package.Classes,
@@ -653,7 +653,7 @@ internal class DbSchemaIntentMetadataMerger
             {
                 // Update existing DataContract
                 var schemaFolder = GetOrCreateSchemaFolder(udtSchema.Schema, package);
-                dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, package);
+                dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, package, deduplicationContext);
                 SyncElements(package, existingDataContract, dataContract);
                 dataContract = existingDataContract; // Use existing for mapping
             }
@@ -661,7 +661,7 @@ internal class DbSchemaIntentMetadataMerger
             {
                 // Create new DataContract
                 var schemaFolder = GetOrCreateSchemaFolder(udtSchema.Schema, package);
-                dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, package);
+                dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, package, deduplicationContext);
                 package.Classes.Add(dataContract);
             }
             
