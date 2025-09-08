@@ -22,6 +22,7 @@ internal static class SettingsHelper
         if (importModel.SettingPersistence != DatabaseSettingPersistence.None)
         {
             package.AddMetadata("rdbms-import:entityNameConvention", importModel.EntityNameConvention);
+            package.AddMetadata("rdbms-import:attributeNameConvention", importModel.AttributeNameConvention);
             package.AddMetadata("rdbms-import:tableStereotypes", importModel.TableStereotype);
             package.AddMetadata("rdbms-import:typesToExport", importModel.TypesToExport.Any() ? string.Join(";", importModel.TypesToExport.Select(t => t.ToString())) : "");
             package.AddMetadata("rdbms-import:importFilterFilePath", importModel.ImportFilterFilePath);
@@ -33,6 +34,7 @@ internal static class SettingsHelper
         else
         {
             package.RemoveMetadata("rdbms-import:entityNameConvention");
+            package.RemoveMetadata("rdbms-import:attributeNameConvention");
             package.RemoveMetadata("rdbms-import:tableStereotypes");
             package.RemoveMetadata("rdbms-import:typesToExport");
             package.RemoveMetadata("rdbms-import:importFilterFilePath");

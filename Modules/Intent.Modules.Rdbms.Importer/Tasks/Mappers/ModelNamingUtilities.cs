@@ -48,13 +48,13 @@ internal static class ModelNamingUtilities
         return deduplicationContext?.DeduplicateView(normalized, schema) ?? normalized;
     }
 
-    public static string GetAttributeName(string columnName, string? tableName, string className, string schema, DeduplicationContext? deduplicationContext)
+    public static string GetAttributeName(string columnName, string? tableName, string className, string schema, AttributeNameConvention convention, DeduplicationContext? deduplicationContext)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(columnName);
         ArgumentException.ThrowIfNullOrWhiteSpace(className);
         ArgumentException.ThrowIfNullOrWhiteSpace(schema);
         // Normalize column name
-        var normalized = NormalizeColumnName(columnName, tableName, true);
+        var normalized = NormalizeColumnName(columnName, tableName, convention == AttributeNameConvention.LanguageCompliant);
         return deduplicationContext?.DeduplicateColumn(normalized, className, schema) ?? normalized;
     }
 

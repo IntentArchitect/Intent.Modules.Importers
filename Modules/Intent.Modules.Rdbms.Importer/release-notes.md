@@ -1,3 +1,7 @@
+### Version 1.0.4
+
+- Improvement: Introducing `Attribute Name Convention` for how Column names translates into Entity attribute names. 
+
 ### Version 1.0.3
 
 - Improvement: Switched to use a module task to show progress more explicitly.

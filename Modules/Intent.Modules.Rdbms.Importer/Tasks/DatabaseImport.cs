@@ -104,6 +104,11 @@ public class DatabaseImport : IModuleTask
             inputModel.StoredProcedureType = "Default";
         }
 
+        if (string.IsNullOrWhiteSpace(inputModel.AttributeNameConvention))
+        {
+            inputModel.AttributeNameConvention = "LanguageCompliant";
+        }
+
         if (!_metadataManager.TryGetApplicationPackage(inputModel.ApplicationId, inputModel.PackageId, out var package, out _))
         {
             throw new Exception($"Package {inputModel.PackageId} for Application {inputModel.ApplicationId} doesn't exist");
@@ -201,6 +206,7 @@ public class DatabaseImport : IModuleTask
             PackageFileName = importModel.PackageFileName,
             ImportFilterFilePath = importModel.ImportFilterFilePath,
             EntityNameConvention = Enum.Parse<EntityNameConvention>(importModel.EntityNameConvention),
+            AttributeNameConvention = Enum.Parse<AttributeNameConvention>(importModel.AttributeNameConvention),
             TableStereotype = Enum.Parse<TableStereotype>(importModel.TableStereotype),
             TypesToExport = importModel.TypesToExport.Select(Enum.Parse<ExportType>).ToHashSet(),
             StoredProcedureType = string.IsNullOrWhiteSpace(importModel.StoredProcedureType)

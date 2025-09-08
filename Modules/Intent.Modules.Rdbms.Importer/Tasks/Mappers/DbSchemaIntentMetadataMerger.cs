@@ -579,14 +579,14 @@ internal class DbSchemaIntentMetadataMerger
             if (existingDataContract != null)
             {
                 // Update existing data contract
-                dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package, deduplicationContext);
+                dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, _config, package, deduplicationContext);
                 SyncElements(package, existingDataContract, dataContract);
                 dataContract = existingDataContract; // Use the existing data contract for TypeReference
             }
             else
             {
                 // Create new data contract
-                dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, package, deduplicationContext);
+                dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, _config, package, deduplicationContext);
                 package.Classes.Add(dataContract);
             }
             
@@ -653,7 +653,7 @@ internal class DbSchemaIntentMetadataMerger
             {
                 // Update existing DataContract
                 var schemaFolder = GetOrCreateSchemaFolder(udtSchema.Schema, package);
-                dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, package, deduplicationContext);
+                dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, _config, package, deduplicationContext);
                 SyncElements(package, existingDataContract, dataContract);
                 dataContract = existingDataContract; // Use existing for mapping
             }
@@ -661,7 +661,7 @@ internal class DbSchemaIntentMetadataMerger
             {
                 // Create new DataContract
                 var schemaFolder = GetOrCreateSchemaFolder(udtSchema.Schema, package);
-                dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, package, deduplicationContext);
+                dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, _config, package, deduplicationContext);
                 package.Classes.Add(dataContract);
             }
             

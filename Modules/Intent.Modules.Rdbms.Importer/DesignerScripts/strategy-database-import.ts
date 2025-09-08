@@ -54,6 +54,7 @@ class DatabaseImportStrategy {
 
         let result: ISqlDatabaseImportPackageSettings = {
             entityNameConvention: this.getSettingValue(domainPackage, "rdbms-import:entityNameConvention", "SingularEntity"),
+            attributeNameConvention: this.getSettingValue(domainPackage, "rdbms-import:attributeNameConvention", "LanguageCompliant"),
             tableStereotypes: this.getSettingValue(domainPackage, "rdbms-import:tableStereotypes", "WhenDifferent"),
             includeTables: includeTables,
             includeViews: includeViews,
@@ -153,6 +154,15 @@ class DatabaseImportStrategy {
                             hint: "",
                             value: defaults.entityNameConvention,
                             selectOptions: [{ id: "SingularEntity", description: "Singularized table name" }, { id: "MatchTable", description: "Table name, as is" }]
+                        },
+                        {
+                            id: "attributeNameConvention",
+                            fieldType: "select",
+                            label: "Attribute Name Convention",
+                            placeholder: "",
+                            hint: "How column names should be converted to attribute names",
+                            value: defaults.attributeNameConvention,
+                            selectOptions: [{ id: "LanguageCompliant", description: "Language Compliant (normalized)" }, { id: "PreserveOriginal", description: "Preserve Original (minimal changes)" }]
                         },
                         {
                             id: "tableStereotypes",
@@ -294,6 +304,7 @@ class DatabaseImportStrategy {
             designerId: domainDesignerId,
             packageId: element.getPackage().id,
             entityNameConvention: capturedInput.entityNameConvention,
+            attributeNameConvention: capturedInput.attributeNameConvention,
             tableStereotype: capturedInput.tableStereotypes,
             typesToExport: typesToExport,
             importFilterFilePath: capturedInput.importFilterFilePath,
@@ -901,6 +912,7 @@ class DatabaseImportStrategy {
 
 interface ISqlDatabaseImportPackageSettings {
     entityNameConvention: string;
+    attributeNameConvention: string;
     tableStereotypes: string;
     includeTables: string;
     includeViews: string;
@@ -918,6 +930,7 @@ interface IDatabaseImportModel {
     designerId: string;
     packageId: string;
     entityNameConvention: string;
+    attributeNameConvention: string;
     tableStereotype: string;
     typesToExport: string[];
     importFilterFilePath: string;
@@ -986,6 +999,7 @@ interface IFormResult {
     importFilterFilePath: string;
     tableStereotypes: string;
     entityNameConvention: string;
+    attributeNameConvention: string;
     includeIndexes: string;
     includeStoredProcedures: string;
     includeViews: string;

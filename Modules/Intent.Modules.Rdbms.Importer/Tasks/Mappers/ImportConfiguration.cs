@@ -7,6 +7,7 @@ internal class ImportConfiguration
 {
     public string? ApplicationId { get; set; }
     public EntityNameConvention EntityNameConvention { get; set; } = EntityNameConvention.SingularEntity;
+    public AttributeNameConvention AttributeNameConvention { get; set; } = AttributeNameConvention.LanguageCompliant;
     public TableStereotype TableStereotype { get; set; } = TableStereotype.WhenDifferent;
     public StoredProcedureType StoredProcedureType { get; set; } = StoredProcedureType.Default;
     public string? RepositoryElementId { get; set; }

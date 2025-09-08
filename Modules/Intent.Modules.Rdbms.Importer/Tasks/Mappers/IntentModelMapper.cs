@@ -138,7 +138,7 @@ internal static class IntentModelMapper
         // Map columns to attributes
         foreach (var column in table.Columns)
         {
-            var attribute = MapColumnToAttribute(column, table.Name, className, table.Schema, package, classElement.Id, deduplicationContext);
+            var attribute = MapColumnToAttribute(column, table.Name, className, table.Schema, config, package, classElement.Id, deduplicationContext);
             classElement.ChildElements.Add(attribute);
 
             // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
@@ -194,7 +194,7 @@ internal static class IntentModelMapper
         // Map columns to attributes
         foreach (var column in view.Columns)
         {
-            var attribute = MapColumnToAttribute(column, view.Name, className, view.Schema, package, classElement.Id, deduplicationContext);
+            var attribute = MapColumnToAttribute(column, view.Name, className, view.Schema, config, package, classElement.Id, deduplicationContext);
             classElement.ChildElements.Add(attribute);
 
             // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
@@ -356,7 +356,7 @@ internal static class IntentModelMapper
     /// Creates a data contract for stored procedure result set
     /// Following the pattern from old DatabaseSchemaToModelMapper.GetOrCreateDataContractResponse
     /// </summary>
-    public static ElementPersistable CreateDataContractForStoredProcedure(StoredProcedureSchema storedProc, string schemaFolderId, string storedProcElementName, PackageModelPersistable package, DeduplicationContext? deduplicationContext)
+    public static ElementPersistable CreateDataContractForStoredProcedure(StoredProcedureSchema storedProc, string schemaFolderId, string storedProcElementName, ImportConfiguration config, PackageModelPersistable package, DeduplicationContext? deduplicationContext)
     {
         var dataContractName = $"{storedProcElementName}Response";
         
@@ -383,7 +383,7 @@ internal static class IntentModelMapper
         // Handle result set columns
         foreach (var resultColumn in storedProc.ResultSetColumns)
         {
-            var attribute = MapResultSetColumnToAttribute(resultColumn, dataContract.Id, storedProc.Name, storedProc.Schema, resultColumn.Name, deduplicationContext);
+            var attribute = MapResultSetColumnToAttribute(resultColumn, dataContract.Id, storedProc.Name, storedProc.Schema, resultColumn.Name, config, deduplicationContext);
             dataContract.ChildElements.Add(attribute);
 
             // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
@@ -399,6 +399,7 @@ internal static class IntentModelMapper
     public static ElementPersistable CreateDataContractForUserDefinedTable(
         UserDefinedTableTypeSchema udtSchema, 
         string schemaFolderId, 
+        ImportConfiguration config,
         PackageModelPersistable package, 
         DeduplicationContext? deduplicationContext)
     {
@@ -427,7 +428,7 @@ internal static class IntentModelMapper
         // Map UDT columns to attributes
         foreach (var column in udtSchema.Columns)
         {
-            var attribute = MapUserDefinedTableColumnToAttribute(column, dataContract.Id, udtSchema.Name, udtSchema.Schema, column.Name, deduplicationContext);
+            var attribute = MapUserDefinedTableColumnToAttribute(column, dataContract.Id, udtSchema.Name, udtSchema.Schema, column.Name, config, deduplicationContext);
             dataContract.ChildElements.Add(attribute);
 
             // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
@@ -721,11 +722,12 @@ internal static class IntentModelMapper
         string tableName, 
         string className, 
         string schema, 
+        ImportConfiguration config,
         PackageModelPersistable package,
         string? parentClassId = null, 
         DeduplicationContext? deduplicationContext = null)
     {
-        var attributeName = ModelNamingUtilities.GetAttributeName(column.Name, tableName, className, schema, deduplicationContext);
+        var attributeName = ModelNamingUtilities.GetAttributeName(column.Name, tableName, className, schema, config.AttributeNameConvention, deduplicationContext);
         
         return new ElementPersistable
         {
@@ -829,9 +831,9 @@ internal static class IntentModelMapper
     /// <summary>
     /// Maps a result set column to an attribute element
     /// </summary>
-    private static ElementPersistable MapResultSetColumnToAttribute(ResultSetColumnSchema resultColumn, string dataContractId, string procName, string schema, string resultColumnName, DeduplicationContext? deduplicationContext)
+    private static ElementPersistable MapResultSetColumnToAttribute(ResultSetColumnSchema resultColumn, string dataContractId, string procName, string schema, string resultColumnName, ImportConfiguration config, DeduplicationContext? deduplicationContext)
     {
-        var attributeName = ModelNamingUtilities.GetAttributeName(resultColumnName, null, procName, schema, deduplicationContext);
+        var attributeName = ModelNamingUtilities.GetAttributeName(resultColumnName, null, procName, schema, config.AttributeNameConvention, deduplicationContext);
         
         return new ElementPersistable
         {
@@ -854,9 +856,9 @@ internal static class IntentModelMapper
     /// <summary>
     /// Maps a UserDefinedTable ColumnSchema to an attribute element
     /// </summary>
-    private static ElementPersistable MapUserDefinedTableColumnToAttribute(ColumnSchema column, string dataContractId, string udtName, string schema, string columnName, DeduplicationContext? deduplicationContext)
+    private static ElementPersistable MapUserDefinedTableColumnToAttribute(ColumnSchema column, string dataContractId, string udtName, string schema, string columnName, ImportConfiguration config, DeduplicationContext? deduplicationContext)
     {
-        var attributeName = ModelNamingUtilities.GetAttributeName(columnName, null, udtName, schema, deduplicationContext);
+        var attributeName = ModelNamingUtilities.GetAttributeName(columnName, null, udtName, schema, config.AttributeNameConvention, deduplicationContext);
         
         return new ElementPersistable
         {

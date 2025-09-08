@@ -83,6 +83,7 @@ class DatabaseImportStrategy {
         }
         let result = {
             entityNameConvention: this.getSettingValue(domainPackage, "rdbms-import:entityNameConvention", "SingularEntity"),
+            attributeNameConvention: this.getSettingValue(domainPackage, "rdbms-import:attributeNameConvention", "LanguageCompliant"),
             tableStereotypes: this.getSettingValue(domainPackage, "rdbms-import:tableStereotypes", "WhenDifferent"),
             includeTables: includeTables,
             includeViews: includeViews,
@@ -142,11 +143,12 @@ class DatabaseImportStrategy {
                                 let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.TestConnection", testConnectionModel);
                                 if (((_a = executionResult.errors) !== null && _a !== void 0 ? _a : []).length > 0) {
                                     form.getField("connectionStringTest").hint = "Failed to connect.";
+                                    form.getField("connectionStringTest").hintType = "danger";
                                     await displayExecutionResultErrors(executionResult);
                                 }
                                 else {
                                     form.getField("connectionStringTest").hint = "Connection established successfully.";
-                                    await dialogService.info("Connection established successfully.");
+                                    form.getField("connectionStringTest").hintType = "success";
                                 }
                             }
                         },
@@ -178,6 +180,15 @@ class DatabaseImportStrategy {
                             hint: "",
                             value: defaults.entityNameConvention,
                             selectOptions: [{ id: "SingularEntity", description: "Singularized table name" }, { id: "MatchTable", description: "Table name, as is" }]
+                        },
+                        {
+                            id: "attributeNameConvention",
+                            fieldType: "select",
+                            label: "Attribute Name Convention",
+                            placeholder: "",
+                            hint: "How column names should be converted to attribute names",
+                            value: defaults.attributeNameConvention,
+                            selectOptions: [{ id: "LanguageCompliant", description: "Language Compliant (normalized)" }, { id: "PreserveOriginal", description: "Preserve Original (minimal changes)" }]
                         },
                         {
                             id: "tableStereotypes",
@@ -310,6 +321,7 @@ class DatabaseImportStrategy {
             designerId: domainDesignerId,
             packageId: element.getPackage().id,
             entityNameConvention: capturedInput.entityNameConvention,
+            attributeNameConvention: capturedInput.attributeNameConvention,
             tableStereotype: capturedInput.tableStereotypes,
             typesToExport: typesToExport,
             importFilterFilePath: capturedInput.importFilterFilePath,
@@ -363,7 +375,7 @@ class DatabaseImportStrategy {
             fieldType: "tree-view",
             label: "Objects to Exclude from Import",
             isRequired: false,
-            isHidden: true,
+            isHidden: true, // hidden by default
             treeViewOptions: {
                 isMultiSelect: true,
                 selectableTypes: [

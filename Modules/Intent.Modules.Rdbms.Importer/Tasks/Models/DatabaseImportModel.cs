@@ -19,8 +19,9 @@ public class DatabaseImportModel
 		ImportFilterFilePath = other.ImportFilterFilePath;
 		StoredProcedureType = other.StoredProcedureType;
 		EntityNameConvention = other.EntityNameConvention;
+		AttributeNameConvention = other.AttributeNameConvention;
 		TableStereotype = other.TableStereotype;
-		TypesToExport = other.TypesToExport?.ToList();
+		TypesToExport = other.TypesToExport?.ToList() ?? [];
 		DatabaseType = other.DatabaseType;
 	}
 	
@@ -28,6 +29,7 @@ public class DatabaseImportModel
 	public string PackageId { get; set; } = null!;
 	public string? PackageFileName { get; set; }
 	public string EntityNameConvention { get; set; } = null!;
+	public string AttributeNameConvention { get; set; } = null!;
 	public string TableStereotype { get; set; } = null!;
 	public string? StoredProcedureType { get; set; }
 	public DatabaseSettingPersistence SettingPersistence { get; set; } = DatabaseSettingPersistence.None;
