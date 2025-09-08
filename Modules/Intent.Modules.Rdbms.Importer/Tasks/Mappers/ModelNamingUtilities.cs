@@ -54,7 +54,7 @@ internal static class ModelNamingUtilities
         ArgumentException.ThrowIfNullOrWhiteSpace(className);
         ArgumentException.ThrowIfNullOrWhiteSpace(schema);
         // Normalize column name
-        var normalized = NormalizeColumnName(columnName, tableName);
+        var normalized = NormalizeColumnName(columnName, tableName, true, true);
         return deduplicationContext?.DeduplicateColumn(normalized, className, schema) ?? normalized;
     }
 
@@ -335,27 +335,38 @@ internal static class ModelNamingUtilities
         return normalized;
     }
 
-    private static string NormalizeColumnName(string colName, string? tableOrViewName)
+    private static string NormalizeColumnName(string colName, string? tableOrViewName, bool normalizePrefix, bool normalizeSuffix)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(colName);
         var normalized = colName != tableOrViewName ? colName : colName + "Value";
         normalized = ToCSharpIdentifier(normalized, "db");
-        normalized = normalized.RemovePrefix("pk");
 
-        // We need to be careful with the "col" prefix since a name could start with:
-        // column, collection, color, etc.
-        // So what we can do is check if the letter after "col" is a capital letter or a non-letter character.
-        if (normalized.StartsWith("col") && 
-            (normalized.Length < 4 || !char.IsLetter(normalized[3]) || char.IsUpper(normalized[3])))
+        if (normalizePrefix)
         {
-            normalized = normalized.RemovePrefix("col");
+            normalized = normalized.RemovePrefix("pk");
+
+            // We need to be careful with the "col" prefix since a name could start with:
+            // column, collection, color, etc.
+            // So what we can do is check if the letter after "col" is a capital letter or a non-letter character.
+            if (normalized.StartsWith("col") &&
+                (normalized.Length < 4 || !char.IsLetter(normalized[3]) || char.IsUpper(normalized[3])))
+            {
+                normalized = normalized.RemovePrefix("col");
+            }
         }
-        
+
         normalized = normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
 
-        if (normalized.EndsWith("ID"))
+        if (normalizeSuffix)
         {
-            normalized = normalized.RemoveSuffix("ID") + "Id";
+            if (normalized.EndsWith("GUID"))
+            {
+                normalized = normalized.RemoveSuffix("GUID") + "Guid";
+            }
+            else if (normalized.EndsWith("ID"))
+            {
+                normalized = normalized.RemoveSuffix("ID") + "Id";
+            }
         }
 
         return normalized;
