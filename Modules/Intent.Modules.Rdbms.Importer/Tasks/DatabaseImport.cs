@@ -106,7 +106,7 @@ public class DatabaseImport : IModuleTask
 
         if (string.IsNullOrWhiteSpace(inputModel.AttributeNameConvention))
         {
-            inputModel.AttributeNameConvention = "LanguageCompliant";
+            inputModel.AttributeNameConvention = "Default";
         }
 
         if (!_metadataManager.TryGetApplicationPackage(inputModel.ApplicationId, inputModel.PackageId, out var package, out _))

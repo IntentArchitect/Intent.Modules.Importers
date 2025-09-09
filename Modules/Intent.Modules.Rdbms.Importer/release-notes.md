@@ -1,6 +1,7 @@
 ### Version 1.0.4
 
-- Improvement: Introducing `Attribute Name Convention` for how Column names translates into Entity attribute names. 
+- Improvement: Introducing `Attribute Name Convention` for how Column names translates into Entity attribute names.
+- Fixed: The `Filter Type` will now be remembered when the next Import has to happen.
 
 ### Version 1.0.3
 

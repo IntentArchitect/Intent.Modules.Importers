@@ -23,6 +23,7 @@ public class DatabaseImportModel
 		TableStereotype = other.TableStereotype;
 		TypesToExport = other.TypesToExport?.ToList() ?? [];
 		DatabaseType = other.DatabaseType;
+		FilterType = other.FilterType;
 	}
 	
 	public string ApplicationId { get; set; } = null!;
@@ -32,6 +33,7 @@ public class DatabaseImportModel
 	public string AttributeNameConvention { get; set; } = null!;
 	public string TableStereotype { get; set; } = null!;
 	public string? StoredProcedureType { get; set; }
+	public string FilterType { get; set; } = "exclude";
 	public DatabaseSettingPersistence SettingPersistence { get; set; } = DatabaseSettingPersistence.None;
 	
 	// BEGIN - ImportSchemaRequest

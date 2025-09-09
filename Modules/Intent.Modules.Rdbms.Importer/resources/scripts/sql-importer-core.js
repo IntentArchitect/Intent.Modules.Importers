@@ -83,7 +83,7 @@ class DatabaseImportStrategy {
         }
         let result = {
             entityNameConvention: this.getSettingValue(domainPackage, "rdbms-import:entityNameConvention", "SingularEntity"),
-            attributeNameConvention: this.getSettingValue(domainPackage, "rdbms-import:attributeNameConvention", "LanguageCompliant"),
+            attributeNameConvention: this.getSettingValue(domainPackage, "rdbms-import:attributeNameConvention", "Default"),
             tableStereotypes: this.getSettingValue(domainPackage, "rdbms-import:tableStereotypes", "WhenDifferent"),
             includeTables: includeTables,
             includeViews: includeViews,
@@ -93,7 +93,8 @@ class DatabaseImportStrategy {
             connectionString: this.getSettingValue(domainPackage, "rdbms-import:connectionString", null),
             storedProcedureType: this.getSettingValue(domainPackage, "rdbms-import:storedProcedureType", ""),
             settingPersistence: this.getSettingValue(domainPackage, "rdbms-import:settingPersistence", "None"),
-            databaseType: this.getSettingValue(domainPackage, "rdbms-import:databaseType", "SqlServer")
+            databaseType: this.getSettingValue(domainPackage, "rdbms-import:databaseType", "SqlServer"),
+            filterType: this.getSettingValue(domainPackage, "rdbms-import:filterType", "exclude")
         };
         return result;
     }
@@ -179,7 +180,18 @@ class DatabaseImportStrategy {
                             placeholder: "",
                             hint: "",
                             value: defaults.entityNameConvention,
-                            selectOptions: [{ id: "SingularEntity", description: "Singularized table name" }, { id: "MatchTable", description: "Table name, as is" }]
+                            selectOptions: [
+                                {
+                                    id: "SingularEntity",
+                                    description: "Singularized table name",
+                                    additionalInfo: "(eg. \"Colors\" => \"Color\")"
+                                },
+                                {
+                                    id: "MatchTable",
+                                    description: "Table name, as is",
+                                    additionalInfo: "(eg. \"tblColor\" => \"tblColor\")"
+                                }
+                            ]
                         },
                         {
                             id: "attributeNameConvention",
@@ -188,7 +200,18 @@ class DatabaseImportStrategy {
                             placeholder: "",
                             hint: "How column names should be converted to attribute names",
                             value: defaults.attributeNameConvention,
-                            selectOptions: [{ id: "LanguageCompliant", description: "Language Compliant (normalized)" }, { id: "PreserveOriginal", description: "Preserve Original (minimal changes)" }]
+                            selectOptions: [
+                                {
+                                    id: "Default",
+                                    description: "Default",
+                                    additionalInfo: "(eg. \"FIRST_NAME\" => \"FirstName\")"
+                                },
+                                {
+                                    id: "ColumnName",
+                                    description: "Column name, as-is",
+                                    additionalInfo: "(eg. \"FIRST_NAME\" => \"FIRST_NAME\")"
+                                }
+                            ]
                         },
                         {
                             id: "tableStereotypes",
@@ -272,31 +295,13 @@ class DatabaseImportStrategy {
                                     return;
                                 }
                             }
-                        },
-                        // {
-                        //     id: "manageIncludeFilters",
-                        //     fieldType: "button",
-                        //     label: "Manage Filters",
-                        //     onClick: async (form: MacroApi.Context.IDynamicFormApi) => {
-                        //         const connectionString = form.getField("connectionString").value as string;
-                        //         if (!connectionString) {
-                        //             await dialogService.error("Please enter a connection string first.");
-                        //             return;
-                        //         }
-                        //         const databaseType = form.getField("databaseType").value as string;
-                        //         let importFilterFilePath = form.getField("importFilterFilePath").value as string;
-                        //         let returnedImportFilterFilePath = await this.presentManageFiltersDialog(connectionString, databaseType, packageId, importFilterFilePath);
-                        //         if (returnedImportFilterFilePath != null) {
-                        //             form.getField("importFilterFilePath").value = returnedImportFilterFilePath;
-                        //         }
-                        //     }
-                        // }
+                        }
                     ],
                     isCollapsed: true,
                     isHidden: false
                 }
             ],
-            pages: [this.presentManageFiltersDialog(packageId)],
+            pages: [this.presentManageFiltersDialog(packageId, defaults)],
         };
         let capturedInput = await dialogService.openForm(formConfig);
         return capturedInput;
@@ -328,11 +333,12 @@ class DatabaseImportStrategy {
             storedProcedureType: capturedInput.storedProcedureType,
             connectionString: capturedInput.connectionString,
             settingPersistence: capturedInput.settingPersistence,
-            databaseType: capturedInput.databaseType
+            databaseType: capturedInput.databaseType,
+            filterType: capturedInput.filterType || "exclude"
         };
         return importConfig;
     }
-    presentManageFiltersDialog(packageId) {
+    presentManageFiltersDialog(packageId, defaults) {
         const inclusiveSelection = {
             id: "inclusiveSelection",
             fieldType: "tree-view",
@@ -442,7 +448,7 @@ class DatabaseImportStrategy {
                             existingFilter = filterLoadResult.result;
                             // Set this to hidden field, since we will need it later.
                             form.getField("existingImportFilter").value = JSON.stringify(filterLoadResult.result);
-                            form.getField("filterType").value = (_b = existingFilter.filter_type) !== null && _b !== void 0 ? _b : "include";
+                            form.getField("filterType").value = (_b = existingFilter.filter_type) !== null && _b !== void 0 ? _b : "exclude";
                             const include = form.getField("filterType").value == "include";
                             form.getField("inclusiveSelection").isHidden = !include;
                             form.getField("exclusiveSelection").isHidden = include;
@@ -451,6 +457,12 @@ class DatabaseImportStrategy {
                             await displayExecutionResultErrors(filterLoadResult);
                             return null;
                         }
+                    }
+                    // If no existing filter was loaded, use the default filterType to set visibility
+                    if (!existingFilter) {
+                        const include = defaults.filterType === "include";
+                        form.getField("inclusiveSelection").isHidden = !include;
+                        form.getField("exclusiveSelection").isHidden = include;
                     }
                     let distinctSchemas = metadata.schemas;
                     // Create tree nodes with pre-selected states for inclusive filter
@@ -505,7 +517,7 @@ class DatabaseImportStrategy {
                     id: "filterType",
                     fieldType: "select",
                     label: "Filter Type",
-                    value: "include",
+                    value: defaults.filterType,
                     selectOptions: [
                         {
                             id: "include",

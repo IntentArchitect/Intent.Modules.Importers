@@ -54,7 +54,7 @@ internal static class ModelNamingUtilities
         ArgumentException.ThrowIfNullOrWhiteSpace(className);
         ArgumentException.ThrowIfNullOrWhiteSpace(schema);
         // Normalize column name
-        var normalized = NormalizeColumnName(columnName, tableName, convention == AttributeNameConvention.LanguageCompliant);
+        var normalized = NormalizeColumnName(columnName, tableName, convention == AttributeNameConvention.Default);
         return deduplicationContext?.DeduplicateColumn(normalized, className, schema) ?? normalized;
     }
 
