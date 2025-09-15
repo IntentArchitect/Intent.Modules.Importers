@@ -115,18 +115,19 @@ steps:
       -dotnetPackOutputDirectory $(Build.ArtifactStagingDirectory)
       -vstsFeedUrl $(vstsFeedUrl)
 
-# Push the NuGet packages to the DevOps artifact feed so that they're available to this build and other pipelines
-- task: DotNetCoreCLI@2
-  displayName: 'Push Intent Nuget Packages to DevOps Artifacts'
-  condition: and(succeeded(), in('True', variables.isMaster, variables.isHotfix, variables.isDevelopment))
-  inputs:
-    command: 'custom'
-    custom: 'nuget'
-    arguments: >
-      push $(Build.ArtifactStagingDirectory)/*.nupkg
-      -s $(vstsFeedUrl)
-      -k none
-      --skip-duplicate
+# Disabled until NuGet packages are added
+# # Push the NuGet packages to the DevOps artifact feed so that they're available to this build and other pipelines
+# - task: DotNetCoreCLI@2
+#   displayName: 'Push Intent Nuget Packages to DevOps Artifacts'
+#   condition: and(succeeded(), in('True', variables.isMaster, variables.isHotfix, variables.isDevelopment))
+#   inputs:
+#     command: 'custom'
+#     custom: 'nuget'
+#     arguments: >
+#       push $(Build.ArtifactStagingDirectory)/*.nupkg
+#       -s $(vstsFeedUrl)
+#       -k none
+#       --skip-duplicate
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet restore'
