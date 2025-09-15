@@ -1,6 +1,7 @@
 ### Version 1.0.4
 
 - Improvement: Introducing `Attribute Name Convention` for how Column names translates into Entity attribute names.
+- Improvement: Added a check to make sure Import Filter File will write to location successfully.
 - Fixed: The `Filter Type` will now be remembered when the next Import has to happen.
 - Fixed: Incorrectly looked for duplicate associations.
 - Fixed: Stored procedure `Name In Schema` is correctly set.

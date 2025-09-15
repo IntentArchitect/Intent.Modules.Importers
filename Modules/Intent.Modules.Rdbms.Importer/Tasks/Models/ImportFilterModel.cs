@@ -23,3 +23,11 @@ public class PathResolutionInputModel
     public string PackageId { get; set; } = null!;
     public string ApplicationId { get; set; } = null!;
 } 
+
+public class VerifyFilePathInputModel
+{
+    // Path to the filter file to verify (may point to existing file or intended new file location)
+    public string PathToFile { get; set; } = null!;
+    public string PackageId { get; set; } = null!;
+    public string ApplicationId { get; set; } = null!;
+}

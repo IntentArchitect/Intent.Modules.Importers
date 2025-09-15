@@ -26,17 +26,3 @@ async function displayExecutionResultErrors(executionResult: IExecutionResult): 
     throw new Error(errorMessage);
     console.error(errorMessage);
 }
-
-async function displayExecutionResultWarnings(executionResult: IExecutionResult, title: string): Promise<void> {
-    if (executionResult.warnings.length === 0) {
-        return;
-    }
-
-    if (title == null || title === "") {
-        title = "Warnings";
-    }
-
-    const warningMessage = executionResult.warnings.map(warning => `🟡 ${warning}`).join("\r\n");
-    await dialogService.warn(title + "\r\n\r\n" + warningMessage);
-    console.warn(title + "\r\n\r\n" + warningMessage);
-}

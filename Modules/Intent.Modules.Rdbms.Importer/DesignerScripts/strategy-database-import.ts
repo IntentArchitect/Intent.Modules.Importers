@@ -279,7 +279,7 @@ class DatabaseImportStrategy {
                     isHidden: false
                 }
             ],
-            pages: [this.presentManageFiltersDialog(packageId, defaults)],
+            pages: [this.presentManageFiltersDialog(packageId, defaults)]
         }
 
         let capturedInput = await dialogService.openForm(formConfig);
@@ -421,6 +421,28 @@ class DatabaseImportStrategy {
                             return null;
                         }
 
+                        // Verify the import filter file path is writable (or creatable) by current process/user
+                        try {
+                            const verifyModel = {
+                                pathToFile: form.getField("importFilterFilePath").value as string,
+                                applicationId: application.id,
+                                packageId: packageId
+                            };
+
+                            const verifyResult = await executeImporterModuleTask(
+                                "Intent.Modules.Rdbms.Importer.Tasks.VerifyFilePath",
+                                verifyModel
+                            );
+
+                            if ((verifyResult.errors ?? []).length > 0) {
+                                verifyResult.errors.unshift("Import Filter File Path Errors.")
+                                await displayExecutionResultErrors(verifyResult);
+                                return null;
+                            }
+                        } catch (err) {
+                            throw err;
+                        }
+
                         console.warn("metadata:")
                         console.warn(JSON.stringify(metadata))
 
@@ -501,7 +523,6 @@ class DatabaseImportStrategy {
                         includeDependantTablesField.value = existingFilter?.include_dependant_tables ? "true" : "false";
 
                     } catch (error) {
-                        //await dialogService.error(`Error loading database metadata: ${error}`);
                         throw error;
                     }
                 },
@@ -548,22 +569,6 @@ class DatabaseImportStrategy {
             };
 
             return formConfig;
-
-        //     try {
-        //         const result = await dialogService.openForm(formConfig);
-        //         if (result) {
-        //             // Handle the save operation when dialog is closed with OK
-        //             let returnedImportFilterFilePath = await this.saveFilterData(result, existingFilter, packageId, importFilterFilePath);
-        //             if (returnedImportFilterFilePath != null) {
-        //                 return returnedImportFilterFilePath;
-        //             }
-        //         }
-        //     } catch (error) {
-        //         console.error("Error in filter selection dialog:", error);
-        //         return null;
-        //     }
-
-        // return importFilterFilePath;
     }
 
     private async fetchDatabaseMetadata(connectionString: string, databaseType: string): Promise<IDatabaseMetadata | null> {
@@ -761,7 +766,7 @@ class DatabaseImportStrategy {
         }
     }
 
-    private async saveFilterData(formResult: IFormResult, existingFilter: ImportFilterModel | null, packageId: string, importFilterFilePath: string): Promise<string | null> {
+    private async saveFilterData(formResult: IFormResult, existingFilter: ImportFilterModel | null, packageId: string, importFilterFilePath: string): Promise<string> {
         try {
             // Extract selections from form result
             const inclusiveSelection = formResult.filterType == "include" ? formResult.inclusiveSelection ?? [] : [];
@@ -910,15 +915,11 @@ class DatabaseImportStrategy {
             if ((saveResult.errors ?? []).length > 0) {
                 await displayExecutionResultErrors(saveResult);
                 return null;
-            } else {
-                //await dialogService.info("Filters saved successfully.");
             }
 
             return savePath;
         } catch (error) {
             throw new Error(`Error saving filters: ${error}`);
-            //await dialogService.error(`Error saving filters: ${error}`);
-            return null;
         }
     }
 }

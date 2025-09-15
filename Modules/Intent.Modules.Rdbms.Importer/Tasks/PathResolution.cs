@@ -45,7 +45,7 @@ public class PathResolution : ModuleTaskBase<PathResolutionInputModel>
         try
         {
             // Normalize paths to handle different path separators
-            var selectedFilePath = Path.GetFullPath(inputModel.SelectedFilePath);
+            var selectedFilePath = inputModel.SelectedFilePath;
             var packageFilePath = Path.GetFullPath(package.FileLocation);
             
             // Get directories
