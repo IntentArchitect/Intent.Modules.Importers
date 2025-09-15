@@ -31,7 +31,7 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Public
             CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.GetCustomerOrdersResponses
-                .FromSqlInterpolated($"SELECT * FROM GetCustomerOrders({customer_id}, {customerId})")
+                .FromSqlInterpolated($"SELECT * FROM public.GetCustomerOrders({customer_id}, {customerId})")
                 .IgnoreQueryFilters()
                 .ToListAsync(cancellationToken);
 
@@ -44,7 +44,7 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Public
             CancellationToken cancellationToken = default)
         {
             var results = await _dbContext.GetOrderItemDetailsResponses
-                .FromSqlInterpolated($"SELECT * FROM GetOrderItemDetails({order_id}, {orderId})")
+                .FromSqlInterpolated($"SELECT * FROM public.GetOrderItemDetails({order_id}, {orderId})")
                 .IgnoreQueryFilters()
                 .ToListAsync(cancellationToken);
 
@@ -61,12 +61,12 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Public
                 DataTypeName = "BrandTypeModel"
             };
 
-            await _dbContext.Database.ExecuteSqlInterpolatedAsync($"CALL InsertBrand({brandsParameter})", cancellationToken);
+            await _dbContext.Database.ExecuteSqlInterpolatedAsync($"CALL public.InsertBrand({brandsParameter})", cancellationToken);
         }
 
         public async Task InsertBrandFromTemp(CancellationToken cancellationToken = default)
         {
-            await _dbContext.Database.ExecuteSqlInterpolatedAsync($"CALL InsertBrandFromTemp()", cancellationToken);
+            await _dbContext.Database.ExecuteSqlInterpolatedAsync($"CALL public.InsertBrandFromTemp()", cancellationToken);
         }
 
         public async Task<List<UuidGenerateV1Response>> UuidGenerateV1(CancellationToken cancellationToken = default)
