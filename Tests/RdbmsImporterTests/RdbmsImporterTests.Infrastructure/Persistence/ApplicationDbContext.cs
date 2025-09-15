@@ -41,6 +41,7 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Child> Children { get; set; }
         public DbSet<Domain.Entities.Dbo.Customer> DboCustomers { get; set; }
+        public DbSet<FKTable> FKTables { get; set; }
         public DbSet<LegacyTable> LegacyTables { get; set; }
         public DbSet<Customers> Customers { get; set; }
         public DbSet<VwOrder> VwOrders { get; set; }
@@ -48,7 +49,9 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Parent> Parents { get; set; }
         public DbSet<Price> Prices { get; set; }
+        public DbSet<PrimaryTable> PrimaryTables { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<SelfReferenceTable> SelfReferenceTables { get; set; }
         public DbSet<Bank> Bank { get; set; }
         public DbSet<Banks> Banks { get; set; }
         public DbSet<Domain.Entities.Schema2.Customer> Schema2Customers { get; set; }
@@ -85,12 +88,15 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
             modelBuilder.ApplyConfiguration(new BrandConfiguration());
             modelBuilder.ApplyConfiguration(new ChildConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.Dbo.CustomerConfiguration());
+            modelBuilder.ApplyConfiguration(new FKTableConfiguration());
             modelBuilder.ApplyConfiguration(new LegacyTableConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
             modelBuilder.ApplyConfiguration(new ParentConfiguration());
             modelBuilder.ApplyConfiguration(new PriceConfiguration());
+            modelBuilder.ApplyConfiguration(new PrimaryTableConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new SelfReferenceTableConfiguration());
             modelBuilder.ApplyConfiguration(new BankConfiguration());
             modelBuilder.ApplyConfiguration(new BanksConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.Schema2.CustomerConfiguration());

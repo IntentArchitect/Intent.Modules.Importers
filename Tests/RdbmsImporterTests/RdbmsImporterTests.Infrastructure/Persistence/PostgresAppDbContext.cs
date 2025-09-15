@@ -55,12 +55,15 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Child> Children { get; set; }
         public DbSet<Domain.Entities.Public.Customer> PublicCustomers { get; set; }
+        public DbSet<Fktable> Fktables { get; set; }
         public DbSet<LegacyTable> LegacyTables { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Parent> Parents { get; set; }
         public DbSet<Price> Prices { get; set; }
+        public DbSet<Primarytable> Primarytables { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Selfreferencetable> Selfreferencetables { get; set; }
 
         public override async Task<int> SaveChangesAsync(
             bool acceptAllChangesOnSuccess,
@@ -108,12 +111,15 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
             modelBuilder.ApplyConfiguration(new BrandConfiguration());
             modelBuilder.ApplyConfiguration(new ChildConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.Public.CustomerConfiguration());
+            modelBuilder.ApplyConfiguration(new FktableConfiguration());
             modelBuilder.ApplyConfiguration(new LegacyTableConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
             modelBuilder.ApplyConfiguration(new ParentConfiguration());
             modelBuilder.ApplyConfiguration(new PriceConfiguration());
+            modelBuilder.ApplyConfiguration(new PrimarytableConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new SelfreferencetableConfiguration());
         }
 
         [IntentManaged(Mode.Ignore)]
