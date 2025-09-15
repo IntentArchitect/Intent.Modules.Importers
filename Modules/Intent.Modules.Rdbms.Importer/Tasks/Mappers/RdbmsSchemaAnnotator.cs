@@ -329,9 +329,16 @@ internal static class RdbmsSchemaAnnotator
     public static void ApplyStoredProcedureElementSettings(StoredProcedureSchema sqlStoredProc, ElementPersistable elementStoredProc)
     {
         var stereotype = elementStoredProc.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedureElement.DefinitionId, InitStoredProcStereotype);
-        if (sqlStoredProc.Name != elementStoredProc.Name)
+        var prop = stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElement.PropertyId.NameInSchema);
+        var isDefaultSchema = string.IsNullOrEmpty(sqlStoredProc.Schema) || string.Equals(sqlStoredProc.Schema, "dbo", StringComparison.OrdinalIgnoreCase);
+
+        if (isDefaultSchema)
         {
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElement.PropertyId.NameInSchema).Value = GetSchemaStoredProcedureName(sqlStoredProc);
+            prop.Value = sqlStoredProc.Name != elementStoredProc.Name ? sqlStoredProc.Name : null!;
+        }
+        else
+        {
+            prop.Value = GetSchemaStoredProcedureName(sqlStoredProc);
         }
 
         for (var paramIndex = 0; paramIndex < sqlStoredProc.Parameters.Count && paramIndex < elementStoredProc.ChildElements.Count; paramIndex++)
@@ -421,9 +428,16 @@ internal static class RdbmsSchemaAnnotator
     public static void ApplyStoredProcedureOperationSettings(StoredProcedureSchema sqlStoredProc, ElementPersistable elementStoredProc)
     {
         var stereotype = elementStoredProc.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedureOperation.DefinitionId, InitStoredProcOperationStereotype);
-        if (sqlStoredProc.Name != elementStoredProc.Name)
+        var prop = stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperation.PropertyId.NameInSchema);
+        var isDefaultSchema = string.IsNullOrEmpty(sqlStoredProc.Schema) || string.Equals(sqlStoredProc.Schema, "dbo", StringComparison.OrdinalIgnoreCase);
+
+        if (isDefaultSchema)
         {
-            stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperation.PropertyId.NameInSchema).Value = GetSchemaStoredProcedureName(sqlStoredProc);
+            prop.Value = sqlStoredProc.Name != elementStoredProc.Name ? sqlStoredProc.Name : null!;
+        }
+        else
+        {
+            prop.Value = GetSchemaStoredProcedureName(sqlStoredProc);
         }
 
         for (var paramIndex = 0; paramIndex < sqlStoredProc.Parameters.Count && paramIndex < elementStoredProc.ChildElements.Count; paramIndex++)
