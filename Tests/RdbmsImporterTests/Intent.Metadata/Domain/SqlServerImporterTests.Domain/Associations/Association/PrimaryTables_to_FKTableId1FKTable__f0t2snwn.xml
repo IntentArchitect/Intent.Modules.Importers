@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="c1057abc-1fc6-4892-bc50-a21adedd605d">
+  <sourceEnd id="7396a880-fa28-4ba7-b108-f29c1f93cec2" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>PrimaryTables</name>
+    <display>PrimaryTables: PrimaryTable[*]</display>
+    <order>0</order>
+    <typeReference id="9cd97871-a7ec-4cc0-864b-e7df17f823b5">
+      <typeId>01b29709-3346-4534-b3f0-ab38a03019a4</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>SqlServerImporterTests</typePackageName>
+      <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="c1057abc-1fc6-4892-bc50-a21adedd605d" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>FKTableId1FKTable</name>
+    <display>FKTableId1FKTable: FKTable</display>
+    <order>10</order>
+    <typeReference id="042c2c2d-8d41-407f-b799-7924e44cf1ea">
+      <typeId>c2d6ecfd-3c2a-492b-9790-ed8a58fb0f51</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>SqlServerImporterTests</typePackageName>
+      <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>[dbo].[primarytable].[fk_primarytable_fktable1]</externalReference>
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <externalReference>[dbo].[primarytable].[fk_primarytable_fktable1]</externalReference>
+  <stereotypes />
+</association>

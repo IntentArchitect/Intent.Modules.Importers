@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="587ebdc7-7814-4dcc-89d7-16ea82678c35">
+  <sourceEnd id="5df1c949-84f3-410b-b8fc-e1d06505c2ea" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>SelfReferenceTables</name>
+    <display>SelfReferenceTables: SelfReferenceTable[*]</display>
+    <order>0</order>
+    <typeReference id="4d6575a2-4748-4983-a412-c53a47c42fb2">
+      <typeId>75133628-a575-42eb-8989-47a42f5ade2e</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>SqlServerImporterTests</typePackageName>
+      <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="587ebdc7-7814-4dcc-89d7-16ea82678c35" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>ManagerSelfReferenceTable</name>
+    <display>ManagerSelfReferenceTable: SelfReferenceTable?</display>
+    <order>4</order>
+    <typeReference id="af7dee29-ada1-4e5c-baa4-c46757ded5e3">
+      <typeId>75133628-a575-42eb-8989-47a42f5ade2e</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>true</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>SqlServerImporterTests</typePackageName>
+      <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>[dbo].[selfreferencetable].[fk_selfreferencetable_selfreferencetable]</externalReference>
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <externalReference>[dbo].[selfreferencetable].[fk_selfreferencetable_selfreferencetable]</externalReference>
+  <stereotypes />
+</association>

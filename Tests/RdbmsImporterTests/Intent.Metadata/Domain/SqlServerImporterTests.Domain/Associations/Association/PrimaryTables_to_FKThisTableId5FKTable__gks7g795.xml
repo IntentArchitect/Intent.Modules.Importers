@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="5621ded2-223a-4f9b-acac-35940a0be496">
+  <sourceEnd id="ed8d1741-bcda-4c6b-9825-1eeb393b99ca" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>PrimaryTables</name>
+    <display>PrimaryTables: PrimaryTable[*]</display>
+    <order>0</order>
+    <typeReference id="77515373-8ec5-4eeb-b74a-ebe6152a3e2f">
+      <typeId>01b29709-3346-4534-b3f0-ab38a03019a4</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>SqlServerImporterTests</typePackageName>
+      <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="5621ded2-223a-4f9b-acac-35940a0be496" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>FKThisTableId5FKTable</name>
+    <display>FKThisTableId5FKTable: FKTable</display>
+    <order>9</order>
+    <typeReference id="426efdc8-312e-4f4d-a14b-1fc6616fbd27">
+      <typeId>c2d6ecfd-3c2a-492b-9790-ed8a58fb0f51</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>SqlServerImporterTests</typePackageName>
+      <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>[dbo].[primarytable].[fk_primarytable_fkthistableid5]</externalReference>
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <externalReference>[dbo].[primarytable].[fk_primarytable_fkthistableid5]</externalReference>
+  <stereotypes />
+</association>

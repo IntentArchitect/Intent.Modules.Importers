@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="28058392-5ae9-4ab5-9ae0-4dacea37393d">
+  <sourceEnd id="ab026bbe-c05d-4d8a-a729-36d47995220e" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>PrimaryTables</name>
+    <display>PrimaryTables: PrimaryTable[*]</display>
+    <order>0</order>
+    <typeReference id="75d87212-ee58-40c8-a08f-c0b465028c5b">
+      <typeId>01b29709-3346-4534-b3f0-ab38a03019a4</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>SqlServerImporterTests</typePackageName>
+      <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="28058392-5ae9-4ab5-9ae0-4dacea37393d" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>FKWithTableId2FKTable</name>
+    <display>FKWithTableId2FKTable: FKTable</display>
+    <order>7</order>
+    <typeReference id="5960002f-6db6-4576-bb0c-76d6ed4f67fa">
+      <typeId>c2d6ecfd-3c2a-492b-9790-ed8a58fb0f51</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>SqlServerImporterTests</typePackageName>
+      <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>[dbo].[primarytable].[fk_primarytable_fkwithtableid2]</externalReference>
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <externalReference>[dbo].[primarytable].[fk_primarytable_fkwithtableid2]</externalReference>
+  <stereotypes />
+</association>

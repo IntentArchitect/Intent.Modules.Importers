@@ -378,6 +378,35 @@ COMMENT ON FUNCTION "GetOrderItemDetails"(UUID) IS 'Returns detailed order item 
 COMMENT ON FUNCTION "InsertBrand"("BrandType"[]) IS 'Inserts multiple brands using array of BrandType composite type';
 COMMENT ON FUNCTION "InsertBrandFromTemp"() IS 'Inserts brands from a temporary table named temp_brands';
 
+CREATE TABLE FKTable (
+         FKTableId SERIAL PRIMARY KEY,
+         Name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE PrimaryTable (
+          PrimaryTableId SERIAL PRIMARY KEY,
+          Name VARCHAR(100) NOT NULL,
+          FKTableId1 INT NOT NULL,
+          FKWithTableId2 INT NOT NULL,
+          FKAsTableId3 INT NOT NULL,
+          FKTryTableId4 INT NOT NULL,
+          FKThisTableId5 INT NOT NULL,
+          CONSTRAINT FK_PrimaryTable_FKTable1 FOREIGN KEY (FKTableId1) REFERENCES FKTable(FKTableId),
+          CONSTRAINT FK_PrimaryTable_FKWithTableId2 FOREIGN KEY (FKWithTableId2) REFERENCES FKTable(FKTableId),
+          CONSTRAINT FK_PrimaryTable_FKAsTableId3 FOREIGN KEY (FKAsTableId3) REFERENCES FKTable(FKTableId),
+          CONSTRAINT FK_PrimaryTable_FKTryTableId4 FOREIGN KEY (FKTryTableId4) REFERENCES FKTable(FKTableId),
+          CONSTRAINT FK_PrimaryTable_FKThisTableId5 FOREIGN KEY (FKThisTableId5) REFERENCES FKTable(FKTableId)
+);
+
+CREATE TABLE SelfReferenceTable (
+        ID UUID NOT NULL,
+        Name VARCHAR(50) NOT NULL,
+        Email VARCHAR(50),
+        ManagerId UUID,
+        CONSTRAINT PK_SelfReferenceTable PRIMARY KEY (ID),
+        CONSTRAINT FK_SelfReferenceTable_SelfReferenceTable FOREIGN KEY (ManagerId) REFERENCES SelfReferenceTable(ID)
+);
+
 -- Usage examples (commented out):
 /*
 -- Example usage of GetCustomerOrders:

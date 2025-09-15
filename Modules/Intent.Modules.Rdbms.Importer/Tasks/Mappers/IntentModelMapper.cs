@@ -626,16 +626,6 @@ internal static class IntentModelMapper
                 ? $"{targetName}Reference" 
                 : targetName;
 
-            // Check if an association with the same source and target already exists
-            var duplicateAssociation = package.Associations?.FirstOrDefault(a =>
-                a.SourceEnd.TypeReference?.TypeId == sourceClass.Id &&
-                a.TargetEnd.TypeReference?.TypeId == targetClass.Id);
-
-            if (duplicateAssociation != null)
-            {
-                return AssociationCreationResult.DuplicateSkipped(sourceClass, targetClass);
-            }
-
             var associationId = Guid.NewGuid().ToString();
             var newAssociation = new AssociationPersistable
             {

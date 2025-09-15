@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="dd272ad4-94b3-401d-881a-69079110f7ce">
+  <sourceEnd id="8611bc86-c00f-4e4b-8a5b-4f8e4debe849" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>PrimaryTables</name>
+    <display>PrimaryTables: PrimaryTable[*]</display>
+    <order>0</order>
+    <typeReference id="098b2640-f768-451a-8e3a-9f31e53e6f34">
+      <typeId>01b29709-3346-4534-b3f0-ab38a03019a4</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>SqlServerImporterTests</typePackageName>
+      <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="dd272ad4-94b3-401d-881a-69079110f7ce" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>FKTryTableId4FKTable</name>
+    <display>FKTryTableId4FKTable: FKTable</display>
+    <order>8</order>
+    <typeReference id="f44bc252-6ba8-4a71-9bd9-dac13e73fb10">
+      <typeId>c2d6ecfd-3c2a-492b-9790-ed8a58fb0f51</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>SqlServerImporterTests</typePackageName>
+      <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>[dbo].[primarytable].[fk_primarytable_fktrytableid4]</externalReference>
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <externalReference>[dbo].[primarytable].[fk_primarytable_fktrytableid4]</externalReference>
+  <stereotypes />
+</association>
