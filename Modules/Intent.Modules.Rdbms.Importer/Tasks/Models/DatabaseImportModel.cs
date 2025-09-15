@@ -33,7 +33,7 @@ public class DatabaseImportModel
 	public string AttributeNameConvention { get; set; } = null!;
 	public string TableStereotype { get; set; } = null!;
 	public string? StoredProcedureType { get; set; }
-	public string FilterType { get; set; } = "exclude";
+	public string FilterType { get; set; } = "include";
 	public DatabaseSettingPersistence SettingPersistence { get; set; } = DatabaseSettingPersistence.None;
 	
 	// BEGIN - ImportSchemaRequest

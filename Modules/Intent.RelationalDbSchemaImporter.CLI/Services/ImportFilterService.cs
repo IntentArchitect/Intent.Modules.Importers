@@ -36,7 +36,9 @@ internal class ImportFilterService
 		
 		if (string.IsNullOrWhiteSpace(_importSchemaRequest.ImportFilterFilePath))
 		{
-			return new ImportFilterSettings();
+			var settings = new ImportFilterSettings();
+			settings.FilterType = ImportFilterSettings.FilterTypes.Exclude; 
+			return settings;
 		}
 
 		var jsonContent = File.ReadAllText(_importSchemaRequest.ImportFilterFilePath);

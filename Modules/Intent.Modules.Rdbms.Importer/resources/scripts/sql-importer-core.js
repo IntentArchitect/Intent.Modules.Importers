@@ -83,7 +83,7 @@ class DatabaseImportStrategy {
             storedProcedureType: this.getSettingValue(domainPackage, "rdbms-import:storedProcedureType", ""),
             settingPersistence: this.getSettingValue(domainPackage, "rdbms-import:settingPersistence", "None"),
             databaseType: this.getSettingValue(domainPackage, "rdbms-import:databaseType", "SqlServer"),
-            filterType: this.getSettingValue(domainPackage, "rdbms-import:filterType", "exclude")
+            filterType: this.getSettingValue(domainPackage, "rdbms-import:filterType", "include")
         };
         return result;
     }
@@ -323,7 +323,7 @@ class DatabaseImportStrategy {
             connectionString: capturedInput.connectionString,
             settingPersistence: capturedInput.settingPersistence,
             databaseType: capturedInput.databaseType,
-            filterType: capturedInput.filterType || "exclude"
+            filterType: capturedInput.filterType || "include"
         };
         return importConfig;
     }
@@ -421,28 +421,29 @@ class DatabaseImportStrategy {
                     if (!metadata) {
                         return null;
                     }
-                    // Verify the import filter file path is writable (or creatable) by current process/user
-                    try {
-                        const verifyModel = {
-                            pathToFile: form.getField("importFilterFilePath").value,
-                            applicationId: application.id,
-                            packageId: packageId
-                        };
-                        const verifyResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.VerifyFilePath", verifyModel);
-                        if (((_a = verifyResult.errors) !== null && _a !== void 0 ? _a : []).length > 0) {
-                            verifyResult.errors.unshift("Import Filter File Path Errors.");
-                            await displayExecutionResultErrors(verifyResult);
-                            return null;
+                    let importFilterFilePath = form.getField("importFilterFilePath").value;
+                    if (importFilterFilePath) {
+                        try {
+                            const verifyModel = {
+                                pathToFile: importFilterFilePath,
+                                applicationId: application.id,
+                                packageId: packageId
+                            };
+                            const verifyResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.VerifyFilePath", verifyModel);
+                            if (((_a = verifyResult.errors) !== null && _a !== void 0 ? _a : []).length > 0) {
+                                verifyResult.errors.unshift("Import Filter File Path Errors.");
+                                await displayExecutionResultErrors(verifyResult);
+                                return null;
+                            }
                         }
-                    }
-                    catch (err) {
-                        throw err;
+                        catch (err) {
+                            throw err;
+                        }
                     }
                     console.warn("metadata:");
                     console.warn(JSON.stringify(metadata));
                     // Load existing filter data if file path exists
                     let existingFilter = null;
-                    let importFilterFilePath = form.getField("importFilterFilePath").value;
                     if (importFilterFilePath) {
                         const filterLoadModel = {
                             importFilterFilePath: importFilterFilePath,
@@ -454,7 +455,7 @@ class DatabaseImportStrategy {
                             existingFilter = filterLoadResult.result;
                             // Set this to hidden field, since we will need it later.
                             form.getField("existingImportFilter").value = JSON.stringify(filterLoadResult.result);
-                            form.getField("filterType").value = (_c = existingFilter.filter_type) !== null && _c !== void 0 ? _c : "exclude";
+                            form.getField("filterType").value = (_c = existingFilter.filter_type) !== null && _c !== void 0 ? _c : "include";
                             const include = form.getField("filterType").value == "include";
                             form.getField("inclusiveSelection").isHidden = !include;
                             form.getField("exclusiveSelection").isHidden = include;
