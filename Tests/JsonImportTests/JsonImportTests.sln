@@ -1,0 +1,53 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 17
+VisualStudioVersion = 17.8.34322.80
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Api", "1 - Api", "{1387C4CF-C35C-4932-B3A7-338237B620A1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonImportTests.Api", "JsonImportTests.Api\JsonImportTests.Api.csproj", "{3AB5B166-3744-4B45-86CB-7410689D6202}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Application", "2 - Application", "{F0AD9488-847C-4962-B095-EC0CD2173F4C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonImportTests.Application", "JsonImportTests.Application\JsonImportTests.Application.csproj", "{4E74497C-D8B8-418D-A936-B348974F0E31}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Domain", "3 - Domain", "{A58CE17A-4455-45A7-9D98-14F31FFEA1A2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonImportTests.Domain", "JsonImportTests.Domain\JsonImportTests.Domain.csproj", "{4C47759D-4163-4487-A6C2-9970D8526EE4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infrastructure", "4 - Infrastructure", "{D8846D5E-B102-4B53-B9D8-DB5F7D79F024}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonImportTests.Infrastructure", "JsonImportTests.Infrastructure\JsonImportTests.Infrastructure.csproj", "{EA335A81-50AF-4710-A72E-87D07E5CA34A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3AB5B166-3744-4B45-86CB-7410689D6202} = {1387C4CF-C35C-4932-B3A7-338237B620A1}
+		{4E74497C-D8B8-418D-A936-B348974F0E31} = {F0AD9488-847C-4962-B095-EC0CD2173F4C}
+		{4C47759D-4163-4487-A6C2-9970D8526EE4} = {A58CE17A-4455-45A7-9D98-14F31FFEA1A2}
+		{EA335A81-50AF-4710-A72E-87D07E5CA34A} = {D8846D5E-B102-4B53-B9D8-DB5F7D79F024}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3AB5B166-3744-4B45-86CB-7410689D6202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AB5B166-3744-4B45-86CB-7410689D6202}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AB5B166-3744-4B45-86CB-7410689D6202}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AB5B166-3744-4B45-86CB-7410689D6202}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E74497C-D8B8-418D-A936-B348974F0E31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E74497C-D8B8-418D-A936-B348974F0E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E74497C-D8B8-418D-A936-B348974F0E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E74497C-D8B8-418D-A936-B348974F0E31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C47759D-4163-4487-A6C2-9970D8526EE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C47759D-4163-4487-A6C2-9970D8526EE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C47759D-4163-4487-A6C2-9970D8526EE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C47759D-4163-4487-A6C2-9970D8526EE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA335A81-50AF-4710-A72E-87D07E5CA34A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA335A81-50AF-4710-A72E-87D07E5CA34A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA335A81-50AF-4710-A72E-87D07E5CA34A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA335A81-50AF-4710-A72E-87D07E5CA34A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

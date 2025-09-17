@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="41517e1a-0870-42e5-9c0a-14573702194d" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>customer</name>
+  <display>customer</display>
+  <externalReference>customer</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>ea38ed65-d051-48af-9a62-2e00b254b1b5</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="0cb0aa90-7e37-493f-8c9c-a88b2ccec162" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Id</name>
+      <display>Id: string</display>
+      <externalReference>customer.Id</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="3ecafd9e-472e-4215-b550-3eca45fecc95">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>41517e1a-0870-42e5-9c0a-14573702194d</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes>
+        <stereotype stereotypeDefinitionId="64f6a994-4909-4a9d-a0a9-afc5adf2ef74" name="Primary Key">
+          <addedByDefault>false</addedByDefault>
+          <definitionPackageName>Intent.Metadata.DocumentDB</definitionPackageName>
+          <definitionPackageId>1c7eab18-9482-4b4e-b61b-1fbd2d2427b6</definitionPackageId>
+          <properties>
+            <property name="ce12cf69-e97f-401b-9b08-7e2c62171d4e" display="Data source" value="Default" isActive="true" />
+          </properties>
+        </stereotype>
+      </stereotypes>
+      <metadata>
+        <entry key="is-managed-key" value="true" />
+      </metadata>
+      <childElements />
+    </childElement>
+    <childElement id="ad733cf2-63cd-4131-98b8-29ac224669f1" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Name</name>
+      <display>Name: string</display>
+      <externalReference>customer.Name</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="e5da860c-8daa-4c67-8a66-4daad51b3431">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>41517e1a-0870-42e5-9c0a-14573702194d</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="69ce6272-016b-4c04-a9e1-027ce85d7236" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Email</name>
+      <display>Email: string</display>
+      <externalReference>customer.Email</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="b7384fa4-a30c-4375-ba6d-6f7a0ca8d4d8">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>41517e1a-0870-42e5-9c0a-14573702194d</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Intent.MetadataSynchronizer.Json.CLI DocumentDB": {
+      "commandName": "Project",
+      "commandLineArgs": "--config-file \"documentdb_config.json\"",
+      "workingDirectory": "$(ProjectDir)"
+    },
+    "Intent.MetadataSynchronizer.Json.CLI EventingMessages": {
+      "commandName": "Project",
+      "commandLineArgs": "--config-file \"eventingmessages_config.json\"",
+      "workingDirectory": "$(ProjectDir)"
+    }
+  }
+}

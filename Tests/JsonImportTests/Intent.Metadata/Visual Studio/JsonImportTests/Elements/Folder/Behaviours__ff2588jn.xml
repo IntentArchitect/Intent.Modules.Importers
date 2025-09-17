@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="bd0233c2-2d36-4aef-90bf-1f650a10462e" type="Folder" typeId="3407a825-1331-4f3f-89a4-901903ed97ce">
+  <name>Behaviours</name>
+  <display>Behaviours</display>
+  <isAbstract>false</isAbstract>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>72cabb22-726e-4296-b77d-3b24b9553934</parentFolderId>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="6e79de04-3b1a-4245-9fbf-a3b2eebe5a7e" type="Template Output" typeId="d421c322-7a51-4094-89fa-e5d8a0a97b27">
+      <name>Intent.Application.MediatR.FluentValidation.ValidationBehaviour</name>
+      <display>Intent.Application.MediatR.FluentValidation.ValidationBehaviour</display>
+      <externalReference>Intent.Application.MediatR.FluentValidation</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <isMapped>false</isMapped>
+      <parentFolderId>bd0233c2-2d36-4aef-90bf-1f650a10462e</parentFolderId>
+      <stereotypes />
+      <metadata>
+        <entry key="status" value="assigned" />
+      </metadata>
+      <childElements />
+    </childElement>
+    <childElement id="4b977e1e-8958-4c8b-ab14-f95a1a55aa4c" type="Template Output" typeId="d421c322-7a51-4094-89fa-e5d8a0a97b27">
+      <name>Intent.Application.MediatR.Behaviours.AuthorizationBehaviour</name>
+      <display>Intent.Application.MediatR.Behaviours.AuthorizationBehaviour</display>
+      <externalReference>Intent.Application.MediatR.Behaviours</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <isMapped>false</isMapped>
+      <parentFolderId>bd0233c2-2d36-4aef-90bf-1f650a10462e</parentFolderId>
+      <stereotypes />
+      <metadata>
+        <entry key="status" value="assigned" />
+      </metadata>
+      <childElements />
+    </childElement>
+    <childElement id="5da15a6a-b90c-4287-8b66-77dd261c6534" type="Template Output" typeId="d421c322-7a51-4094-89fa-e5d8a0a97b27">
+      <name>Intent.Application.MediatR.Behaviours.EventBusPublishBehaviour</name>
+      <display>Intent.Application.MediatR.Behaviours.EventBusPublishBehaviour</display>
+      <externalReference>Intent.Application.MediatR.Behaviours</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <isMapped>false</isMapped>
+      <parentFolderId>bd0233c2-2d36-4aef-90bf-1f650a10462e</parentFolderId>
+      <stereotypes />
+      <metadata>
+        <entry key="status" value="assigned" />
+      </metadata>
+      <childElements />
+    </childElement>
+    <childElement id="2eef6005-7908-4e00-9562-51f9b7c8e3f5" type="Template Output" typeId="d421c322-7a51-4094-89fa-e5d8a0a97b27">
+      <name>Intent.Application.MediatR.Behaviours.LoggingBehaviour</name>
+      <display>Intent.Application.MediatR.Behaviours.LoggingBehaviour</display>
+      <externalReference>Intent.Application.MediatR.Behaviours</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <isMapped>false</isMapped>
+      <parentFolderId>bd0233c2-2d36-4aef-90bf-1f650a10462e</parentFolderId>
+      <stereotypes />
+      <metadata>
+        <entry key="status" value="assigned" />
+      </metadata>
+      <childElements />
+    </childElement>
+    <childElement id="edc09411-8ec8-4673-91b2-43505f79cc3f" type="Template Output" typeId="d421c322-7a51-4094-89fa-e5d8a0a97b27">
+      <name>Intent.Application.MediatR.Behaviours.PerformanceBehaviour</name>
+      <display>Intent.Application.MediatR.Behaviours.PerformanceBehaviour</display>
+      <externalReference>Intent.Application.MediatR.Behaviours</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <isMapped>false</isMapped>
+      <parentFolderId>bd0233c2-2d36-4aef-90bf-1f650a10462e</parentFolderId>
+      <stereotypes />
+      <metadata>
+        <entry key="status" value="assigned" />
+      </metadata>
+      <childElements />
+    </childElement>
+    <childElement id="ff96f5c6-19c1-4bc0-bf2a-2ecc5dffe872" type="Template Output" typeId="d421c322-7a51-4094-89fa-e5d8a0a97b27">
+      <name>Intent.Application.MediatR.Behaviours.UnhandledExceptionBehaviour</name>
+      <display>Intent.Application.MediatR.Behaviours.UnhandledExceptionBehaviour</display>
+      <externalReference>Intent.Application.MediatR.Behaviours</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <isMapped>false</isMapped>
+      <parentFolderId>bd0233c2-2d36-4aef-90bf-1f650a10462e</parentFolderId>
+      <stereotypes />
+      <metadata>
+        <entry key="status" value="assigned" />
+      </metadata>
+      <childElements />
+    </childElement>
+    <childElement id="ef02ad5a-67d7-4260-8d81-b2a5e1974876" type="Template Output" typeId="d421c322-7a51-4094-89fa-e5d8a0a97b27">
+      <name>Intent.Application.MediatR.Behaviours.UnitOfWorkBehaviour</name>
+      <display>Intent.Application.MediatR.Behaviours.UnitOfWorkBehaviour</display>
+      <externalReference>Intent.Application.MediatR.Behaviours</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <isMapped>false</isMapped>
+      <parentFolderId>bd0233c2-2d36-4aef-90bf-1f650a10462e</parentFolderId>
+      <stereotypes />
+      <metadata>
+        <entry key="status" value="assigned" />
+      </metadata>
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

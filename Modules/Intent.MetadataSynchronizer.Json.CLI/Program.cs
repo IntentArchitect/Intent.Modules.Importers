@@ -21,7 +21,7 @@ namespace Intent.MetadataSynchronizer.Json.CLI
         {
             var rootCommand = new RootCommand(
                 "The Intent JSON Metadata Synchronizer CLI tool can be used to synchronize an object " +
-                "graph in a JSON file into an Intent Architect Document DB Domain Package.")
+                "graph in JSON files into an Intent Architect package within any supported designer.")
             {
                 new Option<FileInfo>(
                     name: GetOptionName(nameof(JsonConfig.ConfigFile)),
@@ -33,9 +33,9 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                     name: GetOptionName(nameof(JsonConfig.GenerateConfigFile)),
                     description: $"Scaffolds into the current working directory a \"config.json\" for use with the " +
                                  $"{GetOptionName(nameof(JsonConfig.ConfigFile))} option."),
-                new Option<FileInfo>(
-                    name: GetOptionName(nameof(JsonConfig.SourceJsonFile)),
-                    description: "The name of the JSON file to parse and synchronize into the Intent Architect Package."),
+                new Option<DirectoryInfo>(
+                    name: GetOptionName(nameof(JsonConfig.SourceJsonFolder)),
+                    description: "The path to the folder containing JSON files to parse and synchronize into the Intent Architect Package."),
                 new Option<FileInfo>(
                     name: GetOptionName(nameof(JsonConfig.IslnFile)),
                     description: "The Intent Architect solution (.isln) file containing the Intent Architect Application " +
@@ -55,19 +55,23 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                                  "Intent Architect package."),
                 new Option<CasingConvention?>(
                     name: GetOptionName(nameof(JsonConfig.CasingConvention)),
-                    description: "Casing convention to be applied on imported elements. Options are PascalCase or AsIs.")
+                    description: "Casing convention to be applied on imported elements. Options are PascalCase or AsIs."),
+                new Option<ImportProfile?>(
+                    name: GetOptionName(nameof(JsonConfig.Profile)),
+                    description: "Import profile to use. Options are DomainDocumentDB or EventingMessages.")
             };
 
             rootCommand.SetHandler(
                 handle: (
                     FileInfo? configFilePath,
                     bool generateConfigFile,
-                    FileInfo? sourceJsonFile,
+                    DirectoryInfo? sourceJsonFolder,
                     FileInfo? islnFile,
                     string? applicationName,
                     string? packageId,
                     string? targetFolderId,
-                    CasingConvention? casingConvention) =>
+                    CasingConvention? casingConvention,
+                    ImportProfile? profile) =>
                 {
                     var serializerOptions = new JsonSerializerOptions
                     {
@@ -94,8 +98,8 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                     JsonConfig configFile;
                     if (configFilePath != null)
                     {
-                        if (sourceJsonFile != null)
-                            throw new Exception($"{GetOptionName(nameof(JsonConfig.SourceJsonFile))} not allowed when {configFileOptionName} specified.");
+                        if (sourceJsonFolder != null)
+                            throw new Exception($"{GetOptionName(nameof(JsonConfig.SourceJsonFolder))} not allowed when {configFileOptionName} specified.");
 
                         if (islnFile != null)
                             throw new Exception($"{GetOptionName(nameof(JsonConfig.IslnFile))} not allowed when {configFileOptionName} specified.");
@@ -112,8 +116,8 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                         configFile = JsonSerializer.Deserialize<JsonConfig>(File.ReadAllText(configFilePath.FullName), serializerOptions)
                                      ?? throw new Exception($"Parsing of \"{configFilePath.FullName}\" returned null.");
 
-                        if (string.IsNullOrWhiteSpace(configFile.SourceJsonFile) || !File.Exists(configFile.SourceJsonFile))
-                            throw new Exception($"Config file field {nameof(configFile.SourceJsonFile)} must be a valid file path.");
+                        if (string.IsNullOrWhiteSpace(configFile.SourceJsonFolder) || !Directory.Exists(configFile.SourceJsonFolder))
+                            throw new Exception($"Config file field {nameof(configFile.SourceJsonFolder)} must be a valid directory path.");
 
                         if (string.IsNullOrWhiteSpace(configFile.IslnFile) || !File.Exists(configFile.IslnFile))
                             throw new Exception($"Config file field {nameof(configFile.IslnFile)} must be a valid file path.");
@@ -126,8 +130,8 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                     }
                     else
                     {
-                        if (sourceJsonFile == null)
-                            throw new Exception($"{GetOptionName(nameof(JsonConfig.SourceJsonFile))} mandatory when {configFileOptionName} not specified.");
+                        if (sourceJsonFolder == null)
+                            throw new Exception($"{GetOptionName(nameof(JsonConfig.SourceJsonFolder))} mandatory when {configFileOptionName} not specified.");
 
                         if (islnFile == null)
                             throw new Exception($"{GetOptionName(nameof(JsonConfig.IslnFile))} mandatory when {configFileOptionName} not specified.");
@@ -140,7 +144,7 @@ namespace Intent.MetadataSynchronizer.Json.CLI
 
                         configFile = new JsonConfig
                         {
-                            SourceJsonFile = sourceJsonFile.FullName,
+                            SourceJsonFolder = sourceJsonFolder.FullName,
                             IslnFile = islnFile.FullName,
                             ApplicationName = applicationName,
                             PackageId = packageId,
@@ -150,12 +154,19 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                         {
                             configFile.CasingConvention = casingConvention.Value;
                         }
+                        if (profile != null)
+                        {
+                            configFile.Profile = profile.Value;
+                        }
                     }
+
+                    // Resolve settings from profile
+                    var settings = ProfileFactory.GetSettings(configFile.Profile);
 
                     Helpers.Execute(
                         intentSolutionPath: configFile.IslnFile,
                         applicationName: configFile.ApplicationName,
-                        designerName: "Domain",
+                        designerName: settings.DesignerName,
                         packageId: configFile.PackageId,
                         targetFolderId: configFile.TargetFolderId,
                         deleteExtra: deleteExtra,
@@ -163,7 +174,7 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                         createAttributesWithUnknownTypes: createAttributesWithUnknownTypes,
                         stereotypeManagementMode: stereotypeManagementMode,
                         additionalPreconditionChecks: null,
-                        getPersistables: packages => GetPersistables(configFile.SourceJsonFile, configFile.CasingConvention, packages));
+                        getPersistables: packages => GetPersistables(configFile, packages));
                 },
                 symbols: Enumerable.Empty<IValueDescriptor>()
                     .Concat(rootCommand.Options)
@@ -178,10 +189,11 @@ namespace Intent.MetadataSynchronizer.Json.CLI
         }
 
         private static Persistables GetPersistables(
-            string sourceFile,
-            CasingConvention casingConvention,
+            JsonConfig config,
             IReadOnlyCollection<PackageModelPersistable> packages)
         {
+            // Resolve settings from profile
+            var settings = ProfileFactory.GetSettings(config.Profile);
             var lookups = new MetadataLookup(packages);
             if (!lookups.TryGetTypeDefinitionByName("bool", 0, out var boolType)) throw new Exception();
             if (!lookups.TryGetTypeDefinitionByName("object", 0, out var objectType)) throw new Exception();
@@ -197,31 +209,30 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                 [ClassificationType.Number] = numberType,
             };
 
-            var document = JsonDocument.Parse(File.ReadAllText(sourceFile), new JsonDocumentOptions
-            {
-                CommentHandling = JsonCommentHandling.Skip
-            });
-
-            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(sourceFile);
-            
-            var elementPersistable = ElementPersistable.Create(
-                specializationType: ClassModel.SpecializationType,
-                specializationTypeId: ClassModel.SpecializationTypeId,
-                name: Casing(fileNameWithoutExtension),
-                parentId: null,
-                externalReference: fileNameWithoutExtension);
-
             var classElements = new List<(ElementPersistable Element, Stack<string> PathParts)>();
             var associations = new List<AssociationPersistable>();
 
-            classElements.Add((elementPersistable, new Stack<string>(new[] { fileNameWithoutExtension })));
+            foreach (var jsonFile in Directory.GetFiles(config.SourceJsonFolder, "*.json"))
+            {
+                var document = JsonDocument.Parse(File.ReadAllText(jsonFile), new JsonDocumentOptions
+                {
+                    CommentHandling = JsonCommentHandling.Skip
+                });
 
-            Parse(
-                jsonElement: document.RootElement, 
-                intentElement: elementPersistable, 
-                path: $"({fileNameWithoutExtension})",
-                pathParts: new[] { Casing(fileNameWithoutExtension) },
-                isRootElement: true);
+                var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(jsonFile);
+                
+                var elementPersistable = ElementPersistable.Create(
+                    specializationType: settings.RootSpecializationType,
+                    specializationTypeId: settings.RootSpecializationTypeId,
+                    name: Casing(fileNameWithoutExtension),
+                    parentId: null,
+                    externalReference: fileNameWithoutExtension);
+
+                classElements.Add((elementPersistable, new Stack<string>(new[] { fileNameWithoutExtension })));
+
+                // Parse the document and add to classElements and associations
+                Parse(document.RootElement, elementPersistable, fileNameWithoutExtension, new[] { Casing(fileNameWithoutExtension) }, true);
+            }
 
             do
             {
@@ -250,7 +261,7 @@ namespace Intent.MetadataSynchronizer.Json.CLI
 
             string Casing(string name)
             {
-                return casingConvention == CasingConvention.AsIs ? name : name.ToPascalCase();
+                return config.CasingConvention == CasingConvention.AsIs ? name : name.ToPascalCase();
             }
 
             void Parse(
@@ -266,8 +277,8 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                     if (classification.Type == ClassificationType.Object)
                     {
                         var targetElement = ElementPersistable.Create(
-                            specializationType: ClassModel.SpecializationType,
-                            specializationTypeId: ClassModel.SpecializationTypeId,
+                            specializationType: settings.RootSpecializationType,
+                            specializationTypeId: settings.RootSpecializationTypeId,
                             name: Casing(property.Name).Singularize(false),
                             parentId: null,
                             externalReference: classification.Path);
@@ -279,8 +290,8 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                             Id = Guid.NewGuid().ToString().ToLower(),
                             SourceEnd = new AssociationEndPersistable
                             {
-                                SpecializationType = "Association Source End", // https://dev.azure.com/intentarchitect/Intent%20Architect/_workitems/edit/584
-                                SpecializationTypeId = AssociationSourceEndModel.SpecializationTypeId,
+                                SpecializationType = settings.AssociationSourceEndSpecializationType,
+                                SpecializationTypeId = settings.AssociationSourceEndSpecializationTypeId,
                                 Name = intentElement.Name,
                                 TypeReference = TypeReferencePersistable.Create(
                                     typeId: intentElement.Id,
@@ -298,8 +309,8 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                             },
                             TargetEnd = new AssociationEndPersistable
                             {
-                                SpecializationType = "Association Target End", // https://dev.azure.com/intentarchitect/Intent%20Architect/_workitems/edit/584
-                                SpecializationTypeId = AssociationTargetEndModel.SpecializationTypeId,
+                                SpecializationType = settings.AssociationTargetEndSpecializationType,
+                                SpecializationTypeId = settings.AssociationTargetEndSpecializationTypeId,
                                 Name = Casing(property.Name),
                                 TypeReference = TypeReferencePersistable.Create(
                                     typeId: targetElement.Id,
@@ -315,8 +326,8 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                                     genericTypeParameters: new List<TypeReferencePersistable>()),
                                 ExternalReference = classification.Path,
                             },
-                            AssociationType = AssociationModel.SpecializationType,
-                            AssociationTypeId = AssociationModel.SpecializationTypeId
+                            AssociationType = settings.AssociationSpecializationType,
+                            AssociationTypeId = settings.AssociationSpecializationTypeId
                         };
 
                         associations.Add(association);
@@ -329,8 +340,8 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                     var referencedType = typeLookups[classification.Type];
 
                     var attributeElement = ElementPersistable.Create(
-                        specializationType: AttributeModel.SpecializationType,
-                        specializationTypeId: AttributeModel.SpecializationTypeId,
+                        specializationType: settings.AttributeSpecializationType,
+                        specializationTypeId: settings.AttributeSpecializationTypeId,
                         name: Casing(property.Name),
                         parentId: intentElement.Id,
                         externalReference: classification.Path);
@@ -349,7 +360,9 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                         genericTypeParameters: new List<TypeReferencePersistable>());
 
                     if (isRootElement &&
-                        "Id".Equals(attributeElement.Name, StringComparison.OrdinalIgnoreCase))
+                        "Id".Equals(attributeElement.Name, StringComparison.OrdinalIgnoreCase) &&
+                        config.Profile == ImportProfile.DomainDocumentDB &&
+                        settings.AttributeSpecializationTypeId == AttributeModel.SpecializationTypeId)
                     {
                         attributeElement.Stereotypes.Add(new StereotypePersistable
                         {
