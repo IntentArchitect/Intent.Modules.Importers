@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<class id="cb97c381-a6f2-41b9-b51b-3ce71ff59563" type="Message" typeId="cbe970af-5bad-4d92-a3ed-a24b9fdaa23e">
-  <name>orderPlaced</name>
-  <display>orderPlaced</display>
-  <externalReference>orderPlaced</externalReference>
+<class id="441e3568-e4e8-470f-b0a2-8c3c725248b7" type="Message" typeId="cbe970af-5bad-4d92-a3ed-a24b9fdaa23e">
+  <name>customerEmailChanged</name>
+  <display>customerEmailChanged</display>
+  <externalReference>customerEmailChanged</externalReference>
   <isAbstract>false</isAbstract>
   <sort-children>by-type-then-manually</sort-children>
   <genericTypes />
@@ -13,14 +13,14 @@
   <stereotypes />
   <metadata />
   <childElements>
-    <childElement id="15b712cb-ed36-44b8-bdda-7155966b0e5d" type="Property" typeId="bde29850-5fb9-4f47-9941-b9e182fd9bdc">
+    <childElement id="4acdb20c-38ad-40de-82f7-41d7c95833e2" type="Property" typeId="bde29850-5fb9-4f47-9941-b9e182fd9bdc">
       <name>EventId</name>
-      <display>EventId: string</display>
-      <externalReference>orderPlaced.EventId</externalReference>
+      <display>EventId: guid</display>
+      <externalReference>customerEmailChanged.EventId</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="9d68a76f-a823-4e19-83a9-8c1fa4c30d2e">
-        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+      <typeReference id="e2eb4ad3-6adf-4b43-8618-6204d17fe655">
+        <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
         <isCollection>false</isCollection>
@@ -31,21 +31,21 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>cb97c381-a6f2-41b9-b51b-3ce71ff59563</parentFolderId>
+      <parentFolderId>441e3568-e4e8-470f-b0a2-8c3c725248b7</parentFolderId>
       <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
       <packageName>JsonImportTests.Eventing.Messages</packageName>
       <stereotypes />
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="92045b66-0b48-4c3d-bd72-d907edc5455e" type="Property" typeId="bde29850-5fb9-4f47-9941-b9e182fd9bdc">
+    <childElement id="2170a3b8-244e-486c-a2dc-483167e4bc65" type="Property" typeId="bde29850-5fb9-4f47-9941-b9e182fd9bdc">
       <name>Timestamp</name>
-      <display>Timestamp: string</display>
-      <externalReference>orderPlaced.Timestamp</externalReference>
+      <display>Timestamp: datetime</display>
+      <externalReference>customerEmailChanged.Timestamp</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="06e8249b-0619-4265-8e0c-1db5caeeaab5">
-        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+      <typeReference id="3b47bd72-8666-4bec-a7b2-cb49fe139477">
+        <typeId>a4107c29-7851-4121-9416-cf1236908f1e</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
         <isCollection>false</isCollection>
@@ -56,21 +56,21 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>cb97c381-a6f2-41b9-b51b-3ce71ff59563</parentFolderId>
+      <parentFolderId>441e3568-e4e8-470f-b0a2-8c3c725248b7</parentFolderId>
       <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
       <packageName>JsonImportTests.Eventing.Messages</packageName>
       <stereotypes />
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="f0ea6b62-97ac-4789-a686-084bb8cce53f" type="Property" typeId="bde29850-5fb9-4f47-9941-b9e182fd9bdc">
+    <childElement id="688c02d7-58a9-4fee-9e15-f021c1965c9f" type="Property" typeId="bde29850-5fb9-4f47-9941-b9e182fd9bdc">
       <name>CustomerId</name>
-      <display>CustomerId: string</display>
-      <externalReference>orderPlaced.CustomerId</externalReference>
+      <display>CustomerId: guid</display>
+      <externalReference>customerEmailChanged.CustomerId</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="fd4a2952-dab9-4798-ab66-0d53473d57dc">
-        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+      <typeReference id="1c2d1cdf-e752-4576-acda-66c9d8b1c292">
+        <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
         <isCollection>false</isCollection>
@@ -81,20 +81,20 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>cb97c381-a6f2-41b9-b51b-3ce71ff59563</parentFolderId>
+      <parentFolderId>441e3568-e4e8-470f-b0a2-8c3c725248b7</parentFolderId>
       <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
       <packageName>JsonImportTests.Eventing.Messages</packageName>
       <stereotypes />
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="04d7e689-ffbc-4329-990f-482521cd153b" type="Property" typeId="bde29850-5fb9-4f47-9941-b9e182fd9bdc">
-      <name>Action</name>
-      <display>Action: string</display>
-      <externalReference>orderPlaced.Action</externalReference>
+    <childElement id="06074f4b-cba7-4557-848d-2611c5d6906f" type="Property" typeId="bde29850-5fb9-4f47-9941-b9e182fd9bdc">
+      <name>OldEmail</name>
+      <display>OldEmail: string</display>
+      <externalReference>customerEmailChanged.OldEmail</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="60b4f3d6-21f7-4a21-af09-fbbc79d95375">
+      <typeReference id="723fd87b-07f2-42e7-b09c-2101ea926f02">
         <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -106,7 +106,32 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>cb97c381-a6f2-41b9-b51b-3ce71ff59563</parentFolderId>
+      <parentFolderId>441e3568-e4e8-470f-b0a2-8c3c725248b7</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="de44fa28-c007-4250-b38e-f97343d47e5c" type="Property" typeId="bde29850-5fb9-4f47-9941-b9e182fd9bdc">
+      <name>NewEmail</name>
+      <display>NewEmail: string</display>
+      <externalReference>customerEmailChanged.NewEmail</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="821e111a-f066-4730-90f5-6d9c2ce68c1c">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>441e3568-e4e8-470f-b0a2-8c3c725248b7</parentFolderId>
       <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
       <packageName>JsonImportTests.Eventing.Messages</packageName>
       <stereotypes />

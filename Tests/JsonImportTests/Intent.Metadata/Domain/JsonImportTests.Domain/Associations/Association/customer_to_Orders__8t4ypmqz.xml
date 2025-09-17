@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<association id="aa1e9c2d-9a42-4f76-95bf-38d644450f98">
-  <sourceEnd id="89f054446d83-fb59-67f4-24a9-d2c9e1aa" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+<association id="e9187f7f-8d2f-4dba-9ea9-9b10c68f628a">
+  <sourceEnd id="a826f86c01b9-9ae9-abd4-f2d8-f7f7819e" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
     <name>customer</name>
     <display>customer: customer</display>
     <order>0</order>
-    <typeReference id="8fd26d29-c318-4c0d-96d6-df4f686d1cf0">
-      <typeId>41517e1a-0870-42e5-9c0a-14573702194d</typeId>
+    <typeReference id="8fb3ce55-98c9-4a2e-b30c-a621e1f8234d">
+      <typeId>ddd83336-110a-461b-86f3-027aaf0158b1</typeId>
       <isNavigable>false</isNavigable>
       <isNullable>false</isNullable>
       <isCollection>false</isCollection>
@@ -20,12 +20,12 @@
     <externalReference>customer</externalReference>
     <childElements />
   </sourceEnd>
-  <targetEnd id="aa1e9c2d-9a42-4f76-95bf-38d644450f98" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+  <targetEnd id="e9187f7f-8d2f-4dba-9ea9-9b10c68f628a" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
     <name>Orders</name>
     <display>Orders: Order[*]</display>
     <order>3</order>
-    <typeReference id="71124d37-b845-42c9-a5ad-1109a7232fbb">
-      <typeId>db2ba609-d448-4d6f-a259-50cc5ab0d22e</typeId>
+    <typeReference id="4b4fa720-55f0-4686-a453-e33c4e010c39">
+      <typeId>fbce6b66-bb8c-4492-9576-6f41fa6356ff</typeId>
       <isNavigable>true</isNavigable>
       <isNullable>false</isNullable>
       <isCollection>true</isCollection>

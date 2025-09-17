@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<class id="db2ba609-d448-4d6f-a259-50cc5ab0d22e" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+<class id="fbce6b66-bb8c-4492-9576-6f41fa6356ff" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
   <name>Order</name>
   <display>Order</display>
   <externalReference>customer.Orders[0]</externalReference>
@@ -15,14 +15,14 @@
     <entry key="currentPartitionKey" value="" />
   </metadata>
   <childElements>
-    <childElement id="a038fa32-b2fb-4877-b88a-a6f027c080e9" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+    <childElement id="bcc02f78-a5ea-49e5-9d2f-914bcb2f3010" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
       <name>Id</name>
-      <display>Id: string</display>
+      <display>Id: guid</display>
       <externalReference>customer.Orders[0].Id</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="f413dccd-0912-4454-af35-5132d65a09eb">
-        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+      <typeReference id="f79aa72c-6456-47b5-8edb-1b37c0e4738d">
+        <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
         <isCollection>false</isCollection>
@@ -33,7 +33,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>db2ba609-d448-4d6f-a259-50cc5ab0d22e</parentFolderId>
+      <parentFolderId>fbce6b66-bb8c-4492-9576-6f41fa6356ff</parentFolderId>
       <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
       <packageName>JsonImportTests.Domain</packageName>
       <stereotypes>
@@ -49,13 +49,13 @@
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="b2553026-004e-40c8-b07b-7e7eeb2e7026" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+    <childElement id="11378c9a-efcd-4735-b13f-992d904b7588" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
       <name>Amount</name>
       <display>Amount: decimal</display>
       <externalReference>customer.Orders[0].Amount</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="0defc773-564f-401a-b50f-4f80f6fe31af">
+      <typeReference id="e5b59ac4-c68e-409e-a38b-cea5f96226bc">
         <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -67,7 +67,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>db2ba609-d448-4d6f-a259-50cc5ab0d22e</parentFolderId>
+      <parentFolderId>fbce6b66-bb8c-4492-9576-6f41fa6356ff</parentFolderId>
       <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
       <packageName>JsonImportTests.Domain</packageName>
       <stereotypes />

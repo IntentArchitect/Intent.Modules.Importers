@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<class id="e0692717-80bd-4521-b80b-3e7b5683b71a" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+<class id="4b6c368d-7292-4c5e-bd7d-88bdb17492d4" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
   <name>invoice</name>
   <display>invoice</display>
   <externalReference>invoice</externalReference>
@@ -13,14 +13,14 @@
   <stereotypes />
   <metadata />
   <childElements>
-    <childElement id="1ad018a4-e693-458e-9e90-f9306850d1a3" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+    <childElement id="c67a0292-3f6f-4a86-bf70-071e336334e9" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
       <name>Id</name>
-      <display>Id: string</display>
+      <display>Id: guid</display>
       <externalReference>invoice.Id</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="2768055b-3f41-46c6-a315-075e8cc7dc30">
-        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+      <typeReference id="3670c165-db8b-4365-a1fd-884eaa296051">
+        <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
         <isCollection>false</isCollection>
@@ -31,7 +31,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>e0692717-80bd-4521-b80b-3e7b5683b71a</parentFolderId>
+      <parentFolderId>4b6c368d-7292-4c5e-bd7d-88bdb17492d4</parentFolderId>
       <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
       <packageName>JsonImportTests.Domain</packageName>
       <stereotypes>
@@ -49,14 +49,14 @@
       </metadata>
       <childElements />
     </childElement>
-    <childElement id="30a7d652-51d5-4c53-877e-f38d13aeb039" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+    <childElement id="e8cb6247-9494-48f8-9bd1-425bd3b1d85a" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
       <name>CustomerId</name>
-      <display>CustomerId: string</display>
+      <display>CustomerId: guid</display>
       <externalReference>invoice.CustomerId</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="1e3c67e0-a122-432c-9a0e-695d65c6be9a">
-        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+      <typeReference id="29fbebc2-9ea7-4b99-b7f5-0e7885d30ed3">
+        <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
         <isCollection>false</isCollection>
@@ -67,20 +67,20 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>e0692717-80bd-4521-b80b-3e7b5683b71a</parentFolderId>
+      <parentFolderId>4b6c368d-7292-4c5e-bd7d-88bdb17492d4</parentFolderId>
       <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
       <packageName>JsonImportTests.Domain</packageName>
       <stereotypes />
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="90fd8854-3aba-452e-9d89-bff0f558bcd7" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+    <childElement id="0b3e4fab-8880-4fdd-9ddf-6e36402489df" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
       <name>TotalAmount</name>
       <display>TotalAmount: decimal</display>
       <externalReference>invoice.TotalAmount</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="893d046b-d2c2-4fae-afc4-c2131010ac84">
+      <typeReference id="0b607bf6-9c2d-4e03-98a5-4ae8ed7cf4ac">
         <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -92,7 +92,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>e0692717-80bd-4521-b80b-3e7b5683b71a</parentFolderId>
+      <parentFolderId>4b6c368d-7292-4c5e-bd7d-88bdb17492d4</parentFolderId>
       <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
       <packageName>JsonImportTests.Domain</packageName>
       <stereotypes />

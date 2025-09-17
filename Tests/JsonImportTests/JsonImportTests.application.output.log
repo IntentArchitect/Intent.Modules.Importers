@@ -353,11 +353,75 @@
       <IsIgnored>false</IsIgnored>
     </FileLog>
     <FileLog>
+      <ProjectId>73706411-cf19-4138-ae03-7f35c7a724fa</ProjectId>
+      <CorrelationId>Intent.Entities.DomainEntity#ddd83336-110a-461b-86f3-027aaf0158b1</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Domain/Entities/customer.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>customer.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>73706411-cf19-4138-ae03-7f35c7a724fa</ProjectId>
+      <CorrelationId>Intent.Entities.DomainEntity#4b6c368d-7292-4c5e-bd7d-88bdb17492d4</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Domain/Entities/invoice.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>invoice.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>73706411-cf19-4138-ae03-7f35c7a724fa</ProjectId>
+      <CorrelationId>Intent.Entities.DomainEntity#7552a92e-d5b9-494d-a497-85ec8bc52403</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Domain/Entities/Item.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>Item.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>73706411-cf19-4138-ae03-7f35c7a724fa</ProjectId>
+      <CorrelationId>Intent.Entities.DomainEntity#fbce6b66-bb8c-4492-9576-6f41fa6356ff</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Domain/Entities/Order.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>Order.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
       <ProjectId>4c47759d-4163-4487-a6c2-9970d8526ee4</ProjectId>
       <CorrelationId>Intent.VisualStudio.Projects.CSharpProject#4c47759d-4163-4487-a6c2-9970d8526ee4</CorrelationId>
       <OverwriteBehaviour>always</OverwriteBehaviour>
       <ApplicationRelativeFilePath>JsonImportTests.Domain/JsonImportTests.Domain.csproj</ApplicationRelativeFilePath>
       <ProjectRelativeFilePath>JsonImportTests.Domain.csproj</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>0dadb0e2-8da8-48fe-afec-440bee424aa3</ProjectId>
+      <CorrelationId>Intent.CosmosDB.CosmosDBDocumentInterface#ddd83336-110a-461b-86f3-027aaf0158b1</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Domain/Repositories/Documents/IcustomerDocument.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>IcustomerDocument.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>0dadb0e2-8da8-48fe-afec-440bee424aa3</ProjectId>
+      <CorrelationId>Intent.CosmosDB.CosmosDBDocumentInterface#4b6c368d-7292-4c5e-bd7d-88bdb17492d4</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Domain/Repositories/Documents/IinvoiceDocument.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>IinvoiceDocument.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>0dadb0e2-8da8-48fe-afec-440bee424aa3</ProjectId>
+      <CorrelationId>Intent.CosmosDB.CosmosDBDocumentInterface#7552a92e-d5b9-494d-a497-85ec8bc52403</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Domain/Repositories/Documents/IItemDocument.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>IItemDocument.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>0dadb0e2-8da8-48fe-afec-440bee424aa3</ProjectId>
+      <CorrelationId>Intent.CosmosDB.CosmosDBDocumentInterface#fbce6b66-bb8c-4492-9576-6f41fa6356ff</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Domain/Repositories/Documents/IOrderDocument.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>IOrderDocument.cs</ProjectRelativeFilePath>
       <IsIgnored>false</IsIgnored>
     </FileLog>
     <FileLog>
@@ -370,10 +434,26 @@
     </FileLog>
     <FileLog>
       <ProjectId>7187a911-9091-43ec-8f59-33b1e6e7f6b3</ProjectId>
+      <CorrelationId>Intent.Entities.Repositories.Api.EntityRepositoryInterface#ddd83336-110a-461b-86f3-027aaf0158b1</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Domain/Repositories/ICustomerRepository.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>ICustomerRepository.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>7187a911-9091-43ec-8f59-33b1e6e7f6b3</ProjectId>
       <CorrelationId>Intent.EntityFrameworkCore.Repositories.EFRepositoryInterface</CorrelationId>
       <OverwriteBehaviour>always</OverwriteBehaviour>
       <ApplicationRelativeFilePath>JsonImportTests.Domain/Repositories/IEFRepository.cs</ApplicationRelativeFilePath>
       <ProjectRelativeFilePath>IEFRepository.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>7187a911-9091-43ec-8f59-33b1e6e7f6b3</ProjectId>
+      <CorrelationId>Intent.Entities.Repositories.Api.EntityRepositoryInterface#4b6c368d-7292-4c5e-bd7d-88bdb17492d4</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Domain/Repositories/IInvoiceRepository.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>IInvoiceRepository.cs</ProjectRelativeFilePath>
       <IsIgnored>false</IsIgnored>
     </FileLog>
     <FileLog>
@@ -442,10 +522,42 @@
     </FileLog>
     <FileLog>
       <ProjectId>c5c88ecc-1235-4a13-a427-15c475d1d3f8</ProjectId>
+      <CorrelationId>Intent.CosmosDB.CosmosDBDocument#ddd83336-110a-461b-86f3-027aaf0158b1</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Infrastructure/Persistence/Documents/customerDocument.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>customerDocument.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>c5c88ecc-1235-4a13-a427-15c475d1d3f8</ProjectId>
       <CorrelationId>Intent.CosmosDB.CosmosDBDocumentOfTInterface</CorrelationId>
       <OverwriteBehaviour>always</OverwriteBehaviour>
       <ApplicationRelativeFilePath>JsonImportTests.Infrastructure/Persistence/Documents/ICosmosDBDocument.cs</ApplicationRelativeFilePath>
       <ProjectRelativeFilePath>ICosmosDBDocument.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>c5c88ecc-1235-4a13-a427-15c475d1d3f8</ProjectId>
+      <CorrelationId>Intent.CosmosDB.CosmosDBDocument#4b6c368d-7292-4c5e-bd7d-88bdb17492d4</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Infrastructure/Persistence/Documents/invoiceDocument.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>invoiceDocument.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>c5c88ecc-1235-4a13-a427-15c475d1d3f8</ProjectId>
+      <CorrelationId>Intent.CosmosDB.CosmosDBDocument#7552a92e-d5b9-494d-a497-85ec8bc52403</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Infrastructure/Persistence/Documents/ItemDocument.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>ItemDocument.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>c5c88ecc-1235-4a13-a427-15c475d1d3f8</ProjectId>
+      <CorrelationId>Intent.CosmosDB.CosmosDBDocument#fbce6b66-bb8c-4492-9576-6f41fa6356ff</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Infrastructure/Persistence/Documents/OrderDocument.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>OrderDocument.cs</ProjectRelativeFilePath>
       <IsIgnored>false</IsIgnored>
     </FileLog>
     <FileLog>
@@ -470,6 +582,22 @@
       <OverwriteBehaviour>always</OverwriteBehaviour>
       <ApplicationRelativeFilePath>JsonImportTests.Infrastructure/Repositories/CosmosPagedList.cs</ApplicationRelativeFilePath>
       <ProjectRelativeFilePath>CosmosPagedList.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>85cb5fc0-6b69-4204-8aaa-bee003b1d7de</ProjectId>
+      <CorrelationId>Intent.CosmosDB.CosmosDBRepository#ddd83336-110a-461b-86f3-027aaf0158b1</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Infrastructure/Repositories/customerCosmosDBRepository.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>customerCosmosDBRepository.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>85cb5fc0-6b69-4204-8aaa-bee003b1d7de</ProjectId>
+      <CorrelationId>Intent.CosmosDB.CosmosDBRepository#4b6c368d-7292-4c5e-bd7d-88bdb17492d4</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Infrastructure/Repositories/invoiceCosmosDBRepository.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>invoiceCosmosDBRepository.cs</ProjectRelativeFilePath>
       <IsIgnored>false</IsIgnored>
     </FileLog>
     <FileLog>

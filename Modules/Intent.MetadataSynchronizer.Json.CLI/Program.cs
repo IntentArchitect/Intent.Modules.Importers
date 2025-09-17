@@ -199,6 +199,8 @@ namespace Intent.MetadataSynchronizer.Json.CLI
             if (!lookups.TryGetTypeDefinitionByName("object", 0, out var objectType)) throw new Exception();
             if (!lookups.TryGetTypeDefinitionByName("string", 0, out var stringType)) throw new Exception();
             if (!lookups.TryGetTypeDefinitionByName("decimal", 0, out var numberType)) throw new Exception();
+            if (!lookups.TryGetTypeDefinitionByName("guid", 0, out var guidType)) throw new Exception();
+            if (!lookups.TryGetTypeDefinitionByName("datetime", 0, out var dateTimeType)) throw new Exception();
 
             var typeLookups = new Dictionary<ClassificationType, ElementPersistable>
             {
@@ -207,6 +209,8 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                 [ClassificationType.Object] = objectType,
                 [ClassificationType.Unknown] = objectType,
                 [ClassificationType.Number] = numberType,
+                [ClassificationType.Guid] = guidType,
+                [ClassificationType.DateTime] = dateTimeType,
             };
 
             var classElements = new List<(ElementPersistable Element, Stack<string> PathParts)>();
@@ -424,11 +428,30 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                             return Classify(firstItem, $"{path}[0]") with { IsCollection = true };
                         }
                     case JsonValueKind.String:
-                        return new PropertyClassification(
-                            IsCollection: false,
-                            Type: ClassificationType.String,
-                            Path: path,
-                            Element: element);
+                        {
+                            var stringValue = element.GetString();
+                            if (stringValue == "guid")
+                            {
+                                return new PropertyClassification(
+                                    IsCollection: false,
+                                    Type: ClassificationType.Guid,
+                                    Path: path,
+                                    Element: element);
+                            }
+                            if (stringValue == "datetime")
+                            {
+                                return new PropertyClassification(
+                                    IsCollection: false,
+                                    Type: ClassificationType.DateTime,
+                                    Path: path,
+                                    Element: element);
+                            }
+                            return new PropertyClassification(
+                                IsCollection: false,
+                                Type: ClassificationType.String,
+                                Path: path,
+                                Element: element);
+                        }
                     case JsonValueKind.Number:
                         return new PropertyClassification(
                             IsCollection: false,
@@ -469,6 +492,8 @@ namespace Intent.MetadataSynchronizer.Json.CLI
             Number,
             Bool,
             String,
+            Guid,
+            DateTime,
             Unknown
         }
     }
