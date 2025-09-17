@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <PackageIcon>Resources\Intent Architect - Logo (color).png</PackageIcon>
+    <PackageIcon>Intent Architect - Logo (color).png</PackageIcon>
     <Authors>Intent Architect</Authors>
     <Company>Intent Software (Pty) Ltd.</Company>
     <Description>RPC-style backend tool for database schema extraction used by Intent Architect importer modules. Supports SQL Server and PostgreSQL database schema extraction through JSON-based commands. Separated due to native library dependencies that cannot be included in Intent Architect modules.</Description>
@@ -30,8 +30,9 @@
     <None Update="Resources\filter-file-schema.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\Intent Architect - Logo (color).png">
+    <None Include="Resources\Intent Architect - Logo (color).png">
       <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 
