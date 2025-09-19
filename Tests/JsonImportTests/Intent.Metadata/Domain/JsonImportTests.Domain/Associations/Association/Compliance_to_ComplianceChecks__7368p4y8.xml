@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="0b60c766-7178-46d1-b708-1c6d10e7583f">
+  <sourceEnd id="f3857e01d6c1-807b-1d64-8717-667c06b0" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Compliance</name>
+    <display>Compliance: Compliance</display>
+    <order>0</order>
+    <typeReference id="f3e8ec58-435a-44ec-93b5-a6498e401633">
+      <typeId>8b9a1905-85fc-4440-8a77-62e881a562fa</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>transaction.Compliance</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="0b60c766-7178-46d1-b708-1c6d10e7583f" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>ComplianceChecks</name>
+    <display>ComplianceChecks: ComplianceCheck[*]</display>
+    <order>4</order>
+    <typeReference id="27d89bf8-417a-4713-ad33-ff37264deb2a">
+      <typeId>47cae9cf-e2ca-46f7-9eab-78278c90dd33</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="8b15f274-76c6-4040-8761-53d709f283c4">
+  <sourceEnd id="4c382f907d35-1678-0404-6c67-472f51b8" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Patient</name>
+    <display>Patient: Patient</display>
+    <order>0</order>
+    <typeReference id="9b9ae8b2-9c99-4716-9968-3c360f436a5f">
+      <typeId>c2dd3fb1-2594-4e98-908c-009160e804b0</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>patient</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="8b15f274-76c6-4040-8761-53d709f283c4" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>EmergencyContacts</name>
+    <display>EmergencyContacts: PatientEmergencyContact[*]</display>
+    <order>8</order>
+    <typeReference id="a203df12-5241-40f4-8e11-40eae4cef984">
+      <typeId>e3c1650b-2fe6-4443-9b52-959766a67e51</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

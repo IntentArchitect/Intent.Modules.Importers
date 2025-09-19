@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="85680be2-0e87-4c2c-a5f2-955628c5f7ad">
+  <sourceEnd id="da7f5c826559-2f5a-c2c4-78e0-2eb08658" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Variant</name>
+    <display>Variant: Variant</display>
+    <order>0</order>
+    <typeReference id="57b1e461-b692-4d4b-beeb-ba0e76b9687c">
+      <typeId>eebe206d-117f-4261-afa4-b75b2fa140fe</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>product.Variants[0]</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="85680be2-0e87-4c2c-a5f2-955628c5f7ad" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Pricing</name>
+    <display>Pricing: VariantsPricing</display>
+    <order>3</order>
+    <typeReference id="5a16c164-4dc3-4572-a5a6-9e19104b2c61">
+      <typeId>afebfa8e-cc88-46b0-ad6d-0005256366bb</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="1a4a029f-297d-4873-8260-bdcd6029f228">
+  <sourceEnd id="822f9206dcdb-0628-3784-d792-f920a4a1" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>ComplexEntity</name>
+    <display>ComplexEntity: ComplexEntity</display>
+    <order>0</order>
+    <typeReference id="7e4615ff-4097-4044-8cd1-c55d931c9772">
+      <typeId>a33721af-26cf-4118-83a7-264e3ee116c8</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>complexEntity</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="1a4a029f-297d-4873-8260-bdcd6029f228" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Flags</name>
+    <display>Flags: Flag</display>
+    <order>17</order>
+    <typeReference id="4e2ea040-8689-4555-a252-8aa2868eebab">
+      <typeId>318d7d8a-788f-4db1-97f4-eadab7893458</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

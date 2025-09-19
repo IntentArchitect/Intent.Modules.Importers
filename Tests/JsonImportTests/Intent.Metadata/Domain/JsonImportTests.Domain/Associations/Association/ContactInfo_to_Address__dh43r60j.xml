@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="6467b1b4-0e91-4198-8853-185bd2839727">
+  <sourceEnd id="7279382db581-3588-8914-19e0-4b1b7646" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>ContactInfo</name>
+    <display>ContactInfo: PatientContactInfo</display>
+    <order>0</order>
+    <typeReference id="e18c0ae6-b6dc-4105-9604-78c0e1bad807">
+      <typeId>1ba7f726-1567-40c9-b58e-a606128fdd83</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>patient.ContactInfo</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="6467b1b4-0e91-4198-8853-185bd2839727" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Address</name>
+    <display>Address: PatientContactInfoAddress</display>
+    <order>3</order>
+    <typeReference id="802b4aaa-62c8-4e77-a4a6-760e98eba540">
+      <typeId>94d12454-b3a7-4946-9b7e-07bb16672a4d</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="ad3c640f-2460-47c1-a154-c33e1a4bc6a6">
+  <sourceEnd id="6a6cb4a1e33c-451a-1c74-0642-f046c3da" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Setting</name>
+    <display>Setting: Setting</display>
+    <order>0</order>
+    <typeReference id="73137306-8990-455d-86e6-ac099d3f00d1">
+      <typeId>ba65001f-3951-47ef-b0f7-606c457ef684</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>complexEntity.Configuration.Settings</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="ad3c640f-2460-47c1-a154-c33e1a4bc6a6" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Notifications</name>
+    <display>Notifications: Notification</display>
+    <order>4</order>
+    <typeReference id="e00f50fe-0ca8-49ff-9dc4-9da5b685467e">
+      <typeId>dfc85f06-83a1-48a0-9b7a-0825709a77bb</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

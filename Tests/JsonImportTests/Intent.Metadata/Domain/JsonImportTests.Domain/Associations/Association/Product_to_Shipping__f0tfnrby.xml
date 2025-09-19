@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="dc5f7bbc-d0b9-4d50-86bf-46a217099aab">
+  <sourceEnd id="baa990712a64-fb68-05d4-9b0d-cbb7f5cd" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Product</name>
+    <display>Product: Product</display>
+    <order>0</order>
+    <typeReference id="050578d7-f1c5-4fe6-b3db-011ee68e71df">
+      <typeId>adc080d7-3ba1-43b9-b185-f23cb2f32958</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>product</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="dc5f7bbc-d0b9-4d50-86bf-46a217099aab" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Shipping</name>
+    <display>Shipping: Shipping</display>
+    <order>15</order>
+    <typeReference id="2e775480-51bc-4b98-b9cb-5100a4f5d686">
+      <typeId>a47cfeb5-430c-4a95-aa27-7a922c868f5a</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

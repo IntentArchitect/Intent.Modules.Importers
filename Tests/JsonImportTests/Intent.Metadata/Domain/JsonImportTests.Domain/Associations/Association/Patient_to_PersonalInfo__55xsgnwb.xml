@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="6ee81c4b-2529-436a-be78-12058af9becf">
+  <sourceEnd id="fceb9fa85021-87eb-a634-9252-b4c18ee6" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Patient</name>
+    <display>Patient: Patient</display>
+    <order>0</order>
+    <typeReference id="8c017b49-8984-4457-9392-0e8e4bb1a209">
+      <typeId>c2dd3fb1-2594-4e98-908c-009160e804b0</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>patient</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="6ee81c4b-2529-436a-be78-12058af9becf" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>PersonalInfo</name>
+    <display>PersonalInfo: PatientPersonalInfo</display>
+    <order>5</order>
+    <typeReference id="457bae07-56eb-4c96-9dcb-296364a557ed">
+      <typeId>f12dba25-5433-428c-bf3c-0ec1183f1459</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

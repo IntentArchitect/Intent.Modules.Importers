@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="b9323f73-ebbf-4c10-9ade-370b8b80ae66">
+  <sourceEnd id="66ea08b8b073-eda9-01c4-fbbe-37f3239b" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>EnrollmentHistory</name>
+    <display>EnrollmentHistory: EnrollmentHistory</display>
+    <order>0</order>
+    <typeReference id="9792ec6b-50e2-4329-9d92-bace8fc3612c">
+      <typeId>1f1764fd-4d81-4cf8-80a5-1e731e990482</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>student.EnrollmentHistory[0]</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="b9323f73-ebbf-4c10-9ade-370b8b80ae66" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Courses</name>
+    <display>Courses: EnrollmentHistoryCourse[*]</display>
+    <order>9</order>
+    <typeReference id="4a00ef4b-0fc1-49c4-903e-924a23cd3bc9">
+      <typeId>9739467a-e8f3-44ae-85ae-f660f3c9fec1</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

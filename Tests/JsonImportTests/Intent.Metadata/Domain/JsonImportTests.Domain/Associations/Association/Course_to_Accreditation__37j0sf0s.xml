@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="607bea2e-c566-4b38-87e9-47ca360eac46">
+  <sourceEnd id="64cae063ac74-9e78-83b4-665c-e2aeb706" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Course</name>
+    <display>Course: courseCourse</display>
+    <order>0</order>
+    <typeReference id="3c2564cd-dd3f-4b18-a864-aca46d3b34e1">
+      <typeId>eabee204-9024-4e58-88db-0483c028c80a</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>course</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="607bea2e-c566-4b38-87e9-47ca360eac46" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Accreditation</name>
+    <display>Accreditation: Accreditation</display>
+    <order>19</order>
+    <typeReference id="62f7b7a0-bf35-4dfb-ae3b-68c485f8ed6c">
+      <typeId>a989eac0-8faf-4fc4-a517-832609f76308</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

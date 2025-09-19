@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="8680c91c-0aec-4e95-8fa8-e0a710b81e0d">
+  <sourceEnd id="d0e18b017a0e-8af8-59e4-cea0-c19c0868" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>SpecialCircumstance</name>
+    <display>SpecialCircumstance: SpecialCircumstance</display>
+    <order>0</order>
+    <typeReference id="e6337955-c2c6-4eef-82c7-3ee7be3a8adc">
+      <typeId>76a031ce-0421-44c0-aa7f-8defe901235b</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>enrollment.SpecialCircumstances</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="8680c91c-0aec-4e95-8fa8-e0a710b81e0d" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>AuditStatus</name>
+    <display>AuditStatus: AuditStatus</display>
+    <order>2</order>
+    <typeReference id="de04ecb0-afe8-42b4-9cb7-014b0a02d9a8">
+      <typeId>1abc0e49-3a52-4c49-9385-881dee985f7b</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

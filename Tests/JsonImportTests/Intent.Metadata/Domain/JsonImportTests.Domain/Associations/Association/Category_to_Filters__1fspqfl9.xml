@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="1ba4e814-5d34-437b-ab85-f5f61e22c06a">
+  <sourceEnd id="a60c22e16f5f-58ba-b734-43d5-418e4ab1" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Category</name>
+    <display>Category: categoryCategory</display>
+    <order>0</order>
+    <typeReference id="0d2750c9-0308-4de4-959d-9b74c2e924c0">
+      <typeId>b2d962f9-937c-4331-a2e2-b3641627891f</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>category</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="1ba4e814-5d34-437b-ab85-f5f61e22c06a" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Filters</name>
+    <display>Filters: Filter[*]</display>
+    <order>16</order>
+    <typeReference id="fbae00bc-35f2-4e84-9826-c5fde0bd95d3">
+      <typeId>b3a7e1c1-9bf7-4858-a61c-5760d6ff1c77</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

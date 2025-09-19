@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="8346f752-aeb0-450f-a857-18a52aa94a86">
+  <sourceEnd id="68a49aa25a81-758a-f054-0bea-257f6438" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>ComplexEntity</name>
+    <display>ComplexEntity: ComplexEntity</display>
+    <order>0</order>
+    <typeReference id="cb994300-c40e-450b-9db5-a4f7cb0d7d3a">
+      <typeId>a33721af-26cf-4118-83a7-264e3ee116c8</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>complexEntity</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="8346f752-aeb0-450f-a857-18a52aa94a86" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>OptionalNestedObject</name>
+    <display>OptionalNestedObject: OptionalNestedObject</display>
+    <order>14</order>
+    <typeReference id="a6c456b7-b0d7-4376-a4a5-b47d4031f16e">
+      <typeId>505b8518-735a-4d2e-996b-2079e4631094</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

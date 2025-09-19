@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="124342e8-cb3e-48d6-9576-1dad34dd11aa">
+  <sourceEnd id="aa11dd43dad1-6759-6d84-e3bc-8e243421" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Transaction</name>
+    <display>Transaction: Transaction</display>
+    <order>0</order>
+    <typeReference id="9dbd7ebc-9b8d-435b-b559-454ddab91809">
+      <typeId>a15e128a-1b4d-48e9-be26-a7decac56f88</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>transaction</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="124342e8-cb3e-48d6-9576-1dad34dd11aa" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>SettlementDetails</name>
+    <display>SettlementDetails: SettlementDetail</display>
+    <order>11</order>
+    <typeReference id="e326dffd-779a-4a20-b7b8-4ce76f70ff05">
+      <typeId>58fbd887-b83f-4801-b3a6-cfb68f2dd0af</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

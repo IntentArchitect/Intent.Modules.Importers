@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="c7c58e97-eb9f-4e70-b36e-deae8bca028f">
+  <sourceEnd id="f820acb8eaed-e63b-07e4-f9be-79e85c7c" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>ContactInfo</name>
+    <display>ContactInfo: StudentContactInfo</display>
+    <order>0</order>
+    <typeReference id="2ad34354-14b1-4e97-9deb-3b146e5f02da">
+      <typeId>feb5931f-2170-40e1-9511-8d078f51181f</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>student.ContactInfo</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="c7c58e97-eb9f-4e70-b36e-deae8bca028f" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Address</name>
+    <display>Address: StudentContactInfoAddress</display>
+    <order>4</order>
+    <typeReference id="74d60954-48f0-4747-b85d-ad75570b9300">
+      <typeId>bc1bddcc-87e3-471d-a890-9d972c641258</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

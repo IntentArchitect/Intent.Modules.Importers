@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="b60e6bb2-c2d6-4bd4-b554-9195e7d8804e">
+  <sourceEnd id="e4088d7e5919-455b-4db4-6d2c-2bb6e06b" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>BillingInfo</name>
+    <display>BillingInfo: BillingInfo</display>
+    <order>0</order>
+    <typeReference id="af5e9a1a-aeaf-49e4-b86d-88f5b8eb3b73">
+      <typeId>98886103-2909-4c1b-8dec-c22e55504ffc</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>complexEntity.ConditionalFields.PremiumInfo.BillingInfo</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="b60e6bb2-c2d6-4bd4-b554-9195e7d8804e" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>PaymentMethod</name>
+    <display>PaymentMethod: PaymentMethod</display>
+    <order>4</order>
+    <typeReference id="c8e461c0-2865-4889-b757-8ad9a3faba34">
+      <typeId>d6c68f86-6768-4f5e-a248-b7b33735c5f2</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="ac2c6047-30ed-471e-a94d-7483a4ff505b">
+  <sourceEnd id="b505ff4a3847-d49a-e174-de03-7406c2ca" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>InventoryItem</name>
+    <display>InventoryItem: InventoryItem</display>
+    <order>0</order>
+    <typeReference id="adcda12d-bc75-4ae1-8ef2-b727a2e2bd7f">
+      <typeId>ee0b86d5-6068-46fc-bf6d-fc73ee36c05e</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>inventoryItem</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="ac2c6047-30ed-471e-a94d-7483a4ff505b" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>QualityControl</name>
+    <display>QualityControl: QualityControl</display>
+    <order>9</order>
+    <typeReference id="9f44df30-6329-4f01-8195-9daf60bc8661">
+      <typeId>27350215-d321-44d5-a421-88674c18a62e</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="41397ae6-cc85-4dba-ae67-3bcd465807a4">
+  <sourceEnd id="4a708564dcb3-76ea-abd4-58cc-6ea79314" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Technology</name>
+    <display>Technology: Technology</display>
+    <order>0</order>
+    <typeReference id="f359aa5c-e378-4d95-bf7e-69695fdc04ad">
+      <typeId>2ccfd99a-116b-48f2-9c2c-936c60dbecb3</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>student.Technology</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="41397ae6-cc85-4dba-ae67-3bcd465807a4" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>ITServices</name>
+    <display>ITServices: ITService[*]</display>
+    <order>3</order>
+    <typeReference id="fe836958-d82c-483c-bca2-d71d88dc8556">
+      <typeId>b1fe53ad-4bd9-4923-9dbd-ff0d2ab67332</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>
