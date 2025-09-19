@@ -1,0 +1,59 @@
+{
+  "Id": "guid",
+  "EmployeeId": "string",
+  "PersonalInfo": {
+    "FirstName": "string",
+    "LastName": "string",
+    "DateOfBirth": "datetime",
+    "Gender": "string"
+  },
+  "ContactInfo": {
+    "Phone": "string",
+    "Email": "string",
+    "Address": {
+      "Street": "string",
+      "City": "string",
+      "State": "string",
+      "ZipCode": "string"
+    }
+  },
+  "ProfessionalInfo": {
+    "Title": "string",
+    "Department": "string",
+    "Specialization": "string",
+    "LicenseNumber": "string",
+    "LicenseExpirationDate": "datetime",
+    "YearsOfExperience": 5
+  },
+  "Certifications": [
+    {
+      "Name": "string",
+      "IssuingOrganization": "string",
+      "IssueDate": "datetime",
+      "ExpirationDate": "datetime",
+      "CertificationNumber": "string"
+    }
+  ],
+  "EducationBackground": [
+    {
+      "Institution": "string",
+      "Degree": "string",
+      "FieldOfStudy": "string",
+      "GraduationYear": 2020
+    }
+  ],
+  "WorkSchedule": {
+    "ShiftType": "string",
+    "WeeklyHours": 40,
+    "StartTime": "string",
+    "EndTime": "string",
+    "WorkDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+  },
+  "Supervisor": {
+    "SupervisorId": "guid",
+    "Name": "string",
+    "Title": "string"
+  },
+  "HireDate": "datetime",
+  "IsActive": true
+}

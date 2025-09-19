@@ -1,0 +1,65 @@
+{
+  "Id": "guid",
+  "AppointmentNumber": "string",
+  "PatientId": "guid",
+  "PractitionerId": "guid",
+  "AppointmentType": "string",
+  "Status": "string",
+  "Priority": "string",
+  "ScheduledDateTime": "datetime",
+  "EstimatedDuration": 30,
+  "ActualStartTime": "datetime",
+  "ActualEndTime": "datetime",
+  "ReasonForVisit": "string",
+  "ChiefComplaint": "string",
+  "Location": {
+    "Building": "string",
+    "Floor": "string",
+    "RoomNumber": "string",
+    "FacilityId": "guid"
+  },
+  "VisitDetails": {
+    "VitalSigns": {
+      "Temperature": 98.6,
+      "BloodPressureSystolic": 120,
+      "BloodPressureDiastolic": 80,
+      "HeartRate": 72,
+      "RespiratoryRate": 16,
+      "OxygenSaturation": 98,
+      "Weight": 150.5,
+      "Height": 68.5
+    },
+    "Symptoms": [
+      {
+        "Description": "string",
+        "Severity": "string",
+        "Duration": "string",
+        "OnsetDate": "datetime"
+      }
+    ],
+    "Diagnosis": [
+      {
+        "Code": "string",
+        "Description": "string",
+        "Type": "string",
+        "Certainty": "string"
+      }
+    ],
+    "TreatmentPlan": {
+      "Instructions": "string",
+      "Medications": [
+        {
+          "Name": "string",
+          "Dosage": "string",
+          "Frequency": "string",
+          "Duration": "string"
+        }
+      ],
+      "FollowUpInstructions": "string",
+      "NextAppointmentRecommended": true
+    }
+  },
+  "Notes": "string",
+  "CreatedDate": "datetime",
+  "LastModified": "datetime"
+}

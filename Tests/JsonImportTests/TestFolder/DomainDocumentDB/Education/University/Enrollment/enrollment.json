@@ -1,0 +1,168 @@
+{
+  "Id": "guid",
+  "StudentId": "guid",
+  "CourseOfferingId": "guid",
+  "SemesterId": "guid",
+  "EnrollmentDate": "datetime",
+  "EnrollmentStatus": "enrolled",
+  "EnrollmentType": "regular",
+  "Course": {
+    "CourseId": "guid",
+    "CourseCode": "string",
+    "CourseName": "string",
+    "CreditHours": 3,
+    "Department": "string"
+  },
+  "Student": {
+    "StudentId": "guid",
+    "StudentNumber": "string",
+    "FirstName": "string",
+    "LastName": "string",
+    "Email": "string",
+    "Program": "string",
+    "ClassLevel": "sophomore"
+  },
+  "Semester": {
+    "SemesterId": "guid",
+    "SemesterName": "Fall",
+    "Year": 2024,
+    "StartDate": "datetime",
+    "EndDate": "datetime",
+    "IsCurrentSemester": true
+  },
+  "Instructor": {
+    "InstructorId": "guid",
+    "Name": "string",
+    "Email": "string",
+    "Title": "Professor",
+    "Department": "string"
+  },
+  "GradingInfo": {
+    "CurrentGrade": "A-",
+    "CurrentPercentage": 91.5,
+    "GradePoints": 3.7,
+    "QualityPoints": 11.1,
+    "IsPassFail": false,
+    "IncompleteReason": null,
+    "GradeChangeHistory": [
+      {
+        "ChangeId": "guid",
+        "OldGrade": "B+",
+        "NewGrade": "A-",
+        "ChangeReason": "Grade correction",
+        "ChangedBy": "string",
+        "ChangeDate": "datetime",
+        "ApprovedBy": "string"
+      }
+    ]
+  },
+  "Assessments": [
+    {
+      "AssessmentId": "guid",
+      "Type": "exam",
+      "Name": "Midterm Exam",
+      "MaxPoints": 100,
+      "EarnedPoints": 89,
+      "Percentage": 89.0,
+      "Weight": 30.0,
+      "DueDate": "datetime",
+      "SubmittedDate": "datetime",
+      "GradedDate": "datetime",
+      "Comments": "string",
+      "Rubric": [
+        {
+          "CriteriaId": "guid",
+          "CriteriaName": "string",
+          "MaxPoints": 25,
+          "EarnedPoints": 22,
+          "Comments": "string"
+        }
+      ]
+    }
+  ],
+  "Attendance": {
+    "RequiredAttendance": true,
+    "TotalSessions": 30,
+    "AttendedSessions": 28,
+    "ExcusedAbsences": 1,
+    "UnexcusedAbsences": 1,
+    "AttendancePercentage": 93.3,
+    "AttendanceRecords": [
+      {
+        "Date": "datetime",
+        "Status": "present",
+        "Notes": "string"
+      }
+    ]
+  },
+  "Participation": {
+    "ParticipationGrade": "A",
+    "ParticipationPoints": 95,
+    "MaxParticipationPoints": 100,
+    "ParticipationComments": "string",
+    "EngagementLevel": "high"
+  },
+  "Prerequisites": {
+    "AllPrerequisitesMet": true,
+    "PrerequisiteChecks": [
+      {
+        "RequiredCourseId": "guid",
+        "RequiredCourse": "string",
+        "MinimumGrade": "C",
+        "StudentGrade": "B+",
+        "IsMet": true,
+        "CheckedDate": "datetime"
+      }
+    ],
+    "Waivers": [
+      {
+        "WaiverId": "guid",
+        "PrerequisiteWaived": "string",
+        "WaiverReason": "string",
+        "ApprovedBy": "string",
+        "ApprovalDate": "datetime"
+      }
+    ]
+  },
+  "SpecialCircumstances": {
+    "LateEnrollment": {
+      "IsLateEnrollment": false,
+      "LateEnrollmentFee": 0.0,
+      "ApprovalRequired": false,
+      "ApprovedBy": null
+    },
+    "AuditStatus": {
+      "IsAudit": false,
+      "AuditApprovalDate": null,
+      "AuditFee": 0.0
+    },
+    "IncompleteStatus": {
+      "IsIncomplete": false,
+      "IncompleteReason": null,
+      "CompletionDeadline": null,
+      "ExtensionRequests": []
+    }
+  },
+  "FinancialInfo": {
+    "TuitionCharged": 1200.00,
+    "FeesCharged": 150.00,
+    "FinancialAidApplied": 500.00,
+    "OutstandingBalance": 850.00,
+    "PaymentStatus": "partial",
+    "RefundEligible": true,
+    "RefundAmount": 0.0
+  },
+  "WithdrawalInfo": {
+    "WithdrawalDate": null,
+    "WithdrawalReason": null,
+    "WithdrawalType": null,
+    "RefundPercentage": null,
+    "WithdrawnBy": null,
+    "AcademicImpact": null
+  },
+  "CreatedDate": "datetime",
+  "LastModified": "datetime",
+  "ModifiedBy": "string",
+  "Version": 1,
+  "IsActive": true
+}

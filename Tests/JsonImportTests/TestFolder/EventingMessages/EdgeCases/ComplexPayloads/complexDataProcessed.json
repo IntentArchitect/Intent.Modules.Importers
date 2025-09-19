@@ -1,0 +1,269 @@
+{
+  "EventId": "guid",
+  "EventType": "ComplexDataProcessed",
+  "EventVersion": "1.0",
+  "Timestamp": "datetime",
+  "CorrelationId": "guid",
+  "SourceSystem": "DataProcessor",
+  "ProcessingResult": {
+    "Success": true,
+    "ErrorMessages": [],
+    "WarningMessages": ["Data quality issue in field X"],
+    "ProcessedRecords": 15847,
+    "SkippedRecords": 23,
+    "ErrorRecords": 0
+  },
+  "InputData": {
+    "SourceFiles": [
+      "file1.csv",
+      "file2.json",
+      "file3.xml"
+    ],
+    "FileFormats": ["csv", "json", "xml"],
+    "TotalSizeBytes": 524288000,
+    "CompressionRatio": 0.75,
+    "Checksums": {
+      "MD5": "string",
+      "SHA256": "string"
+    }
+  },
+  "ProcessingSteps": [
+    {
+      "StepId": 1,
+      "StepName": "validation",
+      "Status": "completed",
+      "StartTime": "datetime",
+      "EndTime": "datetime",
+      "Duration": 45.5,
+      "MemoryUsed": 256,
+      "Details": {
+        "ValidationRules": ["required_fields", "data_types", "ranges"],
+        "RuleResults": [
+          {
+            "Rule": "required_fields",
+            "Passed": 15847,
+            "Failed": 0,
+            "Percentage": 100.0
+          },
+          {
+            "Rule": "data_types",
+            "Passed": 15820,
+            "Failed": 27,
+            "Percentage": 99.83
+          }
+        ]
+      }
+    },
+    {
+      "StepId": 2,
+      "StepName": "transformation",
+      "Status": "completed",
+      "StartTime": "datetime",
+      "EndTime": "datetime",
+      "Duration": 127.8,
+      "MemoryUsed": 512,
+      "Details": {
+        "Transformations": [
+          {
+            "Type": "field_mapping",
+            "SourceField": "old_name",
+            "TargetField": "new_name",
+            "TransformationFunction": "uppercase"
+          },
+          {
+            "Type": "data_enrichment",
+            "EnrichmentSource": "external_api",
+            "FieldsEnriched": ["address_validation", "geocoding"],
+            "SuccessRate": 98.5
+          }
+        ]
+      }
+    }
+  ],
+  "OutputData": {
+    "TargetSystems": ["warehouse", "analytics", "reporting"],
+    "Formats": ["parquet", "json", "avro"],
+    "Locations": [
+      {
+        "System": "warehouse",
+        "Path": "/data/processed/batch_001",
+        "Format": "parquet",
+        "PartitionKeys": ["year", "month", "day"],
+        "Compression": "snappy"
+      }
+    ],
+    "QualityMetrics": {
+      "Completeness": 99.2,
+      "Accuracy": 97.8,
+      "Consistency": 98.9,
+      "Validity": 99.5,
+      "Uniqueness": 100.0
+    }
+  },
+  "DataProfile": {
+    "Schema": {
+      "Fields": [
+        {
+          "Name": "id",
+          "Type": "string",
+          "Nullable": false,
+          "Unique": true,
+          "Distribution": {
+            "NullCount": 0,
+            "UniqueCount": 15847,
+            "DuplicateCount": 0
+          }
+        },
+        {
+          "Name": "amount",
+          "Type": "decimal",
+          "Nullable": true,
+          "Unique": false,
+          "Distribution": {
+            "NullCount": 234,
+            "Min": 0.01,
+            "Max": 99999.99,
+            "Mean": 1247.83,
+            "Median": 567.45,
+            "StandardDeviation": 2456.78
+          }
+        },
+        {
+          "Name": "category",
+          "Type": "string",
+          "Nullable": true,
+          "Unique": false,
+          "Distribution": {
+            "NullCount": 156,
+            "UniqueCount": 47,
+            "TopValues": [
+              {
+                "Value": "electronics",
+                "Count": 3245,
+                "Percentage": 20.5
+              },
+              {
+                "Value": "clothing",
+                "Count": 2891,
+                "Percentage": 18.2
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "Anomalies": [
+      {
+        "Type": "outlier",
+        "Field": "amount",
+        "Description": "Values exceeding 3 standard deviations",
+        "Count": 12,
+        "Examples": [99999.99, 87654.32, 76543.21]
+      },
+      {
+        "Type": "pattern_break",
+        "Field": "email",
+        "Description": "Invalid email format",
+        "Count": 5,
+        "Examples": ["invalid.email", "test@", "@domain.com"]
+      }
+    ]
+  },
+  "PerformanceMetrics": {
+    "TotalProcessingTime": 289.3,
+    "ThroughputRecordsPerSecond": 54.8,
+    "PeakMemoryUsage": 768,
+    "CPUUtilization": 85.2,
+    "DiskIOOperations": 15672,
+    "NetworkTraffic": {
+      "InboundMB": 125.4,
+      "OutboundMB": 89.7
+    }
+  },
+  "Configuration": {
+    "ProcessingMode": "batch",
+    "ChunkSize": 1000,
+    "ParallelThreads": 4,
+    "RetryAttempts": 3,
+    "TimeoutSeconds": 300,
+    "ValidationLevel": "strict",
+    "OutputCompression": true,
+    "DebugMode": false,
+    "Features": {
+      "EnableDataProfiling": true,
+      "EnableAnomalyDetection": true,
+      "EnableLineage": false,
+      "EnableCaching": true
+    }
+  },
+  "Lineage": {
+    "DataSources": [
+      {
+        "SourceId": "guid",
+        "SourceName": "customer_db",
+        "SourceType": "database",
+        "LastUpdated": "datetime",
+        "Version": "2.1.5"
+      },
+      {
+        "SourceId": "guid",
+        "SourceName": "transaction_api",
+        "SourceType": "api",
+        "LastUpdated": "datetime",
+        "Version": "1.8.2"
+      }
+    ],
+    "Dependencies": [
+      {
+        "DependencyId": "guid",
+        "DependencyName": "reference_data",
+        "DependencyType": "lookup_table",
+        "Version": "4.2.1"
+      }
+    ],
+    "DownstreamConsumers": [
+      {
+        "ConsumerId": "guid",
+        "ConsumerName": "analytics_dashboard",
+        "ConsumerType": "application",
+        "LastAccessed": "datetime"
+      }
+    ]
+  },
+  "Security": {
+    "DataClassification": "confidential",
+    "EncryptionApplied": true,
+    "AccessControls": {
+      "RequiredRoles": ["data_processor", "data_analyst"],
+      "AccessLevel": "read_write",
+      "ApprovalRequired": false
+    },
+    "ComplianceFlags": {
+      "GDPR": true,
+      "CCPA": true,
+      "HIPAA": false,
+      "SOX": false
+    },
+    "PIIFields": ["email", "phone", "address"],
+    "RedactionApplied": ["ssn", "credit_card"]
+  },
+  "Metadata": {
+    "ProcessedBy": "string",
+    "ProcessedAt": "datetime",
+    "JobId": "guid",
+    "BatchId": "string",
+    "EnvironmentName": "production",
+    "ClusterInfo": {
+      "ClusterName": "data-processing-cluster",
+      "NodeCount": 4,
+      "NodeType": "compute-optimized",
+      "Region": "us-east-1"
+    },
+    "Tags": {
+      "department": "analytics",
+      "project": "customer_insights",
+      "cost_center": "12345",
+      "priority": "high"
+    }
+  }
+}

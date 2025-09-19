@@ -1,0 +1,116 @@
+{
+  "Id": "guid",
+  "Symbol": "string",
+  "Name": "string",
+  "ISIN": "string",
+  "CUSIP": "string",
+  "AssetType": "equity",
+  "AssetClass": "stock",
+  "Sector": "technology",
+  "Industry": "software",
+  "Exchange": "NASDAQ",
+  "Currency": "USD",
+  "Country": "US",
+  "CompanyInfo": {
+    "CompanyName": "string",
+    "MarketCap": 1500000000000,
+    "EmployeeCount": 180000,
+    "HeadquartersLocation": "string",
+    "Website": "string",
+    "Description": "string",
+    "CEOName": "string",
+    "FoundedYear": 1975,
+    "FiscalYearEnd": "June"
+  },
+  "TradingInfo": {
+    "PrimaryExchange": "NASDAQ",
+    "SecondaryExchanges": ["NYSE", "LSE"],
+    "TradingHours": {
+      "MarketOpen": "09:30",
+      "MarketClose": "16:00",
+      "TimeZone": "EST"
+    },
+    "TickSize": 0.01,
+    "LotSize": 1,
+    "IsShortable": true,
+    "IsMarginable": true,
+    "DividendEligible": true
+  },
+  "PricingData": {
+    "CurrentPrice": 425.50,
+    "PreviousClose": 422.15,
+    "DayHigh": 428.75,
+    "DayLow": 421.30,
+    "WeekHigh52": 468.35,
+    "WeekLow52": 325.12,
+    "Volume": 2500000,
+    "AverageVolume10Day": 2800000,
+    "AverageVolume3Month": 3200000,
+    "Beta": 1.15,
+    "Volatility": {
+      "ImpliedVolatility": 25.8,
+      "HistoricalVolatility30Day": 28.5,
+      "HistoricalVolatility90Day": 26.3
+    }
+  },
+  "Fundamentals": {
+    "MarketCapitalization": 1580000000000,
+    "EnterpriseValue": 1620000000000,
+    "PERatio": 28.5,
+    "EarningsPerShare": 14.92,
+    "BookValuePerShare": 45.67,
+    "PriceToBook": 9.32,
+    "PriceToSales": 12.5,
+    "DividendPerShare": 11.00,
+    "DividendYield": 2.59,
+    "PayoutRatio": 73.7,
+    "ReturnOnEquity": 32.8,
+    "ReturnOnAssets": 18.5,
+    "DebtToEquity": 0.45,
+    "CurrentRatio": 2.1,
+    "QuickRatio": 1.85
+  },
+  "FinancialStatements": {
+    "LastReportingDate": "datetime",
+    "ReportingFrequency": "quarterly",
+    "Revenue": 198000000000,
+    "NetIncome": 57400000000,
+    "TotalAssets": 352000000000,
+    "TotalLiabilities": 287000000000,
+    "ShareholdersEquity": 65000000000,
+    "FreeCashFlow": 73400000000,
+    "OperatingCashFlow": 104000000000
+  },
+  "RiskMetrics": {
+    "CreditRating": {
+      "SP": "AAA",
+      "Moody": "Aaa",
+      "Fitch": "AAA"
+    },
+    "ESGScore": 85,
+    "LiquidityRisk": "low",
+    "ConcentrationRisk": "medium",
+    "RegulatoryRisk": "medium"
+  },
+  "Analysts": {
+    "Consensus": "buy",
+    "TargetPrice": 475.00,
+    "PriceTargetHigh": 550.00,
+    "PriceTargetLow": 400.00,
+    "Recommendations": {
+      "StrongBuy": 8,
+      "Buy": 12,
+      "Hold": 5,
+      "Sell": 1,
+      "StrongSell": 0
+    }
+  },
+  "Metadata": {
+    "DataProvider": "string",
+    "LastUpdated": "datetime",
+    "DataQuality": "high",
+    "IsActive": true,
+    "ListingDate": "datetime",
+    "DelistingDate": null
+  }
+}

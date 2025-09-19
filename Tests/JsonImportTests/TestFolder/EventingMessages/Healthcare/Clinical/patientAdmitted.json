@@ -1,0 +1,96 @@
+{
+  "EventId": "guid",
+  "EventType": "PatientAdmitted",
+  "EventVersion": "1.0",
+  "Timestamp": "datetime",
+  "CorrelationId": "guid",
+  "SourceSystem": "HMS",
+  "Patient": {
+    "PatientId": "guid",
+    "PatientNumber": "string",
+    "PersonalInfo": {
+      "FirstName": "string",
+      "LastName": "string",
+      "DateOfBirth": "datetime",
+      "Gender": "string"
+    },
+    "ContactInfo": {
+      "Phone": "string",
+      "Email": "string",
+      "Address": {
+        "Street": "string",
+        "City": "string",
+        "State": "string",
+        "ZipCode": "string"
+      }
+    },
+    "Insurance": {
+      "PrimaryInsurance": {
+        "Provider": "string",
+        "PolicyNumber": "string",
+        "GroupNumber": "string"
+      }
+    }
+  },
+  "Admission": {
+    "AdmissionId": "guid",
+    "AdmissionDate": "datetime",
+    "AdmissionType": "emergency",
+    "AdmissionSource": "emergency_department",
+    "ChiefComplaint": "string",
+    "AdmittingPhysician": {
+      "PhysicianId": "guid",
+      "Name": "string",
+      "Specialty": "string",
+      "LicenseNumber": "string"
+    },
+    "Department": {
+      "DepartmentId": "guid",
+      "Name": "string",
+      "Floor": "string",
+      "Unit": "string"
+    },
+    "Room": {
+      "RoomId": "guid",
+      "RoomNumber": "string",
+      "RoomType": "private",
+      "Bed": "A"
+    },
+    "VitalSigns": {
+      "Temperature": 101.2,
+      "BloodPressure": "140/90",
+      "HeartRate": 88,
+      "RespiratoryRate": 18,
+      "OxygenSaturation": 96,
+      "PainLevel": 7
+    },
+    "InitialDiagnosis": [
+      {
+        "Code": "J44.1",
+        "Description": "Chronic obstructive pulmonary disease with acute exacerbation",
+        "Type": "primary"
+      }
+    ],
+    "Allergies": [
+      {
+        "Substance": "Penicillin",
+        "Severity": "severe",
+        "Reaction": "anaphylaxis"
+      }
+    ],
+    "EstimatedLengthOfStay": 3,
+    "Priority": "high"
+  },
+  "Metadata": {
+    "ProcessedBy": "string",
+    "ProcessedAt": "datetime",
+    "ValidationResults": {
+      "IsValid": true,
+      "ValidationErrors": []
+    },
+    "Routing": {
+      "ExchangeName": "healthcare.events",
+      "RoutingKey": "patient.admitted.emergency"
+    }
+  }
+}

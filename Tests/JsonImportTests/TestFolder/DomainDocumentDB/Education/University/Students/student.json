@@ -1,0 +1,187 @@
+{
+  "Id": "guid",
+  "StudentId": "string",
+  "PersonalInfo": {
+    "FirstName": "string",
+    "LastName": "string",
+    "MiddleName": "string",
+    "DateOfBirth": "datetime",
+    "Gender": "string",
+    "Nationality": "string",
+    "CitizenshipStatus": "citizen"
+  },
+  "ContactInfo": {
+    "Email": "string",
+    "AlternateEmail": "string",
+    "Phone": "string",
+    "Address": {
+      "Street": "string",
+      "City": "string",
+      "State": "string",
+      "ZipCode": "string",
+      "Country": "string",
+      "IsInternational": false
+    },
+    "EmergencyContact": {
+      "Name": "string",
+      "Relationship": "string",
+      "Phone": "string",
+      "Email": "string"
+    }
+  },
+  "AcademicInfo": {
+    "AdmissionDate": "datetime",
+    "StudentType": "full-time",
+    "AcademicStatus": "active",
+    "ClassLevel": "sophomore",
+    "ExpectedGraduationDate": "datetime",
+    "MajorPrograms": [
+      {
+        "ProgramId": "guid",
+        "ProgramName": "string",
+        "DegreeType": "bachelor",
+        "Major": "string",
+        "Minor": "string",
+        "Concentration": "string",
+        "DeclaredDate": "datetime"
+      }
+    ],
+    "AcademicAdvisor": {
+      "AdvisorId": "guid",
+      "Name": "string",
+      "Email": "string",
+      "Department": "string",
+      "AssignedDate": "datetime"
+    },
+    "GPA": {
+      "CumulativeGPA": 3.45,
+      "SemesterGPA": 3.67,
+      "MajorGPA": 3.52,
+      "TotalCreditHours": 85,
+      "QualityPoints": 293.25,
+      "ClassRank": 45,
+      "ClassSize": 250
+    }
+  },
+  "EnrollmentHistory": [
+    {
+      "SemesterId": "guid",
+      "Semester": "Fall",
+      "Year": 2024,
+      "EnrollmentStatus": "enrolled",
+      "CreditHours": 15,
+      "SemesterGPA": 3.67,
+      "DeansList": true,
+      "Probation": false,
+      "Courses": [
+        {
+          "CourseId": "guid",
+          "CourseCode": "string",
+          "CreditHours": 3,
+          "Grade": "A-",
+          "GradePoints": 11.1,
+          "GradeDate": "datetime"
+        }
+      ]
+    }
+  ],
+  "FinancialInfo": {
+    "TuitionStatus": "in-state",
+    "FinancialAidEligible": true,
+    "ScholarshipsAndGrants": [
+      {
+        "AwardId": "guid",
+        "Name": "string",
+        "Type": "merit",
+        "Amount": 5000.00,
+        "Semester": "Fall 2024",
+        "Year": 2024,
+        "Renewable": true,
+        "Requirements": "Maintain 3.5 GPA"
+      }
+    ],
+    "StudentLoans": [
+      {
+        "LoanId": "guid",
+        "LoanType": "federal",
+        "Amount": 8500.00,
+        "InterestRate": 4.5,
+        "Status": "active",
+        "Servicer": "string"
+      }
+    ],
+    "OutstandingBalance": 2500.00,
+    "PaymentPlan": {
+      "PlanType": "monthly",
+      "MonthlyAmount": 500.00,
+      "NextDueDate": "datetime"
+    }
+  },
+  "Activities": {
+    "Organizations": [
+      {
+        "OrganizationId": "guid",
+        "Name": "string",
+        "Role": "member",
+        "JoinDate": "datetime",
+        "IsActive": true
+      }
+    ],
+    "Sports": [
+      {
+        "SportId": "guid",
+        "SportName": "string",
+        "Position": "string",
+        "Season": "Fall",
+        "Year": 2024,
+        "ScholarshipAmount": 0.0
+      }
+    ],
+    "Honors": [
+      {
+        "HonorId": "guid",
+        "Title": "string",
+        "Organization": "string",
+        "DateReceived": "datetime",
+        "Description": "string"
+      }
+    ]
+  },
+  "HealthAndServices": {
+    "InsuranceInfo": {
+      "HasInsurance": true,
+      "InsuranceProvider": "string",
+      "PolicyNumber": "string",
+      "CoverageType": "student"
+    },
+    "Disabilities": [
+      {
+        "DisabilityType": "string",
+        "AccommodationsNeeded": ["string"],
+        "ApprovedDate": "datetime"
+      }
+    ],
+    "CounselingServices": {
+      "IsReceivingServices": false,
+      "CounselorId": null,
+      "LastAppointment": null
+    }
+  },
+  "Technology": {
+    "UniversityEmail": "string",
+    "StudentPortalAccess": true,
+    "LibraryAccess": true,
+    "ITServices": [
+      {
+        "ServiceType": "laptop_loan",
+        "IsActive": true,
+        "StartDate": "datetime",
+        "EndDate": "datetime"
+      }
+    ]
+  },
+  "CreatedDate": "datetime",
+  "LastUpdated": "datetime",
+  "IsActive": true,
+  "PrivacyConsent": true
+}

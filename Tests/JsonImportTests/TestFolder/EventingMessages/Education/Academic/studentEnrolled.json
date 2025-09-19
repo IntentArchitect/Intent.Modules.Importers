@@ -1,0 +1,244 @@
+{
+  "EventId": "guid",
+  "EventType": "StudentEnrolled",
+  "EventVersion": "1.5",
+  "Timestamp": "datetime",
+  "CorrelationId": "guid",
+  "SourceSystem": "SIS",
+  "Student": {
+    "StudentId": "guid",
+    "StudentNumber": "string",
+    "PersonalInfo": {
+      "FirstName": "string",
+      "LastName": "string",
+      "MiddleName": "string",
+      "Email": "string",
+      "AlternateEmail": "string",
+      "Phone": "string",
+      "DateOfBirth": "datetime"
+    },
+    "AcademicInfo": {
+      "Program": {
+        "ProgramId": "guid",
+        "ProgramCode": "string",
+        "ProgramName": "string",
+        "DegreeType": "bachelor",
+        "Major": "string",
+        "Minor": "string",
+        "Department": "string",
+        "School": "string"
+      },
+      "ClassLevel": "sophomore",
+      "StudentType": "full-time",
+      "AcademicStatus": "good_standing",
+      "CumulativeGPA": 3.45,
+      "TotalCreditHours": 45
+    }
+  },
+  "Enrollment": {
+    "EnrollmentId": "guid",
+    "EnrollmentDate": "datetime",
+    "EnrollmentStatus": "enrolled",
+    "EnrollmentType": "regular",
+    "Semester": {
+      "SemesterId": "guid",
+      "SemesterCode": "FALL2024",
+      "SemesterName": "Fall 2024",
+      "Year": 2024,
+      "Term": "Fall",
+      "StartDate": "datetime",
+      "EndDate": "datetime",
+      "IsCurrentSemester": true,
+      "RegistrationPeriod": {
+        "EarlyRegistrationStart": "datetime",
+        "RegularRegistrationStart": "datetime",
+        "LateRegistrationStart": "datetime",
+        "RegistrationEnd": "datetime"
+      }
+    },
+    "Courses": [
+      {
+        "CourseEnrollmentId": "guid",
+        "Course": {
+          "CourseId": "guid",
+          "CourseCode": "string",
+          "CourseName": "string",
+          "CourseTitle": "string",
+          "CreditHours": 3,
+          "Department": "string",
+          "CourseLevel": "undergraduate",
+          "Prerequisites": [
+            {
+              "CourseCode": "string",
+              "MinimumGrade": "C"
+            }
+          ]
+        },
+        "Section": {
+          "SectionId": "guid",
+          "SectionNumber": "001",
+          "MaxEnrollment": 30,
+          "CurrentEnrollment": 28,
+          "WaitlistCount": 3,
+          "Instructor": {
+            "InstructorId": "guid",
+            "Name": "string",
+            "Email": "string",
+            "Title": "Professor",
+            "Department": "string"
+          },
+          "Schedule": [
+            {
+              "Day": "Monday",
+              "StartTime": "10:00",
+              "EndTime": "11:30",
+              "Location": {
+                "Building": "Science Hall",
+                "Room": "101",
+                "Campus": "Main"
+              }
+            },
+            {
+              "Day": "Wednesday",
+              "StartTime": "10:00",
+              "EndTime": "11:30",
+              "Location": {
+                "Building": "Science Hall",
+                "Room": "101",
+                "Campus": "Main"
+              }
+            }
+          ],
+          "ModalityType": "in_person",
+          "IsOnline": false,
+          "IsHybrid": false
+        },
+        "EnrollmentDate": "datetime",
+        "EnrollmentMethod": "online_registration",
+        "GradeMode": "letter_grade",
+        "IsAudit": false,
+        "SpecialApprovals": []
+      }
+    ],
+    "TotalCreditHours": 15,
+    "FullTimeStatus": true,
+    "ResidencyStatus": "in_state"
+  },
+  "Financial": {
+    "TuitionAndFees": {
+      "Tuition": 12000.00,
+      "TechnologyFee": 200.00,
+      "StudentActivityFee": 150.00,
+      "RecreationFee": 100.00,
+      "TotalFees": 12450.00
+    },
+    "FinancialAid": {
+      "EligibilityStatus": "eligible",
+      "TotalAwardAmount": 8500.00,
+      "Awards": [
+        {
+          "AwardId": "guid",
+          "AwardType": "grant",
+          "AwardName": "Pell Grant",
+          "Amount": 3500.00,
+          "Semester": "Fall 2024",
+          "Status": "accepted"
+        },
+        {
+          "AwardId": "guid",
+          "AwardType": "scholarship",
+          "AwardName": "Merit Scholarship",
+          "Amount": 2000.00,
+          "Semester": "Fall 2024",
+          "Status": "accepted"
+        },
+        {
+          "AwardId": "guid",
+          "AwardType": "loan",
+          "AwardName": "Subsidized Loan",
+          "Amount": 3000.00,
+          "InterestRate": 4.5,
+          "Status": "accepted"
+        }
+      ]
+    },
+    "PaymentPlan": {
+      "PlanId": "guid",
+      "PlanType": "monthly",
+      "TotalAmount": 3950.00,
+      "MonthlyAmount": 987.50,
+      "NumberOfPayments": 4,
+      "FirstPaymentDate": "datetime",
+      "SetupFee": 50.00
+    },
+    "OutstandingBalance": 3950.00
+  },
+  "Prerequisites": {
+    "PrerequisiteChecks": [
+      {
+        "CourseCode": "string",
+        "RequiredCourse": "string",
+        "RequiredGrade": "C",
+        "StudentGrade": "B+",
+        "CheckStatus": "passed",
+        "CheckedBy": "system",
+        "CheckedAt": "datetime"
+      }
+    ],
+    "Waivers": [],
+    "OverallStatus": "all_requirements_met"
+  },
+  "Housing": {
+    "HousingAssignment": {
+      "AssignmentId": "guid",
+      "ResidenceHall": "string",
+      "Room": "string",
+      "RoomType": "double",
+      "MealPlan": "unlimited",
+      "MoveInDate": "datetime",
+      "Roommate": {
+        "StudentId": "guid",
+        "Name": "string",
+        "Email": "string"
+      }
+    },
+    "HousingCost": 4500.00,
+    "MealPlanCost": 3200.00
+  },
+  "Services": {
+    "OrientationCompleted": true,
+    "OrientationDate": "datetime",
+    "AcademicAdvisor": {
+      "AdvisorId": "guid",
+      "Name": "string",
+      "Email": "string",
+      "Department": "string",
+      "AppointmentScheduled": true
+    },
+    "TechnologyAccess": {
+      "UniversityEmailCreated": true,
+      "PortalAccessGranted": true,
+      "LibraryAccessGranted": true,
+      "WifiAccessGranted": true
+    }
+  },
+  "Metadata": {
+    "ProcessedBy": "string",
+    "ProcessedAt": "datetime",
+    "RegistrationSource": "student_portal",
+    "PriorityRegistration": false,
+    "RegistrationTime": "datetime",
+    "ValidationResults": {
+      "IsValid": true,
+      "Warnings": [],
+      "Errors": []
+    },
+    "DownstreamNotifications": [
+      "financial_aid",
+      "housing",
+      "academic_advising",
+      "student_accounts",
+      "it_services"
+    ]
+  }
+}

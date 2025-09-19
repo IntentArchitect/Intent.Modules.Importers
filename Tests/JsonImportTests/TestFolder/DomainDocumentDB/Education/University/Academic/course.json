@@ -1,0 +1,169 @@
+{
+  "Id": "guid",
+  "CourseCode": "string",
+  "CourseName": "string",
+  "CourseTitle": "string",
+  "Description": "string",
+  "Department": {
+    "DepartmentId": "guid",
+    "Name": "string",
+    "Code": "string",
+    "Faculty": "string"
+  },
+  "Credits": 3,
+  "CourseLevel": "undergraduate",
+  "Prerequisites": [
+    {
+      "CourseId": "guid",
+      "CourseCode": "string",
+      "CourseName": "string",
+      "MinimumGrade": "C",
+      "IsRequired": true
+    }
+  ],
+  "Corequisites": [
+    {
+      "CourseId": "guid",
+      "CourseCode": "string",
+      "CourseName": "string",
+      "CanBeTakenConcurrently": true
+    }
+  ],
+  "LearningOutcomes": [
+    {
+      "OutcomeId": "guid",
+      "Description": "string",
+      "BloomLevel": "application",
+      "AssessmentMethods": ["exam", "project", "presentation"]
+    }
+  ],
+  "Offerings": [
+    {
+      "OfferingId": "guid",
+      "Semester": "Fall",
+      "Year": 2024,
+      "Section": "001",
+      "Instructor": {
+        "InstructorId": "guid",
+        "Name": "string",
+        "Email": "string",
+        "Title": "Professor",
+        "Department": "string"
+      },
+      "Schedule": {
+        "MeetingTimes": [
+          {
+            "Day": "Monday",
+            "StartTime": "10:00",
+            "EndTime": "11:30",
+            "Location": {
+              "Building": "Science Hall",
+              "Room": "101",
+              "Capacity": 30,
+              "Equipment": ["projector", "whiteboard", "computer"]
+            }
+          }
+        ],
+        "ExamSchedule": {
+          "MidtermDate": "datetime",
+          "FinalExamDate": "datetime",
+          "Location": "string"
+        }
+      },
+      "Enrollment": {
+        "MaxStudents": 30,
+        "EnrolledStudents": 28,
+        "WaitlistStudents": 5,
+        "MinEnrollment": 10
+      },
+      "GradingPolicy": {
+        "GradingScale": [
+          {
+            "Grade": "A",
+            "MinPercentage": 90.0,
+            "MaxPercentage": 100.0,
+            "GradePoints": 4.0
+          },
+          {
+            "Grade": "B",
+            "MinPercentage": 80.0,
+            "MaxPercentage": 89.9,
+            "GradePoints": 3.0
+          }
+        ],
+        "AssignmentWeights": [
+          {
+            "Category": "Exams",
+            "Weight": 60.0
+          },
+          {
+            "Category": "Assignments",
+            "Weight": 25.0
+          },
+          {
+            "Category": "Participation",
+            "Weight": 15.0
+          }
+        ]
+      }
+    }
+  ],
+  "CourseContent": {
+    "Modules": [
+      {
+        "ModuleId": "guid",
+        "Title": "string",
+        "Order": 1,
+        "LearningObjectives": ["string"],
+        "Topics": [
+          {
+            "Title": "string",
+            "Description": "string",
+            "EstimatedHours": 2.5
+          }
+        ],
+        "Assignments": [
+          {
+            "AssignmentId": "guid",
+            "Title": "string",
+            "Type": "homework",
+            "DueDate": "datetime",
+            "Points": 100,
+            "Instructions": "string"
+          }
+        ]
+      }
+    ],
+    "TextBooks": [
+      {
+        "ISBN": "string",
+        "Title": "string",
+        "Author": "string",
+        "Edition": "5th",
+        "Publisher": "string",
+        "IsRequired": true
+      }
+    ],
+    "OnlineResources": [
+      {
+        "Title": "string",
+        "URL": "string",
+        "Type": "video",
+        "AccessRequired": false
+      }
+    ]
+  },
+  "Accreditation": {
+    "AccreditingBody": "string",
+    "AccreditationLevel": "string",
+    "LastReviewDate": "datetime",
+    "NextReviewDate": "datetime",
+    "Status": "accredited"
+  },
+  "CreatedDate": "datetime",
+  "LastModified": "datetime",
+  "CreatedBy": "string",
+  "IsActive": true,
+  "IsOfferedOnline": false,
+  "IsOfferedInPerson": true
+}

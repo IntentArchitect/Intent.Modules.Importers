@@ -1,0 +1,80 @@
+{
+  "Id": "guid",
+  "ProductId": "guid",
+  "VariantId": "guid",
+  "SKU": "string",
+  "Location": {
+    "WarehouseId": "guid",
+    "WarehouseName": "string",
+    "Zone": "string",
+    "Aisle": "string",
+    "Shelf": "string",
+    "Bin": "string"
+  },
+  "StockLevels": {
+    "Available": 150,
+    "Reserved": 25,
+    "OnOrder": 50,
+    "Damaged": 2,
+    "Total": 227,
+    "MinimumLevel": 20,
+    "MaximumLevel": 500,
+    "ReorderPoint": 30,
+    "ReorderQuantity": 100
+  },
+  "MovementHistory": [
+    {
+      "Id": "guid",
+      "Type": "inbound",
+      "Quantity": 100,
+      "Reason": "purchase_order",
+      "ReferenceId": "guid",
+      "Date": "datetime",
+      "User": "string",
+      "Notes": "string",
+      "UnitCost": 120.00
+    }
+  ],
+  "Reservations": [
+    {
+      "Id": "guid",
+      "OrderId": "guid",
+      "Quantity": 5,
+      "ReservedDate": "datetime",
+      "ExpirationDate": "datetime",
+      "Status": "active",
+      "ReservedBy": "string"
+    }
+  ],
+  "QualityControl": {
+    "LastInspectionDate": "datetime",
+    "InspectionResults": {
+      "Grade": "A",
+      "DefectCount": 0,
+      "Notes": "string",
+      "InspectedBy": "string"
+    },
+    "ExpirationDate": "datetime",
+    "BatchNumber": "string",
+    "SerialNumbers": ["string"]
+  },
+  "CostTracking": {
+    "AverageCost": 118.50,
+    "LastCost": 120.00,
+    "StandardCost": 115.00,
+    "TotalValue": 17775.00,
+    "CostMethod": "FIFO"
+  },
+  "Alerts": [
+    {
+      "Type": "low_stock",
+      "Message": "Stock level below minimum threshold",
+      "Severity": "warning",
+      "CreatedDate": "datetime",
+      "IsAcknowledged": false
+    }
+  ],
+  "LastUpdated": "datetime",
+  "UpdatedBy": "string",
+  "Version": 1
+}

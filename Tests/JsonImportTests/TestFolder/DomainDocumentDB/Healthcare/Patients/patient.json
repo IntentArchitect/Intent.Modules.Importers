@@ -1,0 +1,75 @@
+{
+  "Id": "guid",
+  "PatientNumber": "string",
+  "PersonalInfo": {
+    "FirstName": "string",
+    "LastName": "string",
+    "DateOfBirth": "datetime",
+    "Gender": "string",
+    "SocialSecurityNumber": "string"
+  },
+  "ContactInfo": {
+    "PrimaryPhone": "string",
+    "SecondaryPhone": "string",
+    "Email": "string",
+    "Address": {
+      "Street": "string",
+      "City": "string",
+      "State": "string",
+      "ZipCode": "string",
+      "Country": "string"
+    }
+  },
+  "EmergencyContacts": [
+    {
+      "Name": "string",
+      "Relationship": "string",
+      "Phone": "string",
+      "Email": "string"
+    }
+  ],
+  "InsuranceInfo": {
+    "PrimaryInsurance": {
+      "ProviderName": "string",
+      "PolicyNumber": "string",
+      "GroupNumber": "string",
+      "EffectiveDate": "datetime",
+      "ExpirationDate": "datetime"
+    },
+    "SecondaryInsurance": {
+      "ProviderName": "string",
+      "PolicyNumber": "string",
+      "GroupNumber": "string",
+      "EffectiveDate": "datetime",
+      "ExpirationDate": "datetime"
+    }
+  },
+  "MedicalHistory": {
+    "Allergies": [
+      {
+        "Substance": "string",
+        "Severity": "string",
+        "Reaction": "string"
+      }
+    ],
+    "ChronicConditions": [
+      {
+        "Condition": "string",
+        "DiagnosedDate": "datetime",
+        "Status": "string"
+      }
+    ],
+    "Medications": [
+      {
+        "Name": "string",
+        "Dosage": "string",
+        "Frequency": "string",
+        "PrescribedDate": "datetime",
+        "PrescribingPhysician": "string"
+      }
+    ]
+  },
+  "CreatedDate": "datetime",
+  "LastUpdated": "datetime",
+  "IsActive": true
+}

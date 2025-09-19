@@ -1,0 +1,81 @@
+{
+  "Id": "guid",
+  "Name": "string",
+  "Description": "string",
+  "Slug": "string",
+  "ParentCategoryId": "guid",
+  "Level": 2,
+  "Path": "Electronics/Computers/Laptops",
+  "DisplayOrder": 1,
+  "IsActive": true,
+  "IsVisible": true,
+  "Metadata": {
+    "SEO": {
+      "MetaTitle": "string",
+      "MetaDescription": "string",
+      "MetaKeywords": ["string"],
+      "CanonicalUrl": "string"
+    },
+    "DisplaySettings": {
+      "BannerImage": "string",
+      "IconUrl": "string",
+      "Color": "string",
+      "LayoutTemplate": "grid"
+    }
+  },
+  "Attributes": [
+    {
+      "AttributeId": "guid",
+      "Name": "string",
+      "Type": "string",
+      "IsRequired": false,
+      "IsFilterable": true,
+      "Values": [
+        {
+          "Value": "string",
+          "DisplayName": "string",
+          "Color": "string",
+          "Image": "string"
+        }
+      ]
+    }
+  ],
+  "SubCategories": [
+    {
+      "Id": "guid",
+      "Name": "string",
+      "Slug": "string",
+      "ProductCount": 25,
+      "IsActive": true
+    }
+  ],
+  "ProductCount": 150,
+  "FeaturedProducts": [
+    {
+      "ProductId": "guid",
+      "Position": 1,
+      "IsSponsored": false
+    }
+  ],
+  "Filters": [
+    {
+      "Name": "Price Range",
+      "Type": "range",
+      "Options": [
+        {
+          "Label": "$0 - $100",
+          "MinValue": 0,
+          "MaxValue": 100
+        },
+        {
+          "Label": "$100 - $500",
+          "MinValue": 100,
+          "MaxValue": 500
+        }
+      ]
+    }
+  ],
+  "CreatedDate": "datetime",
+  "LastModified": "datetime",
+  "CreatedBy": "string"
+}

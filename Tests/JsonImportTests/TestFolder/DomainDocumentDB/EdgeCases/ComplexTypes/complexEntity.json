@@ -1,0 +1,211 @@
+{
+  "Id": "guid",
+  "Name": "string",
+  "OptionalDescription": null,
+  "Tags": ["tag1", "tag2", "tag3"],
+  "Numbers": [1, 2, 3, 5, 8, 13],
+  "Decimals": [1.1, 2.5, 3.14159, 42.0],
+  "Booleans": [true, false, true],
+  "EmptyArray": [],
+  "NullableField": null,
+  "OptionalObject": null,
+  "NestedArrays": [
+    ["a", "b", "c"],
+    ["x", "y", "z"],
+    []
+  ],
+  "MixedTypeArray": [
+    {
+      "Type": "text",
+      "Value": "string",
+      "IsValid": true
+    },
+    {
+      "Type": "number",
+      "Value": 42,
+      "IsValid": true
+    },
+    {
+      "Type": "boolean",
+      "Value": false,
+      "IsValid": false
+    }
+  ],
+  "OptionalNestedObject": {
+    "RequiredField": "string",
+    "OptionalField": null,
+    "ConditionalData": {
+      "WhenPresent": "string",
+      "MaybeNull": null,
+      "OptionalArray": ["optional1", "optional2"]
+    }
+  },
+  "Polymorphic": [
+    {
+      "Type": "Circle",
+      "Radius": 5.0,
+      "Color": "red"
+    },
+    {
+      "Type": "Rectangle",
+      "Width": 10.0,
+      "Height": 15.0,
+      "Color": "blue"
+    },
+    {
+      "Type": "Triangle",
+      "Base": 8.0,
+      "Height": 12.0,
+      "Color": "green",
+      "OptionalAngle": 45.0
+    }
+  ],
+  "ComplexInheritance": {
+    "BaseType": "Vehicle",
+    "Properties": {
+      "Make": "string",
+      "Model": "string",
+      "Year": 2024,
+      "VIN": "string"
+    },
+    "SpecificProperties": {
+      "VehicleType": "Car",
+      "Doors": 4,
+      "FuelType": "gasoline",
+      "Transmission": "automatic",
+      "Features": ["cruise_control", "bluetooth", "backup_camera"],
+      "Engine": {
+        "Type": "V6",
+        "Displacement": 3.5,
+        "Horsepower": 280,
+        "Turbo": false
+      },
+      "Safety": {
+        "AirbagsCount": 8,
+        "HasABS": true,
+        "HasESC": true,
+        "CrashRating": 5,
+        "OptionalSafetyFeatures": ["lane_assist", "collision_warning"]
+      }
+    }
+  },
+  "ConditionalFields": {
+    "UserType": "premium",
+    "BasicInfo": {
+      "Name": "string",
+      "Email": "string"
+    },
+    "PremiumInfo": {
+      "SubscriptionLevel": "gold",
+      "Features": ["feature1", "feature2", "feature3"],
+      "Limits": {
+        "APICallsPerDay": 10000,
+        "StorageGB": 100,
+        "ConcurrentConnections": 50
+      },
+      "BillingInfo": {
+        "Plan": "monthly",
+        "Amount": 99.99,
+        "Currency": "USD",
+        "NextBillingDate": "datetime",
+        "PaymentMethod": {
+          "Type": "credit_card",
+          "Last4": "1234",
+          "ExpiryMonth": 12,
+          "ExpiryYear": 2025
+        }
+      }
+    },
+    "AdminInfo": null,
+    "GuestInfo": null
+  },
+  "MetadataMap": {
+    "key1": "value1",
+    "key2": 42,
+    "key3": true,
+    "key4": null,
+    "key5": {
+      "nested": "object",
+      "with": ["array", "values"]
+    }
+  },
+  "VersionHistory": [
+    {
+      "Version": "1.0.0",
+      "Changes": ["Initial version"],
+      "Date": "datetime",
+      "Author": "string",
+      "Breaking": false
+    },
+    {
+      "Version": "1.1.0",
+      "Changes": ["Added feature X", "Fixed bug Y"],
+      "Date": "datetime",
+      "Author": "string",
+      "Breaking": false
+    },
+    {
+      "Version": "2.0.0",
+      "Changes": ["Major refactor", "Breaking API changes"],
+      "Date": "datetime",
+      "Author": "string",
+      "Breaking": true,
+      "MigrationGuide": "string"
+    }
+  ],
+  "Timestamps": {
+    "CreatedAt": "datetime",
+    "UpdatedAt": "datetime",
+    "LastAccessedAt": null,
+    "ScheduledAt": "datetime",
+    "CompletedAt": null,
+    "DeletedAt": null
+  },
+  "Flags": {
+    "IsActive": true,
+    "IsDeleted": false,
+    "IsPublic": true,
+    "IsVerified": null,
+    "RequiresApproval": false,
+    "HasNotifications": true
+  },
+  "Configuration": {
+    "Settings": {
+      "Theme": "dark",
+      "Language": "en-US",
+      "Timezone": "UTC-5",
+      "Notifications": {
+        "Email": true,
+        "SMS": false,
+        "Push": true,
+        "InApp": true
+      },
+      "Privacy": {
+        "ProfileVisibility": "public",
+        "ShowEmail": false,
+        "ShowPhone": null,
+        "AllowSearch": true
+      }
+    },
+    "Preferences": [
+      {
+        "Category": "appearance",
+        "Key": "font_size",
+        "Value": "medium",
+        "Type": "string"
+      },
+      {
+        "Category": "behavior",
+        "Key": "auto_save",
+        "Value": true,
+        "Type": "boolean"
+      },
+      {
+        "Category": "advanced",
+        "Key": "debug_mode",
+        "Value": null,
+        "Type": "boolean"
+      }
+    ]
+  }
+}

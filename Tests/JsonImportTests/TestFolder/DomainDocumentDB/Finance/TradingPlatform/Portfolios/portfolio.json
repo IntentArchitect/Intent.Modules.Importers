@@ -1,0 +1,120 @@
+{
+  "Id": "guid",
+  "AccountId": "guid",
+  "PortfolioName": "string",
+  "PortfolioType": "individual",
+  "InvestmentObjective": "growth",
+  "RiskTolerance": "moderate",
+  "Owner": {
+    "CustomerId": "guid",
+    "Name": "string",
+    "Email": "string",
+    "Phone": "string"
+  },
+  "AccountDetails": {
+    "AccountNumber": "string",
+    "AccountType": "brokerage",
+    "TaxStatus": "taxable",
+    "BaseCurrency": "USD",
+    "OpenDate": "datetime",
+    "Status": "active"
+  },
+  "Holdings": [
+    {
+      "Id": "guid",
+      "AssetId": "guid",
+      "Symbol": "string",
+      "AssetType": "stock",
+      "Quantity": 100.0,
+      "AveragePrice": 125.50,
+      "CurrentPrice": 132.75,
+      "MarketValue": 13275.00,
+      "UnrealizedGainLoss": 725.00,
+      "PercentageGainLoss": 5.78,
+      "PercentOfPortfolio": 15.25,
+      "FirstPurchaseDate": "datetime",
+      "LastTransactionDate": "datetime",
+      "DividendYield": 2.45,
+      "AccruedDividends": 125.50
+    }
+  ],
+  "Performance": {
+    "TotalValue": 87000.00,
+    "CashValue": 5000.00,
+    "InvestedValue": 82000.00,
+    "TotalGainLoss": 4500.00,
+    "TotalGainLossPercentage": 5.48,
+    "DayChange": 275.50,
+    "DayChangePercentage": 0.32,
+    "YearToDateReturn": 8.75,
+    "OneYearReturn": 12.45,
+    "ThreeYearReturn": 7.89,
+    "FiveYearReturn": 9.12,
+    "InceptionReturn": 11.23,
+    "Volatility": {
+      "Beta": 1.05,
+      "StandardDeviation": 15.78,
+      "SharpeRatio": 0.89,
+      "MaxDrawdown": -12.45
+    }
+  },
+  "AssetAllocation": {
+    "Stocks": {
+      "Percentage": 75.0,
+      "Value": 65250.00,
+      "Sectors": [
+        {
+          "Name": "Technology",
+          "Percentage": 35.0,
+          "Value": 30450.00
+        },
+        {
+          "Name": "Healthcare",
+          "Percentage": 20.0,
+          "Value": 17400.00
+        }
+      ]
+    },
+    "Bonds": {
+      "Percentage": 15.0,
+      "Value": 13050.00,
+      "Types": [
+        {
+          "Name": "Government",
+          "Percentage": 10.0,
+          "Value": 8700.00
+        },
+        {
+          "Name": "Corporate",
+          "Percentage": 5.0,
+          "Value": 4350.00
+        }
+      ]
+    },
+    "Cash": {
+      "Percentage": 5.75,
+      "Value": 5000.00
+    },
+    "Other": {
+      "Percentage": 4.25,
+      "Value": 3700.00
+    }
+  },
+  "RiskMetrics": {
+    "VaR95": -2500.00,
+    "ConditionalVaR": -3750.00,
+    "RiskRating": "medium",
+    "ConcentrationRisk": "low",
+    "LiquidityRisk": "low"
+  },
+  "Restrictions": {
+    "MaxPositionSize": 10.0,
+    "ProhibitedAssets": ["tobacco", "gambling"],
+    "MinCashPercentage": 2.0,
+    "MaxSectorConcentration": 40.0
+  },
+  "CreatedDate": "datetime",
+  "LastRebalanceDate": "datetime",
+  "LastValuationDate": "datetime",
+  "IsActive": true
+}

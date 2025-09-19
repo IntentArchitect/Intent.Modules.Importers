@@ -1,0 +1,117 @@
+{
+  "Id": "guid",
+  "PatientId": "guid",
+  "RecordNumber": "string",
+  "RecordType": "string",
+  "CreatedDate": "datetime",
+  "CreatedBy": {
+    "PractitionerId": "guid",
+    "Name": "string",
+    "Title": "string"
+  },
+  "VisitInformation": {
+    "AppointmentId": "guid",
+    "VisitDate": "datetime",
+    "VisitType": "string",
+    "FacilityId": "guid"
+  },
+  "ClinicalData": {
+    "ChiefComplaint": "string",
+    "HistoryOfPresentIllness": "string",
+    "ReviewOfSystems": {
+      "Constitutional": "string",
+      "Cardiovascular": "string",
+      "Respiratory": "string",
+      "Gastrointestinal": "string",
+      "Neurological": "string",
+      "Musculoskeletal": "string"
+    },
+    "PhysicalExamination": {
+      "General": "string",
+      "VitalSigns": {
+        "Temperature": 98.6,
+        "BloodPressure": "120/80",
+        "HeartRate": 72,
+        "RespiratoryRate": 16,
+        "OxygenSaturation": 98
+      },
+      "SystemicFindings": {
+        "Head": "string",
+        "Neck": "string",
+        "Chest": "string",
+        "Abdomen": "string",
+        "Extremities": "string"
+      }
+    }
+  },
+  "DiagnosticTests": [
+    {
+      "TestId": "guid",
+      "TestName": "string",
+      "TestType": "string",
+      "OrderedDate": "datetime",
+      "CompletedDate": "datetime",
+      "Results": "string",
+      "Interpretation": "string",
+      "OrderingPhysician": "string"
+    }
+  ],
+  "Diagnoses": [
+    {
+      "DiagnosisId": "guid",
+      "Code": "string",
+      "Description": "string",
+      "Type": "string",
+      "Severity": "string",
+      "OnsetDate": "datetime",
+      "Status": "string"
+    }
+  ],
+  "TreatmentPlans": [
+    {
+      "PlanId": "guid",
+      "Description": "string",
+      "StartDate": "datetime",
+      "EndDate": "datetime",
+      "Status": "string",
+      "Goals": ["string"],
+      "Interventions": [
+        {
+          "Type": "string",
+          "Description": "string",
+          "Frequency": "string",
+          "Duration": "string"
+        }
+      ]
+    }
+  ],
+  "Medications": [
+    {
+      "MedicationId": "guid",
+      "Name": "string",
+      "GenericName": "string",
+      "Dosage": "string",
+      "Route": "string",
+      "Frequency": "string",
+      "StartDate": "datetime",
+      "EndDate": "datetime",
+      "PrescribingPhysician": "string",
+      "Instructions": "string"
+    }
+  ],
+  "Allergies": [
+    {
+      "AllergyId": "guid",
+      "Substance": "string",
+      "AllergyType": "string",
+      "Severity": "string",
+      "Reaction": "string",
+      "OnsetDate": "datetime",
+      "VerifiedDate": "datetime"
+    }
+  ],
+  "LastModified": "datetime",
+  "ModifiedBy": "string",
+  "Version": 1,
+  "IsActive": true
+}

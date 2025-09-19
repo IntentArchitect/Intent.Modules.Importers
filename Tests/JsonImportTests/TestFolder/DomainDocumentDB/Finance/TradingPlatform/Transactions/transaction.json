@@ -1,0 +1,139 @@
+{
+  "Id": "guid",
+  "TransactionId": "string",
+  "PortfolioId": "guid",
+  "AssetId": "guid",
+  "OrderId": "guid",
+  "TransactionType": "buy",
+  "TransactionStatus": "settled",
+  "TradeDate": "datetime",
+  "SettlementDate": "datetime",
+  "BookingDate": "datetime",
+  "Instrument": {
+    "Symbol": "string",
+    "Name": "string",
+    "AssetType": "stock",
+    "ISIN": "string",
+    "Exchange": "string",
+    "Currency": "USD"
+  },
+  "Quantity": {
+    "OrderedQuantity": 100.0,
+    "ExecutedQuantity": 100.0,
+    "RemainingQuantity": 0.0,
+    "CancelledQuantity": 0.0
+  },
+  "Pricing": {
+    "OrderPrice": 425.00,
+    "ExecutedPrice": 425.50,
+    "GrossAmount": 42550.00,
+    "NetAmount": 42567.50,
+    "MarketValue": 42550.00,
+    "AccruedInterest": 0.0
+  },
+  "Fees": {
+    "Commission": 9.95,
+    "RegulatoryFees": 0.22,
+    "ExchangeFees": 1.25,
+    "ClearingFees": 0.50,
+    "OtherFees": 5.58,
+    "TotalFees": 17.50,
+    "Currency": "USD"
+  },
+  "Taxes": {
+    "TransactionTax": 0.0,
+    "StampDuty": 0.0,
+    "WithholdingTax": 0.0,
+    "TotalTaxes": 0.0,
+    "TaxCurrency": "USD"
+  },
+  "OrderDetails": {
+    "OrderType": "market",
+    "TimeInForce": "day",
+    "OrderPlacedBy": "string",
+    "OrderChannel": "online",
+    "OrderTime": "datetime",
+    "ExecutionTime": "datetime",
+    "Venue": "NASDAQ",
+    "ExecutionQuality": {
+      "PriceImprovement": 0.0,
+      "SpreadCaptured": 0.05,
+      "TimeToExecution": 250
+    }
+  },
+  "SettlementDetails": {
+    "SettlementCurrency": "USD",
+    "ExchangeRate": 1.0,
+    "SettlementAmount": 42567.50,
+    "SettlementMethod": "DVP",
+    "CustodianReference": "string",
+    "ClearingHouse": "string"
+  },
+  "Counterparty": {
+    "BrokerId": "string",
+    "BrokerName": "string",
+    "DealerId": "string",
+    "DealerName": "string",
+    "PrimeBroker": "string"
+  },
+  "RiskData": {
+    "VaRImpact": -1250.00,
+    "DeltaEquivalent": 42550.00,
+    "NotionalAmount": 42550.00,
+    "RiskClass": "equity",
+    "ConcentrationLimit": 50000.00,
+    "PositionLimit": 1000.0
+    },
+  "Compliance": {
+    "TradeRestrictions": [],
+    "ComplianceChecks": [
+      {
+        "CheckType": "position_limit",
+        "Status": "passed",
+        "CheckedAt": "datetime"
+      },
+      {
+        "CheckType": "concentration_limit",
+        "Status": "passed",
+        "CheckedAt": "datetime"
+      }
+    ],
+    "RequiresApproval": false,
+    "ApprovedBy": null,
+    "ApprovalTime": null
+  },
+  "Allocations": [
+    {
+      "AccountId": "guid",
+      "AllocationPercentage": 100.0,
+      "AllocatedQuantity": 100.0,
+      "AllocatedAmount": 42567.50
+    }
+  ],
+  "Amendments": [
+    {
+      "AmendmentId": "guid",
+      "AmendmentType": "price_correction",
+      "AmendmentReason": "string",
+      "OriginalValue": "string",
+      "NewValue": "string",
+      "AmendedBy": "string",
+      "AmendedAt": "datetime"
+    }
+  ],
+  "AuditTrail": {
+    "CreatedBy": "string",
+    "CreatedAt": "datetime",
+    "LastModifiedBy": "string",
+    "LastModifiedAt": "datetime",
+    "Version": 1,
+    "Source": "trading_system"
+  },
+  "RelatedTransactions": [
+    {
+      "RelatedTransactionId": "guid",
+      "RelationType": "corporate_action",
+      "Description": "string"
+    }
+  ]
+}

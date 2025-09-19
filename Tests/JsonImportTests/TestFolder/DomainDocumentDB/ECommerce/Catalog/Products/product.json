@@ -1,0 +1,144 @@
+{
+  "Id": "guid",
+  "SKU": "string",
+  "Name": "string",
+  "Description": "string",
+  "ShortDescription": "string",
+  "Brand": {
+    "Id": "guid",
+    "Name": "string",
+    "LogoUrl": "string",
+    "Website": "string"
+  },
+  "Category": {
+    "CategoryId": "guid",
+    "Name": "string",
+    "ParentCategoryId": "guid"
+  },
+  "ProductType": "string",
+  "Status": "string",
+  "Pricing": {
+    "BasePrice": 199.99,
+    "CompareAtPrice": 249.99,
+    "CostPrice": 120.00,
+    "Currency": "USD",
+    "TaxClass": "standard",
+    "DiscountRules": [
+      {
+        "RuleId": "guid",
+        "Type": "percentage",
+        "Value": 10.0,
+        "MinQuantity": 5,
+        "StartDate": "datetime",
+        "EndDate": "datetime"
+      }
+    ]
+  },
+  "Variants": [
+    {
+      "Id": "guid",
+      "SKU": "string",
+      "Name": "string",
+      "Attributes": {
+        "Color": "string",
+        "Size": "string",
+        "Material": "string",
+        "Weight": 1.5
+      },
+      "Pricing": {
+        "BasePrice": 199.99,
+        "CompareAtPrice": 249.99,
+        "CostPrice": 120.00
+      },
+      "Inventory": {
+        "Quantity": 100,
+        "ReservedQuantity": 5,
+        "MinStockLevel": 10,
+        "MaxStockLevel": 500,
+        "ReorderPoint": 20,
+        "ReorderQuantity": 100
+      },
+      "Images": [
+        {
+          "Id": "guid",
+          "Url": "string",
+          "AltText": "string",
+          "Position": 1,
+          "IsPrimary": true
+        }
+      ],
+      "Dimensions": {
+        "Length": 10.5,
+        "Width": 8.0,
+        "Height": 2.5,
+        "Weight": 1.5,
+        "Unit": "inches"
+      }
+    }
+  ],
+  "Attributes": [
+    {
+      "Name": "string",
+      "Value": "string",
+      "Type": "string",
+      "IsFilterable": true,
+      "IsSearchable": true,
+      "DisplayOrder": 1
+    }
+  ],
+  "SEO": {
+    "MetaTitle": "string",
+    "MetaDescription": "string",
+    "MetaKeywords": ["string"],
+    "UrlSlug": "string",
+    "CanonicalUrl": "string"
+  },
+  "Images": [
+    {
+      "Id": "guid",
+      "Url": "string",
+      "AltText": "string",
+      "Position": 1,
+      "IsPrimary": true,
+      "ImageType": "product"
+    }
+  ],
+  "RelatedProducts": [
+    {
+      "ProductId": "guid",
+      "RelationType": "cross-sell",
+      "Position": 1
+    }
+  ],
+  "Reviews": {
+    "AverageRating": 4.5,
+    "TotalReviews": 127,
+    "RatingDistribution": {
+      "5Star": 85,
+      "4Star": 30,
+      "3Star": 8,
+      "2Star": 3,
+      "1Star": 1
+    }
+  },
+  "Shipping": {
+    "Weight": 1.5,
+    "Dimensions": {
+      "Length": 12.0,
+      "Width": 10.0,
+      "Height": 4.0,
+      "Unit": "inches"
+    },
+    "ShippingClass": "standard",
+    "RequiresShipping": true,
+    "IsFreeShipping": false,
+    "HandlingTime": 2
+  },
+  "Tags": ["electronics", "gadgets", "tech"],
+  "CreatedDate": "datetime",
+  "LastModified": "datetime",
+  "CreatedBy": "string",
+  "IsActive": true,
+  "IsVisible": true,
+  "IsFeatured": false
+}

@@ -1,0 +1,198 @@
+{
+  "EventId": "guid",
+  "EventType": "TradeExecuted",
+  "EventVersion": "3.0",
+  "Timestamp": "datetime",
+  "CorrelationId": "guid",
+  "SourceSystem": "TradingEngine",
+  "Trade": {
+    "TradeId": "guid",
+    "OrderId": "guid",
+    "TradeNumber": "string",
+    "ExecutionTime": "datetime",
+    "TradeDate": "datetime",
+    "SettlementDate": "datetime",
+    "TradeStatus": "executed",
+    "TradeType": "market_order"
+  },
+  "Instrument": {
+    "Symbol": "AAPL",
+    "Name": "Apple Inc.",
+    "AssetType": "equity",
+    "AssetClass": "common_stock",
+    "ISIN": "US0378331005",
+    "CUSIP": "037833100",
+    "Exchange": "NASDAQ",
+    "Currency": "USD",
+    "Sector": "Technology",
+    "Industry": "Consumer Electronics"
+  },
+  "Execution": {
+    "Side": "buy",
+    "Quantity": {
+      "Ordered": 1000,
+      "Executed": 1000,
+      "Remaining": 0
+    },
+    "Price": {
+      "OrderPrice": 175.00,
+      "ExecutedPrice": 175.25,
+      "AveragePrice": 175.25,
+      "LimitPrice": 180.00
+    },
+    "Value": {
+      "GrossAmount": 175250.00,
+      "NetAmount": 175267.95,
+      "CommissionAmount": 9.95,
+      "RegulatoryFees": 2.85,
+      "ExchangeFees": 3.50,
+      "ClearingFees": 1.65,
+      "TotalFees": 17.95
+    },
+    "Venue": {
+      "ExchangeCode": "XNAS",
+      "MarketCenter": "NASDAQ",
+      "LiquidityFlag": "added",
+      "ExecutionVenue": "primary",
+      "DarkPool": false
+    }
+  },
+  "Account": {
+    "AccountId": "guid",
+    "AccountNumber": "string",
+    "AccountType": "margin",
+    "CustodianId": "guid",
+    "PrimeBrokerId": "guid",
+    "OwnerInfo": {
+      "ClientId": "guid",
+      "ClientName": "string",
+      "ClientType": "institutional",
+      "InvestmentObjective": "growth"
+    }
+  },
+  "Portfolio": {
+    "PortfolioId": "guid",
+    "PortfolioCode": "string",
+    "StrategyId": "guid",
+    "StrategyName": "string",
+    "FundId": "guid",
+    "FundName": "string",
+    "PositionBefore": {
+      "Quantity": 2500,
+      "AveragePrice": 168.75,
+      "MarketValue": 421875.00,
+      "UnrealizedPnL": 15625.00
+    },
+    "PositionAfter": {
+      "Quantity": 3500,
+      "AveragePrice": 170.89,
+      "MarketValue": 598125.00,
+      "UnrealizedPnL": 15875.00
+    }
+  },
+  "OrderDetails": {
+    "OriginalOrderId": "guid",
+    "ParentOrderId": "guid",
+    "OrderChain": ["guid"],
+    "OrderType": "market",
+    "TimeInForce": "day",
+    "OrderSource": "algorithmic",
+    "Algorithm": {
+      "AlgorithmId": "guid",
+      "AlgorithmName": "TWAP",
+      "AlgorithmVersion": "2.1",
+      "Parameters": {
+        "Duration": 300,
+        "Participation": 15.0,
+        "MinQuantity": 100
+      }
+    },
+    "Trader": {
+      "TraderId": "guid",
+      "TraderName": "string",
+      "DeskId": "guid",
+      "DeskName": "string"
+    }
+  },
+  "RiskMetrics": {
+    "PreTradeChecks": {
+      "PositionLimit": {
+        "Limit": 5000,
+        "Used": 2500,
+        "Available": 2500,
+        "Status": "passed"
+      },
+      "ConcentrationLimit": {
+        "Limit": 25.0,
+        "Current": 18.5,
+        "PostTrade": 21.2,
+        "Status": "passed"
+      },
+      "VaRLimit": {
+        "Limit": 50000.00,
+        "Current": 35000.00,
+        "Impact": 2500.00,
+        "Status": "passed"
+      }
+    },
+    "PostTradeRisk": {
+      "DeltaEquivalent": 175250.00,
+      "VaRContribution": 2750.00,
+      "BetaAdjustedExposure": 184012.50,
+      "SectorExposure": 425000.00,
+      "CountryExposure": 2150000.00
+    }
+  },
+  "Compliance": {
+    "ComplianceChecks": [
+      {
+        "RuleId": "CR001",
+        "RuleName": "Single Stock Concentration",
+        "Status": "passed",
+        "CheckTime": "datetime"
+      },
+      {
+        "RuleId": "CR002",
+        "RuleName": "Sector Concentration",
+        "Status": "passed",
+        "CheckTime": "datetime"
+      }
+    ],
+    "RequiredApprovals": [],
+    "Exemptions": []
+  },
+  "Settlement": {
+    "SettlementCurrency": "USD",
+    "SettlementAmount": 175267.95,
+    "SettlementInstructions": {
+      "DVP": true,
+      "CustodianAccount": "string",
+      "SettlementAgent": "string",
+      "SpecialInstructions": "string"
+    },
+    "CounterpartyInfo": {
+      "CounterpartyId": "guid",
+      "CounterpartyName": "string",
+      "CounterpartyType": "dealer",
+      "SettlementAccount": "string"
+    }
+  },
+  "Metadata": {
+    "ProcessedBy": "string",
+    "ProcessedAt": "datetime",
+    "MessageVersion": "3.0",
+    "SequenceNumber": 1234567,
+    "DownstreamNotifications": [
+      "position_management",
+      "risk_management",
+      "compliance",
+      "settlement",
+      "reporting"
+    ],
+    "AuditTrail": {
+      "CreatedBy": "TradingEngine",
+      "Source": "NASDAQ_FEED",
+      "OriginalMessageId": "string"
+    }
+  }
+}

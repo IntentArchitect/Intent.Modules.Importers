@@ -1,0 +1,147 @@
+{
+  "EventId": "guid",
+  "EventType": "OrderShipped",
+  "EventVersion": "2.1",
+  "Timestamp": "datetime",
+  "CorrelationId": "guid",
+  "SourceSystem": "OMS",
+  "Order": {
+    "OrderId": "guid",
+    "OrderNumber": "string",
+    "OrderDate": "datetime",
+    "OrderStatus": "shipped",
+    "Customer": {
+      "CustomerId": "guid",
+      "Email": "string",
+      "FirstName": "string",
+      "LastName": "string",
+      "Phone": "string",
+      "CustomerType": "premium",
+      "LoyaltyTier": "gold"
+    },
+    "BillingAddress": {
+      "FirstName": "string",
+      "LastName": "string",
+      "Company": "string",
+      "Street1": "string",
+      "Street2": "string",
+      "City": "string",
+      "State": "string",
+      "PostalCode": "string",
+      "Country": "string",
+      "IsCommercial": false
+    },
+    "ShippingAddress": {
+      "FirstName": "string",
+      "LastName": "string",
+      "Company": "string",
+      "Street1": "string",
+      "Street2": "string",
+      "City": "string",
+      "State": "string",
+      "PostalCode": "string",
+      "Country": "string",
+      "IsCommercial": false,
+      "DeliveryInstructions": "string"
+    }
+  },
+  "Shipment": {
+    "ShipmentId": "guid",
+    "TrackingNumber": "string",
+    "ShippingCarrier": "UPS",
+    "ShippingMethod": "Ground",
+    "ShippingService": "UPS Ground",
+    "ShipDate": "datetime",
+    "EstimatedDeliveryDate": "datetime",
+    "ShippingCost": 12.99,
+    "InsuranceValue": 250.00,
+    "RequiresSignature": true,
+    "IsExpedited": false,
+    "Warehouse": {
+      "WarehouseId": "guid",
+      "WarehouseName": "string",
+      "WarehouseCode": "string",
+      "Address": {
+        "Street": "string",
+        "City": "string",
+        "State": "string",
+        "PostalCode": "string"
+      }
+    },
+    "Packages": [
+      {
+        "PackageId": "guid",
+        "TrackingNumber": "string",
+        "Weight": 2.5,
+        "Dimensions": {
+          "Length": 12.0,
+          "Width": 8.0,
+          "Height": 4.0,
+          "Unit": "inches"
+        },
+        "PackageType": "box",
+        "Items": [
+          {
+            "ItemId": "guid",
+            "SKU": "string",
+            "ProductName": "string",
+            "Quantity": 2,
+            "UnitPrice": 49.99,
+            "TotalPrice": 99.98,
+            "Weight": 1.2,
+            "SerialNumbers": ["string"],
+            "LotNumbers": ["string"]
+          }
+        ]
+      }
+    ]
+  },
+  "Financial": {
+    "SubTotal": 199.96,
+    "TaxAmount": 16.00,
+    "ShippingAmount": 12.99,
+    "DiscountAmount": 20.00,
+    "TotalAmount": 208.95,
+    "Currency": "USD",
+    "PaymentMethod": {
+      "Type": "credit_card",
+      "Last4Digits": "1234",
+      "Brand": "Visa",
+      "AuthorizationCode": "string",
+      "TransactionId": "string"
+    }
+  },
+  "Fulfillment": {
+    "FulfillmentCenter": "string",
+    "FulfillmentMethod": "ship_to_home",
+    "ProcessedBy": "string",
+    "ProcessedAt": "datetime",
+    "PackedBy": "string",
+    "PackedAt": "datetime",
+    "QualityCheck": {
+      "CheckedBy": "string",
+      "CheckedAt": "datetime",
+      "QualityScore": 98,
+      "Notes": "string"
+    }
+  },
+  "Notifications": {
+    "CustomerNotified": true,
+    "NotificationMethod": "email",
+    "NotificationSentAt": "datetime",
+    "SMSOptIn": true,
+    "EmailOptIn": true,
+    "TrackingLinkProvided": true
+  },
+  "Metadata": {
+    "ProcessedBy": "string",
+    "ProcessedAt": "datetime",
+    "RetryCount": 0,
+    "DownstreamSystems": ["inventory", "accounting", "crm"],
+    "BusinessRules": {
+      "AutoShipEligible": true,
+      "GiftWrapRequested": false,
+      "ExpressShippingUpgrade": false
+    }
+  }
+}
