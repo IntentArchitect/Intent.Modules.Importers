@@ -1,18 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Intent.Persistence;
 using JetBrains.Annotations;
 
 namespace Intent.MetadataSynchronizer.CSharp.CLI;
 
 public record ImportProfileConfig
 {
-    public string ClassToSpecializationTypeId { get; init; }
-    public string? PropertiesToSpecializationId { get; init; }
-    public string? MethodsToSpecializationId { get; init; }
-    public string? ParametersToSpecializationId { get; init; }
-    public string? ConstructorsToSpecializationId { get; init; }
-    public string? EnumToSpecializationId { get; init; }
-    public string? EnumLiteralToSpecializationId { get; init; }
-    public string? AssociationSpecializationTypeId { get; init; }
+    public IElementSettings MapClassesTo { get; init; }
+    public IElementSettings? MapPropertiesTo { get; init; }
+    public IElementSettings? MapMethodsTo { get; init; }
+    public IElementSettings? MapMethodParametersTo { get; init; }
+    public IElementSettings? MapConstructorsTo { get; init; }
+    public IElementSettings? MapConstructorParametersTo { get; init; }
+    public IElementSettings? EnumToSpecializationId { get; init; }
+    public IElementSettings? EnumLiteralToSpecializationId { get; init; }
+    public IAssociationSettings MapAssociationsTo { get; init; }
 }
 
 public record CSharpConfig

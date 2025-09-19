@@ -1,7 +1,13 @@
-﻿using System;
+﻿using Intent.IArchitect.Agent.Persistence.Model;
+using Intent.IArchitect.Agent.Persistence.Model.Common;
+using Intent.IArchitect.Agent.Persistence.Model.Module;
+using Intent.IArchitect.Agent.Persistence.Serialization;
+using Intent.Persistence;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Intent.Persistence;
+using static Intent.MetadataSynchronizer.CSharp.CLI.Program;
+using IElementPersistable = Intent.Persistence.IElementPersistable;
 
 namespace Intent.MetadataSynchronizer;
 
@@ -13,6 +19,7 @@ public class MetadataLookup
     private Dictionary<string, IElementPersistable> _elementsById;
     private Dictionary<string, IReadOnlyCollection<IElementPersistable>> _byParentId;
     /// <remarks>Contains each association twice, so that can be found by key either way.</remarks>
+    private readonly Dictionary<string, IAssociationPersistable> _associationsByReference = new();
     private readonly Dictionary<string, HashSet<IAssociationPersistable>> _associationsByTypeId = new();
     //private IApplicationDesignerPersistable _designer;
 
@@ -31,12 +38,43 @@ public class MetadataLookup
     public MetadataLookup(IPackageModelPersistable package)
     {
         Package = package;
-        var references = Package.References.Select(x => x.TryGetPackage(package.ApplicationId, out var reference) ? reference : null)
-            .Where(x => x != null)
-            .ToList();
+        //var references = Package.References.Select(x => x.TryGetPackage(package.ApplicationId, out var reference) ? reference : null)
+        //    .Where(x => x != null)
+        //    .ToList();
+        var references = GetReferencedPackages(package);
 
         var packages = new[] { Package }.Concat(references).ToList();
         Index(packages.SelectMany(x => x.GetAllElements()), packages.SelectMany(x => x.Associations));
+    }
+
+    private static IEnumerable<PackageModelPersistable> GetReferencedPackages(IPackageModelPersistable package)
+    {
+        InstalledModules installedModules = null;
+        return package.References
+            .Select(reference =>
+            {
+                var solution = SolutionContext.Current;
+
+                if (reference.Module == null)
+                {
+                    return PackageModelPersistable.Load((reference as PackageReferenceModel).AbsolutePath);
+                }
+
+                installedModules ??= InstalledModules.Load(Path.Combine(((ApplicationPersistable)package.GetDesigner().Application).DirectoryPath, "modules.config"));
+                var installedModule = installedModules.Modules
+                    .Single(x => x.ModuleId.Equals(reference.Module, StringComparison.OrdinalIgnoreCase));
+                var moduleDirectory = Path.Combine(
+                    path1: solution.ModulesCacheAbsolutePath,
+                    path2: $"{installedModule.ModuleId}.{installedModule.Version}");
+                var moduleConfiguration = XmlSerializationHelper
+                    .LoadFromDirectory<ModuleConfigurationPersistable>(
+                        directory: moduleDirectory,
+                        filenamePattern: $"*.{ModuleConfigurationPersistable.FILE_EXTENSION}")
+                    .SingleOrDefault();
+                if (moduleConfiguration == null) throw new Exception($"Could not find .{ModuleConfigurationPersistable.FILE_EXTENSION} file, have Intent modules been restored? Tried looking at: {moduleDirectory}");
+
+                return moduleConfiguration.GetPackage(reference.PackageId);
+            });
     }
 
     public IPackageModelPersistable Package { get; }
@@ -89,6 +127,11 @@ public class MetadataLookup
                 grouping => grouping.Key ?? string.Empty,
                 grouping => (IReadOnlyCollection<IElementPersistable>)grouping.ToArray());
 
+        //var x = _elementsById.Values
+        //    .Where(x => !string.IsNullOrWhiteSpace(x.ExternalReference))
+        //    .GroupBy(x => x.ExternalReference)
+        //    .ToDictionary(x => x.ToList());
+
         _elementsByReference = _elementsById.Values
             .Where(x => !string.IsNullOrWhiteSpace(x.ExternalReference))
             .ToDictionary(x => x.ExternalReference);
@@ -113,6 +156,11 @@ public class MetadataLookup
 
     public void AddAssociation(IAssociationPersistable association)
     {
+        if (association?.ExternalReference != null)
+        {
+            _associationsByReference.Add(association.ExternalReference, association);
+        }
+
         if (!string.IsNullOrWhiteSpace(association.SourceEnd?.TypeReference?.TypeId))
         {
             if (!_associationsByTypeId.TryGetValue(association.SourceEnd.TypeReference.TypeId, out var associations))
@@ -216,5 +264,10 @@ public class MetadataLookup
                associationsFromTarget?.Any(ap => ap.TargetEnd.TypeReference.TypeId == association.SourceEnd.TypeReference.TypeId &&
                                                  ap.SourceEnd.TypeReference.TypeId == association.TargetEnd.TypeReference.TypeId &&
                                                  ap.SourceEnd.Name == association.TargetEnd.Name) == true;
+    }
+
+    public bool TryGetAssociationByReference(string externalReference, out IAssociationPersistable? association)
+    {
+        return _associationsByReference.TryGetValue(externalReference, out association);
     }
 }

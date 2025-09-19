@@ -18,11 +18,11 @@ internal static class PersistableFactory
 
         //var elements = new List<IElementPersistable>();
 
-        var classDataLookup = coreTypeElements.Classes.ToDictionary(classData => $"{classData.Namespace}.{classData.Name}");
+        var classDataLookup = coreTypeElements.Classes.ToDictionary(classData => classData.GetIdentifier());
 
         var builderMetadataManager = new BuilderMetadataManager(package, csConfig);
 
-        var classDataAndBuilders = RegisterElements(coreTypeElements, builderMetadataManager);
+        var classDataAndBuilders = RegisterElements(coreTypeElements, csConfig.TargetFolderId, builderMetadataManager);
         PostProcessElements(csConfig.ImportProfile, classDataAndBuilders, classDataLookup, builderMetadataManager);
 
         return builderMetadataManager.GetPersistables();
@@ -30,13 +30,14 @@ internal static class PersistableFactory
 
     private static List<(ClassData, IElementPersistable)> RegisterElements(
         CoreTypesData coreTypeElements,
+        string? targetFolderId,
         BuilderMetadataManager builderMetadataManager)
     {
         var result = new List<(ClassData, IElementPersistable)>();
 
         foreach (var classData in coreTypeElements.Classes)
         {
-            var element = builderMetadataManager.CreateElement(classData);
+            var element = builderMetadataManager.GetElementByReference(classData.GetIdentifier()) ?? builderMetadataManager.CreateElement(classData, targetFolderId);
             result.Add((classData, element));
         }
 
@@ -52,22 +53,26 @@ internal static class PersistableFactory
         List<IAssociationPersistable> associations = [];
         foreach (var classData in classDataLookup.Values)
         {
-            var propertiesThatAreAssociations = classData.Properties.Where(p => builderMetadataManager.GetElementByReference(p.Type)?.SpecializationTypeId == profile.ClassToSpecializationTypeId).ToArray();
+            var propertiesThatAreAssociations = classData.Properties.Where(p => builderMetadataManager.GetElementByReference(p.Type)?.SpecializationTypeId == profile.MapClassesTo.SpecializationTypeId).ToArray();
             foreach (var property in propertiesThatAreAssociations)
             {
                 if (!classDataLookup.TryGetValue(property.Type!, out var otherClass))
                 {
                     continue;
                 }
-
+                var existingAssociation = builderMetadataManager.GetAssociationByReference($"{classData.GetIdentifier()}+{property.GetIdentifier()}");
+                
                 // Is this a bi-directional association?
                 var bidirectionalProperty = otherClass.Properties
-                    .FirstOrDefault(p => builderMetadataManager.GetElementByReference(p.Type)?.SpecializationTypeId == profile.ClassToSpecializationTypeId &&
+                    .FirstOrDefault(p => builderMetadataManager.GetElementByReference(p.Type)?.SpecializationTypeId == profile.MapClassesTo.SpecializationTypeId &&
                                          classDataLookup.TryGetValue(property.Type!, out var thisClass) &&
-                                         thisClass == otherClass && p.Type == $"{classData.Namespace}.{classData.Name}");
+                                         thisClass == otherClass && p.Type == classData.GetIdentifier());
 
-                var sourceElement = builderMetadataManager.GetElementByReference($"{classData.Namespace}.{classData.Name}");
-                if (!builderMetadataManager.TryCreateAssociation(sourceElement.Id, out var association)) ;
+                var sourceElement = builderMetadataManager.GetElementByReference(classData.GetIdentifier());
+                var targetElement = builderMetadataManager.GetElementByReference(property.Type);
+                var association = existingAssociation ?? builderMetadataManager.CreateAssociation(sourceElement.Id, targetElement.Id);
+
+                association.ExternalReference = $"{classData.GetIdentifier()}+{property.GetIdentifier()}";
                 if (bidirectionalProperty is null)
                 {
                     // if the class contains a FK to the other class PK (based on convention)
@@ -81,16 +86,10 @@ internal static class PersistableFactory
                     association.SourceEnd.TypeReference.IsCollection = bidirectionalProperty.IsCollection;
                 }
 
-                var targetElement = builderMetadataManager.GetElementByReference(property.Type);
                 association.TargetEnd.TypeReference.TypeId = targetElement.Id;
                 association.TargetEnd.Name = property.Name;
                 association.TargetEnd.TypeReference.IsNullable = property.IsNullable;
                 association.TargetEnd.TypeReference.IsCollection = property.IsCollection;
-
-                if (!builderMetadataManager.HasExistingAssociation(association))
-                {
-                    associations.Add(association);
-                }
             }
         }
 
@@ -98,39 +97,54 @@ internal static class PersistableFactory
         {
             foreach (var constructor in classData.Constructors)
             {
-                var newCtor = element.ChildElements.Add(
+                if (profile.MapConstructorsTo is null)
+                {
+                    break;
+                }
+
+                var existingCtor = element.ChildElements.SingleOrDefault(x => x.ExternalReference == $"{classData.GetIdentifier()}+{constructor.GetIdentifier()}");
+                var newCtor = existingCtor ?? element.ChildElements.Add(
                     id: Guid.NewGuid().ToString().ToLower(),
-                    specializationType: profile.ConstructorsToSpecializationId,
-                    specializationTypeId: profile.ConstructorsToSpecializationId,
+                    specializationType: profile.MapConstructorsTo.SpecializationType,
+                    specializationTypeId: profile.MapConstructorsTo.SpecializationTypeId,
                     name: element.Name,
                     parentId: element.Id,
-                    externalReference: $"Ctor+{string.Join("+", new[] { element.ExternalReference }.Concat(constructor.Parameters.Select(x => x.Type)))}");
+                    externalReference: $"{classData.GetIdentifier()}+{constructor.GetIdentifier()}");
                 foreach (var parameter in constructor.Parameters)
                 {
-                    var newParam = newCtor.ChildElements.Add(
+                    if (profile.MapConstructorParametersTo is null)
+                    {
+                        break;
+                    }
+                    var existingParam = newCtor.ChildElements.SingleOrDefault(x => x.ExternalReference == $"{classData.GetIdentifier()}+{parameter.GetIdentifier()}");
+                    var newParam = existingParam ?? newCtor.ChildElements.Add(
                         id: Guid.NewGuid().ToString().ToLower(),
-                        specializationType: profile.ParametersToSpecializationId,
-                        specializationTypeId: profile.ParametersToSpecializationId,
+                        specializationType: profile.MapConstructorParametersTo.SpecializationType,
+                        specializationTypeId: profile.MapConstructorParametersTo.SpecializationTypeId,
                         name: parameter.Name,
                         parentId: newCtor.Id,
-                        externalReference: parameter.Name);
+                        externalReference: $"{classData.GetIdentifier()}+{parameter.GetIdentifier()}");
 
                     // a shit pattern from the original importer:
                     builderMetadataManager.SetTypeReference(newParam, parameter.Type, parameter.IsNullable, parameter.IsCollection);
                 }
             }
 
-            foreach (var prop in classData.Properties.Where(p => builderMetadataManager.GetElementByReference(p.Type)?.SpecializationTypeId != profile.ClassToSpecializationTypeId))
+            foreach (var prop in classData.Properties.Where(p => builderMetadataManager.GetElementByReference(p.Type)?.SpecializationTypeId != profile.MapClassesTo.SpecializationTypeId))
             {
-
-                var attBuilder = element.ChildElements.Add(
+                if (profile.MapPropertiesTo is null)
+                {
+                    break;
+                }
+                var existingAttribute = element.ChildElements.SingleOrDefault(x => x.ExternalReference == $"{classData.GetIdentifier()}+{prop.GetIdentifier()}");
+                var attribute = existingAttribute ?? element.ChildElements.Add(
                     id: Guid.NewGuid().ToString().ToLower(),
-                    specializationType: profile.PropertiesToSpecializationId,
-                    specializationTypeId: profile.PropertiesToSpecializationId,
+                    specializationType: profile.MapPropertiesTo.SpecializationType,
+                    specializationTypeId: profile.MapPropertiesTo.SpecializationTypeId,
                     name: prop.Name,
                     parentId: element.Id,
-                    externalReference: prop.Name);
-                builderMetadataManager.SetTypeReference(attBuilder, prop.Type, prop.IsNullable, prop.IsCollection);
+                    externalReference: $"{classData.GetIdentifier()}+{prop.GetIdentifier()}");
+                builderMetadataManager.SetTypeReference(attribute, prop.Type, prop.IsNullable, prop.IsCollection);
 
                 // if the property is flagged with the [Key] atribute, is called "Id", or is called {ClassName}Id - then assume its a PK
                 //if (prop.Attributes.Contains("Key") || prop.Name.Equals("Id", StringComparison.InvariantCultureIgnoreCase) ||
@@ -177,19 +191,29 @@ internal static class PersistableFactory
 
             foreach (var method in classData.Methods)
             {
-                var newMethod = element.ChildElements.Add(
+                if (profile.MapMethodsTo is null)
+                {
+                    break;
+                }
+                var existingMethod = element.ChildElements.SingleOrDefault(x => x.ExternalReference == method.GetIdentifier());
+                var newMethod = existingMethod ?? element.ChildElements.Add(
                     id: Guid.NewGuid().ToString().ToLower(),
-                    specializationType: profile.MethodsToSpecializationId,
-                    specializationTypeId: profile.MethodsToSpecializationId,
+                    specializationType: profile.MapMethodsTo.SpecializationType,
+                    specializationTypeId: profile.MapMethodsTo.SpecializationTypeId,
                     name: element.Name,
                     parentId: element.Id,
-                    externalReference: $"Method+{method.Name}+{string.Join("+", new[] { element.ExternalReference }.Concat(method.Parameters.Select(x => x.Type)))}");
+                    externalReference: $"{classData.GetIdentifier()}+{method.GetIdentifier()}");
                 foreach (var parameter in method.Parameters)
                 {
-                    var newParam = newMethod.ChildElements.Add(
+                    if (profile.MapMethodParametersTo is null)
+                    {
+                        break;
+                    }
+                    var existingParam = newMethod.ChildElements.SingleOrDefault(x => x.ExternalReference == parameter.GetIdentifier());
+                    var newParam = existingParam ?? newMethod.ChildElements.Add(
                         id: Guid.NewGuid().ToString().ToLower(),
-                        specializationType: profile.ParametersToSpecializationId,
-                        specializationTypeId: profile.ParametersToSpecializationId,
+                        specializationType: profile.MapMethodParametersTo.SpecializationType,
+                        specializationTypeId: profile.MapMethodParametersTo.SpecializationTypeId,
                         name: parameter.Name,
                         parentId: newMethod.Id,
                         externalReference: parameter.Name);

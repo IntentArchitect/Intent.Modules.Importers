@@ -1,8 +1,8 @@
-﻿using Intent.IArchitect.Agent.Persistence.Model;
-using Intent.Metadata.Models;
+﻿using Intent.Metadata.Models;
 using Intent.Persistence;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Intent.IArchitect.Agent.Persistence.Model;
 using IElementPersistable = Intent.Persistence.IElementPersistable;
 
 namespace Intent.MetadataSynchronizer.CSharp.CLI.Builders;
@@ -29,110 +29,11 @@ public class BuilderMetadataManager
     //    _elementsToAdd = elementsToAdd;
     //}
 
-    public void SetTypeReference(IElementPersistable targetElement, string type, bool isNullable, bool isCollection)
-    {
-        targetElement.TypeReference.IsNullable = isNullable;
-        targetElement.TypeReference.IsCollection = isCollection;
-
-        if (_metadataLookup.TryGetTypeDefinitionByName(type, 0, out var typeDefElement))
-        {
-            targetElement.TypeReference.TypeId = typeDefElement.Id;
-            targetElement.TypeReference.TypePackageId = typeDefElement.PackageId;
-            targetElement.TypeReference.TypePackageName = typeDefElement.PackageName;
-            return;
-        }
-
-        if (_metadataLookup.TryGetElementByReference(type, out var domainElement))
-        {
-            targetElement.TypeReference.TypeId = domainElement.Id;
-            targetElement.TypeReference.TypePackageId = domainElement.PackageId;
-            targetElement.TypeReference.TypePackageName = domainElement.PackageName;
-            return;
-        }
-        
-        //if (_metadataLookup.TryGetElementByReference(type, DomainServiceModel.SpecializationTypeId, out var domainServiceElement))
-        //{
-        //    targetElement.TypeReference.TypeId = domainServiceElement.Id;
-        //    targetElement.TypeReference.TypePackageId = domainServiceElement.PackageId;
-        //    targetElement.TypeReference.TypePackageName = domainServiceElement.PackageName;
-        //    return;
-        //}
-        
-        //if (_metadataLookup.TryGetElementByReference(type, EnumModel.SpecializationTypeId, out var enumElement))
-        //{
-        //    targetElement.TypeReference.TypeId = enumElement.Id;
-        //    targetElement.TypeReference.TypePackageId = enumElement.PackageId;
-        //    targetElement.TypeReference.TypePackageName = enumElement.PackageName;
-        //    return;
-        //}
-
-        //if (_metadataLookup.TryGetElementByReference(type, ValueObjectModel.SpecializationTypeId, out var valueObjectElement))
-        //{
-        //    targetElement.TypeReference.TypeId = valueObjectElement.Id;
-        //    targetElement.TypeReference.TypePackageId = valueObjectElement.PackageId;
-        //    targetElement.TypeReference.TypePackageName = valueObjectElement.PackageName;
-        //    return;
-        //}
-
-        //if (_metadataLookup.TryGetElementByReference(type, DataContractModel.SpecializationTypeId, out var dataContractElement))
-        //{
-        //    targetElement.TypeReference.TypeId = dataContractElement.Id;
-        //    targetElement.TypeReference.TypePackageId = dataContractElement.PackageId;
-        //    targetElement.TypeReference.TypePackageName = dataContractElement.PackageName;
-        //    return;
-        //}
-        
-        //if (_metadataLookup.TryGetElementByReference(type, RepositoryModel.SpecializationTypeId, out var repositoryElement))
-        //{
-        //    targetElement.TypeReference.TypeId = repositoryElement.Id;
-        //    targetElement.TypeReference.TypePackageId = repositoryElement.PackageId;
-        //    targetElement.TypeReference.TypePackageName = repositoryElement.PackageName;
-        //    return;
-        //}
-
-        //if (_metadataLookup.TryGetElementByReference(type, MessageModel.SpecializationTypeId, out var eventMessageElement))
-        //{
-        //    targetElement.TypeReference.TypeId = eventMessageElement.Id;
-        //    targetElement.TypeReference.TypePackageId = eventMessageElement.PackageId;
-        //    targetElement.TypeReference.TypePackageName = eventMessageElement.PackageName;
-        //    return;
-        //}
-
-        //if (_metadataLookup.TryGetElementByReference(type, EventingDTOModel.SpecializationTypeId, out var eventDtoElement))
-        //{
-        //    targetElement.TypeReference.TypeId = eventDtoElement.Id;
-        //    targetElement.TypeReference.TypePackageId = eventDtoElement.PackageId;
-        //    targetElement.TypeReference.TypePackageName = eventDtoElement.PackageName;
-        //    return;
-        //}
-
-        //if (_metadataLookup.TryGetElementByReference(type, TypeDefinitionModel.SpecializationTypeId, out var typeDefCustomElement))
-        //{
-        //    targetElement.TypeReference.TypeId = typeDefCustomElement.Id;
-        //    targetElement.TypeReference.TypePackageId = typeDefCustomElement.PackageId;
-        //    targetElement.TypeReference.TypePackageName = typeDefCustomElement.PackageName;
-        //    return;
-        //}
-
-        // Couldn't find an appropriate type. Let's create a Type-Def:
-        var typeDefCustomElement = _package.Classes.Add(
-            id: Guid.NewGuid().ToString().ToLower(),
-            specializationType: TypeDefinitionModel.SpecializationType,
-            specializationTypeId: TypeDefinitionModel.SpecializationTypeId,
-            name: type,
-            parentId: _package.Id,
-            externalReference: type);
-        _metadataLookup.AddElement(typeDefCustomElement);
-        _elementsToAdd.Add(typeDefCustomElement);
-
-        targetElement.TypeReference.TypeId = typeDefCustomElement.Id;
-        targetElement.TypeReference.TypePackageId = typeDefCustomElement.PackageId;
-        targetElement.TypeReference.TypePackageName = typeDefCustomElement.PackageName;
-    }
-
 
     private static readonly char[] Separators = { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
+
     public IReadOnlyList<IElementPersistable> GetFolderElements(string relativeFolderPath, string targetFolderId) => GetFolderElements(relativeFolderPath, _package.GetElementById(targetFolderId));
+
     public IReadOnlyList<IElementPersistable> GetFolderElements(string relativeFolderPath, IElementPersistable targetFolder)
     {
         if (string.IsNullOrWhiteSpace(relativeFolderPath) || relativeFolderPath == ".")
@@ -185,19 +86,27 @@ public class BuilderMetadataManager
             ? null 
             : domainElement.Id;
     }
-    
+
     public string? GetClassTypeName(string classReference)
     {
         return !_metadataLookup.TryGetElementByReference(classReference, out var domainElement) 
             ? null 
             : domainElement.Name;
     }
-    
+
     public IElementPersistable? GetElementByReference(string externalReference)
     {
         return !_metadataLookup.TryGetElementByReference(externalReference, out var element)
             ? null
             : element;
+    }
+
+
+    public IAssociationPersistable? GetAssociationByReference(string externalReference)
+    {
+        return !_metadataLookup.TryGetAssociationByReference(externalReference, out var association)
+            ? null
+            : association;
     }
 
     internal void AddElementForLookup(IElementPersistable element)
@@ -215,9 +124,13 @@ public class BuilderMetadataManager
         return _metadataLookup.TryGetElementById(typeReferenceTypeId, out element);
     }
 
-    public IElementPersistable CreateElement(ClassData classData)
+    public IElementPersistable CreateElement(ClassData classData, string? targetFolderId)
     {
-        var externalReference = $"{classData.Namespace}.{classData.Name}";
+        var externalReference = classData.GetIdentifier();
+        if (GetElementByReference(externalReference) != null)
+        {
+            throw new Exception("An element with external reference \"" + externalReference + "\" already exists");
+        }
         if (string.IsNullOrWhiteSpace(externalReference))
         {
             throw new ArgumentNullException(nameof(externalReference));
@@ -228,22 +141,79 @@ public class BuilderMetadataManager
             ArgumentException.ThrowIfNullOrEmpty(nameof(classData.Name));
         }
 
-
         var folders = GetFolderElements(
             relativeFolderPath: GetRelativeLocation(classData.FilePath, _config.TargetFolder!),
             targetFolderId: _config.TargetFolderId);
 
-        var settings = _package.GetDesigner().GetElementSettings(_config.ImportProfile.ClassToSpecializationTypeId);
+        var settings = _config.ImportProfile.MapClassesTo;
 
         var element = _package.Classes.Add(
             id: Guid.NewGuid().ToString().ToLower(),
             specializationType: settings.SpecializationType,
             specializationTypeId: settings.SpecializationTypeId,
             name: classData.Name,
-            parentId: folders.LastOrDefault()?.Id ?? _package.Id,
+            parentId: folders.LastOrDefault()?.Id ?? targetFolderId ?? _package.Id,
             externalReference: externalReference);
+        _metadataLookup.AddElement(element);
         _elementsToAdd.Add(element);
         return element;
+    }
+
+    public IAssociationPersistable CreateAssociation(string sourceElementId, string targetElementId)
+    {
+        var settings = _config.ImportProfile.MapAssociationsTo;
+        if (settings == null)
+        {
+            throw new Exception($"Cannot create Association: {nameof(ImportProfileConfig.MapAssociationsTo)} was not specified.");
+        }
+
+        var association = _package.Associations.Add(settings, sourceElementId, targetElementId);
+        _metadataLookup.AddAssociation(association);
+        _associationsToAdd.Add(association);
+        return association;
+    }
+
+    public void SetTypeReference(IElementPersistable targetElement, string type, bool isNullable, bool isCollection)
+    {
+        targetElement.TypeReference = new TypeReferencePersistable();
+        targetElement.TypeReference.IsNullable = isNullable;
+        targetElement.TypeReference.IsCollection = isCollection;
+
+        if (_metadataLookup.TryGetTypeDefinitionByName(type, 0, out var typeDefElement))
+        {
+            targetElement.TypeReference.TypeId = typeDefElement.Id;
+            targetElement.TypeReference.TypePackageId = typeDefElement.PackageId;
+            targetElement.TypeReference.TypePackageName = typeDefElement.PackageName;
+            return;
+        }
+
+        if (_metadataLookup.TryGetElementByReference(type, out var domainElement))
+        {
+            targetElement.TypeReference.TypeId = domainElement.Id;
+            targetElement.TypeReference.TypePackageId = domainElement.PackageId;
+            targetElement.TypeReference.TypePackageName = domainElement.PackageName;
+            return;
+        }
+
+        // Couldn't find an appropriate type. Let's create a Type-Def:
+        var typeDefCustomElement = _package.Classes.Add(
+            id: Guid.NewGuid().ToString().ToLower(),
+            specializationType: TypeDefinitionModel.SpecializationType,
+            specializationTypeId: TypeDefinitionModel.SpecializationTypeId,
+            name: type,
+            parentId: _package.Id,
+            externalReference: type);
+        _metadataLookup.AddElement(typeDefCustomElement);
+        _elementsToAdd.Add(typeDefCustomElement);
+
+        targetElement.TypeReference.TypeId = typeDefCustomElement.Id;
+        targetElement.TypeReference.TypePackageId = typeDefCustomElement.PackageId;
+        targetElement.TypeReference.TypePackageName = typeDefCustomElement.PackageName;
+    }
+
+    public Persistables GetPersistables()
+    {
+        return new Persistables(_elementsToAdd, _associationsToAdd);
     }
 
     private static string GetRelativeLocation(string? curFilePath, string targetFolder)
@@ -257,25 +227,6 @@ public class BuilderMetadataManager
         var newPath = Path.GetRelativePath(targetFolder, curClassDir);
         newPath = newPath.TrimStart('.', '\\', '/');
         return newPath;
-    }
-
-    public bool TryCreateAssociation(string sourceElementId, out IAssociationPersistable association)
-    {
-        association = null;
-        var settings = _package.GetDesigner().GetAssociationSettings(_config.ImportProfile.AssociationSpecializationTypeId);
-        if (settings == null)
-        {
-            return false;
-        }
-
-        association = _package.Associations.Add(settings, sourceElementId);
-        _associationsToAdd.Add(association);
-        return true;
-    }
-
-    public Persistables GetPersistables()
-    {
-        return new Persistables(_elementsToAdd, _associationsToAdd);
     }
 }
 
