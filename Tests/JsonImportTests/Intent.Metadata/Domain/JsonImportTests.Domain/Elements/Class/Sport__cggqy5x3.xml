@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="0fbfeaa5-4a24-46d0-b663-eca98c87472b" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>Sport</name>
+  <display>Sport</display>
+  <externalReference>student.Activities.Sports[0]</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>aa1aa635-89a3-4384-bf86-dcd5f8c88ed9</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata>
+    <entry key="currentPartitionKey" value="" />
+  </metadata>
+  <childElements>
+    <childElement id="960847b2-0e5a-4441-85f5-35691992e625" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>SportId</name>
+      <display>SportId: guid</display>
+      <externalReference>student.Activities.Sports[0].SportId</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="5ec70d10-5777-491c-a8da-756f5eba6718">
+        <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>0fbfeaa5-4a24-46d0-b663-eca98c87472b</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes>
+        <stereotype stereotypeDefinitionId="64f6a994-4909-4a9d-a0a9-afc5adf2ef74" name="Primary Key">
+          <addedByDefault>false</addedByDefault>
+          <definitionPackageName>Intent.Metadata.DocumentDB</definitionPackageName>
+          <definitionPackageId>1c7eab18-9482-4b4e-b61b-1fbd2d2427b6</definitionPackageId>
+          <properties>
+            <property name="ce12cf69-e97f-401b-9b08-7e2c62171d4e" display="Data source" value="Default" isActive="true" />
+          </properties>
+        </stereotype>
+      </stereotypes>
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="70ed933f-6459-4a27-a62b-1ff55455157a" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>SportName</name>
+      <display>SportName: string</display>
+      <externalReference>student.Activities.Sports[0].SportName</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="1303af09-5d56-4913-ae0c-498d9bc92000">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>0fbfeaa5-4a24-46d0-b663-eca98c87472b</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="45cc8a22-b1fd-4804-bc60-b6669d99d17d" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Position</name>
+      <display>Position: string</display>
+      <externalReference>student.Activities.Sports[0].Position</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="65af8cbb-4a12-4d4b-a81d-f0b66d5aad30">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>0fbfeaa5-4a24-46d0-b663-eca98c87472b</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="60ba61a2-0193-443a-9c8f-f39c78e30a5e" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Season</name>
+      <display>Season: string</display>
+      <externalReference>student.Activities.Sports[0].Season</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="210ef7a1-a978-4ce9-b0bb-3da12e6cb005">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>0fbfeaa5-4a24-46d0-b663-eca98c87472b</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="cf1c17f6-dda6-48ad-9e37-75e3c753470d" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Year</name>
+      <display>Year: decimal</display>
+      <externalReference>student.Activities.Sports[0].Year</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="82a0d388-b4f4-4fb5-8e32-f29a9d8a6f76">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>0fbfeaa5-4a24-46d0-b663-eca98c87472b</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="d9ca64a9-7b3f-4533-b67c-25fa517482b8" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>ScholarshipAmount</name>
+      <display>ScholarshipAmount: decimal</display>
+      <externalReference>student.Activities.Sports[0].ScholarshipAmount</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="0ec393c1-c2a4-45bb-a007-358258a50569">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>0fbfeaa5-4a24-46d0-b663-eca98c87472b</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

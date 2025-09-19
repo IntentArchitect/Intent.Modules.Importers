@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="89c87e23-d4b0-4d42-bbb7-1f07a04278c9" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>DisplaySetting</name>
+  <display>DisplaySetting</display>
+  <externalReference>category.Metadata.DisplaySettings</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>33fbfc37-de2b-494f-b8e6-3f32964cf655</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="81f08128-a3f1-42b0-b66f-ed8be746292d" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>BannerImage</name>
+      <display>BannerImage: string</display>
+      <externalReference>category.Metadata.DisplaySettings.BannerImage</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="4dc6d608-73cd-4399-98ae-9ecbca8c529a">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>89c87e23-d4b0-4d42-bbb7-1f07a04278c9</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="4f069ea0-ba96-4d44-bb0c-6b6db183dc4c" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>IconUrl</name>
+      <display>IconUrl: string</display>
+      <externalReference>category.Metadata.DisplaySettings.IconUrl</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="f3b68e20-2b57-44c9-8136-281b67e07cbc">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>89c87e23-d4b0-4d42-bbb7-1f07a04278c9</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="589e0070-f189-43bd-9fe9-6b7ce1df4830" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Color</name>
+      <display>Color: string</display>
+      <externalReference>category.Metadata.DisplaySettings.Color</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="b47f69f8-2d8f-45be-8f54-189b251e12ce">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>89c87e23-d4b0-4d42-bbb7-1f07a04278c9</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="b0aae025-f233-4e67-b8c5-ec707e5d4f2b" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>LayoutTemplate</name>
+      <display>LayoutTemplate: string</display>
+      <externalReference>category.Metadata.DisplaySettings.LayoutTemplate</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="0f07a334-2b9b-4d16-8a94-2e7dfed8a0a0">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>89c87e23-d4b0-4d42-bbb7-1f07a04278c9</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

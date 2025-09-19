@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="ed3d2fdc-58a8-4f53-b3a7-362697c66de4" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>CreatedBy</name>
+  <display>CreatedBy</display>
+  <externalReference>medicalRecord.CreatedBy</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>cd9966f8-766a-42e3-96d1-f704cb585bb9</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="b781398f-8e5b-4a4c-96ae-2815e12667f3" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>PractitionerId</name>
+      <display>PractitionerId: guid</display>
+      <externalReference>medicalRecord.CreatedBy.PractitionerId</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="c2f4e948-b54b-4b58-b1bb-0706129cf2d9">
+        <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ed3d2fdc-58a8-4f53-b3a7-362697c66de4</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="77cc3e88-6316-48ab-8ba4-5cf26fc164ba" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Name</name>
+      <display>Name: string</display>
+      <externalReference>medicalRecord.CreatedBy.Name</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="42198fa1-a8cc-4b24-949d-7fc0b747b8e9">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ed3d2fdc-58a8-4f53-b3a7-362697c66de4</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="59913ddd-8e1e-44d1-8a03-6796fb5182a8" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Title</name>
+      <display>Title: string</display>
+      <externalReference>medicalRecord.CreatedBy.Title</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="b2c0ad83-60cc-4fd9-a229-8fb98bc7d482">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>ed3d2fdc-58a8-4f53-b3a7-362697c66de4</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

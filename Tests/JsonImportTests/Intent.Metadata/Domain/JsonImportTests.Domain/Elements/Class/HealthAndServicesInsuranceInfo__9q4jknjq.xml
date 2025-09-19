@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="cd1a8f8c-7871-4f47-bc43-12c4ad0446d0" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>HealthAndServicesInsuranceInfo</name>
+  <display>HealthAndServicesInsuranceInfo</display>
+  <externalReference>student.HealthAndServices.InsuranceInfo</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>aa1aa635-89a3-4384-bf86-dcd5f8c88ed9</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="4d9372e7-0bd6-49e8-8427-e7e5aba0c2a1" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>HasInsurance</name>
+      <display>HasInsurance: bool</display>
+      <externalReference>student.HealthAndServices.InsuranceInfo.HasInsurance</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="935e9cc3-a558-4fc8-91d3-f3d281e7fd2e">
+        <typeId>e6f92b09-b2c5-4536-8270-a4d9e5bbd930</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>cd1a8f8c-7871-4f47-bc43-12c4ad0446d0</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="b18ed0ba-8ca1-4262-86cd-a69efa6858a7" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>InsuranceProvider</name>
+      <display>InsuranceProvider: string</display>
+      <externalReference>student.HealthAndServices.InsuranceInfo.InsuranceProvider</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="6b296aa8-8c3a-4a19-8d77-7053d70c6307">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>cd1a8f8c-7871-4f47-bc43-12c4ad0446d0</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="0a70370d-8362-49f7-bce8-4e96c420556b" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>PolicyNumber</name>
+      <display>PolicyNumber: string</display>
+      <externalReference>student.HealthAndServices.InsuranceInfo.PolicyNumber</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="0f981a9e-7146-4d3a-aa29-698e62703445">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>cd1a8f8c-7871-4f47-bc43-12c4ad0446d0</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="1b8a7dab-b2c3-40be-9d2f-6d25283225fe" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>CoverageType</name>
+      <display>CoverageType: string</display>
+      <externalReference>student.HealthAndServices.InsuranceInfo.CoverageType</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="c7fe93cb-f2f9-403c-8b0f-c0fd6ed3e81b">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>cd1a8f8c-7871-4f47-bc43-12c4ad0446d0</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="34af6c91-60a5-45ef-a88c-b4c15f66761d" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>Recommendation</name>
+  <display>Recommendation</display>
+  <externalReference>asset.Analysts.Recommendations</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>6e89206e-91f1-4d19-97a4-7694bc0f3f00</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="d3f15dd6-71b9-41e6-9b26-be1e5f515d72" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>StrongBuy</name>
+      <display>StrongBuy: decimal</display>
+      <externalReference>asset.Analysts.Recommendations.StrongBuy</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="1427375a-da17-456a-855e-ec982765e8f0">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>34af6c91-60a5-45ef-a88c-b4c15f66761d</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="b78e9964-7c5e-413e-a655-dd20aa347686" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Buy</name>
+      <display>Buy: decimal</display>
+      <externalReference>asset.Analysts.Recommendations.Buy</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="92309e5e-c424-447f-b746-6bece9d33de0">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>34af6c91-60a5-45ef-a88c-b4c15f66761d</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="96f7c761-7e65-47ed-8a60-4fef538100ab" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Hold</name>
+      <display>Hold: decimal</display>
+      <externalReference>asset.Analysts.Recommendations.Hold</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="8fa02130-ebc1-4e7f-bfbe-aba33e985dc5">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>34af6c91-60a5-45ef-a88c-b4c15f66761d</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="68a16a0b-7282-41a9-9f0b-aa3d25257289" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Sell</name>
+      <display>Sell: decimal</display>
+      <externalReference>asset.Analysts.Recommendations.Sell</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="3eb1ef20-47c2-4ae8-ba2d-70626bf134bd">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>34af6c91-60a5-45ef-a88c-b4c15f66761d</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="ae6aa38a-e8f6-432d-baf6-5191124551bb" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>StrongSell</name>
+      <display>StrongSell: decimal</display>
+      <externalReference>asset.Analysts.Recommendations.StrongSell</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="190650cb-bce2-46e2-ae7b-23ff3de813a6">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>34af6c91-60a5-45ef-a88c-b4c15f66761d</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

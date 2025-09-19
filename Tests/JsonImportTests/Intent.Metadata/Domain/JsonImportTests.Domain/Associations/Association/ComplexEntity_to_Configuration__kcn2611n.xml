@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="3e7069fb-e642-47a6-83d1-0582d17948c3">
+  <sourceEnd id="3c84971d2850-1d38-6a74-246e-bf9607e3" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>ComplexEntity</name>
+    <display>ComplexEntity: ComplexEntity</display>
+    <order>0</order>
+    <typeReference id="8dd46557-69bb-4aa6-8404-08e50374cc9b">
+      <typeId>bb9e37b0-c066-467e-888b-9a073d161a6a</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>complexEntity</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="3e7069fb-e642-47a6-83d1-0582d17948c3" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Configuration</name>
+    <display>Configuration: Configuration</display>
+    <order>18</order>
+    <typeReference id="c78b6796-a7ad-4363-8d3e-dbb5bc8cd647">
+      <typeId>915b0410-6c7b-4630-ad92-4a51b2f3b380</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

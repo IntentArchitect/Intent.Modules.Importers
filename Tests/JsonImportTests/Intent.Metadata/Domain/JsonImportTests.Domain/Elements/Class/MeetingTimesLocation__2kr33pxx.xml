@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="e7853825-e475-41b1-9241-745f51ae9c67" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>MeetingTimesLocation</name>
+  <display>MeetingTimesLocation</display>
+  <externalReference>course.Offerings[0].Schedule.MeetingTimes[0].Location</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>bda428c6-ed3d-4043-a055-1bae8f3df0d8</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="13b01b8c-5507-4093-b6ee-d7a871086560" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Building</name>
+      <display>Building: string</display>
+      <externalReference>course.Offerings[0].Schedule.MeetingTimes[0].Location.Building</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="8adbb457-5fb7-4890-b787-cd6b6ea13d82">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>e7853825-e475-41b1-9241-745f51ae9c67</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="bd170bfb-7581-4c3d-b7ba-7f3eaca3b7a9" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Room</name>
+      <display>Room: string</display>
+      <externalReference>course.Offerings[0].Schedule.MeetingTimes[0].Location.Room</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="7b3d11bf-f857-41ef-aa7c-02d95e8cce5b">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>e7853825-e475-41b1-9241-745f51ae9c67</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="c53ecf23-1273-4b4c-a53a-c7953160ab68" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Capacity</name>
+      <display>Capacity: decimal</display>
+      <externalReference>course.Offerings[0].Schedule.MeetingTimes[0].Location.Capacity</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="20d4bf63-b062-45ca-8f85-e6934eb6d414">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>e7853825-e475-41b1-9241-745f51ae9c67</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="5ef3e7d3-c0c7-4bd6-941d-117abc27f697" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Equipment</name>
+      <display>Equipment: string[*]</display>
+      <externalReference>course.Offerings[0].Schedule.MeetingTimes[0].Location.Equipment[0]</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="dc552009-6c67-488a-8225-dac3833f9ba1">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>e7853825-e475-41b1-9241-745f51ae9c67</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

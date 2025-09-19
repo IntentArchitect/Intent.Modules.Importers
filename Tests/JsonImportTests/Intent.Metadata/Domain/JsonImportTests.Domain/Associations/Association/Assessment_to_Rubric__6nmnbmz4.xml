@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="d91c7260-d65d-4216-a656-134d41597c6b">
+  <sourceEnd id="b6c79514d431-656a-6124-d56d-0627c19d" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Assessment</name>
+    <display>Assessment: Assessment</display>
+    <order>0</order>
+    <typeReference id="57e981f4-9868-49e0-aebb-e27d314af5ef">
+      <typeId>5a938f8c-7c0a-48b8-b236-4996a7718834</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>enrollment.Assessments[0]</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="d91c7260-d65d-4216-a656-134d41597c6b" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Rubric</name>
+    <display>Rubric: Rubric[*]</display>
+    <order>11</order>
+    <typeReference id="d110cb2d-759c-4fcc-8fdf-c3d9cf6a29e8">
+      <typeId>36b0707c-0008-4eb9-a0a3-bec0b125033b</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

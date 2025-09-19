@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="1466f07c-d9e7-4740-8824-327561d715cb">
+  <sourceEnd id="bc517d165723-4288-0474-7e9d-c70f6641" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>OrderDetail</name>
+    <display>OrderDetail: OrderDetail</display>
+    <order>0</order>
+    <typeReference id="df3a272b-52ad-4ea8-9b50-d3e74bd3a41e">
+      <typeId>ef6a6a8c-3dca-4c26-b44d-40177591dcf4</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>transaction.OrderDetails</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="1466f07c-d9e7-4740-8824-327561d715cb" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>ExecutionQuality</name>
+    <display>ExecutionQuality: ExecutionQuality</display>
+    <order>7</order>
+    <typeReference id="2e8aec87-9458-44ac-afe8-50439561b3bc">
+      <typeId>ef100c29-adaf-4c07-9ff2-5396f1a84a2e</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

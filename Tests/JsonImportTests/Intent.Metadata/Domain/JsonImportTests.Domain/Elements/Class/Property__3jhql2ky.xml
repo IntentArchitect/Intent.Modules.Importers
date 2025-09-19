@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="7916a601-1bd2-4773-a542-b2d2db0f15a8" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>Property</name>
+  <display>Property</display>
+  <externalReference>complexEntity.ComplexInheritance.Properties</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>7eac3949-74e6-4eae-b08a-3875df883234</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="92073e03-76d4-4149-ab34-76f8221157ed" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Make</name>
+      <display>Make: string</display>
+      <externalReference>complexEntity.ComplexInheritance.Properties.Make</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="d061788f-1154-4fa1-9565-b28bf8b4caec">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>7916a601-1bd2-4773-a542-b2d2db0f15a8</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="f8e6cbe6-93fd-4b32-a8b1-fa99b846ceb0" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Model</name>
+      <display>Model: string</display>
+      <externalReference>complexEntity.ComplexInheritance.Properties.Model</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="218fd979-3dd7-4bb7-8816-231ac2842a74">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>7916a601-1bd2-4773-a542-b2d2db0f15a8</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="aa834747-cd0b-4915-8949-853dee8bf28f" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Year</name>
+      <display>Year: decimal</display>
+      <externalReference>complexEntity.ComplexInheritance.Properties.Year</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="41f20e7b-2b15-4d58-88e4-847e4991f3da">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>7916a601-1bd2-4773-a542-b2d2db0f15a8</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="a8cc09f1-c7c9-499f-bd4f-3350f494f81e" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>VIN</name>
+      <display>VIN: string</display>
+      <externalReference>complexEntity.ComplexInheritance.Properties.VIN</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="46dfb28d-dfa0-4cb2-9457-80d53207571e">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>7916a601-1bd2-4773-a542-b2d2db0f15a8</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

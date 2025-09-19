@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="3339d84c-f0dd-4f53-89c7-19df16bd65ed">
+  <sourceEnd id="de56db61fd91-7c98-35f4-dd0f-c48d9333" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>VisitDetail</name>
+    <display>VisitDetail: VisitDetail</display>
+    <order>0</order>
+    <typeReference id="463315c6-5620-4d76-90e8-bcdb494c08f2">
+      <typeId>5f1e8cf1-3524-47d3-a826-f7b919adee01</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>appointment.VisitDetails</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="3339d84c-f0dd-4f53-89c7-19df16bd65ed" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>TreatmentPlan</name>
+    <display>TreatmentPlan: VisitDetailsTreatmentPlan</display>
+    <order>1</order>
+    <typeReference id="b4a2f706-1e62-47f5-a4b1-4d70246ae211">
+      <typeId>15f2789e-f043-4b6c-906f-d3635d56585d</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

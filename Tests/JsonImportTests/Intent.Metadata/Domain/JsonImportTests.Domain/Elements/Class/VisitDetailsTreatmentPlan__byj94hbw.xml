@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="15f2789e-f043-4b6c-906f-d3635d56585d" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>VisitDetailsTreatmentPlan</name>
+  <display>VisitDetailsTreatmentPlan</display>
+  <externalReference>appointment.VisitDetails.TreatmentPlan</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>cd9966f8-766a-42e3-96d1-f704cb585bb9</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="636d743f-2a91-4f46-8e83-bfc46f66d6f1" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Instructions</name>
+      <display>Instructions: string</display>
+      <externalReference>appointment.VisitDetails.TreatmentPlan.Instructions</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="0dbe3718-ce8a-4d45-9039-75653f00c4f2">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>15f2789e-f043-4b6c-906f-d3635d56585d</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="fb6e76fc-c5b7-4b7e-96d0-f5ce012e7446" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>FollowUpInstructions</name>
+      <display>FollowUpInstructions: string</display>
+      <externalReference>appointment.VisitDetails.TreatmentPlan.FollowUpInstructions</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="493bab34-4773-491d-8458-9a252838aa24">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>15f2789e-f043-4b6c-906f-d3635d56585d</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="b0c84bec-b761-433c-b197-d3ed24b7e18b" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>NextAppointmentRecommended</name>
+      <display>NextAppointmentRecommended: bool</display>
+      <externalReference>appointment.VisitDetails.TreatmentPlan.NextAppointmentRecommended</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="8cca26d9-692f-4942-a916-8991ca80f3d4">
+        <typeId>e6f92b09-b2c5-4536-8270-a4d9e5bbd930</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>15f2789e-f043-4b6c-906f-d3635d56585d</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="14d609eb-d04b-49ab-b6e8-f2ee52cfa5e8" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>LateEnrollment</name>
+  <display>LateEnrollment</display>
+  <externalReference>enrollment.SpecialCircumstances.LateEnrollment</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>372b3681-01cc-4278-b81f-3a1d91492acb</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="a31b4e43-0f54-440a-8ed8-52a8b888ecfb" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>IsLateEnrollment</name>
+      <display>IsLateEnrollment: bool</display>
+      <externalReference>enrollment.SpecialCircumstances.LateEnrollment.IsLateEnrollment</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="a28e04dd-086d-4247-828a-46202d007b9d">
+        <typeId>e6f92b09-b2c5-4536-8270-a4d9e5bbd930</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>14d609eb-d04b-49ab-b6e8-f2ee52cfa5e8</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="95438aba-e030-4e90-9378-930002701fde" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>LateEnrollmentFee</name>
+      <display>LateEnrollmentFee: decimal</display>
+      <externalReference>enrollment.SpecialCircumstances.LateEnrollment.LateEnrollmentFee</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="9e646ad4-3557-4e87-852f-28099430425b">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>14d609eb-d04b-49ab-b6e8-f2ee52cfa5e8</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="de7ce102-4ea1-42ce-8c75-3fcf688504fa" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>ApprovalRequired</name>
+      <display>ApprovalRequired: bool</display>
+      <externalReference>enrollment.SpecialCircumstances.LateEnrollment.ApprovalRequired</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="614d44c1-81c4-4214-96af-14d1d891fbde">
+        <typeId>e6f92b09-b2c5-4536-8270-a4d9e5bbd930</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>14d609eb-d04b-49ab-b6e8-f2ee52cfa5e8</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="8434a8a2-826c-489f-8ae8-6c39250ed915" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>ApprovedBy</name>
+      <display>ApprovedBy: object</display>
+      <externalReference>enrollment.SpecialCircumstances.LateEnrollment.ApprovedBy</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="d6d84244-212e-4781-a6aa-7f8b18b015bd">
+        <typeId>341DD965-D06C-4A40-9437-9516ADA77FF5</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <comment>Unable to determine type in JSON for Null JsonValueKind.</comment>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>14d609eb-d04b-49ab-b6e8-f2ee52cfa5e8</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

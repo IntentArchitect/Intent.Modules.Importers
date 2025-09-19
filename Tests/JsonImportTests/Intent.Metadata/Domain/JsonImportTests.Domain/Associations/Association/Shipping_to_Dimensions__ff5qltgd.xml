@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="e0ba40c2-f850-465e-89d5-3a7b62c83e6d">
+  <sourceEnd id="d6e38c26b7a3-5d98-e564-058f-2c04ab0e" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Shipping</name>
+    <display>Shipping: Shipping</display>
+    <order>0</order>
+    <typeReference id="956e8209-bc28-4a57-b3b8-6e013ebb2027">
+      <typeId>ba7c4f63-6d32-4a94-ae40-bfe0561150ca</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>product.Shipping</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="e0ba40c2-f850-465e-89d5-3a7b62c83e6d" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Dimensions</name>
+    <display>Dimensions: ShippingDimension</display>
+    <order>5</order>
+    <typeReference id="26ba64c0-77cf-4e4a-860f-4a760a98b1c5">
+      <typeId>63dca4a9-8b57-4dde-a828-c906081c477e</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

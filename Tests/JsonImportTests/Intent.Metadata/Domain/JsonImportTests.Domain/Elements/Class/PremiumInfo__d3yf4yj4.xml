@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="cd1679af-20f4-4365-854d-745d492682c1" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>PremiumInfo</name>
+  <display>PremiumInfo</display>
+  <externalReference>complexEntity.ConditionalFields.PremiumInfo</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>7eac3949-74e6-4eae-b08a-3875df883234</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="6c85cea3-8d6d-4028-bc94-acdc9c72784b" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>SubscriptionLevel</name>
+      <display>SubscriptionLevel: string</display>
+      <externalReference>complexEntity.ConditionalFields.PremiumInfo.SubscriptionLevel</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="8d623ca2-856f-4ef7-8de4-d21477c5c0d3">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>cd1679af-20f4-4365-854d-745d492682c1</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="8e5c412a-76da-4561-8493-eed8683e9710" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Features</name>
+      <display>Features: string[*]</display>
+      <externalReference>complexEntity.ConditionalFields.PremiumInfo.Features[0]</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="65f3145a-8d42-4382-a244-1ee0863e9b83">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>cd1679af-20f4-4365-854d-745d492682c1</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

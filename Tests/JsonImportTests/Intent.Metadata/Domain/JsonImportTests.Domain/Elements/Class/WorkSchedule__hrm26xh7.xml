@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="203b0fe4-baba-4c73-bc1f-1d4ec8302417" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>WorkSchedule</name>
+  <display>WorkSchedule</display>
+  <externalReference>practitioner.WorkSchedule</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>ef16641d-1a99-4e60-9594-e3a990efcd6f</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="aee35c67-b1e2-4bc0-aa90-bada0e0b4c41" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>ShiftType</name>
+      <display>ShiftType: string</display>
+      <externalReference>practitioner.WorkSchedule.ShiftType</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="25c724bc-2b21-457f-991b-c28945fd0b95">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>203b0fe4-baba-4c73-bc1f-1d4ec8302417</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="4866a8b7-7416-44cc-8e35-b150712ef739" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>WeeklyHours</name>
+      <display>WeeklyHours: decimal</display>
+      <externalReference>practitioner.WorkSchedule.WeeklyHours</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="c574d330-d3d1-4a14-a9c9-f3345402490c">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>203b0fe4-baba-4c73-bc1f-1d4ec8302417</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="ce9b815e-be57-4de0-bf74-c2326c10fe7d" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>StartTime</name>
+      <display>StartTime: string</display>
+      <externalReference>practitioner.WorkSchedule.StartTime</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="2bf5c32c-b3c8-47ad-91ce-2b2114b30db1">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>203b0fe4-baba-4c73-bc1f-1d4ec8302417</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="c4b0fd2d-9652-4a34-939a-a5263a7a9a5e" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>EndTime</name>
+      <display>EndTime: string</display>
+      <externalReference>practitioner.WorkSchedule.EndTime</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="67719142-a892-4de8-b329-246509b8683b">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>203b0fe4-baba-4c73-bc1f-1d4ec8302417</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="6871410c-30c6-4587-9562-d2d0963d2d60" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>WorkDays</name>
+      <display>WorkDays: string[*]</display>
+      <externalReference>practitioner.WorkSchedule.WorkDays[0]</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="2a89892a-9aa1-4019-8582-0f4265b0ef0b">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>203b0fe4-baba-4c73-bc1f-1d4ec8302417</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

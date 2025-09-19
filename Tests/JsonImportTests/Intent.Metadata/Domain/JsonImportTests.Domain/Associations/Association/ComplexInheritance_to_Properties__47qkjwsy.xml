@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="09cb7b3d-ecea-4e2e-aa72-05e758f4658d">
+  <sourceEnd id="d8564f857e50-27aa-e2e4-aece-d3b7bc90" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>ComplexInheritance</name>
+    <display>ComplexInheritance: ComplexInheritance</display>
+    <order>0</order>
+    <typeReference id="d9012557-df13-4a84-90f8-2f7eacc2ce09">
+      <typeId>e4bedb87-4a6e-4a77-a8f9-3a208b90f8f6</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>complexEntity.ComplexInheritance</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="09cb7b3d-ecea-4e2e-aa72-05e758f4658d" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Properties</name>
+    <display>Properties: Property</display>
+    <order>2</order>
+    <typeReference id="81a38bc7-b041-4843-b0e2-585034635805">
+      <typeId>7916a601-1bd2-4773-a542-b2d2db0f15a8</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

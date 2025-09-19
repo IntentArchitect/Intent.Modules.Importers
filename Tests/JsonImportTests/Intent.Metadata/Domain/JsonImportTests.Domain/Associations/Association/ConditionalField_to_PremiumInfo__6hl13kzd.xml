@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="906e165e-ce05-4b95-b7c7-dfe7cc89ae06">
+  <sourceEnd id="60ea98cc7efd-7c7b-59b4-50ec-e561e609" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>ConditionalField</name>
+    <display>ConditionalField: ConditionalField</display>
+    <order>0</order>
+    <typeReference id="6e791a89-3bfa-44af-a0d6-68c6c507d1d5">
+      <typeId>3fe2f3fa-4bb9-4c23-b09f-053cca194de5</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>complexEntity.ConditionalFields</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="906e165e-ce05-4b95-b7c7-dfe7cc89ae06" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>PremiumInfo</name>
+    <display>PremiumInfo: PremiumInfo</display>
+    <order>3</order>
+    <typeReference id="f833c711-332d-4530-8ae5-4853a7e9b006">
+      <typeId>cd1679af-20f4-4365-854d-745d492682c1</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

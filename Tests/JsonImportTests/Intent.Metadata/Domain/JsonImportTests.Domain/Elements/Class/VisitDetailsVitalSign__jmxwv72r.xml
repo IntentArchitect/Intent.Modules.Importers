@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="5b42cff0-7122-4290-9b77-8c57a7d1e819" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>VisitDetailsVitalSign</name>
+  <display>VisitDetailsVitalSign</display>
+  <externalReference>appointment.VisitDetails.VitalSigns</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>cd9966f8-766a-42e3-96d1-f704cb585bb9</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="15acd607-21bb-4a8c-897e-0ab92b320d11" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Temperature</name>
+      <display>Temperature: decimal</display>
+      <externalReference>appointment.VisitDetails.VitalSigns.Temperature</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="4e0a6ad8-e3a1-4026-b550-ac12fc144755">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>5b42cff0-7122-4290-9b77-8c57a7d1e819</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="78ecb89f-337e-4eb4-8488-72187e059780" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>BloodPressureSystolic</name>
+      <display>BloodPressureSystolic: decimal</display>
+      <externalReference>appointment.VisitDetails.VitalSigns.BloodPressureSystolic</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="d2da711e-5b64-41ab-9b00-8a8f9c8d6c4b">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>5b42cff0-7122-4290-9b77-8c57a7d1e819</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="1d944139-d679-4d4c-af03-fe41646ecce2" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>BloodPressureDiastolic</name>
+      <display>BloodPressureDiastolic: decimal</display>
+      <externalReference>appointment.VisitDetails.VitalSigns.BloodPressureDiastolic</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="1069f86b-8d09-48a2-a38c-80f5992bec93">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>5b42cff0-7122-4290-9b77-8c57a7d1e819</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="a2efee71-0708-4b6f-beb1-926828a1c946" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>HeartRate</name>
+      <display>HeartRate: decimal</display>
+      <externalReference>appointment.VisitDetails.VitalSigns.HeartRate</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="6fb29560-b745-43d8-bd7f-9c2f13228839">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>5b42cff0-7122-4290-9b77-8c57a7d1e819</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="161b8ff6-0447-4879-bd53-d63c84d5deef" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>RespiratoryRate</name>
+      <display>RespiratoryRate: decimal</display>
+      <externalReference>appointment.VisitDetails.VitalSigns.RespiratoryRate</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="f65bc91a-d271-414c-ae33-5c67fbbd98a0">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>5b42cff0-7122-4290-9b77-8c57a7d1e819</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="07d555d2-8658-423a-b45c-db35fe79f2e6" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>OxygenSaturation</name>
+      <display>OxygenSaturation: decimal</display>
+      <externalReference>appointment.VisitDetails.VitalSigns.OxygenSaturation</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="4ecf9de9-6a1d-4ddf-bcbe-ec059026db0b">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>5b42cff0-7122-4290-9b77-8c57a7d1e819</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="e4e939d1-1455-4c68-a92f-7d4a54a21422" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Weight</name>
+      <display>Weight: decimal</display>
+      <externalReference>appointment.VisitDetails.VitalSigns.Weight</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="e92a68a0-a80e-4ced-bd26-b1f91add25bf">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>5b42cff0-7122-4290-9b77-8c57a7d1e819</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="ea443dac-41a4-4918-b61d-dd6417d8936c" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Height</name>
+      <display>Height: decimal</display>
+      <externalReference>appointment.VisitDetails.VitalSigns.Height</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="9bbda861-6d96-4e4a-a3e2-2f2e211cd6a2">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>5b42cff0-7122-4290-9b77-8c57a7d1e819</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

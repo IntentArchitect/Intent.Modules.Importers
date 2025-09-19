@@ -9,44 +9,44 @@ namespace JsonImportTests.Infrastructure.Persistence.Documents.ECommerce.Catalog
 {
     internal class RatingDistributionDocument : IRatingDistributionDocument
     {
-        public decimal 5Star { get; set; }
-    public decimal 4Star { get; set; }
-public decimal 3Star { get; set; }
-        public decimal 2Star { get; set; }
-        public decimal 1Star { get; set; }
+        public decimal Star5 { get; set; }
+        public decimal Star4 { get; set; }
+        public decimal Star3 { get; set; }
+        public decimal Star2 { get; set; }
+        public decimal Star1 { get; set; }
 
         public RatingDistribution ToEntity(RatingDistribution? entity = default)
-{
-    entity ??= new RatingDistribution();
+        {
+            entity ??= new RatingDistribution();
 
-    entity.5Star = 5Star;
-    entity.4Star = 4Star;
-    entity.3Star = 3Star;
-    entity.2Star = 2Star;
-    entity.1Star = 1Star;
+            entity.Star5 = Star5;
+            entity.Star4 = Star4;
+            entity.Star3 = Star3;
+            entity.Star2 = Star2;
+            entity.Star1 = Star1;
 
-    return entity;
-}
+            return entity;
+        }
 
-public RatingDistributionDocument PopulateFromEntity(RatingDistribution entity)
-{
-    5Star = entity.5Star;
-    4Star = entity.4Star;
-    3Star = entity.3Star;
-    2Star = entity.2Star;
-    1Star = entity.1Star;
+        public RatingDistributionDocument PopulateFromEntity(RatingDistribution entity)
+        {
+            Star5 = entity.Star5;
+            Star4 = entity.Star4;
+            Star3 = entity.Star3;
+            Star2 = entity.Star2;
+            Star1 = entity.Star1;
 
-    return this;
-}
+            return this;
+        }
 
-public static RatingDistributionDocument? FromEntity(RatingDistribution? entity)
-{
-    if (entity is null)
-    {
-        return null;
-    }
+        public static RatingDistributionDocument? FromEntity(RatingDistribution? entity)
+        {
+            if (entity is null)
+            {
+                return null;
+            }
 
-    return new RatingDistributionDocument().PopulateFromEntity(entity);
-}
+            return new RatingDistributionDocument().PopulateFromEntity(entity);
+        }
     }
 }

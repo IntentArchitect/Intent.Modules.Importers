@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="3d12267f-f96a-4caf-8a29-5bf7e19fd67c" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>GradingInfo</name>
+  <display>GradingInfo</display>
+  <externalReference>enrollment.GradingInfo</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>372b3681-01cc-4278-b81f-3a1d91492acb</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="99868944-bceb-4ae9-b55c-d6c8cbcfcdd4" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>CurrentGrade</name>
+      <display>CurrentGrade: string</display>
+      <externalReference>enrollment.GradingInfo.CurrentGrade</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="9b61ba49-b198-49ea-9875-ae811ec9e6fa">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>3d12267f-f96a-4caf-8a29-5bf7e19fd67c</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="0a0db9a7-adf7-4233-b6d4-a217a0a81839" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>CurrentPercentage</name>
+      <display>CurrentPercentage: decimal</display>
+      <externalReference>enrollment.GradingInfo.CurrentPercentage</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="09166443-7887-4be0-9070-f3124bcf5dd8">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>3d12267f-f96a-4caf-8a29-5bf7e19fd67c</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="0ea72154-9317-43e9-9e49-79ec54e44974" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>GradePoints</name>
+      <display>GradePoints: decimal</display>
+      <externalReference>enrollment.GradingInfo.GradePoints</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="19568334-bbd2-45d3-9ad6-29b998de2910">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>3d12267f-f96a-4caf-8a29-5bf7e19fd67c</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="cd754607-ecfc-421a-9d39-43bd01a5aa12" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>QualityPoints</name>
+      <display>QualityPoints: decimal</display>
+      <externalReference>enrollment.GradingInfo.QualityPoints</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="412597a6-b8af-4d43-8c0c-f19ca4a94265">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>3d12267f-f96a-4caf-8a29-5bf7e19fd67c</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="d0625705-5f95-457f-9dc7-ed6153dad0ba" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>IsPassFail</name>
+      <display>IsPassFail: bool</display>
+      <externalReference>enrollment.GradingInfo.IsPassFail</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="6f751b56-cef6-4acc-a9e9-4c8660dc476c">
+        <typeId>e6f92b09-b2c5-4536-8270-a4d9e5bbd930</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>3d12267f-f96a-4caf-8a29-5bf7e19fd67c</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="40ff7b5a-f225-45d4-a4b6-21bf6f15106a" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>IncompleteReason</name>
+      <display>IncompleteReason: object</display>
+      <externalReference>enrollment.GradingInfo.IncompleteReason</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="e26b9718-d73b-4e0c-b1c7-8bbcd865e5a3">
+        <typeId>341DD965-D06C-4A40-9437-9516ADA77FF5</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <comment>Unable to determine type in JSON for Null JsonValueKind.</comment>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>3d12267f-f96a-4caf-8a29-5bf7e19fd67c</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

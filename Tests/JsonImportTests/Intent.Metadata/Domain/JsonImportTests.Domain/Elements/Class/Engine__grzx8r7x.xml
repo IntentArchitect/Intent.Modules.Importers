@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="c4c4c4d5-611f-49b3-b0e9-d2f7af8efe0e" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>Engine</name>
+  <display>Engine</display>
+  <externalReference>complexEntity.ComplexInheritance.SpecificProperties.Engine</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>7eac3949-74e6-4eae-b08a-3875df883234</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="2ce26fc6-9f55-4649-9fce-d319b5120e8d" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Type</name>
+      <display>Type: string</display>
+      <externalReference>complexEntity.ComplexInheritance.SpecificProperties.Engine.Type</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="abd86f63-a671-416e-b679-8b729053224f">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>c4c4c4d5-611f-49b3-b0e9-d2f7af8efe0e</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="9e916ae5-9bb9-46b7-9479-803dffd2e478" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Displacement</name>
+      <display>Displacement: decimal</display>
+      <externalReference>complexEntity.ComplexInheritance.SpecificProperties.Engine.Displacement</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="bacd251c-066b-4b4c-a465-252323e9e2b5">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>c4c4c4d5-611f-49b3-b0e9-d2f7af8efe0e</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="b56c8315-23cc-4ebb-ba86-6e14505543b7" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Horsepower</name>
+      <display>Horsepower: decimal</display>
+      <externalReference>complexEntity.ComplexInheritance.SpecificProperties.Engine.Horsepower</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="a734c0eb-827d-49ce-8c5e-1231b614600a">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>c4c4c4d5-611f-49b3-b0e9-d2f7af8efe0e</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="ee1144b1-276e-4d33-84ec-592457185783" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>Turbo</name>
+      <display>Turbo: bool</display>
+      <externalReference>complexEntity.ComplexInheritance.SpecificProperties.Engine.Turbo</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="19c773e3-7681-4347-a3bd-cc724993e88c">
+        <typeId>e6f92b09-b2c5-4536-8270-a4d9e5bbd930</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>c4c4c4d5-611f-49b3-b0e9-d2f7af8efe0e</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

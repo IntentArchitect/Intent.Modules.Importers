@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="e4590cef-7803-4f23-888e-2fd9feda672f">
+  <sourceEnd id="f276adef9df2-e888-32f4-3087-fec0954e" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Portfolio</name>
+    <display>Portfolio: Portfolio</display>
+    <order>0</order>
+    <typeReference id="d828c980-7b9e-4d0a-82f3-7a9244683f7c">
+      <typeId>839b30c3-d190-4c09-9fbb-2e9a886197d2</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>portfolio</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="e4590cef-7803-4f23-888e-2fd9feda672f" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Performance</name>
+    <display>Performance: Performance</display>
+    <order>12</order>
+    <typeReference id="edaaa7a7-0be7-439c-879c-1b48d2237343">
+      <typeId>14be1b13-fc6d-410d-8443-33f83f409ec2</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

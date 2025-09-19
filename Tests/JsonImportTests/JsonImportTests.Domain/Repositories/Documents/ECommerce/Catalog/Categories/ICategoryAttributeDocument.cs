@@ -13,6 +13,6 @@ namespace JsonImportTests.Domain.Repositories.Documents.ECommerce.Catalog.Catego
         string Type { get; }
         bool IsRequired { get; }
         bool IsFilterable { get; }
-        IReadOnlyList<IValueDocument> Values { get; }
+        IReadOnlyList<IAttributeValueDocument> AttributeValues { get; }
     }
 }

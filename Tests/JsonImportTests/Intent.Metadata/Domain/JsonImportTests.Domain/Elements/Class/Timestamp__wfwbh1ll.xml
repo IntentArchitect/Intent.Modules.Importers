@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="c1a8cf0c-bbfb-475e-9dc2-865d9705c6fb" type="Class" typeId="04e12b51-ed12-42a3-9667-a6aa81bb6d10">
+  <name>Timestamp</name>
+  <display>Timestamp</display>
+  <externalReference>complexEntity.Timestamps</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>7eac3949-74e6-4eae-b08a-3875df883234</parentFolderId>
+  <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+  <packageName>JsonImportTests.Domain</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="df8e47ae-f70f-4ec5-8ccd-ba55cab7ca06" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>CreatedAt</name>
+      <display>CreatedAt: datetime</display>
+      <externalReference>complexEntity.Timestamps.CreatedAt</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="3d2f67a4-9c90-498e-8aa0-f7ed1c94b3a6">
+        <typeId>a4107c29-7851-4121-9416-cf1236908f1e</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>c1a8cf0c-bbfb-475e-9dc2-865d9705c6fb</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="5693cb52-3eb5-4a5a-9fa6-8758d788315c" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>UpdatedAt</name>
+      <display>UpdatedAt: datetime</display>
+      <externalReference>complexEntity.Timestamps.UpdatedAt</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="0a1b365e-ec79-4fed-9e10-bb7d4a7815bc">
+        <typeId>a4107c29-7851-4121-9416-cf1236908f1e</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>c1a8cf0c-bbfb-475e-9dc2-865d9705c6fb</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="36cc1e62-87fb-4de0-bce9-9e09ef535487" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>LastAccessedAt</name>
+      <display>LastAccessedAt: object</display>
+      <externalReference>complexEntity.Timestamps.LastAccessedAt</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="38588ebc-4a64-4c7d-9989-02bee0fe0778">
+        <typeId>341DD965-D06C-4A40-9437-9516ADA77FF5</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <comment>Unable to determine type in JSON for Null JsonValueKind.</comment>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>c1a8cf0c-bbfb-475e-9dc2-865d9705c6fb</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="28f1e437-c019-4194-b3c9-591f589ffad3" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>ScheduledAt</name>
+      <display>ScheduledAt: datetime</display>
+      <externalReference>complexEntity.Timestamps.ScheduledAt</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="241acd2e-0448-4b97-8b25-26e1150f7823">
+        <typeId>a4107c29-7851-4121-9416-cf1236908f1e</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>c1a8cf0c-bbfb-475e-9dc2-865d9705c6fb</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="25be86cc-254f-4d6e-87df-80df140fec2f" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>CompletedAt</name>
+      <display>CompletedAt: object</display>
+      <externalReference>complexEntity.Timestamps.CompletedAt</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="77fba306-d626-482e-9f5c-4588372ad49c">
+        <typeId>341DD965-D06C-4A40-9437-9516ADA77FF5</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <comment>Unable to determine type in JSON for Null JsonValueKind.</comment>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>c1a8cf0c-bbfb-475e-9dc2-865d9705c6fb</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="9656ce9c-33ec-42b9-b03e-343b7d96b505" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+      <name>DeletedAt</name>
+      <display>DeletedAt: object</display>
+      <externalReference>complexEntity.Timestamps.DeletedAt</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="1370dd5f-42fe-40cc-bd48-c14ed669d068">
+        <typeId>341DD965-D06C-4A40-9437-9516ADA77FF5</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <comment>Unable to determine type in JSON for Null JsonValueKind.</comment>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>c1a8cf0c-bbfb-475e-9dc2-865d9705c6fb</parentFolderId>
+      <packageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</packageId>
+      <packageName>JsonImportTests.Domain</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="5e189b71-1042-4ae7-8c26-59ac7c8e051e">
+  <sourceEnd id="e150e8c7ca95-62c8-7ea4-2401-17b981e5" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Offering</name>
+    <display>Offering: Offering</display>
+    <order>0</order>
+    <typeReference id="d868ea02-ffe5-41d9-9ab7-cb9a479e8a32">
+      <typeId>1a20c6ef-1d05-4084-815d-b2cd791d55bd</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>course.Offerings[0]</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="5e189b71-1042-4ae7-8c26-59ac7c8e051e" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Enrollment</name>
+    <display>Enrollment: OfferingsEnrollment</display>
+    <order>7</order>
+    <typeReference id="5a71e60b-0256-45f8-99cd-ad9bb3d24ee2">
+      <typeId>182f9681-1bf4-4d13-a775-e8c3451b0076</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

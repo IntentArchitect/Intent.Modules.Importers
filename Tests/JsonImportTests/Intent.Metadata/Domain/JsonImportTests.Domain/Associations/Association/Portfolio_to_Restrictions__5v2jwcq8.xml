@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="9cfa8454-86f9-432e-831f-b94a7b54e6dc">
+  <sourceEnd id="cd6e45b7a49b-f138-e234-9f68-4548afc9" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Portfolio</name>
+    <display>Portfolio: Portfolio</display>
+    <order>0</order>
+    <typeReference id="2cd011a5-329f-499b-838b-1b679939a0a6">
+      <typeId>839b30c3-d190-4c09-9fbb-2e9a886197d2</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>portfolio</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="9cfa8454-86f9-432e-831f-b94a7b54e6dc" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Restrictions</name>
+    <display>Restrictions: Restriction</display>
+    <order>11</order>
+    <typeReference id="130131d8-df28-4b12-9d76-362bc7fba070">
+      <typeId>29ec07e5-23b2-4901-bb99-2f2813d2786b</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

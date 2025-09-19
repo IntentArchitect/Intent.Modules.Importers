@@ -31,6 +31,6 @@ namespace JsonImportTests.Domain.Entities.ECommerce.Catalog.Categories
 
         public bool IsFilterable { get; set; }
 
-        public ICollection<Value> Values { get; set; } = [];
+        public ICollection<AttributeValue> AttributeValues { get; set; } = [];
     }
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="ef61ea66-2d90-4455-844f-9ba0746cc099">
+  <sourceEnd id="990cc6470ab9-f448-5544-09d2-66ae16fe" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>MedicalRecord</name>
+    <display>MedicalRecord: MedicalRecord</display>
+    <order>0</order>
+    <typeReference id="8cd8d17f-459c-4270-a8c5-8057f62814d1">
+      <typeId>2d98b364-1a5a-48f3-a450-a2f4145b034c</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>medicalRecord</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="ef61ea66-2d90-4455-844f-9ba0746cc099" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Medications</name>
+    <display>Medications: MedicalRecordMedication[*]</display>
+    <order>11</order>
+    <typeReference id="ddfd3271-0112-40f8-af3f-54006e7986bc">
+      <typeId>4bc35a6e-16ce-4a97-b56b-ed9bb6c645b2</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

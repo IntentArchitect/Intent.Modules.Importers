@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="485e890f-c73c-4e0c-a17e-e50f4ef92a70">
+  <sourceEnd id="07a29fe4f05e-e71a-c0e4-c37c-f098e584" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Configuration</name>
+    <display>Configuration: Configuration</display>
+    <order>0</order>
+    <typeReference id="62d90879-935a-4bd9-989c-a5f11c82f4d9">
+      <typeId>915b0410-6c7b-4630-ad92-4a51b2f3b380</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>complexEntity.Configuration</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="485e890f-c73c-4e0c-a17e-e50f4ef92a70" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Preferences</name>
+    <display>Preferences: Preference[*]</display>
+    <order>1</order>
+    <typeReference id="2952ef25-0abb-4434-8066-e8accd160ca4">
+      <typeId>1d2fdacf-9c9c-4b74-b843-88cbeafb40cc</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="60b70b38-2b90-4490-be24-b3943ecb7f2d">
+  <sourceEnd id="d2f7bce3493b-42eb-0944-09b2-83b07b06" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>ComplexEntity</name>
+    <display>ComplexEntity: ComplexEntity</display>
+    <order>0</order>
+    <typeReference id="2efb10ca-e5cd-4c11-b22e-bc705228ad6e">
+      <typeId>bb9e37b0-c066-467e-888b-9a073d161a6a</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>complexEntity</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="60b70b38-2b90-4490-be24-b3943ecb7f2d" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>ConditionalFields</name>
+    <display>ConditionalFields: ConditionalField</display>
+    <order>19</order>
+    <typeReference id="971e7af8-a638-4411-8434-caee66cb5fe1">
+      <typeId>3fe2f3fa-4bb9-4c23-b09f-053cca194de5</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

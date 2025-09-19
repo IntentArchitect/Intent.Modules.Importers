@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="1f0a7dd8-bc28-4fe7-9e6b-7f2574be4842">
+  <sourceEnd id="2484eb4752f7-b6e9-7ef4-82cb-8dd7a0f1" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>InventoryItem</name>
+    <display>InventoryItem: InventoryItem</display>
+    <order>0</order>
+    <typeReference id="c102d24c-7e9e-4377-8cf1-b3e3eef6395d">
+      <typeId>3946633d-adb8-4763-a8cf-f5365e78e91a</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>inventoryItem</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="1f0a7dd8-bc28-4fe7-9e6b-7f2574be4842" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>MovementHistory</name>
+    <display>MovementHistory: MovementHistory[*]</display>
+    <order>10</order>
+    <typeReference id="06446d5c-6784-4a57-8268-7b0a35ebbd8b">
+      <typeId>2a02f0c9-5b69-48a5-822b-c6cfa5e716d4</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

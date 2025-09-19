@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="3bef2eaf-571d-4ae4-8d39-377ce45b2219">
+  <sourceEnd id="9122b54ec773-93d8-4ea4-d175-fae2feb3" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>PhysicalExamination</name>
+    <display>PhysicalExamination: PhysicalExamination</display>
+    <order>0</order>
+    <typeReference id="cb5f9f3d-54cf-4af6-831a-eeb1977129a9">
+      <typeId>60759a4d-62f2-4e2b-9cae-a1835b4af268</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>medicalRecord.ClinicalData.PhysicalExamination</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="3bef2eaf-571d-4ae4-8d39-377ce45b2219" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>VitalSigns</name>
+    <display>VitalSigns: PhysicalExaminationVitalSign</display>
+    <order>1</order>
+    <typeReference id="eb12f9bf-1d02-48d6-9b4f-dec384d1695d">
+      <typeId>374a1c9f-fd75-42e0-8b75-ca1c4bbd3df3</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

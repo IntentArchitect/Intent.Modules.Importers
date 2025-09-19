@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="5f2c1700-365e-47f0-ab2a-fb523aabe5ba">
+  <sourceEnd id="ab5ebaa325bf-a2ba-0f74-e563-0071c2f5" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>MedicalRecord</name>
+    <display>MedicalRecord: MedicalRecord</display>
+    <order>0</order>
+    <typeReference id="7db25804-3dec-4eb1-ab6b-d7eb8137368f">
+      <typeId>2d98b364-1a5a-48f3-a450-a2f4145b034c</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>medicalRecord</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="5f2c1700-365e-47f0-ab2a-fb523aabe5ba" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>TreatmentPlans</name>
+    <display>TreatmentPlans: MedicalRecordTreatmentPlan[*]</display>
+    <order>10</order>
+    <typeReference id="3c2712e9-b8b5-4509-84da-c2cbfeecf401">
+      <typeId>e4833b68-60b0-43e2-85aa-22ac319d007d</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

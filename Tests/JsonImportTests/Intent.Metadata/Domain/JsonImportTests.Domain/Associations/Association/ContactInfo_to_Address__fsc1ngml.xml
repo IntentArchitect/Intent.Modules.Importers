@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="4c9c77c7-cc54-4fe6-b6b1-280c14259443">
+  <sourceEnd id="34495241c082-1b6b-6ef4-45cc-7c77c9c4" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>ContactInfo</name>
+    <display>ContactInfo: PractitionerContactInfo</display>
+    <order>0</order>
+    <typeReference id="84301590-9837-4462-a36f-317f5b1c2b27">
+      <typeId>541873c9-c60f-4c6b-b40e-a537f969a2be</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>practitioner.ContactInfo</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="4c9c77c7-cc54-4fe6-b6b1-280c14259443" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Address</name>
+    <display>Address: PractitionerContactInfoAddress</display>
+    <order>2</order>
+    <typeReference id="8a0c056e-6d76-44ef-a46d-63a0ede4a54b">
+      <typeId>781bd965-ce43-4a72-a364-55e51ee74450</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

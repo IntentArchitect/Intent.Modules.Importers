@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="bb7a7253-52e9-45bd-8c59-7733ff38069a">
+  <sourceEnd id="a96083ff3377-95c8-db54-9e25-3527a7bb" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Offering</name>
+    <display>Offering: Offering</display>
+    <order>0</order>
+    <typeReference id="c0d47294-9eae-4b0c-a85e-693d9d6e307b">
+      <typeId>1a20c6ef-1d05-4084-815d-b2cd791d55bd</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>course.Offerings[0]</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="bb7a7253-52e9-45bd-8c59-7733ff38069a" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Instructor</name>
+    <display>Instructor: OfferingsInstructor</display>
+    <order>5</order>
+    <typeReference id="0ec6574d-b24f-43ea-ac0e-2f1d437e3364">
+      <typeId>7fa75c61-6a44-46cc-92e9-8155c47f2f65</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

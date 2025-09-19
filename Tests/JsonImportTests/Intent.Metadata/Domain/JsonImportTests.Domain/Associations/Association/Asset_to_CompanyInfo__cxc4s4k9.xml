@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="9fbe65ac-869d-40d9-b19d-badbda1046a5">
+  <sourceEnd id="5a6401adbdab-d91b-9d04-d968-ca56ebf9" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Asset</name>
+    <display>Asset: Asset</display>
+    <order>0</order>
+    <typeReference id="f1bbd9c6-5775-4f05-84a6-4892462d5806">
+      <typeId>788141eb-700b-4976-9acb-f68b2056ee88</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>asset</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="9fbe65ac-869d-40d9-b19d-badbda1046a5" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>CompanyInfo</name>
+    <display>CompanyInfo: CompanyInfo</display>
+    <order>18</order>
+    <typeReference id="5404c980-89a9-4053-bfc4-0501358ffb1a">
+      <typeId>f519deb5-710d-4311-bb1c-dda943fdd5e0</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

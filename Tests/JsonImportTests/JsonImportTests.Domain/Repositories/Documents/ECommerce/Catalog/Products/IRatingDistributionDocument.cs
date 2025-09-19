@@ -7,10 +7,10 @@ namespace JsonImportTests.Domain.Repositories.Documents.ECommerce.Catalog.Produc
 {
     public interface IRatingDistributionDocument
     {
-        decimal 5Star { get; }
-    decimal 4Star { get; }
-decimal 3Star { get; }
-        decimal 2Star { get; }
-        decimal 1Star { get; }
+        decimal Star5 { get; }
+        decimal Star4 { get; }
+        decimal Star3 { get; }
+        decimal Star2 { get; }
+        decimal Star1 { get; }
     }
 }

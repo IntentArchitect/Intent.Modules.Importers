@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="e58b0c54-07f8-4835-86fc-408329f93851">
+  <sourceEnd id="15839f923804-cf68-5384-8f70-45c0b85e" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Transaction</name>
+    <display>Transaction: Transaction</display>
+    <order>0</order>
+    <typeReference id="654c74bb-4f3a-47b2-8fe0-e74407d43708">
+      <typeId>9a3cba6b-499c-469b-8d0d-97a1d4a8a1e4</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>transaction</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="e58b0c54-07f8-4835-86fc-408329f93851" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Counterparty</name>
+    <display>Counterparty: Counterparty</display>
+    <order>19</order>
+    <typeReference id="1ff1e98d-9c5f-4685-83c5-cd1610bf854c">
+      <typeId>65cd19b8-10a9-438d-aafc-c5daefea6bfd</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

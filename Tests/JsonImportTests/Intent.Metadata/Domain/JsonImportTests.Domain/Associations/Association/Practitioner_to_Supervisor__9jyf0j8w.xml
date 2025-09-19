@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="ca19228a-26d8-4598-810d-32fdb56e8612">
+  <sourceEnd id="2168e65bdf23-d018-8954-8d62-a82291ac" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Practitioner</name>
+    <display>Practitioner: Practitioner</display>
+    <order>0</order>
+    <typeReference id="8b9bada5-baca-43e3-a689-d7134f903cc1">
+      <typeId>8ec1fbaa-2832-4ff1-b83e-99f3715f404a</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>practitioner</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="ca19228a-26d8-4598-810d-32fdb56e8612" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Supervisor</name>
+    <display>Supervisor: Supervisor</display>
+    <order>5</order>
+    <typeReference id="66b8907a-a668-4858-9948-98d9aca6743f">
+      <typeId>d73acdef-5da7-43d0-a326-fb1f0ae1c7df</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

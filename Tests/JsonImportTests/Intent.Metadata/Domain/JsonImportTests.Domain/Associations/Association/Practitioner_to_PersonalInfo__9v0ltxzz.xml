@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="d9ea5d8e-a5c3-4cee-8f9a-0cc13a0abc4f">
+  <sourceEnd id="f4cba0a31cc0-a9f8-eec4-3c5a-e8d5ae9d" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Practitioner</name>
+    <display>Practitioner: Practitioner</display>
+    <order>0</order>
+    <typeReference id="40f72f2b-58cd-4603-b242-5bf7d31b2df4">
+      <typeId>8ec1fbaa-2832-4ff1-b83e-99f3715f404a</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>practitioner</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="d9ea5d8e-a5c3-4cee-8f9a-0cc13a0abc4f" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>PersonalInfo</name>
+    <display>PersonalInfo: PractitionerPersonalInfo</display>
+    <order>7</order>
+    <typeReference id="3637f438-1249-495f-a4ca-de6bd62b8b10">
+      <typeId>65b58b49-fd59-4648-8a70-70dade4dec9b</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

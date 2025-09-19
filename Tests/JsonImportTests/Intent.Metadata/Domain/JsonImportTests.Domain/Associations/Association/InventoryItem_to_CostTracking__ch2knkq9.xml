@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="f95233a6-74ba-4e87-9e86-19928a8293fd">
+  <sourceEnd id="df3928a82991-68e9-78e4-ab47-6a33259f" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>InventoryItem</name>
+    <display>InventoryItem: InventoryItem</display>
+    <order>0</order>
+    <typeReference id="2e123d38-11fb-43fa-a9d1-e856be1f4dad">
+      <typeId>3946633d-adb8-4763-a8cf-f5365e78e91a</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>inventoryItem</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="f95233a6-74ba-4e87-9e86-19928a8293fd" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>CostTracking</name>
+    <display>CostTracking: CostTracking</display>
+    <order>12</order>
+    <typeReference id="3b8770b4-aa36-4c8e-895a-699c2ffe7495">
+      <typeId>990bbd9a-6809-474c-a02d-3da0a93ec218</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

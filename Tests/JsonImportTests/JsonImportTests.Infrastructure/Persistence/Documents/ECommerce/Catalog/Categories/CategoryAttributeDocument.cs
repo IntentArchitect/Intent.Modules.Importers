@@ -15,8 +15,8 @@ namespace JsonImportTests.Infrastructure.Persistence.Documents.ECommerce.Catalog
         public string Type { get; set; } = default!;
         public bool IsRequired { get; set; }
         public bool IsFilterable { get; set; }
-        public List<ValueDocument> Values { get; set; } = default!;
-        IReadOnlyList<IValueDocument> ICategoryAttributeDocument.Values => Values;
+        public List<AttributeValueDocument> AttributeValues { get; set; } = default!;
+        IReadOnlyList<IAttributeValueDocument> ICategoryAttributeDocument.AttributeValues => AttributeValues;
 
         public CategoryAttribute ToEntity(CategoryAttribute? entity = default)
         {
@@ -28,7 +28,7 @@ namespace JsonImportTests.Infrastructure.Persistence.Documents.ECommerce.Catalog
             entity.Type = Type ?? throw new Exception($"{nameof(entity.Type)} is null");
             entity.IsRequired = IsRequired;
             entity.IsFilterable = IsFilterable;
-            entity.Values = Values.Select(x => x.ToEntity()).ToList();
+            entity.AttributeValues = AttributeValues.Select(x => x.ToEntity()).ToList();
 
             return entity;
         }
@@ -41,7 +41,7 @@ namespace JsonImportTests.Infrastructure.Persistence.Documents.ECommerce.Catalog
             Type = entity.Type;
             IsRequired = entity.IsRequired;
             IsFilterable = entity.IsFilterable;
-            Values = entity.Values.Select(x => ValueDocument.FromEntity(x)!).ToList();
+            AttributeValues = entity.AttributeValues.Select(x => AttributeValueDocument.FromEntity(x)!).ToList();
 
             return this;
         }

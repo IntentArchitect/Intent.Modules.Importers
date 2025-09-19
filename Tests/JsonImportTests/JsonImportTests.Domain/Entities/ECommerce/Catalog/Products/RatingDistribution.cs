@@ -6,14 +6,14 @@ namespace JsonImportTests.Domain.Entities.ECommerce.Catalog.Products
 {
     public class RatingDistribution
     {
-        public decimal _5Star { get; set; }
+        public decimal Star5 { get; set; }
 
-        public decimal _4Star { get; set; }
+        public decimal Star4 { get; set; }
 
-        public decimal _3Star { get; set; }
+        public decimal Star3 { get; set; }
 
-        public decimal _2Star { get; set; }
+        public decimal Star2 { get; set; }
 
-        public decimal _1Star { get; set; }
+        public decimal Star1 { get; set; }
     }
 }
