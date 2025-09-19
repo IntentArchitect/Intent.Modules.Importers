@@ -35,6 +35,8 @@ namespace Intent.Modules.OpenApi.Importer.Tasks
                 return Fail(errorMessage!);
             }
 
+            // I know why we had to do this for RDBMS but is it really necessary for OpenAPI
+            // when its just normal C# services being invoked with platform-agnostic binaries?
             var toolDirectory = Path.Combine(Path.GetDirectoryName(typeof(OpenApiImport).Assembly.Location), @"../content/tool");
             var executableName = "dotnet";
             var executableArgs = $"\"{Path.Combine(toolDirectory, "Intent.MetadataSynchronizer.OpenApi.CLI.dll")}\" --serialized-config \"{openApiImportSettings}\"";

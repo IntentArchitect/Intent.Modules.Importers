@@ -138,7 +138,7 @@ declare namespace MacroApi.Context {
 
     interface IDynamicFormFieldConfig {
         id: string;
-        fieldType: "text" | "select" | "multi-select" | "checkbox" | "textarea" | "tree-view" | "tiles" | "open-file" | "button" | "alert"
+        fieldType: "text" | "select" | "multi-select" | "checkbox" | "textarea" | "tree-view" | "tiles" | "open-file" | "button" | "alert" | "open-directory";
         label: string;
         isRequired?: boolean;
         isHidden?: boolean;
@@ -151,7 +151,8 @@ declare namespace MacroApi.Context {
         columns?: number;
         selectOptions?: IDynamicFormFieldSelectOption[];
         treeViewOptions?: ISelectableTreeViewOptions;
-        openFileOptions?: IDynamicFormOpenFileOptions
+        openFileOptions?: IDynamicFormOpenFileOptions;
+        openDirectoryOptions?: IDynamicFormOpenDirectoryOptions;
         onClick?: (formApi: IDynamicFormApi) => Promise<void>;
         onChange?: (formApi: IDynamicFormApi) => void;
     }
@@ -189,6 +190,22 @@ declare namespace MacroApi.Context {
     interface IDynamicFormOpenFileOptions_FileFilters {
         name: string;
         extensions: string[];
+    }
+
+    interface IDynamicFormOpenDirectoryOptions {
+        /**
+         * Set the title of the open file dialog.
+         */
+        title?: string;
+        /**
+         * Set the location to start browsing with the open file dialog. If not specified, it will open at your last location.
+         */
+        defaultPath?: string;
+        /**
+         * Custom label for the confirmation button, when left empty, the default label will
+         * be used.
+         */
+        buttonLabel?: string;
     }
 
     interface ISelectableTreeViewOptions {

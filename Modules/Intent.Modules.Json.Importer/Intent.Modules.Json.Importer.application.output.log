@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<outputLog>
+  <ApplicationId>e9c104a9-64d9-4d3d-9ca8-cbfd30ec4e65</ApplicationId>
+  <FileLogs>
+    <FileLog>
+      <CorrelationId>Intent.VisualStudio.Projects.VisualStudioSolution#b042caa4-5f12-4344-8f01-8274509efe25</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>../Intent.Modules.Importers.sln</ApplicationRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>6397897b-1adb-4b01-ba55-d65f1e571fce</ProjectId>
+      <CorrelationId>Intent.ModuleBuilder.IModSpecFile</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>Intent.Json.Importer.imodspec</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>Intent.Json.Importer.imodspec</ProjectRelativeFilePath>
+      <IsIgnored>true</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>6397897b-1adb-4b01-ba55-d65f1e571fce</ProjectId>
+      <CorrelationId>Intent.VisualStudio.Projects.CSharpProject#6397897b-1adb-4b01-ba55-d65f1e571fce</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>Intent.Modules.Json.Importer.csproj</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>Intent.Modules.Json.Importer.csproj</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>0e2ad177-68aa-41f5-80d9-eb58db78f513</ProjectId>
+      <CorrelationId>Intent.ModuleBuilder.DesignerSettings#d9e5d00f-7faa-42d2-b83e-8ecd93510b2b</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>modelers/Domain Designer Settings.designer.settings</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>Domain Designer Settings.designer.settings</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>0e2ad177-68aa-41f5-80d9-eb58db78f513</ProjectId>
+      <CorrelationId>Intent.ModuleBuilder.DesignerSettings#a0658acc-9e05-4431-8360-5686a8b9c9bf</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>modelers/Service Designer Settings.designer.settings</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>Service Designer Settings.designer.settings</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>6397897b-1adb-4b01-ba55-d65f1e571fce</ProjectId>
+      <CorrelationId>Intent.ModuleBuilder.Templates.ReleaseNotes</CorrelationId>
+      <OverwriteBehaviour>once-off</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>release-notes.md</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>release-notes.md</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+  </FileLogs>
+</outputLog>

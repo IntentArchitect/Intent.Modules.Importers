@@ -7,8 +7,10 @@
   <iconType>UrlImagePath</iconType>
   <metadataRelativePath>Intent.Metadata</metadataRelativePath>
   <modulesCacheRelativePath>.intent/modules</modulesCacheRelativePath>
+  <lastUsedApplicationTemplate id="Intent.ApplicationTemplate.ModuleBuilder" version="4.1.6" />
   <applications>
     <application id="86b08c05-fea8-40cb-b37e-122ad0491b3a" name="Intent.OpenApi.Importer" relativePath="Intent.Modules.OpenApi.Importer/Intent.OpenApi.Importer.application.config" />
     <application id="6e00a575-a873-4cf4-ab2a-b62721a8bc24" name="Intent.SqlServerImporter" relativePath="Intent.Modules.Rdbms.Importer/Intent.Modules.Rdbms.Importer.application.config" />
+    <application id="e9c104a9-64d9-4d3d-9ca8-cbfd30ec4e65" name="Intent.Modules.Json.Importer" relativePath="Intent.Modules.Json.Importer/Intent.Modules.Json.Importer.application.config" />
   </applications>
 </solution>

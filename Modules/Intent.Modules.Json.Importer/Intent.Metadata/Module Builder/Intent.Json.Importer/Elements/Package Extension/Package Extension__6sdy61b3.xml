@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="4a2e3662-e293-474a-b518-a390fa445821" type="Package Extension" typeId="ab4152df-3add-4a08-81b6-0fefc7cbb204">
+  <name>Package Extension</name>
+  <display>Package Extension: Services Package</display>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-by-name</sort-children>
+  <genericTypes />
+  <typeReference id="8b080b94-3f1d-4ac0-bccd-eba8e82b3fc5">
+    <typeId>df45eaf6-9202-4c25-8dd5-677e9ba1e906</typeId>
+    <isNavigable>true</isNavigable>
+    <isNullable>false</isNullable>
+    <isCollection>false</isCollection>
+    <isRequired>true</isRequired>
+    <typePackageName>Intent.Modelers.Services</typePackageName>
+    <typePackageId>4ba53041-59f9-4446-a207-6da4fbdf86fe</typePackageId>
+    <stereotypes />
+    <genericTypeParameters />
+  </typeReference>
+  <isMapped>false</isMapped>
+  <parentFolderId>a0658acc-9e05-4431-8360-5686a8b9c9bf</parentFolderId>
+  <packageId>2993652d-0fd9-469f-96a2-13ed8476fdb3</packageId>
+  <packageName>Intent.Json.Importer</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="31a6a8d6-79c7-4edb-90f0-5ae4f952435a" type="Context Menu" typeId="d45e383d-90ba-4b64-aca7-34ca100cea21">
+      <name>[context menu]</name>
+      <display>[context menu]</display>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <isMapped>false</isMapped>
+      <parentFolderId>4a2e3662-e293-474a-b518-a390fa445821</parentFolderId>
+      <packageId>2993652d-0fd9-469f-96a2-13ed8476fdb3</packageId>
+      <packageName>Intent.Json.Importer</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

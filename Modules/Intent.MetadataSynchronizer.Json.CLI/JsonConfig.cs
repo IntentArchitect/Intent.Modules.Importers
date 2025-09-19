@@ -1,8 +1,6 @@
-﻿using Intent.Modelers.Domain.Api;
-
-namespace Intent.MetadataSynchronizer.Json.CLI
+﻿namespace Intent.MetadataSynchronizer.Json.CLI
 {
-    internal class JsonConfig
+    public class JsonConfig
     {
         public JsonConfig()
         {
