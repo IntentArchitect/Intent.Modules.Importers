@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<outputLog>
+  <ApplicationId>deae0622-b2d7-4e17-8f81-f7dcd267bd4e</ApplicationId>
+  <FileLogs>
+    <FileLog>
+      <ProjectId>4dc96601-03b4-477c-bc61-3bf0eb4a6afd</ProjectId>
+      <CorrelationId>Intent.ModuleBuilder.IModSpecFile#b941758f-a675-4c33-b6af-ef41ce4c1ba8</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>../Intent.Modules.CSharp.Importer/Intent.CSharp.Importer.imodspec</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>Intent.CSharp.Importer.imodspec</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>4dc96601-03b4-477c-bc61-3bf0eb4a6afd</ProjectId>
+      <CorrelationId>Intent.VisualStudio.Projects.CSharpProject#4dc96601-03b4-477c-bc61-3bf0eb4a6afd</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>../Intent.Modules.CSharp.Importer/Intent.Modules.CSharp.Importer.csproj</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>Intent.Modules.CSharp.Importer.csproj</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>032dc2c0-edbf-4388-8c32-776806775c3b</ProjectId>
+      <CorrelationId>Intent.ModuleBuilder.Templates.ModuleTask#209110b2-b524-4b1a-933a-ee4aae04ca32</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>../Intent.Modules.CSharp.Importer/Tasks/ImportCSharpFilesTask.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>ImportCSharpFilesTask.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>032dc2c0-edbf-4388-8c32-776806775c3b</ProjectId>
+      <CorrelationId>Intent.ModuleBuilder.Templates.ModuleTask#bbac3130-0e34-444e-b58e-5bf94bd95786</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>../Intent.Modules.CSharp.Importer/Tasks/LoadFilesTask.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>LoadFilesTask.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <CorrelationId>Intent.VisualStudio.Projects.VisualStudioSolution#10839593-0c2e-4d20-88f2-ba3b27512fee</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>../Intent.Modules.Importers.sln</ApplicationRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+  </FileLogs>
+</outputLog>
