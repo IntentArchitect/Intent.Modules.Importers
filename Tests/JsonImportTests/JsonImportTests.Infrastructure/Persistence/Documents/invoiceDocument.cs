@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace JsonImportTests.Infrastructure.Persistence.Documents
 {
-    internal class invoiceDocument : IinvoiceDocument, ICosmosDBDocument<invoice, invoiceDocument>
+    internal class InvoiceDocument : IInvoiceDocument, ICosmosDBDocument<Invoice, InvoiceDocument>
     {
         [JsonProperty("_etag")]
         protected string? _etag;
@@ -25,11 +25,11 @@ namespace JsonImportTests.Infrastructure.Persistence.Documents
         public Guid CustomerId { get; set; }
         public decimal TotalAmount { get; set; }
         public List<ItemDocument> Items { get; set; } = default!;
-        IReadOnlyList<IItemDocument> IinvoiceDocument.Items => Items;
+        IReadOnlyList<IItemDocument> IInvoiceDocument.Items => Items;
 
-        public invoice ToEntity(invoice? entity = default)
+        public Invoice ToEntity(Invoice? entity = default)
         {
-            entity ??= new invoice();
+            entity ??= new Invoice();
 
             entity.Id = Guid.Parse(Id);
             entity.CustomerId = CustomerId;
@@ -39,7 +39,7 @@ namespace JsonImportTests.Infrastructure.Persistence.Documents
             return entity;
         }
 
-        public invoiceDocument PopulateFromEntity(invoice entity, Func<string, string?> getEtag)
+        public InvoiceDocument PopulateFromEntity(Invoice entity, Func<string, string?> getEtag)
         {
             Id = entity.Id.ToString();
             CustomerId = entity.CustomerId;
@@ -51,14 +51,14 @@ namespace JsonImportTests.Infrastructure.Persistence.Documents
             return this;
         }
 
-        public static invoiceDocument? FromEntity(invoice? entity, Func<string, string?> getEtag)
+        public static InvoiceDocument? FromEntity(Invoice? entity, Func<string, string?> getEtag)
         {
             if (entity is null)
             {
                 return null;
             }
 
-            return new invoiceDocument().PopulateFromEntity(entity, getEtag);
+            return new InvoiceDocument().PopulateFromEntity(entity, getEtag);
         }
     }
 }

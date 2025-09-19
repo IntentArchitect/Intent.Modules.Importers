@@ -4,7 +4,7 @@ using Intent.RoslynWeaver.Attributes;
 
 namespace JsonImportTests.Domain.Entities
 {
-    public class invoice
+    public class Invoice
     {
         private Guid? _id;
 

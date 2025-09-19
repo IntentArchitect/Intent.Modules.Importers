@@ -8,11 +8,11 @@ using JsonImportTests.Domain.Repositories.Documents;
 namespace JsonImportTests.Domain.Repositories
 {
     [IntentManaged(Mode.Merge, Signature = Mode.Fully)]
-    public interface ICustomerRepository : ICosmosDBRepository<customer, IcustomerDocument>
+    public interface ICustomerRepository : ICosmosDBRepository<Customer, ICustomerDocument>
     {
         [IntentManaged(Mode.Fully)]
-        Task<customer?> FindByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<Customer?> FindByIdAsync(Guid id, CancellationToken cancellationToken = default);
         [IntentManaged(Mode.Fully)]
-        Task<List<customer>> FindByIdsAsync(Guid[] ids, CancellationToken cancellationToken = default);
+        Task<List<Customer>> FindByIdsAsync(Guid[] ids, CancellationToken cancellationToken = default);
     }
 }

@@ -14,17 +14,17 @@ using Microsoft.Extensions.Options;
 
 namespace JsonImportTests.Infrastructure.Repositories
 {
-    internal class invoiceCosmosDBRepository : CosmosDBRepositoryBase<invoice, invoiceDocument, IinvoiceDocument>, IInvoiceRepository
+    internal class InvoiceCosmosDBRepository : CosmosDBRepositoryBase<Invoice, InvoiceDocument, IInvoiceDocument>, IInvoiceRepository
     {
-        public invoiceCosmosDBRepository(CosmosDBUnitOfWork unitOfWork,
-            Microsoft.Azure.CosmosRepository.IRepository<invoiceDocument> cosmosRepository,
-            ICosmosContainerProvider<invoiceDocument> containerProvider,
+        public InvoiceCosmosDBRepository(CosmosDBUnitOfWork unitOfWork,
+            Microsoft.Azure.CosmosRepository.IRepository<InvoiceDocument> cosmosRepository,
+            ICosmosContainerProvider<InvoiceDocument> containerProvider,
             IOptionsMonitor<RepositoryOptions> optionsMonitor) : base(unitOfWork, cosmosRepository, "id", containerProvider, optionsMonitor)
         {
         }
 
-        public async Task<invoice?> FindByIdAsync(Guid id, CancellationToken cancellationToken = default) => await FindByIdAsync(id: id.ToString(), cancellationToken: cancellationToken);
+        public async Task<Invoice?> FindByIdAsync(Guid id, CancellationToken cancellationToken = default) => await FindByIdAsync(id: id.ToString(), cancellationToken: cancellationToken);
 
-        public async Task<List<invoice>> FindByIdsAsync(Guid[] ids, CancellationToken cancellationToken = default) => await FindByIdsAsync(ids.Select(id => id.ToString()).ToArray(), cancellationToken);
+        public async Task<List<Invoice>> FindByIdsAsync(Guid[] ids, CancellationToken cancellationToken = default) => await FindByIdsAsync(ids.Select(id => id.ToString()).ToArray(), cancellationToken);
     }
 }

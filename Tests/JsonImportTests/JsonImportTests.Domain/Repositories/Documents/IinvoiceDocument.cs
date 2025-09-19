@@ -5,7 +5,7 @@ using Intent.RoslynWeaver.Attributes;
 
 namespace JsonImportTests.Domain.Repositories.Documents
 {
-    public interface IinvoiceDocument
+    public interface IInvoiceDocument
     {
         string Id { get; }
         Guid CustomerId { get; }

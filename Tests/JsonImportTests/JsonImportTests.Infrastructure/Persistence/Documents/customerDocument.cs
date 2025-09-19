@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace JsonImportTests.Infrastructure.Persistence.Documents
 {
-    internal class customerDocument : IcustomerDocument, ICosmosDBDocument<customer, customerDocument>
+    internal class CustomerDocument : ICustomerDocument, ICosmosDBDocument<Customer, CustomerDocument>
     {
         [JsonProperty("_etag")]
         protected string? _etag;
@@ -25,11 +25,11 @@ namespace JsonImportTests.Infrastructure.Persistence.Documents
         public string Name { get; set; } = default!;
         public string Email { get; set; } = default!;
         public List<OrderDocument> Orders { get; set; } = default!;
-        IReadOnlyList<IOrderDocument> IcustomerDocument.Orders => Orders;
+        IReadOnlyList<IOrderDocument> ICustomerDocument.Orders => Orders;
 
-        public customer ToEntity(customer? entity = default)
+        public Customer ToEntity(Customer? entity = default)
         {
-            entity ??= new customer();
+            entity ??= new Customer();
 
             entity.Id = Guid.Parse(Id);
             entity.Name = Name ?? throw new Exception($"{nameof(entity.Name)} is null");
@@ -39,7 +39,7 @@ namespace JsonImportTests.Infrastructure.Persistence.Documents
             return entity;
         }
 
-        public customerDocument PopulateFromEntity(customer entity, Func<string, string?> getEtag)
+        public CustomerDocument PopulateFromEntity(Customer entity, Func<string, string?> getEtag)
         {
             Id = entity.Id.ToString();
             Name = entity.Name;
@@ -51,14 +51,14 @@ namespace JsonImportTests.Infrastructure.Persistence.Documents
             return this;
         }
 
-        public static customerDocument? FromEntity(customer? entity, Func<string, string?> getEtag)
+        public static CustomerDocument? FromEntity(Customer? entity, Func<string, string?> getEtag)
         {
             if (entity is null)
             {
                 return null;
             }
 
-            return new customerDocument().PopulateFromEntity(entity, getEtag);
+            return new CustomerDocument().PopulateFromEntity(entity, getEtag);
         }
     }
 }

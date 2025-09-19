@@ -4,11 +4,11 @@ using Intent.RoslynWeaver.Attributes;
 
 namespace JsonImportTests.Domain.Entities
 {
-    public class customer
+    public class Customer
     {
         private Guid? _id;
 
-        public customer()
+        public Customer()
         {
             Name = null!;
             Email = null!;
