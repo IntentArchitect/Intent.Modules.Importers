@@ -2,18 +2,18 @@
 
 public static class Builder
 {
-    public static ClassElementBuilder CreateClassBuilder(string externalReference, string name, BuilderMetadataManager builderMetadataManager)
-    {
-        var classBuilder = new ClassElementBuilder(externalReference, name, builderMetadataManager);
-        builderMetadataManager.AddElementForLookup(classBuilder.InternalElement);
-        return classBuilder;
-    }
+    //public static ClassElementBuilder CreateClassBuilder(ImportProfileConfig profile, string externalReference, string name, BuilderMetadataManager builderMetadataManager)
+    //{
+    //    var classBuilder = new ClassElementBuilder(profile, externalReference, name, builderMetadataManager);
+    //    builderMetadataManager.AddElementForLookup(classBuilder.InternalElement);
+    //    return classBuilder;
+    //}
 
-    public static AssociationBuilder CreateAssociationBuilder(BuilderMetadataManager builderMetadataManager)
-    {
-        var associationBuilder = new AssociationBuilder(builderMetadataManager);
-        return associationBuilder;
-    }
+    //public static AssociationBuilder CreateAssociationBuilder(BuilderMetadataManager builderMetadataManager)
+    //{
+    //    var associationBuilder = new AssociationBuilder(builderMetadataManager);
+    //    return associationBuilder;
+    //}
 
     //public static EnumElementBuilder CreateEnumBuilder(string externalReference, string name, BuilderMetadataManager builderMetadataManager)
     //{

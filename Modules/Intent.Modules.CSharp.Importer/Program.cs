@@ -25,12 +25,12 @@ class Program
 
         var solution = SolutionPersistable.Load(@"C:\Dev\Demos\Payflex\intent\Payflex.isln");
         var application = solution.GetApplication("e5ad233e-d1f8-4d03-8187-2a9f790053cd");
-        var targetParent = PackageModelPersistable.Load(@"C:\Dev\Demos\Payflex\intent\Payflex.Ordering\Intent.Metadata\Domain\Payflex.Ordering.Domain\Payflex.Ordering.Domain.pkg.config");
+        var targetPackage = application.GetDesigner("").GetPackage("");
 
         PersistableFactory.GetPersistables(new CSharpConfig()
         {
 
-        }, classDataElements, )
+        }, classDataElements, targetPackage);
 
         return 0;
     }

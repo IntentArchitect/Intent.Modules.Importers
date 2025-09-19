@@ -1,21 +1,39 @@
-﻿using Intent.Persistence;
+﻿using Intent.IArchitect.Agent.Persistence.Model;
+using Intent.Metadata.Models;
+using Intent.Persistence;
+using System.Collections.Generic;
+using System.Xml.Linq;
+using IElementPersistable = Intent.Persistence.IElementPersistable;
 
 namespace Intent.MetadataSynchronizer.CSharp.CLI.Builders;
 
 public class BuilderMetadataManager
 {
+    private readonly IPackageModelPersistable _package;
+    private readonly CSharpConfig _config;
     private readonly MetadataLookup _metadataLookup;
-    private readonly List<IElementPersistable> _elementsToAdd;
-    private readonly IReadOnlyCollection<IPackageModelPersistable> _packages;
+    private readonly List<IElementPersistable> _elementsToAdd = [];
+    private readonly List<IAssociationPersistable> _associationsToAdd = [];
+    //private readonly IReadOnlyCollection<IPackageModelPersistable> _packages;
 
-    public BuilderMetadataManager(MetadataLookup metadataLookup, List<IElementPersistable> elementsToAdd)
+    public BuilderMetadataManager(IPackageModelPersistable package, CSharpConfig config)
     {
-        _metadataLookup = metadataLookup;
-        _elementsToAdd = elementsToAdd;
+        _package = package;
+        _config = config;
+        _metadataLookup = new MetadataLookup(package);
     }
 
-    public void SetTypeReferenceTypeId(IElementPersistable targetElement, string type)
+    //public BuilderMetadataManager(MetadataLookup metadataLookup, List<IElementPersistable> elementsToAdd)
+    //{
+    //    _metadataLookup = metadataLookup;
+    //    _elementsToAdd = elementsToAdd;
+    //}
+
+    public void SetTypeReference(IElementPersistable targetElement, string type, bool isNullable, bool isCollection)
     {
+        targetElement.TypeReference.IsNullable = isNullable;
+        targetElement.TypeReference.IsCollection = isCollection;
+
         if (_metadataLookup.TryGetTypeDefinitionByName(type, 0, out var typeDefElement))
         {
             targetElement.TypeReference.TypeId = typeDefElement.Id;
@@ -97,11 +115,12 @@ public class BuilderMetadataManager
         //}
 
         // Couldn't find an appropriate type. Let's create a Type-Def:
-        var typeDefCustomElement = IElementPersistable.Create(
+        var typeDefCustomElement = _package.Classes.Add(
+            id: Guid.NewGuid().ToString().ToLower(),
             specializationType: TypeDefinitionModel.SpecializationType,
             specializationTypeId: TypeDefinitionModel.SpecializationTypeId,
             name: type,
-            parentId: null,
+            parentId: _package.Id,
             externalReference: type);
         _metadataLookup.AddElement(typeDefCustomElement);
         _elementsToAdd.Add(typeDefCustomElement);
@@ -110,7 +129,56 @@ public class BuilderMetadataManager
         targetElement.TypeReference.TypePackageId = typeDefCustomElement.PackageId;
         targetElement.TypeReference.TypePackageName = typeDefCustomElement.PackageName;
     }
-    
+
+
+    private static readonly char[] Separators = { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
+    public IReadOnlyList<IElementPersistable> GetFolderElements(string relativeFolderPath, string targetFolderId) => GetFolderElements(relativeFolderPath, _package.GetElementById(targetFolderId));
+    public IReadOnlyList<IElementPersistable> GetFolderElements(string relativeFolderPath, IElementPersistable targetFolder)
+    {
+        if (string.IsNullOrWhiteSpace(relativeFolderPath) || relativeFolderPath == ".")
+        {
+            return ArraySegment<IElementPersistable>.Empty;
+        }
+
+        var folders = new List<IElementPersistable>();
+        var parentFolder = targetFolder;
+        var parts = relativeFolderPath.Split(Separators, StringSplitOptions.RemoveEmptyEntries);
+        for (var partIndex = 0; partIndex < parts.Length; partIndex++)
+        {
+            var curPart = parts[partIndex];
+            if (curPart == ".")
+            {
+                continue;
+            }
+
+            var pathToHere = string.Join("-", parts.Take(partIndex + 1));
+            var externalReference = $"Folder-{pathToHere}";
+
+            if (!_metadataLookup.TryGetElementByReference(externalReference, out var folderElement))
+            {
+                folderElement = parentFolder.ChildElements.Add(
+                    id: Guid.NewGuid().ToString().ToLower(),
+                    specializationType: FolderModel.SpecializationType,
+                    specializationTypeId: FolderModel.SpecializationTypeId,
+                    name: curPart,
+                    parentId: parentFolder.Id,
+                    externalReference: externalReference);
+                //folderElement = IElementPersistable.Create(
+                //    specializationType: FolderModel.SpecializationType,
+                //    specializationTypeId: FolderModel.SpecializationTypeId,
+                //    name: curPart,
+                //    parentId: parentFolderId,
+                //    externalReference: externalReference);
+            }
+
+            parentFolder = folderElement;
+
+            folders.Add(folderElement);
+        }
+
+        return folders;
+    }
+
     public string? GetClassTypeId(string classReference)
     {
         return !_metadataLookup.TryGetElementByReference(classReference, out var domainElement) 
@@ -125,7 +193,7 @@ public class BuilderMetadataManager
             : domainElement.Name;
     }
     
-    public IElementPersistable? GetElementByReference(string externalReference, string typeId)
+    public IElementPersistable? GetElementByReference(string externalReference)
     {
         return !_metadataLookup.TryGetElementByReference(externalReference, out var element)
             ? null
@@ -136,4 +204,89 @@ public class BuilderMetadataManager
     {
         _metadataLookup.AddElementsIfMissing([element]);
     }
+
+    public bool HasExistingAssociation(IAssociationPersistable association)
+    {
+        return _metadataLookup.HasExistingAssociation(association);
+    }
+
+    public bool TryGetElementById(string typeReferenceTypeId, out IElementPersistable element)
+    {
+        return _metadataLookup.TryGetElementById(typeReferenceTypeId, out element);
+    }
+
+    public IElementPersistable CreateElement(ClassData classData)
+    {
+        var externalReference = $"{classData.Namespace}.{classData.Name}";
+        if (string.IsNullOrWhiteSpace(externalReference))
+        {
+            throw new ArgumentNullException(nameof(externalReference));
+        }
+
+        if (string.IsNullOrWhiteSpace(classData.Name))
+        {
+            ArgumentException.ThrowIfNullOrEmpty(nameof(classData.Name));
+        }
+
+
+        var folders = GetFolderElements(
+            relativeFolderPath: GetRelativeLocation(classData.FilePath, _config.TargetFolder!),
+            targetFolderId: _config.TargetFolderId);
+
+        var settings = _package.GetDesigner().GetElementSettings(_config.ImportProfile.ClassToSpecializationTypeId);
+
+        var element = _package.Classes.Add(
+            id: Guid.NewGuid().ToString().ToLower(),
+            specializationType: settings.SpecializationType,
+            specializationTypeId: settings.SpecializationTypeId,
+            name: classData.Name,
+            parentId: folders.LastOrDefault()?.Id ?? _package.Id,
+            externalReference: externalReference);
+        _elementsToAdd.Add(element);
+        return element;
+    }
+
+    private static string GetRelativeLocation(string? curFilePath, string targetFolder)
+    {
+        var curClassDir = Path.GetDirectoryName(curFilePath);
+        if (string.IsNullOrWhiteSpace(curClassDir))
+        {
+            curClassDir = ".";
+        }
+
+        var newPath = Path.GetRelativePath(targetFolder, curClassDir);
+        newPath = newPath.TrimStart('.', '\\', '/');
+        return newPath;
+    }
+
+    public bool TryCreateAssociation(string sourceElementId, out IAssociationPersistable association)
+    {
+        association = null;
+        var settings = _package.GetDesigner().GetAssociationSettings(_config.ImportProfile.AssociationSpecializationTypeId);
+        if (settings == null)
+        {
+            return false;
+        }
+
+        association = _package.Associations.Add(settings, sourceElementId);
+        _associationsToAdd.Add(association);
+        return true;
+    }
+
+    public Persistables GetPersistables()
+    {
+        return new Persistables(_elementsToAdd, _associationsToAdd);
+    }
+}
+
+public class FolderModel
+{
+    public const string SpecializationTypeId = "4d95d53a-8855-4f35-aa82-e312643f5c5f";
+    public const string SpecializationType = "Folder";
+}
+
+public class TypeDefinitionModel
+{
+    public const string SpecializationTypeId = "d4e577cd-ad05-4180-9a2e-fff4ddea0e1e";
+    public const string SpecializationType = "Type-Definition";
 }

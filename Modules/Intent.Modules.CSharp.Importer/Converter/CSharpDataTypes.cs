@@ -1,13 +1,13 @@
 ﻿namespace Intent.MetadataSynchronizer.CSharp.CLI;
 
-class CoreTypesData
+public class CoreTypesData
 {
     // These are populated based on folder settings supplied by the CSharpConfig Folder properties.
     public IList<ClassData> Classes { get; } = new List<ClassData>();
     public IList<EnumData> Enums { get; } = new List<EnumData>();
 }
 
-record ClassData
+public record ClassData
 {
     public string? FilePath { get; init; }
     public string Namespace { get; init; }
@@ -20,7 +20,7 @@ record ClassData
     public IReadOnlyList<MethodData> Methods { get; init; }
 }
 
-record EnumData
+public record EnumData
 {
     public string? FilePath { get; init; }
     public string Namespace { get; init; }
@@ -28,18 +28,18 @@ record EnumData
     public IReadOnlyList<EnumLiteralData> Literals { get; init; }
 }
 
-record EnumLiteralData
+public record EnumLiteralData
 {
     public string Name { get; init; }
     public string? Value { get; init; }
 }
 
-record ConstructorData
+public record ConstructorData
 {
     public IReadOnlyList<ParameterData> Parameters { get; init; }
 }
 
-record PropertyData
+public record PropertyData
 {
     public string Name { get; init; }
     public string? Type { get; init; }
@@ -48,7 +48,7 @@ record PropertyData
     public List<string> Attributes { get; init; } = [];
 }
 
-record MethodData
+public record MethodData
 {
     public string Name { get; init; }
     public string? ReturnType { get; init; }
@@ -59,7 +59,7 @@ record MethodData
     public IReadOnlyList<string> GenericParameters { get; init; }
 }
 
-record ParameterData
+public record ParameterData
 {
     public string Name { get; init; }
     public string? Type { get; init; }
