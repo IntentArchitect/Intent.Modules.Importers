@@ -6,8 +6,6 @@ using Intent.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Intent.Modules.CSharp.Importer.Tasks.Model;
-using static Intent.MetadataSynchronizer.CSharp.CLI.Program;
 using IElementPersistable = Intent.Persistence.IElementPersistable;
 using IInstalledModule = Intent.Persistence.IInstalledModule;
 

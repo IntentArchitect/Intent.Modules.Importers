@@ -12,17 +12,21 @@ using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.MetadataSynchronizer.Configuration;
 using Intent.Modules.Common;
 using Intent.Modules.Common.Templates;
-using Intent.Modules.CSharp.Importer.Tasks.Model;
+using Intent.Modules.CSharp.Importer.Importer;
+using Intent.Modules.CSharp.Importer.Tasks;
 using Intent.Persistence;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI;
+namespace Intent.MetadataSynchronizer.CSharp.Importer;
 
 class Program
 {
+    /// <summary>
+    /// This is purely for testing purposes
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
     static async Task<int> Main(string[] args)
     {
-        const bool createAttributesWithUnknownTypes = true;
-        const StereotypeManagementMode stereotypeManagementMode = StereotypeManagementMode.Merge;
         var folder = @"C:\Dev\Clients\Payflex\Payflex.Backend\Customer.Domain\Models\Events\CustomerEvents\";
         folder = @"C:\Dev\Demos\Payflex\Payflex.Ordering\Payflex.Ordering.Domain\Entities";
         var classDataElements = await CSharpCodeAnalyzer.ImportMetadataFromFolder(folder);
@@ -38,12 +42,12 @@ class Program
                 //MapClassesTo = designer.GetElementSettings("04e12b51-ed12-42a3-9667-a6aa81bb6d10"),
                 //MapPropertiesTo = designer.GetElementSettings("0090fb93-483e-41af-a11d-5ad2dc796adf"),
                 //MapAssociationsTo = designer.GetAssociationSettings("0a66489f-30aa-417b-a75d-b945863366fd"),
-                MapClassesTo = new ElementSetting("04e12b51-ed12-42a3-9667-a6aa81bb6d10", "Class"),
-                MapPropertiesTo = new ElementSetting("0090fb93-483e-41af-a11d-5ad2dc796adf", "Attribute"),
-                MapAssociationsTo = new AssociationSetting(specializationTypeId: "0a66489f-30aa-417b-a75d-b945863366fd",
+                MapClassesTo = new ElementSettings("04e12b51-ed12-42a3-9667-a6aa81bb6d10", "Class"),
+                MapPropertiesTo = new ElementSettings("0090fb93-483e-41af-a11d-5ad2dc796adf", "Attribute"),
+                MapAssociationsTo = new AssociationSettings(specializationTypeId: "0a66489f-30aa-417b-a75d-b945863366fd",
                     specializationType: "Association",
-                    sourceEnd: new AssociationEndSetting("8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58", "Association Source End"),
-                    targetEnd: new AssociationEndSetting("eaf9ed4e-0b61-4ac1-ba88-09f912c12087", "Association Target End")),
+                    sourceEnd: new AssociationEndSettings("8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58", "Association Source End"),
+                    targetEnd: new AssociationEndSettings("eaf9ed4e-0b61-4ac1-ba88-09f912c12087", "Association Target End")),
             },
             TargetFolder = folder,
             TargetFolderId = "0d92287d-b96d-46fb-8e3f-741bf3a75d3f"

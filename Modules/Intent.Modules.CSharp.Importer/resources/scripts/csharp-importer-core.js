@@ -21,18 +21,9 @@ async function importJson(element) {
     if (inputs === null) {
         return; // User cancelled
     }
-    // Validate inputs
-    if (!inputs.sourceFolder) {
-        await dialogService.error("Please specify a source folder.");
-        return;
-    }
     // Get selected files from the tree view
     const selectedFiles = [];
     selectedFiles.push(...inputs.selectionTree);
-    if (!selectedFiles.length) {
-        await dialogService.warn("No C# File files selected to import.");
-        return;
-    }
     const importConfig = {
         sourceFolder: inputs.sourceFolder,
         designerId: element.getPackage().designerId,
@@ -44,7 +35,6 @@ async function importJson(element) {
     };
     // Execute import task with structured result handling
     const executionResult = await executeImporterModuleTask("Intent.CSharp.Importer.ImportCSharpFilesTask", importConfig);
-    console.log(`executionResult = ${JSON.stringify(executionResult)}`);
     if (((_a = executionResult.errors) !== null && _a !== void 0 ? _a : []).length > 0) {
         await dialogService.error(executionResult.errors.join("\r\n"));
         return;
@@ -54,7 +44,6 @@ async function importJson(element) {
         await dialogService.warn("Import complete.\r\n\r\n" + warnings.join("\r\n"));
         return;
     }
-    await dialogService.info("Import complete.");
 }
 async function getCharpFilesAndPreview(folderPath, glob) {
     var _a;
@@ -133,26 +122,19 @@ function getAvailableProfiles(packageModel) {
 function createFileSelectionPage() {
     return {
         onInitialize: async (formApi) => {
-            try {
-                const sourceFolder = formApi.getField("sourceFolder").value;
-                if (!sourceFolder) {
-                    await dialogService.error("No source folder selected.");
-                    return;
-                }
-                const pattern = formApi.getField("pattern").value;
-                const previewData = await getCharpFilesAndPreview(sourceFolder, pattern);
-                if (previewData.files.length === 0) {
-                    await dialogService.warn("No C# files found in the selected folder.");
-                    return;
-                }
-                // Populate the tree with found files (now supports folders)
-                const selectionTree = formApi.getField("selectionTree");
-                selectionTree.treeViewOptions.rootNode = buildTree(previewData.rootName, previewData.files);
+            const sourceFolder = formApi.getField("sourceFolder").value;
+            if (!sourceFolder) {
+                await dialogService.error("No source folder selected.");
+                return;
             }
-            catch (error) {
-                console.error("Error scanning folder:", error);
-                await dialogService.error(`Error scanning folder: ${error}`);
+            const pattern = formApi.getField("pattern").value;
+            const previewData = await getCharpFilesAndPreview(sourceFolder, pattern);
+            if (previewData.files.length === 0) {
+                throw new Error("No C# files found in the selected folder. Please choose another folder.");
             }
+            // Populate the tree with found files (now supports folders)
+            const selectionTree = formApi.getField("selectionTree");
+            selectionTree.treeViewOptions.rootNode = buildTree(previewData.rootName, previewData.files);
         },
         fields: [
             {
@@ -162,7 +144,7 @@ function createFileSelectionPage() {
                 hint: "Choose which C# files you want to import into your domain model.",
                 isRequired: false,
                 treeViewOptions: {
-                    height: "400px",
+                    height: "500px",
                     width: "100%",
                     isMultiSelect: true,
                     selectableTypes: [

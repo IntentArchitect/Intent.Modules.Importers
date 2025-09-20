@@ -1,7 +1,7 @@
 ﻿using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.Modules.Common.Types.Api;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI.Builders;
+namespace Intent.MetadataSynchronizer.CSharp.Importer.Builders;
 
 public class EnumElementBuilder : ElementBuilderBase
 {

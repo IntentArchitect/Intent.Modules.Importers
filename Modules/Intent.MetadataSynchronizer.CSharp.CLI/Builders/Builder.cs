@@ -1,4 +1,4 @@
-﻿namespace Intent.MetadataSynchronizer.CSharp.CLI.Builders;
+﻿namespace Intent.MetadataSynchronizer.CSharp.Importer.Builders;
 
 public static class Builder
 {

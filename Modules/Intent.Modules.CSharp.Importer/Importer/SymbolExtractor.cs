@@ -1,8 +1,9 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using Intent.MetadataSynchronizer.CSharp.Importer;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI;
+namespace Intent.Modules.CSharp.Importer.Importer;
 
 internal static class SymbolExtractor
 {

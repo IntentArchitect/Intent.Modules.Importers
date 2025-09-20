@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Intent.IArchitect.Agent.Persistence.Model;
 using IElementPersistable = Intent.Persistence.IElementPersistable;
+using Intent.MetadataSynchronizer;
+using Intent.MetadataSynchronizer.CSharp.Importer;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI.Builders;
+namespace Intent.Modules.CSharp.Importer.Importer;
 
 public class BuilderMetadataManager
 {
@@ -64,12 +66,7 @@ public class BuilderMetadataManager
                     name: curPart,
                     parentId: parentFolder.Id,
                     externalReference: externalReference);
-                //folderElement = IElementPersistable.Create(
-                //    specializationType: FolderModel.SpecializationType,
-                //    specializationTypeId: FolderModel.SpecializationTypeId,
-                //    name: curPart,
-                //    parentId: parentFolderId,
-                //    externalReference: externalReference);
+                _metadataLookup.AddElement(folderElement);
             }
 
             parentFolder = folderElement;

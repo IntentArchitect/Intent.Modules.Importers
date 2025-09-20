@@ -1,9 +1,10 @@
-﻿using Intent.Modules.Common;
+﻿using Intent.MetadataSynchronizer.CSharp.Importer;
+using Intent.Modules.Common;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI;
+namespace Intent.Modules.CSharp.Importer.Importer;
 
 internal static class CSharpCodeAnalyzer
 {

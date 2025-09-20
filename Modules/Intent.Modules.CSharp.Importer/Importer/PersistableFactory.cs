@@ -1,9 +1,8 @@
-﻿using Intent.MetadataSynchronizer.CSharp.CLI.Builders;
-using Intent.Modules.Common.Templates;
+﻿using Intent.MetadataSynchronizer;
 using Intent.Persistence;
 using IElementPersistable = Intent.Persistence.IElementPersistable;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI;
+namespace Intent.Modules.CSharp.Importer.Importer;
 
 
 internal static class PersistableFactory
@@ -136,7 +135,8 @@ internal static class PersistableFactory
                 {
                     break;
                 }
-                var existingAttribute = element.ChildElements.SingleOrDefault(x => x.ExternalReference == $"{classData.GetIdentifier()}+{prop.GetIdentifier()}");
+                var existingAttribute = element.ChildElements.SingleOrDefault(x => x.ExternalReference == $"{classData.GetIdentifier()}+{prop.GetIdentifier()}")
+                    ?? element.ChildElements.SingleOrDefault(x => x.Name == classData.Name);
                 var attribute = existingAttribute ?? element.ChildElements.Add(
                     id: Guid.NewGuid().ToString().ToLower(),
                     specializationType: profile.MapPropertiesTo.SpecializationType,

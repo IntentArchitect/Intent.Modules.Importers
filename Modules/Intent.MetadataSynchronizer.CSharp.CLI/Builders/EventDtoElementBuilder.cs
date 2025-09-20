@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI.Builders;
+namespace Intent.MetadataSynchronizer.CSharp.Importer.Builders;
 public class EventDtoElementBuilder : ElementBuilderBase
 {
     private readonly BuilderMetadataManager _builderMetadataManager;

@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace Intent.MetadataSynchronizer.CSharp.CLI;
+﻿namespace Intent.Modules.CSharp.Importer.Importer;
 
 public class CoreTypesData
 {

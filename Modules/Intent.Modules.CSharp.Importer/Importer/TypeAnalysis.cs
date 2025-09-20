@@ -1,8 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI;
+namespace Intent.Modules.CSharp.Importer.Importer;
 
 public static class TypeAnalysis
 {

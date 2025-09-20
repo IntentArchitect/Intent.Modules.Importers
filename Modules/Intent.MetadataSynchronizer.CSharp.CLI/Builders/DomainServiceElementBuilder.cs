@@ -1,7 +1,7 @@
 ﻿using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.Modelers.Domain.Services.Api;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI.Builders;
+namespace Intent.MetadataSynchronizer.CSharp.Importer.Builders;
 
 public class DomainServiceElementBuilder : ElementBuilderBase
 {

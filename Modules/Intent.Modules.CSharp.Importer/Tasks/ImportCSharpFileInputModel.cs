@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Intent.Modules.CSharp.Importer.Tasks.Model;
+namespace Intent.Modules.CSharp.Importer.Tasks;
 public class ImportCSharpFileInputModel
 {
     public string SourceFolder { get; set; }
@@ -16,13 +16,13 @@ public class ImportCSharpFileInputModel
     public string? TargetFolderId { get; set; }
 }
 
-class ElementSetting(string specializationTypeId, string specializationType) : IElementSettings
+class ElementSettings(string specializationTypeId, string specializationType) : IElementSettings
 {
     public string SpecializationTypeId { get; } = specializationTypeId;
     public string SpecializationType { get; } = specializationType;
 }
 
-class AssociationSetting(string specializationTypeId, string specializationType, IAssociationEndSetting sourceEnd, IAssociationEndSetting targetEnd) : IAssociationSettings
+class AssociationSettings(string specializationTypeId, string specializationType, IAssociationEndSetting sourceEnd, IAssociationEndSetting targetEnd) : IAssociationSettings
 {
     public string SpecializationTypeId { get; } = specializationTypeId;
     public string SpecializationType { get; } = specializationType;
@@ -30,7 +30,7 @@ class AssociationSetting(string specializationTypeId, string specializationType,
     public IAssociationEndSetting TargetEnd { get; } = targetEnd;
 }
 
-class AssociationEndSetting(string specializationTypeId, string specializationType) : IAssociationEndSetting
+class AssociationEndSettings(string specializationTypeId, string specializationType) : IAssociationEndSetting
 {
     public string SpecializationTypeId { get; } = specializationTypeId;
     public string SpecializationType { get; } = specializationType;
