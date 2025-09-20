@@ -28,7 +28,7 @@ public class JsonImport : ModuleTaskBase<JsonImportInputModel>
     {
         if (string.IsNullOrWhiteSpace(inputModel.SourceFolder))
             return ValidationResult.ErrorResult("Source folder is required.");
-        
+
         if (!Directory.Exists(inputModel.SourceFolder))
             return ValidationResult.ErrorResult($"Source folder does not exist: {inputModel.SourceFolder}");
 
@@ -55,55 +55,44 @@ public class JsonImport : ModuleTaskBase<JsonImportInputModel>
     {
         var executionResult = new ExecuteResult();
 
-        try
+        // Get .isln file path
+        var islnFile = Directory.GetFiles(_configurationProvider.GetSolutionConfig().SolutionRootLocation, "*.isln").First();
+
+        // Get application config
+        var application = _configurationProvider.GetApplicationConfig();
+
+        // Build JsonConfig from UI input
+        var config = new JsonConfig
         {
-            // Get .isln file path
-            var islnFile = Directory.GetFiles(_configurationProvider.GetSolutionConfig().SolutionRootLocation, "*.isln").First();
-            
-            // Get application config
-            var application = _configurationProvider.GetApplicationConfig();
+            SourceJsonFolder = inputModel.SourceFolder,
+            IslnFile = islnFile,
+            ApplicationName = application.Name,
+            PackageId = inputModel.PackageId,
+            TargetFolderId = inputModel.TargetFolderId,
+            CasingConvention = inputModel.CasingConvention,
+            Profile = inputModel.Profile
+        };
 
-            // Build JsonConfig from UI input
-            var config = new JsonConfig
-            {
-                SourceJsonFolder = inputModel.SourceFolder,
-                IslnFile = islnFile,
-                ApplicationName = application.Name,
-                PackageId = inputModel.PackageId,
-                TargetFolderId = inputModel.TargetFolderId,
-                CasingConvention = inputModel.CasingConvention,
-                Profile = inputModel.Profile
-            };
+        // Resolve settings from profile (same as CLI does)
+        var settings = ProfileFactory.GetSettings(config.Profile);
 
-            // Resolve settings from profile (same as CLI does)
-            var settings = ProfileFactory.GetSettings(config.Profile);
+        Logging.Log.Info($"Starting JSON import from {config.SourceJsonFolder} into package {config.PackageId}");
 
-            Logging.Log.Info($"Starting JSON import from {config.SourceJsonFolder} into package {config.PackageId}");
-
-            // Invoke the core synchronizer logic directly (no process spawn)
-            Intent.MetadataSynchronizer.Helpers.Execute(
-                intentSolutionPath: config.IslnFile,
-                applicationName: config.ApplicationName,
-                designerName: settings.DesignerName,
-                packageId: config.PackageId,
-                targetFolderId: config.TargetFolderId,
-                deleteExtra: false, // Default; can add UI toggle later
-                debug: false,
-                createAttributesWithUnknownTypes: true,
-                stereotypeManagementMode: StereotypeManagementMode.Merge,
-                additionalPreconditionChecks: null,
-                getPersistables: packages => inputModel.SelectedFiles.Count > 0 
-                    ? JsonPersistableFactory.GetPersistables(config, packages, inputModel.SelectedFiles)
-                    : JsonPersistableFactory.GetPersistables(config, packages));
-            
-            Logging.Log.Info("JSON import completed successfully");
-        }
-        catch (Exception ex)
-        {
-            var errorMessage = $"JSON import failed: {ex.Message}";
-            Logging.Log.Failure(ex);
-            executionResult.Errors.Add(errorMessage);
-        }
+        // Invoke the core synchronizer logic directly (no process spawn)
+        Intent.MetadataSynchronizer.Helpers.Execute(
+            intentSolutionPath: config.IslnFile,
+            applicationName: config.ApplicationName,
+            designerName: settings.DesignerName,
+            packageId: config.PackageId,
+            targetFolderId: config.TargetFolderId,
+            deleteExtra: false, // Default; can add UI toggle later
+            debug: false,
+            createAttributesWithUnknownTypes: true,
+            stereotypeManagementMode: StereotypeManagementMode.Merge,
+            additionalPreconditionChecks: null,
+            getPersistables: packages => inputModel.SelectedFiles.Count > 0
+                ? JsonPersistableFactory.GetPersistables(config, packages, inputModel.SelectedFiles)
+                : JsonPersistableFactory.GetPersistables(config, packages));
 
         return executionResult;
     }
