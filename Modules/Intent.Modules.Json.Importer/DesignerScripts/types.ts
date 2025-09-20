@@ -28,3 +28,9 @@ interface IJsonPreviewResult {
     rootName: string;
     files: IFileData[];
 }
+
+interface IExecutionResult {
+    result?: any;
+    warnings: string[];
+    errors: string[];
+}

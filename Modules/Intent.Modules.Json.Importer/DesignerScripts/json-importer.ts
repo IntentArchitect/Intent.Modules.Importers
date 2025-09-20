@@ -1,12 +1,5 @@
 /// <reference path="../../TypescriptCore/elementmacro.context.api.d.ts" />
 
-// Align with RDBMS importer UI task/error handling
-interface IExecutionResult {
-    result?: any;
-    warnings: string[];
-    errors: string[];
-}
-
 async function executeImporterModuleTask(taskTypeId: string, input: any): Promise<IExecutionResult> {
     const payload = JSON.stringify(input);
     console.log(`Executing Module Task ${taskTypeId} => ${payload}`);
@@ -18,7 +11,7 @@ async function executeImporterModuleTask(taskTypeId: string, input: any): Promis
 async function importJson(element: MacroApi.Context.IElementApi): Promise<void> {
     // Page 1: Folder Selection
     const folderSelectionPage = createFolderSelectionPage(element);
-    
+
     // Page 2: File Selection
     const fileSelectionPage = createFileSelectionPage();
 
@@ -36,8 +29,7 @@ async function importJson(element: MacroApi.Context.IElementApi): Promise<void> 
 
     // Validate inputs
     if (!inputs.sourceFolder) {
-        await dialogService.error("Please specify a source folder.");
-        return;
+        throw new Error("Please specify a source folder.");
     }
 
     // Get selected files from the tree view
@@ -45,10 +37,9 @@ async function importJson(element: MacroApi.Context.IElementApi): Promise<void> 
     selectedFiles.push(...inputs.selectionTree);
 
     if (!selectedFiles.length) {
-        await dialogService.warn("No JSON files selected to import.");
-        return;
+        throw new Error("Please select at least one JSON file to import.");
     }
-    
+
     const importConfig: IImportConfig = {
         sourceFolder: inputs.sourceFolder,
         packageId: element.getPackage().id,
@@ -67,8 +58,7 @@ async function importJson(element: MacroApi.Context.IElementApi): Promise<void> 
     console.log(`executionResult = ${JSON.stringify(executionResult)}`);
 
     if ((executionResult.errors ?? []).length > 0) {
-        await dialogService.error(executionResult.errors.join("\r\n"));
-        return;
+        throw new Error(executionResult.errors.join("\r\n"));
     }
 
     const warnings = executionResult.warnings ?? [];
@@ -99,7 +89,7 @@ function createFolderSelectionPage(element: MacroApi.Context.IElementApi): Macro
     // Determine available profiles based on the designer
     const packageModel = element.getPackage();
     const profileOptions = getAvailableProfiles(packageModel);
-    
+
     return {
         fields: [
             {
@@ -150,7 +140,7 @@ function createFolderSelectionPage(element: MacroApi.Context.IElementApi): Macro
 
 function getAvailableProfiles(packageModel: MacroApi.Context.IPackageApi): IProfileOption[] {
     const profiles: IProfileOption[] = [];
-    
+
     if (packageModel.specialization == "Domain Package") {
         profiles.push({ id: "DomainDocumentDB", description: "Domain Document DB Profile" });
     }
@@ -158,36 +148,28 @@ function getAvailableProfiles(packageModel: MacroApi.Context.IPackageApi): IProf
     if (packageModel.specialization == "Eventing Package") {
         profiles.push({ id: "EventingMessages", description: "Eventing Messages Profile" });
     }
-    
+
     return profiles;
 }
 
 function createFileSelectionPage(): MacroApi.Context.IDynamicFormWizardPageConfig {
     return {
         onInitialize: async (formApi: MacroApi.Context.IDynamicFormApi) => {
-            try {
-                const sourceFolder = formApi.getField("sourceFolder").value as string;
-                if (!sourceFolder) {
-                    await dialogService.error("No source folder selected.");
-                    return;
-                }
-
-                const pattern = formApi.getField("pattern").value as string;
-                const previewData = await getJsonFilesAndPreview(sourceFolder, pattern);
-
-                if (previewData.files.length === 0) {
-                    await dialogService.warn("No JSON files found in the selected folder.");
-                    return;
-                }
-
-                // Populate the tree with found files (now supports folders)
-                const selectionTree = formApi.getField("selectionTree");
-                selectionTree.treeViewOptions!.rootNode = buildTree(previewData.rootName, previewData.files);
-
-            } catch (error) {
-                console.error("Error scanning folder:", error);
-                await dialogService.error(`Error scanning folder: ${error}`);
+            const sourceFolder = formApi.getField("sourceFolder").value as string;
+            if (!sourceFolder) {
+                throw new Error("No source folder selected.");
             }
+
+            const pattern = formApi.getField("pattern").value as string;
+            const previewData = await getJsonFilesAndPreview(sourceFolder, pattern);
+
+            if (previewData.files.length === 0) {
+                throw new Error("No JSON files found in the selected folder.");
+            }
+
+            // Populate the tree with found files (now supports folders)
+            const selectionTree = formApi.getField("selectionTree");
+            selectionTree.treeViewOptions!.rootNode = buildTree(previewData.rootName, previewData.files);
         },
         fields: [
             {
@@ -201,15 +183,15 @@ function createFileSelectionPage(): MacroApi.Context.IDynamicFormWizardPageConfi
                     width: "100%",
                     isMultiSelect: true,
                     selectableTypes: [
-                        { 
-                            specializationId: "json-folder", 
+                        {
+                            specializationId: "json-folder",
                             isSelectable: true,
                             autoSelectChildren: true,
                             autoExpand: true,
                         },
-                        { 
-                            specializationId: "json-file", 
-                            isSelectable: true 
+                        {
+                            specializationId: "json-file",
+                            isSelectable: true
                         },
                     ],
                     rootNode: {
@@ -230,7 +212,7 @@ function createFileSelectionPage(): MacroApi.Context.IDynamicFormWizardPageConfi
     };
 }
 
-function buildTree(rootName: string, files: IFileData[]) : MacroApi.Context.ISelectableTreeNode {
+function buildTree(rootName: string, files: IFileData[]): MacroApi.Context.ISelectableTreeNode {
     const root: MacroApi.Context.ISelectableTreeNode = {
         specializationId: "json-folder",
         id: "root",

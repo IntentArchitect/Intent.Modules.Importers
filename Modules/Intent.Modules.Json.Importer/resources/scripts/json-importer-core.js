@@ -28,15 +28,13 @@ async function importJson(element) {
     }
     // Validate inputs
     if (!inputs.sourceFolder) {
-        await dialogService.error("Please specify a source folder.");
-        return;
+        throw new Error("Please specify a source folder.");
     }
     // Get selected files from the tree view
     const selectedFiles = [];
     selectedFiles.push(...inputs.selectionTree);
     if (!selectedFiles.length) {
-        await dialogService.warn("No JSON files selected to import.");
-        return;
+        throw new Error("Please select at least one JSON file to import.");
     }
     const importConfig = {
         sourceFolder: inputs.sourceFolder,
@@ -50,8 +48,7 @@ async function importJson(element) {
     const executionResult = await executeImporterModuleTask("Intent.Modules.Json.Importer.Tasks.JsonImport", importConfig);
     console.log(`executionResult = ${JSON.stringify(executionResult)}`);
     if (((_a = executionResult.errors) !== null && _a !== void 0 ? _a : []).length > 0) {
-        await dialogService.error(executionResult.errors.join("\r\n"));
-        return;
+        throw new Error(executionResult.errors.join("\r\n"));
     }
     const warnings = (_b = executionResult.warnings) !== null && _b !== void 0 ? _b : [];
     if (warnings.length > 0) {
@@ -137,26 +134,18 @@ function getAvailableProfiles(packageModel) {
 function createFileSelectionPage() {
     return {
         onInitialize: async (formApi) => {
-            try {
-                const sourceFolder = formApi.getField("sourceFolder").value;
-                if (!sourceFolder) {
-                    await dialogService.error("No source folder selected.");
-                    return;
-                }
-                const pattern = formApi.getField("pattern").value;
-                const previewData = await getJsonFilesAndPreview(sourceFolder, pattern);
-                if (previewData.files.length === 0) {
-                    await dialogService.warn("No JSON files found in the selected folder.");
-                    return;
-                }
-                // Populate the tree with found files (now supports folders)
-                const selectionTree = formApi.getField("selectionTree");
-                selectionTree.treeViewOptions.rootNode = buildTree(previewData.rootName, previewData.files);
+            const sourceFolder = formApi.getField("sourceFolder").value;
+            if (!sourceFolder) {
+                throw new Error("No source folder selected.");
             }
-            catch (error) {
-                console.error("Error scanning folder:", error);
-                await dialogService.error(`Error scanning folder: ${error}`);
+            const pattern = formApi.getField("pattern").value;
+            const previewData = await getJsonFilesAndPreview(sourceFolder, pattern);
+            if (previewData.files.length === 0) {
+                throw new Error("No JSON files found in the selected folder.");
             }
+            // Populate the tree with found files (now supports folders)
+            const selectionTree = formApi.getField("selectionTree");
+            selectionTree.treeViewOptions.rootNode = buildTree(previewData.rootName, previewData.files);
         },
         fields: [
             {
