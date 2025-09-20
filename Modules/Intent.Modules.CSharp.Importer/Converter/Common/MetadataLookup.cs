@@ -6,8 +6,10 @@ using Intent.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Intent.Modules.CSharp.Importer.Tasks.Model;
 using static Intent.MetadataSynchronizer.CSharp.CLI.Program;
 using IElementPersistable = Intent.Persistence.IElementPersistable;
+using IInstalledModule = Intent.Persistence.IInstalledModule;
 
 namespace Intent.MetadataSynchronizer;
 
@@ -21,61 +23,44 @@ public class MetadataLookup
     /// <remarks>Contains each association twice, so that can be found by key either way.</remarks>
     private readonly Dictionary<string, IAssociationPersistable> _associationsByReference = new();
     private readonly Dictionary<string, HashSet<IAssociationPersistable>> _associationsByTypeId = new();
-    //private IApplicationDesignerPersistable _designer;
-
-    //public MetadataLookup(IApplicationDesignerPersistable designer, string packageId)
-    //{
-    //    _designer = designer;
-    //    Package = _designer.GetPackage(packageId);
-    //    var references = Package.References.Select(x => x.TryGetPackage(designer.Application.Id, out var reference) ? reference : null)
-    //        .Where(x => x != null)
-    //        .ToList();
-
-    //    var packages = new[] { Package }.Concat(references).ToList();
-    //    Index(packages.SelectMany(x => x.GetAllElements()), packages.SelectMany(x => x.Associations));
-    //}
 
     public MetadataLookup(IPackageModelPersistable package)
     {
         Package = package;
-        //var references = Package.References.Select(x => x.TryGetPackage(package.ApplicationId, out var reference) ? reference : null)
-        //    .Where(x => x != null)
-        //    .ToList();
-        var references = GetReferencedPackages(package);
-
+        var references = package.GetReferencedPackages();
         var packages = new[] { Package }.Concat(references).ToList();
         Index(packages.SelectMany(x => x.GetAllElements()), packages.SelectMany(x => x.Associations));
     }
 
-    private static IEnumerable<PackageModelPersistable> GetReferencedPackages(IPackageModelPersistable package)
-    {
-        InstalledModules installedModules = null;
-        return package.References
-            .Select(reference =>
-            {
-                var solution = SolutionContext.Current;
+    //private static IEnumerable<PackageModelPersistable> GetReferencedPackages(IPackageModelPersistable package)
+    //{
+    //    IEnumerable<IInstalledModule> installedModules = null;
+    //    return package.References
+    //        .Select(reference =>
+    //        {
+    //            var solution = SolutionContext.Current;
 
-                if (reference.Module == null)
-                {
-                    return PackageModelPersistable.Load((reference as PackageReferenceModel).AbsolutePath);
-                }
+    //            if (reference.Module == null)
+    //            {
+    //                return PackageModelPersistable.Load((reference as PackageReferenceModel).AbsolutePath);
+    //            }
 
-                installedModules ??= InstalledModules.Load(Path.Combine(((ApplicationPersistable)package.GetDesigner().Application).DirectoryPath, "modules.config"));
-                var installedModule = installedModules.Modules
-                    .Single(x => x.ModuleId.Equals(reference.Module, StringComparison.OrdinalIgnoreCase));
-                var moduleDirectory = Path.Combine(
-                    path1: solution.ModulesCacheAbsolutePath,
-                    path2: $"{installedModule.ModuleId}.{installedModule.Version}");
-                var moduleConfiguration = XmlSerializationHelper
-                    .LoadFromDirectory<ModuleConfigurationPersistable>(
-                        directory: moduleDirectory,
-                        filenamePattern: $"*.{ModuleConfigurationPersistable.FILE_EXTENSION}")
-                    .SingleOrDefault();
-                if (moduleConfiguration == null) throw new Exception($"Could not find .{ModuleConfigurationPersistable.FILE_EXTENSION} file, have Intent modules been restored? Tried looking at: {moduleDirectory}");
+    //            installedModules = package.GetDesigner().Application.Modules;
+    //            var installedModule = installedModules
+    //                .Single(x => x.ModuleId.Equals(reference.Module, StringComparison.OrdinalIgnoreCase));
+    //            var moduleDirectory = Path.Combine(
+    //                path1: solution.ModulesCacheAbsolutePath,
+    //                path2: $"{installedModule.ModuleId}.{installedModule.Version}");
+    //            var moduleConfiguration = XmlSerializationHelper
+    //                .LoadFromDirectory<ModuleConfigurationPersistable>(
+    //                    directory: moduleDirectory,
+    //                    filenamePattern: $"*.{ModuleConfigurationPersistable.FILE_EXTENSION}")
+    //                .SingleOrDefault();
+    //            if (moduleConfiguration == null) throw new Exception($"Could not find .{ModuleConfigurationPersistable.FILE_EXTENSION} file, have Intent modules been restored? Tried looking at: {moduleDirectory}");
 
-                return moduleConfiguration.GetPackage(reference.PackageId);
-            });
-    }
+    //            return moduleConfiguration.GetPackage(reference.PackageId);
+    //        });
+    //}
 
     public IPackageModelPersistable Package { get; }
 

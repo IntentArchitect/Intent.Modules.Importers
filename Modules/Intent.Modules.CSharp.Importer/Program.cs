@@ -12,6 +12,7 @@ using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.MetadataSynchronizer.Configuration;
 using Intent.Modules.Common;
 using Intent.Modules.Common.Templates;
+using Intent.Modules.CSharp.Importer.Tasks.Model;
 using Intent.Persistence;
 
 namespace Intent.MetadataSynchronizer.CSharp.CLI;
@@ -30,7 +31,6 @@ class Program
         var application = solution.GetApplication("e5ad233e-d1f8-4d03-8187-2a9f790053cd");
         var designer = application.GetDesigner("6ab29b31-27af-4f56-a67c-986d82097d63");
         var targetPackage = designer.GetPackage("b64cd0db-f3c3-4df9-84de-91cff1374f77");
-        SolutionContext.Current = solution;
         var persistables = PersistableFactory.GetPersistables(new CSharpConfig()
         {
             ImportProfile = new ImportProfileConfig()
@@ -52,30 +52,5 @@ class Program
         targetPackage.Save(false);
 
         return 0;
-    }
-
-    public static class SolutionContext
-    {
-        public static SolutionPersistable Current { get; set; }
-    }
-
-    class ElementSetting(string specializationTypeId, string specializationType) : IElementSettings
-    {
-        public string SpecializationTypeId { get; } = specializationTypeId;
-        public string SpecializationType { get; } = specializationType;
-    }
-
-    class AssociationSetting(string specializationTypeId, string specializationType, IAssociationEndSetting sourceEnd, IAssociationEndSetting targetEnd) : IAssociationSettings
-    {
-        public string SpecializationTypeId { get; } = specializationTypeId;
-        public string SpecializationType { get; } = specializationType;
-        public IAssociationEndSetting SourceEnd { get; } = sourceEnd;
-        public IAssociationEndSetting TargetEnd { get; } = targetEnd;
-    }
-
-    class AssociationEndSetting(string specializationTypeId, string specializationType) : IAssociationEndSetting
-    {
-        public string SpecializationTypeId { get; } = specializationTypeId;
-        public string SpecializationType { get; } = specializationType;
     }
 }

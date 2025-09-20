@@ -14,7 +14,7 @@
       <OverwriteBehaviour>always</OverwriteBehaviour>
       <ApplicationRelativeFilePath>Intent.CSharp.Importer.imodspec</ApplicationRelativeFilePath>
       <ProjectRelativeFilePath>Intent.CSharp.Importer.imodspec</ProjectRelativeFilePath>
-      <IsIgnored>false</IsIgnored>
+      <IsIgnored>true</IsIgnored>
     </FileLog>
     <FileLog>
       <ProjectId>4dc96601-03b4-477c-bc61-3bf0eb4a6afd</ProjectId>
@@ -25,19 +25,27 @@
       <IsIgnored>false</IsIgnored>
     </FileLog>
     <FileLog>
+      <ProjectId>91fc8986-a1ae-48f9-95a4-02b73c44da5c</ProjectId>
+      <CorrelationId>Intent.ModuleBuilder.DesignerSettings#71a18671-23ed-43f9-bd3a-c36c3011f7ce</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>modelers/Domain Designer Settings.designer.settings</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>Domain Designer Settings.designer.settings</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>91fc8986-a1ae-48f9-95a4-02b73c44da5c</ProjectId>
+      <CorrelationId>Intent.ModuleBuilder.DesignerSettings#aceeb2a6-cbca-461b-9bc0-f944543cb6b1</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>modelers/Service Designer Settings.designer.settings</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>Service Designer Settings.designer.settings</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
       <ProjectId>032dc2c0-edbf-4388-8c32-776806775c3b</ProjectId>
       <CorrelationId>Intent.ModuleBuilder.Templates.ModuleTask#209110b2-b524-4b1a-933a-ee4aae04ca32</CorrelationId>
       <OverwriteBehaviour>always</OverwriteBehaviour>
       <ApplicationRelativeFilePath>Tasks/ImportCSharpFilesTask.cs</ApplicationRelativeFilePath>
       <ProjectRelativeFilePath>ImportCSharpFilesTask.cs</ProjectRelativeFilePath>
-      <IsIgnored>false</IsIgnored>
-    </FileLog>
-    <FileLog>
-      <ProjectId>032dc2c0-edbf-4388-8c32-776806775c3b</ProjectId>
-      <CorrelationId>Intent.ModuleBuilder.Templates.ModuleTask#bbac3130-0e34-444e-b58e-5bf94bd95786</CorrelationId>
-      <OverwriteBehaviour>always</OverwriteBehaviour>
-      <ApplicationRelativeFilePath>Tasks/LoadFilesTask.cs</ApplicationRelativeFilePath>
-      <ProjectRelativeFilePath>LoadFilesTask.cs</ProjectRelativeFilePath>
       <IsIgnored>false</IsIgnored>
     </FileLog>
   </FileLogs>

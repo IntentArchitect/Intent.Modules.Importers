@@ -38,6 +38,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intent.Modules.Json.Importe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intent.Modules.CSharp.Importer", "Intent.Modules.CSharp.Importer\Intent.Modules.CSharp.Importer.csproj", "{4DC96601-03B4-477C-BC61-3BF0EB4A6AFD}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Intent.Modules.Shared.FileImporter", "Intent.Modules.Shared.FileImporter\Intent.Modules.Shared.FileImporter.shproj", "{8A5B3463-F42B-4328-BA6B-7350DB970B84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -124,5 +126,13 @@ Global
 		{4F82D79D-D5B5-4CC5-9AE3-5BF17B3A4BBD} = {5C31005F-A1A1-4612-B2EF-CFD1A3DE266B}
 		{6397897B-1ADB-4B01-BA55-D65F1E571FCE} = {5C31005F-A1A1-4612-B2EF-CFD1A3DE266B}
 		{4DC96601-03B4-477C-BC61-3BF0EB4A6AFD} = {5C31005F-A1A1-4612-B2EF-CFD1A3DE266B}
+		{8A5B3463-F42B-4328-BA6B-7350DB970B84} = {5C31005F-A1A1-4612-B2EF-CFD1A3DE266B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9B661C11-ED67-4FAD-BEC8-A58CC9C9EF8E}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Intent.Modules.Shared.FileImporter\Intent.Modules.Shared.FileImporter.projitems*{4dc96601-03b4-477c-bc61-3bf0eb4a6afd}*SharedItemsImports = 5
+		Intent.Modules.Shared.FileImporter\Intent.Modules.Shared.FileImporter.projitems*{8a5b3463-f42b-4328-ba6b-7350db970b84}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
