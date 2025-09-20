@@ -24,48 +24,10 @@ public class MetadataLookup
 
     public MetadataLookup(IPackageModelPersistable package)
     {
-        Package = package;
         var references = package.GetReferencedPackages();
-        var packages = new[] { Package }.Concat(references).ToList();
+        var packages = new[] { package }.Concat(references).ToList();
         Index(packages.SelectMany(x => x.GetAllElements()), packages.SelectMany(x => x.Associations));
     }
-
-    //private static IEnumerable<PackageModelPersistable> GetReferencedPackages(IPackageModelPersistable package)
-    //{
-    //    IEnumerable<IInstalledModule> installedModules = null;
-    //    return package.References
-    //        .Select(reference =>
-    //        {
-    //            var solution = SolutionContext.Current;
-
-    //            if (reference.Module == null)
-    //            {
-    //                return PackageModelPersistable.Load((reference as PackageReferenceModel).AbsolutePath);
-    //            }
-
-    //            installedModules = package.GetDesigner().Application.Modules;
-    //            var installedModule = installedModules
-    //                .Single(x => x.ModuleId.Equals(reference.Module, StringComparison.OrdinalIgnoreCase));
-    //            var moduleDirectory = Path.Combine(
-    //                path1: solution.ModulesCacheAbsolutePath,
-    //                path2: $"{installedModule.ModuleId}.{installedModule.Version}");
-    //            var moduleConfiguration = XmlSerializationHelper
-    //                .LoadFromDirectory<ModuleConfigurationPersistable>(
-    //                    directory: moduleDirectory,
-    //                    filenamePattern: $"*.{ModuleConfigurationPersistable.FILE_EXTENSION}")
-    //                .SingleOrDefault();
-    //            if (moduleConfiguration == null) throw new Exception($"Could not find .{ModuleConfigurationPersistable.FILE_EXTENSION} file, have Intent modules been restored? Tried looking at: {moduleDirectory}");
-
-    //            return moduleConfiguration.GetPackage(reference.PackageId);
-    //        });
-    //}
-
-    public IPackageModelPersistable Package { get; }
-
-    //public MetadataLookup(IReadOnlyCollection<IPackageModelPersistable> packages)
-    //{
-    //    Index(packages.SelectMany(x => x.GetAllElements()), packages.SelectMany(x => x.Associations));
-    //}
 
     public MetadataLookup(
         IReadOnlyCollection<IElementPersistable> elements,
@@ -109,11 +71,6 @@ public class MetadataLookup
             .ToDictionary(
                 grouping => grouping.Key ?? string.Empty,
                 grouping => (IReadOnlyCollection<IElementPersistable>)grouping.ToArray());
-
-        //var x = _elementsById.Values
-        //    .Where(x => !string.IsNullOrWhiteSpace(x.ExternalReference))
-        //    .GroupBy(x => x.ExternalReference)
-        //    .ToDictionary(x => x.ToList());
 
         _elementsByReference = _elementsById.Values
             .Where(x => !string.IsNullOrWhiteSpace(x.ExternalReference))

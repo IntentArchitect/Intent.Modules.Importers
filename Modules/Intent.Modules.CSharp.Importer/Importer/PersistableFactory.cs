@@ -7,34 +7,29 @@ namespace Intent.Modules.CSharp.Importer.Importer;
 
 internal static class PersistableFactory
 {
-    public static Persistables GetPersistables(CSharpConfig csConfig, CoreTypesData coreTypeElements,
-        IPackageModelPersistable package)
+    public static void ImportCSharpTypes(this IPackageModelPersistable package, CoreTypesData csharpTypes, CSharpConfig csConfig)
     {
         if (!string.IsNullOrWhiteSpace(csConfig.TargetFolderId) && package.GetElementById(csConfig.TargetFolderId) is null)
         {
             throw new InvalidOperationException($"{nameof(csConfig.TargetFolderId)} has value of '{csConfig.TargetFolderId}' which could not be found.");
         }
 
-        //var elements = new List<IElementPersistable>();
-
-        var classDataLookup = coreTypeElements.Classes.ToDictionary(classData => classData.GetIdentifier());
+        var classDataLookup = csharpTypes.Classes.ToDictionary(classData => classData.GetIdentifier());
 
         var builderMetadataManager = new BuilderMetadataManager(package, csConfig);
 
-        var classDataAndBuilders = RegisterElements(coreTypeElements, csConfig.TargetFolderId, builderMetadataManager);
+        var classDataAndBuilders = RegisterElements(csharpTypes.Classes, csConfig.TargetFolderId, builderMetadataManager);
         PostProcessElements(csConfig.ImportProfile, classDataAndBuilders, classDataLookup, builderMetadataManager);
-
-        return builderMetadataManager.GetPersistables();
     }
 
     private static List<(ClassData, IElementPersistable)> RegisterElements(
-        CoreTypesData coreTypeElements,
+        IList<ClassData> csharpTypes,
         string? targetFolderId,
         BuilderMetadataManager builderMetadataManager)
     {
         var result = new List<(ClassData, IElementPersistable)>();
 
-        foreach (var classData in coreTypeElements.Classes)
+        foreach (var classData in csharpTypes)
         {
             var element = builderMetadataManager.GetElementByReference(classData.GetIdentifier()) ?? builderMetadataManager.CreateElement(classData, targetFolderId);
             result.Add((classData, element));

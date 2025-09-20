@@ -25,18 +25,11 @@ public class BuilderMetadataManager
         _metadataLookup = new MetadataLookup(package);
     }
 
-    //public BuilderMetadataManager(MetadataLookup metadataLookup, List<IElementPersistable> elementsToAdd)
-    //{
-    //    _metadataLookup = metadataLookup;
-    //    _elementsToAdd = elementsToAdd;
-    //}
-
-
     private static readonly char[] Separators = { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
 
-    public IReadOnlyList<IElementPersistable> GetFolderElements(string relativeFolderPath, string targetFolderId) => GetFolderElements(relativeFolderPath, _package.GetElementById(targetFolderId));
+    public IReadOnlyList<IElementPersistable> GetFolderElements(string relativeFolderPath, string? targetFolderId) => GetFolderElements(relativeFolderPath, targetFolderId != null ? _package.GetElementById(targetFolderId) : null);
 
-    public IReadOnlyList<IElementPersistable> GetFolderElements(string relativeFolderPath, IElementPersistable targetFolder)
+    public IReadOnlyList<IElementPersistable> GetFolderElements(string relativeFolderPath, IElementPersistable? targetFolder)
     {
         if (string.IsNullOrWhiteSpace(relativeFolderPath) || relativeFolderPath == ".")
         {
@@ -59,12 +52,12 @@ public class BuilderMetadataManager
 
             if (!_metadataLookup.TryGetElementByReference(externalReference, out var folderElement))
             {
-                folderElement = parentFolder.ChildElements.Add(
+                folderElement = (parentFolder?.ChildElements ?? _package.Classes).Add(
                     id: Guid.NewGuid().ToString().ToLower(),
                     specializationType: FolderModel.SpecializationType,
                     specializationTypeId: FolderModel.SpecializationTypeId,
                     name: curPart,
-                    parentId: parentFolder.Id,
+                    parentId: parentFolder?.Id ?? _package.Id,
                     externalReference: externalReference);
                 _metadataLookup.AddElement(folderElement);
             }

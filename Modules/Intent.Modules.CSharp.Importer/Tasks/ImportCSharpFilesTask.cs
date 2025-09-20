@@ -41,23 +41,24 @@ namespace Intent.Modules.CSharp.Importer.Tasks
             var designer = application.GetDesigner(importModel.DesignerId);
             var targetPackage = designer.GetPackage(importModel.PackageId);
 
-            var persistables = PersistableFactory.GetPersistables(new CSharpConfig()
+
+            targetPackage.ImportCSharpTypes(importedTypes, new CSharpConfig()
             {
                 ImportProfile = new ImportProfileConfig()
                 {
-                    //MapClassesTo = designer.GetElementSettings("04e12b51-ed12-42a3-9667-a6aa81bb6d10"),
-                    //MapPropertiesTo = designer.GetElementSettings("0090fb93-483e-41af-a11d-5ad2dc796adf"),
-                    //MapAssociationsTo = designer.GetAssociationSettings("0a66489f-30aa-417b-a75d-b945863366fd"),
-                    MapClassesTo = new ElementSettings("04e12b51-ed12-42a3-9667-a6aa81bb6d10", "Class"),
-                    MapPropertiesTo = new ElementSettings("0090fb93-483e-41af-a11d-5ad2dc796adf", "Attribute"),
-                    MapAssociationsTo = new AssociationSettings(specializationTypeId: "0a66489f-30aa-417b-a75d-b945863366fd",
-                        specializationType: "Association",
-                        sourceEnd: new AssociationEndSettings("8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58", "Association Source End"),
-                        targetEnd: new AssociationEndSettings("eaf9ed4e-0b61-4ac1-ba88-09f912c12087", "Association Target End")),
+                    MapClassesTo = designer.GetElementSettings("04e12b51-ed12-42a3-9667-a6aa81bb6d10"),
+                    MapPropertiesTo = designer.GetElementSettings("0090fb93-483e-41af-a11d-5ad2dc796adf"),
+                    MapAssociationsTo = designer.GetAssociationSettings("eaf9ed4e-0b61-4ac1-ba88-09f912c12087"),
+                    //MapClassesTo = new ElementSettings("04e12b51-ed12-42a3-9667-a6aa81bb6d10", "Class"),
+                    //MapPropertiesTo = new ElementSettings("0090fb93-483e-41af-a11d-5ad2dc796adf", "Attribute"),
+                    //MapAssociationsTo = new AssociationSettings(specializationTypeId: "0a66489f-30aa-417b-a75d-b945863366fd",
+                    //    specializationType: "Association",
+                    //    sourceEnd: new AssociationEndSettings("8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58", "Association Source End"),
+                    //    targetEnd: new AssociationEndSettings("eaf9ed4e-0b61-4ac1-ba88-09f912c12087", "Association Target End")),
                 },
                 TargetFolder = importModel.SourceFolder,
                 TargetFolderId = importModel.TargetFolderId
-            }, importedTypes, targetPackage);
+            });
 
             targetPackage.Save();
 
