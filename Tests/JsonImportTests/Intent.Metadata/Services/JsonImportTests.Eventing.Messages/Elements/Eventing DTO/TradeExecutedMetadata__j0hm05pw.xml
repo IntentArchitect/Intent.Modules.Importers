@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="0accbde7-456d-4825-a773-4c93230c9bb2" type="Eventing DTO" typeId="544f1d57-27ce-4985-a4ec-cc01568d72b0">
+  <name>TradeExecutedMetadata</name>
+  <display>TradeExecutedMetadata</display>
+  <externalReference>tradeExecuted.Metadata</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>5c7201e8-3691-4366-a6ab-148064c0a41f</parentFolderId>
+  <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+  <packageName>JsonImportTests.Eventing.Messages</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="7908b025-30aa-471f-ad12-365fefdd8d85" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>ProcessedBy</name>
+      <display>ProcessedBy: string</display>
+      <externalReference>tradeExecuted.Metadata.ProcessedBy</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="e2891463-922f-409e-9cb2-9daad6e99e19">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>0accbde7-456d-4825-a773-4c93230c9bb2</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="8ee27540-5166-4b96-b496-250c667c5324" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>ProcessedAt</name>
+      <display>ProcessedAt: datetime</display>
+      <externalReference>tradeExecuted.Metadata.ProcessedAt</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="96cf8c84-b9d1-4968-9505-a77c76a20c76">
+        <typeId>a4107c29-7851-4121-9416-cf1236908f1e</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>0accbde7-456d-4825-a773-4c93230c9bb2</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="82f35a4f-1d5c-4cc0-b7f3-60bbae79e3a2" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>MessageVersion</name>
+      <display>MessageVersion: string</display>
+      <externalReference>tradeExecuted.Metadata.MessageVersion</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="e3a65fd8-679b-4ff9-9d64-f33c1c90a33a">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>0accbde7-456d-4825-a773-4c93230c9bb2</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="3afbf270-6494-498e-a0f9-9384d1065d40" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>SequenceNumber</name>
+      <display>SequenceNumber: decimal</display>
+      <externalReference>tradeExecuted.Metadata.SequenceNumber</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="fa983246-697f-4bf2-a885-6eba9da4923a">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>0accbde7-456d-4825-a773-4c93230c9bb2</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="4a23ea0e-227e-463a-9cca-c62bebe25908" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>DownstreamNotifications</name>
+      <display>DownstreamNotifications: string[*]</display>
+      <externalReference>tradeExecuted.Metadata.DownstreamNotifications[0]</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="b75f81bc-a89e-431b-a4b4-a1a4857b2a6e">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>0accbde7-456d-4825-a773-4c93230c9bb2</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="dd22f8ab-6183-4012-8e23-e51d600a4d7b" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>AuditTrail</name>
+      <display>AuditTrail: AuditTrail</display>
+      <externalReference>tradeExecuted.Metadata.AuditTrail</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="846ff487-c9c3-4818-bee3-9e7d870f2fa1">
+        <typeId>86b53afa-a7d7-46f5-af9f-cddd95e91997</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>JsonImportTests.Eventing.Messages</typePackageName>
+        <typePackageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>0accbde7-456d-4825-a773-4c93230c9bb2</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

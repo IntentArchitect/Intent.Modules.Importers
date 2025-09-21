@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="42c1e259-00b8-4747-8216-33976f844554">
+  <sourceEnd id="455448f67933-6128-7474-8b00-952e1c24" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Course</name>
+    <display>Course: courseCourse</display>
+    <order>0</order>
+    <typeReference id="c4388eb8-3323-4a6a-82ef-2d4ecc2a7928">
+      <typeId>43638304-b571-4f58-9a6f-e903692bbe85</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>course</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="42c1e259-00b8-4747-8216-33976f844554" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>CourseContent</name>
+    <display>CourseContent: CourseContent</display>
+    <order>17</order>
+    <typeReference id="cf196381-ff67-4504-9eca-027fbecabde3">
+      <typeId>f25e0f1d-b23c-4854-ac5c-2b65671be48f</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

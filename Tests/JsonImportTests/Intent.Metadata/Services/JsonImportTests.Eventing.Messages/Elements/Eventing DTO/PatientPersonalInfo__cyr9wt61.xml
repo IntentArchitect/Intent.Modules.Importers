@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="081f0cad-5d6f-47b2-9fcb-a93134f6f534" type="Eventing DTO" typeId="544f1d57-27ce-4985-a4ec-cc01568d72b0">
+  <name>PatientPersonalInfo</name>
+  <display>PatientPersonalInfo</display>
+  <externalReference>patientAdmitted.Patient.PersonalInfo</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>b5689f2d-b193-4981-a2dc-8bea5ff9732e</parentFolderId>
+  <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+  <packageName>JsonImportTests.Eventing.Messages</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="717a32c0-0d4f-4c5c-88af-833abd55b6f0" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>FirstName</name>
+      <display>FirstName: string</display>
+      <externalReference>patientAdmitted.Patient.PersonalInfo.FirstName</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="d0cad4a6-ccf6-463d-9341-6e448c9325bb">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>081f0cad-5d6f-47b2-9fcb-a93134f6f534</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="5926d74b-0009-4367-8f40-1456ddd46c70" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>LastName</name>
+      <display>LastName: string</display>
+      <externalReference>patientAdmitted.Patient.PersonalInfo.LastName</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="c6a258bd-557c-49fe-8f98-8162714e5bc8">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>081f0cad-5d6f-47b2-9fcb-a93134f6f534</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="3a72bd6b-d88c-40e1-a32b-a4b2d7376e30" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>DateOfBirth</name>
+      <display>DateOfBirth: datetime</display>
+      <externalReference>patientAdmitted.Patient.PersonalInfo.DateOfBirth</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="6493c864-ffdf-4bae-9466-70b39e02ed43">
+        <typeId>a4107c29-7851-4121-9416-cf1236908f1e</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>081f0cad-5d6f-47b2-9fcb-a93134f6f534</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="369ae3c2-9435-4d78-b336-8c4ae7421c1f" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>Gender</name>
+      <display>Gender: string</display>
+      <externalReference>patientAdmitted.Patient.PersonalInfo.Gender</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="8e3cb025-c2a2-49de-b834-7c32c586c479">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>081f0cad-5d6f-47b2-9fcb-a93134f6f534</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

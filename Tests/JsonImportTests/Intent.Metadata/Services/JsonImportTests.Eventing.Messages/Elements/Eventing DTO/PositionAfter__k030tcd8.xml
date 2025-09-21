@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="376205f6-16f5-4b7f-b2a3-0871f8cbe364" type="Eventing DTO" typeId="544f1d57-27ce-4985-a4ec-cc01568d72b0">
+  <name>PositionAfter</name>
+  <display>PositionAfter</display>
+  <externalReference>tradeExecuted.Portfolio.PositionAfter</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>5c7201e8-3691-4366-a6ab-148064c0a41f</parentFolderId>
+  <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+  <packageName>JsonImportTests.Eventing.Messages</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="cd035ff5-1b6f-4e1e-90e7-1f6d766b020f" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>Quantity</name>
+      <display>Quantity: decimal</display>
+      <externalReference>tradeExecuted.Portfolio.PositionAfter.Quantity</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="f8f104a6-b643-4f4e-8b79-be83f3f5771a">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>376205f6-16f5-4b7f-b2a3-0871f8cbe364</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="21888ea7-1d3d-4ece-90c2-a6d705ddd626" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>AveragePrice</name>
+      <display>AveragePrice: decimal</display>
+      <externalReference>tradeExecuted.Portfolio.PositionAfter.AveragePrice</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="64678477-2a97-484a-a86a-9662ee4fe55e">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>376205f6-16f5-4b7f-b2a3-0871f8cbe364</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="97cdd724-99bb-4951-8035-b19d80669cf2" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>MarketValue</name>
+      <display>MarketValue: decimal</display>
+      <externalReference>tradeExecuted.Portfolio.PositionAfter.MarketValue</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="6ca2b5c2-ca46-45fd-9994-6652caae2274">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>376205f6-16f5-4b7f-b2a3-0871f8cbe364</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="f8104357-22f7-4d27-8452-3c52490639b4" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>UnrealizedPnL</name>
+      <display>UnrealizedPnL: decimal</display>
+      <externalReference>tradeExecuted.Portfolio.PositionAfter.UnrealizedPnL</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="25adb7e0-6523-447a-a007-5a2cf43b4b4b">
+        <typeId>675c7b84-997a-44e0-82b9-cd724c07c9e6</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>376205f6-16f5-4b7f-b2a3-0871f8cbe364</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

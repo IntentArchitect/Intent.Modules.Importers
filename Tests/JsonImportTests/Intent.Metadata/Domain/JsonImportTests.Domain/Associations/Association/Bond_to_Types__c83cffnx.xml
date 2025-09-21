@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="77fef1a2-2d19-4568-ad88-14db4427eb9d">
+  <sourceEnd id="d9be7244bd41-88da-8654-91d2-2a1fef77" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Bond</name>
+    <display>Bond: Bond</display>
+    <order>0</order>
+    <typeReference id="60c22ec5-ab29-4958-99ba-b7a4812b6ee7">
+      <typeId>dbdbba49-bd7e-495c-b2a0-1c780b9a7ff8</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>portfolio.AssetAllocation.Bonds</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="77fef1a2-2d19-4568-ad88-14db4427eb9d" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Types</name>
+    <display>Types: Type[*]</display>
+    <order>2</order>
+    <typeReference id="97a08e85-6888-45fa-8b8a-6b1c7ea5793d">
+      <typeId>a8cc2b9f-a8fc-4ed1-8033-1e73dbe6378f</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

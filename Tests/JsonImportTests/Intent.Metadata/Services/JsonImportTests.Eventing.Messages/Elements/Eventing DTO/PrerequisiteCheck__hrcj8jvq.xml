@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="8e24f2e3-2cc8-4395-9012-964a90e1af63" type="Eventing DTO" typeId="544f1d57-27ce-4985-a4ec-cc01568d72b0">
+  <name>PrerequisiteCheck</name>
+  <display>PrerequisiteCheck</display>
+  <externalReference>studentEnrolled.Prerequisites.PrerequisiteChecks[0]</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>d4a3535c-151f-42cb-a609-7f0a3e4e2b5c</parentFolderId>
+  <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+  <packageName>JsonImportTests.Eventing.Messages</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="f59256e7-ba3b-4b19-9ace-a603432eb8af" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>CourseCode</name>
+      <display>CourseCode: string</display>
+      <externalReference>studentEnrolled.Prerequisites.PrerequisiteChecks[0].CourseCode</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="cc8f1982-32e7-479d-9d04-e9ca1bad2d30">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>8e24f2e3-2cc8-4395-9012-964a90e1af63</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="4b278040-7e2a-454e-bcf8-5fdf3df9621d" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>RequiredCourse</name>
+      <display>RequiredCourse: string</display>
+      <externalReference>studentEnrolled.Prerequisites.PrerequisiteChecks[0].RequiredCourse</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="1333bb21-4678-4ce5-b86d-99c90c4f7298">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>8e24f2e3-2cc8-4395-9012-964a90e1af63</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="1bdbde7f-0d72-49be-b3b2-17c336c9b531" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>RequiredGrade</name>
+      <display>RequiredGrade: string</display>
+      <externalReference>studentEnrolled.Prerequisites.PrerequisiteChecks[0].RequiredGrade</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="fa651b22-64b5-424b-b640-d3e327d59583">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>8e24f2e3-2cc8-4395-9012-964a90e1af63</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="bb758400-81e2-4636-8b2b-063aa2c6ef42" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>StudentGrade</name>
+      <display>StudentGrade: string</display>
+      <externalReference>studentEnrolled.Prerequisites.PrerequisiteChecks[0].StudentGrade</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="afb7546a-ff02-4f95-8827-252a4cdc5993">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>8e24f2e3-2cc8-4395-9012-964a90e1af63</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="b6a61050-b15c-4bb3-a226-80552efcccae" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>CheckStatus</name>
+      <display>CheckStatus: string</display>
+      <externalReference>studentEnrolled.Prerequisites.PrerequisiteChecks[0].CheckStatus</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="98a75d76-72ab-4dbb-a03c-72b90fd6bdff">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>8e24f2e3-2cc8-4395-9012-964a90e1af63</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="469bfcc8-1e17-44cc-974e-70af9f0e639e" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>CheckedBy</name>
+      <display>CheckedBy: string</display>
+      <externalReference>studentEnrolled.Prerequisites.PrerequisiteChecks[0].CheckedBy</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="e4c7f993-38ca-4d93-bb35-915a802757b3">
+        <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>8e24f2e3-2cc8-4395-9012-964a90e1af63</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="051cd163-8481-4425-8870-c5b767213001" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>CheckedAt</name>
+      <display>CheckedAt: datetime</display>
+      <externalReference>studentEnrolled.Prerequisites.PrerequisiteChecks[0].CheckedAt</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="02cfb65e-fe8e-4b38-a61e-a2889eaf722a">
+        <typeId>a4107c29-7851-4121-9416-cf1236908f1e</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>8e24f2e3-2cc8-4395-9012-964a90e1af63</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

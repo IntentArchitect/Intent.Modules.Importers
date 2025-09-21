@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="55357e5b-85a3-4286-8b4e-de607bd4db70">
+  <sourceEnd id="07bd4db706ed-e4b8-6824-3a58-b5e75355" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>AssetAllocation</name>
+    <display>AssetAllocation: AssetAllocation</display>
+    <order>0</order>
+    <typeReference id="63e843da-e6e0-4fae-9fd8-163ab6ea0b47">
+      <typeId>175ffa3c-3727-4077-906f-91e17716430a</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>portfolio.AssetAllocation</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="55357e5b-85a3-4286-8b4e-de607bd4db70" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Other</name>
+    <display>Other: Other</display>
+    <order>1</order>
+    <typeReference id="0599a421-822b-4142-a23a-1dc3c33a6d8a">
+      <typeId>0b4ee97b-62d5-4fc0-be85-bbfd4559edba</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

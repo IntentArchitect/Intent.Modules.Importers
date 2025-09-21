@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="c38c720c-91c8-4e54-8a83-97829b848d90">
+  <sourceEnd id="09d848b92879-38a8-45e4-8c19-c027c83c" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>SpecialCircumstance</name>
+    <display>SpecialCircumstance: SpecialCircumstance</display>
+    <order>0</order>
+    <typeReference id="7b87f318-7ae2-41d1-a9c5-891dc7e892ad">
+      <typeId>a7fba141-1dcd-4632-95a0-c466fd7ce729</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>enrollment.SpecialCircumstances</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="c38c720c-91c8-4e54-8a83-97829b848d90" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>IncompleteStatus</name>
+    <display>IncompleteStatus: IncompleteStatus</display>
+    <order>1</order>
+    <typeReference id="832d91ec-8d93-4b75-b3e2-5c2890f48dea">
+      <typeId>a874e543-84e1-4c96-a473-f6e02b1a00f5</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

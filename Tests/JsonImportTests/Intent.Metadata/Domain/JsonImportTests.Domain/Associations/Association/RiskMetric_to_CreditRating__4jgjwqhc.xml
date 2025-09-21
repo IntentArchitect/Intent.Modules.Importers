@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="d1429041-a6ff-4bb0-8407-e63e77357928">
+  <sourceEnd id="82975377e36e-7048-0bb4-ff6a-1409241d" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>RiskMetric</name>
+    <display>RiskMetric: AssetRiskMetric</display>
+    <order>0</order>
+    <typeReference id="02ebffa6-5561-4dd4-9704-9f105733b175">
+      <typeId>141a052a-63d5-42c2-b985-3b6176f1767d</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>asset.RiskMetrics</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="d1429041-a6ff-4bb0-8407-e63e77357928" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>CreditRating</name>
+    <display>CreditRating: CreditRating</display>
+    <order>4</order>
+    <typeReference id="58bd5dcd-6aa1-483a-8627-886af917ddd8">
+      <typeId>cc8d24a6-b355-465b-be17-7efb20e4e773</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="7a8df165-366e-496c-ab70-8ca073799d1d">
+  <sourceEnd id="d1d997370ac8-07ba-c694-e663-561fd8a7" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>FinancialInfo</name>
+    <display>FinancialInfo: StudentFinancialInfo</display>
+    <order>0</order>
+    <typeReference id="818a8493-1673-4860-b070-c1206dae8d5b">
+      <typeId>35b8d20e-20ff-497c-95f5-c14e853a350d</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>student.FinancialInfo</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="7a8df165-366e-496c-ab70-8ca073799d1d" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>ScholarshipsAndGrants</name>
+    <display>ScholarshipsAndGrants: ScholarshipsAndGrant[*]</display>
+    <order>4</order>
+    <typeReference id="07045d19-c84d-4371-9888-d229234be3be">
+      <typeId>0323176c-ef58-4f49-9701-a35aab1c9e59</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

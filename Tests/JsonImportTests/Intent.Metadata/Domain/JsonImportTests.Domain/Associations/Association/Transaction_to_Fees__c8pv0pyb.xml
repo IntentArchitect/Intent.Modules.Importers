@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="063039a3-74bb-4d7d-9785-bccdc5c7d93b">
+  <sourceEnd id="b39d7c5cdccb-5879-d7d4-bb47-3a930360" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Transaction</name>
+    <display>Transaction: Transaction</display>
+    <order>0</order>
+    <typeReference id="feb771db-9ea1-4442-bac7-c30818768aa1">
+      <typeId>e4eecdce-0987-4eda-b7cd-06af8eaa6388</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>transaction</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="063039a3-74bb-4d7d-9785-bccdc5c7d93b" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Fees</name>
+    <display>Fees: Fee</display>
+    <order>18</order>
+    <typeReference id="d6aa7e6e-8186-4863-9a1f-2ef4ab83a805">
+      <typeId>615a6f94-9723-4555-9bb5-3dd6bae2e93f</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

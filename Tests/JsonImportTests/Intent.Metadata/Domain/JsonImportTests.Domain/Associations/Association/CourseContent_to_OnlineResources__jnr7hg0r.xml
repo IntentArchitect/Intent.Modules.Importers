@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="bbf130f1-f7b1-40a7-b39c-410fa3d22027">
+  <sourceEnd id="72022d3af014-c93b-7a04-1b7f-1f031fbb" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>CourseContent</name>
+    <display>CourseContent: CourseContent</display>
+    <order>0</order>
+    <typeReference id="a31d452f-456f-48ca-8f3d-6f15c4f66eb0">
+      <typeId>f25e0f1d-b23c-4854-ac5c-2b65671be48f</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>course.CourseContent</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="bbf130f1-f7b1-40a7-b39c-410fa3d22027" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>OnlineResources</name>
+    <display>OnlineResources: OnlineResource[*]</display>
+    <order>1</order>
+    <typeReference id="099d74a3-cea5-495f-a78c-13134335974a">
+      <typeId>b8b1de15-e226-4b02-805e-694258a90688</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

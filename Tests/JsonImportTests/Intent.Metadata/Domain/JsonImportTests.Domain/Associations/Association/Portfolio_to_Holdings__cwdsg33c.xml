@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="ef8ef4ab-1897-4294-b244-defd495a3918">
+  <sourceEnd id="8193a594dfed-442b-4924-7981-ba4fe8fe" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Portfolio</name>
+    <display>Portfolio: Portfolio</display>
+    <order>0</order>
+    <typeReference id="1adfd315-f187-4df0-b545-a083495044ac">
+      <typeId>50a7f2fa-3105-4f4a-915c-13579a7700fb</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>portfolio</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="ef8ef4ab-1897-4294-b244-defd495a3918" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Holdings</name>
+    <display>Holdings: Holding[*]</display>
+    <order>14</order>
+    <typeReference id="4570dccb-ee16-42b0-b7af-4632c09173e5">
+      <typeId>9b406040-c70b-409d-9632-a55dca135746</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

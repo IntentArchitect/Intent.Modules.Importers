@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="b4c9212b-0702-4e30-87e5-c5a40c01f64d" type="Eventing DTO" typeId="544f1d57-27ce-4985-a4ec-cc01568d72b0">
+  <name>Schema</name>
+  <display>Schema</display>
+  <externalReference>complexDataProcessed.DataProfile.Schema</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>by-type-then-manually</sort-children>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>c5087a10-a7a9-4d4f-a1aa-2d27b782af30</parentFolderId>
+  <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+  <packageName>JsonImportTests.Eventing.Messages</packageName>
+  <stereotypes />
+  <metadata />
+  <childElements>
+    <childElement id="b2dbd849-94f3-4c66-b012-65cc273659be" type="Eventing DTO-Field" typeId="93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7">
+      <name>Fields</name>
+      <display>Fields: Field[*]</display>
+      <externalReference>complexDataProcessed.DataProfile.Schema.Fields[0]</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="3610e64b-c9e5-41aa-9865-36deab308b11">
+        <typeId>302ebaff-ee6f-421b-a131-98674d4cd992</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>true</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>JsonImportTests.Eventing.Messages</typePackageName>
+        <typePackageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>b4c9212b-0702-4e30-87e5-c5a40c01f64d</parentFolderId>
+      <packageId>f1d09ce3-6c4d-4a64-bcbc-af9756c6cf1c</packageId>
+      <packageName>JsonImportTests.Eventing.Messages</packageName>
+      <stereotypes />
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

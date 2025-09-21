@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="be900595-7ea9-4d28-bc68-301a0d157cd6">
+  <sourceEnd id="6dc751d0a103-86cb-82d4-9ae7-595009eb" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Course</name>
+    <display>Course: courseCourse</display>
+    <order>0</order>
+    <typeReference id="75e09641-947f-484b-8eea-cebf7131be61">
+      <typeId>43638304-b571-4f58-9a6f-e903692bbe85</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>course</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="be900595-7ea9-4d28-bc68-301a0d157cd6" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Corequisites</name>
+    <display>Corequisites: Corequisite[*]</display>
+    <order>18</order>
+    <typeReference id="cadae5fa-849b-4b6b-a4f4-76ccfedba29d">
+      <typeId>db4f8f82-8d78-4ca7-be5e-387a13a74c42</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="d20c642a-aefc-4e86-8e05-b54755acb64d">
+  <sourceEnd id="d46bca55745b-50e8-68e4-cfea-a246c02d" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Metadata</name>
+    <display>Metadata: CategoryMetadata</display>
+    <order>0</order>
+    <typeReference id="5e9a4ac9-ed85-4935-bc7e-4a79ddf17773">
+      <typeId>a16cee9a-41bc-4537-9ece-bfda5e64f4f5</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>category.Metadata</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="d20c642a-aefc-4e86-8e05-b54755acb64d" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>DisplaySettings</name>
+    <display>DisplaySettings: DisplaySetting</display>
+    <order>1</order>
+    <typeReference id="8081b6d1-2dad-49de-b34e-860ba14b849c">
+      <typeId>44255f26-59a0-4f9c-ad37-4d1d5a56873e</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="2c6bb942-c8c7-4420-9923-54ff8e3adbc8">
+  <sourceEnd id="8cbda3e8ff45-3299-0244-7c8c-249bb6c2" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Asset</name>
+    <display>Asset: Asset</display>
+    <order>0</order>
+    <typeReference id="f694bfc2-6108-417a-952e-5518d3637dfe">
+      <typeId>7fd4c8e4-8e6e-4daf-9ef8-506a990711e9</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>asset</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="2c6bb942-c8c7-4420-9923-54ff8e3adbc8" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Analysts</name>
+    <display>Analysts: Analyst</display>
+    <order>19</order>
+    <typeReference id="6c05d25c-1bd7-4788-93cb-5dc5752146d3">
+      <typeId>3f2c6ffc-fe71-4c20-a012-b7cba258cefd</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

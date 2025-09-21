@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="a5bcda30-36bb-467d-ba8d-438b33825008">
+  <sourceEnd id="80052833b834-d8ab-d764-bb63-03adcb5a" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Practitioner</name>
+    <display>Practitioner: Practitioner</display>
+    <order>0</order>
+    <typeReference id="c50c53d7-1d61-4f13-8d74-0b48b9f5d8fc">
+      <typeId>a4abf5b6-698d-4b04-bf92-18b7a3e77c1f</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>practitioner</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="a5bcda30-36bb-467d-ba8d-438b33825008" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>ProfessionalInfo</name>
+    <display>ProfessionalInfo: ProfessionalInfo</display>
+    <order>6</order>
+    <typeReference id="550b02bf-67fe-4b43-bf40-aec7be9e47b6">
+      <typeId>84701985-bf71-4195-8b86-2508338e742a</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

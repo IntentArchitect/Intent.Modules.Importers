@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="422f0fe2-a6d8-4058-acb4-fc7a2d49c712">
+  <sourceEnd id="217c94d2a7cf-4bca-8504-8d6a-2ef0f224" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Transaction</name>
+    <display>Transaction: Transaction</display>
+    <order>0</order>
+    <typeReference id="195a1c35-28b3-43c4-9637-a2644e8b6fbe">
+      <typeId>e4eecdce-0987-4eda-b7cd-06af8eaa6388</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>transaction</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="422f0fe2-a6d8-4058-acb4-fc7a2d49c712" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>OrderDetails</name>
+    <display>OrderDetails: OrderDetail</display>
+    <order>16</order>
+    <typeReference id="ec45fb62-cce7-4ce8-9dba-b204e1fe2240">
+      <typeId>163987ed-14e5-4876-a29a-b4db4b40a19d</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="5ab261a1-3a12-4b5f-9eef-f677048f8eb6">
+  <sourceEnd id="6be8f840776f-fee9-f5b4-21a3-1a162ba5" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Product</name>
+    <display>Product: Product</display>
+    <order>0</order>
+    <typeReference id="c9bfe324-b7fb-435c-9ffe-d0038e3520fa">
+      <typeId>0c375574-f4f3-46b6-9e09-9d320d8fa401</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>product</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="5ab261a1-3a12-4b5f-9eef-f677048f8eb6" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Attributes</name>
+    <display>Attributes: ProductAttribute[*]</display>
+    <order>23</order>
+    <typeReference id="8b75bc62-5f55-40ab-8d1f-9c1f12bbc3e0">
+      <typeId>3f4735fb-92a7-4466-a6c2-1bad430fda02</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

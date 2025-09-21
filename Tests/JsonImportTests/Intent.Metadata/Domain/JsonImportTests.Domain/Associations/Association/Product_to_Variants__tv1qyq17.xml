@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="179c0f0c-d1ba-4092-bb1a-15cf1b654e69">
+  <sourceEnd id="96e456b1fc51-a1bb-2904-ab1d-c0f0c971" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Product</name>
+    <display>Product: Product</display>
+    <order>0</order>
+    <typeReference id="76aeedf6-4fa3-4f0f-9929-f38f34400d28">
+      <typeId>0c375574-f4f3-46b6-9e09-9d320d8fa401</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>product</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="179c0f0c-d1ba-4092-bb1a-15cf1b654e69" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Variants</name>
+    <display>Variants: Variant[*]</display>
+    <order>14</order>
+    <typeReference id="3629ad20-3394-4273-a218-16131f61603b">
+      <typeId>ae8b18bb-1fc3-4a52-825d-126ba7ccc570</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

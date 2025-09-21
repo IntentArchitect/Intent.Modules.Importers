@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="867af3ea-81b5-4b50-9b57-479f50a48e71">
+  <sourceEnd id="17e84a05f974-75b9-05b4-5b18-ae3fa768" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Offering</name>
+    <display>Offering: Offering</display>
+    <order>0</order>
+    <typeReference id="6e3d8328-656d-4b8a-bbab-965475d33aaf">
+      <typeId>90db1d22-faa2-4033-86ee-387076d2955c</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>course.Offerings[0]</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="867af3ea-81b5-4b50-9b57-479f50a48e71" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>GradingPolicy</name>
+    <display>GradingPolicy: GradingPolicy</display>
+    <order>6</order>
+    <typeReference id="727712a4-05eb-43a1-b8af-78c5355d22ac">
+      <typeId>ce33cdd5-ef31-4840-80b5-089ab91eab7d</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

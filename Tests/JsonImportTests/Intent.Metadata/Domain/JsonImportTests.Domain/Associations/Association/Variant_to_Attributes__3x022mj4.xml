@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="c4337a38-b623-4e09-a6e7-ff1f4639504f">
+  <sourceEnd id="f4059364f1ff-7e6a-90e4-326b-83a7334c" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Variant</name>
+    <display>Variant: Variant</display>
+    <order>0</order>
+    <typeReference id="3f6201ae-a613-4fa6-9a80-6e201feda995">
+      <typeId>ae8b18bb-1fc3-4a52-825d-126ba7ccc570</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>product.Variants[0]</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="c4337a38-b623-4e09-a6e7-ff1f4639504f" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Attributes</name>
+    <display>Attributes: VariantsAttribute</display>
+    <order>7</order>
+    <typeReference id="1f48248b-2871-486a-b255-82aff1850202">
+      <typeId>94712556-673c-4d4f-9607-c00f5568a8c7</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

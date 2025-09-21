@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="10472040-0596-468e-80bf-b8a4a3fed2f6">
+  <sourceEnd id="6f2def3a4a8b-fb08-e864-6950-04027401" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Schedule</name>
+    <display>Schedule: Schedule</display>
+    <order>0</order>
+    <typeReference id="d8dd6c29-84f8-4cdb-a7c0-0cd188230209">
+      <typeId>4f5a71ed-a8fb-4bcc-9daa-eb6443c87805</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>course.Offerings[0].Schedule</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="10472040-0596-468e-80bf-b8a4a3fed2f6" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>ExamSchedule</name>
+    <display>ExamSchedule: ExamSchedule</display>
+    <order>1</order>
+    <typeReference id="bdda8d33-1110-43b3-9aa6-e467c1c444b4">
+      <typeId>4de2fd5a-9882-4344-a9ec-d99bc9f70205</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

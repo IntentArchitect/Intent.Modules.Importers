@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="09649436-f27f-4fce-ac8c-2e234a258015">
+  <sourceEnd id="510852a432e2-c8ca-ecf4-f72f-63494690" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Attendance</name>
+    <display>Attendance: Attendance</display>
+    <order>0</order>
+    <typeReference id="73109828-42f6-4826-b4a5-df2bdffac867">
+      <typeId>9cfaa488-70cf-489a-a27b-e4bbfdb717b3</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>enrollment.Attendance</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="09649436-f27f-4fce-ac8c-2e234a258015" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>AttendanceRecords</name>
+    <display>AttendanceRecords: AttendanceRecord[*]</display>
+    <order>6</order>
+    <typeReference id="866be118-e85f-4d8f-b2ed-1f78de36d44b">
+      <typeId>4467e6a2-66c7-4e1b-88ec-a53c9c0f7a15</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

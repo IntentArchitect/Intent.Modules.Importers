@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="f06acce8-9997-45a7-bee1-0922c29a4bea">
+  <sourceEnd id="aeb4a92c2290-1eeb-7a54-7999-8ecca60f" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Practitioner</name>
+    <display>Practitioner: Practitioner</display>
+    <order>0</order>
+    <typeReference id="505fcd4c-a1ee-4859-800f-85b963b47bcf">
+      <typeId>a4abf5b6-698d-4b04-bf92-18b7a3e77c1f</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>practitioner</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="f06acce8-9997-45a7-bee1-0922c29a4bea" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>EducationBackground</name>
+    <display>EducationBackground: EducationBackground[*]</display>
+    <order>8</order>
+    <typeReference id="7057b02f-fc70-48a7-98be-f064e8e9e7ea">
+      <typeId>79fc0547-7d25-4af6-838c-72d40d46bb98</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

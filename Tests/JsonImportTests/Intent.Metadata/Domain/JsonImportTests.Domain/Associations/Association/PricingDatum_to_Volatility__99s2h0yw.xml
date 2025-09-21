@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="f31bc986-95da-4eb6-92a2-a4d9f6d3a3c6">
+  <sourceEnd id="6c3a3d6f9d4a-2a29-6be4-ad59-689cb13f" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>PricingDatum</name>
+    <display>PricingDatum: PricingDatum</display>
+    <order>0</order>
+    <typeReference id="d392b056-e0b8-45ff-a534-e6c52f67aa39">
+      <typeId>bc26961a-98a9-4d06-8c35-9bec6a917803</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>asset.PricingData</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="f31bc986-95da-4eb6-92a2-a4d9f6d3a3c6" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Volatility</name>
+    <display>Volatility: PricingDataVolatility</display>
+    <order>10</order>
+    <typeReference id="f5a41aa9-67da-4d2e-b93a-24ca6df738da">
+      <typeId>3c893e76-e0a1-45a3-9386-07c70f7e1f24</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

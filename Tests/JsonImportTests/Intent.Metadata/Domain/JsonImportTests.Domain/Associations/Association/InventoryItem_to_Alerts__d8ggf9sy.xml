@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="c3dd94b1-2dd8-44b2-8261-a913f1a36cfc">
+  <sourceEnd id="cfc63a1f319a-1628-2b44-8dd2-1b49dd3c" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>InventoryItem</name>
+    <display>InventoryItem: InventoryItem</display>
+    <order>0</order>
+    <typeReference id="22dd552d-6d42-4050-acde-bec7ea8f70e3">
+      <typeId>dde83f6f-64e6-44a5-a334-64372bca9ec3</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>inventoryItem</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="c3dd94b1-2dd8-44b2-8261-a913f1a36cfc" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Alerts</name>
+    <display>Alerts: Alert[*]</display>
+    <order>13</order>
+    <typeReference id="62ddcf9d-aeeb-49b3-81fd-a305f05b1c1b">
+      <typeId>4575bc34-e14e-4951-81e3-0ac7e7cd920b</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

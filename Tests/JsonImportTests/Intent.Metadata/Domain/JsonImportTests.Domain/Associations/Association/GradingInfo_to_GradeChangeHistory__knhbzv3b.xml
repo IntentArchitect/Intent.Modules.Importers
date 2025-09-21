@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="0ba58aff-6deb-442e-a889-40d9f291282a">
+  <sourceEnd id="a282192f9d04-988a-e244-bed6-ffa85ab0" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>GradingInfo</name>
+    <display>GradingInfo: GradingInfo</display>
+    <order>0</order>
+    <typeReference id="e443bbd6-4693-4606-be91-299d1b2a3a9f">
+      <typeId>0ba63cd5-59b6-4347-a2d7-c6b7a31f22a9</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>enrollment.GradingInfo</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="0ba58aff-6deb-442e-a889-40d9f291282a" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>GradeChangeHistory</name>
+    <display>GradeChangeHistory: GradeChangeHistory[*]</display>
+    <order>6</order>
+    <typeReference id="76da9e53-4ea7-4fb9-a901-9d1e496c2538">
+      <typeId>276bfbf8-641a-4ad6-b5f8-090ae3b4b725</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

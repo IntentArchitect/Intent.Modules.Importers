@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="93d50b5c-d742-4a9e-a69b-af7bcc4f1188">
+  <sourceEnd id="8811f4ccb7fa-b96a-e9a4-247d-c5b05d39" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>MedicalRecord</name>
+    <display>MedicalRecord: MedicalRecord</display>
+    <order>0</order>
+    <typeReference id="eea98628-efa2-4b5d-a3b8-ebcfa1b04495">
+      <typeId>ad414893-41af-4305-a00e-629026572fd4</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>medicalRecord</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="93d50b5c-d742-4a9e-a69b-af7bcc4f1188" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>DiagnosticTests</name>
+    <display>DiagnosticTests: DiagnosticTest[*]</display>
+    <order>12</order>
+    <typeReference id="573387ad-acf0-4492-ad89-208d980822a6">
+      <typeId>c8be0290-dd48-4edf-81aa-8ce69d1b82cc</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="7a298fa1-2c1e-4072-8ebf-369647b133c8">
+  <sourceEnd id="8c331b746963-fbe8-2704-e1c2-1af892a7" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Enrollment</name>
+    <display>Enrollment: enrollmentEnrollment</display>
+    <order>0</order>
+    <typeReference id="9e4a66e4-717c-4046-97f6-79088b10d600">
+      <typeId>10f27a41-2922-47f5-aeb6-ec40c2d23acb</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>enrollment</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="7a298fa1-2c1e-4072-8ebf-369647b133c8" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Instructor</name>
+    <display>Instructor: EnrollmentInstructor</display>
+    <order>18</order>
+    <typeReference id="b2dad90e-8451-4b92-a347-112e69d55200">
+      <typeId>aee2c64c-4683-46bc-a6a7-3dd93a7a62ff</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

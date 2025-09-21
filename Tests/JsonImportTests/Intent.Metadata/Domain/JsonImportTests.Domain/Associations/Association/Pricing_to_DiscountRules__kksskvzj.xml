@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="d28f48fe-1bbb-4458-8378-4eff7a828dbf">
+  <sourceEnd id="fbd828a7ffe4-8738-8544-bbb1-ef84f82d" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Pricing</name>
+    <display>Pricing: ProductPricing</display>
+    <order>0</order>
+    <typeReference id="cb706074-2a9d-4a5f-92bd-ebf876280b0d">
+      <typeId>d0cf3c4f-62b0-4eee-baf7-e3b5e64d397d</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>product.Pricing</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="d28f48fe-1bbb-4458-8378-4eff7a828dbf" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>DiscountRules</name>
+    <display>DiscountRules: DiscountRule[*]</display>
+    <order>5</order>
+    <typeReference id="1081fd6a-bfb2-4ac1-a309-196cf5cb2b76">
+      <typeId>d36c75a2-159c-4e19-a6d7-382c856890d6</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

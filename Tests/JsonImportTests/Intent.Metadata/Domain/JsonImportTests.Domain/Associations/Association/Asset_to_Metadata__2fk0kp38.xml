@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="8b214323-021b-4be0-a6e0-f7387511a11d">
+  <sourceEnd id="d11a1157837f-0e6a-0eb4-b120-323412b8" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Asset</name>
+    <display>Asset: Asset</display>
+    <order>0</order>
+    <typeReference id="4620d900-48bb-437b-b1d3-c79d660b86a0">
+      <typeId>7fd4c8e4-8e6e-4daf-9ef8-506a990711e9</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>asset</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="8b214323-021b-4be0-a6e0-f7387511a11d" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Metadata</name>
+    <display>Metadata: AssetMetadata</display>
+    <order>15</order>
+    <typeReference id="7a7a2436-07ad-4f57-97ba-1a1e54cd4483">
+      <typeId>dcf24be4-7160-4735-94ef-a55b0d715ffd</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

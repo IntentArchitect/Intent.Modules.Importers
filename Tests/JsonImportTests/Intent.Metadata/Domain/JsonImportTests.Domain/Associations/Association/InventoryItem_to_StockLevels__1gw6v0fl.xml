@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="3ad76915-f8d0-4b86-9ed3-77097ff8fe3f">
+  <sourceEnd id="f3ef8ff79077-3de9-68b4-0d8f-51967da3" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>InventoryItem</name>
+    <display>InventoryItem: InventoryItem</display>
+    <order>0</order>
+    <typeReference id="580631b7-ad1e-422f-937c-2364268b7054">
+      <typeId>dde83f6f-64e6-44a5-a334-64372bca9ec3</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>inventoryItem</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="3ad76915-f8d0-4b86-9ed3-77097ff8fe3f" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>StockLevels</name>
+    <display>StockLevels: StockLevel</display>
+    <order>7</order>
+    <typeReference id="aa9aef17-a29f-4205-ba4e-ea36f7a22c5e">
+      <typeId>d5e0284c-ec26-42b3-9237-0bb601e61cc0</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

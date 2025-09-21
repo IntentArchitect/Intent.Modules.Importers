@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="e3bba155-dbae-4dc4-944e-e1621a37a417">
+  <sourceEnd id="714a73a1261e-e449-4cd4-eabd-551abb3e" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Asset</name>
+    <display>Asset: Asset</display>
+    <order>0</order>
+    <typeReference id="83803711-176e-4447-91fd-ddf3789fd433">
+      <typeId>7fd4c8e4-8e6e-4daf-9ef8-506a990711e9</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>asset</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="e3bba155-dbae-4dc4-944e-e1621a37a417" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>TradingInfo</name>
+    <display>TradingInfo: TradingInfo</display>
+    <order>12</order>
+    <typeReference id="3adbdcdf-24df-409f-a562-033f73a57f5c">
+      <typeId>387acb5b-d752-4df2-a9ba-07bf5463d567</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

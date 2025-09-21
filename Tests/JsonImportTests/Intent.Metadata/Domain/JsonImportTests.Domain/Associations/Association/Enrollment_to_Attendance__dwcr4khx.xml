@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="76a468ba-7aac-4195-b044-028ae4565850">
+  <sourceEnd id="0585654ea820-440b-5914-caa7-ab864a67" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Enrollment</name>
+    <display>Enrollment: enrollmentEnrollment</display>
+    <order>0</order>
+    <typeReference id="f7e587ce-12d9-4014-a586-0de58b12cf0e">
+      <typeId>10f27a41-2922-47f5-aeb6-ec40c2d23acb</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>enrollment</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="76a468ba-7aac-4195-b044-028ae4565850" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Attendance</name>
+    <display>Attendance: Attendance</display>
+    <order>22</order>
+    <typeReference id="db99ee66-36b6-404d-87de-cbf1f332728a">
+      <typeId>9cfaa488-70cf-489a-a27b-e4bbfdb717b3</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="f70be944-0b63-45ea-a3c6-7857c3f19fc0">
+  <sourceEnd id="0cf91f3c7587-6c3a-ae54-36b0-449eb07f" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Schedule</name>
+    <display>Schedule: Schedule</display>
+    <order>0</order>
+    <typeReference id="8401a8a2-e914-450e-99e1-7a8a2c18638e">
+      <typeId>4f5a71ed-a8fb-4bcc-9daa-eb6443c87805</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>course.Offerings[0].Schedule</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="f70be944-0b63-45ea-a3c6-7857c3f19fc0" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>MeetingTimes</name>
+    <display>MeetingTimes: MeetingTime[*]</display>
+    <order>0</order>
+    <typeReference id="1ab10d6a-ea60-44c5-9acb-0cddbc986357">
+      <typeId>6d04aa2d-654f-420a-af7d-87b6a7fc8a18</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

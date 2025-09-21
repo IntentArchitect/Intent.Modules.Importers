@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="8278c3e6-dabf-4187-a152-78869d60b152">
+  <sourceEnd id="251b06d96887-251a-7814-fbad-6e3c8728" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Asset</name>
+    <display>Asset: Asset</display>
+    <order>0</order>
+    <typeReference id="5fa8b389-3e3c-49ec-b7af-fdca5ebbb2c1">
+      <typeId>7fd4c8e4-8e6e-4daf-9ef8-506a990711e9</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>asset</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="8278c3e6-dabf-4187-a152-78869d60b152" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Fundamentals</name>
+    <display>Fundamentals: Fundamental</display>
+    <order>16</order>
+    <typeReference id="db1dbb99-82ad-4f49-8bf5-cd95a46500fd">
+      <typeId>854c2d99-453d-4bac-983a-78f25c29d8a1</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

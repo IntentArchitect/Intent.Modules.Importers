@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="dbfdc031-6392-4eb6-a216-2f90d9eeab22">
+  <sourceEnd id="22baee9d09f2-612a-6be4-2936-130cdfbd" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Category</name>
+    <display>Category: categoryCategory</display>
+    <order>0</order>
+    <typeReference id="22c28df9-e8fc-4984-ad91-b4b7dec20823">
+      <typeId>7ead041c-d75f-4bca-acdc-da0d7214d4ed</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>category</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="dbfdc031-6392-4eb6-a216-2f90d9eeab22" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Metadata</name>
+    <display>Metadata: CategoryMetadata</display>
+    <order>15</order>
+    <typeReference id="24cc0ef1-0d50-4722-80e6-ce2437df2ec7">
+      <typeId>a16cee9a-41bc-4537-9ece-bfda5e64f4f5</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

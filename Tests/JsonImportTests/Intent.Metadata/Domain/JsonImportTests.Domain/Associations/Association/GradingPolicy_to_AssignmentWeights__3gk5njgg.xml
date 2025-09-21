@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="355a3332-9606-4267-bf8d-59b989cf7593">
+  <sourceEnd id="3957fc989b95-d8fb-7624-6069-2333a553" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>GradingPolicy</name>
+    <display>GradingPolicy: GradingPolicy</display>
+    <order>0</order>
+    <typeReference id="7b12652a-dcf4-4373-b482-e71809778cd5">
+      <typeId>ce33cdd5-ef31-4840-80b5-089ab91eab7d</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>course.Offerings[0].GradingPolicy</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="355a3332-9606-4267-bf8d-59b989cf7593" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>AssignmentWeights</name>
+    <display>AssignmentWeights: AssignmentWeight[*]</display>
+    <order>1</order>
+    <typeReference id="1f403817-afb1-4c1a-95ad-c6cd29628bf8">
+      <typeId>393333d6-72f8-48ba-aa02-57df0c37b42c</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

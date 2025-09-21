@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="98d9de45-0570-46fd-a76c-927187b875bb">
+  <sourceEnd id="bb578b781729-c67a-df64-0750-54ed9d89" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Configuration</name>
+    <display>Configuration: Configuration</display>
+    <order>0</order>
+    <typeReference id="d0bc7a86-0e7e-402e-8ec1-91c68fb1e71c">
+      <typeId>8a085d00-e3fe-4030-8563-87d652d32ab3</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>complexEntity.Configuration</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="98d9de45-0570-46fd-a76c-927187b875bb" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Settings</name>
+    <display>Settings: Setting</display>
+    <order>0</order>
+    <typeReference id="fa14720c-2484-45ec-b5f4-c04133fe779b">
+      <typeId>ec3ddad3-a452-4119-8c3e-348292dd0930</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

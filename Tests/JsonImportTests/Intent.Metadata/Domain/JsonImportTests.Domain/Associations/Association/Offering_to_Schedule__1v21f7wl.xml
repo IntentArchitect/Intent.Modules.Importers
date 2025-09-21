@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="23a7a21a-ef0d-4743-9c31-b6769e713cad">
+  <sourceEnd id="dac317e9676b-13c9-3474-d0fe-a12a7a32" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Offering</name>
+    <display>Offering: Offering</display>
+    <order>0</order>
+    <typeReference id="8c912016-2540-4799-9e69-e2e9069e4e93">
+      <typeId>90db1d22-faa2-4033-86ee-387076d2955c</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>course.Offerings[0]</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="23a7a21a-ef0d-4743-9c31-b6769e713cad" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Schedule</name>
+    <display>Schedule: Schedule</display>
+    <order>4</order>
+    <typeReference id="ade276e4-9d28-4284-a7d0-2be79c7f7626">
+      <typeId>4f5a71ed-a8fb-4bcc-9daa-eb6443c87805</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="9f0bde92-ead6-4589-9fb6-e57dbe9dd437">
+  <sourceEnd id="734dd9ebd75e-6bf9-9854-6dae-29edb0f9" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>MedicalHistory</name>
+    <display>MedicalHistory: MedicalHistory</display>
+    <order>0</order>
+    <typeReference id="13749e8a-437b-41a0-b667-c46713484992">
+      <typeId>f4fdcdc8-e20a-4283-9caf-711052647b06</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>patient.MedicalHistory</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="9f0bde92-ead6-4589-9fb6-e57dbe9dd437" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>ChronicConditions</name>
+    <display>ChronicConditions: ChronicCondition[*]</display>
+    <order>1</order>
+    <typeReference id="71c03bcc-3cc0-4c75-b3fc-00b0c0315ab2">
+      <typeId>e2bcb158-f5e6-4282-bf3e-9f5320a1a2a5</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

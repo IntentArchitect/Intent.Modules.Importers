@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="91208802-3dcd-4190-aeea-7b219159ffaf">
+  <sourceEnd id="faff951912b7-aeea-0914-dcd3-20880219" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>ContactInfo</name>
+    <display>ContactInfo: StudentContactInfo</display>
+    <order>0</order>
+    <typeReference id="ef18632c-2971-4e95-a8b8-46a6f8721468">
+      <typeId>99279b4a-acd3-4886-8deb-3f9fba5760e1</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>student.ContactInfo</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="91208802-3dcd-4190-aeea-7b219159ffaf" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>EmergencyContact</name>
+    <display>EmergencyContact: ContactInfoEmergencyContact</display>
+    <order>3</order>
+    <typeReference id="b103670f-9681-4834-b389-12e1d25573e4">
+      <typeId>c7d11252-5499-4f7a-aa16-7e60ea3b6ced</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="99d318ec-1e33-48bf-b3d5-5b35dfc472f4">
+  <sourceEnd id="4f274cfd53b5-5d3b-fb84-33e1-ce813d99" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>ComplexEntity</name>
+    <display>ComplexEntity: ComplexEntity</display>
+    <order>0</order>
+    <typeReference id="d86654e5-39b2-4644-bb3e-5f60702a8938">
+      <typeId>7c4e6a24-9839-48f7-a121-9a55dddb3f9d</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>complexEntity</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="99d318ec-1e33-48bf-b3d5-5b35dfc472f4" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Timestamps</name>
+    <display>Timestamps: Timestamp</display>
+    <order>12</order>
+    <typeReference id="8daa705c-d9c3-410e-ab60-0773aacb2d69">
+      <typeId>64354dc8-6d01-4c51-8253-b86065afb1b3</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

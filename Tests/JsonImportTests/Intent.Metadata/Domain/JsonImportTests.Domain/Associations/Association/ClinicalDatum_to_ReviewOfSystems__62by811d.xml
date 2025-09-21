@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="57c3e957-03a3-415f-ae62-cc05495d46bf">
+  <sourceEnd id="fb64d59450cc-26ea-f514-3a30-759e3c75" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>ClinicalDatum</name>
+    <display>ClinicalDatum: ClinicalDatum</display>
+    <order>0</order>
+    <typeReference id="1e36dfc7-ef77-4cab-bdc6-5a71162ee64d">
+      <typeId>93497479-c847-41cc-8443-1433395af349</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>medicalRecord.ClinicalData</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="57c3e957-03a3-415f-ae62-cc05495d46bf" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>ReviewOfSystems</name>
+    <display>ReviewOfSystems: ReviewOfSystem</display>
+    <order>2</order>
+    <typeReference id="f46a5e33-5b9b-462f-b356-6de8f2f01e51">
+      <typeId>d219f838-5c12-41c0-83e3-18cb4499e207</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

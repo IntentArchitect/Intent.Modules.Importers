@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="2a0167c8-6641-44cf-91c3-c85150e3d436">
+  <sourceEnd id="634d3e05158c-3c19-fc44-1466-8c7610a2" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>TradingInfo</name>
+    <display>TradingInfo: TradingInfo</display>
+    <order>0</order>
+    <typeReference id="cdcbe4b5-6089-42db-84c6-c42470bef8b8">
+      <typeId>387acb5b-d752-4df2-a9ba-07bf5463d567</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>asset.TradingInfo</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="2a0167c8-6641-44cf-91c3-c85150e3d436" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>TradingHours</name>
+    <display>TradingHours: TradingHour</display>
+    <order>7</order>
+    <typeReference id="4427058b-c4b6-475c-b12d-1765ae89af22">
+      <typeId>00f5b7a2-dcb9-4b02-a57d-52b014eb3679</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

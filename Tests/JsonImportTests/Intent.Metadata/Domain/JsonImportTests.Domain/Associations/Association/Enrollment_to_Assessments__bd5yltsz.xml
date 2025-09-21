@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="59cf6196-1a86-4795-b0b5-863e3c024a60">
+  <sourceEnd id="06a420c3e368-5b0b-5974-68a1-6916fc95" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Enrollment</name>
+    <display>Enrollment: enrollmentEnrollment</display>
+    <order>0</order>
+    <typeReference id="f60e61af-49f2-40ca-a296-a2eca67e17b8">
+      <typeId>10f27a41-2922-47f5-aeb6-ec40c2d23acb</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>enrollment</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="59cf6196-1a86-4795-b0b5-863e3c024a60" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Assessments</name>
+    <display>Assessments: Assessment[*]</display>
+    <order>23</order>
+    <typeReference id="6fbd1726-77eb-4b6b-8599-548574abb603">
+      <typeId>151db714-db2f-4222-a749-d4ba999ba5cf</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

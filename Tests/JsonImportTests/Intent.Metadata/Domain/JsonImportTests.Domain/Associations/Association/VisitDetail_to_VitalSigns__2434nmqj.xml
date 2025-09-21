@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="4a4bda1e-19a6-4d24-8055-bc38abac08fb">
+  <sourceEnd id="bf80caba83cb-5508-42d4-6a91-e1adb4a4" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>VisitDetail</name>
+    <display>VisitDetail: VisitDetail</display>
+    <order>0</order>
+    <typeReference id="bf8da351-7fab-4561-ba13-6f1f64947ab7">
+      <typeId>e0c7a35b-2114-4bb1-9182-285ba56065af</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>appointment.VisitDetails</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="4a4bda1e-19a6-4d24-8055-bc38abac08fb" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>VitalSigns</name>
+    <display>VitalSigns: VisitDetailsVitalSign</display>
+    <order>0</order>
+    <typeReference id="a5664fbe-f834-414e-9832-84a35e69c3d8">
+      <typeId>94d2b630-1941-4b7e-a4cd-9e383b83a3c2</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

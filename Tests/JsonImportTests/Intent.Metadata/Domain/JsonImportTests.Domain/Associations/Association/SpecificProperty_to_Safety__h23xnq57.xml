@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="559e07da-af6f-4175-b053-62b2b1e6777b">
+  <sourceEnd id="b7776e1b2b26-350b-5714-f6fa-ad70e955" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>SpecificProperty</name>
+    <display>SpecificProperty: SpecificProperty</display>
+    <order>0</order>
+    <typeReference id="1ae0ad8b-18af-48a0-8cbf-380565949b5d">
+      <typeId>0e1e46f2-5596-47c9-99b8-8bbb42ee4063</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>complexEntity.ComplexInheritance.SpecificProperties</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="559e07da-af6f-4175-b053-62b2b1e6777b" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Safety</name>
+    <display>Safety: Safety</display>
+    <order>5</order>
+    <typeReference id="4248c992-d750-41f2-9237-d1762c1e4aea">
+      <typeId>c60bd2af-ad10-4775-9a0a-daf812ef20b1</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

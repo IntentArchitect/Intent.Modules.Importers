@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="c54cf30a-fae3-4e27-81c0-92f9d65096b6">
+  <sourceEnd id="6b69056d9f29-0c18-72e4-3eaf-a03fc45c" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Enrollment</name>
+    <display>Enrollment: enrollmentEnrollment</display>
+    <order>0</order>
+    <typeReference id="c622f805-80eb-4bac-a62b-6ea650062119">
+      <typeId>10f27a41-2922-47f5-aeb6-ec40c2d23acb</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>enrollment</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="c54cf30a-fae3-4e27-81c0-92f9d65096b6" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>SpecialCircumstances</name>
+    <display>SpecialCircumstances: SpecialCircumstance</display>
+    <order>14</order>
+    <typeReference id="818c1f40-b524-4dad-9c03-32a571212e56">
+      <typeId>a7fba141-1dcd-4632-95a0-c466fd7ce729</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

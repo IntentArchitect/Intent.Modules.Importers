@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="2490ebae-6993-47fd-965a-b4b5f31910a1">
+  <sourceEnd id="1a01913f5b4b-a569-df74-3996-eabe0942" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>InsuranceInfo</name>
+    <display>InsuranceInfo: PatientInsuranceInfo</display>
+    <order>0</order>
+    <typeReference id="5ef8e93e-7d6b-4ffa-9a6d-5c041aa20264">
+      <typeId>923da49a-fcca-4bbf-ab38-5ac535cdf7a6</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>patient.InsuranceInfo</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="2490ebae-6993-47fd-965a-b4b5f31910a1" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>PrimaryInsurance</name>
+    <display>PrimaryInsurance: PrimaryInsurance</display>
+    <order>1</order>
+    <typeReference id="60f5d1c0-f1c6-4c54-b842-69f72c7b44d4">
+      <typeId>2a716a19-247f-4b55-a6aa-85384b3c8b2c</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

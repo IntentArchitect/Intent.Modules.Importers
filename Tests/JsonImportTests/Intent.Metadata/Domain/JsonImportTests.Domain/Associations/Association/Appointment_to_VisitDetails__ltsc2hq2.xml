@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="5028ca08-59cd-442b-b621-1f78b02b53e8">
+  <sourceEnd id="8e35b20b87f1-126b-b244-dc95-80ac8205" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Appointment</name>
+    <display>Appointment: Appointment</display>
+    <order>0</order>
+    <typeReference id="8e18f53b-e7ca-49fe-862b-c53d54722c74">
+      <typeId>50687e25-ed47-4cbf-a888-ccaf984d153c</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>appointment</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="5028ca08-59cd-442b-b621-1f78b02b53e8" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>VisitDetails</name>
+    <display>VisitDetails: VisitDetail</display>
+    <order>16</order>
+    <typeReference id="0b0225c3-4198-4072-a8bd-378ad635c238">
+      <typeId>e0c7a35b-2114-4bb1-9182-285ba56065af</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

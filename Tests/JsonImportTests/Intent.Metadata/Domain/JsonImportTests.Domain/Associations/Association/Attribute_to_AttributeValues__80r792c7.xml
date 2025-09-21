@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="055e1a74-2bd8-457e-96fe-1b806b9b8b41">
+  <sourceEnd id="14b8b9b608b1-ef69-e754-8db2-47a1e550" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Attribute</name>
+    <display>Attribute: CategoryAttribute</display>
+    <order>0</order>
+    <typeReference id="12ecb604-153b-491d-9add-45c4c0229379">
+      <typeId>6bbc9037-b13c-479f-9e19-4386e2e79a88</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>category.Attributes[0]</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="055e1a74-2bd8-457e-96fe-1b806b9b8b41" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>AttributeValues</name>
+    <display>AttributeValues: AttributeValue[*]</display>
+    <order>6</order>
+    <typeReference id="1db9c10e-64cd-42bd-b1ff-fb34f7d6081d">
+      <typeId>ae25bbb9-980e-4e55-ac81-4d29ba4f4f0e</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

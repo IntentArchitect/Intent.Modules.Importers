@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="21092a4e-d6af-4355-8269-e454b080c36f">
+  <sourceEnd id="f63c080b454e-9628-5534-fa6d-e4a29012" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Stock</name>
+    <display>Stock: Stock</display>
+    <order>0</order>
+    <typeReference id="9795ce62-b41e-4352-88f0-16da4c8683b4">
+      <typeId>90ea4084-0b00-40fc-b26a-e20aa3bc4bd7</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>portfolio.AssetAllocation.Stocks</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="21092a4e-d6af-4355-8269-e454b080c36f" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Sectors</name>
+    <display>Sectors: Sector[*]</display>
+    <order>2</order>
+    <typeReference id="c972272a-29f2-42bf-bdb9-c1e758ae9580">
+      <typeId>5601818d-da1c-4a29-8295-66b1c382c019</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

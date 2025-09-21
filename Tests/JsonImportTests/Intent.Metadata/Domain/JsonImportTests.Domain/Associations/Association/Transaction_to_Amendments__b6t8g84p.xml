@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="a358df93-16df-4df7-8550-058e97a129c0">
+  <sourceEnd id="0c921a79e850-0558-7fd4-fd61-39fd853a" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Transaction</name>
+    <display>Transaction: Transaction</display>
+    <order>0</order>
+    <typeReference id="d40e6e13-fe4c-440d-85ce-be798122c79d">
+      <typeId>e4eecdce-0987-4eda-b7cd-06af8eaa6388</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>transaction</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="a358df93-16df-4df7-8550-058e97a129c0" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Amendments</name>
+    <display>Amendments: Amendment[*]</display>
+    <order>22</order>
+    <typeReference id="662c3747-7ebb-4561-a54a-3eeafaeec48a">
+      <typeId>95d09003-1312-4173-93c0-863211740bc4</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

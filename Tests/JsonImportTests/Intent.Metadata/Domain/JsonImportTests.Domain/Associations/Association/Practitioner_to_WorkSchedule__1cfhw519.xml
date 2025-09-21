@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="828ace13-cf0b-44a3-b833-8f5367e8cdcf">
+  <sourceEnd id="fcdc8e7635f8-338b-3a44-b0fc-31eca828" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Practitioner</name>
+    <display>Practitioner: Practitioner</display>
+    <order>0</order>
+    <typeReference id="a6105c42-03f9-473a-ba3e-0b93bf66e40a">
+      <typeId>a4abf5b6-698d-4b04-bf92-18b7a3e77c1f</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>practitioner</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="828ace13-cf0b-44a3-b833-8f5367e8cdcf" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>WorkSchedule</name>
+    <display>WorkSchedule: WorkSchedule</display>
+    <order>4</order>
+    <typeReference id="3d780732-caba-470b-bd71-7ed44448d907">
+      <typeId>4cb6739c-dda6-41d9-9bcb-4cd9c4ff8eac</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

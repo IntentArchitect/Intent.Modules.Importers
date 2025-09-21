@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="326264c8-c5ab-40df-af30-6252d9c52bcb">
+  <sourceEnd id="bcb25c9d2526-03fa-fd04-ba5c-8c462623" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Student</name>
+    <display>Student: studentStudent</display>
+    <order>0</order>
+    <typeReference id="f55f2a0d-5103-45e6-87ed-47f9127206a0">
+      <typeId>e200c616-f6ad-4a7e-badf-693260d1a8f9</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>student</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="326264c8-c5ab-40df-af30-6252d9c52bcb" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Activities</name>
+    <display>Activities: Activity</display>
+    <order>12</order>
+    <typeReference id="4be900a0-2bb8-4528-8317-e690cea4dd0d">
+      <typeId>e748fdae-9887-4c01-b273-a850acd1aa75</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

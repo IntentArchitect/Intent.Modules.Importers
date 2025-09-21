@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="35f4eea7-db98-4cd7-98f0-727a0a6ec77c">
+  <sourceEnd id="c77ce6a0a727-0f89-7dc4-89bd-7aee4f53" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>PremiumInfo</name>
+    <display>PremiumInfo: PremiumInfo</display>
+    <order>0</order>
+    <typeReference id="ca167872-781c-4abf-b9ff-a137dd225a14">
+      <typeId>03202760-ce0f-44b7-9786-c358b4525669</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>complexEntity.ConditionalFields.PremiumInfo</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="35f4eea7-db98-4cd7-98f0-727a0a6ec77c" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Limits</name>
+    <display>Limits: Limit</display>
+    <order>2</order>
+    <typeReference id="c83230ae-eb32-4434-a64b-7bd79009faeb">
+      <typeId>66ea383f-adf0-4f5c-8cff-f48fc12b55de</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

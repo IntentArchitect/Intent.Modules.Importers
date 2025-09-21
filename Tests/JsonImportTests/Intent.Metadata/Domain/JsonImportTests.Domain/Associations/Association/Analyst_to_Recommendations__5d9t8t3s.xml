@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="432f184e-22b9-4a05-8a34-c8e9070fdbc3">
+  <sourceEnd id="3cbdf0709e8c-43a8-50a4-9b22-e481f234" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Analyst</name>
+    <display>Analyst: Analyst</display>
+    <order>0</order>
+    <typeReference id="551209c2-e677-48e6-b764-a4b6968bce44">
+      <typeId>3f2c6ffc-fe71-4c20-a012-b7cba258cefd</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>asset.Analysts</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="432f184e-22b9-4a05-8a34-c8e9070fdbc3" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Recommendations</name>
+    <display>Recommendations: Recommendation</display>
+    <order>4</order>
+    <typeReference id="fe2e8df7-b310-41e4-87dc-af79926e5ee1">
+      <typeId>22a42546-c101-452e-b2a0-7ef64d0c66f8</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

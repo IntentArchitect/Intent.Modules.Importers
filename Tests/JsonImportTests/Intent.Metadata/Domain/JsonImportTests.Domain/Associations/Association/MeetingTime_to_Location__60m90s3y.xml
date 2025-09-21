@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="78f61a57-d7ae-4105-af75-a7d34477af19">
+  <sourceEnd id="91fa77443d7a-57fa-5014-ea7d-75a16f87" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>MeetingTime</name>
+    <display>MeetingTime: MeetingTime</display>
+    <order>0</order>
+    <typeReference id="b3394ae1-338b-42e0-87c0-ba5c1098f95e">
+      <typeId>6d04aa2d-654f-420a-af7d-87b6a7fc8a18</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>course.Offerings[0].Schedule.MeetingTimes[0]</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="78f61a57-d7ae-4105-af75-a7d34477af19" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Location</name>
+    <display>Location: MeetingTimesLocation</display>
+    <order>4</order>
+    <typeReference id="2323b5f9-7864-4db9-8af1-b91208c4c6f7">
+      <typeId>5b653113-12b1-4a91-af55-1e068f9c075b</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

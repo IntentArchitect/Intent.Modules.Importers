@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="9d036ba0-a31f-4202-b22f-6343f681e71c">
+  <sourceEnd id="c17e186f3436-f22b-2024-f13a-0ab630d9" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>SpecificProperty</name>
+    <display>SpecificProperty: SpecificProperty</display>
+    <order>0</order>
+    <typeReference id="4eebb8eb-f920-45f9-b6bd-ba540745f6ee">
+      <typeId>0e1e46f2-5596-47c9-99b8-8bbb42ee4063</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>complexEntity.ComplexInheritance.SpecificProperties</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="9d036ba0-a31f-4202-b22f-6343f681e71c" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Engine</name>
+    <display>Engine: Engine</display>
+    <order>6</order>
+    <typeReference id="e8a14fd5-a9ba-448a-bf34-a0b8cce8fff5">
+      <typeId>cd8772db-1a79-4ce5-ad0a-71c9d28f33ba</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

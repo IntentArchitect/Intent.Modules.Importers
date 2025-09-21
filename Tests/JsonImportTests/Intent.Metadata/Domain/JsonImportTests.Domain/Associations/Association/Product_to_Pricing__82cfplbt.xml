@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="79e2db74-a1f8-4dab-bd5f-53233a751ed4">
+  <sourceEnd id="4de157a33235-f5db-bad4-8f1a-47bd2e97" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Product</name>
+    <display>Product: Product</display>
+    <order>0</order>
+    <typeReference id="59fe6f25-9647-44db-a8e7-c887c2e1d788">
+      <typeId>0c375574-f4f3-46b6-9e09-9d320d8fa401</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>product</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="79e2db74-a1f8-4dab-bd5f-53233a751ed4" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Pricing</name>
+    <display>Pricing: ProductPricing</display>
+    <order>19</order>
+    <typeReference id="db18bd48-8689-4084-8eef-aa804cb2d45b">
+      <typeId>d0cf3c4f-62b0-4eee-baf7-e3b5e64d397d</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="91a7a711-c268-4da0-a9e1-12151d7ab683">
+  <sourceEnd id="386ba7d15121-1e9a-0ad4-862c-117a7a19" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Prerequisite</name>
+    <display>Prerequisite: EnrollmentPrerequisite</display>
+    <order>0</order>
+    <typeReference id="ffbfddd3-fef7-4984-bf45-0dbe340ce7bf">
+      <typeId>12da2755-7cdc-4499-9a29-a8da81afbb52</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>enrollment.Prerequisites</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="91a7a711-c268-4da0-a9e1-12151d7ab683" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>PrerequisiteChecks</name>
+    <display>PrerequisiteChecks: PrerequisiteCheck[*]</display>
+    <order>2</order>
+    <typeReference id="df3d43cf-3a8f-4e89-95ea-d9c82d7744a2">
+      <typeId>f2fe28c9-84c2-42af-8222-4593dce4b8ab</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

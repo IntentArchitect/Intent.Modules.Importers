@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="756c4369-1162-4fbf-8369-5f6f9a01a7f7">
+  <sourceEnd id="7f7a10a9f6f5-9638-fbf4-2611-9634c657" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>Student</name>
+    <display>Student: studentStudent</display>
+    <order>0</order>
+    <typeReference id="bf8963e0-7c46-49c0-98d6-63bf200b608f">
+      <typeId>e200c616-f6ad-4a7e-badf-693260d1a8f9</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>student</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="756c4369-1162-4fbf-8369-5f6f9a01a7f7" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>FinancialInfo</name>
+    <display>FinancialInfo: StudentFinancialInfo</display>
+    <order>9</order>
+    <typeReference id="876e6fb8-118a-43a2-9391-eebfc8a825d0">
+      <typeId>35b8d20e-20ff-497c-95f5-c14e853a350d</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

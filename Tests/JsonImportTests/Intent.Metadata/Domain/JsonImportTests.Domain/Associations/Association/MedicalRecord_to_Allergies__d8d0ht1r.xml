@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="3c6d8bb1-13dd-4744-8fe3-1db3ab89d151">
+  <sourceEnd id="151d98ba3bd1-3ef8-4474-dd31-1bb8d6c3" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>MedicalRecord</name>
+    <display>MedicalRecord: MedicalRecord</display>
+    <order>0</order>
+    <typeReference id="75c8ddd7-d795-416e-8ad1-bcc555c5f7a5">
+      <typeId>ad414893-41af-4305-a00e-629026572fd4</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>medicalRecord</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="3c6d8bb1-13dd-4744-8fe3-1db3ab89d151" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>Allergies</name>
+    <display>Allergies: MedicalRecordAllergy[*]</display>
+    <order>16</order>
+    <typeReference id="f8dba78f-fd53-4041-87f3-8bc4c6d405de">
+      <typeId>a9729c26-73df-42a8-b943-18f029ab8ff0</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>true</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>

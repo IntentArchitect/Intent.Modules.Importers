@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="5b8a53d8-654a-475c-8467-67a9e0c8c5e2">
+  <sourceEnd id="2e5c8c0e9a76-7648-c574-a456-8d35a8b5" type="Association Source End" typeId="8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58">
+    <name>ComplexEntity</name>
+    <display>ComplexEntity: ComplexEntity</display>
+    <order>0</order>
+    <typeReference id="19bf4604-2cc3-4afe-8a29-e9968b5b6237">
+      <typeId>7c4e6a24-9839-48f7-a121-9a55dddb3f9d</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <externalReference>complexEntity</externalReference>
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="5b8a53d8-654a-475c-8467-67a9e0c8c5e2" type="Association Target End" typeId="0a66489f-30aa-417b-a75d-b945863366fd">
+    <name>MetadataMap</name>
+    <display>MetadataMap: MetadataMap</display>
+    <order>16</order>
+    <typeReference id="9f13f728-af60-4e82-8ef8-ce34f01252fd">
+      <typeId>2ee51909-1c29-473e-a657-73bccafac54c</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>JsonImportTests.Domain</typePackageName>
+      <typePackageId>ea38ed65-d051-48af-9a62-2e00b254b1b5</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Association</associationType>
+  <associationTypeId>eaf9ed4e-0b61-4ac1-ba88-09f912c12087</associationTypeId>
+  <stereotypes />
+</association>
