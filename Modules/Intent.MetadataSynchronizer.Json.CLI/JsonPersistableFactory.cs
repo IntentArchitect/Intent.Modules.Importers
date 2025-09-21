@@ -2,6 +2,7 @@ using System.Linq;
 using System.Text.Json;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
+using Intent.MetadataSynchronizer.Json.CLI.Visitors;
 using Intent.Modelers.Domain.Api;
 using Intent.Modules.Common.Templates;
 
@@ -35,8 +36,8 @@ public static class JsonPersistableFactory
         IReadOnlyCollection<PackageModelPersistable> packages,
         IReadOnlyCollection<string>? selectedFiles)
     {
-        // Resolve settings from profile
-        var settings = ProfileFactory.GetSettings(config.Profile);
+        // Resolve profile strategy
+        var visitor = ProfileFactory.GetVisitorForProfile(config.Profile);
         var lookups = new MetadataLookup(packages);
         if (!lookups.TryGetTypeDefinitionByName("bool", 0, out var boolType)) throw new Exception();
         if (!lookups.TryGetTypeDefinitionByName("object", 0, out var objectType)) throw new Exception();
@@ -94,14 +95,12 @@ public static class JsonPersistableFactory
                 parentFolderId = CreateFolderHierarchy(directoryPath, createdFolders, classElements);
             }
 
-            var elementPersistable = ElementPersistable.Create(
-                specializationType: settings.RootSpecializationType,
-                specializationTypeId: settings.RootSpecializationTypeId,
-                name: Casing(config, fileNameWithoutExtension),
-                parentId: parentFolderId,
-                externalReference: relativePath.Replace('\\', '/')); // Use relative path as external reference
+            var elementPersistable = visitor.VisitRoot(
+                name: Utils.Casing(config, fileNameWithoutExtension),
+                parentFolderId: parentFolderId,
+                externalReference: relativePath.Replace('\\', '/'));
 
-            classElements.Add(new (elementPersistable, new Stack<string>(new[] { fileNameWithoutExtension })));
+            classElements.Add(new(elementPersistable, new Stack<string>(new[] { fileNameWithoutExtension })));
 
             // Parse the document and add to classElements and associations
             var (parsedClassElements, parsedAssociations) = Parse(
@@ -109,12 +108,12 @@ public static class JsonPersistableFactory
                 jsonElement: document.RootElement,
                 intentElement: elementPersistable,
                 path: fileNameWithoutExtension,
-                pathParts: [Casing(config, fileNameWithoutExtension)],
-                profileSettings: settings,
+                pathParts: [Utils.Casing(config, fileNameWithoutExtension)],
+                visitor: visitor,
                 typeLookups: typeLookups,
                 isRootElement: true,
                 parentFolderId: parentFolderId);
-            
+
             classElements.AddRange(parsedClassElements);
             associations.AddRange(parsedAssociations);
         }
@@ -145,136 +144,53 @@ public static class JsonPersistableFactory
         return new Persistables(classElements.Select(x => x.Element).ToArray(), associations);
     }
 
-    private static string Casing(JsonConfig config, string name)
-    {
-        return config.CasingConvention == CasingConvention.AsIs ? name : name.ToPascalCase();
-    }
-
     private record ParseResult(List<ClassElement> ClassElements, List<AssociationPersistable> Associations);
     private record ClassElement(ElementPersistable Element, Stack<string> PathParts);
-    
+
     private static ParseResult Parse(
         JsonConfig config,
         JsonElement jsonElement,
         ElementPersistable intentElement,
         string path,
         IReadOnlyCollection<string> pathParts,
-        ProfileSettings profileSettings,
+        IJsonElementVisitor visitor,
         Dictionary<ClassificationType, ElementPersistable> typeLookups,
         bool isRootElement = false,
         string? parentFolderId = null)
     {
         var classElements = new List<ClassElement>();
         var associations = new List<AssociationPersistable>();
-        
+
         foreach (var property in jsonElement.EnumerateObject())
         {
             var classification = Classify(property.Value, $"{path}.{property.Name}");
             if (classification.Type == ClassificationType.Object)
             {
-                var targetElement = ElementPersistable.Create(
-                    specializationType: profileSettings.ComplexTypeSpecializationType,
-                    specializationTypeId: profileSettings.ComplexTypeSpecializationTypeId,
-                    name: Casing(config, property.Name).Singularize(false),
-                    // Place composites/nested elements in the same folder as the root element
-                    parentId: parentFolderId,
-                    externalReference: classification.Path);
+                var visitorResult = visitor.VisitObject(
+                    config: config,
+                    property: property,
+                    owner: intentElement,
+                    parentFolderId: parentFolderId,
+                    sourcePath: path,
+                    targetPath: classification.Path,
+                    isCollection: classification.IsCollection);
 
-                classElements.Add(new (targetElement, new Stack<string>(pathParts)));
+                var targetElement = visitorResult.ClassElement;
+                if (visitorResult.Association != null) associations.Add(visitorResult.Association);
 
-                if (profileSettings.CreateAssociations)
-                {
-                    var association = new AssociationPersistable
-                    {
-                        Id = Guid.NewGuid().ToString().ToLower(),
-                        SourceEnd = new AssociationEndPersistable
-                        {
-                            SpecializationType = profileSettings.AssociationSourceEndSpecializationType,
-                            SpecializationTypeId = profileSettings.AssociationSourceEndSpecializationTypeId,
-                            Name = intentElement.Name,
-                            TypeReference = TypeReferencePersistable.Create(
-                                typeId: intentElement.Id,
-                                isNavigable: false,
-                                isNullable: false,
-                                isCollection: false,
-                                isRequired: default,
-                                comment: default,
-                                genericTypeId: default,
-                                typePackageName: default,
-                                typePackageId: default,
-                                stereotypes: new List<StereotypePersistable>(),
-                                genericTypeParameters: new List<TypeReferencePersistable>()),
-                            ExternalReference = path,
-                        },
-                        TargetEnd = new AssociationEndPersistable
-                        {
-                            SpecializationType = profileSettings.AssociationTargetEndSpecializationType,
-                            SpecializationTypeId = profileSettings.AssociationTargetEndSpecializationTypeId,
-                            Name = Casing(config, property.Name),
-                            TypeReference = TypeReferencePersistable.Create(
-                                typeId: targetElement.Id,
-                                isNavigable: true,
-                                isNullable: false,
-                                isCollection: classification.IsCollection,
-                                isRequired: default,
-                                comment: default,
-                                genericTypeId: default,
-                                typePackageName: default,
-                                typePackageId: default,
-                                stereotypes: new List<StereotypePersistable>(),
-                                genericTypeParameters: new List<TypeReferencePersistable>()),
-                            ExternalReference = classification.Path,
-                        },
-                        AssociationType = profileSettings.AssociationSpecializationType,
-                        AssociationTypeId = profileSettings.AssociationSpecializationTypeId
-                    };
-                    associations.Add(association);
-                }
-                else
-                {
-                    // If the parent is a ComplexType (e.g., Eventing DTO), use the ComplexTypeAttribute specialization
-                    var isParentComplex = intentElement.SpecializationTypeId == profileSettings.ComplexTypeSpecializationTypeId;
-                    var complexPropSpec = isParentComplex
-                        ? profileSettings.ComplexTypeAttributeSpecializationType
-                        : profileSettings.AttributeSpecializationType;
-                    var complexPropSpecId = isParentComplex
-                        ? profileSettings.ComplexTypeAttributeSpecializationTypeId
-                        : profileSettings.AttributeSpecializationTypeId;
-
-                    var complexTypeProperty = ElementPersistable.Create(
-                        specializationType: complexPropSpec,
-                        specializationTypeId: complexPropSpecId,
-                        name: Casing(config, property.Name),
-                        parentId: intentElement.Id,
-                        externalReference: classification.Path);
-
-                    complexTypeProperty.TypeReference = TypeReferencePersistable.Create(
-                        typeId: targetElement.Id,
-                        isNavigable: true,
-                        isNullable: default,
-                        isCollection: classification.IsCollection,
-                        isRequired: default,
-                        comment: classification.Remarks,
-                        genericTypeId: default,
-                        typePackageName: default,
-                        typePackageId: default,
-                        stereotypes: [],
-                        genericTypeParameters: []);
-                    
-                    intentElement.ChildElements.Add(complexTypeProperty);
-                }
+                classElements.Add(new(targetElement, new Stack<string>(pathParts)));
 
                 var (parsedClassElements, parsedAssociations) = Parse(
                     config: config,
                     jsonElement: classification.Element!.Value,
                     intentElement: targetElement,
                     path: classification.Path,
-                    pathParts: pathParts.Append(Casing(config, property.Name)).ToArray(),
-                    profileSettings: profileSettings,
+                    pathParts: pathParts.Append(Utils.Casing(config, property.Name)).ToArray(),
+                    visitor: visitor,
                     typeLookups: typeLookups,
                     isRootElement: false,
                     parentFolderId: parentFolderId);
-                
+
                 classElements.AddRange(parsedClassElements);
                 associations.AddRange(parsedAssociations);
 
@@ -282,58 +198,15 @@ public static class JsonPersistableFactory
             }
 
             var referencedType = typeLookups[classification.Type];
-
-            var attributeSpecializationType = intentElement.SpecializationTypeId == profileSettings.ComplexTypeSpecializationTypeId
-                ? profileSettings.ComplexTypeAttributeSpecializationType
-                : profileSettings.AttributeSpecializationType;
-            var attributeSpecializationTypeId = intentElement.SpecializationTypeId == profileSettings.ComplexTypeSpecializationTypeId
-                ? profileSettings.ComplexTypeAttributeSpecializationTypeId
-                : profileSettings.AttributeSpecializationTypeId;
-            
-            var attributeElement = ElementPersistable.Create(
-                specializationType: attributeSpecializationType,
-                specializationTypeId: attributeSpecializationTypeId,
-                name: Casing(config, property.Name),
-                parentId: intentElement.Id,
-                externalReference: classification.Path);
-
-            attributeElement.TypeReference = TypeReferencePersistable.Create(
-                typeId: referencedType.Id,
-                isNavigable: true,
-                isNullable: default,
+            visitor.VisitProperty(
+                config: config,
+                property: property,
+                owner: intentElement,
+                externalReference: classification.Path,
+                referencedType: referencedType,
                 isCollection: classification.IsCollection,
-                isRequired: default,
-                comment: classification.Remarks,
-                genericTypeId: default,
-                typePackageName: referencedType.PackageName,
-                typePackageId: referencedType.PackageId,
-                stereotypes: [],
-                genericTypeParameters: []);
-
-            if (isRootElement &&
-                "Id".Equals(attributeElement.Name, StringComparison.OrdinalIgnoreCase) &&
-                config.Profile == ImportProfile.DomainDocumentDB &&
-                profileSettings.AttributeSpecializationTypeId == AttributeModel.SpecializationTypeId)
-            {
-                attributeElement.Stereotypes.Add(new StereotypePersistable
-                {
-                    DefinitionId = "64f6a994-4909-4a9d-a0a9-afc5adf2ef74",
-                    Name = "Primary Key",
-                    Comment = null!,
-                    AddedByDefault = false,
-                    DefinitionPackageName = "Intent.Metadata.DocumentDB",
-                    DefinitionPackageId = "1c7eab18-9482-4b4e-b61b-1fbd2d2427b6",
-                    Properties = []
-                });
-
-                attributeElement.Metadata.Add(new GenericMetadataPersistable
-                {
-                    Key = "is-managed-key",
-                    Value = "true"
-                });
-            }
-
-            intentElement.ChildElements.Add(attributeElement);
+                remarks: classification.Remarks,
+                isRootElement: isRootElement);
         }
 
         return new(classElements, associations);
@@ -428,7 +301,7 @@ public static class JsonPersistableFactory
                 throw new ArgumentOutOfRangeException($"Cannot classify JSON element of type '{element.ValueKind}'");
         }
     }
-    
+
     private static string CreateFolderHierarchy(
         string directoryPath,
         Dictionary<string, ElementPersistable> createdFolders,
@@ -458,7 +331,7 @@ public static class JsonPersistableFactory
                     externalReference: $"folder:{currentPath}");
 
                 createdFolders[currentPath] = folderElement;
-                classElements.Add(new (folderElement, new Stack<string>(pathParts.Take(i + 1).Reverse())));
+                classElements.Add(new(folderElement, new Stack<string>(pathParts.Take(i + 1).Reverse())));
             }
 
             parentFolderId = folderElement.Id;

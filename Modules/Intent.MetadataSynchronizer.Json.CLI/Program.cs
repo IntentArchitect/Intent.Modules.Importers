@@ -161,19 +161,19 @@ namespace Intent.MetadataSynchronizer.Json.CLI
                     }
 
                     // Resolve settings from profile
-                    var settings = ProfileFactory.GetSettings(configFile.Profile);
+                    var visitor = ProfileFactory.GetVisitorForProfile(configFile.Profile);
 
                     Helpers.Execute(
                         intentSolutionPath: configFile.IslnFile,
                         applicationName: configFile.ApplicationName,
-                        designerName: settings.DesignerName,
+                        designerName: visitor.DesignerName,
                         packageId: configFile.PackageId,
                         targetFolderId: configFile.TargetFolderId,
                         deleteExtra: deleteExtra,
                         debug: debug,
                         createAttributesWithUnknownTypes: createAttributesWithUnknownTypes,
                         stereotypeManagementMode: stereotypeManagementMode,
-                        additionalPreconditionChecks: null,
+                        additionalPreconditionChecks: () => { },
                         getPersistables: packages => JsonPersistableFactory.GetPersistables(configFile, packages));
                 },
                 symbols: Enumerable.Empty<IValueDescriptor>()

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Intent.Engine;
@@ -43,7 +44,8 @@ public class JsonImport : ModuleTaskBase<JsonImportInputModel>
 
         // Validate that the package exists - use application config instead of input application ID
         var application = _configurationProvider.GetApplicationConfig();
-        if (!_metadataManager.TryGetApplicationPackage(application.Id, ProfileFactory.GetSettings(inputModel.Profile).DesignerName, inputModel.PackageId, out _, out var errorMessage))
+        var visitor = ProfileFactory.GetVisitorForProfile(inputModel.Profile);
+        if (!_metadataManager.TryGetApplicationPackage(application.Id, visitor.DesignerName, inputModel.PackageId, out _, out var errorMessage))
         {
             return ValidationResult.ErrorResult($"Package validation failed: {errorMessage}");
         }
@@ -74,7 +76,7 @@ public class JsonImport : ModuleTaskBase<JsonImportInputModel>
         };
 
         // Resolve settings from profile (same as CLI does)
-        var settings = ProfileFactory.GetSettings(config.Profile);
+        var visitor = ProfileFactory.GetVisitorForProfile(config.Profile);
 
         Logging.Log.Info($"Starting JSON import from {config.SourceJsonFolder} into package {config.PackageId}");
 
@@ -82,7 +84,7 @@ public class JsonImport : ModuleTaskBase<JsonImportInputModel>
         Intent.MetadataSynchronizer.Helpers.Execute(
             intentSolutionPath: config.IslnFile,
             applicationName: config.ApplicationName,
-            designerName: settings.DesignerName,
+            designerName: visitor.DesignerName,
             packageId: config.PackageId,
             targetFolderId: config.TargetFolderId,
             deleteExtra: false, // Default; can add UI toggle later
