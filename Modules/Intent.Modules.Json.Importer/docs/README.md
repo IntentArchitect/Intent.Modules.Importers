@@ -1,6 +1,6 @@
 # Intent.Json.Importer
 
-This module adds to Intent Architect the ability to import designs from JSON files. For example, importing a set of JSON files to create a domain model.
+This module adds to Intent Architect the ability to import metadata from JSON files. For example, importing a set of JSON files to create a domain model.
 
 ## How it works
 
@@ -8,7 +8,7 @@ The importer is available on specific packages in the designers. Right-click on 
 
 The profile used for the import is determined by the type of package you right-click on:
 
-- **Domain Designer**: Right-clicking on a `Domain Package` uses the `DomainDocumentDB` profile to import the JSON files as `Classes`.
+- **Domain Designer**: Right-clicking on a `Domain Package` uses the `DomainDocumentDB` profile to import the JSON files as `Entities`.
 - **Services Designer**: Right-clicking on an `Eventing Package` uses the `EventingMessages` profile to import the JSON files as `Messages`.
 
 ![JSON Import context menu item](images/json-import.png)
@@ -59,15 +59,15 @@ Type inference rules used by the importer:
 - Arrays infer their element type from the first element; empty arrays default to object[].
 - Arrays of arrays are not supported.
 
-### Domain-DocumentDB Profile
+### `DomainDocumentDB` Profile
 
-When using the `DomainDocumentDB` profile, each `.json` file is treated as a definition for a `Class` in the `Domain Designer`. The filename (without the extension) is used as the name of the `Class`. The JSON object's properties are imported as `Attributes` on that `Class`.
+When using the `DomainDocumentDB` profile, each `.json` file is treated as a definition for a `Entity` in the `Domain Designer`. The filename (without the extension) is used as the name of the `Entity`. The JSON object's properties are imported as `Attributes` on that `Entity`.
 
-Nested JSON objects will be modeled as separate `Classes` with composite (has-a) relationships between them. Arrays of objects will result in a composite relationship with a `many` cardinality.
+Nested JSON objects will be modeled as separate `Entities` with composite (has-a) relationships between them. Arrays of objects will result in a composite relationship with a `many` cardinality.
 
 **Example `user.json`:**
 
-This file will create a `User` class with attributes like `id`, `firstName`, `lastName`, `email`, and `createdAt`. It will also create an `Address` class and an `Order` class and establish composite relationships from the `User` class to them. The values `"guid"` and `"datetime"` are sentinel tokens used to infer Guid and DateTime types.
+This file will create a `User` entity with attributes like `id`, `firstName`, `lastName`, `email`, and `createdAt`. It will also create an `Address` entity and an `Order` entity and establish composite relationships from the `User` entity to them. The values `"guid"` and `"datetime"` are sentinel tokens used to infer `Guid` and `DateTime` types.
 
 ```json
 {
@@ -94,13 +94,13 @@ Diagram representation:
 
 ![Domain Entities](images/domain-entities.png)
 
-### Eventing-Messages Profile
+### `EventingMessages` Profile
 
-When using the `EventingMessages` profile, each `.json` file is treated as a `Message` in the `Eventing Designer`. The filename (without the extension) is used as the name of the `Message`. Nested objects are created as `Data Transfer Objects` (DTOs) and linked to the message.
+When using the `EventingMessages` profile, each `.json` file is treated as a `Message` in the `Services Designer`. The filename (without the extension) is used as the name of the `Message`. Nested objects are created as `Eventing DTOs` and linked to the message.
 
 **Example `user-registered.json`:**
 
-This file will create a `UserRegistered` message with `userId`, `username`, and `registrationDate` properties. It will also create a `RegistrationDetails` DTO with a `source` property and associate it with the message. The values `"guid"` and `"datetime"` are sentinel tokens used to infer Guid and DateTime types.
+This file will create a `UserRegistered` message with `userId`, `username`, and `registrationDate` properties. It will also create a `RegistrationDetails` DTO with a `source` property and associate it with the message. The values `"guid"` and `"datetime"` are sentinel tokens used to infer `Guid` and `DateTime` types.
 
 ```json
 {
@@ -113,5 +113,7 @@ This file will create a `UserRegistered` message with `userId`, `username`, and 
   }
 }
 ```
+
+Tree-view representation:
 
 ![Eventing Message](images/eventing-message.png)
