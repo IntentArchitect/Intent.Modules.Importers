@@ -18,11 +18,18 @@ internal static class PersistableFactory
 
         var builderMetadataManager = new BuilderMetadataManager(package, csConfig);
 
-        var classDataAndBuilders = RegisterElements(csharpTypes.Classes, csConfig.TargetFolderId, builderMetadataManager);
-        PostProcessElements(csConfig.ImportProfile, classDataAndBuilders, classDataLookup, builderMetadataManager);
+        if (csConfig.ImportProfile.MapClassesTo != null)
+        {
+            var classDataAndBuilders = CreateElements(csharpTypes.Classes, csConfig.TargetFolderId, builderMetadataManager);
+            PostProcessElements(csConfig.ImportProfile, classDataAndBuilders, classDataLookup, builderMetadataManager);
+        }
+        else if (csConfig.ImportProfile.MapEnumsTo != null)
+        {
+            CreateEnums(csConfig.ImportProfile, csharpTypes.Enums, csConfig.TargetFolderId, builderMetadataManager);
+        }
     }
 
-    private static List<(ClassData, IElementPersistable)> RegisterElements(
+    private static List<(ClassData, IElementPersistable)> CreateElements(
         IList<ClassData> csharpTypes,
         string? targetFolderId,
         BuilderMetadataManager builderMetadataManager)
@@ -37,17 +44,47 @@ internal static class PersistableFactory
 
         return result;
     }
+
+    private static void CreateEnums(ImportProfileConfig profile, IList<EnumData> enums,
+        string? targetFolderId,
+        BuilderMetadataManager builderMetadataManager)
+    {
+        foreach (var enumData in enums)
+        {
+            var element = builderMetadataManager.GetElementByReference(enumData.GetIdentifier())
+                          ?? builderMetadataManager.CreateElement(profile.MapEnumsTo, enumData.Name, enumData.FilePath, enumData.GetIdentifier(), targetFolderId);
+            var settings = profile.MapEnumLiteralsTo;
+            if (settings != null)
+            {
+                foreach (var literal in enumData.Literals)
+                {
+                    var existingLiteral = element.ChildElements.SingleOrDefault(x => x.ExternalReference == $"{enumData.GetIdentifier()}+{literal.GetIdentifier()}")
+                                          ?? element.ChildElements.SingleOrDefault(x => x.Name == literal.Name);
+                    var newLiteral = existingLiteral ?? element.ChildElements.Add(
+                        id: Guid.NewGuid().ToString().ToLower(),
+                        specializationType: settings.SpecializationTypeId,
+                        specializationTypeId: settings.SpecializationType,
+                        name: literal.Name,
+                        parentId: element.Id,
+                        externalReference: $"{enumData.GetIdentifier()}+{literal.GetIdentifier()}");
+
+                    newLiteral.Value = literal.Value;
+                }
+            }
+        }
+    }
+
     private static void PostProcessElements(
         ImportProfileConfig profile,
         List<(ClassData, IElementPersistable)> classDataAndBuilders,
         Dictionary<string, ClassData> classDataLookup,
         BuilderMetadataManager builderMetadataManager)
     {
-        // handle associations first, so we can get a list of foreign keys to be used just below
-        List<IAssociationPersistable> associations = [];
         foreach (var classData in classDataLookup.Values)
         {
-            var propertiesThatAreAssociations = classData.Properties.Where(p => builderMetadataManager.GetElementByReference(p.Type)?.SpecializationTypeId == profile.MapClassesTo.SpecializationTypeId).ToArray();
+            var propertiesThatAreAssociations = classData.Properties.Where(p => 
+                profile.MapAssociationsTo != null &&
+                builderMetadataManager.GetElementByReference(p.Type)?.SpecializationTypeId == profile.MapClassesTo!.SpecializationTypeId).ToArray();
             foreach (var property in propertiesThatAreAssociations)
             {
                 if (!classDataLookup.TryGetValue(property.Type!, out var otherClass))
@@ -55,7 +92,7 @@ internal static class PersistableFactory
                     continue;
                 }
                 var existingAssociation = builderMetadataManager.GetAssociationByReference($"{classData.GetIdentifier()}+{property.GetIdentifier()}");
-                
+
                 // Is this a bi-directional association?
                 var bidirectionalProperty = otherClass.Properties
                     .FirstOrDefault(p => builderMetadataManager.GetElementByReference(p.Type)?.SpecializationTypeId == profile.MapClassesTo.SpecializationTypeId &&
@@ -124,7 +161,9 @@ internal static class PersistableFactory
                 }
             }
 
-            foreach (var prop in classData.Properties.Where(p => builderMetadataManager.GetElementByReference(p.Type)?.SpecializationTypeId != profile.MapClassesTo.SpecializationTypeId))
+            foreach (var prop in classData.Properties.Where(p =>
+                         profile.MapAssociationsTo == null || // was not handled as an association.
+                         builderMetadataManager.GetElementByReference(p.Type)?.SpecializationTypeId != profile.MapClassesTo.SpecializationTypeId))
             {
                 if (profile.MapPropertiesTo is null)
                 {

@@ -43,7 +43,7 @@ async function importJson(element: MacroApi.Context.IElementApi): Promise<void> 
         designerId: element.getPackage().designerId,
         packageId: element.getPackage().id,
         targetFolderId: element.specialization === "Folder" ? element.id : null,
-        profile: inputs.profile,
+        importProfileId: inputs.importProfileId,
         selectedFiles: selectedFiles,
         casingConvention: inputs.casingConvention,
     };
@@ -109,7 +109,7 @@ function createFolderSelectionPage(element: MacroApi.Context.IElementApi): Macro
                 value: "**/*.cs"
             },
             {
-                id: "profile",
+                id: "importProfileId",
                 fieldType: "select",
                 label: "Profile",
                 hint: "Select the import profile for these files.",
@@ -138,7 +138,10 @@ function getAvailableProfiles(packageModel: MacroApi.Context.IPackageApi): IProf
     const profiles: IProfileOption[] = [];
     
     if (packageModel.specialization == "Domain Package") {
-        profiles.push({ id: "DomainDocumentDB", description: "Domain Document DB Profile" });
+        profiles.push({ id: "domain-classes", description: "Domain Classes" });
+        profiles.push({ id: "domain-enums", description: "Domain Enums" });
+        profiles.push({ id: "domain-events", description: "Domain Events" });
+        profiles.push({ id: "domain-contracts", description: "Domain Contracts" });
     }
 
     if (packageModel.specialization == "Eventing Package") {
@@ -215,6 +218,7 @@ function buildTree(rootName: string, files: IFileData[]) : MacroApi.Context.ISel
         id: "folder/root",
         label: `${rootName} (${files.length} found)`,
         icon: Icons.Folder,
+        expandedIcon: Icons.OpenFolder,
         isSelected: true,
         isExpanded: true,
         children: []
@@ -236,7 +240,7 @@ function buildTree(rootName: string, files: IFileData[]) : MacroApi.Context.ISel
                         label: part,
                         isExpanded: false,
                         isSelected: true,
-                        icon: Icons.JsonFile,
+                        icon: Icons.CSharpFile,
                         children: []
                     }
                     : {
@@ -246,6 +250,7 @@ function buildTree(rootName: string, files: IFileData[]) : MacroApi.Context.ISel
                         isExpanded: true,
                         isSelected: true,
                         icon: Icons.Folder,
+                        expandedIcon: Icons.OpenFolder,
                         children: []
                     };
                 node.children.push(child);

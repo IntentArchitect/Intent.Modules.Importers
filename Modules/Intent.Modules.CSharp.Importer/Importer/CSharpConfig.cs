@@ -5,6 +5,7 @@ namespace Intent.Modules.CSharp.Importer.Importer;
 
 public record ImportProfileConfig
 {
+    public required string Identifier { get; init; }
     public IElementSettings? MapClassesTo { get; init; }
     public IElementSettings? MapPropertiesTo { get; init; }
     public IElementSettings? MapMethodsTo { get; init; }

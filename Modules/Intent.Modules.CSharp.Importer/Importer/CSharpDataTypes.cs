@@ -30,12 +30,22 @@ public record EnumData
     public string Namespace { get; init; }
     public string Name { get; init; }
     public IReadOnlyList<EnumLiteralData> Literals { get; init; }
+
+    public string GetIdentifier()
+    {
+        return $"{Namespace}.{Name}";
+    }
 }
 
 public record EnumLiteralData
 {
     public string Name { get; init; }
     public string? Value { get; init; }
+
+    public string GetIdentifier()
+    {
+        return Name;
+    }
 }
 
 public record ConstructorData

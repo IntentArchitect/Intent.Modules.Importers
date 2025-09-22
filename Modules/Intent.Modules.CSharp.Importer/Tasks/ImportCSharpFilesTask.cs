@@ -41,21 +41,11 @@ namespace Intent.Modules.CSharp.Importer.Tasks
             var designer = application.GetDesigner(importModel.DesignerId);
             var targetPackage = designer.GetPackage(importModel.PackageId);
 
+            var profile = GetProfile(importModel.ImportProfileId, designer);
 
             targetPackage.ImportCSharpTypes(importedTypes, new CSharpConfig()
             {
-                ImportProfile = new ImportProfileConfig()
-                {
-                    MapClassesTo = designer.GetElementSettings("04e12b51-ed12-42a3-9667-a6aa81bb6d10"),
-                    MapPropertiesTo = designer.GetElementSettings("0090fb93-483e-41af-a11d-5ad2dc796adf"),
-                    MapAssociationsTo = designer.GetAssociationSettings("eaf9ed4e-0b61-4ac1-ba88-09f912c12087"),
-                    //MapClassesTo = new ElementSettings("04e12b51-ed12-42a3-9667-a6aa81bb6d10", "Class"),
-                    //MapPropertiesTo = new ElementSettings("0090fb93-483e-41af-a11d-5ad2dc796adf", "Attribute"),
-                    //MapAssociationsTo = new AssociationSettings(specializationTypeId: "0a66489f-30aa-417b-a75d-b945863366fd",
-                    //    specializationType: "Association",
-                    //    sourceEnd: new AssociationEndSettings("8d9d2e5b-bd55-4f36-9ae4-2b9e84fd4e58", "Association Source End"),
-                    //    targetEnd: new AssociationEndSettings("eaf9ed4e-0b61-4ac1-ba88-09f912c12087", "Association Target End")),
-                },
+                ImportProfile = profile,
                 TargetFolder = importModel.SourceFolder,
                 TargetFolderId = importModel.TargetFolderId
             });
@@ -63,6 +53,39 @@ namespace Intent.Modules.CSharp.Importer.Tasks
             targetPackage.Save();
 
             return new ExecuteResult<int>();
+        }
+
+        private ImportProfileConfig GetProfile(string identifier, IApplicationDesignerPersistable designer)
+        {
+            var profiles = new[] {
+                new ImportProfileConfig()
+                {
+                    Identifier = "domain-classes",
+                    MapClassesTo = designer.GetElementSettings("04e12b51-ed12-42a3-9667-a6aa81bb6d10"),
+                    MapPropertiesTo = designer.GetElementSettings("0090fb93-483e-41af-a11d-5ad2dc796adf"),
+                    MapAssociationsTo = designer.GetAssociationSettings("eaf9ed4e-0b61-4ac1-ba88-09f912c12087"),
+                },
+                new ImportProfileConfig()
+                {
+                    Identifier = "domain-enums",
+                    MapEnumsTo = designer.GetElementSettings("85fba0e9-9161-4c85-a603-a229ef312beb"),
+                    MapEnumLiteralsTo= designer.GetElementSettings("4215f417-25d2-4509-9309-5076a1452eaa"),
+                },
+                new ImportProfileConfig()
+                {
+                    Identifier = "domain-events",
+                    MapClassesTo = designer.GetElementSettings("0814e459-fb9b-47db-b7eb-32ce30397e8a"),
+                    MapPropertiesTo = designer.GetElementSettings("b4d69073-5abb-4968-b41b-545b2f7408ed"),
+                },
+                new ImportProfileConfig()
+                {
+                    Identifier = "domain-contracts",
+                    MapClassesTo = designer.GetElementSettings("4464fabe-c59e-4d90-81fc-c9245bdd1afd"),
+                    MapPropertiesTo = designer.GetElementSettings("8ebd48a9-eae7-451b-92de-22b6c8ee838c"),
+                },
+            };
+
+            return profiles.SingleOrDefault(x => x.Identifier == identifier) ?? throw new Exception($"No profile with id '{identifier ?? "null"}' exists.");
         }
     }
 }

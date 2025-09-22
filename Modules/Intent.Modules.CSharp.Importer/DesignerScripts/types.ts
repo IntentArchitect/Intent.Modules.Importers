@@ -13,7 +13,7 @@ interface IImportConfig {
     designerId: string;
     packageId: string;
     targetFolderId: string | null;
-    profile: string;
+    importProfileId: string;
     selectedFiles: string[];
     casingConvention: string;
 }

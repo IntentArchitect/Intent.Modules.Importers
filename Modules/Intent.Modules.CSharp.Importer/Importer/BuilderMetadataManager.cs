@@ -116,6 +116,11 @@ public class BuilderMetadataManager
 
     public IElementPersistable CreateElement(ClassData classData, string? targetFolderId)
     {
+        var settings = _config.ImportProfile.MapClassesTo;
+        if (settings == null)
+        {
+            throw new Exception("No Class settings specified for the import profile");
+        }
         var externalReference = classData.GetIdentifier();
         if (GetElementByReference(externalReference) != null)
         {
@@ -135,7 +140,6 @@ public class BuilderMetadataManager
             relativeFolderPath: GetRelativeLocation(classData.FilePath, _config.TargetFolder!),
             targetFolderId: _config.TargetFolderId);
 
-        var settings = _config.ImportProfile.MapClassesTo;
 
         var element = _package.Classes.Add(
             id: Guid.NewGuid().ToString().ToLower(),
@@ -144,6 +148,44 @@ public class BuilderMetadataManager
             name: classData.Name,
             parentId: folders.LastOrDefault()?.Id ?? targetFolderId ?? _package.Id,
             externalReference: externalReference);
+        _metadataLookup.AddElement(element);
+        _elementsToAdd.Add(element);
+        return element;
+    }
+
+    public IElementPersistable? CreateElement(IElementSettings settings, string name, string relativeFilePath, string externalReference, string? targetFolderId)
+    {
+        if (settings == null)
+        {
+            throw new Exception("No Enum settings specified for the import profile");
+        }
+
+        if (GetElementByReference(externalReference) != null)
+        {
+            throw new Exception("An element with external reference \"" + externalReference + "\" already exists");
+        }
+        if (string.IsNullOrWhiteSpace(externalReference))
+        {
+            throw new ArgumentNullException(nameof(externalReference));
+        }
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            ArgumentException.ThrowIfNullOrEmpty(nameof(name));
+        }
+
+        var folders = GetFolderElements(
+            relativeFolderPath: GetRelativeLocation(relativeFilePath, _config.TargetFolder!),
+            targetFolderId: _config.TargetFolderId);
+
+        var element = _package.Classes.Add(
+            id: Guid.NewGuid().ToString().ToLower(),
+            specializationType: settings.SpecializationType,
+            specializationTypeId: settings.SpecializationTypeId,
+            name: name,
+            parentId: folders.LastOrDefault()?.Id ?? targetFolderId ?? _package.Id,
+            externalReference: externalReference);
+
         _metadataLookup.AddElement(element);
         _elementsToAdd.Add(element);
         return element;

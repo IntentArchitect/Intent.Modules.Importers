@@ -13,6 +13,7 @@ public class ImportCSharpFileInputModel
     public string[] SelectedFiles { get; set; }
     public string DesignerId { get; set; }
     public string PackageId { get; set; }
+    public string ImportProfileId { get; set; }
     public string? TargetFolderId { get; set; }
 }
 
