@@ -257,6 +257,10 @@ declare namespace MacroApi.Context {
          * The icon of this node. A default icon will be used if this is not specified.
          */
         icon?: string | MacroApi.Context.IIcon;
+        /**
+         * This icon will be used only when the node is expanded.
+         */
+        expandedIcon?: string | MacroApi.Context.IIcon;
     }
 
     interface ISelectableTypeCriteria {

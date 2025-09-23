@@ -3,7 +3,7 @@ using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.IArchitect.Agent.Persistence.Model.Mappings;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI.Builders;
+namespace Intent.MetadataSynchronizer.CSharp.Importer.Builders;
 
 public class ElementMappingBuilder
 {

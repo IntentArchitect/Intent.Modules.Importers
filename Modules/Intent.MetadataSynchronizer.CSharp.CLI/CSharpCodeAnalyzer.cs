@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI;
+namespace Intent.MetadataSynchronizer.CSharp.Importer;
 
 internal static class CSharpCodeAnalyzer
 {

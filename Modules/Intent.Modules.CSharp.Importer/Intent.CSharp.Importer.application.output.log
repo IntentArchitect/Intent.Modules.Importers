@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<outputLog>
+  <ApplicationId>deae0622-b2d7-4e17-8f81-f7dcd267bd4e</ApplicationId>
+  <FileLogs>
+    <FileLog>
+      <CorrelationId>Intent.VisualStudio.Projects.VisualStudioSolution#10839593-0c2e-4d20-88f2-ba3b27512fee</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>../Intent.Modules.Importers.sln</ApplicationRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>4dc96601-03b4-477c-bc61-3bf0eb4a6afd</ProjectId>
+      <CorrelationId>Intent.ModuleBuilder.IModSpecFile#b941758f-a675-4c33-b6af-ef41ce4c1ba8</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>Intent.CSharp.Importer.imodspec</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>Intent.CSharp.Importer.imodspec</ProjectRelativeFilePath>
+      <IsIgnored>true</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>4dc96601-03b4-477c-bc61-3bf0eb4a6afd</ProjectId>
+      <CorrelationId>Intent.VisualStudio.Projects.CSharpProject#4dc96601-03b4-477c-bc61-3bf0eb4a6afd</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>Intent.Modules.CSharp.Importer.csproj</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>Intent.Modules.CSharp.Importer.csproj</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>91fc8986-a1ae-48f9-95a4-02b73c44da5c</ProjectId>
+      <CorrelationId>Intent.ModuleBuilder.DesignerSettings#71a18671-23ed-43f9-bd3a-c36c3011f7ce</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>modelers/Domain Designer Settings.designer.settings</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>Domain Designer Settings.designer.settings</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>91fc8986-a1ae-48f9-95a4-02b73c44da5c</ProjectId>
+      <CorrelationId>Intent.ModuleBuilder.DesignerSettings#aceeb2a6-cbca-461b-9bc0-f944543cb6b1</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>modelers/Service Designer Settings.designer.settings</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>Service Designer Settings.designer.settings</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>4dc96601-03b4-477c-bc61-3bf0eb4a6afd</ProjectId>
+      <CorrelationId>Intent.ModuleBuilder.Templates.ReleaseNotes#59bf95e4-1c19-4d24-a402-9ae90241fde9</CorrelationId>
+      <OverwriteBehaviour>once-off</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>release-notes.md</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>release-notes.md</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>032dc2c0-edbf-4388-8c32-776806775c3b</ProjectId>
+      <CorrelationId>Intent.ModuleBuilder.Templates.ModuleTask#209110b2-b524-4b1a-933a-ee4aae04ca32</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>Tasks/ImportCSharpFilesTask.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>ImportCSharpFilesTask.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+  </FileLogs>
+</outputLog>

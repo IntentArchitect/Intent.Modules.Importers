@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings version="3.1.1">
+  <id>aceeb2a6-cbca-461b-9bc0-f944543cb6b1</id>
+  <name>Service Designer Settings</name>
+  <designerReferences />
+  <packageSettings />
+  <packageExtensions>
+    <packageExtension type="Eventing Package" typeId="df96d537-7bb5-4c49-811f-973fa6e95beb">
+      <requiredPackages />
+      <contextMenuOptions>
+        <runScript group="2" type="run-script">
+          <text>Import from C# Files</text>
+          <icon type="UrlImagePath" source="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmZpbGVfdHlwZV9jc2hhcnAyPC90aXRsZT48cGF0aCBkPSJNMjksMTAuMjMyYTIuMzg3LDIuMzg3LDAsMCwwLS4zMTgtMS4yNDQsMi40NTEsMi40NTEsMCwwLDAtLjkzNi0uODc5UTIyLjU1Miw1LjI0MSwxNy4zNTMsMi4zNzZBMi42NDIsMi42NDIsMCwwLDAsMTQuNTksMi40Yy0xLjM3OC43NzktOC4yNzUsNC41NjUtMTAuMzMxLDUuNzA2QTIuMjg3LDIuMjg3LDAsMCwwLDMsMTAuMjMxVjIxLjc3YTIuNCwyLjQsMCwwLDAsLjMsMS4yMiwyLjQzNCwyLjQzNCwwLDAsMCwuOTU0LjljMi4wNTYsMS4xNDEsOC45NTQsNC45MjcsMTAuMzMyLDUuNzA2YTIuNjQyLDIuNjQyLDAsMCwwLDIuNzYzLjAyNnE1LjE5LTIuODcxLDEwLjM4Ni01LjczM2EyLjQ0NCwyLjQ0NCwwLDAsMCwuOTU1LS45LDIuNCwyLjQsMCwwLDAsLjMtMS4yMlYxMC4yMzIiIHN0eWxlPSJmaWxsOiM0ZTk5NGEiLz48cGF0aCBkPSJNMjguNTQ5LDIzLjE3MWEyLjEyNiwyLjEyNiwwLDAsMCwuMTQ3LS4xODIsMi40LDIuNCwwLDAsMCwuMy0xLjIyVjEwLjIzMmEyLjM4NywyLjM4NywwLDAsMC0uMzE4LTEuMjQ0Yy0uMDM2LS4wNTktLjA4OS0uMTA1LS4xMy0uMTZMMTYsMTZaIiBzdHlsZT0iZmlsbDojMzU4MjMwIi8+PHBhdGggZD0iTTI4LjU0OSwyMy4xNzEsMTYsMTYsMy40NTEsMjMuMTcxYTIuNDM1LDIuNDM1LDAsMCwwLC44MDkuNzJjMi4wNTYsMS4xNDEsOC45NTQsNC45MjcsMTAuMzMyLDUuNzA2YTIuNjQyLDIuNjQyLDAsMCwwLDIuNzYzLjAyNnE1LjE5LTIuODcxLDEwLjM4Ni01LjczM0EyLjQzLDIuNDMsMCwwLDAsMjguNTQ5LDIzLjE3MVoiIHN0eWxlPSJmaWxsOiMxYTc1MTUiLz48cGF0aCBkPSJNMTkuNiwxOC4wMmE0LjEyMSw0LjEyMSwwLDEsMS0uMDI3LTQuMDg3bDMuNjE1LTIuMDczQTguMzA5LDguMzA5LDAsMCwwLDcuNywxNmE4LjIxNiw4LjIxNiwwLDAsMCwxLjEsNC4xMTdBOC4zMTksOC4zMTksMCwwLDAsMjMuMjExLDIwLjFMMTkuNiwxOC4wMiIgc3R5bGU9ImZpbGw6I2ZmZiIvPjxwYXRoIGQ9Ik0yNy42NywxNS4yNzFWMTQuMDMzSDI2LjY2M1YxMy4wMjdIMjUuNDI0djEuMDA2SDIzLjkxNlYxMy4wMjdIMjIuNjc3djEuMDA2SDIxLjY2OXYxLjIzOGgxLjAwNnYxLjUxM0gyMS42Njl2MS4yMzdoMS4wMDZ2MS4wMDZoMS4yMzlWMTguMDIxaDEuNTA5djEuMDA2aDEuMjM5VjE4LjAyMWgxLjAwNlYxNi43ODRoLTFWMTUuMjcxWm0tMi4yNDYsMS41MTNIMjMuOTE2VjE1LjI3MWgxLjUwOFoiIHN0eWxlPSJmaWxsOiNmZmYiLz48L3N2Zz4=" />
+          <dependencies>
+            <dependency name="ServicesJsonImportCore" id="897429b3-3af8-4301-8764-a4947b16ec5b" />
+          </dependencies>
+          <script>await importJson(element);</script>
+        </runScript>
+      </contextMenuOptions>
+      <creationOptions />
+      <scriptOptions>
+        <option group="2" type="run-script">
+          <text>Import from C# Files</text>
+          <icon type="UrlImagePath" source="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmZpbGVfdHlwZV9jc2hhcnAyPC90aXRsZT48cGF0aCBkPSJNMjksMTAuMjMyYTIuMzg3LDIuMzg3LDAsMCwwLS4zMTgtMS4yNDQsMi40NTEsMi40NTEsMCwwLDAtLjkzNi0uODc5UTIyLjU1Miw1LjI0MSwxNy4zNTMsMi4zNzZBMi42NDIsMi42NDIsMCwwLDAsMTQuNTksMi40Yy0xLjM3OC43NzktOC4yNzUsNC41NjUtMTAuMzMxLDUuNzA2QTIuMjg3LDIuMjg3LDAsMCwwLDMsMTAuMjMxVjIxLjc3YTIuNCwyLjQsMCwwLDAsLjMsMS4yMiwyLjQzNCwyLjQzNCwwLDAsMCwuOTU0LjljMi4wNTYsMS4xNDEsOC45NTQsNC45MjcsMTAuMzMyLDUuNzA2YTIuNjQyLDIuNjQyLDAsMCwwLDIuNzYzLjAyNnE1LjE5LTIuODcxLDEwLjM4Ni01LjczM2EyLjQ0NCwyLjQ0NCwwLDAsMCwuOTU1LS45LDIuNCwyLjQsMCwwLDAsLjMtMS4yMlYxMC4yMzIiIHN0eWxlPSJmaWxsOiM0ZTk5NGEiLz48cGF0aCBkPSJNMjguNTQ5LDIzLjE3MWEyLjEyNiwyLjEyNiwwLDAsMCwuMTQ3LS4xODIsMi40LDIuNCwwLDAsMCwuMy0xLjIyVjEwLjIzMmEyLjM4NywyLjM4NywwLDAsMC0uMzE4LTEuMjQ0Yy0uMDM2LS4wNTktLjA4OS0uMTA1LS4xMy0uMTZMMTYsMTZaIiBzdHlsZT0iZmlsbDojMzU4MjMwIi8+PHBhdGggZD0iTTI4LjU0OSwyMy4xNzEsMTYsMTYsMy40NTEsMjMuMTcxYTIuNDM1LDIuNDM1LDAsMCwwLC44MDkuNzJjMi4wNTYsMS4xNDEsOC45NTQsNC45MjcsMTAuMzMyLDUuNzA2YTIuNjQyLDIuNjQyLDAsMCwwLDIuNzYzLjAyNnE1LjE5LTIuODcxLDEwLjM4Ni01LjczM0EyLjQzLDIuNDMsMCwwLDAsMjguNTQ5LDIzLjE3MVoiIHN0eWxlPSJmaWxsOiMxYTc1MTUiLz48cGF0aCBkPSJNMTkuNiwxOC4wMmE0LjEyMSw0LjEyMSwwLDEsMS0uMDI3LTQuMDg3bDMuNjE1LTIuMDczQTguMzA5LDguMzA5LDAsMCwwLDcuNywxNmE4LjIxNiw4LjIxNiwwLDAsMCwxLjEsNC4xMTdBOC4zMTksOC4zMTksMCwwLDAsMjMuMjExLDIwLjFMMTkuNiwxOC4wMiIgc3R5bGU9ImZpbGw6I2ZmZiIvPjxwYXRoIGQ9Ik0yNy42NywxNS4yNzFWMTQuMDMzSDI2LjY2M1YxMy4wMjdIMjUuNDI0djEuMDA2SDIzLjkxNlYxMy4wMjdIMjIuNjc3djEuMDA2SDIxLjY2OXYxLjIzOGgxLjAwNnYxLjUxM0gyMS42Njl2MS4yMzdoMS4wMDZ2MS4wMDZoMS4yMzlWMTguMDIxaDEuNTA5djEuMDA2aDEuMjM5VjE4LjAyMWgxLjAwNlYxNi43ODRoLTFWMTUuMjcxWm0tMi4yNDYsMS41MTNIMjMuOTE2VjE1LjI3MWgxLjUwOFoiIHN0eWxlPSJmaWxsOiNmZmYiLz48L3N2Zz4=" />
+          <dependencies>
+            <dependency name="ServicesJsonImportCore" id="897429b3-3af8-4301-8764-a4947b16ec5b" />
+          </dependencies>
+          <script>await importJson(element);</script>
+        </option>
+      </scriptOptions>
+      <typeOrder />
+    </packageExtension>
+    <packageExtension type="Services Package" typeId="df45eaf6-9202-4c25-8dd5-677e9ba1e906">
+      <requiredPackages />
+      <contextMenuOptions>
+        <runScript group="2" type="run-script">
+          <text>Import from C# Files</text>
+          <icon type="UrlImagePath" source="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmZpbGVfdHlwZV9jc2hhcnAyPC90aXRsZT48cGF0aCBkPSJNMjksMTAuMjMyYTIuMzg3LDIuMzg3LDAsMCwwLS4zMTgtMS4yNDQsMi40NTEsMi40NTEsMCwwLDAtLjkzNi0uODc5UTIyLjU1Miw1LjI0MSwxNy4zNTMsMi4zNzZBMi42NDIsMi42NDIsMCwwLDAsMTQuNTksMi40Yy0xLjM3OC43NzktOC4yNzUsNC41NjUtMTAuMzMxLDUuNzA2QTIuMjg3LDIuMjg3LDAsMCwwLDMsMTAuMjMxVjIxLjc3YTIuNCwyLjQsMCwwLDAsLjMsMS4yMiwyLjQzNCwyLjQzNCwwLDAsMCwuOTU0LjljMi4wNTYsMS4xNDEsOC45NTQsNC45MjcsMTAuMzMyLDUuNzA2YTIuNjQyLDIuNjQyLDAsMCwwLDIuNzYzLjAyNnE1LjE5LTIuODcxLDEwLjM4Ni01LjczM2EyLjQ0NCwyLjQ0NCwwLDAsMCwuOTU1LS45LDIuNCwyLjQsMCwwLDAsLjMtMS4yMlYxMC4yMzIiIHN0eWxlPSJmaWxsOiM0ZTk5NGEiLz48cGF0aCBkPSJNMjguNTQ5LDIzLjE3MWEyLjEyNiwyLjEyNiwwLDAsMCwuMTQ3LS4xODIsMi40LDIuNCwwLDAsMCwuMy0xLjIyVjEwLjIzMmEyLjM4NywyLjM4NywwLDAsMC0uMzE4LTEuMjQ0Yy0uMDM2LS4wNTktLjA4OS0uMTA1LS4xMy0uMTZMMTYsMTZaIiBzdHlsZT0iZmlsbDojMzU4MjMwIi8+PHBhdGggZD0iTTI4LjU0OSwyMy4xNzEsMTYsMTYsMy40NTEsMjMuMTcxYTIuNDM1LDIuNDM1LDAsMCwwLC44MDkuNzJjMi4wNTYsMS4xNDEsOC45NTQsNC45MjcsMTAuMzMyLDUuNzA2YTIuNjQyLDIuNjQyLDAsMCwwLDIuNzYzLjAyNnE1LjE5LTIuODcxLDEwLjM4Ni01LjczM0EyLjQzLDIuNDMsMCwwLDAsMjguNTQ5LDIzLjE3MVoiIHN0eWxlPSJmaWxsOiMxYTc1MTUiLz48cGF0aCBkPSJNMTkuNiwxOC4wMmE0LjEyMSw0LjEyMSwwLDEsMS0uMDI3LTQuMDg3bDMuNjE1LTIuMDczQTguMzA5LDguMzA5LDAsMCwwLDcuNywxNmE4LjIxNiw4LjIxNiwwLDAsMCwxLjEsNC4xMTdBOC4zMTksOC4zMTksMCwwLDAsMjMuMjExLDIwLjFMMTkuNiwxOC4wMiIgc3R5bGU9ImZpbGw6I2ZmZiIvPjxwYXRoIGQ9Ik0yNy42NywxNS4yNzFWMTQuMDMzSDI2LjY2M1YxMy4wMjdIMjUuNDI0djEuMDA2SDIzLjkxNlYxMy4wMjdIMjIuNjc3djEuMDA2SDIxLjY2OXYxLjIzOGgxLjAwNnYxLjUxM0gyMS42Njl2MS4yMzdoMS4wMDZ2MS4wMDZoMS4yMzlWMTguMDIxaDEuNTA5djEuMDA2aDEuMjM5VjE4LjAyMWgxLjAwNlYxNi43ODRoLTFWMTUuMjcxWm0tMi4yNDYsMS41MTNIMjMuOTE2VjE1LjI3MWgxLjUwOFoiIHN0eWxlPSJmaWxsOiNmZmYiLz48L3N2Zz4=" />
+          <dependencies>
+            <dependency name="ServicesJsonImportCore" id="897429b3-3af8-4301-8764-a4947b16ec5b" />
+          </dependencies>
+          <script>await importJson(element);</script>
+        </runScript>
+      </contextMenuOptions>
+      <creationOptions />
+      <scriptOptions>
+        <option group="2" type="run-script">
+          <text>Import from C# Files</text>
+          <icon type="UrlImagePath" source="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmZpbGVfdHlwZV9jc2hhcnAyPC90aXRsZT48cGF0aCBkPSJNMjksMTAuMjMyYTIuMzg3LDIuMzg3LDAsMCwwLS4zMTgtMS4yNDQsMi40NTEsMi40NTEsMCwwLDAtLjkzNi0uODc5UTIyLjU1Miw1LjI0MSwxNy4zNTMsMi4zNzZBMi42NDIsMi42NDIsMCwwLDAsMTQuNTksMi40Yy0xLjM3OC43NzktOC4yNzUsNC41NjUtMTAuMzMxLDUuNzA2QTIuMjg3LDIuMjg3LDAsMCwwLDMsMTAuMjMxVjIxLjc3YTIuNCwyLjQsMCwwLDAsLjMsMS4yMiwyLjQzNCwyLjQzNCwwLDAsMCwuOTU0LjljMi4wNTYsMS4xNDEsOC45NTQsNC45MjcsMTAuMzMyLDUuNzA2YTIuNjQyLDIuNjQyLDAsMCwwLDIuNzYzLjAyNnE1LjE5LTIuODcxLDEwLjM4Ni01LjczM2EyLjQ0NCwyLjQ0NCwwLDAsMCwuOTU1LS45LDIuNCwyLjQsMCwwLDAsLjMtMS4yMlYxMC4yMzIiIHN0eWxlPSJmaWxsOiM0ZTk5NGEiLz48cGF0aCBkPSJNMjguNTQ5LDIzLjE3MWEyLjEyNiwyLjEyNiwwLDAsMCwuMTQ3LS4xODIsMi40LDIuNCwwLDAsMCwuMy0xLjIyVjEwLjIzMmEyLjM4NywyLjM4NywwLDAsMC0uMzE4LTEuMjQ0Yy0uMDM2LS4wNTktLjA4OS0uMTA1LS4xMy0uMTZMMTYsMTZaIiBzdHlsZT0iZmlsbDojMzU4MjMwIi8+PHBhdGggZD0iTTI4LjU0OSwyMy4xNzEsMTYsMTYsMy40NTEsMjMuMTcxYTIuNDM1LDIuNDM1LDAsMCwwLC44MDkuNzJjMi4wNTYsMS4xNDEsOC45NTQsNC45MjcsMTAuMzMyLDUuNzA2YTIuNjQyLDIuNjQyLDAsMCwwLDIuNzYzLjAyNnE1LjE5LTIuODcxLDEwLjM4Ni01LjczM0EyLjQzLDIuNDMsMCwwLDAsMjguNTQ5LDIzLjE3MVoiIHN0eWxlPSJmaWxsOiMxYTc1MTUiLz48cGF0aCBkPSJNMTkuNiwxOC4wMmE0LjEyMSw0LjEyMSwwLDEsMS0uMDI3LTQuMDg3bDMuNjE1LTIuMDczQTguMzA5LDguMzA5LDAsMCwwLDcuNywxNmE4LjIxNiw4LjIxNiwwLDAsMCwxLjEsNC4xMTdBOC4zMTksOC4zMTksMCwwLDAsMjMuMjExLDIwLjFMMTkuNiwxOC4wMiIgc3R5bGU9ImZpbGw6I2ZmZiIvPjxwYXRoIGQ9Ik0yNy42NywxNS4yNzFWMTQuMDMzSDI2LjY2M1YxMy4wMjdIMjUuNDI0djEuMDA2SDIzLjkxNlYxMy4wMjdIMjIuNjc3djEuMDA2SDIxLjY2OXYxLjIzOGgxLjAwNnYxLjUxM0gyMS42Njl2MS4yMzdoMS4wMDZ2MS4wMDZoMS4yMzlWMTguMDIxaDEuNTA5djEuMDA2aDEuMjM5VjE4LjAyMWgxLjAwNlYxNi43ODRoLTFWMTUuMjcxWm0tMi4yNDYsMS41MTNIMjMuOTE2VjE1LjI3MWgxLjUwOFoiIHN0eWxlPSJmaWxsOiNmZmYiLz48L3N2Zz4=" />
+          <dependencies>
+            <dependency name="ServicesJsonImportCore" id="897429b3-3af8-4301-8764-a4947b16ec5b" />
+          </dependencies>
+          <script>await importJson(element);</script>
+        </option>
+      </scriptOptions>
+      <typeOrder />
+    </packageExtension>
+  </packageExtensions>
+  <elementSettings />
+  <elementExtensions>
+    <elementExtension type="Folder" typeId="4d95d53a-8855-4f35-aa82-e312643f5c5f">
+      <contextMenuOptions>
+        <runScript group="2" type="run-script">
+          <text>Import from C# Files</text>
+          <icon type="UrlImagePath" source="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmZpbGVfdHlwZV9jc2hhcnAyPC90aXRsZT48cGF0aCBkPSJNMjksMTAuMjMyYTIuMzg3LDIuMzg3LDAsMCwwLS4zMTgtMS4yNDQsMi40NTEsMi40NTEsMCwwLDAtLjkzNi0uODc5UTIyLjU1Miw1LjI0MSwxNy4zNTMsMi4zNzZBMi42NDIsMi42NDIsMCwwLDAsMTQuNTksMi40Yy0xLjM3OC43NzktOC4yNzUsNC41NjUtMTAuMzMxLDUuNzA2QTIuMjg3LDIuMjg3LDAsMCwwLDMsMTAuMjMxVjIxLjc3YTIuNCwyLjQsMCwwLDAsLjMsMS4yMiwyLjQzNCwyLjQzNCwwLDAsMCwuOTU0LjljMi4wNTYsMS4xNDEsOC45NTQsNC45MjcsMTAuMzMyLDUuNzA2YTIuNjQyLDIuNjQyLDAsMCwwLDIuNzYzLjAyNnE1LjE5LTIuODcxLDEwLjM4Ni01LjczM2EyLjQ0NCwyLjQ0NCwwLDAsMCwuOTU1LS45LDIuNCwyLjQsMCwwLDAsLjMtMS4yMlYxMC4yMzIiIHN0eWxlPSJmaWxsOiM0ZTk5NGEiLz48cGF0aCBkPSJNMjguNTQ5LDIzLjE3MWEyLjEyNiwyLjEyNiwwLDAsMCwuMTQ3LS4xODIsMi40LDIuNCwwLDAsMCwuMy0xLjIyVjEwLjIzMmEyLjM4NywyLjM4NywwLDAsMC0uMzE4LTEuMjQ0Yy0uMDM2LS4wNTktLjA4OS0uMTA1LS4xMy0uMTZMMTYsMTZaIiBzdHlsZT0iZmlsbDojMzU4MjMwIi8+PHBhdGggZD0iTTI4LjU0OSwyMy4xNzEsMTYsMTYsMy40NTEsMjMuMTcxYTIuNDM1LDIuNDM1LDAsMCwwLC44MDkuNzJjMi4wNTYsMS4xNDEsOC45NTQsNC45MjcsMTAuMzMyLDUuNzA2YTIuNjQyLDIuNjQyLDAsMCwwLDIuNzYzLjAyNnE1LjE5LTIuODcxLDEwLjM4Ni01LjczM0EyLjQzLDIuNDMsMCwwLDAsMjguNTQ5LDIzLjE3MVoiIHN0eWxlPSJmaWxsOiMxYTc1MTUiLz48cGF0aCBkPSJNMTkuNiwxOC4wMmE0LjEyMSw0LjEyMSwwLDEsMS0uMDI3LTQuMDg3bDMuNjE1LTIuMDczQTguMzA5LDguMzA5LDAsMCwwLDcuNywxNmE4LjIxNiw4LjIxNiwwLDAsMCwxLjEsNC4xMTdBOC4zMTksOC4zMTksMCwwLDAsMjMuMjExLDIwLjFMMTkuNiwxOC4wMiIgc3R5bGU9ImZpbGw6I2ZmZiIvPjxwYXRoIGQ9Ik0yNy42NywxNS4yNzFWMTQuMDMzSDI2LjY2M1YxMy4wMjdIMjUuNDI0djEuMDA2SDIzLjkxNlYxMy4wMjdIMjIuNjc3djEuMDA2SDIxLjY2OXYxLjIzOGgxLjAwNnYxLjUxM0gyMS42Njl2MS4yMzdoMS4wMDZ2MS4wMDZoMS4yMzlWMTguMDIxaDEuNTA5djEuMDA2aDEuMjM5VjE4LjAyMWgxLjAwNlYxNi43ODRoLTFWMTUuMjcxWm0tMi4yNDYsMS41MTNIMjMuOTE2VjE1LjI3MWgxLjUwOFoiIHN0eWxlPSJmaWxsOiNmZmYiLz48L3N2Zz4=" />
+          <dependencies>
+            <dependency name="ServicesJsonImportCore" id="897429b3-3af8-4301-8764-a4947b16ec5b" />
+          </dependencies>
+          <script>await importJson(element);</script>
+        </runScript>
+      </contextMenuOptions>
+      <typeOrder />
+      <mappingSettings />
+    </elementExtension>
+  </elementExtensions>
+  <associationSettings />
+  <associationExtensions />
+  <mappingSettings />
+  <mappableElementPackages />
+  <mappableElementPackageExtensions />
+  <scripts>
+    <script name="ServicesJsonImportCore" id="897429b3-3af8-4301-8764-a4947b16ec5b">
+      <filePath>scripts/csharp-importer-core.js</filePath>
+    </script>
+  </scripts>
+</settings>

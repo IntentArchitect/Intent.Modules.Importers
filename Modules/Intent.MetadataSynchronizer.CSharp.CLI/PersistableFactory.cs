@@ -1,11 +1,11 @@
 ﻿using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
-using Intent.MetadataSynchronizer.CSharp.CLI.Builders;
+using Intent.MetadataSynchronizer.CSharp.Importer.Builders;
 using Intent.Modelers.Domain.Api;
 using Intent.Modules.Common.Templates;
 using Intent.Modules.Common.Types.Api;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI;
+namespace Intent.MetadataSynchronizer.CSharp.Importer;
 
 internal static class PersistableFactory
 {

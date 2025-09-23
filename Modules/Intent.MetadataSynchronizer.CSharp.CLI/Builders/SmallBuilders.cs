@@ -5,7 +5,7 @@ using Intent.Modelers.Eventing.Api;
 using Intent.Modelers.Services.Api;
 using ParameterModel = Intent.Modelers.Domain.Api.ParameterModel;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI.Builders;
+namespace Intent.MetadataSynchronizer.CSharp.Importer.Builders;
 
 public record ParameterBuilder(string ParameterName, string ParameterType, bool ParameterTypeIsNullable, bool ParameterTypeIsCollection)
 {

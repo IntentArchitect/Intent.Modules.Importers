@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>8a5b3463-f42b-4328-ba6b-7350db970b84</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Intent.Modules.Shared.FileImporter</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Task\Helpers\MetadataManagerExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Task\Helpers\ModuleTaskBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Task\Helpers\SerializationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Task\FileDirectoryPreviewTask.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Task\Models\ExecuteResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Task\Models\Models.cs" />
+  </ItemGroup>
+</Project>

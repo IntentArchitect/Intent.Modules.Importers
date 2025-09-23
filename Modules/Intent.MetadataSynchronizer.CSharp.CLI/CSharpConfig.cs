@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI;
+namespace Intent.MetadataSynchronizer.CSharp.Importer;
 
 public record CSharpConfig
 {

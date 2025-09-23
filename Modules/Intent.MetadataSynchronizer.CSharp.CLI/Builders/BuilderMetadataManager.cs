@@ -7,7 +7,7 @@ using Intent.Modelers.Domain.ValueObjects.Api;
 using Intent.Modelers.Eventing.Api;
 using Intent.Modules.Common.Types.Api;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI.Builders;
+namespace Intent.MetadataSynchronizer.CSharp.Importer.Builders;
 
 public class BuilderMetadataManager
 {

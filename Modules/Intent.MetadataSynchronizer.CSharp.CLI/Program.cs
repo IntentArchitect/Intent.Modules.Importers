@@ -11,7 +11,7 @@ using Intent.MetadataSynchronizer.Configuration;
 using Intent.Modules.Common;
 using Intent.Modules.Common.Templates;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI;
+namespace Intent.MetadataSynchronizer.CSharp.Importer;
 
 class Program
 {

@@ -5,7 +5,7 @@ using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.MetadataSynchronizer;
 using Intent.MetadataSynchronizer.Configuration;
-using Intent.MetadataSynchronizer.CSharp.CLI.Builders;
+using Intent.MetadataSynchronizer.CSharp.Importer.Builders;
 using Intent.Modelers.Domain.Api;
 using Intent.Modules.Common.Templates;
 using AssociationType = System.Data.Entity.Core.Metadata.Edm.AssociationType;

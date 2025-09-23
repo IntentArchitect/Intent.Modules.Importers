@@ -2,7 +2,7 @@
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.Modelers.Domain.Api;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI.Builders;
+namespace Intent.MetadataSynchronizer.CSharp.Importer.Builders;
 
 public class AssociationBuilder
 {

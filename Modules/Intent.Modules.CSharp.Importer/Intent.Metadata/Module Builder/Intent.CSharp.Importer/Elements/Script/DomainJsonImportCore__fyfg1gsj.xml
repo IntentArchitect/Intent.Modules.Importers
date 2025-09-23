@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="944bd6c9-876c-4152-b064-9a1135012ec8" type="Script" typeId="101fd5b6-3159-4810-9490-a103ef323e9c">
+  <name>DomainJsonImportCore</name>
+  <display>DomainJsonImportCore</display>
+  <isAbstract>false</isAbstract>
+  <genericTypes />
+  <isMapped>false</isMapped>
+  <parentFolderId>71a18671-23ed-43f9-bd3a-c36c3011f7ce</parentFolderId>
+  <packageId>3e3cae34-c6d2-4a19-bd3e-1082f84d8ca3</packageId>
+  <packageName>Intent.CSharp.Importer</packageName>
+  <stereotypes>
+    <stereotype stereotypeDefinitionId="da7d632f-b07f-4c83-ab01-bc6175006aa5" name="Script Settings">
+      <addedByDefault>true</addedByDefault>
+      <definitionPackageName>Intent.ModuleBuilder</definitionPackageName>
+      <definitionPackageId>9972b2a9-b749-4bba-b5c8-824bf694c6ef</definitionPackageId>
+      <properties>
+        <property name="4708b6ef-0671-4ea1-a920-ccec2c9eb3ea" display="Type" value="File Resource" isActive="true" />
+        <property name="3256efdd-5d71-46f3-bd51-ef08a8d95526" display="Script" isActive="false" />
+        <property name="41cc0d56-3141-40fe-ae97-c024866d441e" display="File Path" value="scripts/csharp-importer-core.js" isActive="true" />
+        <property name="540780ad-f54e-4bd5-95f3-20a58fd59105" display="Dependencies" value="[]" isActive="true" />
+      </properties>
+    </stereotype>
+  </stereotypes>
+  <metadata />
+  <childElements />
+</class>

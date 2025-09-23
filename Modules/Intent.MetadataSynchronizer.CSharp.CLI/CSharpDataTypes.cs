@@ -1,4 +1,4 @@
-﻿namespace Intent.MetadataSynchronizer.CSharp.CLI;
+﻿namespace Intent.MetadataSynchronizer.CSharp.Importer;
 
 class CoreTypesData
 {

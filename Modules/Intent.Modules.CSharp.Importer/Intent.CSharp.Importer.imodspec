@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <id>Intent.CSharp.Importer</id>
+  <version>1.0.0-pre.0</version>
+  <supportedClientVersions>[4.5.18-a,5.0.0)</supportedClientVersions>
+  <summary>Support for importing C# code into the Domain and Services designers.</summary>
+  <description>Support for importing C# code into the Domain and Services designers.</description>
+  <authors>Intent Architect</authors>
+  <iconUrl>data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHRpdGxlPmZpbGVfdHlwZV9jc2hhcnAyPC90aXRsZT48cGF0aCBkPSJNMjksMTAuMjMyYTIuMzg3LDIuMzg3LDAsMCwwLS4zMTgtMS4yNDQsMi40NTEsMi40NTEsMCwwLDAtLjkzNi0uODc5UTIyLjU1Miw1LjI0MSwxNy4zNTMsMi4zNzZBMi42NDIsMi42NDIsMCwwLDAsMTQuNTksMi40Yy0xLjM3OC43NzktOC4yNzUsNC41NjUtMTAuMzMxLDUuNzA2QTIuMjg3LDIuMjg3LDAsMCwwLDMsMTAuMjMxVjIxLjc3YTIuNCwyLjQsMCwwLDAsLjMsMS4yMiwyLjQzNCwyLjQzNCwwLDAsMCwuOTU0LjljMi4wNTYsMS4xNDEsOC45NTQsNC45MjcsMTAuMzMyLDUuNzA2YTIuNjQyLDIuNjQyLDAsMCwwLDIuNzYzLjAyNnE1LjE5LTIuODcxLDEwLjM4Ni01LjczM2EyLjQ0NCwyLjQ0NCwwLDAsMCwuOTU1LS45LDIuNCwyLjQsMCwwLDAsLjMtMS4yMlYxMC4yMzIiIHN0eWxlPSJmaWxsOiM0ZTk5NGEiLz48cGF0aCBkPSJNMjguNTQ5LDIzLjE3MWEyLjEyNiwyLjEyNiwwLDAsMCwuMTQ3LS4xODIsMi40LDIuNCwwLDAsMCwuMy0xLjIyVjEwLjIzMmEyLjM4NywyLjM4NywwLDAsMC0uMzE4LTEuMjQ0Yy0uMDM2LS4wNTktLjA4OS0uMTA1LS4xMy0uMTZMMTYsMTZaIiBzdHlsZT0iZmlsbDojMzU4MjMwIi8+PHBhdGggZD0iTTI4LjU0OSwyMy4xNzEsMTYsMTYsMy40NTEsMjMuMTcxYTIuNDM1LDIuNDM1LDAsMCwwLC44MDkuNzJjMi4wNTYsMS4xNDEsOC45NTQsNC45MjcsMTAuMzMyLDUuNzA2YTIuNjQyLDIuNjQyLDAsMCwwLDIuNzYzLjAyNnE1LjE5LTIuODcxLDEwLjM4Ni01LjczM0EyLjQzLDIuNDMsMCwwLDAsMjguNTQ5LDIzLjE3MVoiIHN0eWxlPSJmaWxsOiMxYTc1MTUiLz48cGF0aCBkPSJNMTkuNiwxOC4wMmE0LjEyMSw0LjEyMSwwLDEsMS0uMDI3LTQuMDg3bDMuNjE1LTIuMDczQTguMzA5LDguMzA5LDAsMCwwLDcuNywxNmE4LjIxNiw4LjIxNiwwLDAsMCwxLjEsNC4xMTdBOC4zMTksOC4zMTksMCwwLDAsMjMuMjExLDIwLjFMMTkuNiwxOC4wMiIgc3R5bGU9ImZpbGw6I2ZmZiIvPjxwYXRoIGQ9Ik0yNy42NywxNS4yNzFWMTQuMDMzSDI2LjY2M1YxMy4wMjdIMjUuNDI0djEuMDA2SDIzLjkxNlYxMy4wMjdIMjIuNjc3djEuMDA2SDIxLjY2OXYxLjIzOGgxLjAwNnYxLjUxM0gyMS42Njl2MS4yMzdoMS4wMDZ2MS4wMDZoMS4yMzlWMTguMDIxaDEuNTA5djEuMDA2aDEuMjM5VjE4LjAyMWgxLjAwNlYxNi43ODRoLTFWMTUuMjcxWm0tMi4yNDYsMS41MTNIMjMuOTE2VjE1LjI3MWgxLjUwOFoiIHN0eWxlPSJmaWxsOiNmZmYiLz48L3N2Zz4=</iconUrl>
+  <tags>importer import c# csharp file</tags>
+  <templates></templates>
+  <decorators></decorators>
+  <factoryExtensions></factoryExtensions>
+  <moduleSettings></moduleSettings>
+  <dependencies>
+    <dependency id="Intent.Common" version="3.7.2" />
+    <dependency id="Intent.Common.Types" version="3.4.0" />
+  </dependencies>
+  <files>
+    <file src="$outDir$/$id$.dll" />
+    <file src="$outDir$/$id$.pdb" />
+  </files>
+  <moduleSettingsExtensions />
+  <metadata>
+    <install target="Domain" src="modelers/Domain Designer Settings.designer.settings" externalReference="71a18671-23ed-43f9-bd3a-c36c3011f7ce" />
+    <install target="Services" src="modelers/Service Designer Settings.designer.settings" externalReference="aceeb2a6-cbca-461b-9bc0-f944543cb6b1" />
+  </metadata>
+  <releaseNotes>release-notes.md</releaseNotes>
+  <migrations />
+</package>

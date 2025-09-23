@@ -1,6 +1,6 @@
 ﻿using Intent.IArchitect.Agent.Persistence.Model;
 
-namespace Intent.MetadataSynchronizer.CSharp.CLI.Builders;
+namespace Intent.MetadataSynchronizer.CSharp.Importer.Builders;
 
 public abstract class ElementBuilderBase
 {
