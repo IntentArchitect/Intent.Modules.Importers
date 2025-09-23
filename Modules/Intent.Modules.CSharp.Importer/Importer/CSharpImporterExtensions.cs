@@ -1,5 +1,6 @@
 ﻿using Intent.MetadataSynchronizer;
 using Intent.Persistence;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using IElementPersistable = Intent.Persistence.IElementPersistable;
 
 namespace Intent.Modules.CSharp.Importer.Importer;
@@ -14,8 +15,6 @@ internal static class CSharpImporterExtensions
             throw new InvalidOperationException($"{nameof(csConfig.TargetFolderId)} has value of '{csConfig.TargetFolderId}' which could not be found.");
         }
 
-        var classDataLookup = csharpTypes.Classes.ToDictionary(classData => classData.GetIdentifier());
-
         var builderMetadataManager = new BuilderMetadataManager(package, csConfig);
 
         if (csConfig.ImportProfile.MapEnumsTo != null)
@@ -24,12 +23,21 @@ internal static class CSharpImporterExtensions
         }
         if (csConfig.ImportProfile.MapClassesTo != null)
         {
-            var classDataAndBuilders = CreateElements(csharpTypes.Classes, csConfig.TargetFolderId, builderMetadataManager);
-            PostProcessElements(csConfig.ImportProfile, classDataAndBuilders, classDataLookup, builderMetadataManager);
+            var classElementsMap = CreateElements(csConfig.ImportProfile.MapClassesTo, csharpTypes.Classes, csConfig.TargetFolderId, builderMetadataManager);
+            ProcessElements(csConfig.ImportProfile, classElementsMap, builderMetadataManager);
+        }
+        else if (csConfig.ImportProfile.MapInterfacesTo != null)
+        {
+            var interfaceElementsMap = CreateElements(csConfig.ImportProfile.MapInterfacesTo, csharpTypes.Interfaces, csConfig.TargetFolderId, builderMetadataManager);
+            foreach (var (interfaceData, element) in interfaceElementsMap)
+            {
+                ProcessElement(csConfig.ImportProfile, builderMetadataManager, interfaceData, element);
+            }
         }
     }
 
     private static List<(ClassData, IElementPersistable)> CreateElements(
+        IElementSettings settings,
         IList<ClassData> csharpTypes,
         string? targetFolderId,
         BuilderMetadataManager builderMetadataManager)
@@ -38,8 +46,26 @@ internal static class CSharpImporterExtensions
 
         foreach (var classData in csharpTypes)
         {
-            var element = builderMetadataManager.GetElementByReference(classData.GetIdentifier()) 
-                          ?? builderMetadataManager.CreateElement(classData, targetFolderId);
+            var element = builderMetadataManager.GetElementByReference(classData.GetIdentifier())
+                          ?? builderMetadataManager.CreateElement(settings, classData.Name, classData.FilePath, classData.GetIdentifier(), targetFolderId);
+            result.Add((classData, element));
+        }
+
+        return result;
+    }
+
+    private static List<(InterfaceData, IElementPersistable)> CreateElements(
+        IElementSettings settings,
+        IList<InterfaceData> csharpTypes,
+        string? targetFolderId,
+        BuilderMetadataManager builderMetadataManager)
+    {
+        var result = new List<(InterfaceData, IElementPersistable)>();
+
+        foreach (var classData in csharpTypes)
+        {
+            var element = builderMetadataManager.GetElementByReference(classData.GetIdentifier())
+                          ?? builderMetadataManager.CreateElement(settings, classData.Name, classData.FilePath, classData.GetIdentifier(), targetFolderId);
             result.Add((classData, element));
         }
 
@@ -75,15 +101,16 @@ internal static class CSharpImporterExtensions
         }
     }
 
-    private static void PostProcessElements(
+    private static void ProcessElements(
         ImportProfileConfig profile,
-        List<(ClassData, IElementPersistable)> classDataAndBuilders,
-        Dictionary<string, ClassData> classDataLookup,
+        List<(ClassData ClassData, IElementPersistable Element)> classDataAndBuilders,
         BuilderMetadataManager builderMetadataManager)
     {
+        var classDataLookup = classDataAndBuilders.Select(x => x.ClassData).ToDictionary(classData => classData.GetIdentifier());
+
         foreach (var classData in classDataLookup.Values)
         {
-            var propertiesThatAreAssociations = classData.Properties.Where(p => 
+            var propertiesThatAreAssociations = classData.Properties.Where(p =>
                 builderMetadataManager.GetElementByReference(p.Type)?.SpecializationTypeId == profile.MapClassesTo!.SpecializationTypeId).ToArray();
             foreach (var property in propertiesThatAreAssociations)
             {
@@ -136,15 +163,15 @@ internal static class CSharpImporterExtensions
             }
         }
 
-        foreach (var (classData, element) in classDataAndBuilders)
+        foreach (var (interfaceData, element) in classDataAndBuilders)
         {
             if (element.SpecializationTypeId == profile.DependencyProfile?.MapClassesTo?.SpecializationTypeId)
             {
-                ProcessElement(profile.DependencyProfile, builderMetadataManager, classData, element);
+                ProcessElement(profile.DependencyProfile, builderMetadataManager, interfaceData, element);
             }
             else
             {
-                ProcessElement(profile, builderMetadataManager, classData, element);
+                ProcessElement(profile, builderMetadataManager, interfaceData, element);
             }
         }
     }
@@ -152,7 +179,8 @@ internal static class CSharpImporterExtensions
     private static void ProcessElement(ImportProfileConfig profile, BuilderMetadataManager builderMetadataManager, ClassData classData, IElementPersistable element)
     {
         var baseType = classData.BaseType != null ? builderMetadataManager.GetElementByReference(classData.BaseType) : null;
-        if (baseType != null && profile.MapInheritanceTo != null) {
+        if (baseType != null && profile.MapInheritanceTo != null)
+        {
             var existingAssociation = builderMetadataManager.GetAssociationByReference($"{classData.GetIdentifier()}+extends+{classData.BaseType}");
 
             var sourceElement = builderMetadataManager.GetElementByReference(classData.GetIdentifier())!;
@@ -197,6 +225,11 @@ internal static class CSharpImporterExtensions
             }
         }
 
+        ProcessElement(profile, builderMetadataManager, (TypeDeclarationData)classData, element);
+    }
+
+    private static void ProcessElement(ImportProfileConfig profile, BuilderMetadataManager builderMetadataManager, TypeDeclarationData classData, IElementPersistable element)
+    {
         foreach (var prop in classData.Properties.Where(p =>
                      profile.MapAssociationsTo == null || // was not handled as an association.
                      builderMetadataManager.GetElementByReference(p.Type)?.SpecializationTypeId != profile.MapClassesTo.SpecializationTypeId))

@@ -114,44 +114,44 @@ public class BuilderMetadataManager
         return _metadataLookup.TryGetElementById(typeReferenceTypeId, out element);
     }
 
-    public IElementPersistable CreateElement(ClassData classData, string? targetFolderId)
-    {
-        var settings = _config.ImportProfile.MapClassesTo;
-        if (settings == null)
-        {
-            throw new Exception("No Class settings specified for the import profile");
-        }
-        var externalReference = classData.GetIdentifier();
-        if (GetElementByReference(externalReference) != null)
-        {
-            throw new Exception("An element with external reference \"" + externalReference + "\" already exists");
-        }
-        if (string.IsNullOrWhiteSpace(externalReference))
-        {
-            throw new ArgumentNullException(nameof(externalReference));
-        }
+    //public IElementPersistable CreateElement(ClassData classData, string? targetFolderId)
+    //{
+    //    var settings = _config.ImportProfile.MapClassesTo;
+    //    if (settings == null)
+    //    {
+    //        throw new Exception("No Class settings specified for the import profile");
+    //    }
+    //    var externalReference = classData.GetIdentifier();
+    //    if (GetElementByReference(externalReference) != null)
+    //    {
+    //        throw new Exception("An element with external reference \"" + externalReference + "\" already exists");
+    //    }
+    //    if (string.IsNullOrWhiteSpace(externalReference))
+    //    {
+    //        throw new ArgumentNullException(nameof(externalReference));
+    //    }
 
-        if (string.IsNullOrWhiteSpace(classData.Name))
-        {
-            ArgumentException.ThrowIfNullOrEmpty(nameof(classData.Name));
-        }
+    //    if (string.IsNullOrWhiteSpace(classData.Name))
+    //    {
+    //        ArgumentException.ThrowIfNullOrEmpty(nameof(classData.Name));
+    //    }
 
-        var folders = GetFolderElements(
-            relativeFolderPath: GetRelativeLocation(classData.FilePath, _config.TargetFolder!),
-            targetFolderId: _config.TargetFolderId);
+    //    var folders = GetFolderElements(
+    //        relativeFolderPath: GetRelativeLocation(classData.FilePath, _config.TargetFolder!),
+    //        targetFolderId: _config.TargetFolderId);
 
 
-        var element = _package.Classes.Add(
-            id: Guid.NewGuid().ToString().ToLower(),
-            specializationType: settings.SpecializationType,
-            specializationTypeId: settings.SpecializationTypeId,
-            name: classData.Name,
-            parentId: folders.LastOrDefault()?.Id ?? targetFolderId ?? _package.Id,
-            externalReference: externalReference);
-        _metadataLookup.AddElement(element);
-        _elementsToAdd.Add(element);
-        return element;
-    }
+    //    var element = _package.Classes.Add(
+    //        id: Guid.NewGuid().ToString().ToLower(),
+    //        specializationType: settings.SpecializationType,
+    //        specializationTypeId: settings.SpecializationTypeId,
+    //        name: classData.Name,
+    //        parentId: folders.LastOrDefault()?.Id ?? targetFolderId ?? _package.Id,
+    //        externalReference: externalReference);
+    //    _metadataLookup.AddElement(element);
+    //    _elementsToAdd.Add(element);
+    //    return element;
+    //}
 
     public IElementPersistable? CreateElement(IElementSettings settings, string name, string relativeFilePath, string externalReference, string? targetFolderId)
     {

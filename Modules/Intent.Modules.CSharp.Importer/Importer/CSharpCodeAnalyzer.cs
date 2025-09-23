@@ -105,6 +105,7 @@ internal static class CSharpCodeAnalyzer
 
         ExtractClassesFromSyntaxTrees(compilation, syntaxTrees, data);
         ExtractRecordsFromSyntaxTrees(compilation, syntaxTrees, data);
+        ExtractInterfacesFromSyntaxTrees(compilation, syntaxTrees, data);
         ExtractEnumsFromSyntaxTrees(compilation, syntaxTrees, data);
 
         return data;
@@ -174,7 +175,7 @@ internal static class CSharpCodeAnalyzer
 
                 var classData = ExtractClassFromSyntaxTree(newCompilation, newTree, newClassDeclaration);
 
-                ApplyDataForClassesAndRecords(firstClassDeclaration, data, classData);
+                data.Classes.Add(classData);
             }
         }
 
@@ -187,7 +188,8 @@ internal static class CSharpCodeAnalyzer
             foreach (var declarationSyntax in normalClassDeclarations)
             {
                 var classData = ExtractClassFromSyntaxTree(compilation, declarationSyntax.SyntaxTree, declarationSyntax);
-                ApplyDataForClassesAndRecords(declarationSyntax, data, classData);
+
+                data.Classes.Add(classData);
             }
         }
 
@@ -212,13 +214,25 @@ internal static class CSharpCodeAnalyzer
             var semanticModel = compilation.GetSemanticModel(declarationSyntax.SyntaxTree);
             var recordData = SymbolExtractor.GetRecordData(semanticModel, declarationSyntax, compilation);
 
-            ApplyDataForClassesAndRecords(declarationSyntax, data, recordData);
+            data.Classes.Add(recordData);
         }
     }
 
-    private static void ApplyDataForClassesAndRecords(BaseTypeDeclarationSyntax typeDeclaration, CoreTypesData data, ClassData classData)
+    private static void ExtractInterfacesFromSyntaxTrees(CSharpCompilation compilation, IReadOnlyList<SyntaxTree> syntaxTrees, CoreTypesData data)
     {
-        data.Classes.Add(classData);
+        var interfaceDeclaration = syntaxTrees
+            .SelectMany(s => s.GetCompilationUnitRoot().DescendantNodes().OfType<InterfaceDeclarationSyntax>())
+            .Where(p => p.Parent is BaseNamespaceDeclarationSyntax
+                        && (p.TypeParameterList is null || p.TypeParameterList.Parameters.Count == 0) // No generic parameters)
+                        )
+            .ToArray();
+        foreach (var declarationSyntax in interfaceDeclaration)
+        {
+            var semanticModel = compilation.GetSemanticModel(declarationSyntax.SyntaxTree);
+            var interfaceData = SymbolExtractor.GetInterfaceData(semanticModel, declarationSyntax, compilation);
+
+            data.Interfaces.Add(interfaceData);
+        }
     }
 
     private static void ExtractEnumsFromSyntaxTrees(

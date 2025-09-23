@@ -136,25 +136,29 @@ function createFolderSelectionPage(element: MacroApi.Context.IElementApi): Macro
 
 function getAvailableProfiles(packageModel: MacroApi.Context.IPackageApi): IProfileOption[] {
     const profiles: IProfileOption[] = [];
-    
     if (packageModel.specialization == "Domain Package") {
         profiles.push({ id: "domain-classes", description: "Classes" });
-        profiles.push({ id: "domain-enums", description: "Enums" });
-        profiles.push({ id: "domain-events", description: "Domain Events" });
+        if (application.installedModules.some(x => x.id == "Intent.Modelers.Domain.Events")) {
+            profiles.push({ id: "domain-events", description: "Domain Events" });
+        }
         profiles.push({ id: "domain-contracts", description: "Domain Contracts" });
+        profiles.push({ id: "domain-enums", description: "Enums Only" });
     }
 
     if (packageModel.specialization == "Services Package") {
-        profiles.push({ id: "services-commands", description: "Commands" });
+        if (application.installedModules.some(x => x.id == "Intent.Modelers.Services.CQRS")) {
+            profiles.push({ id: "services-commands", description: "Commands" });
+            profiles.push({ id: "services-queries", description: "Queries" });
+        }
         profiles.push({ id: "services-dtos", description: "DTOs" });
-        profiles.push({ id: "services-enums", description: "Enums" });
+        profiles.push({ id: "services-enums", description: "Enums Only" });
     }
 
     if (packageModel.specialization == "Eventing Package") {
         profiles.push({ id: "eventing-integration-messages", description: "Eventing Messages" });
         profiles.push({ id: "eventing-integration-commands", description: "Integration Commands" });
         profiles.push({ id: "eventing-dtos", description: "Integration DTOs" });
-        profiles.push({ id: "services-enums", description: "Enums" });
+        profiles.push({ id: "services-enums", description: "Enums Only" });
     }
     
     return profiles;
@@ -232,7 +236,7 @@ function buildTree(rootName: string, files: IFileData[]) : MacroApi.Context.ISel
         isExpanded: true,
         children: []
     };
-    for (const file of files) {
+    for (const file of files.sort((x, y) => y.relativePath.split("/").length - x.relativePath.split("/").length)) {
         // file.relativePath is already relative from backend; normalize slashes
         const relPath = file.relativePath.replace(/\\/g, "/");
         const parts = relPath.split("/");

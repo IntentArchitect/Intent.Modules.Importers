@@ -24,6 +24,21 @@ internal static class SymbolExtractor
         };
     }
 
+    public static InterfaceData GetInterfaceData(SemanticModel semanticModel, InterfaceDeclarationSyntax classDeclaration, CSharpCompilation compilation)
+    {
+        var classSymbol = semanticModel.GetDeclaredSymbol(classDeclaration)!;
+        return new InterfaceData()
+        {
+            FilePath = classDeclaration.SyntaxTree.FilePath,
+            Namespace = classSymbol.ContainingNamespace?.ToString() ?? "UnknownNamespace",
+            Name = classSymbol.Name,
+            Interfaces = GetInterfaces(classSymbol, compilation),
+            Attributes = GetAttributes(classSymbol),
+            Properties = GetProperties(semanticModel, classDeclaration.Members, compilation),
+            Methods = GetMethods(semanticModel, classDeclaration.Members, compilation)
+        };
+    }
+
     public static ClassData GetRecordData(SemanticModel semanticModel, RecordDeclarationSyntax recordDeclaration, CSharpCompilation compilation)
     {
         var classSymbol = semanticModel.GetDeclaredSymbol(recordDeclaration)!;
