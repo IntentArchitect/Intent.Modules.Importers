@@ -119,11 +119,12 @@ function getAvailableProfiles(packageModel) {
         profiles.push({ id: "domain-enums", description: "Enums Only" });
     }
     if (packageModel.specialization == "Services Package") {
+        profiles.push({ id: "services-services", description: "Services" });
+        profiles.push({ id: "services-dtos", description: "DTOs" });
         if (application.installedModules.some(x => x.id == "Intent.Modelers.Services.CQRS")) {
             profiles.push({ id: "services-commands", description: "Commands" });
             profiles.push({ id: "services-queries", description: "Queries" });
         }
-        profiles.push({ id: "services-dtos", description: "DTOs" });
         profiles.push({ id: "services-enums", description: "Enums Only" });
     }
     if (packageModel.specialization == "Eventing Package") {
@@ -202,6 +203,7 @@ function buildTree(rootName, files) {
         isExpanded: true,
         children: []
     };
+    // sort - to ensure that folders are at the top by starting with the deepest directories first:
     for (const file of files.sort((x, y) => y.relativePath.split("/").length - x.relativePath.split("/").length)) {
         // file.relativePath is already relative from backend; normalize slashes
         const relPath = file.relativePath.replace(/\\/g, "/");

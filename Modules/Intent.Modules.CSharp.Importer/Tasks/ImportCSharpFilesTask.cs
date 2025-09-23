@@ -34,6 +34,7 @@ namespace Intent.Modules.CSharp.Importer.Tasks
 
         protected override ExecuteResult<int> ExecuteModuleTask(ImportCSharpFileInputModel importModel)
         {
+            Debugger.Launch();
             var importedTypes = CSharpCodeAnalyzer.ImportMetadataFromFiles(importModel.SelectedFiles).GetAwaiter().GetResult();
 
             var application = _persistenceLoader.LoadCurrentApplication();
@@ -57,6 +58,7 @@ namespace Intent.Modules.CSharp.Importer.Tasks
         private ImportProfileConfig GetProfile(string identifier, IApplicationDesignerPersistable designer)
         {
             var profiles = new[] {
+                //----------------- DOMAIN -----------------//
                 new ImportProfileConfig()
                 {
                     Identifier = "domain-classes",
@@ -91,6 +93,18 @@ namespace Intent.Modules.CSharp.Importer.Tasks
                     MapEnumsTo = designer.GetElementSettings("85fba0e9-9161-4c85-a603-a229ef312beb"),
                     MapEnumLiteralsTo= designer.GetElementSettings("4215f417-25d2-4509-9309-5076a1452eaa"),
                 },
+
+                //----------------- SERVICES -----------------//
+                new ImportProfileConfig()
+                {
+                    Identifier = "services-services",
+                    MapClassesTo = designer.GetElementSettings("b16578a5-27b1-4047-a8df-f0b783d706bd"),
+                    MapInterfacesTo = designer.GetElementSettings("b16578a5-27b1-4047-a8df-f0b783d706bd"),
+                    MapMethodsTo = designer.GetElementSettings("e030c97a-e066-40a7-8188-808c275df3cb"),
+                    MapMethodParametersTo = designer.GetElementSettings("00208d20-469d-41cb-8501-768fd5eb796b"),
+                    MapEnumsTo = designer.GetElementSettings("85fba0e9-9161-4c85-a603-a229ef312beb"),
+                    MapEnumLiteralsTo = designer.GetElementSettings("4215f417-25d2-4509-9309-5076a1452eaa"),
+                },
                 new ImportProfileConfig()
                 {
                     Identifier = "services-commands",
@@ -122,6 +136,8 @@ namespace Intent.Modules.CSharp.Importer.Tasks
                     MapEnumsTo = designer.GetElementSettings("85fba0e9-9161-4c85-a603-a229ef312beb"),
                     MapEnumLiteralsTo = designer.GetElementSettings("4215f417-25d2-4509-9309-5076a1452eaa"),
                 },
+
+                //----------------- EVENTING -----------------//
                 new ImportProfileConfig()
                 {
                     Identifier = "eventing-integration-messages",
@@ -151,6 +167,8 @@ namespace Intent.Modules.CSharp.Importer.Tasks
 
             profiles["domain-events"].DependencyProfile = profiles["domain-contracts"];
             profiles["services-commands"].DependencyProfile = profiles["services-dtos"];
+            profiles["services-queries"].DependencyProfile = profiles["services-dtos"];
+            profiles["services-services"].DependencyProfile = profiles["services-dtos"];
             profiles["eventing-integration-messages"].DependencyProfile = profiles["eventing-dtos"];
             profiles["eventing-integration-commands"].DependencyProfile = profiles["eventing-dtos"];
 

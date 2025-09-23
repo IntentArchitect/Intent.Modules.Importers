@@ -19,8 +19,8 @@ internal static class SymbolExtractor
             Interfaces = GetInterfaces(classSymbol, compilation),
             Attributes = GetAttributes(classSymbol),
             Constructors = GetConstructors(semanticModel, classDeclaration.Members, compilation),
-            Properties = GetProperties(semanticModel, classDeclaration.Members, compilation),
-            Methods = GetMethods(semanticModel, classDeclaration.Members, compilation)
+            Properties = GetClassProperties(semanticModel, classDeclaration.Members, compilation),
+            Methods = GetClassMethods(semanticModel, classDeclaration.Members, compilation)
         };
     }
 
@@ -34,8 +34,8 @@ internal static class SymbolExtractor
             Name = classSymbol.Name,
             Interfaces = GetInterfaces(classSymbol, compilation),
             Attributes = GetAttributes(classSymbol),
-            Properties = GetProperties(semanticModel, classDeclaration.Members, compilation),
-            Methods = GetMethods(semanticModel, classDeclaration.Members, compilation)
+            Properties = GetInterfaceProperties(semanticModel, classDeclaration.Members, compilation),
+            Methods = GetInterfaceMethods(semanticModel, classDeclaration.Members, compilation)
         };
     }
 
@@ -51,8 +51,8 @@ internal static class SymbolExtractor
             Interfaces = GetInterfaces(classSymbol, compilation),
             Attributes = GetAttributes(classSymbol),
             Constructors = GetConstructors(semanticModel, recordDeclaration.Members, compilation),
-            Properties = GetProperties(semanticModel, recordDeclaration.Members, compilation),
-            Methods = GetMethods(semanticModel, recordDeclaration.Members, compilation)
+            Properties = GetClassProperties(semanticModel, recordDeclaration.Members, compilation),
+            Methods = GetClassMethods(semanticModel, recordDeclaration.Members, compilation)
         };
     }
     
@@ -99,7 +99,7 @@ internal static class SymbolExtractor
     }
 
     
-    private static IReadOnlyList<PropertyData> GetProperties(SemanticModel semanticModel, SyntaxList<MemberDeclarationSyntax> memberDeclarations, CSharpCompilation compilation)
+    private static IReadOnlyList<PropertyData> GetClassProperties(SemanticModel semanticModel, SyntaxList<MemberDeclarationSyntax> memberDeclarations, CSharpCompilation compilation)
     {
         return memberDeclarations
             .OfType<PropertyDeclarationSyntax>()
@@ -108,7 +108,15 @@ internal static class SymbolExtractor
             .ToList();
     }
 
-    private static IReadOnlyList<MethodData> GetMethods(SemanticModel semanticModel, SyntaxList<MemberDeclarationSyntax> memberDeclarations, CSharpCompilation compilation)
+    private static IReadOnlyList<PropertyData> GetInterfaceProperties(SemanticModel semanticModel, SyntaxList<MemberDeclarationSyntax> memberDeclarations, CSharpCompilation compilation)
+    {
+        return memberDeclarations
+            .OfType<PropertyDeclarationSyntax>()
+            .Select(property => MapPropertyDeclarationToPropertyData(semanticModel, property, compilation))
+            .ToList();
+    }
+
+    private static IReadOnlyList<MethodData> GetClassMethods(SemanticModel semanticModel, SyntaxList<MemberDeclarationSyntax> memberDeclarations, CSharpCompilation compilation)
     {
         return memberDeclarations
             .OfType<MethodDeclarationSyntax>()
@@ -116,7 +124,15 @@ internal static class SymbolExtractor
             .Select(method => MapMethodDeclarationToMethodData(semanticModel, method, compilation))
             .ToList();
     }
-    
+
+    private static IReadOnlyList<MethodData> GetInterfaceMethods(SemanticModel semanticModel, SyntaxList<MemberDeclarationSyntax> memberDeclarations, CSharpCompilation compilation)
+    {
+        return memberDeclarations
+            .OfType<MethodDeclarationSyntax>()
+            .Select(method => MapMethodDeclarationToMethodData(semanticModel, method, compilation))
+            .ToList();
+    }
+
     private static PropertyData MapPropertyDeclarationToPropertyData(SemanticModel semanticModel, PropertyDeclarationSyntax propertyDeclaration, CSharpCompilation compilation)
     {
         var typeInfo = semanticModel.GetTypeInfo(propertyDeclaration.Type);
