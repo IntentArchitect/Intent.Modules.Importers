@@ -24,6 +24,22 @@ public record ClassData
     }
 }
 
+public record InterfaceData
+{
+    public string? FilePath { get; init; }
+    public string Namespace { get; init; }
+    public string Name { get; init; }
+    public IReadOnlyList<InterfaceData> Interfaces { get; init; }
+    public IReadOnlyList<string> Attributes { get; init; }
+    public IReadOnlyList<PropertyData> Properties { get; init; }
+    public IReadOnlyList<MethodData> Methods { get; init; }
+
+    public string GetIdentifier()
+    {
+        return $"{Namespace}.{Name}";
+    }
+}
+
 public record EnumData
 {
     public string? FilePath { get; init; }

@@ -16,6 +16,7 @@ public class MetadataLookup
     private const string TypeDefinitionId = "d4e577cd-ad05-4180-9a2e-fff4ddea0e1e";
     private Dictionary<(string Name, int TypeParamCount), IElementPersistable> _typeDefinitions;
     private Dictionary<string, IElementPersistable> _elementsByReference;
+    private Dictionary<string, IElementPersistable[]> _elementsByName;
     private Dictionary<string, IElementPersistable> _elementsById;
     private Dictionary<string, IReadOnlyCollection<IElementPersistable>> _byParentId;
     /// <remarks>Contains each association twice, so that can be found by key either way.</remarks>
@@ -65,6 +66,10 @@ public class MetadataLookup
         _typeDefinitions = _elementsById.Values
             .Where(x => x.SpecializationTypeId == TypeDefinitionId)
             .ToDictionary(x => (x.Name, x.GenericTypes.Count()));
+
+        _elementsByName = _elementsById.Values
+            .GroupBy(x => x.Name)
+            .ToDictionary(x => x.Key, x => x.ToArray());
 
         _byParentId = _elementsById.Values
             .GroupBy(x => x.ParentFolderId)
@@ -178,6 +183,18 @@ public class MetadataLookup
     {
         if (_elementsByReference.TryGetValue(reference, out element))
         {
+            return true;
+        }
+
+        element = default;
+        return false;
+    }
+
+    public bool TryGetElementByName(string name, out IElementPersistable element)
+    {
+        if (_elementsByName.TryGetValue(name, out var elements) && elements.Length == 1)
+        {
+            element = elements[0];
             return true;
         }
 

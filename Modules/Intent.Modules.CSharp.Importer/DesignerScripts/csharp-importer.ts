@@ -100,6 +100,16 @@ function createFolderSelectionPage(element: MacroApi.Context.IElementApi): Macro
                 isRequired: true
             },
             {
+                id: "importProfileId",
+                fieldType: "select",
+                label: "Profile",
+                hint: "Select the import profile for these files.",
+                isRequired: true,
+                isHidden: profileOptions.length === 1,
+                selectOptions: profileOptions,
+                value: null
+            },
+            {
                 id: "pattern",
                 fieldType: "text",
                 label: "File Pattern",
@@ -108,28 +118,18 @@ function createFolderSelectionPage(element: MacroApi.Context.IElementApi): Macro
                 isRequired: true,
                 value: "**/*.cs"
             },
-            {
-                id: "importProfileId",
-                fieldType: "select",
-                label: "Profile",
-                hint: "Select the import profile for these files.",
-                isRequired: true,
-                isHidden: profileOptions.length === 1,
-                selectOptions: profileOptions,
-                value: profileOptions[0]?.id
-            },
-            {
-                id: "casingConvention",
-                fieldType: "select",
-                label: "Casing Convention",
-                hint: "Select how property names should be cased when imported.",
-                isRequired: true,
-                selectOptions: [
-                    { id: "PascalCase", description: "PascalCase", additionalInfo: "(e.g. FirstName)" },
-                    { id: "AsIs", description: "As Is", additionalInfo: "(preserve original casing)" }
-                ],
-                value: "PascalCase"
-            }
+            // {
+            //     id: "casingConvention",
+            //     fieldType: "select",
+            //     label: "Casing Convention",
+            //     hint: "Select how property names should be cased when imported.",
+            //     isRequired: true,
+            //     selectOptions: [
+            //         { id: "PascalCase", description: "PascalCase", additionalInfo: "(e.g. FirstName)" },
+            //         { id: "AsIs", description: "As Is", additionalInfo: "(preserve original casing)" }
+            //     ],
+            //     value: "PascalCase"
+            // }
         ]
     };
 }
@@ -138,14 +138,23 @@ function getAvailableProfiles(packageModel: MacroApi.Context.IPackageApi): IProf
     const profiles: IProfileOption[] = [];
     
     if (packageModel.specialization == "Domain Package") {
-        profiles.push({ id: "domain-classes", description: "Domain Classes" });
-        profiles.push({ id: "domain-enums", description: "Domain Enums" });
+        profiles.push({ id: "domain-classes", description: "Classes" });
+        profiles.push({ id: "domain-enums", description: "Enums" });
         profiles.push({ id: "domain-events", description: "Domain Events" });
         profiles.push({ id: "domain-contracts", description: "Domain Contracts" });
     }
 
+    if (packageModel.specialization == "Services Package") {
+        profiles.push({ id: "services-commands", description: "Commands" });
+        profiles.push({ id: "services-dtos", description: "DTOs" });
+        profiles.push({ id: "services-enums", description: "Enums" });
+    }
+
     if (packageModel.specialization == "Eventing Package") {
-        profiles.push({ id: "EventingMessages", description: "Eventing Messages Profile" });
+        profiles.push({ id: "eventing-integration-messages", description: "Eventing Messages" });
+        profiles.push({ id: "eventing-integration-commands", description: "Integration Commands" });
+        profiles.push({ id: "eventing-dtos", description: "Integration DTOs" });
+        profiles.push({ id: "services-enums", description: "Enums" });
     }
     
     return profiles;

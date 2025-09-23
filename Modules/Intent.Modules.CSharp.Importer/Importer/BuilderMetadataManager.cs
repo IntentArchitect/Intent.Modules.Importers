@@ -191,9 +191,8 @@ public class BuilderMetadataManager
         return element;
     }
 
-    public IAssociationPersistable CreateAssociation(string sourceElementId, string targetElementId)
+    public IAssociationPersistable CreateAssociation(IAssociationSettings settings, string sourceElementId, string targetElementId)
     {
-        var settings = _config.ImportProfile.MapAssociationsTo;
         if (settings == null)
         {
             throw new Exception($"Cannot create Association: {nameof(ImportProfileConfig.MapAssociationsTo)} was not specified.");
@@ -219,11 +218,19 @@ public class BuilderMetadataManager
             return;
         }
 
-        if (_metadataLookup.TryGetElementByReference(type, out var domainElement))
+        if (_metadataLookup.TryGetElementByReference(type, out var element))
         {
-            targetElement.TypeReference.TypeId = domainElement.Id;
-            targetElement.TypeReference.TypePackageId = domainElement.PackageId;
-            targetElement.TypeReference.TypePackageName = domainElement.PackageName;
+            targetElement.TypeReference.TypeId = element.Id;
+            targetElement.TypeReference.TypePackageId = element.PackageId;
+            targetElement.TypeReference.TypePackageName = element.PackageName;
+            return;
+        }
+
+        if (_metadataLookup.TryGetElementByName(type, out element))
+        {
+            targetElement.TypeReference.TypeId = element.Id;
+            targetElement.TypeReference.TypePackageId = element.PackageId;
+            targetElement.TypeReference.TypePackageName = element.PackageName;
             return;
         }
 

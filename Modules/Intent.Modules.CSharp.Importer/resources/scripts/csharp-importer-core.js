@@ -58,7 +58,6 @@ async function getCharpFilesAndPreview(folderPath, glob) {
     return (executionResult === null || executionResult === void 0 ? void 0 : executionResult.result) || { rootPath: folderPath, rootName: "Unknown", files: [] };
 }
 function createFolderSelectionPage(element) {
-    var _a;
     // Determine available profiles based on the designer
     const packageModel = element.getPackage();
     const profileOptions = getAvailableProfiles(packageModel);
@@ -76,6 +75,16 @@ function createFolderSelectionPage(element) {
                 isRequired: true
             },
             {
+                id: "importProfileId",
+                fieldType: "select",
+                label: "Profile",
+                hint: "Select the import profile for these files.",
+                isRequired: true,
+                isHidden: profileOptions.length === 1,
+                selectOptions: profileOptions,
+                value: null
+            },
+            {
                 id: "pattern",
                 fieldType: "text",
                 label: "File Pattern",
@@ -84,41 +93,39 @@ function createFolderSelectionPage(element) {
                 isRequired: true,
                 value: "**/*.cs"
             },
-            {
-                id: "importProfileId",
-                fieldType: "select",
-                label: "Profile",
-                hint: "Select the import profile for these files.",
-                isRequired: true,
-                isHidden: profileOptions.length === 1,
-                selectOptions: profileOptions,
-                value: (_a = profileOptions[0]) === null || _a === void 0 ? void 0 : _a.id
-            },
-            {
-                id: "casingConvention",
-                fieldType: "select",
-                label: "Casing Convention",
-                hint: "Select how property names should be cased when imported.",
-                isRequired: true,
-                selectOptions: [
-                    { id: "PascalCase", description: "PascalCase", additionalInfo: "(e.g. FirstName)" },
-                    { id: "AsIs", description: "As Is", additionalInfo: "(preserve original casing)" }
-                ],
-                value: "PascalCase"
-            }
+            // {
+            //     id: "casingConvention",
+            //     fieldType: "select",
+            //     label: "Casing Convention",
+            //     hint: "Select how property names should be cased when imported.",
+            //     isRequired: true,
+            //     selectOptions: [
+            //         { id: "PascalCase", description: "PascalCase", additionalInfo: "(e.g. FirstName)" },
+            //         { id: "AsIs", description: "As Is", additionalInfo: "(preserve original casing)" }
+            //     ],
+            //     value: "PascalCase"
+            // }
         ]
     };
 }
 function getAvailableProfiles(packageModel) {
     const profiles = [];
     if (packageModel.specialization == "Domain Package") {
-        profiles.push({ id: "domain-classes", description: "Domain Classes" });
-        profiles.push({ id: "domain-enums", description: "Domain Enums" });
+        profiles.push({ id: "domain-classes", description: "Classes" });
+        profiles.push({ id: "domain-enums", description: "Enums" });
         profiles.push({ id: "domain-events", description: "Domain Events" });
         profiles.push({ id: "domain-contracts", description: "Domain Contracts" });
     }
+    if (packageModel.specialization == "Services Package") {
+        profiles.push({ id: "services-commands", description: "Commands" });
+        profiles.push({ id: "services-dtos", description: "DTOs" });
+        profiles.push({ id: "services-enums", description: "Enums" });
+    }
     if (packageModel.specialization == "Eventing Package") {
-        profiles.push({ id: "EventingMessages", description: "Eventing Messages Profile" });
+        profiles.push({ id: "eventing-integration-messages", description: "Eventing Messages" });
+        profiles.push({ id: "eventing-integration-commands", description: "Integration Commands" });
+        profiles.push({ id: "eventing-dtos", description: "Integration DTOs" });
+        profiles.push({ id: "services-enums", description: "Enums" });
     }
     return profiles;
 }

@@ -15,6 +15,8 @@ public record ImportProfileConfig
     public IElementSettings? MapEnumsTo { get; init; }
     public IElementSettings? MapEnumLiteralsTo { get; init; }
     public IAssociationSettings? MapAssociationsTo { get; init; }
+    public IAssociationSettings? MapInheritanceTo { get; init; }
+    public ImportProfileConfig? DependencyProfile { get; set; }
 }
 
 public record CSharpConfig
