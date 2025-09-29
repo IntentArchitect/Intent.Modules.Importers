@@ -52,6 +52,12 @@ The dialog can remember your configuration for the next time you want to run it.
 - `(None)`,  settings will not be persisted and remembered. Previously saved configuration will be deleted.
 - `All`, All settings will be persisted.
 
+## OpenAPI Document URL
+
+When importing an OpenAPI document, if it includes **server URL** information, the `Service URL` stereotype property will be automatically set on the package into which the document is imported. This `Service URL` is then used as the default base URL when creating service proxies (see [importer usage](#importer-usage) below).
+
+If the OpenAPI document does not define a server URL, or if the `Service URL` on the package is not set for any reason, you can manually configure it. In that case, the value you provide will be used as the initial default base URL for any proxies generated from the service.
+
 ## Importer Usage
 
 [This article](
