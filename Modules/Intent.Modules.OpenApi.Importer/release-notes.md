@@ -1,3 +1,8 @@
+### Version 1.1.8
+
+- Improvement: The URL from the OpenApi document (if present) is now saved in a stereotype against the package (to be used when creating proxy services)
+- Improvement: Small update to UI text
+
 ### Version 1.1.7
 
 - Improvement: Removed dependency on MediatR

@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Intent.IArchitect.Agent.Persistence.Model;
+﻿using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.MetadataSynchronizer.OpenApi.CLI.ServiceCreation;
 using Intent.Modules.Common.Templates;
@@ -8,6 +7,9 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
 using Microsoft.OpenApi.Validations;
+using System.Diagnostics;
+using System.Reflection.Metadata;
+using System.Text;
 
 namespace Intent.MetadataSynchronizer.OpenApi.CLI
 {
@@ -20,6 +22,7 @@ namespace Intent.MetadataSynchronizer.OpenApi.CLI
         private MetadataLookup _metadataLookup;
         private ImportConfig _config;
         private IServiceCreationStrategy _metadataFactory;
+        private OpenApiDocument _document;
 
         public OpenApiPersistableFactory()
         {
@@ -94,11 +97,11 @@ namespace Intent.MetadataSynchronizer.OpenApi.CLI
             IReadOnlyCollection<PackageModelPersistable> packages)
         {
             var document = LoadDocument(stream);
+            _document = document;
 
             Configure(packages, config, document);
 
             var services = ParseServices(config, document);
-
             return _metadataFactory.CreateServices(services);
         }
 
@@ -289,6 +292,72 @@ namespace Intent.MetadataSynchronizer.OpenApi.CLI
             return new ResolvedType(response, isCollection, nullable, typeNameContext);
         }
 
+        public void PersistAdditionalMetadata(PackageModelPersistable package)
+        {
+            if (_config.SettingPersistence != SettingPersistence.None)
+            {
+                package.AddMetadata("open-api-import:open-api-file", _config.OpenApiSpecificationFile);
+                package.AddMetadata("open-api-import:add-postfixes", _config.AddPostFixes.ToString().ToLower());
+                package.AddMetadata("open-api-import:allow-removal", _config.AllowRemoval.ToString().ToLower());
+                package.AddMetadata("open-api-import:service-type", _config.ServiceType.ToString());
+                package.AddMetadata("open-api-import:setting-persistence", _config.SettingPersistence.ToString());
+            }
+            else
+            {
+                package.RemoveMetadata("open-api-import:open-api-file");
+                package.RemoveMetadata("open-api-import:add-postfixes");
+                package.RemoveMetadata("open-api-import:allow-removal");
+                package.RemoveMetadata("open-api-import:service-type");
+                package.RemoveMetadata("open-api-import:setting-persistence");
+            }
+
+            if (!package.Stereotypes.Any(s => s.DefinitionId == "c06e9978-c271-49fc-b5c9-09833b6b8992"))
+            {
+                package.Stereotypes.Add(new StereotypePersistable
+                {
+                    DefinitionId = "c06e9978-c271-49fc-b5c9-09833b6b8992",
+                    Name = "Endpoint Settings",
+                    DefinitionPackageName = "Intent.Metadata.WebApi",
+                    DefinitionPackageId = "0011387a-b122-45d7-9cdb-8e21b315ab9f",
+                    Properties =
+                        [
+                            new StereotypePropertyPersistable
+                            {
+                                Name = "Service URL",
+                                DefinitionId = "2164bf84-1db8-42d0-94a6-255d2908b9b5",
+                                Value = GetOpenApiDocumentUrl()
+                            }
+                        ]
+                });
+            }
+        }
+
+        private string GetOpenApiDocumentUrl()
+        {
+            var httpsServer = _document.Servers.FirstOrDefault(s => s.Url.StartsWith("https"));
+            if (httpsServer is not null && !string.IsNullOrWhiteSpace(httpsServer.Url))
+            {
+                return httpsServer.Url;
+            }
+
+            var httpServer = _document.Servers.FirstOrDefault(s => s.Url.StartsWith("http"));
+            if (httpServer is not null && !string.IsNullOrWhiteSpace(httpServer.Url))
+            {
+                return httpServer.Url;
+            }
+
+            var uri = new Uri(_config.OpenApiSpecificationFile);
+            if(_document.Servers.Any(s => !string.IsNullOrWhiteSpace(s.Url)) && 
+                uri.Scheme == "http" || uri.Scheme == "https")
+            {
+                var serviceUrl = new Uri(uri, _document.Servers.First(s => !string.IsNullOrWhiteSpace(s.Url)).Url);
+
+                return serviceUrl.ToString();
+            }
+
+            return string.Empty;
+        }
+
         private static OpenApiDocument LoadDocument(Stream stream)
         {
             var settings = new OpenApiReaderSettings
@@ -303,7 +372,7 @@ namespace Intent.MetadataSynchronizer.OpenApi.CLI
             {
                 return openApiDocument;
             }
-            
+
             var errorMessage = new StringBuilder();
             errorMessage.AppendLine("OpenAPI Parsing errors:");
             foreach (var error in diagnostic.Errors)

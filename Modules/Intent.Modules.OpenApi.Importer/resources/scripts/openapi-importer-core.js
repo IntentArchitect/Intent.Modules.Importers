@@ -6,7 +6,7 @@ async function importOpenApi(element) {
         fieldType: "text",
         label: "OpenApi File",
         placeholder: null,
-        hint: "Path to file, including name.",
+        hint: "File path or URL to the OpenAPI document (including filename)",
         isRequired: true,
         value: defaults.openApiFile
     };

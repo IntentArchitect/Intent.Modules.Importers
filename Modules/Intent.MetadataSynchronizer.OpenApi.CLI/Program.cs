@@ -166,7 +166,7 @@ namespace Intent.MetadataSynchronizer.OpenApi.CLI
                             stereotypeManagementMode: stereotypeManagementMode,
                             additionalPreconditionChecks: null,
                             getPersistables: packages => factory.GetPersistables(configFile, packages),
-                            persistAdditionalMetadata: package => PersistSettings(package, configFile),
+                            persistAdditionalMetadata: package => factory.PersistAdditionalMetadata(package),
                             packageTypeId: "df45eaf6-9202-4c25-8dd5-677e9ba1e906");
 
                         if (configFile.ReverseEngineerImplementation)
@@ -228,24 +228,6 @@ namespace Intent.MetadataSynchronizer.OpenApi.CLI
             }
         }
 
-        private static void PersistSettings(PackageModelPersistable package, ImportConfig config)
-        {
-            if (config.SettingPersistence != SettingPersistence.None)
-            {
-                package.AddMetadata("open-api-import:open-api-file", config.OpenApiSpecificationFile);
-                package.AddMetadata("open-api-import:add-postfixes", config.AddPostFixes.ToString().ToLower());
-                package.AddMetadata("open-api-import:allow-removal", config.AllowRemoval.ToString().ToLower());
-                package.AddMetadata("open-api-import:service-type", config.ServiceType.ToString());
-                package.AddMetadata("open-api-import:setting-persistence", config.SettingPersistence.ToString());
-            }
-            else
-            {
-                package.RemoveMetadata("open-api-import:open-api-file");
-                package.RemoveMetadata("open-api-import:add-postfixes");
-                package.RemoveMetadata("open-api-import:allow-removal");
-                package.RemoveMetadata("open-api-import:service-type");
-                package.RemoveMetadata("open-api-import:setting-persistence");
-            }
-        }
+        
     }
 }
