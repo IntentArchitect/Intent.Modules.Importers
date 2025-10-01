@@ -10,10 +10,8 @@ class DatabaseImportStrategy {
             return;
         }
 
-        console.warn(JSON.stringify(result));
-
         // Handle the save operation when dialog is closed with OK:
-        let importModel = JSON.stringify(this.createImportModel(result));
+        const importModel = JSON.stringify(this.createImportModel(result));
         launchHostedModuleTask("Intent.Modules.Rdbms.Importer.Tasks.DatabaseImport", [importModel], {
             taskName: "Database Import",
             openWindow: true
@@ -21,13 +19,13 @@ class DatabaseImportStrategy {
     }
 
     private getDialogDefaults(element: MacroApi.Context.IElementApi): ISqlDatabaseImportPackageSettings {
-        let domainPackage = element.getPackage();
-        let persistedValue = this.getSettingValue(domainPackage, "rdbms-import:typesToExport", "");
+        const domainPackage = element.getPackage();
+        const persistedValue = this.getSettingValue(domainPackage, "rdbms-import:typesToExport", "");
         let includeTables = "true";
         let includeViews = "true";
         let includeStoredProcedures = "true";
         let includeIndexes = "true";
-        if (persistedValue) {
+        if (persistedValue != null && persistedValue !== "") {
             includeTables = "false";
             includeViews = "false";
             includeStoredProcedures = "false";
@@ -52,7 +50,7 @@ class DatabaseImportStrategy {
             });
         }
 
-        let result: ISqlDatabaseImportPackageSettings = {
+        const result: ISqlDatabaseImportPackageSettings = {
             entityNameConvention: this.getSettingValue(domainPackage, "rdbms-import:entityNameConvention", "SingularEntity"),
             attributeNameConvention: this.getSettingValue(domainPackage, "rdbms-import:attributeNameConvention", "Default"),
             tableStereotypes: this.getSettingValue(domainPackage, "rdbms-import:tableStereotypes", "WhenDifferent"),
@@ -65,13 +63,14 @@ class DatabaseImportStrategy {
             storedProcedureType: this.getSettingValue(domainPackage, "rdbms-import:storedProcedureType", ""),
             settingPersistence: this.getSettingValue(domainPackage, "rdbms-import:settingPersistence", "None"),
             databaseType: this.getSettingValue(domainPackage, "rdbms-import:databaseType", "SqlServer"),
-            filterType: this.getSettingValue(domainPackage, "rdbms-import:filterType", "include")
+            filterType: this.getSettingValue(domainPackage, "rdbms-import:filterType", "include"),
+            allowDeletions: this.getSettingValue(domainPackage, "rdbms-import:allowDeletions", "true")
         };
         return result;
     }
 
-    private async presentImportDialog(defaults: ISqlDatabaseImportPackageSettings, packageId: string): Promise<IFormResult> {
-        let formConfig: MacroApi.Context.IDynamicFormConfig = {
+    private async presentImportDialog(defaults: ISqlDatabaseImportPackageSettings, packageId: string): Promise<IFormResult | null> {
+        const formConfig: MacroApi.Context.IDynamicFormConfig = {
             title: "RDBMS Import",
             minWidth: "600px",
             height: "80%",
@@ -108,12 +107,12 @@ class DatabaseImportStrategy {
                             label: "Test Connection",
                             hint: "Test whether the Connection String is valid to access the Database Server",
                             onClick: async (form: MacroApi.Context.IDynamicFormApi) => {
-                                let testConnectionModel: ITestConnectionModel = {
+                                const testConnectionModel: ITestConnectionModel = {
                                     connectionString: form.getField("connectionString").value as string,
                                     databaseType: form.getField("databaseType").value as string
                                 };
 
-                                let executionResult = await executeImporterModuleTask(
+                                const executionResult = await executeImporterModuleTask(
                                     "Intent.Modules.Rdbms.Importer.Tasks.TestConnection",
                                     testConnectionModel);
 
@@ -215,28 +214,17 @@ class DatabaseImportStrategy {
                     name: 'Filtering Options',
                     fields: [
                         {
-                            id: "includeTables",
-                            fieldType: "checkbox",
-                            label: "Include Tables",
-                            value: defaults.includeTables
-                        },
-                        {
-                            id: "includeViews",
-                            fieldType: "checkbox",
-                            label: "Include Views",
-                            value: defaults.includeViews
-                        },
-                        {
-                            id: "includeStoredProcedures",
-                            fieldType: "checkbox",
-                            label: "Include Stored Procedures",
-                            value: defaults.includeStoredProcedures
-                        },
-                        {
                             id: "includeIndexes",
                             fieldType: "checkbox",
                             label: "Include Indexes",
                             value: defaults.includeIndexes
+                        },
+                        {
+                            id: "allowDeletions",
+                            fieldType: "checkbox",
+                            label: "Remove deleted database elements",
+                            hint: "Removes imported attributes and associations that no longer exist in the database",
+                            value: defaults.allowDeletions
                         },
                         {
                             id: "importFilterFilePath",
@@ -250,7 +238,7 @@ class DatabaseImportStrategy {
                             },
                             onChange: async (form) => {
                                 const selectedFilePath = form.getField("importFilterFilePath").value as string;
-                                if (!selectedFilePath) {
+                                if (selectedFilePath == null || selectedFilePath === "") {
                                     return;
                                 }
 
@@ -282,28 +270,22 @@ class DatabaseImportStrategy {
             pages: [this.presentManageFiltersDialog(packageId, defaults)]
         }
 
-        let capturedInput = await dialogService.openForm(formConfig);
+        const capturedInput = await dialogService.openForm(formConfig);
         return capturedInput;
     }
 
     private createImportModel(capturedInput: IFormResult): IDatabaseImportModel {
-        const typesToExport: string[] = [];
-        if (capturedInput.includeTables == "true") {
-            typesToExport.push("Table");
-        }
-        if (capturedInput.includeViews == "true") {
-            typesToExport.push("View");
-        }
-        if (capturedInput.includeStoredProcedures == "true") {
-            typesToExport.push("StoredProcedure");
-        }
-        if (capturedInput.includeIndexes == "true") {
+        // Always include Tables, Views, and Stored Procedures - filtering is handled by the filter file
+        const typesToExport: string[] = ["Table", "View", "StoredProcedure"];
+        
+        // Index is optional since it's metadata on tables, not a selectable object
+        if (capturedInput.includeIndexes === "true") {
             typesToExport.push("Index");
         }
 
         const domainDesignerId: string = "6ab29b31-27af-4f56-a67c-986d82097d63";
 
-        let importConfig: IDatabaseImportModel = {
+        const importConfig: IDatabaseImportModel = {
             applicationId: application.id,
             designerId: domainDesignerId,
             packageId: element.getPackage().id,
@@ -316,7 +298,8 @@ class DatabaseImportStrategy {
             connectionString: capturedInput.connectionString,
             settingPersistence: capturedInput.settingPersistence,
             databaseType: capturedInput.databaseType,
-            filterType: capturedInput.filterType || "include"
+            filterType: capturedInput.filterType ?? "include",
+            allowDeletions: capturedInput.allowDeletions === "true"
         };
 
         return importConfig;
@@ -417,12 +400,12 @@ class DatabaseImportStrategy {
                         const connectionString = form.getField("connectionString").value as string;
                         const databaseType = form.getField("databaseType").value as string;
                         const metadata = await this.fetchDatabaseMetadata(connectionString, databaseType);
-                        if (!metadata) {
+                        if (metadata == null) {
                             return null;
                         }
 
                         let importFilterFilePath = form.getField("importFilterFilePath").value as string;
-                        if (importFilterFilePath) {
+                        if (importFilterFilePath != null && importFilterFilePath !== "") {
                             try {
                                 const verifyModel = {
                                     pathToFile: importFilterFilePath,
@@ -445,12 +428,9 @@ class DatabaseImportStrategy {
                             }
                         }
 
-                        console.warn("metadata:")
-                        console.warn(JSON.stringify(metadata))
-
                         // Load existing filter data if file path exists
                         let existingFilter: ImportFilterModel | null = null;
-                        if (importFilterFilePath) {
+                        if (importFilterFilePath != null && importFilterFilePath !== "") {
                             const filterLoadModel = {
                                 importFilterFilePath: importFilterFilePath,
                                 applicationId: application.id,
@@ -461,12 +441,12 @@ class DatabaseImportStrategy {
                                 filterLoadModel
                             );
 
-                            if ((filterLoadResult.errors ?? []).length === 0 && filterLoadResult.result) {
+                            if ((filterLoadResult.errors ?? []).length === 0 && filterLoadResult.result != null) {
                                 existingFilter = filterLoadResult.result as ImportFilterModel;
                                 // Set this to hidden field, since we will need it later.
                                 form.getField("existingImportFilter").value = JSON.stringify(filterLoadResult.result as ImportFilterModel);
                                 form.getField("filterType").value = existingFilter.filter_type ?? "include";
-                                const include = form.getField("filterType").value == "include";
+                                const include = form.getField("filterType").value === "include";
                                 form.getField("inclusiveSelection").isHidden = !include;
                                 form.getField("exclusiveSelection").isHidden = include;
 
@@ -477,13 +457,13 @@ class DatabaseImportStrategy {
                         }
                         
                         // If no existing filter was loaded, use the default filterType to set visibility
-                        if (!existingFilter) {
+                        if (existingFilter == null) {
                             const include = defaults.filterType === "include";
                             form.getField("inclusiveSelection").isHidden = !include;
                             form.getField("exclusiveSelection").isHidden = include;
                         }
                         
-                        let distinctSchemas = metadata.schemas;
+                        const distinctSchemas = metadata.schemas;
 
                         // Create tree nodes with pre-selected states for inclusive filter
                         inclusiveSelection.treeViewOptions.rootNode = {
@@ -550,7 +530,7 @@ class DatabaseImportStrategy {
                             }
                         ],
                         onChange: (api) => {
-                            const include = api.getField("filterType").value == "include";
+                            const include = api.getField("filterType").value === "include";
                             api.getField("inclusiveSelection").isHidden = !include;
                             api.getField("exclusiveSelection").isHidden = include;
                         }
@@ -561,9 +541,8 @@ class DatabaseImportStrategy {
                 ],
                 onContinue: async (form) => {
                     const result = form.getValues();
-                    let returnedImportFilterFilePath = await this.saveFilterData(result, JSON.parse(result.existingImportFilter), packageId, result.importFilterFilePath);
+                    const returnedImportFilterFilePath = await this.saveFilterData(result, JSON.parse(result.existingImportFilter), packageId, result.importFilterFilePath);
                     if (returnedImportFilterFilePath != null) {
-                        console.warn(returnedImportFilterFilePath)
                         form.getField("importFilterFilePath").value = returnedImportFilterFilePath;
                     }
                 }
@@ -602,7 +581,7 @@ class DatabaseImportStrategy {
     ): MacroApi.Context.ISelectableTreeNode[] {
         const nodes: MacroApi.Context.ISelectableTreeNode[] = [];
 
-        if (metadata.tables.some(x => x)) {
+        if (metadata.tables.length > 0) {
             nodes.push(this.createCategoryNode(
                 metadata.schemaName,
                 "tables",
@@ -615,7 +594,7 @@ class DatabaseImportStrategy {
             ));
         }
 
-        if (metadata.storedProcedures.some(x => x)) {
+        if (metadata.storedProcedures.length > 0) {
             nodes.push(this.createCategoryNode(
                 metadata.schemaName,
                 "storedProcedures",
@@ -628,7 +607,7 @@ class DatabaseImportStrategy {
             ));
         }
 
-        if (metadata.views.some(x => x)) {
+        if (metadata.views.length > 0) {
             nodes.push(this.createCategoryNode(
                 metadata.schemaName,
                 "views",
@@ -671,20 +650,20 @@ class DatabaseImportStrategy {
         };
     }
 
-    private getSettingValue(domainPackage: MacroApi.Context.IPackageApi, key: string, defaultValue: string): string {
-        let persistedValue = domainPackage.getMetadata(key);
-        return persistedValue ? persistedValue : defaultValue;
+    private getSettingValue(domainPackage: MacroApi.Context.IPackageApi, key: string, defaultValue: string | null): string | null {
+        const persistedValue = domainPackage.getMetadata(key);
+        return persistedValue ?? defaultValue;
     }
 
     private isSchemaIncluded(schemaName: string, existingFilter: ImportFilterModel | null): boolean {
-        if (!existingFilter) {
+        if (existingFilter == null) {
             return false;
         }
         return existingFilter.schemas.includes(schemaName);
     }
 
     private isSchemaExcluded(schemaName: string, existingFilter: ImportFilterModel | null): boolean {
-        if (!existingFilter) {
+        if (existingFilter == null) {
             return false;
         }
         // Check if any tables, views, or stored procedures from this schema are in exclude lists
@@ -697,10 +676,10 @@ class DatabaseImportStrategy {
     private isCategorySelected(
         schemaName: string,
         category: string,
-        existingFilter: ImportFilterModel,
+        existingFilter: ImportFilterModel | null,
         filterType: "include" | "exclude"
     ): boolean {
-        if (!existingFilter) {
+        if (existingFilter == null) {
             return false;
         }
 
@@ -736,7 +715,7 @@ class DatabaseImportStrategy {
         existingFilter: ImportFilterModel | null,
         filterType: "include" | "exclude"
     ): boolean {
-        if (!existingFilter) {
+        if (existingFilter == null) {
             return false;
         }
 
@@ -939,6 +918,7 @@ interface ISqlDatabaseImportPackageSettings {
     settingPersistence: string;
     databaseType: string;
     filterType: string;
+    allowDeletions: string;
 }
 
 interface IDatabaseImportModel {
@@ -956,6 +936,7 @@ interface IDatabaseImportModel {
     settingPersistence: string;
     databaseType: string;
     filterType: string;
+    allowDeletions: boolean;
 }
 
 interface ITestConnectionModel {
@@ -1021,4 +1002,5 @@ interface IFormResult {
     includeStoredProcedures: string;
     includeViews: string;
     includeTables: string;
+    allowDeletions: string;
 }

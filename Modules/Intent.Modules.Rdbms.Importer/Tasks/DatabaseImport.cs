@@ -199,7 +199,7 @@ public class DatabaseImport : IModuleTask
 
     private static ImportConfiguration CreateImportConfiguration(DatabaseImportModel importModel)
     {
-        return new ImportConfiguration
+        var config = new ImportConfiguration
         {
             ApplicationId = importModel.ApplicationId,
             ConnectionString = importModel.ConnectionString,
@@ -208,11 +208,18 @@ public class DatabaseImport : IModuleTask
             EntityNameConvention = Enum.Parse<EntityNameConvention>(importModel.EntityNameConvention),
             AttributeNameConvention = Enum.Parse<AttributeNameConvention>(importModel.AttributeNameConvention),
             TableStereotype = Enum.Parse<TableStereotype>(importModel.TableStereotype),
-            TypesToExport = importModel.TypesToExport.Select(Enum.Parse<ExportType>).ToHashSet(),
             StoredProcedureType = string.IsNullOrWhiteSpace(importModel.StoredProcedureType)
                 ? StoredProcedureType.Default
                 : Enum.Parse<StoredProcedureType>(importModel.StoredProcedureType),
             DatabaseType = importModel.DatabaseType
         };
+
+        // Only override TypesToExport if explicitly provided, otherwise use the default from ImportConfiguration
+        if (importModel.TypesToExport.Count > 0)
+        {
+            config.TypesToExport = importModel.TypesToExport.Select(Enum.Parse<ExportType>).ToHashSet();
+        }
+
+        return config;
     }
 }

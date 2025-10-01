@@ -21,6 +21,11 @@ internal class ImportConfiguration
     public DatabaseType DatabaseType { get; set; }
     // END - ImportSchemaRequest
     
+    /// <summary>
+    /// Indicates whether to remove attributes/elements that no longer exist in the database.
+    /// Only elements with external references (imported from DB) will be removed.
+    /// </summary>
+    public bool AllowDeletions { get; set; } = true;
     
     public bool ExportTables()
     {

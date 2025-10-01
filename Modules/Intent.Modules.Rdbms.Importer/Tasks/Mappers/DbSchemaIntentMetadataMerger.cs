@@ -89,7 +89,7 @@ internal class DbSchemaIntentMetadataMerger
                 // Update existing class without moving it (keep existing ParentFolderId)
                 // Don't use deduplication context for updates to preserve existing names
                 var updatedClassElement = IntentModelMapper.MapTableToClass(table, _config, package, existingClass.ParentFolderId);
-                SyncElements(package, existingClass, updatedClassElement);
+                SyncElements(package, existingClass, updatedClassElement, _config.AllowDeletions, result);
 
                 // Re-evaluate stereotypes on existing class after sync to ensure renamed attributes get proper Column stereotypes
                 ApplyTableStereotypes(table, existingClass, _config);
@@ -139,7 +139,7 @@ internal class DbSchemaIntentMetadataMerger
                 // Update existing class without moving it (keep existing ParentFolderId)
                 // Don't use deduplication context for updates to preserve existing names
                 var updatedClassElement = IntentModelMapper.MapViewToClass(view, _config, package, existingClass.ParentFolderId);
-                SyncElements(package, existingClass, updatedClassElement);
+                SyncElements(package, existingClass, updatedClassElement, _config.AllowDeletions, result);
                 
                 // Apply view stereotypes after sync
                 ApplyViewStereotypes(view, existingClass);
@@ -189,13 +189,13 @@ internal class DbSchemaIntentMetadataMerger
                 if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
                 {
                     var updatedElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, package, null, udtDataContracts);
-                    SyncElements(package, existingElement, updatedElement);
+                    SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, result);
                     RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingElement);
                 }
                 else
                 {
                     var updatedElement = IntentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, package, null, udtDataContracts);
-                    SyncElements(package, existingElement, updatedElement);
+                    SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, result);
                     RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingElement);
                 }
                 
@@ -281,7 +281,14 @@ internal class DbSchemaIntentMetadataMerger
     /// <param name="package">Container package</param>
     /// <param name="existingElement">The existing element to be updated</param>
     /// <param name="sourceElement">The source element containing new/updated data</param>
-    private static void SyncElements(PackageModelPersistable package, ElementPersistable existingElement, ElementPersistable sourceElement)
+    /// <param name="allowDeletions">Whether to remove child elements with external references that don't exist in source</param>
+    /// <param name="result">Optional merge result to collect warnings about deleted elements</param>
+    private static void SyncElements(
+        PackageModelPersistable package, 
+        ElementPersistable existingElement, 
+        ElementPersistable sourceElement,
+        bool allowDeletions = false,
+        MergeResult? result = null)
     {
         // Extract parent element's schema for child element lookups
         var parentSchema = IntentModelMapper.GetElementDbSchema(existingElement);
@@ -291,6 +298,8 @@ internal class DbSchemaIntentMetadataMerger
             existingElement: existingElement,
             sourceElement: sourceElement,
             parentSchema: parentSchema,
+            allowDeletions: allowDeletions,
+            result: result,
             visitedElements: new HashSet<ElementPersistable>(EqualityComparer<ElementPersistable>.Create(
                 (a, b) =>
                     (
@@ -313,6 +322,8 @@ internal class DbSchemaIntentMetadataMerger
             ElementPersistable existingElement, 
             ElementPersistable sourceElement,
             string? parentSchema,
+            bool allowDeletions,
+            MergeResult? result,
             HashSet<ElementPersistable> visitedElements)
         {
             // Update type reference (existing behavior - direct overwrite)
@@ -340,6 +351,14 @@ internal class DbSchemaIntentMetadataMerger
 
             // Sync child elements using the unified lookup helper with 3-level precedence
             existingElement.ChildElements ??= [];
+            
+            // Track source external references for deletion detection
+            var sourceExternalRefs = new HashSet<string>(
+                sourceElement.ChildElements
+                    .Where(c => !string.IsNullOrWhiteSpace(c.ExternalReference))
+                    .Select(c => c.ExternalReference!),
+                StringComparer.OrdinalIgnoreCase);
+            
             foreach (var sourceChild in sourceElement.ChildElements)
             {
                 // Use unified lookup helper for child elements with 3-level precedence
@@ -364,9 +383,68 @@ internal class DbSchemaIntentMetadataMerger
                     var childSchema = IntentModelMapper.GetElementDbSchema(existingChild) ?? parentSchema;
                         
                     // Recursively sync the child element
-                    InternSyncElements(package, existingChild, sourceChild, childSchema, visitedElements);
+                    InternSyncElements(package, existingChild, sourceChild, childSchema, allowDeletions, result, visitedElements);
                 }
             }
+            
+            // Remove child elements that have external references but don't exist in source
+            if (allowDeletions)
+            {
+                var elementsToRemove = existingElement.ChildElements
+                    .Where(existing => 
+                        !string.IsNullOrWhiteSpace(existing.ExternalReference) &&
+                        existing.SpecializationType == AttributeModel.SpecializationType && // Only delete attributes
+                        !sourceExternalRefs.Contains(existing.ExternalReference))
+                    .ToList();
+
+                foreach (var elementToRemove in elementsToRemove)
+                {
+                    existingElement.ChildElements.Remove(elementToRemove);
+                    
+                    // Log the deletion as a warning
+                    result?.Warnings.Add(
+                        $"Removed attribute '{elementToRemove.Name}' from '{existingElement.Name}' (no longer exists in database).");
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Removes associations that reference deleted foreign keys.
+    /// The association's ExternalReference matches the FK's external reference from ModelNamingUtilities.GetForeignKeyExternalReference().
+    /// This is called after ProcessForeignKeys completes, so we know exactly which FKs exist in the database.
+    /// </summary>
+    /// <param name="package">The package containing associations</param>
+    /// <param name="sourceFkExternalRefs">Set of FK external references that exist in the source database</param>
+    /// <param name="result">Optional merge result to collect warnings about deleted associations</param>
+    private static void RemoveObsoleteAssociations(
+        PackageModelPersistable package, 
+        HashSet<string> sourceFkExternalRefs,
+        MergeResult? result)
+    {
+        if (package.Associations == null || package.Associations.Count == 0)
+        {
+            return;
+        }
+
+        // Find associations with external references that no longer exist in the source database
+        var associationsToRemove = package.Associations
+            .Where(assoc => 
+                !string.IsNullOrWhiteSpace(assoc.ExternalReference) &&
+                !sourceFkExternalRefs.Contains(assoc.ExternalReference))
+            .ToList();
+
+        foreach (var association in associationsToRemove)
+        {
+            // Get class name for the warning message
+            var sourceClassName = package.Classes
+                .FirstOrDefault(c => c.Id == association.SourceEnd?.TypeReference?.TypeId)
+                ?.Name ?? "Unknown";
+
+            package.Associations.Remove(association);
+            
+            result?.Warnings.Add(
+                $"Removed association '{association.TargetEnd?.Name}' from '{sourceClassName}' (foreign key no longer exists in database).");
         }
     }
 
@@ -491,6 +569,9 @@ internal class DbSchemaIntentMetadataMerger
             return;
         }
 
+        // Build a set of all FK external references from the database schema
+        var sourceFkExternalRefs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
         foreach (var table in databaseSchema.Tables)
         {
             var tableExternalRef = ModelNamingUtilities.GetTableExternalReference(table.Schema, table.Name);
@@ -503,6 +584,10 @@ internal class DbSchemaIntentMetadataMerger
 
             foreach (var foreignKey in table.ForeignKeys)
             {
+                // Track this FK as existing in the source database
+                var fkExternalRef = ModelNamingUtilities.GetForeignKeyExternalReference(table.Schema, table.Name, foreignKey.Name);
+                sourceFkExternalRefs.Add(fkExternalRef);
+
                 var associationResult = IntentModelMapper.GetOrCreateAssociation(foreignKey, table, classElement, package, databaseSchema);
                 
                 switch (associationResult.Status)
@@ -546,6 +631,12 @@ internal class DbSchemaIntentMetadataMerger
                 }
             }
         }
+
+        // Remove obsolete associations after processing all foreign keys
+        if (_config.AllowDeletions)
+        {
+            RemoveObsoleteAssociations(package, sourceFkExternalRefs, result);
+        }
     }
 
     /// <summary>
@@ -580,7 +671,7 @@ internal class DbSchemaIntentMetadataMerger
             {
                 // Update existing data contract
                 dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, _config, package, deduplicationContext);
-                SyncElements(package, existingDataContract, dataContract);
+                SyncElements(package, existingDataContract, dataContract, _config.AllowDeletions, result);
                 dataContract = existingDataContract; // Use the existing data contract for TypeReference
             }
             else
@@ -654,7 +745,7 @@ internal class DbSchemaIntentMetadataMerger
                 // Update existing DataContract
                 var schemaFolder = GetOrCreateSchemaFolder(udtSchema.Schema, package);
                 dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, _config, package, deduplicationContext);
-                SyncElements(package, existingDataContract, dataContract);
+                SyncElements(package, existingDataContract, dataContract, _config.AllowDeletions, result);
                 dataContract = existingDataContract; // Use existing for mapping
             }
             else
