@@ -1,0 +1,239 @@
+{
+  Package: {
+    Name: TestPackage,
+    Metadata: [],
+    Folders: [
+      {
+        Name: Dbo,
+        SpecializationType: Folder,
+        ExternalReference: schema:[dbo],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [
+          {
+            Name: Schema,
+            DefinitionId: Guid_1,
+            Properties: [
+              {
+                Name: Name,
+                DefinitionId: Guid_2,
+                Value: dbo,
+                IsActive: true
+              }
+            ]
+          }
+        ],
+        Children: []
+      }
+    ],
+    Classes: [
+      {
+        Name: Customer,
+        SpecializationType: Class,
+        ExternalReference: [dbo].[customers],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [],
+        Children: [
+          {
+            Name: Email,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[customers].[email],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 255,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: Id,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[customers].[id],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_8,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_9,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_10,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      },
+      {
+        Name: Order,
+        SpecializationType: Class,
+        ExternalReference: [dbo].[orders],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [],
+        Children: [
+          {
+            Name: CustomerId,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[orders].[customerid],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_8,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: association,
+                Value: Guid_11
+              },
+              {
+                Key: fk-original-name,
+                Value: CustomerId
+              },
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Foreign Key,
+                DefinitionId: Guid_12,
+                Properties: [
+                  {
+                    Name: Association,
+                    DefinitionId: Guid_13,
+                    Value: Guid_11,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: Id,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[orders].[id],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_8,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_9,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_10,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      }
+    ],
+    Associations: [
+      {
+        ExternalReference: [dbo].[orders].[fk_orders_customers],
+        Source: {
+          TypeReference: {
+            TypeId: Guid_14,
+            ResolvedName: Order,
+            IsNullable: false,
+            IsCollection: true,
+            IsNavigable: false,
+            IsRequired: true
+          },
+          Stereotypes: []
+        },
+        Target: {
+          Name: Customer,
+          ExternalReference: [dbo].[orders].[fk_orders_customers],
+          TypeReference: {
+            TypeId: Guid_15,
+            ResolvedName: Customer,
+            IsNullable: false,
+            IsCollection: false,
+            IsNavigable: true,
+            IsRequired: true
+          },
+          Stereotypes: []
+        }
+      }
+    ]
+  }
+}

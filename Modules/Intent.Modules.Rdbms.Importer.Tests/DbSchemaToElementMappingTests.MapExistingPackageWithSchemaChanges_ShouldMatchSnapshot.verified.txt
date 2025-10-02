@@ -1,0 +1,137 @@
+{
+  Package: {
+    Name: TestPackage,
+    Metadata: [],
+    Folders: [],
+    Classes: [
+      {
+        Name: Customer,
+        SpecializationType: Class,
+        ExternalReference: table:dbo.Customers,
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [
+          {
+            Name: Table,
+            DefinitionId: table-stereotype-id,
+            Properties: [
+              {
+                Name: Schema,
+                Value: dbo,
+                IsActive: true
+              },
+              {
+                Name: Name,
+                Value: Customers,
+                IsActive: true
+              }
+            ]
+          }
+        ],
+        Children: [
+          {
+            Name: Address,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[customers].[address],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_1,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_2,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_3,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_4,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_5,
+                    Value: 500,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: CreatedOn,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[customers].[createdon],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_6,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [],
+            Children: []
+          },
+          {
+            Name: Email,
+            SpecializationType: Attribute,
+            ExternalReference: column:dbo.Customers.Email,
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_1,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [],
+            Children: []
+          },
+          {
+            Name: Id,
+            SpecializationType: Attribute,
+            ExternalReference: column:dbo.Customers.Id,
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_7,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Primary Key,
+                DefinitionId: pk-stereotype-id,
+                Properties: []
+              }
+            ],
+            Children: []
+          }
+        ]
+      }
+    ],
+    Associations: []
+  }
+}
