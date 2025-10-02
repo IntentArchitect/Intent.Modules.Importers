@@ -58,5 +58,9 @@
     <Folder Include="resources\scripts\" />
     <Folder Include="resources\tool\" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <InternalsVisibleTo Include="Intent.Modules.Rdbms.Importer.Tests" />
+  </ItemGroup>
 
 </Project>
