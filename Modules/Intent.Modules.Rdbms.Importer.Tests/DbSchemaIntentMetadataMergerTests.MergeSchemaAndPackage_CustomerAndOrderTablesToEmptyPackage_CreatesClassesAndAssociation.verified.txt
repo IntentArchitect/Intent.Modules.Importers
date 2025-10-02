@@ -1,0 +1,303 @@
+﻿{
+  Classes: [
+    {
+      Id: Guid_1,
+      SpecializationType: Folder,
+      SpecializationTypeId: Guid_2,
+      Name: Dbo,
+      Display: Dbo,
+      ExternalReference: schema:[dbo],
+      IsAbstract: false,
+      IsStatic: false,
+      SortChildren: SortByTypeAndName,
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      PackageId: Guid_3,
+      PackageName: TestPackage,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_4,
+          Name: Schema,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.RDBMS,
+          DefinitionPackageId: Guid_5,
+          Properties: [
+            {
+              DefinitionId: Guid_6,
+              Name: Name,
+              Value: dbo,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_7,
+      SpecializationType: Class,
+      SpecializationTypeId: Guid_8,
+      Name: Customer,
+      Display: Customer,
+      ExternalReference: [dbo].[customers],
+      IsAbstract: false,
+      IsStatic: false,
+      SortChildren: SortByTypeAndName,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      PackageId: Guid_3,
+      PackageName: TestPackage,
+      ChildElements: [
+        {
+          Id: Guid_9,
+          SpecializationType: Attribute,
+          SpecializationTypeId: Guid_10,
+          Name: Id,
+          Display: Id,
+          ExternalReference: [dbo].[customers].[id],
+          IsAbstract: false,
+          IsStatic: false,
+          TypeReference: {
+            Id: Guid_11,
+            TypeId: Guid_12,
+            IsNavigable: true,
+            IsNullable: false,
+            IsCollection: false,
+            IsRequired: true
+          },
+          IsMapped: false,
+          ParentFolderId: Guid_7,
+          PackageId: Guid_3,
+          PackageName: TestPackage,
+          Stereotypes: [
+            {
+              DefinitionId: Guid_13,
+              Name: Primary Key,
+              AddedByDefault: false,
+              DefinitionPackageName: Intent.Metadata.RDBMS,
+              DefinitionPackageId: Guid_5,
+              Properties: [
+                {
+                  DefinitionId: Guid_14,
+                  Name: Data source,
+                  Value: Auto-generated,
+                  IsActive: true
+                }
+              ]
+            }
+          ],
+          Metadata: [
+            {
+              Key: is-managed-key,
+              Value: true
+            }
+          ],
+          IsChild: true
+        },
+        {
+          Id: Guid_15,
+          SpecializationType: Attribute,
+          SpecializationTypeId: Guid_10,
+          Name: Email,
+          Display: Email,
+          ExternalReference: [dbo].[customers].[email],
+          IsAbstract: false,
+          IsStatic: false,
+          TypeReference: {
+            Id: Guid_16,
+            TypeId: Guid_17,
+            IsNavigable: true,
+            IsNullable: false,
+            IsCollection: false,
+            IsRequired: true
+          },
+          IsMapped: false,
+          ParentFolderId: Guid_7,
+          PackageId: Guid_3,
+          PackageName: TestPackage,
+          Stereotypes: [
+            {
+              DefinitionId: Guid_18,
+              Name: Text Constraints,
+              AddedByDefault: false,
+              DefinitionPackageName: Intent.Metadata.RDBMS,
+              DefinitionPackageId: Guid_5,
+              Properties: [
+                {
+                  DefinitionId: Guid_19,
+                  Name: SQL Data Type,
+                  Value: NVARCHAR,
+                  IsActive: true
+                },
+                {
+                  DefinitionId: Guid_20,
+                  Name: MaxLength,
+                  Value: 255,
+                  IsActive: true
+                },
+                {
+                  DefinitionId: Guid_21,
+                  Name: IsUnicode,
+                  Value: true,
+                  IsActive: true
+                }
+              ]
+            }
+          ],
+          IsChild: true
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_22,
+      SpecializationType: Class,
+      SpecializationTypeId: Guid_8,
+      Name: Order,
+      Display: Order,
+      ExternalReference: [dbo].[orders],
+      IsAbstract: false,
+      IsStatic: false,
+      SortChildren: SortByTypeAndName,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      PackageId: Guid_3,
+      PackageName: TestPackage,
+      ChildElements: [
+        {
+          Id: Guid_23,
+          SpecializationType: Attribute,
+          SpecializationTypeId: Guid_10,
+          Name: Id,
+          Display: Id,
+          ExternalReference: [dbo].[orders].[id],
+          IsAbstract: false,
+          IsStatic: false,
+          TypeReference: {
+            Id: Guid_24,
+            TypeId: Guid_12,
+            IsNavigable: true,
+            IsNullable: false,
+            IsCollection: false,
+            IsRequired: true
+          },
+          IsMapped: false,
+          ParentFolderId: Guid_22,
+          PackageId: Guid_3,
+          PackageName: TestPackage,
+          Stereotypes: [
+            {
+              DefinitionId: Guid_13,
+              Name: Primary Key,
+              AddedByDefault: false,
+              DefinitionPackageName: Intent.Metadata.RDBMS,
+              DefinitionPackageId: Guid_5,
+              Properties: [
+                {
+                  DefinitionId: Guid_14,
+                  Name: Data source,
+                  Value: Auto-generated,
+                  IsActive: true
+                }
+              ]
+            }
+          ],
+          Metadata: [
+            {
+              Key: is-managed-key,
+              Value: true
+            }
+          ],
+          IsChild: true
+        },
+        {
+          Id: Guid_25,
+          SpecializationType: Attribute,
+          SpecializationTypeId: Guid_10,
+          Name: CustomerId,
+          Display: CustomerId,
+          ExternalReference: [dbo].[orders].[customerid],
+          IsAbstract: false,
+          IsStatic: false,
+          TypeReference: {
+            Id: Guid_26,
+            TypeId: Guid_12,
+            IsNavigable: true,
+            IsNullable: false,
+            IsCollection: false,
+            IsRequired: true
+          },
+          IsMapped: false,
+          ParentFolderId: Guid_22,
+          PackageId: Guid_3,
+          PackageName: TestPackage,
+          Stereotypes: [
+            {
+              DefinitionId: Guid_27,
+              Name: Foreign Key,
+              AddedByDefault: false,
+              DefinitionPackageName: Intent.Metadata.RDBMS,
+              DefinitionPackageId: Guid_5,
+              Properties: [
+                {
+                  DefinitionId: Guid_28,
+                  Name: Association,
+                  Value: Guid_29,
+                  IsActive: true
+                }
+              ]
+            }
+          ],
+          Metadata: [
+            {
+              Key: fk-original-name,
+              Value: CustomerId
+            },
+            {
+              Key: association,
+              Value: Guid_29
+            },
+            {
+              Key: is-managed-key,
+              Value: true
+            }
+          ],
+          IsChild: true
+        }
+      ],
+      IsChild: false
+    }
+  ],
+  Associations: [
+    {
+      Id: Guid_29,
+      SourceEnd: {
+        Id: Guid_30,
+        TypeReference: {
+          Id: Guid_31,
+          TypeId: Guid_22,
+          IsNavigable: false,
+          IsNullable: false,
+          IsCollection: true,
+          IsRequired: true
+        }
+      },
+      TargetEnd: {
+        Id: Guid_29,
+        Name: Customer,
+        TypeReference: {
+          Id: Guid_32,
+          TypeId: Guid_7,
+          IsNavigable: true,
+          IsNullable: false,
+          IsCollection: false,
+          IsRequired: true
+        },
+        ExternalReference: [dbo].[orders].[fk_orders_customers]
+      },
+      AssociationType: Association,
+      AssociationTypeId: Guid_33,
+      ExternalReference: [dbo].[orders].[fk_orders_customers]
+    }
+  ]
+}

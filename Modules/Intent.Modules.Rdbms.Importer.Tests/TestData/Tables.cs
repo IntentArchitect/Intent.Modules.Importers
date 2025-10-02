@@ -66,6 +66,47 @@ internal static class Tables
         Indexes = []
     };
 
+    public static TableSchema CustomerWithAddress() => new()
+    {
+        Schema = "dbo",
+        Name = "Customers",
+        Columns =
+        [
+            Column("Id", SqlDbType.Int, isPrimaryKey: true),
+            Column("Email", SqlDbType.NVarChar, length: 255),
+            Column("Address", SqlDbType.NVarChar, length: 500, isNullable: true) // New column
+        ],
+        ForeignKeys = [],
+        Indexes = []
+    };
+
+    public static TableSchema Product() => new()
+    {
+        Schema = "dbo",
+        Name = "Products",
+        Columns =
+        [
+            Column("Id", SqlDbType.Int, isPrimaryKey: true),
+            Column("Name", SqlDbType.NVarChar, length: 200),
+            Column("Price", SqlDbType.Decimal, precision: 18, scale: 2)
+        ],
+        ForeignKeys = [],
+        Indexes = []
+    };
+
+    public static TableSchema CustomerInSchema2() => new()
+    {
+        Schema = "schema2",
+        Name = "Customer",
+        Columns =
+        [
+            Column("Id", SqlDbType.UniqueIdentifier, isPrimaryKey: true),
+            Column("Name", SqlDbType.NVarChar, length: 100)
+        ],
+        ForeignKeys = [],
+        Indexes = []
+    };
+
     public static ColumnSchema Column(
         string name,
         SqlDbType type,

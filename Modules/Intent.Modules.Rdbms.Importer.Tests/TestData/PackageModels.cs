@@ -42,4 +42,31 @@ internal static class PackageModels
         package.Classes.Add(Elements.Repository("CustomerRepository"));
         return package;
     }
+
+    public static PackageModelPersistable WithCustomerTable()
+    {
+        var package = Empty();
+        package.Classes.Add(Elements.SimpleCustomersTable());
+        return package;
+    }
+
+    public static PackageModelPersistable WithCustomerAndOrderTables()
+    {
+        var package = Empty();
+        var customers = Elements.SimpleCustomersTable();
+        var orders = Elements.OrdersTableWithCustomerFk();
+        
+        package.Classes.Add(customers);
+        package.Classes.Add(orders);
+        package.Associations.Add(Associations.OrdersToCustomersFk(orders.Id, customers.Id));
+        
+        return package;
+    }
+
+    public static PackageModelPersistable WithExistingCustomer()
+    {
+        var package = Empty();
+        package.Classes.Add(Elements.SimpleCustomersTable());
+        return package;
+    }
 }

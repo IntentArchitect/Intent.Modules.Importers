@@ -1,0 +1,32 @@
+﻿[
+  {
+    Id: Guid_1,
+    SpecializationType: Class,
+    SpecializationTypeId: Guid_2,
+    Name: Customer,
+    ExternalReference: table:dbo.Customers,
+    IsAbstract: false,
+    IsStatic: false,
+    IsMapped: false,
+    Stereotypes: [
+      {
+        DefinitionId: table-stereotype-id,
+        Name: Table,
+        AddedByDefault: false,
+        Properties: [
+          {
+            Name: Schema,
+            Value: dbo,
+            IsActive: true
+          },
+          {
+            Name: Name,
+            Value: Customers,
+            IsActive: true
+          }
+        ]
+      }
+    ],
+    IsChild: false
+  }
+]
