@@ -82,7 +82,8 @@ internal class DbSchemaIntentMetadataMerger
                 tableExternalRef,
                 className,
                 table.Schema,
-                ClassModel.SpecializationType);
+                ClassModel.SpecializationType,
+                package);
 
             if (existingClass is not null)
             {
@@ -132,7 +133,8 @@ internal class DbSchemaIntentMetadataMerger
                 viewExternalRef,
                 className,
                 view.Schema,
-                ClassModel.SpecializationType);
+                ClassModel.SpecializationType,
+                package);
 
             if (existingClass != null)
             {
@@ -370,7 +372,8 @@ internal class DbSchemaIntentMetadataMerger
                     sourceChild.ExternalReference,
                     sourceChild.Name,
                     parentSchema, // Use parent element's schema for context
-                    sourceChild.SpecializationType);
+                    sourceChild.SpecializationType,
+                    package);
                 
                 if (existingChild is null)
                 {
@@ -664,7 +667,8 @@ internal class DbSchemaIntentMetadataMerger
                 dataContractExternalRef,
                 dataContractName,
                 storedProc.Schema,
-                Constants.SpecializationTypes.DataContract.SpecializationType);
+                Constants.SpecializationTypes.DataContract.SpecializationType,
+                package);
 
             ElementPersistable dataContract;
             if (existingDataContract != null)
@@ -737,7 +741,8 @@ internal class DbSchemaIntentMetadataMerger
                 udtExternalRef,
                 dataContractName,
                 udtSchema.Schema,
-                Constants.SpecializationTypes.DataContract.SpecializationType);
+                Constants.SpecializationTypes.DataContract.SpecializationType,
+                package);
 
             ElementPersistable dataContract;
             if (existingDataContract != null)

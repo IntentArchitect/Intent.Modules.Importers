@@ -28,13 +28,15 @@ internal static class IntentModelMapper
     /// <param name="name">Element name to match (levels 2 and 3)</param>
     /// <param name="dbSchema">Database schema name to match (level 2)</param>
     /// <param name="specializationType">Specialization type to match (all levels)</param>
+    /// <param name="package">Package containing the elements (for schema lookup in hierarchy)</param>
     /// <returns>Found element or null</returns>
     public static ElementPersistable? FindElementWithPrecedence(
         IEnumerable<ElementPersistable> elements,
         string? externalReference,
         string? name,
         string? dbSchema,
-        string specializationType)
+        string specializationType,
+        PackageModelPersistable? package = null)
     {
         var elementList = elements.ToList();
 
@@ -54,7 +56,7 @@ internal static class IntentModelMapper
             var byNameAndSchema = elementList.FirstOrDefault(e => 
                 e.Name.Equals(name, StringComparison.OrdinalIgnoreCase) &&
                 e.SpecializationType == specializationType &&
-                GetElementDbSchema(e) == dbSchema);
+                GetElementDbSchema(e, package) == dbSchema);
             if (byNameAndSchema != null)
                 return byNameAndSchema;
         }
@@ -67,8 +69,8 @@ internal static class IntentModelMapper
                 e.SpecializationType == specializationType &&
                 // Only match if schemas are compatible (both null/empty or both equal)
                 (string.IsNullOrWhiteSpace(dbSchema) || 
-                 string.IsNullOrWhiteSpace(GetElementDbSchema(e)) || 
-                 GetElementDbSchema(e) == dbSchema));
+                 string.IsNullOrWhiteSpace(GetElementDbSchema(e, package)) || 
+                 GetElementDbSchema(e, package) == dbSchema));
             if (byName != null)
                 return byName;
         }
@@ -77,11 +79,12 @@ internal static class IntentModelMapper
     }
 
     /// <summary>
-    /// Extracts the database schema from an element using stereotype properties
+    /// Extracts the database schema from an element using stereotype properties.
+    /// Checks the element itself, then parent folder, then package hierarchy.
     /// </summary>
-    internal static string? GetElementDbSchema(ElementPersistable element)
+    internal static string? GetElementDbSchema(ElementPersistable element, PackageModelPersistable? package = null)
     {
-        // Try Table stereotype first
+        // Try Table stereotype on element first
         if (element.TryGetStereotypeProperty(
             Constants.Stereotypes.Rdbms.Table.DefinitionId,
             Constants.Stereotypes.Rdbms.Table.PropertyId.Schema,
@@ -90,7 +93,7 @@ internal static class IntentModelMapper
             return tableSchema;
         }
 
-        // Try View stereotype
+        // Try View stereotype on element
         if (element.TryGetStereotypeProperty(
             Constants.Stereotypes.Rdbms.View.DefinitionId,
             Constants.Stereotypes.Rdbms.View.PropertyId.Schema,
@@ -99,7 +102,7 @@ internal static class IntentModelMapper
             return viewSchema;
         }
 
-        // Try Schema stereotype (for folders)
+        // Try Schema stereotype on element (for folders)
         if (element.TryGetStereotypeProperty(
             Constants.Stereotypes.Rdbms.Schema.DefinitionId,
             Constants.Stereotypes.Rdbms.Schema.PropertyId.Name,
@@ -108,7 +111,35 @@ internal static class IntentModelMapper
             return schemaName;
         }
 
+        // If package is provided, check parent folder hierarchy
+        if (package != null && !string.IsNullOrWhiteSpace(element.ParentFolderId))
+        {
+            var folder = FindFolderById(package, element.ParentFolderId);
+            if (folder != null)
+            {
+                // Check Schema stereotype on folder
+                if (folder.TryGetStereotypeProperty(
+                    Constants.Stereotypes.Rdbms.Schema.DefinitionId,
+                    Constants.Stereotypes.Rdbms.Schema.PropertyId.Name,
+                    out var folderSchema))
+                {
+                    return folderSchema;
+                }
+            }
+        }
+
         return null;
+    }
+
+    /// <summary>
+    /// Finds a folder by ID in the package (folders are stored as elements in Classes collection)
+    /// </summary>
+    private static ElementPersistable? FindFolderById(PackageModelPersistable package, string folderId)
+    {
+        // Folders are stored in the Classes collection with Folder specialization type
+        return package.Classes.FirstOrDefault(e => 
+            e.Id == folderId && 
+            e.SpecializationType == Constants.SpecializationTypes.Folder.SpecializationType);
     }
 
     public static ElementPersistable MapTableToClass(
@@ -567,7 +598,8 @@ internal static class IntentModelMapper
             targetTableExternalRef,
             targetTableEntity,
             foreignKey.ReferencedTableSchema,
-            ClassModel.SpecializationType);
+            ClassModel.SpecializationType,
+            package);
 
         if (targetClass == null)
         {
