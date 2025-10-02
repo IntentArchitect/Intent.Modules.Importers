@@ -59,12 +59,16 @@ internal static class IntentModelMapper
                 return byNameAndSchema;
         }
 
-        // Level 3: Name + SpecializationType
+        // Level 3: Name + SpecializationType (but avoid matching if schemas conflict)
         if (!string.IsNullOrWhiteSpace(name))
         {
             var byName = elementList.FirstOrDefault(e => 
                 e.Name.Equals(name, StringComparison.OrdinalIgnoreCase) &&
-                e.SpecializationType == specializationType);
+                e.SpecializationType == specializationType &&
+                // Only match if schemas are compatible (both null/empty or both equal)
+                (string.IsNullOrWhiteSpace(dbSchema) || 
+                 string.IsNullOrWhiteSpace(GetElementDbSchema(e)) || 
+                 GetElementDbSchema(e) == dbSchema));
             if (byName != null)
                 return byName;
         }

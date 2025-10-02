@@ -119,12 +119,9 @@ public class DbSchemaIntentMetadataMergerTests
         GetAttributeNames(customer).ShouldBe(new[] { "Id", "Email" });
     }
 
-    [Fact(Skip = "TODO: Restore once column external references are preserved during deletions")]
+    [Fact]
     public void MergeSchemaAndPackage_ColumnRemovedWithAllowDeletionsTrue_RemovesAttribute()
     {
-        // Known issue: syncing with deletions enabled removes all attributes because existing column
-        // external references aren't updated, so the primary key is deleted along with the missing column.
-        // Preserve this assertion for when the production behaviour is fixed.
         // Arrange
         var scenario = ScenarioComposer.Create(DatabaseSchemas.WithCustomerMissingEmailColumn(), PackageModels.WithCustomerTable());
         var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesWithDeletions());
@@ -160,11 +157,9 @@ public class DbSchemaIntentMetadataMergerTests
         GetClassById(classes, association.TargetEnd.TypeReference.TypeId).Name.ShouldBe("Customer");
     }
 
-    [Fact(Skip = "TODO: Restore once schema stereotype is persisted for multi-schema tables")]
+    [Fact]
     public void MergeSchemaAndPackage_MultipleSchemas_ImportsTablesFromBothSchemas()
     {
-    // Known issue: DbSchemaIntentMetadataMerger collapses tables with the same name across schemas because
-    // ApplyTableDetails doesn't set the schema stereotype. Once production behaviour is fixed, re-enable this test.
         // Arrange
         var scenario = ScenarioComposer.Create(DatabaseSchemas.WithMultipleSchemas(), PackageModels.Empty());
         var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());

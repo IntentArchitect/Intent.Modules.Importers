@@ -1,6 +1,7 @@
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.Modelers.Domain.Api;
+using Intent.Modules.Rdbms.Importer.Tasks.Mappers;
 
 namespace Intent.Modules.Rdbms.Importer.Tests.TestData;
 
@@ -15,15 +16,15 @@ internal static class Elements
         Name = "User",
         SpecializationType = ClassModel.SpecializationType,
         SpecializationTypeId = ClassModel.SpecializationTypeId,
-        ExternalReference = "table:dbo.Users",
+        ExternalReference = ModelNamingUtilities.GetTableExternalReference("dbo", "Users"),
         Stereotypes = new List<StereotypePersistable>
         {
             Stereotypes.Table("dbo", "Users")
         },
         ChildElements = new List<ElementPersistable>
         {
-            Attribute("Id", "int", "column:dbo.Users.Id", isPrimaryKey: true),
-            Attribute("Name", "string", "column:dbo.Users.Name")
+            Attribute("Id", "int", ModelNamingUtilities.GetColumnExternalReference("dbo", "Users", "Id"), isPrimaryKey: true),
+            Attribute("Name", "string", ModelNamingUtilities.GetColumnExternalReference("dbo", "Users", "Name"))
         }
     };
 
@@ -33,15 +34,15 @@ internal static class Elements
         Name = "Customer",
         SpecializationType = ClassModel.SpecializationType,
         SpecializationTypeId = ClassModel.SpecializationTypeId,
-        ExternalReference = "table:dbo.Customers",
+        ExternalReference = ModelNamingUtilities.GetTableExternalReference("dbo", "Customers"),
         Stereotypes = new List<StereotypePersistable>
         {
             Stereotypes.Table("dbo", "Customers")
         },
         ChildElements = new List<ElementPersistable>
         {
-            Attribute("Id", "int", "column:dbo.Customers.Id", isPrimaryKey: true),
-            Attribute("Email", "string", "column:dbo.Customers.Email")
+            Attribute("Id", "int", ModelNamingUtilities.GetColumnExternalReference("dbo", "Customers", "Id"), isPrimaryKey: true),
+            Attribute("Email", "string", ModelNamingUtilities.GetColumnExternalReference("dbo", "Customers", "Email"))
         }
     };
 
@@ -51,15 +52,15 @@ internal static class Elements
         Name = "Order",
         SpecializationType = ClassModel.SpecializationType,
         SpecializationTypeId = ClassModel.SpecializationTypeId,
-        ExternalReference = "table:dbo.Orders",
+        ExternalReference = ModelNamingUtilities.GetTableExternalReference("dbo", "Orders"),
         Stereotypes = new List<StereotypePersistable>
         {
             Stereotypes.Table("dbo", "Orders")
         },
         ChildElements = new List<ElementPersistable>
         {
-            Attribute("Id", "int", "column:dbo.Orders.Id", isPrimaryKey: true),
-            Attribute("CustomerId", "int", "column:dbo.Orders.CustomerId")
+            Attribute("Id", "int", ModelNamingUtilities.GetColumnExternalReference("dbo", "Orders", "Id"), isPrimaryKey: true),
+            Attribute("CustomerId", "int", ModelNamingUtilities.GetColumnExternalReference("dbo", "Orders", "CustomerId"))
         }
     };
 

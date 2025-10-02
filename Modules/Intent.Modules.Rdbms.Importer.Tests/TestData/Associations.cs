@@ -1,5 +1,6 @@
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
+using Intent.Modules.Rdbms.Importer.Tasks.Mappers;
 
 namespace Intent.Modules.Rdbms.Importer.Tests.TestData;
 
@@ -14,7 +15,7 @@ internal static class Associations
         string? id = null) => new()
     {
         Id = id ?? Guid.NewGuid().ToString(),
-        ExternalReference = "foreignkey:dbo.Orders.FK_Orders_Customers",
+        ExternalReference = ModelNamingUtilities.GetForeignKeyExternalReference("dbo", "Orders", "FK_Orders_Customers"),
         SourceEnd = new AssociationEndPersistable
         {
             Id = Guid.NewGuid().ToString(),

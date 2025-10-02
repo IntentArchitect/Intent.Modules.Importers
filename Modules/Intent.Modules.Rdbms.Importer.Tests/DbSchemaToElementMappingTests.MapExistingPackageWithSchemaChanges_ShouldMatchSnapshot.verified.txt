@@ -7,7 +7,7 @@
       {
         Name: Customer,
         SpecializationType: Class,
-        ExternalReference: table:dbo.Customers,
+        ExternalReference: [dbo].[customers],
         IsAbstract: false,
         IsMapped: false,
         Metadata: [],
@@ -92,7 +92,7 @@
           {
             Name: Email,
             SpecializationType: Attribute,
-            ExternalReference: column:dbo.Customers.Email,
+            ExternalReference: [dbo].[customers].[email],
             IsAbstract: false,
             IsMapped: false,
             TypeReference: {
@@ -103,13 +103,38 @@
               IsRequired: true
             },
             Metadata: [],
-            Stereotypes: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_2,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_3,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_4,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_5,
+                    Value: 255,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
             Children: []
           },
           {
             Name: Id,
             SpecializationType: Attribute,
-            ExternalReference: column:dbo.Customers.Id,
+            ExternalReference: [dbo].[customers].[id],
             IsAbstract: false,
             IsMapped: false,
             TypeReference: {
@@ -119,8 +144,25 @@
               IsNavigable: true,
               IsRequired: true
             },
-            Metadata: [],
+            Metadata: [
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
             Stereotypes: [
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_8,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_9,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              },
               {
                 Name: Primary Key,
                 DefinitionId: pk-stereotype-id,
