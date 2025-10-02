@@ -76,7 +76,7 @@ internal static class DatabaseSchemas
     public static DatabaseSchema WithOrderAndExistingCustomerReference() => new()
     {
         DatabaseName = "TestDatabase",
-        Tables = [Tables.OrdersWithCustomerFk()],
+        Tables = [Tables.SimpleCustomers(), Tables.OrdersWithCustomerFk()],
         Views = [],
         StoredProcedures = []
     };
