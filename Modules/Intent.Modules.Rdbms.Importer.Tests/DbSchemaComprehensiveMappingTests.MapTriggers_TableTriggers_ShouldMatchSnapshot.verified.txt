@@ -1,0 +1,262 @@
+﻿{
+  Package: {
+    Name: TestPackage,
+    Metadata: [],
+    Folders: [
+      {
+        Name: Dbo,
+        SpecializationType: Folder,
+        ExternalReference: schema:[dbo],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [
+          {
+            Name: Schema,
+            DefinitionId: Guid_1,
+            Properties: [
+              {
+                Name: Name,
+                DefinitionId: Guid_2,
+                Value: dbo,
+                IsActive: true
+              }
+            ]
+          }
+        ],
+        Children: []
+      }
+    ],
+    Classes: [
+      {
+        Name: Product,
+        SpecializationType: Class,
+        ExternalReference: [dbo].[products],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [],
+        Children: [
+          {
+            Name: Id,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[products].[id],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_5,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: Name,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[products].[name],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_6,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_7,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_8,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_9,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_10,
+                    Value: 200,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: Price,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[products].[price],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_11,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Decimal Constraints,
+                DefinitionId: Guid_12,
+                Properties: [
+                  {
+                    Name: Precision,
+                    DefinitionId: Guid_13,
+                    Value: 18,
+                    IsActive: true
+                  },
+                  {
+                    Name: Scale,
+                    DefinitionId: Guid_14,
+                    Value: 2,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: SKU,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[products].[sku],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_6,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_7,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_8,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_9,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_10,
+                    Value: 50,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: Status,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[products].[status],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_6,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_7,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_8,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_9,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_10,
+                    Value: 20,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: trg_Products_AfterInsert,
+            SpecializationType: Trigger,
+            ExternalReference: trigger:[dbo].[products].[trg_products_afterinsert],
+            IsAbstract: false,
+            IsMapped: false,
+            Metadata: [],
+            Stereotypes: [],
+            Children: []
+          },
+          {
+            Name: trg_Products_AfterUpdate,
+            SpecializationType: Trigger,
+            ExternalReference: trigger:[dbo].[products].[trg_products_afterupdate],
+            IsAbstract: false,
+            IsMapped: false,
+            Metadata: [],
+            Stereotypes: [],
+            Children: []
+          }
+        ]
+      }
+    ],
+    Associations: []
+  }
+}

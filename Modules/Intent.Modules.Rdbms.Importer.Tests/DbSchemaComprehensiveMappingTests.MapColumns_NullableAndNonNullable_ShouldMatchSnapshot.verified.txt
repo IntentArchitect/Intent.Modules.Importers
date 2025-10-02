@@ -1,43 +1,50 @@
-{
+﻿{
   Package: {
     Name: TestPackage,
     Metadata: [],
-    Folders: [],
-    Classes: [
+    Folders: [
       {
-        Name: Customer,
-        SpecializationType: Class,
-        ExternalReference: [dbo].[customers],
+        Name: Dbo,
+        SpecializationType: Folder,
+        ExternalReference: schema:[dbo],
         IsAbstract: false,
         IsMapped: false,
         Metadata: [],
         Stereotypes: [
           {
-            Name: Table,
-            DefinitionId: table-stereotype-id,
+            Name: Schema,
+            DefinitionId: Guid_1,
             Properties: [
               {
-                Name: Schema,
-                Value: dbo,
-                IsActive: true
-              },
-              {
                 Name: Name,
-                Value: Customers,
+                DefinitionId: Guid_2,
+                Value: dbo,
                 IsActive: true
               }
             ]
           }
         ],
+        Children: []
+      }
+    ],
+    Classes: [
+      {
+        Name: User,
+        SpecializationType: Class,
+        ExternalReference: [dbo].[users],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [],
         Children: [
           {
-            Name: Address,
+            Name: Email,
             SpecializationType: Attribute,
-            ExternalReference: [dbo].[customers].[address],
+            ExternalReference: [dbo].[users].[email],
             IsAbstract: false,
             IsMapped: false,
             TypeReference: {
-              TypeId: Guid_1,
+              TypeId: Guid_3,
               IsNullable: true,
               IsCollection: false,
               IsNavigable: true,
@@ -47,82 +54,23 @@
             Stereotypes: [
               {
                 Name: Text Constraints,
-                DefinitionId: Guid_2,
+                DefinitionId: Guid_4,
                 Properties: [
                   {
                     Name: SQL Data Type,
-                    DefinitionId: Guid_3,
+                    DefinitionId: Guid_5,
                     Value: NVARCHAR,
                     IsActive: true
                   },
                   {
                     Name: IsUnicode,
-                    DefinitionId: Guid_4,
+                    DefinitionId: Guid_6,
                     Value: true,
                     IsActive: true
                   },
                   {
                     Name: MaxLength,
-                    DefinitionId: Guid_5,
-                    Value: 500,
-                    IsActive: true
-                  }
-                ]
-              }
-            ],
-            Children: []
-          },
-          {
-            Name: CreatedOn,
-            SpecializationType: Attribute,
-            ExternalReference: [dbo].[customers].[createdon],
-            IsAbstract: false,
-            IsMapped: false,
-            TypeReference: {
-              TypeId: Guid_6,
-              IsNullable: false,
-              IsCollection: false,
-              IsNavigable: true,
-              IsRequired: true
-            },
-            Metadata: [],
-            Stereotypes: [],
-            Children: []
-          },
-          {
-            Name: Email,
-            SpecializationType: Attribute,
-            ExternalReference: [dbo].[customers].[email],
-            IsAbstract: false,
-            IsMapped: false,
-            TypeReference: {
-              TypeId: Guid_1,
-              IsNullable: false,
-              IsCollection: false,
-              IsNavigable: true,
-              IsRequired: true
-            },
-            Metadata: [],
-            Stereotypes: [
-              {
-                Name: Text Constraints,
-                DefinitionId: Guid_2,
-                Properties: [
-                  {
-                    Name: SQL Data Type,
-                    DefinitionId: Guid_3,
-                    Value: NVARCHAR,
-                    IsActive: true
-                  },
-                  {
-                    Name: IsUnicode,
-                    DefinitionId: Guid_4,
-                    Value: true,
-                    IsActive: true
-                  },
-                  {
-                    Name: MaxLength,
-                    DefinitionId: Guid_5,
+                    DefinitionId: Guid_7,
                     Value: 255,
                     IsActive: true
                   }
@@ -134,11 +82,11 @@
           {
             Name: Id,
             SpecializationType: Attribute,
-            ExternalReference: [dbo].[customers].[id],
+            ExternalReference: [dbo].[users].[id],
             IsAbstract: false,
             IsMapped: false,
             TypeReference: {
-              TypeId: Guid_7,
+              TypeId: Guid_8,
               IsNullable: false,
               IsCollection: false,
               IsNavigable: true,
@@ -153,20 +101,57 @@
             Stereotypes: [
               {
                 Name: Primary Key,
-                DefinitionId: Guid_8,
+                DefinitionId: Guid_9,
                 Properties: [
                   {
                     Name: Data source,
-                    DefinitionId: Guid_9,
+                    DefinitionId: Guid_10,
                     Value: Auto-generated,
                     IsActive: true
                   }
                 ]
-              },
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: Name,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[users].[name],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
               {
-                Name: Primary Key,
-                DefinitionId: pk-stereotype-id,
-                Properties: []
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 100,
+                    IsActive: true
+                  }
+                ]
               }
             ],
             Children: []

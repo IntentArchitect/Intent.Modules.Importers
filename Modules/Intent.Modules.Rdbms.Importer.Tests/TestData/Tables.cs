@@ -107,6 +107,50 @@ internal static class Tables
         Indexes = []
     };
 
+    public static TableSchema TableWithConstraints() => new()
+    {
+        Schema = "dbo",
+        Name = "Orders",
+        Columns =
+        [
+            Column("Id", SqlDbType.Int, isPrimaryKey: true),
+            Column("OrderNumber", SqlDbType.NVarChar, length: 50, isNullable: false), // Text constraint (length)
+            Column("Status", SqlDbType.NVarChar, length: 20, isNullable: false, defaultValue: "'Pending'"), // Default constraint
+            Column("Quantity", SqlDbType.Int, isNullable: false, defaultValue: "1"), // Default constraint
+            Column("UnitPrice", SqlDbType.Decimal, precision: 18, scale: 2, isNullable: false), // Decimal constraint (precision/scale)
+            Column("TotalAmount", SqlDbType.Decimal, precision: 18, scale: 2, isNullable: false, computedExpression: "([Quantity] * [UnitPrice])", isPersisted: true), // Computed constraint
+            Column("CreatedDate", SqlDbType.DateTime2, isNullable: false, defaultValue: "getutcdate()") // Default constraint with function
+        ],
+        ForeignKeys = [],
+        Indexes = [],
+        Triggers = []
+    };
+
+    public static TableSchema TableWithIndexesAndTriggers() => new()
+    {
+        Schema = "dbo",
+        Name = "Products",
+        Columns =
+        [
+            Column("Id", SqlDbType.Int, isPrimaryKey: true),
+            Column("Name", SqlDbType.NVarChar, length: 200, isNullable: false),
+            Column("SKU", SqlDbType.NVarChar, length: 50, isNullable: false),
+            Column("Price", SqlDbType.Decimal, precision: 18, scale: 2, isNullable: false),
+            Column("Status", SqlDbType.NVarChar, length: 20, isNullable: false)
+        ],
+        ForeignKeys = [],
+        Indexes =
+        [
+            Indexes.UniqueEmailIndex(),
+            Indexes.NonClusteredCompositeIndex()
+        ],
+        Triggers =
+        [
+            Triggers.AfterInsertTrigger("Products"),
+            Triggers.AfterUpdateTrigger("Products")
+        ]
+    };
+
     public static ColumnSchema Column(
         string name,
         SqlDbType type,
@@ -114,7 +158,10 @@ internal static class Tables
         bool isNullable = false,
         int? length = null,
         int? precision = null,
-        int? scale = null)
+        int? scale = null,
+        string? defaultValue = null,
+        string? computedExpression = null,
+        bool isPersisted = false)
     {
         var dbDataType = type.ToString().ToLower();
         var languageDataType = MapToLanguageType(type);
@@ -129,11 +176,13 @@ internal static class Tables
             IsIdentity = isPrimaryKey, // Simplified assumption for tests
             MaxLength = length,
             NumericPrecision = precision,
-            NumericScale = scale
+            NumericScale = scale,
+            DefaultConstraint = defaultValue != null ? new DefaultConstraintSchema { Text = defaultValue } : null,
+            ComputedColumn = computedExpression != null ? new ComputedColumnSchema { Expression = computedExpression, IsPersisted = isPersisted } : null
         };
     }
 
-    private static string MapToLanguageType(SqlDbType type) => type switch
+    public static string MapToLanguageType(SqlDbType type) => type switch
     {
         SqlDbType.Int => "int",
         SqlDbType.BigInt => "long",

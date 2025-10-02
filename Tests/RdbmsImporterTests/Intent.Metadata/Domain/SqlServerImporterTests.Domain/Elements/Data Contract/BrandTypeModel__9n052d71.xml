@@ -13,13 +13,13 @@
   <stereotypes />
   <metadata />
   <childElements>
-    <childElement id="db1ad68d-c9fa-4631-910a-b550ec43ed88" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+    <childElement id="7daf6de5-198c-4174-a268-399182f80db3" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
       <name>Name</name>
       <display>Name: string</display>
-      <externalReference>[dbo].[brandtype].[name</externalReference>
+      <externalReference>[dbo].[brandtype].UDT.[name]</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="14c93975-fb5e-4c62-a876-2eb512caf354">
+      <typeReference id="e9a1e588-7ff6-468f-9e98-71714cf09452">
         <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -49,13 +49,13 @@
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="60946102-c1b4-4f2f-9d1e-37bf3f429700" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
+    <childElement id="d528f24d-0dc5-4abc-b268-f1bd97a5978f" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
       <name>IsActive</name>
       <display>IsActive: bool</display>
-      <externalReference>[dbo].[brandtype].[isactive</externalReference>
+      <externalReference>[dbo].[brandtype].UDT.[isactive]</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="dd8eea71-16cb-41e6-8c15-93f7dadbf68c">
+      <typeReference id="cee3784e-383c-42e3-a9e1-5b0fd6964dd0">
         <typeId>e6f92b09-b2c5-4536-8270-a4d9e5bbd930</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>

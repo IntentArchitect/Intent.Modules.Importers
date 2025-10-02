@@ -85,30 +85,5 @@
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="c4a25131-82bb-4af8-b0a8-6303a49b889e" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">
-      <name>Id</name>
-      <display>Id: guid</display>
-      <externalReference>[[dbo].[getcustomerorders].response].[id]</externalReference>
-      <isAbstract>false</isAbstract>
-      <genericTypes />
-      <typeReference id="6693d149-9956-4028-bf81-2bd091e36aba">
-        <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
-        <isNavigable>true</isNavigable>
-        <isNullable>false</isNullable>
-        <isCollection>false</isCollection>
-        <isRequired>true</isRequired>
-        <typePackageName>Intent.Common.Types</typePackageName>
-        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
-        <stereotypes />
-        <genericTypeParameters />
-      </typeReference>
-      <isMapped>false</isMapped>
-      <parentFolderId>fbcb1b73-7a16-47d5-9512-481ac622fed3</parentFolderId>
-      <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
-      <packageName>SqlServerImporterTests</packageName>
-      <stereotypes />
-      <metadata />
-      <childElements />
-    </childElement>
   </childElements>
 </class>
