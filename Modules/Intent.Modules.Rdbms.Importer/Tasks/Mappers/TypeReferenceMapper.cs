@@ -13,6 +13,7 @@ internal static class TypeReferenceMapper
         {
             Id = Guid.NewGuid().ToString(),
             TypeId = GetTypeId(column.LanguageDataType),
+            TypeName = column.LanguageDataType,
             IsNullable = column.IsNullable,
             IsCollection = column.LanguageDataType.EndsWith("[]"),
             Stereotypes = [],
@@ -26,6 +27,7 @@ internal static class TypeReferenceMapper
         {
             Id = Guid.NewGuid().ToString(),
             TypeId = GetTypeId(parameter.LanguageDataType),
+            TypeName = parameter.LanguageDataType,
             IsNullable = parameter.Direction != StoredProcedureParameterDirection.Out, // Input parameters can be nullable, output parameters typically aren't
             IsCollection = parameter.LanguageDataType.EndsWith("[]"),
             Stereotypes = [],
@@ -45,6 +47,7 @@ internal static class TypeReferenceMapper
             {
                 Id = Guid.NewGuid().ToString(),
                 TypeId = userDefinedTableDataContractId,
+                TypeName = parameter.LanguageDataType,
                 IsNullable = parameter.Direction != StoredProcedureParameterDirection.Out,
                 IsCollection = true, // UserDefinedTable parameters are collections
                 Stereotypes = [],
@@ -62,6 +65,7 @@ internal static class TypeReferenceMapper
         {
             Id = Guid.NewGuid().ToString(),
             TypeId = GetTypeId(column.LanguageDataType),
+            TypeName = column.LanguageDataType,
             IsNullable = column.IsNullable,
             IsCollection = column.LanguageDataType.EndsWith("[]"),
             Stereotypes = [],

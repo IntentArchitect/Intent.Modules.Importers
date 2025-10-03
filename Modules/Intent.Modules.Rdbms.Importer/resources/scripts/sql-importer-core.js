@@ -234,21 +234,8 @@ class DatabaseImportStrategy {
                             id: "includeIndexes",
                             fieldType: "checkbox",
                             label: "Include Indexes",
+                            hint: "If set, the importer will include database indexes in the import.",
                             value: defaults.includeIndexes
-                        },
-                        {
-                            id: "allowDeletions",
-                            fieldType: "checkbox",
-                            label: "Remove deleted database elements",
-                            hint: "Removes imported attributes and associations that no longer exist in the database",
-                            value: defaults.allowDeletions
-                        },
-                        {
-                            id: "preserveAttributeTypes",
-                            fieldType: "checkbox",
-                            label: "Preserve user-specified return types",
-                            hint: "If set, the importer will not overwrite any return types set by the user.",
-                            value: defaults.preserveAttributeTypes
                         },
                         {
                             id: "importFilterFilePath",
@@ -281,6 +268,27 @@ class DatabaseImportStrategy {
                                     return;
                                 }
                             }
+                        }
+                    ],
+                    isCollapsed: true,
+                    isHidden: false
+                },
+                {
+                    name: "Advanced",
+                    fields: [
+                        {
+                            id: "allowDeletions",
+                            fieldType: "checkbox",
+                            label: "Remove deleted database attributes and associations",
+                            hint: "Removes imported attributes and associations that no longer exist in the database",
+                            value: defaults.allowDeletions
+                        },
+                        {
+                            id: "preserveAttributeTypes",
+                            fieldType: "checkbox",
+                            label: "Preserve user-specified attribute types",
+                            hint: "If set, the importer will not overwrite any attribute types set by the user.",
+                            value: defaults.preserveAttributeTypes
                         }
                     ],
                     isCollapsed: true,

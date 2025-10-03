@@ -343,6 +343,16 @@ internal class DbSchemaIntentMetadataMerger
                 {
                     existingElement.TypeReference.TypeId = sourceElement.TypeReference.TypeId;
                 }
+                else if (preserveAttributeTypes && 
+                         !string.IsNullOrEmpty(existingElement.TypeReference.TypeId) &&
+                         existingElement.TypeReference.TypeId != sourceElement.TypeReference.TypeId)
+                {
+                    // Log warning when type preservation prevents an update
+                    var elementIdentifier = string.IsNullOrEmpty(parentSchema) 
+                        ? existingElement.Name 
+                        : $"{parentSchema}.{existingElement.Name}";
+                    result?.Warnings.Add($"Preserved user-specified type for '{elementIdentifier}'. Database type would have changed it to '{sourceElement.TypeReference.TypeName}'.");
+                }
                 
                 existingElement.TypeReference.GenericTypeId = sourceElement.TypeReference.GenericTypeId;
                 existingElement.TypeReference.IsCollection = sourceElement.TypeReference.IsCollection;
