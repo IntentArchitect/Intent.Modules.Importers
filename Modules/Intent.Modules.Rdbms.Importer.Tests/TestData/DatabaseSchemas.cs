@@ -23,6 +23,14 @@ internal static class DatabaseSchemas
         StoredProcedures = []
     };
 
+    public static DatabaseSchema WithSimpleUsersTableWithStatus() => new()
+    {
+        DatabaseName = "TestDatabase",
+        Tables = [Tables.SimpleUsersWithStatus()],
+        Views = [],
+        StoredProcedures = []
+    };
+
     public static DatabaseSchema WithCustomersAndOrders() => new()
     {
         DatabaseName = "TestDatabase",

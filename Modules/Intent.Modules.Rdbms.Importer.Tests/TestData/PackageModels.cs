@@ -69,4 +69,30 @@ internal static class PackageModels
         package.Classes.Add(Elements.SimpleCustomersTable());
         return package;
     }
+
+    public static PackageModelPersistable WithUserHavingCustomEnumType()
+    {
+        var package = Empty();
+        var userClass = Elements.SimpleUsersTable();
+        
+        // Add a Status attribute with a custom enum type instead of the default int
+        var statusAttribute = new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "Status",
+            SpecializationType = "Attribute",
+            SpecializationTypeId = "c8e1ed70-26bb-4e10-9d2a-30c35bb26471",
+            ExternalReference = "[dbo].[users].[status]",
+            TypeReference = new TypeReferencePersistable
+            {
+                TypeId = "custom-enum-id", // Custom enum type ID
+                IsNullable = false
+            }
+        };
+        
+        userClass.ChildElements.Add(statusAttribute);
+        package.Classes.Add(userClass);
+        
+        return package;
+    }
 }

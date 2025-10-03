@@ -24,6 +24,8 @@ public class DatabaseImportModel
 		TypesToExport = other.TypesToExport?.ToList() ?? [];
 		DatabaseType = other.DatabaseType;
 		FilterType = other.FilterType;
+		AllowDeletions = other.AllowDeletions;
+		PreserveAttributeTypes = other.PreserveAttributeTypes;
 	}
 	
 	public string ApplicationId { get; set; } = null!;
@@ -35,6 +37,8 @@ public class DatabaseImportModel
 	public string? StoredProcedureType { get; set; }
 	public string FilterType { get; set; } = "include";
 	public DatabaseSettingPersistence SettingPersistence { get; set; } = DatabaseSettingPersistence.None;
+	public bool AllowDeletions { get; set; } = true;
+	public bool PreserveAttributeTypes { get; set; } = true;
 	
 	// BEGIN - ImportSchemaRequest
 	public string ConnectionString { get; set; } = null!;

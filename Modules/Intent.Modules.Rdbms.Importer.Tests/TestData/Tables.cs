@@ -23,6 +23,21 @@ internal static class Tables
         Indexes = []
     };
 
+    public static TableSchema SimpleUsersWithStatus() => new()
+    {
+        Schema = "dbo",
+        Name = "Users",
+        Columns =
+        [
+            Column("Id", SqlDbType.Int, isPrimaryKey: true),
+            Column("Name", SqlDbType.NVarChar, length: 100, isNullable: false),
+            Column("Email", SqlDbType.NVarChar, length: 255, isNullable: true),
+            Column("Status", SqlDbType.Int, isNullable: false) // Status column as int in database
+        ],
+        ForeignKeys = [],
+        Indexes = []
+    };
+
     public static TableSchema SimpleCustomers() => new()
     {
         Schema = "dbo",

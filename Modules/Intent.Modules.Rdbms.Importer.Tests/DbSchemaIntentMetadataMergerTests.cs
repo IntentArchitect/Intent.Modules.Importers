@@ -175,6 +175,48 @@ public class DbSchemaIntentMetadataMergerTests
         classes.ShouldContain(c => string.Equals(c.ExternalReference, "[schema2].[customer]", StringComparison.OrdinalIgnoreCase));
     }
 
+    [Fact]
+    public void MergeSchemaAndPackage_AttributeWithCustomType_PreservesCustomTypeWhenConfigured()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.Create(
+            DatabaseSchemas.WithSimpleUsersTableWithStatus(),
+            PackageModels.WithUserHavingCustomEnumType());
+        var configWithPreservation = ImportConfigurations.TablesOnly();
+        configWithPreservation.PreserveAttributeTypes = true;
+        var merger = new DbSchemaIntentMetadataMerger(configWithPreservation);
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        var userClass = GetClasses(scenario.Package).ShouldHaveSingleItem();
+        var statusAttribute = userClass.ChildElements.Single(a => a.Name == "Status");
+        statusAttribute.TypeReference.TypeId.ShouldBe("custom-enum-id", "Custom enum type should be preserved");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_AttributeWithCustomType_OverridesCustomTypeWhenNotConfigured()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.Create(
+            DatabaseSchemas.WithSimpleUsersTableWithStatus(),
+            PackageModels.WithUserHavingCustomEnumType());
+        var configWithoutPreservation = ImportConfigurations.TablesOnly();
+        configWithoutPreservation.PreserveAttributeTypes = false;
+        var merger = new DbSchemaIntentMetadataMerger(configWithoutPreservation);
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        var userClass = GetClasses(scenario.Package).ShouldHaveSingleItem();
+        var statusAttribute = userClass.ChildElements.Single(a => a.Name == "Status");
+        statusAttribute.TypeReference.TypeId.ShouldNotBe("custom-enum-id", "Custom enum type should be overridden with database type");
+    }
+
     private static IEnumerable<ElementPersistable> GetClasses(PackageModelPersistable package) =>
         package.Classes.Where(c =>
             string.Equals(c.SpecializationType, ClassModel.SpecializationType, StringComparison.OrdinalIgnoreCase));

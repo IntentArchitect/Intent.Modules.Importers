@@ -211,7 +211,9 @@ public class DatabaseImport : IModuleTask
             StoredProcedureType = string.IsNullOrWhiteSpace(importModel.StoredProcedureType)
                 ? StoredProcedureType.Default
                 : Enum.Parse<StoredProcedureType>(importModel.StoredProcedureType),
-            DatabaseType = importModel.DatabaseType
+            DatabaseType = importModel.DatabaseType,
+            AllowDeletions = importModel.AllowDeletions,
+            PreserveAttributeTypes = importModel.PreserveAttributeTypes
         };
 
         // Only override TypesToExport if explicitly provided, otherwise use the default from ImportConfiguration

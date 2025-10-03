@@ -27,6 +27,13 @@ internal class ImportConfiguration
     /// </summary>
     public bool AllowDeletions { get; set; } = true;
     
+    /// <summary>
+    /// Indicates whether to preserve existing attribute type references during import.
+    /// When true (default), custom type mappings (e.g., enums) set by the user will not be overridden.
+    /// When false, attribute types will be updated to match the database column types.
+    /// </summary>
+    public bool PreserveAttributeTypes { get; set; } = true;
+    
     public bool ExportTables()
     {
         return TypesToExport.Contains(ExportType.Table);

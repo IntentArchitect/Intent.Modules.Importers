@@ -64,7 +64,8 @@ class DatabaseImportStrategy {
             settingPersistence: this.getSettingValue(domainPackage, "rdbms-import:settingPersistence", "None"),
             databaseType: this.getSettingValue(domainPackage, "rdbms-import:databaseType", "SqlServer"),
             filterType: this.getSettingValue(domainPackage, "rdbms-import:filterType", "include"),
-            allowDeletions: this.getSettingValue(domainPackage, "rdbms-import:allowDeletions", "true")
+            allowDeletions: this.getSettingValue(domainPackage, "rdbms-import:allowDeletions", "true"),
+            preserveAttributeTypes: this.getSettingValue(domainPackage, "rdbms-import:preserveAttributeTypes", "true")
         };
         return result;
     }
@@ -227,6 +228,13 @@ class DatabaseImportStrategy {
                             value: defaults.allowDeletions
                         },
                         {
+                            id: "preserveAttributeTypes",
+                            fieldType: "checkbox",
+                            label: "Preserve user-specified return types",
+                            hint: "If set, the importer will not overwrite any return types set by the user.",
+                            value: defaults.preserveAttributeTypes
+                        },
+                        {
                             id: "importFilterFilePath",
                             fieldType: "open-file",
                             label: "Import Filter File",
@@ -299,7 +307,8 @@ class DatabaseImportStrategy {
             settingPersistence: capturedInput.settingPersistence,
             databaseType: capturedInput.databaseType,
             filterType: capturedInput.filterType ?? "include",
-            allowDeletions: capturedInput.allowDeletions === "true"
+            allowDeletions: capturedInput.allowDeletions === "true",
+            preserveAttributeTypes: capturedInput.preserveAttributeTypes === "true"
         };
 
         return importConfig;
@@ -919,6 +928,7 @@ interface ISqlDatabaseImportPackageSettings {
     databaseType: string;
     filterType: string;
     allowDeletions: string;
+    preserveAttributeTypes: string;
 }
 
 interface IDatabaseImportModel {
@@ -937,6 +947,7 @@ interface IDatabaseImportModel {
     databaseType: string;
     filterType: string;
     allowDeletions: boolean;
+    preserveAttributeTypes: boolean;
 }
 
 interface ITestConnectionModel {
@@ -1003,4 +1014,5 @@ interface IFormResult {
     includeViews: string;
     includeTables: string;
     allowDeletions: string;
+    preserveAttributeTypes: string;
 }

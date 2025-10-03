@@ -10,16 +10,19 @@ internal readonly record struct Scenario(DatabaseSchema Schema, PackageModelPers
 
 internal static class ScenarioComposer
 {
+    /// Create custom scenario
     public static Scenario Create(DatabaseSchema schema, PackageModelPersistable package)
     {
         return new Scenario(schema, package);
     }
 
+    /// Create scenario where only DB Schema is supplied but on an empty existing package
     public static Scenario SchemaOnly(DatabaseSchema schema)
     {
         return new Scenario(schema, PackageModels.Empty());
     }
 
+    /// Create scenario where only Package is supplied but no DB Schema is supplied
     public static Scenario PackageOnly(PackageModelPersistable package)
     {
         return new Scenario(DatabaseSchemas.Empty(), package);
