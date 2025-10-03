@@ -28,6 +28,8 @@ internal static class SettingsHelper
             package.AddMetadata("rdbms-import:importFilterFilePath", importModel.ImportFilterFilePath);
             package.AddMetadata("rdbms-import:storedProcedureType", importModel.StoredProcedureType);
             package.AddMetadata("rdbms-import:filterType", importModel.FilterType);
+            package.AddMetadata("rdbms-import:allowDeletions", importModel.AllowDeletions.ToString().ToLowerInvariant());
+            package.AddMetadata("rdbms-import:preserveAttributeTypes", importModel.PreserveAttributeTypes.ToString().ToLowerInvariant());
             ProcessConnectionStringSetting(package, importModel);
             package.AddMetadata("rdbms-import:settingPersistence", importModel.SettingPersistence.ToString());
             package.AddMetadata("rdbms-import:databaseType", importModel.DatabaseType.ToString());
@@ -41,6 +43,8 @@ internal static class SettingsHelper
             package.RemoveMetadata("rdbms-import:importFilterFilePath");
             package.RemoveMetadata("rdbms-import:storedProcedureType");
             package.RemoveMetadata("rdbms-import:filterType");
+            package.RemoveMetadata("rdbms-import:allowDeletions");
+            package.RemoveMetadata("rdbms-import:preserveAttributeTypes");
             package.RemoveMetadata("rdbms-import:connectionString");
             package.RemoveMetadata("rdbms-import:settingPersistence");
             package.RemoveMetadata("rdbms-import:databaseType");
