@@ -8,11 +8,10 @@ namespace RdbmsImporterTests.Domain.Contracts.Dbo
 {
     public record GetCustomerOrdersResponse
     {
-        public GetCustomerOrdersResponse(DateTime orderDate, string refNo, Guid id)
+        public GetCustomerOrdersResponse(DateTime orderDate, string refNo)
         {
             OrderDate = orderDate;
             RefNo = refNo;
-            Id = id;
         }
 
         /// <summary>
@@ -26,6 +25,5 @@ namespace RdbmsImporterTests.Domain.Contracts.Dbo
 
         public DateTime OrderDate { get; init; }
         public string RefNo { get; init; }
-        public Guid Id { get; init; }
     }
 }
