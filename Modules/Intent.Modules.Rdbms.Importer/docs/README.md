@@ -12,7 +12,9 @@ Selecting this option will provide you with the following dialog:
 
 ![Database Import dialog](images/db-import-dialog.png)
 
-The dialog is organized into collapsible sections for a better user experience:
+> [!NOTE]
+> 
+> The dialog is organized into **collapsible sections** for a better user experience.
 
 ### Connection & Settings Section
 
@@ -57,7 +59,7 @@ This setting controls the naming convention of the entities which will be create
 This setting controls how database column names are converted to attribute names in the Domain Designer.
 
 - **Default** - Column names will be converted to PascalCase format. e.g. `FIRST_NAME` -> `FirstName`.
-- **Column name, as-is** - Attribute names will match the column names exactly as they appear in the database. e.g. `FIRST_NAME` -> `FIRST_NAME`.
+- **Column name, as is** - Attribute names will match the column names exactly as they appear in the database. e.g. `FIRST_NAME` -> `FIRST_NAME`.
 
 #### Apply Table Stereotypes
 
@@ -82,13 +84,13 @@ Choose between using Repository Elements and Repository Operations to represent 
 
 ### Filtering Options Section
 
+![Import Filtering](images/db-import-dialog-import-filtering.png)
+
 #### Include Indexes
 
 When checked, the importer will include database indexes in the import. Indexes are represented as stereotypes on the domain entities and their attributes.
 
 #### Import Filter File
-
-![Import Filtering](images/db-import-dialog-import-filtering.png)
 
 Specify a JSON file path **(that may be a relative file path to the Package file being imported into)** with a file browser dialog that assists with importing only certain objects from the database.
 
@@ -97,6 +99,8 @@ The import filter JSON file will be automatically updated with settings chosen o
 For details on the format of this file, refer to the [Filter File Structure](#filter-file-structure) section of this document.
 
 ### Advanced Section
+
+![Advanced](images/db-import-dialog-import-advanced.png)
 
 The Advanced section contains options for fine-tuning the import behavior:
 
@@ -155,9 +159,6 @@ The filter file should follow this JSON structure:
 ```json
 {
   "filter_type": "include",
-  "schemas": [
-    "dbo"
-  ],
   "include_dependant_tables": true,
   "include_tables": [
     {
@@ -221,5 +222,6 @@ By default, if a qualifying table has a trigger, it will be imported and modeled
 
 ![Trigger Modelling](images/trigger-import.png)
 
-> [!NOTE]  
+> [!NOTE]
+> 
 > The actual `trigger` implementation is not modeled in the `Domain Designer`. The `trigger` stereotype is used only to mark to the underlying provider (specifically, Entity Framework Core) that the table has an existing trigger. This allows Entity Framework to correctly generate the appropriate SQL statements.
