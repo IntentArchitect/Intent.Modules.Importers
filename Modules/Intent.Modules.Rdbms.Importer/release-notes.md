@@ -1,3 +1,8 @@
+### Version 1.0.5
+
+- Improvement: Remove deleted database attributes and associations.
+- Improvement: Preserve user-specified attribute types.
+
 ### Version 1.0.4
 
 - Improvement: Introducing `Attribute Name Convention` for how Column names translates into Entity attribute names.
