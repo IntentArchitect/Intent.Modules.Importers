@@ -81,6 +81,19 @@ internal static class Tables
         Indexes = []
     };
 
+    public static TableSchema OrdersWithoutCustomerFk() => new()
+    {
+        Schema = "dbo",
+        Name = "Orders",
+        Columns =
+        [
+            Column("Id", SqlDbType.Int, isPrimaryKey: true),
+            Column("CustomerId", SqlDbType.Int, isNullable: false)
+        ],
+        ForeignKeys = [], // No foreign keys - FK has been removed
+        Indexes = []
+    };
+
     public static TableSchema CustomerWithAddress() => new()
     {
         Schema = "dbo",
@@ -164,6 +177,385 @@ internal static class Tables
             Triggers.AfterInsertTrigger("Products"),
             Triggers.AfterUpdateTrigger("Products")
         ]
+    };
+
+    public static TableSchema ParentsWithCompositePK() => new()
+    {
+        Schema = "dbo",
+        Name = "Parents",
+        Columns =
+        [
+            Column("Id", SqlDbType.UniqueIdentifier, isPrimaryKey: true, isNullable: false),
+            Column("Id2", SqlDbType.UniqueIdentifier, isPrimaryKey: true, isNullable: false),
+            Column("Name", SqlDbType.NVarChar, length: 100, isNullable: false)
+        ],
+        ForeignKeys = [],
+        Indexes = []
+    };
+
+    public static TableSchema ChildrenWithCompositeFk() => new()
+    {
+        Schema = "dbo",
+        Name = "Children",
+        Columns =
+        [
+            Column("Id", SqlDbType.UniqueIdentifier, isPrimaryKey: true),
+            Column("ParentId", SqlDbType.UniqueIdentifier, isNullable: false),
+            Column("ParentId2", SqlDbType.UniqueIdentifier, isNullable: false),
+            Column("Name", SqlDbType.NVarChar, length: 100, isNullable: false)
+        ],
+        ForeignKeys =
+        [
+            new()
+            {
+                Name = "FK_Children_Parents",
+                TableName = "Children",
+                ReferencedTableSchema = "dbo",
+                ReferencedTableName = "Parents",
+                Columns =
+                [
+                    new() { Name = "ParentId", ReferencedColumnName = "Id" },
+                    new() { Name = "ParentId2", ReferencedColumnName = "Id2" }
+                ]
+            }
+        ],
+        Indexes = []
+    };
+
+    public static TableSchema FKTable() => new()
+    {
+        Schema = "dbo",
+        Name = "FKTable",
+        Columns =
+        [
+            Column("Id", SqlDbType.Int, isPrimaryKey: true),
+            Column("Name", SqlDbType.NVarChar, length: 100)
+        ],
+        ForeignKeys = [],
+        Indexes = []
+    };
+
+    public static TableSchema PrimaryTableWithMultipleFks() => new()
+    {
+        Schema = "dbo",
+        Name = "PrimaryTable",
+        Columns =
+        [
+            Column("PrimaryTableId", SqlDbType.Int, isPrimaryKey: true),
+            Column("Name", SqlDbType.NVarChar, length: 100, isNullable: false),
+            Column("FKTableId1", SqlDbType.Int, isNullable: false),
+            Column("FKTableId2", SqlDbType.Int, isNullable: true),
+            Column("FKAsTableId3", SqlDbType.Int, isNullable: true),
+            Column("FKTryTableId4", SqlDbType.Int, isNullable: true),
+            Column("FKThisTableId5", SqlDbType.Int, isNullable: true)
+        ],
+        ForeignKeys =
+        [
+            new()
+            {
+                Name = "FK_PrimaryTable_FKTable_Id1",
+                TableName = "PrimaryTable",
+                ReferencedTableSchema = "dbo",
+                ReferencedTableName = "FKTable",
+                Columns = [new() { Name = "FKTableId1", ReferencedColumnName = "Id" }]
+            },
+            new()
+            {
+                Name = "FK_PrimaryTable_FKTable_Id2",
+                TableName = "PrimaryTable",
+                ReferencedTableSchema = "dbo",
+                ReferencedTableName = "FKTable",
+                Columns = [new() { Name = "FKTableId2", ReferencedColumnName = "Id" }]
+            },
+            new()
+            {
+                Name = "FK_PrimaryTable_FKTable_Id3",
+                TableName = "PrimaryTable",
+                ReferencedTableSchema = "dbo",
+                ReferencedTableName = "FKTable",
+                Columns = [new() { Name = "FKAsTableId3", ReferencedColumnName = "Id" }]
+            },
+            new()
+            {
+                Name = "FK_PrimaryTable_FKTable_Id4",
+                TableName = "PrimaryTable",
+                ReferencedTableSchema = "dbo",
+                ReferencedTableName = "FKTable",
+                Columns = [new() { Name = "FKTryTableId4", ReferencedColumnName = "Id" }]
+            },
+            new()
+            {
+                Name = "FK_PrimaryTable_FKTable_Id5",
+                TableName = "PrimaryTable",
+                ReferencedTableSchema = "dbo",
+                ReferencedTableName = "FKTable",
+                Columns = [new() { Name = "FKThisTableId5", ReferencedColumnName = "Id" }]
+            }
+        ],
+        Indexes = []
+    };
+
+    public static TableSchema SelfReferencingTable() => new()
+    {
+        Schema = "dbo",
+        Name = "SelfReferenceTable",
+        Columns =
+        [
+            Column("Id", SqlDbType.UniqueIdentifier, isPrimaryKey: true),
+            Column("ParentId", SqlDbType.UniqueIdentifier, isNullable: true),
+            Column("Name", SqlDbType.NVarChar, length: 100, isNullable: false)
+        ],
+        ForeignKeys =
+        [
+            new()
+            {
+                Name = "FK_SelfReferenceTable_SelfReferenceTable",
+                TableName = "SelfReferenceTable",
+                ReferencedTableSchema = "dbo",
+                ReferencedTableName = "SelfReferenceTable",
+                Columns = [new() { Name = "ParentId", ReferencedColumnName = "Id" }]
+            }
+        ],
+        Indexes = []
+    };
+
+    public static TableSchema LegacyTableNoPK() => new()
+    {
+        Schema = "dbo",
+        Name = "Legacy_Table",
+        Columns =
+        [
+            Column("LegacyID", SqlDbType.Int, isPrimaryKey: false), // No PK
+            Column("Name", SqlDbType.NVarChar, length: 100),
+            Column("BadDate", SqlDbType.DateTime, isNullable: false)
+        ],
+        ForeignKeys = [],
+        Indexes = []
+    };
+
+    public static TableSchema OrdersWithUniqueIndex() => new()
+    {
+        Schema = "dbo",
+        Name = "Orders",
+        Columns =
+        [
+            Column("Id", SqlDbType.UniqueIdentifier, isPrimaryKey: true),
+            Column("CustomerId", SqlDbType.UniqueIdentifier, isNullable: false),
+            Column("RefNo", SqlDbType.NVarChar, length: 256, isNullable: false),
+            Column("OrderDate", SqlDbType.DateTime, isNullable: false)
+        ],
+        ForeignKeys =
+        [
+            new()
+            {
+                Name = "FK_Orders_Customers",
+                TableName = "Orders",
+                ReferencedTableSchema = "dbo",
+                ReferencedTableName = "Customers",
+                Columns = [new() { Name = "CustomerId", ReferencedColumnName = "Id" }]
+            }
+        ],
+        Indexes =
+        [
+            new IndexSchema
+            {
+                Name = "IX_Orders_RefNo",
+                IsUnique = true,
+                IsClustered = false,
+                HasFilter = false,
+                Columns =
+                [
+                    new IndexColumnSchema { Name = "RefNo", IsDescending = false, IsIncluded = false }
+                ],
+                Metadata = new()
+            },
+            new IndexSchema
+            {
+                Name = "IX_Orders_CustomerId",
+                IsUnique = false,
+                IsClustered = false,
+                HasFilter = false,
+                Columns =
+                [
+                    new IndexColumnSchema { Name = "CustomerId", IsDescending = false, IsIncluded = false },
+                    new IndexColumnSchema { Name = "OrderDate", IsDescending = false, IsIncluded = true }
+                ],
+                Metadata = new()
+            }
+        ]
+    };
+
+    // ASP.NET Identity Tables
+    public static TableSchema AspNetUsers() => new()
+    {
+        Schema = "dbo",
+        Name = "AspNetUsers",
+        Columns =
+        [
+            Column("Id", SqlDbType.NVarChar, length: 450, isPrimaryKey: true, isNullable: false),
+            Column("UserName", SqlDbType.NVarChar, length: 256, isNullable: true),
+            Column("NormalizedUserName", SqlDbType.NVarChar, length: 256, isNullable: true),
+            Column("Email", SqlDbType.NVarChar, length: 256, isNullable: true),
+            Column("NormalizedEmail", SqlDbType.NVarChar, length: 256, isNullable: true),
+            Column("EmailConfirmed", SqlDbType.Bit, isNullable: false),
+            Column("PasswordHash", SqlDbType.NVarChar, isNullable: true),
+            Column("SecurityStamp", SqlDbType.NVarChar, isNullable: true),
+            Column("ConcurrencyStamp", SqlDbType.NVarChar, isNullable: true),
+            Column("PhoneNumber", SqlDbType.NVarChar, isNullable: true),
+            Column("PhoneNumberConfirmed", SqlDbType.Bit, isNullable: false),
+            Column("TwoFactorEnabled", SqlDbType.Bit, isNullable: false),
+            Column("LockoutEnd", SqlDbType.DateTime, isNullable: true),
+            Column("LockoutEnabled", SqlDbType.Bit, isNullable: false),
+            Column("AccessFailedCount", SqlDbType.Int, isNullable: false)
+        ],
+        ForeignKeys = [],
+        Indexes = []
+    };
+
+    public static TableSchema AspNetRoles() => new()
+    {
+        Schema = "dbo",
+        Name = "AspNetRoles",
+        Columns =
+        [
+            Column("Id", SqlDbType.NVarChar, length: 450, isPrimaryKey: true, isNullable: false),
+            Column("Name", SqlDbType.NVarChar, length: 256, isNullable: true),
+            Column("NormalizedName", SqlDbType.NVarChar, length: 256, isNullable: true),
+            Column("ConcurrencyStamp", SqlDbType.NVarChar, isNullable: true)
+        ],
+        ForeignKeys = [],
+        Indexes = []
+    };
+
+    public static TableSchema AspNetUserRoles() => new()
+    {
+        Schema = "dbo",
+        Name = "AspNetUserRoles",
+        Columns =
+        [
+            Column("UserId", SqlDbType.NVarChar, length: 450, isPrimaryKey: true, isNullable: false),
+            Column("RoleId", SqlDbType.NVarChar, length: 450, isPrimaryKey: true, isNullable: false)
+        ],
+        ForeignKeys =
+        [
+            new()
+            {
+                Name = "FK_AspNetUserRoles_AspNetUsers",
+                TableName = "AspNetUserRoles",
+                ReferencedTableSchema = "dbo",
+                ReferencedTableName = "AspNetUsers",
+                Columns = [new() { Name = "UserId", ReferencedColumnName = "Id" }]
+            },
+            new()
+            {
+                Name = "FK_AspNetUserRoles_AspNetRoles",
+                TableName = "AspNetUserRoles",
+                ReferencedTableSchema = "dbo",
+                ReferencedTableName = "AspNetRoles",
+                Columns = [new() { Name = "RoleId", ReferencedColumnName = "Id" }]
+            }
+        ],
+        Indexes = []
+    };
+
+    public static TableSchema AspNetUserClaims() => new()
+    {
+        Schema = "dbo",
+        Name = "AspNetUserClaims",
+        Columns =
+        [
+            Column("Id", SqlDbType.Int, isPrimaryKey: true, isNullable: false),
+            Column("UserId", SqlDbType.NVarChar, length: 450, isNullable: false),
+            Column("ClaimType", SqlDbType.NVarChar, isNullable: true),
+            Column("ClaimValue", SqlDbType.NVarChar, isNullable: true)
+        ],
+        ForeignKeys =
+        [
+            new()
+            {
+                Name = "FK_AspNetUserClaims_AspNetUsers",
+                TableName = "AspNetUserClaims",
+                ReferencedTableSchema = "dbo",
+                ReferencedTableName = "AspNetUsers",
+                Columns = [new() { Name = "UserId", ReferencedColumnName = "Id" }]
+            }
+        ],
+        Indexes = []
+    };
+
+    public static TableSchema AspNetRoleClaims() => new()
+    {
+        Schema = "dbo",
+        Name = "AspNetRoleClaims",
+        Columns =
+        [
+            Column("Id", SqlDbType.Int, isPrimaryKey: true, isNullable: false),
+            Column("RoleId", SqlDbType.NVarChar, length: 450, isNullable: false),
+            Column("ClaimType", SqlDbType.NVarChar, isNullable: true),
+            Column("ClaimValue", SqlDbType.NVarChar, isNullable: true)
+        ],
+        ForeignKeys =
+        [
+            new()
+            {
+                Name = "FK_AspNetRoleClaims_AspNetRoles",
+                TableName = "AspNetRoleClaims",
+                ReferencedTableSchema = "dbo",
+                ReferencedTableName = "AspNetRoles",
+                Columns = [new() { Name = "RoleId", ReferencedColumnName = "Id" }]
+            }
+        ],
+        Indexes = []
+    };
+
+    public static TableSchema AspNetUserLogins() => new()
+    {
+        Schema = "dbo",
+        Name = "AspNetUserLogins",
+        Columns =
+        [
+            Column("LoginProvider", SqlDbType.NVarChar, length: 450, isPrimaryKey: true, isNullable: false),
+            Column("ProviderKey", SqlDbType.NVarChar, length: 450, isPrimaryKey: true, isNullable: false),
+            Column("ProviderDisplayName", SqlDbType.NVarChar, isNullable: true),
+            Column("UserId", SqlDbType.NVarChar, length: 450, isNullable: false)
+        ],
+        ForeignKeys =
+        [
+            new()
+            {
+                Name = "FK_AspNetUserLogins_AspNetUsers",
+                TableName = "AspNetUserLogins",
+                ReferencedTableSchema = "dbo",
+                ReferencedTableName = "AspNetUsers",
+                Columns = [new() { Name = "UserId", ReferencedColumnName = "Id" }]
+            }
+        ],
+        Indexes = []
+    };
+
+    public static TableSchema AspNetUserTokens() => new()
+    {
+        Schema = "dbo",
+        Name = "AspNetUserTokens",
+        Columns =
+        [
+            Column("UserId", SqlDbType.NVarChar, length: 450, isPrimaryKey: true, isNullable: false),
+            Column("LoginProvider", SqlDbType.NVarChar, length: 450, isPrimaryKey: true, isNullable: false),
+            Column("Name", SqlDbType.NVarChar, length: 450, isPrimaryKey: true, isNullable: false),
+            Column("Value", SqlDbType.NVarChar, isNullable: true)
+        ],
+        ForeignKeys =
+        [
+            new()
+            {
+                Name = "FK_AspNetUserTokens_AspNetUsers",
+                TableName = "AspNetUserTokens",
+                ReferencedTableSchema = "dbo",
+                ReferencedTableName = "AspNetUsers",
+                Columns = [new() { Name = "UserId", ReferencedColumnName = "Id" }]
+            }
+        ],
+        Indexes = []
     };
 
     public static ColumnSchema Column(

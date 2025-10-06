@@ -633,6 +633,84 @@ public class DbSchemaComprehensiveMappingTests
 
     #endregion
 
+    #region Composite Keys and Complex Scenarios
+
+    [Fact]
+    public async Task MapCompositePrimaryKey_ParentsTable_ShouldMatchSnapshot()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [Tables.ParentsWithCompositePK()],
+            Views = [],
+            StoredProcedures = []
+        };
+        var package = PackageModels.Empty();
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(schema, package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        var snapshot = BuildPackageSnapshot(package);
+        await Verify(snapshot).UseParameters("composite-pk");
+    }
+
+    [Fact]
+    public async Task MapCompositeForeignKey_ChildrenToParents_ShouldMatchSnapshot()
+    {
+        // Arrange
+        var schema = DatabaseSchemas.WithParentsAndChildrenCompositePK();
+        var package = PackageModels.Empty();
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(schema, package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        var snapshot = BuildPackageSnapshot(package);
+        await Verify(snapshot).UseParameters("composite-fk");
+    }
+
+    [Fact]
+    public async Task MapAspNetIdentitySchema_AllTables_ShouldMatchSnapshot()
+    {
+        // Arrange
+        var schema = DatabaseSchemas.WithAspNetIdentityTables();
+        var package = PackageModels.Empty();
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(schema, package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        var snapshot = BuildPackageSnapshot(package);
+        await Verify(snapshot).UseParameters("aspnet-identity");
+    }
+
+    [Fact]
+    public async Task MapUniqueIndexConstraint_OrdersWithRefNo_ShouldMatchSnapshot()
+    {
+        // Arrange
+        var schema = DatabaseSchemas.WithOrdersAndUniqueIndex();
+        var package = PackageModels.Empty();
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(schema, package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        var snapshot = BuildPackageSnapshot(package);
+        await Verify(snapshot).UseParameters("unique-index");
+    }
+
+    #endregion
+    
     #region Helper Methods
 
     private static object BuildPackageSnapshot(PackageModelPersistable package)

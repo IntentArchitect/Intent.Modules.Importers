@@ -136,6 +136,22 @@ public class DbSchemaIntentMetadataMergerTests
     }
 
     [Fact]
+    public void MergeSchemaAndPackage_ForeignKeyRemovedWithAllowDeletionsTrue_RemovesAssociation()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.Create(DatabaseSchemas.WithCustomerAndOrderWithoutForeignKey(), PackageModels.WithCustomerAndOrderTables());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesWithDeletions());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        scenario.Package.Associations.ShouldBeEmpty();
+        result.Warnings.ShouldContain(w => w.Contains("Removed association") && w.Contains("Customer") && w.Contains("foreign key no longer exists"));
+    }
+
+    [Fact]
     public void MergeSchemaAndPackage_NewTableWithForeignKeyToExistingTable_CreatesClassAndAssociation()
     {
         // Arrange
@@ -215,6 +231,128 @@ public class DbSchemaIntentMetadataMergerTests
         var userClass = GetClasses(scenario.Package).ShouldHaveSingleItem();
         var statusAttribute = userClass.ChildElements.Single(a => a.Name == "Status");
         statusAttribute.TypeReference.TypeId.ShouldNotBe("custom-enum-id", "Custom enum type should be overridden with database type");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_TableWithCompositePK_CreatesBothPrimaryKeyStereotypes()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.Create(DatabaseSchemas.WithParentsAndChildrenCompositePK(), PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        var parentClass = GetClasses(scenario.Package).Single(c => c.Name == "Parent");
+        var pkAttributes = parentClass.ChildElements
+            .Where(a => a.Stereotypes.Any(s => s.Name == "Primary Key"))
+            .ToList();
+        pkAttributes.Count.ShouldBe(2);
+        pkAttributes.ShouldContain(a => a.Name == "Id");
+        pkAttributes.ShouldContain(a => a.Name == "Id2");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_TableWithCompositeFk_CreatesAssociationWithMultipleFkAttributes()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.Create(DatabaseSchemas.WithParentsAndChildrenCompositePK(), PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        scenario.Package.Associations.ShouldHaveSingleItem();
+        var childClass = GetClasses(scenario.Package).Single(c => c.Name == "Child");
+        var fkAttributes = childClass.ChildElements
+            .Where(a => a.Stereotypes.Any(s => s.Name == "Foreign Key"))
+            .ToList();
+        fkAttributes.Count.ShouldBe(2);
+        fkAttributes.ShouldContain(a => a.Name == "ParentId");
+        fkAttributes.ShouldContain(a => a.Name == "ParentId2");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_TableWithMultipleForeignKeys_CreatesAllAssociations()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.Create(DatabaseSchemas.WithTableWithMultipleFKs(), PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        scenario.Package.Associations.Count.ShouldBe(5);
+        var primaryTable = GetClasses(scenario.Package).Single(c => c.Name == "PrimaryTable");
+        var fkAttributes = primaryTable.ChildElements
+            .Where(a => a.Stereotypes.Any(s => s.Name == "Foreign Key"))
+            .ToList();
+        fkAttributes.Count.ShouldBe(5);
+        fkAttributes.Select(a => a.Name).ShouldBe(new[] { "FKTableId1", "FKTableId2", "FKAsTableId3", "FKTryTableId4", "FKThisTableId5" });
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_SelfReferencingTable_CreatesCircularAssociation()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.Create(DatabaseSchemas.WithSelfReferencingTable(), PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        var selfRefTable = GetClasses(scenario.Package).ShouldHaveSingleItem();
+        selfRefTable.Name.ShouldBe("SelfReferenceTable");
+        scenario.Package.Associations.ShouldHaveSingleItem();
+        var association = scenario.Package.Associations.Single();
+        association.SourceEnd.TypeReference.TypeId.ShouldBe(selfRefTable.Id);
+        association.TargetEnd.TypeReference.TypeId.ShouldBe(selfRefTable.Id);
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_LegacyTableWithoutPK_DoesNotCreatePrimaryKeyStereotypes()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.Create(DatabaseSchemas.WithLegacyTableNoPK(), PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        var legacyTable = GetClasses(scenario.Package).ShouldHaveSingleItem();
+        legacyTable.Name.ShouldBe("LegacyTable");
+        var pkAttributes = legacyTable.ChildElements
+            .Where(a => a.Stereotypes.Any(s => s.Name == "Primary Key"))
+            .ToList();
+        pkAttributes.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_LegacyTableWithUnderscoreName_MapsNameCorrectly()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.Create(DatabaseSchemas.WithLegacyTableNoPK(), PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        var legacyTable = GetClasses(scenario.Package).ShouldHaveSingleItem();
+        legacyTable.Name.ShouldBe("LegacyTable");
+        legacyTable.ExternalReference.ShouldBe("[dbo].[legacy_table]");
+        GetAttributeNames(legacyTable).ShouldContain("LegacyId");
     }
 
     private static IEnumerable<ElementPersistable> GetClasses(PackageModelPersistable package) =>

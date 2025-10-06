@@ -1,0 +1,1959 @@
+﻿{
+  Package: {
+    Name: TestPackage,
+    Metadata: [],
+    Folders: [
+      {
+        Name: Dbo,
+        SpecializationType: Folder,
+        ExternalReference: schema:[dbo],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [
+          {
+            Name: Schema,
+            DefinitionId: Guid_1,
+            Properties: [
+              {
+                Name: Name,
+                DefinitionId: Guid_2,
+                Value: dbo,
+                IsActive: true
+              }
+            ]
+          }
+        ],
+        Children: []
+      }
+    ],
+    Classes: [
+      {
+        Name: AspNetRole,
+        SpecializationType: Class,
+        ExternalReference: [dbo].[aspnetroles],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [],
+        Children: [
+          {
+            Name: ConcurrencyStamp,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetroles].[concurrencystamp],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: Id,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetroles].[id],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 450,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_8,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_9,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: Name,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetroles].[name],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 256,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: NormalizedName,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetroles].[normalizedname],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 256,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      },
+      {
+        Name: AspNetRoleClaim,
+        SpecializationType: Class,
+        ExternalReference: [dbo].[aspnetroleclaims],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [],
+        Children: [
+          {
+            Name: ClaimType,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetroleclaims].[claimtype],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: ClaimValue,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetroleclaims].[claimvalue],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: Id,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetroleclaims].[id],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_10,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_8,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_9,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: RoleId,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetroleclaims].[roleid],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: association,
+                Value: Guid_11
+              },
+              {
+                Key: fk-original-name,
+                Value: RoleId
+              },
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 450,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Foreign Key,
+                DefinitionId: Guid_12,
+                Properties: [
+                  {
+                    Name: Association,
+                    DefinitionId: Guid_13,
+                    Value: Guid_11,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      },
+      {
+        Name: AspNetUser,
+        SpecializationType: Class,
+        ExternalReference: [dbo].[aspnetusers],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [],
+        Children: [
+          {
+            Name: AccessFailedCount,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusers].[accessfailedcount],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_10,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [],
+            Children: []
+          },
+          {
+            Name: ConcurrencyStamp,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusers].[concurrencystamp],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: Email,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusers].[email],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 256,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: EmailConfirmed,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusers].[emailconfirmed],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_14,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [],
+            Children: []
+          },
+          {
+            Name: Id,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusers].[id],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 450,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_8,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_9,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: LockoutEnabled,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusers].[lockoutenabled],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_14,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [],
+            Children: []
+          },
+          {
+            Name: LockoutEnd,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusers].[lockoutend],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_15,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Column,
+                DefinitionId: Guid_16,
+                Properties: [
+                  {
+                    Name: Name,
+                    DefinitionId: Guid_17,
+                    IsActive: true
+                  },
+                  {
+                    Name: Type,
+                    DefinitionId: Guid_18,
+                    Value: datetime,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: NormalizedEmail,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusers].[normalizedemail],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 256,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: NormalizedUserName,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusers].[normalizedusername],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 256,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: PasswordHash,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusers].[passwordhash],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: PhoneNumber,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusers].[phonenumber],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: PhoneNumberConfirmed,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusers].[phonenumberconfirmed],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_14,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [],
+            Children: []
+          },
+          {
+            Name: SecurityStamp,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusers].[securitystamp],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: TwoFactorEnabled,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusers].[twofactorenabled],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_14,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [],
+            Children: []
+          },
+          {
+            Name: UserName,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusers].[username],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 256,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      },
+      {
+        Name: AspNetUserClaim,
+        SpecializationType: Class,
+        ExternalReference: [dbo].[aspnetuserclaims],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [],
+        Children: [
+          {
+            Name: ClaimType,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetuserclaims].[claimtype],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: ClaimValue,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetuserclaims].[claimvalue],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: Id,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetuserclaims].[id],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_10,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_8,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_9,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: UserId,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetuserclaims].[userid],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: association,
+                Value: Guid_19
+              },
+              {
+                Key: fk-original-name,
+                Value: UserId
+              },
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 450,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Foreign Key,
+                DefinitionId: Guid_12,
+                Properties: [
+                  {
+                    Name: Association,
+                    DefinitionId: Guid_13,
+                    Value: Guid_19,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      },
+      {
+        Name: AspNetUserLogin,
+        SpecializationType: Class,
+        ExternalReference: [dbo].[aspnetuserlogins],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [],
+        Children: [
+          {
+            Name: LoginProvider,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetuserlogins].[loginprovider],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 450,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_8,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_9,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: ProviderDisplayName,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetuserlogins].[providerdisplayname],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: ProviderKey,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetuserlogins].[providerkey],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 450,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_8,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_9,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: UserId,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetuserlogins].[userid],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: association,
+                Value: Guid_20
+              },
+              {
+                Key: fk-original-name,
+                Value: UserId
+              },
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 450,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Foreign Key,
+                DefinitionId: Guid_12,
+                Properties: [
+                  {
+                    Name: Association,
+                    DefinitionId: Guid_13,
+                    Value: Guid_20,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      },
+      {
+        Name: AspNetUserRole,
+        SpecializationType: Class,
+        ExternalReference: [dbo].[aspnetuserroles],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [],
+        Children: [
+          {
+            Name: RoleId,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetuserroles].[roleid],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: association,
+                Value: Guid_21
+              },
+              {
+                Key: fk-original-name,
+                Value: RoleId
+              },
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 450,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Foreign Key,
+                DefinitionId: Guid_12,
+                Properties: [
+                  {
+                    Name: Association,
+                    DefinitionId: Guid_13,
+                    Value: Guid_21,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_8,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_9,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: UserId,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetuserroles].[userid],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: association,
+                Value: Guid_22
+              },
+              {
+                Key: fk-original-name,
+                Value: UserId
+              },
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 450,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Foreign Key,
+                DefinitionId: Guid_12,
+                Properties: [
+                  {
+                    Name: Association,
+                    DefinitionId: Guid_13,
+                    Value: Guid_22,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_8,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_9,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      },
+      {
+        Name: AspNetUserToken,
+        SpecializationType: Class,
+        ExternalReference: [dbo].[aspnetusertokens],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [],
+        Children: [
+          {
+            Name: LoginProvider,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusertokens].[loginprovider],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 450,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_8,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_9,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: Name,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusertokens].[name],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 450,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_8,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_9,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: UserId,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusertokens].[userid],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: association,
+                Value: Guid_23
+              },
+              {
+                Key: fk-original-name,
+                Value: UserId
+              },
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 450,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Foreign Key,
+                DefinitionId: Guid_12,
+                Properties: [
+                  {
+                    Name: Association,
+                    DefinitionId: Guid_13,
+                    Value: Guid_23,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_8,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_9,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: Value,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[aspnetusertokens].[value],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      }
+    ],
+    Associations: [
+      {
+        ExternalReference: [dbo].[aspnetroleclaims].[fk_aspnetroleclaims_aspnetroles],
+        Source: {
+          TypeReference: {
+            TypeId: Guid_24,
+            ResolvedName: AspNetRoleClaim,
+            IsNullable: false,
+            IsCollection: true,
+            IsNavigable: false,
+            IsRequired: true
+          },
+          Stereotypes: []
+        },
+        Target: {
+          Name: RoleAspNetRole,
+          ExternalReference: [dbo].[aspnetroleclaims].[fk_aspnetroleclaims_aspnetroles],
+          TypeReference: {
+            TypeId: Guid_25,
+            ResolvedName: AspNetRole,
+            IsNullable: false,
+            IsCollection: false,
+            IsNavigable: true,
+            IsRequired: true
+          },
+          Stereotypes: []
+        }
+      },
+      {
+        ExternalReference: [dbo].[aspnetuserclaims].[fk_aspnetuserclaims_aspnetusers],
+        Source: {
+          TypeReference: {
+            TypeId: Guid_26,
+            ResolvedName: AspNetUserClaim,
+            IsNullable: false,
+            IsCollection: true,
+            IsNavigable: false,
+            IsRequired: true
+          },
+          Stereotypes: []
+        },
+        Target: {
+          Name: UserAspNetUser,
+          ExternalReference: [dbo].[aspnetuserclaims].[fk_aspnetuserclaims_aspnetusers],
+          TypeReference: {
+            TypeId: Guid_27,
+            ResolvedName: AspNetUser,
+            IsNullable: false,
+            IsCollection: false,
+            IsNavigable: true,
+            IsRequired: true
+          },
+          Stereotypes: []
+        }
+      },
+      {
+        ExternalReference: [dbo].[aspnetuserlogins].[fk_aspnetuserlogins_aspnetusers],
+        Source: {
+          TypeReference: {
+            TypeId: Guid_28,
+            ResolvedName: AspNetUserLogin,
+            IsNullable: false,
+            IsCollection: true,
+            IsNavigable: false,
+            IsRequired: true
+          },
+          Stereotypes: []
+        },
+        Target: {
+          Name: UserAspNetUser,
+          ExternalReference: [dbo].[aspnetuserlogins].[fk_aspnetuserlogins_aspnetusers],
+          TypeReference: {
+            TypeId: Guid_27,
+            ResolvedName: AspNetUser,
+            IsNullable: false,
+            IsCollection: false,
+            IsNavigable: true,
+            IsRequired: true
+          },
+          Stereotypes: []
+        }
+      },
+      {
+        ExternalReference: [dbo].[aspnetuserroles].[fk_aspnetuserroles_aspnetroles],
+        Source: {
+          TypeReference: {
+            TypeId: Guid_29,
+            ResolvedName: AspNetUserRole,
+            IsNullable: false,
+            IsCollection: true,
+            IsNavigable: false,
+            IsRequired: true
+          },
+          Stereotypes: []
+        },
+        Target: {
+          Name: RoleAspNetRole,
+          ExternalReference: [dbo].[aspnetuserroles].[fk_aspnetuserroles_aspnetroles],
+          TypeReference: {
+            TypeId: Guid_25,
+            ResolvedName: AspNetRole,
+            IsNullable: false,
+            IsCollection: false,
+            IsNavigable: true,
+            IsRequired: true
+          },
+          Stereotypes: []
+        }
+      },
+      {
+        ExternalReference: [dbo].[aspnetuserroles].[fk_aspnetuserroles_aspnetusers],
+        Source: {
+          TypeReference: {
+            TypeId: Guid_29,
+            ResolvedName: AspNetUserRole,
+            IsNullable: false,
+            IsCollection: true,
+            IsNavigable: false,
+            IsRequired: true
+          },
+          Stereotypes: []
+        },
+        Target: {
+          Name: UserAspNetUser,
+          ExternalReference: [dbo].[aspnetuserroles].[fk_aspnetuserroles_aspnetusers],
+          TypeReference: {
+            TypeId: Guid_27,
+            ResolvedName: AspNetUser,
+            IsNullable: false,
+            IsCollection: false,
+            IsNavigable: true,
+            IsRequired: true
+          },
+          Stereotypes: []
+        }
+      },
+      {
+        ExternalReference: [dbo].[aspnetusertokens].[fk_aspnetusertokens_aspnetusers],
+        Source: {
+          TypeReference: {
+            TypeId: Guid_30,
+            ResolvedName: AspNetUserToken,
+            IsNullable: false,
+            IsCollection: true,
+            IsNavigable: false,
+            IsRequired: true
+          },
+          Stereotypes: []
+        },
+        Target: {
+          Name: UserAspNetUser,
+          ExternalReference: [dbo].[aspnetusertokens].[fk_aspnetusertokens_aspnetusers],
+          TypeReference: {
+            TypeId: Guid_27,
+            ResolvedName: AspNetUser,
+            IsNullable: false,
+            IsCollection: false,
+            IsNavigable: true,
+            IsRequired: true
+          },
+          Stereotypes: []
+        }
+      }
+    ]
+  }
+}

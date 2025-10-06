@@ -96,4 +96,69 @@ internal static class DatabaseSchemas
         Views = [],
         StoredProcedures = []
     };
+
+    public static DatabaseSchema WithParentsAndChildrenCompositePK() => new()
+    {
+        DatabaseName = "TestDatabase",
+        Tables = [Tables.ParentsWithCompositePK(), Tables.ChildrenWithCompositeFk()],
+        Views = [],
+        StoredProcedures = []
+    };
+
+    public static DatabaseSchema WithTableWithMultipleFKs() => new()
+    {
+        DatabaseName = "TestDatabase",
+        Tables = [Tables.FKTable(), Tables.PrimaryTableWithMultipleFks()],
+        Views = [],
+        StoredProcedures = []
+    };
+
+    public static DatabaseSchema WithSelfReferencingTable() => new()
+    {
+        DatabaseName = "TestDatabase",
+        Tables = [Tables.SelfReferencingTable()],
+        Views = [],
+        StoredProcedures = []
+    };
+
+    public static DatabaseSchema WithLegacyTableNoPK() => new()
+    {
+        DatabaseName = "TestDatabase",
+        Tables = [Tables.LegacyTableNoPK()],
+        Views = [],
+        StoredProcedures = []
+    };
+
+    public static DatabaseSchema WithOrdersAndUniqueIndex() => new()
+    {
+        DatabaseName = "TestDatabase",
+        Tables = [Tables.SimpleCustomers(), Tables.OrdersWithUniqueIndex()],
+        Views = [],
+        StoredProcedures = []
+    };
+
+    public static DatabaseSchema WithAspNetIdentityTables() => new()
+    {
+        DatabaseName = "TestDatabase",
+        Tables =
+        [
+            Tables.AspNetUsers(),
+            Tables.AspNetRoles(),
+            Tables.AspNetUserRoles(),
+            Tables.AspNetUserClaims(),
+            Tables.AspNetRoleClaims(),
+            Tables.AspNetUserLogins(),
+            Tables.AspNetUserTokens()
+        ],
+        Views = [],
+        StoredProcedures = []
+    };
+
+    public static DatabaseSchema WithCustomerAndOrderWithoutForeignKey() => new()
+    {
+        DatabaseName = "TestDatabase",
+        Tables = [Tables.SimpleCustomers(), Tables.OrdersWithoutCustomerFk()],
+        Views = [],
+        StoredProcedures = []
+    };
 }

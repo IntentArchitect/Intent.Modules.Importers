@@ -158,10 +158,42 @@ public async Task MapView_BasicView_ShouldMatchSnapshot()
 
 | Test File | Purpose | Test Count | Testing Approach |
 | --- | --- | --- | --- |
-| `DbSchemaIntentMetadataMergerTests.cs` | Merge behavior, edge cases, error handling | 9 | Explicit assertions (Shouldly) |
+| `DbSchemaIntentMetadataMergerTests.cs` | Merge behavior, edge cases, error handling, composite keys, legacy scenarios, deletion tracking | 16 | Explicit assertions (Shouldly) |
 | `DbSchemaToElementMappingTests.cs` | Integration scenarios, real-world use cases | 3 | Snapshot testing (Verify) |
-| `DbSchemaComprehensiveMappingTests.cs` | Granular mapping validation for all DB objects | 22 | Snapshot testing (Verify) |
+| `DbSchemaComprehensiveMappingTests.cs` | Granular mapping validation for all DB objects, composite keys, ASP.NET Identity schema | 26 | Snapshot testing (Verify) |
 
-**Total: 34 tests** ensuring robust database schema import functionality.
+**Total: 45 tests** (previously 44) ensuring robust database schema import functionality.
+
+### Recently Added Test Coverage
+
+The test suite now includes comprehensive coverage for advanced database scenarios:
+
+#### Composite Keys (2 assertion + 2 snapshot tests)
+- **Composite Primary Keys**: Tables with multi-column PKs (e.g., `Parents` with `Id` + `Id2`)
+- **Composite Foreign Keys**: Relationships referencing composite PKs (e.g., `Children` → `Parents`)
+- Validates that all PK columns receive stereotypes and associations link correctly
+
+#### Complex Relationships (2 assertion tests)
+- **Multiple Foreign Keys**: Tables with many FKs to the same or different tables (e.g., `PrimaryTable` with 5 FKs)
+- **Self-Referencing Tables**: Circular relationships where a table references itself
+
+#### Legacy and Edge Cases (2 assertion tests)
+- **Tables Without Primary Keys**: Legacy tables with no PK constraint (e.g., `Legacy_Table`)
+- **Naming Conventions**: Underscore-based naming (`Legacy_Table` → `LegacyTable`)
+
+#### ASP.NET Identity Schema (1 snapshot test)
+- **Complete Identity Framework**: All 7 ASP.NET Identity tables with their relationships
+  - `AspNetUsers`, `AspNetRoles`, `AspNetUserRoles` (composite PK)
+  - `AspNetUserClaims`, `AspNetRoleClaims`, `AspNetUserLogins` (composite PK), `AspNetUserTokens` (composite PK)
+- Validates complex multi-table schema with various PK/FK patterns
+
+#### Unique Indexes (1 snapshot test)
+- **Business Constraints**: Unique indexes as business rules (e.g., `IX_Orders_RefNo`)
+- Validates unique index mapping alongside foreign key relationships
+
+#### Deletion Tracking (1 assertion test)
+- **Association Removal**: When `AllowDeletions = true`, validates that associations are removed when their corresponding foreign keys no longer exist in the database
+- **Critical Gap Coverage**: Previously untested scenario where `RemoveObsoleteAssociations` method ensures orphaned associations are cleaned up
+- Tests the complete deletion workflow: FK removed from DB → association removed from package → warning logged
 
 See `DbSchemaComprehensiveMappingTests.README.md` for detailed documentation of the comprehensive test suite.
