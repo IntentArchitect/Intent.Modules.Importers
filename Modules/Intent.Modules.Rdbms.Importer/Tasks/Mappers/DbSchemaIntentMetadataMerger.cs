@@ -438,13 +438,16 @@ internal class DbSchemaIntentMetadataMerger
     /// Removes associations that reference deleted foreign keys.
     /// The association's ExternalReference matches the FK's external reference from ModelNamingUtilities.GetForeignKeyExternalReference().
     /// This is called after ProcessForeignKeys completes, so we know exactly which FKs exist in the database.
+    /// Only removes associations from tables that are being imported to support inclusive imports.
     /// </summary>
     /// <param name="package">The package containing associations</param>
     /// <param name="sourceFkExternalRefs">Set of FK external references that exist in the source database</param>
+    /// <param name="importedTableExternalRefs">Set of table external references being imported in this operation</param>
     /// <param name="result">Optional merge result to collect warnings about deleted associations</param>
     private static void RemoveObsoleteAssociations(
         PackageModelPersistable package, 
         HashSet<string> sourceFkExternalRefs,
+        HashSet<string> importedTableExternalRefs,
         MergeResult? result)
     {
         if (package.Associations == null || package.Associations.Count == 0)
@@ -453,10 +456,28 @@ internal class DbSchemaIntentMetadataMerger
         }
 
         // Find associations with external references that no longer exist in the source database
+        // AND where the source class is being imported (to support inclusive imports)
         var associationsToRemove = package.Associations
             .Where(assoc => 
-                !string.IsNullOrWhiteSpace(assoc.ExternalReference) &&
-                !sourceFkExternalRefs.Contains(assoc.ExternalReference))
+            {
+                // Must have an external reference (from a FK)
+                if (string.IsNullOrWhiteSpace(assoc.ExternalReference))
+                    return false;
+                
+                // FK must no longer exist in the database
+                if (sourceFkExternalRefs.Contains(assoc.ExternalReference))
+                    return false;
+                
+                // Only remove if the source class is being imported
+                var sourceClass = package.Classes
+                    .FirstOrDefault(c => c.Id == assoc.SourceEnd?.TypeReference?.TypeId);
+                
+                if (sourceClass == null)
+                    return false;
+                
+                // Only remove associations from tables we're actually importing
+                return importedTableExternalRefs.Contains(sourceClass.ExternalReference ?? string.Empty);
+            })
             .ToList();
 
         foreach (var association in associationsToRemove)
@@ -596,6 +617,12 @@ internal class DbSchemaIntentMetadataMerger
 
         // Build a set of all FK external references from the database schema
         var sourceFkExternalRefs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        
+        // Track which tables are being imported in this operation
+        var importedTableExternalRefs = new HashSet<string>(
+            databaseSchema.Tables.Select(t => 
+                ModelNamingUtilities.GetTableExternalReference(t.Schema, t.Name)),
+            StringComparer.OrdinalIgnoreCase);
 
         foreach (var table in databaseSchema.Tables)
         {
@@ -660,7 +687,7 @@ internal class DbSchemaIntentMetadataMerger
         // Remove obsolete associations after processing all foreign keys
         if (_config.AllowDeletions)
         {
-            RemoveObsoleteAssociations(package, sourceFkExternalRefs, result);
+            RemoveObsoleteAssociations(package, sourceFkExternalRefs, importedTableExternalRefs, result);
         }
     }
 

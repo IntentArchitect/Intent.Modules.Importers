@@ -141,14 +141,15 @@ public class DbSchemaIntentMetadataMergerTests
         // Arrange
         var scenario = ScenarioComposer.Create(DatabaseSchemas.WithCustomerAndOrderWithoutForeignKey(), PackageModels.WithCustomerAndOrderTables());
         var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesWithDeletions());
+        var associationCountBefore = scenario.Package.Associations.Count;
 
         // Act
         var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
 
         // Assert
         result.IsSuccessful.ShouldBeTrue();
-        scenario.Package.Associations.ShouldBeEmpty();
-        result.Warnings.ShouldContain(w => w.Contains("Removed association") && w.Contains("Customer") && w.Contains("foreign key no longer exists"));
+        associationCountBefore.ShouldBe(1, "Should have started with one association");
+        scenario.Package.Associations.ShouldBeEmpty("Association should have been removed when FK no longer exists");
     }
 
     [Fact]
@@ -353,6 +354,45 @@ public class DbSchemaIntentMetadataMergerTests
         legacyTable.Name.ShouldBe("LegacyTable");
         legacyTable.ExternalReference.ShouldBe("[dbo].[legacy_table]");
         GetAttributeNames(legacyTable).ShouldContain("LegacyId");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_InclusiveImportTableBOnly_ShouldPreserveAssociationFromTableAAndRemoveAssociationFromTableB()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.Create(
+            DatabaseSchemas.WithOnlyTableB(), // Only Table B is being imported (inclusive import simulation)
+            PackageModels.WithTableABCAndBothAssociations()); // Package has A→B and B→C associations
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesWithDeletions());
+        
+        var classes = GetClasses(scenario.Package).ToList();
+        var tableA = classes.Single(c => c.Name == "TableA");
+        var tableB = classes.Single(c => c.Name == "TableB");
+        var tableC = classes.Single(c => c.Name == "TableC");
+        
+        // Capture initial associations
+        var associationAtoB = scenario.Package.Associations.Single(a => 
+            a.SourceEnd.TypeReference.TypeId == tableA.Id && 
+            a.TargetEnd.TypeReference.TypeId == tableB.Id);
+        var associationBtoC = scenario.Package.Associations.Single(a => 
+            a.SourceEnd.TypeReference.TypeId == tableB.Id && 
+            a.TargetEnd.TypeReference.TypeId == tableC.Id);
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert - This test currently fails, demonstrating the bug
+        result.IsSuccessful.ShouldBeTrue();
+        
+        // EXPECTED BEHAVIOR:
+        // - A→B association should remain (FK still exists in real database, just not imported)
+        // - B→C association should be removed (FK no longer exists in database)
+        scenario.Package.Associations.Count.ShouldBe(1, "Only the A→B association should remain");
+        
+        scenario.Package.Associations.ShouldContain(a => a.Id == associationAtoB.Id, 
+            "A→B association should be preserved (FK exists in database, table just wasn't imported)");
+        scenario.Package.Associations.ShouldNotContain(a => a.Id == associationBtoC.Id, 
+            "B→C association should be removed (FK no longer exists in database)");
     }
 
     private static IEnumerable<ElementPersistable> GetClasses(PackageModelPersistable package) =>

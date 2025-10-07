@@ -34,4 +34,18 @@ internal static class ImportConfigurations
         AttributeNameConvention = AttributeNameConvention.Default,
         TableStereotype = TableStereotype.WhenDifferent
     };
+
+    /// <summary>
+    /// Configuration for inclusive import of specific tables only (like Table B) with deletions enabled.
+    /// Uses filter file to specify which tables to import.
+    /// </summary>
+    public static ImportConfiguration InclusiveImportTableBOnly() => new()
+    {
+        TypesToExport = [ExportType.Table],
+        AllowDeletions = true,
+        EntityNameConvention = EntityNameConvention.SingularEntity,
+        AttributeNameConvention = AttributeNameConvention.Default,
+        TableStereotype = TableStereotype.WhenDifferent,
+        ImportFilterFilePath = "test-filter.json" // This would contain the filter configuration
+    };
 }

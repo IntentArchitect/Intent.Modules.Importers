@@ -95,4 +95,26 @@ internal static class PackageModels
         
         return package;
     }
+
+    /// <summary>
+    /// Package with three tables (A, B, C) where A→B and B→C associations exist.
+    /// This represents the existing state before inclusive import where B→C FK was removed from DB.
+    /// </summary>
+    public static PackageModelPersistable WithTableABCAndBothAssociations()
+    {
+        var package = Empty();
+        var tableA = Elements.TableA();
+        var tableB = Elements.TableB();
+        var tableC = Elements.TableC();
+        
+        package.Classes.Add(tableA);
+        package.Classes.Add(tableB);
+        package.Classes.Add(tableC);
+        
+        // Both associations exist in the package (representing outdated state)
+        package.Associations.Add(Associations.TableAToTableB(tableA.Id, tableB.Id));
+        package.Associations.Add(Associations.TableBToTableC(tableB.Id, tableC.Id));
+        
+        return package;
+    }
 }

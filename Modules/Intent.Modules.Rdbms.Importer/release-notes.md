@@ -1,3 +1,7 @@
+### Version 1.0.6
+
+- Fixed: Remove deleted database associations only for selected `Include` tables.
+
 ### Version 1.0.5
 
 - Improvement: Remove deleted database attributes and associations.
