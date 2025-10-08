@@ -401,6 +401,232 @@ public class DbSchemaIntentMetadataMergerTests
             "B→C association should be removed (FK no longer exists in database)");
     }
 
+    [Fact]
+    public void MergeSchemaAndPackage_IndexRemovedWithAllowDeletionsTrue_RemovesIndex()
+    {
+        // Arrange - Start with table that has an index
+        var schemaWithIndex = DatabaseSchemas.WithSimpleUsersTable();
+        schemaWithIndex.Tables[0].Indexes =
+        [
+            Indexes.UniqueEmailIndex()
+        ];
+        
+        var scenario = ScenarioComposer.SchemaOnly(schemaWithIndex);
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesWithDeletions());
+        
+        // Initial import with index
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        
+        // Verify index was created
+        var indexesBefore = scenario.Package.Classes
+            .Where(c => c.SpecializationType == "Index")
+            .ToList();
+        indexesBefore.Count.ShouldBe(1, "Should have created one index");
+        var createdIndex = indexesBefore[0];
+        createdIndex.Name.ShouldBe("IX_Customers_Email_Unique");
+        createdIndex.ExternalReference.ShouldContain("ix_customers_email_unique");
+        
+        // Now remove the index from the schema
+        schemaWithIndex.Tables[0].Indexes = [];
+        
+        // Act - Re-import without the index
+        var result = merger.MergeSchemaAndPackage(schemaWithIndex, scenario.Package);
+        
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        var indexesAfter = scenario.Package.Classes
+            .Where(c => c.SpecializationType == "Index")
+            .ToList();
+        indexesAfter.ShouldBeEmpty("Index should have been removed when it no longer exists in database");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_IndexRemovedWithAllowDeletionsFalse_KeepsIndex()
+    {
+        // Arrange - Start with table that has an index
+        var schemaWithIndex = DatabaseSchemas.WithSimpleUsersTable();
+        schemaWithIndex.Tables[0].Indexes =
+        [
+            Indexes.UniqueEmailIndex()
+        ];
+        
+        var scenario = ScenarioComposer.SchemaOnly(schemaWithIndex);
+        var mergerWithDeletions = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesWithDeletions());
+        
+        // Initial import with index
+        mergerWithDeletions.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        
+        // Verify index was created
+        var indexesBefore = scenario.Package.Classes
+            .Where(c => c.SpecializationType == "Index")
+            .ToList();
+        indexesBefore.Count.ShouldBe(1);
+        var originalIndexId = indexesBefore[0].Id;
+        
+        // Now remove the index from the schema but use config without deletions
+        schemaWithIndex.Tables[0].Indexes = [];
+        var mergerWithoutDeletions = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+        
+        // Act - Re-import without the index but with AllowDeletions=false
+        var result = mergerWithoutDeletions.MergeSchemaAndPackage(schemaWithIndex, scenario.Package);
+        
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        var indexesAfter = scenario.Package.Classes
+            .Where(c => c.SpecializationType == "Index")
+            .ToList();
+        indexesAfter.Count.ShouldBe(1, "Index should NOT be removed when AllowDeletions=false");
+        indexesAfter[0].Id.ShouldBe(originalIndexId, "Same index should still exist with same ID");
+        indexesAfter[0].Name.ShouldBe("IX_Customers_Email_Unique");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_InclusiveImportAfterIndexRemoval_OnlyRemovesIndexFromImportedTable()
+    {
+        // Arrange - Start with two tables, each with an index
+        var schemaWithTwoTables = DatabaseSchemas.WithCustomersAndOrders();
+        schemaWithTwoTables.Tables[0].Indexes = 
+        [
+            Indexes.UniqueEmailIndex() // On Customers table
+        ];
+        schemaWithTwoTables.Tables[1].Indexes = 
+        [
+            Indexes.NonClusteredCompositeIndex() // On Orders table
+        ];
+        
+        var scenario = ScenarioComposer.SchemaOnly(schemaWithTwoTables);
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesWithDeletions());
+        
+        // Initial import with both indexes
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        
+        // Verify both indexes were created
+        var indexesBefore = scenario.Package.Classes
+            .Where(c => c.SpecializationType == "Index")
+            .ToList();
+        indexesBefore.Count.ShouldBe(2);
+        var customersIndex = indexesBefore.Single(i => i.Name == "IX_Customers_Email_Unique");
+        var ordersIndex = indexesBefore.Single(i => i.Name == "IX_Orders_CustomerId_OrderDate");
+        
+        // Now simulate inclusive import: only Orders table, and its index is removed
+        var schemaOnlyOrders = DatabaseSchemas.WithCustomersAndOrders();
+        schemaOnlyOrders.Tables = schemaOnlyOrders.Tables.Where(t => t.Name == "Orders").ToList();
+        schemaOnlyOrders.Tables[0].Indexes = []; // Orders table has no indexes
+        
+        // Act - Re-import only Orders table after its index removal
+        var result = merger.MergeSchemaAndPackage(schemaOnlyOrders, scenario.Package);
+        
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        var indexesAfter = scenario.Package.Classes
+            .Where(c => c.SpecializationType == "Index")
+            .ToList();
+        
+        // Only Orders index should be removed, Customers index should remain
+        indexesAfter.Count.ShouldBe(1, "Only the Orders index should be removed, Customers index should remain");
+        indexesAfter[0].Id.ShouldBe(customersIndex.Id, "Customers index should be preserved (table not imported)");
+        indexesAfter[0].Name.ShouldBe("IX_Customers_Email_Unique");
+        
+        // Verify Orders index is actually gone
+        scenario.Package.Classes.ShouldNotContain(c => c.Id == ordersIndex.Id, "Orders index should be removed");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_MultipleIndexesRemoved_RemovesAllObsoleteIndexes()
+    {
+        // Arrange - Start with table that has multiple indexes
+        var schemaWithIndexes = DatabaseSchemas.WithSimpleUsersTable();
+        schemaWithIndexes.Tables[0].Indexes =
+        [
+            Indexes.UniqueEmailIndex(),
+            Indexes.NonClusteredCompositeIndex()
+        ];
+        
+        var scenario = ScenarioComposer.SchemaOnly(schemaWithIndexes);
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesWithDeletions());
+        
+        // Initial import with indexes
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        
+        // Verify indexes were created
+        var indexesBefore = scenario.Package.Classes
+            .Where(c => c.SpecializationType == "Index")
+            .ToList();
+        indexesBefore.Count.ShouldBe(2);
+        var index1Id = indexesBefore[0].Id;
+        var index2Id = indexesBefore[1].Id;
+        
+        // Now remove all indexes from the schema
+        schemaWithIndexes.Tables[0].Indexes = [];
+        
+        // Act - Re-import without any indexes
+        var result = merger.MergeSchemaAndPackage(schemaWithIndexes, scenario.Package);
+        
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        var indexesAfter = scenario.Package.Classes
+            .Where(c => c.SpecializationType == "Index")
+            .ToList();
+        indexesAfter.ShouldBeEmpty("All indexes should have been removed");
+        
+        // Verify both specific indexes are gone
+        scenario.Package.Classes.ShouldNotContain(c => c.Id == index1Id);
+        scenario.Package.Classes.ShouldNotContain(c => c.Id == index2Id);
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_IndexRemovedButOthersRemain_RemovesOnlyDeletedIndex()
+    {
+        // Arrange - Start with table that has two indexes
+        var schemaWithIndexes = DatabaseSchemas.WithSimpleUsersTable();
+        schemaWithIndexes.Tables[0].Indexes =
+        [
+            Indexes.UniqueEmailIndex(),
+            Indexes.NonClusteredCompositeIndex()
+        ];
+        
+        var scenario = ScenarioComposer.SchemaOnly(schemaWithIndexes);
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesWithDeletions());
+        
+        // Initial import with two indexes
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        
+        // Verify indexes were created
+        var indexesBefore = scenario.Package.Classes
+            .Where(c => c.SpecializationType == "Index")
+            .ToList();
+        indexesBefore.Count.ShouldBe(2);
+        var emailIndex = indexesBefore.Single(i => i.Name == "IX_Customers_Email_Unique");
+        var compositeIndex = indexesBefore.Single(i => i.Name == "IX_Orders_CustomerId_OrderDate");
+        
+        // Now remove only one index from the schema
+        schemaWithIndexes.Tables[0].Indexes =
+        [
+            Indexes.UniqueEmailIndex() // Keep this one
+            // NonClusteredCompositeIndex is removed
+        ];
+        
+        // Act - Re-import with only one index
+        var result = merger.MergeSchemaAndPackage(schemaWithIndexes, scenario.Package);
+        
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        var indexesAfter = scenario.Package.Classes
+            .Where(c => c.SpecializationType == "Index")
+            .ToList();
+        indexesAfter.Count.ShouldBe(1, "Only one index should remain");
+        indexesAfter[0].Id.ShouldBe(emailIndex.Id, "The unique email index should remain");
+        indexesAfter[0].Name.ShouldBe("IX_Customers_Email_Unique");
+        
+        // Verify the composite index is gone
+        scenario.Package.Classes.ShouldNotContain(c => c.Id == compositeIndex.Id, "Composite index should be removed");
+    }
+
     private static IEnumerable<ElementPersistable> GetClasses(PackageModelPersistable package) =>
         package.Classes.Where(c =>
             string.Equals(c.SpecializationType, ClassModel.SpecializationType, StringComparison.OrdinalIgnoreCase));

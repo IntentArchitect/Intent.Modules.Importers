@@ -71,11 +71,27 @@ internal class DbSchemaIntentMetadataMerger
         DeduplicationContext? deduplicationContext, 
         MergeResult result)
     {
+        // Build a set of all index external references from the database schema
+        var sourceIndexExternalRefs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        
+        // Track which tables are being imported in this operation
+        var importedTableExternalRefs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        
         foreach (var table in databaseSchema.Tables)
         {
             // Use unified lookup helper with 3-level precedence
             var tableExternalRef = ModelNamingUtilities.GetTableExternalReference(table.Schema, table.Name);
             var className = ModelNamingUtilities.GetEntityName(table.Name, _config.EntityNameConvention, table.Schema, null);
+            
+            // Track this table as being imported
+            importedTableExternalRefs.Add(tableExternalRef);
+            
+            // Track all indexes from this table
+            foreach (var index in table.Indexes)
+            {
+                var indexExternalRef = ModelNamingUtilities.GetIndexExternalReference(table.Schema, table.Name, index.Name);
+                sourceIndexExternalRefs.Add(indexExternalRef);
+            }
             
             var existingClass = IntentModelMapper.FindElementWithPrecedence(
                 package.Classes,
@@ -113,6 +129,12 @@ internal class DbSchemaIntentMetadataMerger
                 // Process indexes for new class
                 ProcessTableIndexes(table, classElement, package, result);
             }
+        }
+        
+        // Remove obsolete indexes after processing all tables
+        if (_config.AllowDeletions)
+        {
+            RemoveObsoleteIndexes(package, sourceIndexExternalRefs, importedTableExternalRefs, result);
         }
     }
     
@@ -496,6 +518,69 @@ internal class DbSchemaIntentMetadataMerger
             
             result?.Warnings.Add(
                 $"Removed association '{association.TargetEnd?.Name}' from '{sourceClass?.Name ?? "Unknown"}' (foreign key no longer exists in database).");
+        }
+    }
+
+    /// <summary>
+    /// Removes indexes that no longer exist in the source database.
+    /// This is called after ProcessTables completes, so we know exactly which indexes exist in the database.
+    /// Only removes indexes from tables that are being imported to support inclusive imports.
+    /// </summary>
+    /// <param name="package">The package containing indexes</param>
+    /// <param name="sourceIndexExternalRefs">Set of index external references that exist in the source database</param>
+    /// <param name="importedTableExternalRefs">Set of table external references being imported in this operation</param>
+    /// <param name="result">Optional merge result to collect warnings about deleted indexes</param>
+    private static void RemoveObsoleteIndexes(
+        PackageModelPersistable package,
+        HashSet<string> sourceIndexExternalRefs,
+        HashSet<string> importedTableExternalRefs,
+        MergeResult? result)
+    {
+        if (package.Classes == null || package.Classes.Count == 0)
+        {
+            return;
+        }
+
+        // Find indexes with external references that no longer exist in the source database
+        // AND where the parent table is being imported (to support inclusive imports)
+        var indexesToRemove = package.Classes
+            .Where(element =>
+            {
+                // Must be an index
+                if (element.SpecializationType != Constants.SpecializationTypes.Index.SpecializationType)
+                    return false;
+
+                // Must have an external reference
+                if (string.IsNullOrWhiteSpace(element.ExternalReference))
+                    return false;
+
+                // Index must no longer exist in the database
+                if (sourceIndexExternalRefs.Contains(element.ExternalReference))
+                    return false;
+
+                // Only remove if the parent table is being imported
+                // Find the parent class via ParentFolderId (which points to the class ID)
+                var parentClass = package.Classes
+                    .FirstOrDefault(c => c.Id == element.ParentFolderId);
+
+                if (parentClass == null)
+                    return false;
+
+                // Only remove indexes from tables we're actually importing
+                return importedTableExternalRefs.Contains(parentClass.ExternalReference ?? string.Empty);
+            })
+            .ToList();
+
+        foreach (var index in indexesToRemove)
+        {
+            // Get parent class for warning message
+            var parentClass = package.Classes
+                .FirstOrDefault(c => c.Id == index.ParentFolderId);
+
+            package.Classes.Remove(index);
+
+            result?.Warnings.Add(
+                $"Removed index '{index.Name}' from '{parentClass?.Name ?? "Unknown"}' (no longer exists in database).");
         }
     }
 

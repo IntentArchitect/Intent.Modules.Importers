@@ -62,6 +62,25 @@ Use the composer when a test needs to adjust a base scenario without creating a 
 - **Assertions**: use Shouldly for readability (`ShouldContain`, `ShouldHaveSingleItem`, `ShouldBe`). Focus on the observable behaviour relevant to the scenario.
 - **No snapshots**: tests rely on explicit assertions to stay clear and maintainable.
 
+### ⚠️ CRITICAL: Assertion Best Practices
+- **DO NOT assert on warning or error messages** unless the test is explicitly designed to verify messaging behavior.
+- **DO assert on actual state changes**: element counts, IDs, names, external references, presence/absence of objects.
+- **WHY**: Warning/error message assertions are brittle and break when message formatting changes, making tests maintenance nightmares.
+
+**Bad Example (Brittle):**
+```csharp
+result.Warnings.ShouldContain(w => w.Contains("Removed index 'IX_Orders_CustomerId'"));
+```
+
+**Good Example (Robust):**
+```csharp
+// Verify index was actually removed by checking state
+var indexesAfter = package.Classes.Where(c => c.SpecializationType == "Index").ToList();
+indexesAfter.ShouldNotContain(i => i.Id == removedIndexId);
+```
+
+**Exception**: When explicitly testing warning/error generation logic itself, message assertions are appropriate.
+
 ### For Snapshot Tests (DbSchemaToElementMappingTests, DbSchemaComprehensiveMappingTests)
 - **Naming**: `Map{Feature}_{Scenario}_ShouldMatchSnapshot` (e.g. `MapTable_BasicProperties_ShouldMatchSnapshot`).
 - **Structure**: follow AAA pattern with `// Arrange`, `// Act`, `// Assert` comments.
