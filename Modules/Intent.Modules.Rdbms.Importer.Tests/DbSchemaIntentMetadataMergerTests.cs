@@ -627,6 +627,52 @@ public class DbSchemaIntentMetadataMergerTests
         scenario.Package.Classes.ShouldNotContain(c => c.Id == compositeIndex.Id, "Composite index should be removed");
     }
 
+    [Fact]
+    public void MergeSchemaAndPackage_IndexStoredAsChildElementRemoved_RemovesIndexFromChildElements()
+    {
+        // Arrange - Start with table that has an index
+        var schemaWithIndex = DatabaseSchemas.WithSimpleUsersTable();
+        schemaWithIndex.Tables[0].Indexes =
+        [
+            Indexes.UniqueEmailIndex()
+        ];
+        
+        var scenario = ScenarioComposer.SchemaOnly(schemaWithIndex);
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesWithDeletions());
+        
+        // Initial import with index
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        
+        // Manually move the index from package.Classes to the parent class's ChildElements
+        // (simulating indexes stored as nested elements, which is what the user reported)
+        var indexInPackage = scenario.Package.Classes
+            .Single(c => c.SpecializationType == "Index");
+        var parentClass = scenario.Package.Classes
+            .Single(c => c.Id == indexInPackage.ParentFolderId);
+        
+        scenario.Package.Classes.Remove(indexInPackage);
+        parentClass.ChildElements.Add(indexInPackage);
+        
+        // Verify index is now in ChildElements
+        parentClass.ChildElements.ShouldContain(e => e.SpecializationType == "Index");
+        var indexId = indexInPackage.Id;
+        
+        // Now remove the index from the schema
+        schemaWithIndex.Tables[0].Indexes = [];
+        
+        // Act - Re-import without the index
+        var result = merger.MergeSchemaAndPackage(schemaWithIndex, scenario.Package);
+        
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        // Verify index was removed from ChildElements
+        parentClass.ChildElements.ShouldNotContain(e => e.Id == indexId, 
+            "Index should have been removed from ChildElements when it no longer exists in database");
+        parentClass.ChildElements.ShouldNotContain(e => e.SpecializationType == "Index",
+            "No index should remain in ChildElements");
+    }
+
     private static IEnumerable<ElementPersistable> GetClasses(PackageModelPersistable package) =>
         package.Classes.Where(c =>
             string.Equals(c.SpecializationType, ClassModel.SpecializationType, StringComparison.OrdinalIgnoreCase));

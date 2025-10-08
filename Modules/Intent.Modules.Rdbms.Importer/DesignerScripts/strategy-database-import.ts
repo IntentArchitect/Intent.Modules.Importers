@@ -267,8 +267,8 @@ class DatabaseImportStrategy {
                         {
                             id: "allowDeletions",
                             fieldType: "checkbox",
-                            label: "Remove deleted database attributes and associations",
-                            hint: "Removes imported attributes and associations that no longer exist in the database",
+                            label: "Remove deleted database attributes, indexes and associations",
+                            hint: "Removes imported attributes, associations, and indexes that no longer exist in the database",
                             value: defaults.allowDeletions
                         },
                         {

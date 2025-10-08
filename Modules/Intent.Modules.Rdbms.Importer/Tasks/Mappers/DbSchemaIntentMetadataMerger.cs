@@ -541,46 +541,25 @@ internal class DbSchemaIntentMetadataMerger
             return;
         }
 
-        // Find indexes with external references that no longer exist in the source database
-        // AND where the parent table is being imported (to support inclusive imports)
-        var indexesToRemove = package.Classes
-            .Where(element =>
-            {
-                // Must be an index
-                if (element.SpecializationType != Constants.SpecializationTypes.Index.SpecializationType)
-                    return false;
-
-                // Must have an external reference
-                if (string.IsNullOrWhiteSpace(element.ExternalReference))
-                    return false;
-
-                // Index must no longer exist in the database
-                if (sourceIndexExternalRefs.Contains(element.ExternalReference))
-                    return false;
-
-                // Only remove if the parent table is being imported
-                // Find the parent class via ParentFolderId (which points to the class ID)
-                var parentClass = package.Classes
-                    .FirstOrDefault(c => c.Id == element.ParentFolderId);
-
-                if (parentClass == null)
-                    return false;
-
-                // Only remove indexes from tables we're actually importing
-                return importedTableExternalRefs.Contains(parentClass.ExternalReference ?? string.Empty);
-            })
+        // Find classes that are being imported in this operation
+        var classesBeingImported = package.Classes
+            .Where(c => !string.IsNullOrWhiteSpace(c.ExternalReference) && 
+                       importedTableExternalRefs.Contains(c.ExternalReference))
             .ToList();
 
-        foreach (var index in indexesToRemove)
+        // Use RdbmsSchemaAnnotator to remove obsolete indexes from each imported class
+        foreach (var classElement in classesBeingImported)
         {
-            // Get parent class for warning message
-            var parentClass = package.Classes
-                .FirstOrDefault(c => c.Id == index.ParentFolderId);
+            var removedIndexNames = RdbmsSchemaAnnotator.RemoveObsoleteIndexesFromClass(
+                classElement, 
+                package, 
+                sourceIndexExternalRefs);
 
-            package.Classes.Remove(index);
-
-            result?.Warnings.Add(
-                $"Removed index '{index.Name}' from '{parentClass?.Name ?? "Unknown"}' (no longer exists in database).");
+            foreach (var indexName in removedIndexNames)
+            {
+                result?.Warnings.Add(
+                    $"Removed index '{indexName}' from '{classElement.Name}' (no longer exists in database).");
+            }
         }
     }
 
