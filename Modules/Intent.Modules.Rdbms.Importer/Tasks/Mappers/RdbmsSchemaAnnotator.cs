@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.Modules.Common.Templates;
@@ -324,6 +325,50 @@ internal static class RdbmsSchemaAnnotator
             stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.ForeignKey.PropertyId.Association,
                 prop => { prop.Name = Constants.Stereotypes.Rdbms.ForeignKey.PropertyId.AssociationName; });
         }
+    }
+
+    /// <summary>
+    /// Removes all foreign key stereotypes and metadata from attributes that reference the specified association target end.
+    /// This is used when an association is being removed (e.g., when a foreign key constraint is deleted from the database).
+    /// </summary>
+    /// <param name="sourceClass">The class element containing the attributes</param>
+    /// <param name="associationTargetEndId">The target end ID of the association being removed</param>
+    public static void RemoveForeignKeysForAssociation(ElementPersistable sourceClass, string associationTargetEndId)
+    {
+        var fkAttributes = sourceClass.ChildElements
+            .Where(attr => attr.Stereotypes.Any(s => 
+                s.Name == Constants.Stereotypes.Rdbms.ForeignKey.Name &&
+                s.Properties.Any(p => 
+                    p.Name == Constants.Stereotypes.Rdbms.ForeignKey.PropertyId.AssociationName && 
+                    p.Value == associationTargetEndId)))
+            .ToList();
+
+        foreach (var attribute in fkAttributes)
+        {
+            RemoveForeignKey(attribute);
+        }
+    }
+
+    /// <summary>
+    /// Removes the foreign key stereotype and associated metadata from an attribute.
+    /// This cleans up all FK-related information including the stereotype and metadata entries
+    /// that control how the UI treats the attribute.
+    /// </summary>
+    /// <param name="attribute">The attribute to clean up</param>
+    private static void RemoveForeignKey(ElementPersistable attribute)
+    {
+        var fkStereotype = attribute.Stereotypes
+            .FirstOrDefault(s => s.Name == Constants.Stereotypes.Rdbms.ForeignKey.Name);
+        
+        if (fkStereotype != null)
+        {
+            attribute.Stereotypes.Remove(fkStereotype);
+        }
+        
+        // Remove FK-related metadata so the attribute is no longer treated as a managed key
+        attribute.RemoveElementMetadata("fk-original-name");
+        attribute.RemoveElementMetadata("association");
+        attribute.RemoveElementMetadata("is-managed-key");
     }
 
     public static void ApplyStoredProcedureElementSettings(StoredProcedureSchema sqlStoredProc, ElementPersistable elementStoredProc)

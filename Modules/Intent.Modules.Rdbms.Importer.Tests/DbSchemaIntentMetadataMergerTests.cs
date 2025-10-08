@@ -142,6 +142,9 @@ public class DbSchemaIntentMetadataMergerTests
         var scenario = ScenarioComposer.Create(DatabaseSchemas.WithCustomerAndOrderWithoutForeignKey(), PackageModels.WithCustomerAndOrderTables());
         var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesWithDeletions());
         var associationCountBefore = scenario.Package.Associations.Count;
+        var orderClass = GetClasses(scenario.Package).Single(c => c.Name == "Order");
+        var customerIdAttribute = orderClass.ChildElements.Single(a => a.Name == "CustomerId");
+        var fkStereotypeCountBefore = customerIdAttribute.Stereotypes.Count(s => s.Name == "Foreign Key");
 
         // Act
         var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
@@ -150,6 +153,9 @@ public class DbSchemaIntentMetadataMergerTests
         result.IsSuccessful.ShouldBeTrue();
         associationCountBefore.ShouldBe(1, "Should have started with one association");
         scenario.Package.Associations.ShouldBeEmpty("Association should have been removed when FK no longer exists");
+        fkStereotypeCountBefore.ShouldBe(1, "CustomerId should have started with a FK stereotype");
+        var fkStereotypeCountAfter = customerIdAttribute.Stereotypes.Count(s => s.Name == "Foreign Key");
+        fkStereotypeCountAfter.ShouldBe(0, "FK stereotype should have been removed from CustomerId attribute when association was removed");
     }
 
     [Fact]

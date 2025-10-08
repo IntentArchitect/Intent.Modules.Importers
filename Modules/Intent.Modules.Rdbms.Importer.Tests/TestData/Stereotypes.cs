@@ -1,4 +1,5 @@
 using Intent.IArchitect.Agent.Persistence.Model.Common;
+using Intent.Modules.Rdbms.Importer.Tasks.Mappers;
 
 namespace Intent.Modules.Rdbms.Importer.Tests.TestData;
 
@@ -60,6 +61,24 @@ internal static class Stereotypes
         Properties = new List<StereotypePropertyPersistable>
         {
             Property("Column Name", columnName)
+        }
+    };
+
+    public static StereotypePersistable ForeignKeyAttribute(string associationTargetEndId) => new()
+    {
+        Name = "Foreign Key",
+        DefinitionId = "793a5128-57a1-440b-a206-af5722b752a6", // Intent.Modules.Rdbms.Importer.Tasks.Mappers.Constants.Stereotypes.Rdbms.ForeignKey.DefinitionId
+        DefinitionPackageId = "AF8F3810-745C-42A2-93C8-798860DC45B1", // Intent.Metadata.RDBMS
+        DefinitionPackageName = "Intent.Metadata.RDBMS",
+        Properties = new List<StereotypePropertyPersistable>
+        {
+            new StereotypePropertyPersistable
+            {
+                DefinitionId = "42e4f9b5-f834-4e5f-86aa-d3a35c505076", // Intent.Modules.Rdbms.Importer.Tasks.Mappers.Constants.Stereotypes.Rdbms.ForeignKey.PropertyId.Association
+                Name = "Association",
+                Value = associationTargetEndId,
+                IsActive = true
+            }
         }
     };
 

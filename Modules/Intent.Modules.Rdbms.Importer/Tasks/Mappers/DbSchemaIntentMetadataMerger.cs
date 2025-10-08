@@ -482,15 +482,20 @@ internal class DbSchemaIntentMetadataMerger
 
         foreach (var association in associationsToRemove)
         {
-            // Get class name for the warning message
-            var sourceClassName = package.Classes
-                .FirstOrDefault(c => c.Id == association.SourceEnd?.TypeReference?.TypeId)
-                ?.Name ?? "Unknown";
+            // Get source class for FK stereotype removal
+            var sourceClass = package.Classes
+                .FirstOrDefault(c => c.Id == association.SourceEnd?.TypeReference?.TypeId);
+
+            // Remove FK stereotypes and metadata from attributes referencing this association
+            if (sourceClass != null && association.TargetEnd?.Id != null)
+            {
+                RdbmsSchemaAnnotator.RemoveForeignKeysForAssociation(sourceClass, association.TargetEnd.Id);
+            }
 
             package.Associations.Remove(association);
             
             result?.Warnings.Add(
-                $"Removed association '{association.TargetEnd?.Name}' from '{sourceClassName}' (foreign key no longer exists in database).");
+                $"Removed association '{association.TargetEnd?.Name}' from '{sourceClass?.Name ?? "Unknown"}' (foreign key no longer exists in database).");
         }
     }
 
@@ -649,15 +654,15 @@ internal class DbSchemaIntentMetadataMerger
                         break;
                         
                     case AssociationCreationStatus.TargetClassNotFound:
-                        result.Warnings.Add($"Could not create association for foreign key '{foreignKey.Name}' in table '{table.Name}': {associationResult.Reason}");
+                        result.Warnings.Add(associationResult.Reason!);
                         continue;
                         
                     case AssociationCreationStatus.DuplicateSkipped:
-                        result.Warnings.Add($"Skipped creating association for foreign key '{foreignKey.Name}' in table '{table.Name}': {associationResult.Reason}");
+                        result.Warnings.Add(associationResult.Reason!);
                         continue;
                         
                     case AssociationCreationStatus.UnsupportedForeignKey:
-                        result.Warnings.Add($"Foreign key '{foreignKey.Name}' in table '{table.Name}' is not supported for association creation: {associationResult.Reason}");
+                        result.Warnings.Add(associationResult.Reason!);
                         continue;
                         
                     default:

@@ -58,7 +58,15 @@ internal static class PackageModels
         
         package.Classes.Add(customers);
         package.Classes.Add(orders);
-        package.Associations.Add(Associations.OrdersToCustomersFk(orders.Id, customers.Id));
+        var association = Associations.OrdersToCustomersFk(orders.Id, customers.Id);
+        package.Associations.Add(association);
+        
+        // Add FK stereotype to the CustomerId attribute linking to the association's target end
+        var customerIdAttribute = orders.ChildElements.FirstOrDefault(a => a.Name == "CustomerId");
+        if (customerIdAttribute != null)
+        {
+            customerIdAttribute.Stereotypes.Add(Stereotypes.ForeignKeyAttribute(association.TargetEnd.Id));
+        }
         
         return package;
     }

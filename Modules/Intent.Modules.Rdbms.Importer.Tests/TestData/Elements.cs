@@ -69,7 +69,8 @@ internal static class Elements
         string typeId, 
         string? externalReference = null,
         bool isPrimaryKey = false,
-        bool isNullable = false)
+        bool isNullable = false,
+        string? foreignKeyAssociationTargetEndId = null)
     {
         var attr = new ElementPersistable
         {
@@ -90,6 +91,11 @@ internal static class Elements
         if (isPrimaryKey)
         {
             attr.Stereotypes.Add(Stereotypes.PrimaryKey());
+        }
+
+        if (!string.IsNullOrEmpty(foreignKeyAssociationTargetEndId))
+        {
+            attr.Stereotypes.Add(Stereotypes.ForeignKeyAttribute(foreignKeyAssociationTargetEndId));
         }
 
         return attr;

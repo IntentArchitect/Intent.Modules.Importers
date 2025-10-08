@@ -42,11 +42,14 @@ public class AssociationCreationResult
     /// </summary>
     /// <param name="foreignKey"></param>
     public static AssociationCreationResult TargetClassNotFound(ForeignKeySchema foreignKey)
-        => new(AssociationCreationStatus.TargetClassNotFound, reason: $"Target class not found for foreign key '{foreignKey.Name}' on table '{foreignKey.TableName}'");
+        => new(AssociationCreationStatus.TargetClassNotFound, 
+            reason: $"Target class for table '{foreignKey.ReferencedTableSchema}.{foreignKey.ReferencedTableName}' not found in package. " +
+                    $"The referenced table may not have been imported yet, or may be excluded from the current import operation.");
 
     /// <summary>
     /// Creates a result indicating the foreign key structure is not supported for association creation
     /// </summary>
-    public static AssociationCreationResult UnsupportedForeignKey(ForeignKeySchema foreignKey, string reason)
-        => new(AssociationCreationStatus.UnsupportedForeignKey, reason: $"Foreign key '{foreignKey.Name}' on table '{foreignKey.TableName}' is not supported: {reason}");
+    public static AssociationCreationResult UnsupportedForeignKey(ForeignKeySchema foreignKey, string reason, string? tableSchema = null)
+        => new(AssociationCreationStatus.UnsupportedForeignKey, 
+            reason: $"Foreign key '{foreignKey.Name}' on table '{(string.IsNullOrEmpty(tableSchema) ? foreignKey.TableName : $"{tableSchema}.{foreignKey.TableName}")}' is not supported: {reason}");
 }

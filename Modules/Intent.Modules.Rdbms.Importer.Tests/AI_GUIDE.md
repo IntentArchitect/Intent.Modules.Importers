@@ -193,7 +193,8 @@ The test suite now includes comprehensive coverage for advanced database scenari
 
 #### Deletion Tracking (1 assertion test)
 - **Association Removal**: When `AllowDeletions = true`, validates that associations are removed when their corresponding foreign keys no longer exist in the database
-- **Critical Gap Coverage**: Previously untested scenario where `RemoveObsoleteAssociations` method ensures orphaned associations are cleaned up
-- Tests the complete deletion workflow: FK removed from DB → association removed from package → warning logged
+- **FK Stereotype Cleanup**: When an association is removed, the Foreign Key stereotype is also removed from the corresponding attribute(s)
+- **Critical Gap Coverage**: Previously untested scenario where `RemoveObsoleteAssociations` method ensures orphaned associations and FK stereotypes are cleaned up
+- Tests the complete deletion workflow: FK removed from DB → association removed from package → FK stereotype removed from attribute → warning logged
 
 See `DbSchemaComprehensiveMappingTests.README.md` for detailed documentation of the comprehensive test suite.
