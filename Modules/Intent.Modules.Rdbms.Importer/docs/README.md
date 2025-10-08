@@ -104,12 +104,15 @@ For details on the format of this file, refer to the [Filter File Structure](#fi
 
 The Advanced section contains options for fine-tuning the import behavior:
 
-#### Remove Deleted Database Attributes and Associations
+#### Remove Deleted Database Attributes, Indexes and Associations
 
-When checked, the importer will remove attributes and associations from your domain model that no longer exist in the database. This helps keep your domain model synchronized with the database schema.
+When checked, the importer will remove attributes, associations, and indexes from your domain model that no longer exist in the database. This helps keep your domain model synchronized with the database schema.
 
-- **Enabled** (default) - Attributes and associations that no longer exist in the database will be removed during import.
-- **Disabled** - Existing attributes and associations will be preserved even if they no longer exist in the database.
+- **Enabled** (default) - Attributes, associations, and indexes that no longer exist in the database will be removed during import.
+- **Disabled** - Existing attributes, associations, and indexes will be preserved even if they no longer exist in the database.
+
+> [!NOTE]
+> Index removal only occurs when both "Include Indexes" is checked and this option is enabled. If "Include Indexes" is unchecked, indexes are not tracked and therefore not subject to removal.
 
 #### Preserve User-Specified Attribute Types
 

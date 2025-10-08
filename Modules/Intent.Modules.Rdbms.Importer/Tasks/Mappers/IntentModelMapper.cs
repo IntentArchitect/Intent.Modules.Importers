@@ -972,14 +972,23 @@ internal static class IntentModelMapper
         TableSchema sourceTable, 
         DatabaseSchema databaseSchema)
     {
-        // Find the referenced table from the database schema
+        // Find the referenced table from the imported schema
+        // Note: This only checks tables that are being imported in this operation
         var referencedTable = databaseSchema.Tables.FirstOrDefault(t => 
-            string.Equals(t.Name, foreignKey.ReferencedTableName, StringComparison.OrdinalIgnoreCase));
+            string.Equals(t.Name, foreignKey.ReferencedTableName, StringComparison.OrdinalIgnoreCase) &&
+            string.Equals(t.Schema, foreignKey.ReferencedTableSchema, StringComparison.OrdinalIgnoreCase));
 
         if (referencedTable == null)
         {
+            // The referenced table is not in the current import set
+            // This could be because:
+            // 1. It's an inclusive import and the table wasn't selected
+            // 2. The table genuinely doesn't exist in the database
+            // We'll return UnsupportedForeignKey with a clear message for inclusive imports
             return AssociationCreationResult.UnsupportedForeignKey(foreignKey, 
-                "Referenced table not found in database schema");
+                $"Referenced table '{foreignKey.ReferencedTableSchema}.{foreignKey.ReferencedTableName}' is not included in the current import. " +
+                $"This may be due to an inclusive import where only specific tables are selected, or the table could not be found in the database schema being imported.",
+                sourceTable.Schema);
         }
 
         // Get primary key columns of the referenced table
@@ -991,7 +1000,8 @@ internal static class IntentModelMapper
         if (referencedTablePrimaryKeys.Count == 0)
         {
             return AssociationCreationResult.UnsupportedForeignKey(foreignKey,
-                "Referenced table has no primary key defined");
+                $"Referenced table '{foreignKey.ReferencedTableSchema}.{foreignKey.ReferencedTableName}' has no primary key defined",
+                sourceTable.Schema);
         }
 
         // Check if foreign key references all and only the primary key columns
@@ -1004,7 +1014,8 @@ internal static class IntentModelMapper
             return AssociationCreationResult.UnsupportedForeignKey(foreignKey,
                 $"Foreign key references non-primary key columns. " +
                 $"FK references: [{string.Join(", ", foreignKey.Columns.Select(c => c.ReferencedColumnName))}], " +
-                $"PK columns: [{string.Join(", ", referencedTablePrimaryKeys)}]");
+                $"PK columns: [{string.Join(", ", referencedTablePrimaryKeys)}]",
+                sourceTable.Schema);
         }
 
         // If we reach here, the foreign key is valid for association creation

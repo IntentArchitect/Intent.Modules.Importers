@@ -79,4 +79,76 @@ internal static class Associations
         },
         Stereotypes = []
     };
+
+    /// <summary>
+    /// Association from Table A to Table B via FK
+    /// </summary>
+    public static AssociationPersistable TableAToTableB(
+        string tableAClassId, 
+        string tableBClassId,
+        string? id = null) => new()
+    {
+        Id = id ?? Guid.NewGuid().ToString(),
+        ExternalReference = ModelNamingUtilities.GetForeignKeyExternalReference("dbo", "TableA", "FK_TableA_TableB"),
+        SourceEnd = new AssociationEndPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            TypeReference = new TypeReferencePersistable
+            {
+                TypeId = tableAClassId,
+                IsNavigable = false,
+                IsNullable = false,
+                IsCollection = true
+            }
+        },
+        TargetEnd = new AssociationEndPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "TableB",
+            TypeReference = new TypeReferencePersistable
+            {
+                TypeId = tableBClassId,
+                IsNavigable = true,
+                IsNullable = false,
+                IsCollection = false
+            }
+        },
+        Stereotypes = [Stereotypes.ForeignKey("TableBId")]
+    };
+
+    /// <summary>
+    /// Association from Table B to Table C via FK (this should be removed during import)
+    /// </summary>
+    public static AssociationPersistable TableBToTableC(
+        string tableBClassId, 
+        string tableCClassId,
+        string? id = null) => new()
+    {
+        Id = id ?? Guid.NewGuid().ToString(),
+        ExternalReference = ModelNamingUtilities.GetForeignKeyExternalReference("dbo", "TableB", "FK_TableB_TableC"),
+        SourceEnd = new AssociationEndPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            TypeReference = new TypeReferencePersistable
+            {
+                TypeId = tableBClassId,
+                IsNavigable = false,
+                IsNullable = false,
+                IsCollection = true
+            }
+        },
+        TargetEnd = new AssociationEndPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "TableC",
+            TypeReference = new TypeReferencePersistable
+            {
+                TypeId = tableCClassId,
+                IsNavigable = true,
+                IsNullable = false,
+                IsCollection = false
+            }
+        },
+        Stereotypes = [Stereotypes.ForeignKey("TableCId")]
+    };
 }

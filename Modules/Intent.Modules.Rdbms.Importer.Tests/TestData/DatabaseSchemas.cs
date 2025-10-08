@@ -161,4 +161,31 @@ internal static class DatabaseSchemas
         Views = [],
         StoredProcedures = []
     };
+
+    /// <summary>
+    /// Three table scenario for testing inclusive import bug:
+    /// - Table A has FK to Table B (still exists)
+    /// - Table B previously had FK to Table C (now removed)
+    /// - Table C exists independently
+    /// This represents the database state after Table B's FK to Table C was removed
+    /// </summary>
+    public static DatabaseSchema WithTableABCButBToC_ForeignKeyRemoved() => new()
+    {
+        DatabaseName = "TestDatabase",
+        Tables = [Tables.TableA(), Tables.TableB(), Tables.TableC()],
+        Views = [],
+        StoredProcedures = []
+    };
+
+    /// <summary>
+    /// Simulates an inclusive import where only Table B is being imported.
+    /// This is used to test that associations from non-imported tables (A→B) are preserved.
+    /// </summary>
+    public static DatabaseSchema WithOnlyTableB() => new()
+    {
+        DatabaseName = "TestDatabase",
+        Tables = [Tables.TableB()],
+        Views = [],
+        StoredProcedures = []
+    };
 }

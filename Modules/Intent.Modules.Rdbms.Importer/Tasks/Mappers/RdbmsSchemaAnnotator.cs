@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.Modules.Common.Templates;
@@ -591,6 +593,118 @@ internal static class RdbmsSchemaAnnotator
                     prop.Value = schemaName;
                 });
         });
+    }
+
+    /// <summary>
+    /// Removes all foreign key stereotypes and metadata from attributes that reference the specified association target end.
+    /// This is used when an association is being removed (e.g., when a foreign key constraint is deleted from the database).
+    /// </summary>
+    /// <param name="sourceClass">The class element containing the attributes</param>
+    /// <param name="associationTargetEndId">The target end ID of the association being removed</param>
+    public static void RemoveForeignKeysForAssociation(ElementPersistable sourceClass, string associationTargetEndId)
+    {
+        var fkAttributes = sourceClass.ChildElements
+            .Where(attr => attr.Stereotypes.Any(s => 
+                s.Name == Constants.Stereotypes.Rdbms.ForeignKey.Name &&
+                s.Properties.Any(p => 
+                    p.Name == Constants.Stereotypes.Rdbms.ForeignKey.PropertyId.AssociationName && 
+                    p.Value == associationTargetEndId)))
+            .ToList();
+
+        foreach (var attribute in fkAttributes)
+        {
+            RemoveForeignKey(attribute);
+        }
+    }
+
+    /// <summary>
+    /// Removes the foreign key stereotype and associated metadata from an attribute.
+    /// This cleans up all FK-related information including the stereotype and metadata entries
+    /// that control how the UI treats the attribute.
+    /// </summary>
+    /// <param name="attribute">The attribute to clean up</param>
+    private static void RemoveForeignKey(ElementPersistable attribute)
+    {
+        var fkStereotype = attribute.Stereotypes
+            .FirstOrDefault(s => s.Name == Constants.Stereotypes.Rdbms.ForeignKey.Name);
+        
+        if (fkStereotype != null)
+        {
+            attribute.Stereotypes.Remove(fkStereotype);
+        }
+        
+        // Remove FK-related metadata so the attribute is no longer treated as a managed key
+        attribute.RemoveElementMetadata("fk-original-name");
+        attribute.RemoveElementMetadata("association");
+        attribute.RemoveElementMetadata("is-managed-key");
+    }
+
+    /// <summary>
+    /// Removes obsolete indexes from a class element (both from package.Classes and ChildElements).
+    /// This is called when indexes no longer exist in the database and need to be cleaned up.
+    /// </summary>
+    /// <param name="classElement">The class element to check for obsolete indexes</param>
+    /// <param name="package">The package containing the classes</param>
+    /// <param name="sourceIndexExternalRefs">Set of index external references that exist in the source database</param>
+    /// <returns>List of removed index names for reporting purposes</returns>
+    public static List<string> RemoveObsoleteIndexesFromClass(
+        ElementPersistable classElement,
+        PackageModelPersistable package,
+        HashSet<string> sourceIndexExternalRefs)
+    {
+        var removedIndexNames = new List<string>();
+
+        // Check package.Classes for indexes belonging to this class
+        var indexesToRemoveFromPackage = package.Classes
+            .Where(element =>
+            {
+                // Must be an index
+                if (element.SpecializationType != Constants.SpecializationTypes.Index.SpecializationType)
+                    return false;
+
+                // Must belong to this class
+                if (element.ParentFolderId != classElement.Id)
+                    return false;
+
+                // Must have an external reference
+                if (string.IsNullOrWhiteSpace(element.ExternalReference))
+                    return false;
+
+                // Index must no longer exist in the database
+                return !sourceIndexExternalRefs.Contains(element.ExternalReference);
+            })
+            .ToList();
+
+        foreach (var index in indexesToRemoveFromPackage)
+        {
+            package.Classes.Remove(index);
+            removedIndexNames.Add(index.Name);
+        }
+
+        // Check ChildElements for indexes belonging to this class
+        var indexesToRemoveFromChildren = classElement.ChildElements
+            .Where(element =>
+            {
+                // Must be an index
+                if (element.SpecializationType != Constants.SpecializationTypes.Index.SpecializationType)
+                    return false;
+
+                // Must have an external reference
+                if (string.IsNullOrWhiteSpace(element.ExternalReference))
+                    return false;
+
+                // Index must no longer exist in the database
+                return !sourceIndexExternalRefs.Contains(element.ExternalReference);
+            })
+            .ToList();
+
+        foreach (var index in indexesToRemoveFromChildren)
+        {
+            classElement.ChildElements.Remove(index);
+            removedIndexNames.Add(index.Name);
+        }
+
+        return removedIndexNames;
     }
     
     private static bool ShouldUseTextConstraints(ColumnSchema column)

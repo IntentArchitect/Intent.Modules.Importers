@@ -62,6 +62,25 @@ Use the composer when a test needs to adjust a base scenario without creating a 
 - **Assertions**: use Shouldly for readability (`ShouldContain`, `ShouldHaveSingleItem`, `ShouldBe`). Focus on the observable behaviour relevant to the scenario.
 - **No snapshots**: tests rely on explicit assertions to stay clear and maintainable.
 
+### ⚠️ CRITICAL: Assertion Best Practices
+- **DO NOT assert on warning or error messages** unless the test is explicitly designed to verify messaging behavior.
+- **DO assert on actual state changes**: element counts, IDs, names, external references, presence/absence of objects.
+- **WHY**: Warning/error message assertions are brittle and break when message formatting changes, making tests maintenance nightmares.
+
+**Bad Example (Brittle):**
+```csharp
+result.Warnings.ShouldContain(w => w.Contains("Removed index 'IX_Orders_CustomerId'"));
+```
+
+**Good Example (Robust):**
+```csharp
+// Verify index was actually removed by checking state
+var indexesAfter = package.Classes.Where(c => c.SpecializationType == "Index").ToList();
+indexesAfter.ShouldNotContain(i => i.Id == removedIndexId);
+```
+
+**Exception**: When explicitly testing warning/error generation logic itself, message assertions are appropriate.
+
 ### For Snapshot Tests (DbSchemaToElementMappingTests, DbSchemaComprehensiveMappingTests)
 - **Naming**: `Map{Feature}_{Scenario}_ShouldMatchSnapshot` (e.g. `MapTable_BasicProperties_ShouldMatchSnapshot`).
 - **Structure**: follow AAA pattern with `// Arrange`, `// Act`, `// Assert` comments.
@@ -193,7 +212,8 @@ The test suite now includes comprehensive coverage for advanced database scenari
 
 #### Deletion Tracking (1 assertion test)
 - **Association Removal**: When `AllowDeletions = true`, validates that associations are removed when their corresponding foreign keys no longer exist in the database
-- **Critical Gap Coverage**: Previously untested scenario where `RemoveObsoleteAssociations` method ensures orphaned associations are cleaned up
-- Tests the complete deletion workflow: FK removed from DB → association removed from package → warning logged
+- **FK Stereotype Cleanup**: When an association is removed, the Foreign Key stereotype is also removed from the corresponding attribute(s)
+- **Critical Gap Coverage**: Previously untested scenario where `RemoveObsoleteAssociations` method ensures orphaned associations and FK stereotypes are cleaned up
+- Tests the complete deletion workflow: FK removed from DB → association removed from package → FK stereotype removed from attribute → warning logged
 
 See `DbSchemaComprehensiveMappingTests.README.md` for detailed documentation of the comprehensive test suite.

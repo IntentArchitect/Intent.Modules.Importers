@@ -613,4 +613,74 @@ internal static class Tables
         SqlDbType.VarBinary => "binary",
         _ => "string"
     };
+
+    /// <summary>
+    /// Table A in the three-table scenario for testing inclusive import bug.
+    /// Has FK to Table B (this FK should remain during inclusive import of Table B).
+    /// </summary>
+    public static TableSchema TableA() => new()
+    {
+        Schema = "dbo",
+        Name = "TableA",
+        Columns =
+        [
+            Column("Id", SqlDbType.Int, isPrimaryKey: true),
+            Column("Name", SqlDbType.NVarChar, length: 100),
+            Column("TableBId", SqlDbType.Int, isNullable: false)
+        ],
+        ForeignKeys =
+        [
+            new()
+            {
+                Name = "FK_TableA_TableB",
+                TableName = "TableA",
+                ReferencedTableSchema = "dbo",
+                ReferencedTableName = "TableB",
+                Columns =
+                [
+                    new()
+                    {
+                        Name = "TableBId",
+                        ReferencedColumnName = "Id"
+                    }
+                ]
+            }
+        ],
+        Indexes = []
+    };
+
+    /// <summary>
+    /// Table B in the three-table scenario for testing inclusive import bug.
+    /// Previously had FK to Table C (now removed in database). This is the table being imported.
+    /// </summary>
+    public static TableSchema TableB() => new()
+    {
+        Schema = "dbo",
+        Name = "TableB",
+        Columns =
+        [
+            Column("Id", SqlDbType.Int, isPrimaryKey: true),
+            Column("Description", SqlDbType.NVarChar, length: 200),
+            Column("TableCId", SqlDbType.Int, isNullable: true) // Column still exists but FK removed
+        ],
+        ForeignKeys = [], // FK to TableC has been removed
+        Indexes = []
+    };
+
+    /// <summary>
+    /// Table C in the three-table scenario for testing inclusive import bug.
+    /// Exists independently, no longer referenced by Table B.
+    /// </summary>
+    public static TableSchema TableC() => new()
+    {
+        Schema = "dbo",
+        Name = "TableC",
+        Columns =
+        [
+            Column("Id", SqlDbType.Int, isPrimaryKey: true),
+            Column("Category", SqlDbType.NVarChar, length: 50)
+        ],
+        ForeignKeys = [],
+        Indexes = []
+    };
 }
