@@ -149,6 +149,10 @@ function getAvailableProfiles(packageModel: MacroApi.Context.IPackageApi): IProf
         profiles.push({ id: "EventingMessages", description: "Eventing Messages Profile" });
     }
 
+    if (packageModel.specialization == "Services Package") {
+        profiles.push({ id: "ServicesDtos", description: "Services DTOs Profile" });
+    }
+
     return profiles;
 }
 

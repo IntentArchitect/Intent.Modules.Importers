@@ -1,0 +1,28 @@
+{
+  "id": "guid",
+  "name": "Complex Entity",
+  "primitiveString": "text",
+  "primitiveNumber": 42,
+  "primitiveDecimal": 99.99,
+  "primitiveBoolean": true,
+  "primitiveGuid": "guid",
+  "primitiveDateTime": "datetime",
+  "arrayOfStrings": ["item1", "item2", "item3"],
+  "arrayOfNumbers": [1, 2, 3],
+  "arrayOfBooleans": [true, false, true],
+  "nestedObject": {
+    "nestedId": "guid",
+    "nestedName": "Nested",
+    "deeplyNested": {
+      "level": 2,
+      "value": "deep"
+    }
+  },
+  "arrayOfObjects": [
+    {
+      "itemId": "guid",
+      "itemName": "Item 1",
+      "itemValue": 100
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "productId": "guid",
+  "name": "Wireless Headphones",
+  "description": "High-quality wireless headphones with noise cancellation",
+  "sku": "WH-001",
+  "price": 199.99,
+  "stock": 50,
+  "isAvailable": true,
+  "category": {
+    "categoryId": "guid",
+    "name": "Electronics",
+    "description": "Electronic devices and accessories"
+  },
+  "images": [
+    {
+      "url": "https://example.com/image1.jpg",
+      "altText": "Front view",
+      "order": 1
+    }
+  ],
+  "specifications": [
+    {
+      "key": "Battery Life",
+      "value": "30 hours"
+    }
+  ]
+}
