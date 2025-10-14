@@ -160,6 +160,31 @@ public class DbSchemaComprehensiveMappingTests
         await Verify(snapshot).UseParameters("pk-simple");
     }
 
+    [Fact]
+    public async Task MapPrimaryKey_WithIdentityColumn_ShouldMatchSnapshot()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [Tables.SimpleCustomers()], // Has Id column with IsIdentity = true
+            Views = [],
+            StoredProcedures = []
+        };
+        var package = PackageModels.Empty();
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(schema, package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        // Verify the complete mapping including Primary Key stereotype with Data Source property
+        var snapshot = BuildPackageSnapshot(package);
+        await Verify(snapshot).UseParameters("pk-identity");
+    }
+
     #endregion
 
     #region Foreign Key Tests

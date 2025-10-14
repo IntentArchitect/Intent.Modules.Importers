@@ -108,10 +108,10 @@ Following these guidelines keeps the suite expressive, fast, and easy for both h
 
 The `DbSchemaComprehensiveMappingTests` suite provides granular coverage of all database schema object mappings:
 
-### Coverage Areas (22 tests total)
+### Coverage Areas (27 tests total)
 1. **Tables** - Basic properties, multi-schema support
 2. **Columns** - Data types (Int, NVarChar, Decimal, UniqueIdentifier), nullable properties
-3. **Primary Keys** - Simple PKs with identity, composite PKs
+3. **Primary Keys** - Simple PKs, identity columns with Data Source property validation, composite PKs
 4. **Foreign Keys** - Simple and composite FK relationships
 5. **Indexes** - Unique, clustered, non-clustered, composite, filtered, with included columns
 6. **Constraints**:
@@ -179,9 +179,9 @@ public async Task MapView_BasicView_ShouldMatchSnapshot()
 | --- | --- | --- | --- |
 | `DbSchemaIntentMetadataMergerTests.cs` | Merge behavior, edge cases, error handling, composite keys, legacy scenarios, deletion tracking | 16 | Explicit assertions (Shouldly) |
 | `DbSchemaToElementMappingTests.cs` | Integration scenarios, real-world use cases | 3 | Snapshot testing (Verify) |
-| `DbSchemaComprehensiveMappingTests.cs` | Granular mapping validation for all DB objects, composite keys, ASP.NET Identity schema | 26 | Snapshot testing (Verify) |
+| `DbSchemaComprehensiveMappingTests.cs` | Granular mapping validation for all DB objects, composite keys, ASP.NET Identity schema, identity column properties | 27 | Snapshot testing (Verify) |
 
-**Total: 45 tests** (previously 44) ensuring robust database schema import functionality.
+**Total: 46 tests** ensuring robust database schema import functionality.
 
 ### Recently Added Test Coverage
 
