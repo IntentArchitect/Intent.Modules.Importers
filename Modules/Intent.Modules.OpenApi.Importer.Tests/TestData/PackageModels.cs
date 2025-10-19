@@ -1,5 +1,6 @@
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
+using Intent.Modules.Common.Types.Api;
 
 namespace Intent.Modules.OpenApi.Importer.Tests.TestData;
 
@@ -42,26 +43,46 @@ internal static class PackageModels
     public static PackageModelPersistable WithBasicTypes()
     {
         var package = Empty();
+        
+        // Add basic type definitions using the correct SpecializationType
         var types = new[]
         {
-            ("string", "d384db9c-a279-45e1-801e-e4e8099625f2"),
-            ("int", "fb0a362d-e9e2-40de-b6a5-fcabc5484412"),
-            ("decimal", "675c7b84-997e-40ff-a65e-fbabea28634a"),
-            ("bool", "d28db340-56c5-4d94-a07e-b630e9fa4bea"),
-            ("guid", "6b649125-18ea-48fd-a6ba-0bfff0d8f488"),
-            ("datetime", "2611dd43-89e6-4cad-94ea-72cc38ee8ddf"),
-            ("datetimeoffset", "2f2ac841-c6e9-47bd-8c6b-04fb5f7ba7bc")
+            "string",
+            "int",
+            "decimal",
+            "bool",
+            "guid",
+            "datetime",
+            "datetimeoffset",
+            "date",
+            "byte",
+            "long",
+            "double",
+            "float",
+            "object"
         };
 
-        foreach (var (name, typeId) in types)
+        foreach (var typeName in types)
         {
             var type = ElementPersistable.Create(
-                specializationType: "Type-Definition",
-                specializationTypeId: typeId,
-                name: name,
+                specializationType: TypeDefinitionModel.SpecializationType,
+                specializationTypeId: TypeDefinitionModel.SpecializationTypeId,
+                name: typeName,
                 parentId: null);
             package.Classes.Add(type);
         }
+        
+        // Add Dictionary generic type for testing
+        var dictionary = ElementPersistable.Create(
+            TypeDefinitionModel.SpecializationType, 
+            TypeDefinitionModel.SpecializationTypeId, 
+            "Dictionary", 
+            null);
+        dictionary.GenericTypes.AddRange([
+            new GenericType { Name = "TKey" }, 
+            new GenericType { Name = "TValue" }
+        ]);
+        package.Classes.Add(dictionary);
 
         return package;
     }

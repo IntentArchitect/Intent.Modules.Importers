@@ -418,7 +418,10 @@ namespace Intent.Modules.OpenApi.Importer.Importer
         {
             _config = config;
             _metadataLookup = new MetadataLookup(packages);
-            if (!_metadataLookup.TryGetTypeDefinitionByName("string", 0, out _fallbackType)) throw new Exception();
+            if (!_metadataLookup.TryGetTypeDefinitionByName("string", 0, out _fallbackType))
+            {
+                throw new Exception("Failed to find 'string' type definition in the provided packages. Ensure the package contains basic type definitions.");
+            }
             _metadataFactory = GetMetadataCreationFactory(document);
         }
 
