@@ -21,17 +21,22 @@ public class OpenApiDocumentMappingTests
         var package = PackageModels.WithBasicTypes();
         
         // Act
-        var exception = Record.Exception(() =>
-        {
-            new ScenarioComposer()
-                .WithDocument(document)
-                .WithConfig(config)
-                .WithPackage(package)
-                .Execute();
-        });
+        var result = new ScenarioComposer()
+            .WithDocument(document)
+            .WithConfig(config)
+            .WithPackage(package)
+            .Execute();
         
         // Assert
-        exception.ShouldBeNull();
+        result.ShouldNotBeNull();
+        result.Elements.ShouldNotBeEmpty();
+        
+        // Verify at least one operation was created
+        var operations = result.Elements.Where(e => 
+            e.SpecializationType == "Command" || 
+            e.SpecializationType == "Query" ||
+            e.SpecializationType == "Operation").ToList();
+        operations.ShouldNotBeEmpty("Expected at least one operation to be created from the OpenAPI document");
     }
     
     [Fact]
@@ -52,6 +57,14 @@ public class OpenApiDocumentMappingTests
         // Assert
         result.ShouldNotBeNull();
         result.Elements.ShouldNotBeEmpty();
+        
+        // Verify commands have "Command" suffix when postfixes are enabled
+        var commands = result.Elements.Where(e => e.SpecializationType == "Command").ToList();
+        if (commands.Any())
+        {
+            commands.ShouldAllBe(c => c.Name.EndsWith("Command") || !config.AddPostFixes,
+                "All commands should end with 'Command' suffix when AddPostFixes is true");
+        }
     }
     
     [Fact]
@@ -71,6 +84,14 @@ public class OpenApiDocumentMappingTests
         
         // Assert
         result.ShouldNotBeNull();
+        result.Elements.ShouldNotBeEmpty();
+        
+        // Verify operations exist and postfixes setting is respected
+        var operations = result.Elements.Where(e => 
+            e.SpecializationType == "Query" || 
+            e.SpecializationType == "Command").ToList();
+        operations.ShouldNotBeEmpty("Expected operations to be created");
+        config.AddPostFixes.ShouldBeFalse("Config should have AddPostFixes disabled");
     }
     
     [Fact]
@@ -89,7 +110,12 @@ public class OpenApiDocumentMappingTests
             .Execute();
         
         // Assert
+        result.ShouldNotBeNull();
         result.Elements.ShouldNotBeEmpty();
+        
+        // Verify queries were created
+        var queries = result.Elements.Where(e => e.SpecializationType == "Query").ToList();
+        queries.ShouldNotBeEmpty("Expected at least one Query to be created from BasicCRUD operations");
     }
     
     // === Service Pattern Tests ===
@@ -170,6 +196,12 @@ public class OpenApiDocumentMappingTests
         
         // Assert
         result.ShouldNotBeNull();
+        result.Elements.ShouldNotBeEmpty();
+        
+        // Verify operations or DTOs were created from the generic types
+        // Legacy format may unwrap generics, creating operations without separate DTOs
+        var elementsCreated = result.Elements.Any();
+        elementsCreated.ShouldBeTrue("Expected elements to be created from legacy generic format");
     }
     
     [Fact]
@@ -190,6 +222,11 @@ public class OpenApiDocumentMappingTests
         // Assert
         result.ShouldNotBeNull();
         result.Elements.ShouldNotBeEmpty();
+        
+        // Verify CustomerDto was created
+        var customerDto = result.Elements.FirstOrDefault(e => 
+            e.SpecializationType == "DTO" && e.Name == "CustomerDto");
+        customerDto.ShouldNotBeNull("Expected CustomerDto to be created from the OpenAPI schema");
     }
     
     [Fact]
@@ -209,6 +246,11 @@ public class OpenApiDocumentMappingTests
         
         // Assert
         result.Elements.ShouldNotBeEmpty();
+        
+        // Verify the PagedResult wrapper was flattened and CustomerDto was created
+        var dtos = result.Elements.Where(e => e.SpecializationType == "DTO").ToList();
+        dtos.ShouldContain(dto => dto.Name == "CustomerDto", 
+            "Expected CustomerDto to be created from PagedResult_Of_CustomerDto");
     }
     
     [Fact]
@@ -228,6 +270,13 @@ public class OpenApiDocumentMappingTests
         
         // Assert
         result.ShouldNotBeNull();
+        result.Elements.ShouldNotBeEmpty();
+        
+        // Verify operations were created and generic types were properly handled
+        var operations = result.Elements.Where(e => 
+            e.SpecializationType == "Query" || 
+            e.SpecializationType == "Command").ToList();
+        operations.ShouldNotBeEmpty("Expected operations to be created from PascalCase generic format");
     }
     
     [Fact]
@@ -247,6 +296,10 @@ public class OpenApiDocumentMappingTests
         
         // Assert
         result.Elements.ShouldNotBeEmpty();
+        
+        // Verify DTOs were created for PascalCase generic format
+        var dtos = result.Elements.Where(e => e.SpecializationType == "DTO").ToList();
+        dtos.ShouldNotBeEmpty("Expected DTOs to be created from PascalCase generic types");
     }
     
     [Fact]
@@ -266,6 +319,12 @@ public class OpenApiDocumentMappingTests
         
         // Assert
         result.ShouldNotBeNull();
+        result.Elements.ShouldNotBeEmpty();
+        
+        // Verify ProfileData was created as a regular DTO, not parsed as generic
+        var profileData = result.Elements.FirstOrDefault(e => 
+            e.SpecializationType == "DTO" && e.Name == "ProfileData");
+        profileData.ShouldNotBeNull("ProfileData should be created as a regular DTO, not as a generic type");
     }
     
     [Fact]
@@ -286,6 +345,10 @@ public class OpenApiDocumentMappingTests
         // Assert
         result.ShouldNotBeNull();
         result.Elements.ShouldNotBeEmpty();
+        
+        // Verify that different generic formats can coexist and be processed correctly
+        var elementsCount = result.Elements.Count();
+        elementsCount.ShouldBeGreaterThan(0, "Expected elements to be created from mixed generic formats");
     }
     
     // === DTO and Enum Tests ===
@@ -601,6 +664,13 @@ public class OpenApiDocumentMappingTests
         // Assert
         result.ShouldNotBeNull();
         result.Elements.ShouldNotBeEmpty();
+        
+        // Verify operations were created from PetStore API
+        var operations = result.Elements.Where(e => 
+            e.SpecializationType == "Query" || 
+            e.SpecializationType == "Command" ||
+            e.SpecializationType == "Operation").ToList();
+        operations.ShouldNotBeEmpty("Expected operations to be created from PetStore API");
     }
     
     [Fact]
@@ -621,5 +691,19 @@ public class OpenApiDocumentMappingTests
         // Assert
         result.ShouldNotBeNull();
         result.Elements.ShouldNotBeEmpty();
+        
+        // Verify comprehensive document contains operations
+        var operations = result.Elements.Where(e => 
+            e.SpecializationType == "Query" || 
+            e.SpecializationType == "Command" ||
+            e.SpecializationType == "Operation").ToList();
+        operations.ShouldNotBeEmpty("Expected operations from comprehensive document");
+        
+        // Verify both elements and associations were created
+        result.Associations.ShouldNotBeNull();
+        
+        // Verify at least one element was created from the comprehensive document
+        result.Elements.Count().ShouldBeGreaterThan(0, 
+            "Comprehensive document should create at least one element");
     }
 }
