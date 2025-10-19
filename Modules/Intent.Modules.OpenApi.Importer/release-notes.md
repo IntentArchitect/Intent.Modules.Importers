@@ -1,6 +1,7 @@
 ### Version 1.1.9
 
 - Improvement: Small update to UI text
+- Improvement: Enhanced OpenAPI importer to handle generic types using new simplified naming format (e.g., PagedResult_Of_ClientDto).
 
 ### Version 1.1.8
 

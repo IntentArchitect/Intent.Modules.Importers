@@ -53,6 +53,7 @@ namespace Intent.MetadataSynchronizer.OpenApi.CLI.ServiceCreation
                 return result;
             }
 
+            // Backward compatibility for when JsonResponse was represented in full C# full type name.
             if (name == "JsonResponse" && type != null)
             {
                 var start = type.OpenApiType.Reference.Id.IndexOf("JsonResponse`1[[", StringComparison.Ordinal) + "JsonResponse`1[[".Length;
@@ -62,6 +63,102 @@ namespace Intent.MetadataSynchronizer.OpenApi.CLI.ServiceCreation
                 result = OpenApiHelper.GetIntentType(wrappedTypeName.ToLower());
 
                 return result;
+            }
+
+            // Handle the new format: GenericType_Of_Parameter1 or GenericTypeOfParameter1
+            // Check the Reference.Id since the name has already been shortened
+            if (type != null && type.OpenApiType?.Reference?.Id != null)
+            {
+                var refId = type.OpenApiType.Reference.Id;
+                
+                // Check for any generic type with _Of_ pattern (e.g., JsonResponse_Of_, PagedResult_Of_, etc.)
+                if (refId.Contains("_Of_"))
+                {
+                    // Find where the generic type starts by finding the last segment before _Of_
+                    var ofIndex = refId.IndexOf("_Of_", StringComparison.Ordinal);
+                    if (ofIndex != -1)
+                    {
+                        // Find the start of the generic type name (after the last dot before _Of_)
+                        var beforeOf = refId.Substring(0, ofIndex);
+                        var lastDotBeforeOf = beforeOf.LastIndexOf('.');
+                        var genericTypeStart = lastDotBeforeOf != -1 ? lastDotBeforeOf + 1 : 0;
+                        
+                        var fullGenericExpression = refId.Substring(genericTypeStart);
+                        
+                        // Extract the generic type name (before _Of_)
+                        var genericTypeName = fullGenericExpression.Substring(0, fullGenericExpression.IndexOf("_Of_", StringComparison.Ordinal));
+                        
+                        // Extract the parameter type name (after _Of_)
+                        var parameterTypeName = fullGenericExpression.Substring(fullGenericExpression.IndexOf("_Of_", StringComparison.Ordinal) + "_Of_".Length);
+                        
+                        // Extract just the type name (after the last dot, if any)
+                        var lastDotIndex = parameterTypeName.LastIndexOf(".", StringComparison.Ordinal);
+                        if (lastDotIndex != -1)
+                        {
+                            parameterTypeName = parameterTypeName.Substring(lastDotIndex + 1);
+                        }
+                        
+                        // For JsonResponse, unwrap and return the inner type directly
+                        if (genericTypeName.Equals("JsonResponse", StringComparison.OrdinalIgnoreCase))
+                        {
+                            result = OpenApiHelper.GetIntentType(parameterTypeName.ToLower());
+                            return result;
+                        }
+                        
+                        // For other generic types (like PagedResult), create a distinct DTO name
+                        name = $"{genericTypeName}Of{parameterTypeName}";
+                        externalReference = $"{folder.Name}.{name}";
+                        key = externalReference;
+                        
+                        // Check if we've already created this combined type
+                        if (_addedServiceTypes.TryGetValue(key, out result))
+                        {
+                            return result;
+                        }
+                        
+                        // Fall through to normal DTO creation with the modified name
+                    }
+                }
+                // Check for simplified format: GenericTypeOfParameter (e.g., PagedResultOfGuid, JsonResponseOfString)
+                else
+                {
+                    // Extract the last segment after the final dot (if any) to get the simple type name
+                    var lastDotIndex = refId.LastIndexOf('.');
+                    var simpleTypeName = lastDotIndex != -1 ? refId.Substring(lastDotIndex + 1) : refId;
+                    
+                    // Look for "Of" pattern in PascalCase (must have at least one char before and after "Of")
+                    var ofIndex = simpleTypeName.IndexOf("Of", StringComparison.Ordinal);
+                    if (ofIndex > 0 && ofIndex + 2 < simpleTypeName.Length)
+                    {
+                        // Ensure "Of" is followed by an uppercase letter (PascalCase pattern)
+                        var charAfterOf = simpleTypeName[ofIndex + 2];
+                        if (char.IsUpper(charAfterOf))
+                        {
+                            var genericTypeName = simpleTypeName.Substring(0, ofIndex);
+                            var parameterTypeName = simpleTypeName.Substring(ofIndex + 2);
+                            
+                            // For JsonResponse, unwrap and return the inner type directly
+                            if (genericTypeName.Equals("JsonResponse", StringComparison.OrdinalIgnoreCase))
+                            {
+                                result = OpenApiHelper.GetIntentType(parameterTypeName.ToLower());
+                                return result;
+                            }
+                            
+                            // For other generic types (like PagedResult), create a distinct DTO name
+                            name = simpleTypeName; // Use the full name as-is (e.g., "PagedResultOfGuid")
+                            externalReference = $"{folder.Name}.{name}";
+                            key = externalReference;
+                            
+                            // Check if we've already created this combined type
+                            if (_addedServiceTypes.TryGetValue(key, out result))
+                            {
+                                return result;
+                            }
+                            
+                            // Fall through to normal DTO creation with the modified name
+                        }
+                    }
+                }
             }
 
             result = ElementPersistable.Create(

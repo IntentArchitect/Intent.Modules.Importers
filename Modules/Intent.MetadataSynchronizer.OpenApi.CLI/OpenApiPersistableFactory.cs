@@ -115,7 +115,6 @@ namespace Intent.MetadataSynchronizer.OpenApi.CLI
         {
             string serviceRoute = "";
             string operationRoute = "";
-            ;
             string serviceName = "";
             var conceptName = new List<string>();
             var split = url.Split("/");
