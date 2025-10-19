@@ -1,5 +1,26 @@
 ﻿# Intent OpenApi Metadata Synchronizer
 
+> **⚠️ ARCHIVED**: This CLI tool has been superseded by the in-process OpenAPI importer in `Intent.Modules.OpenApi.Importer`.
+>
+> **The CLI project is preserved for reference only and is no longer actively maintained.**
+>
+> For new projects, use the OpenAPI import feature directly in Intent Architect through the Services Designer's context menu.
+
+## Archive Notice
+
+As of version 1.1.9+, all OpenAPI import functionality has been migrated to the `Intent.Modules.OpenApi.Importer` module, which executes the import logic in-process without spawning an external CLI tool. This provides:
+
+- ⚡ Better performance (no process spawning overhead)
+- 🛡️ Improved reliability (direct method invocation)
+- 🐛 Enhanced debuggability (step through entire flow)
+- 🔧 Easier maintenance (single codebase)
+
+**Migration Path**: Simply use the latest version of the `Intent.Modules.OpenApi.Importer` module. The CLI is no longer required.
+
+---
+
+## Original Documentation (Historical Reference)
+
 The Intent OpenApi Metadata Synchronizer CLI tool can be used to synchronize an OpenApi (3.*) file into an Intent Architect Services package.
 
 This tool can be useful for creating Intent Architect Service Packages based on Open API / Swagger definitions.

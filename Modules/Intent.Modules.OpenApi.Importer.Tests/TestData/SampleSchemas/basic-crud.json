@@ -1,0 +1,11 @@
+{
+  "openapi": "3.0.1",
+  "info": {"title": "Basic CRUD Test", "version": "1.0"},
+  "paths": {
+    "/api/customers": {
+      "get": {"operationId": "ListCustomers", "responses": {"200": {"description": "Success"}}},
+      "post": {"operationId": "CreateCustomer", "responses": {"201": {"description": "Created"}}}
+    }
+  },
+  "components": {"schemas": {}}
+}

@@ -1,0 +1,39 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Mixed Generic Formats Test",
+    "description": "Tests all three generic formats in one document",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/test": {
+      "get": {
+        "operationId": "GetTest",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponseOfString"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "JsonResponseOfString": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

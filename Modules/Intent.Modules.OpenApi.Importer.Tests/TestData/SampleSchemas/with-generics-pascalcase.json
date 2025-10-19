@@ -1,0 +1,51 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Generic Types - PascalCase Format Test",
+    "description": "Tests PascalCase format: JsonResponseOfGuid, PagedResultOfCustomerDto",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/customers": {
+      "get": {
+        "operationId": "ListCustomers",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedResultOfCustomerDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PagedResultOfCustomerDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerDto"
+            }
+          }
+        }
+      },
+      "CustomerDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      }
+    }
+  }
+}

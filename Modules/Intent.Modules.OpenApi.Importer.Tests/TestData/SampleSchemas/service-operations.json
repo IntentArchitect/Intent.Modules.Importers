@@ -1,0 +1,13 @@
+{
+  "openapi": "3.0.1",
+  "info": {"title": "Test Schema", "version": "1.0"},
+  "paths": {
+    "/api/test": {
+      "get": {
+        "operationId": "TestOperation",
+        "responses": {"200": {"description": "Success"}}
+      }
+    }
+  },
+  "components": {"schemas": {}}
+}

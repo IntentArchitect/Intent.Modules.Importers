@@ -1,0 +1,31 @@
+{
+  "openapi": "3.0.1",
+  "info": {"title": "False Positives Test", "version": "1.0"},
+  "paths": {
+    "/api/profile": {
+      "get": {
+        "operationId": "GetProfile",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/ProfileData"}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProfileData": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"}
+        }
+      }
+    }
+  }
+}

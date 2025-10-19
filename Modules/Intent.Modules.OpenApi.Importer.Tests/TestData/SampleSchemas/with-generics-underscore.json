@@ -1,0 +1,93 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Generic Types - Underscore Format Test",
+    "description": "Tests underscore format: JsonResponse_Of_Guid, PagedResult_Of_CustomerDto",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/customers": {
+      "get": {
+        "operationId": "ListCustomers",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedResult_Of_CustomerDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/customers/{id}": {
+      "get": {
+        "operationId": "GetCustomer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonResponse_Of_CustomerDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "JsonResponse_Of_CustomerDto": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/CustomerDto"
+          }
+        }
+      },
+      "PagedResult_Of_CustomerDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer"
+          }
+        }
+      },
+      "CustomerDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
