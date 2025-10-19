@@ -12,6 +12,9 @@ using Intent.Utils;
 
 namespace Intent.Modules.OpenApi.Importer.Tasks
 {
+    /// <summary>
+    /// OpenAPI Importer task that imports specifications in-process, replacing the previous external CLI approach.
+    /// </summary>
     public class OpenApiImport : ModuleTaskBase<OpenApiImportInputModel, object>
     {
         private readonly IMetadataManager _metadataManager;
