@@ -4,6 +4,15 @@
 
 This document provides a comprehensive guide for refactoring the OpenAPI Importer to move all CLI components into the module project, following the patterns established by the JSON and C# importers. The CLI project (`Intent.MetadataSynchronizer.OpenApi.CLI`) will be archived after this refactoring.
 
+**CRITICAL REQUIREMENT**: The comprehensive test suite described in this guide is **MANDATORY** and must be completed in the same PR as the refactoring. The PR is not considered complete until:
+1. All code migration is done
+2. All 56 tests (35 behavioral + 21 snapshot) are implemented and passing
+3. All 21 test schema files are created
+4. The application compiles without errors
+5. All tests pass
+
+**DO NOT defer test implementation to a follow-up PR.** The test suite is essential for validating the generic type handling fixes and ensuring import stability.
+
 ---
 
 ## Table of Contents
@@ -383,6 +392,8 @@ else
 
 ## Implementation Steps
 
+**IMPORTANT**: All steps below must be completed in a single PR. Do not skip the test implementation (Steps 6-8).
+
 ### Step 1: Create Folder Structure
 
 1. Create `Intent.Modules.OpenApi.Importer/Importer/` folder
@@ -571,6 +582,83 @@ public class OpenApiImport : ModuleTaskBase<OpenApiImportInputModel>
 
 In `Intent.Modules.OpenApi.Importer/Tasks/`:
 - Delete or archive `ImportSettings.cs` (replaced by `OpenApiImportInputModel`)
+
+### Step 6: Create Test Project (MANDATORY)
+
+**This step is NOT optional and must be completed in the same PR.**
+
+1. Create `Intent.Modules.OpenApi.Importer.Tests` project
+2. Add project reference to `Intent.Modules.OpenApi.Importer`
+3. Add NuGet packages: xunit, Shouldly, Verify.Xunit
+4. Create folder structure:
+   - `TestData/`
+   - `TestData/SampleSchemas/`
+
+### Step 7: Create Test Data Factories (MANDATORY)
+
+**These factories are required for all tests to function.**
+
+1. Create `TestData/OpenApiDocuments.cs` with all 21 factory methods
+2. Create `TestData/ImportConfigurations.cs` with configuration presets
+3. Create `TestData/PackageModels.cs` with package factory methods
+4. Create `TestData/ScenarioComposer.cs` for fluent test setup (if needed)
+
+### Step 8: Create All 21 Test Schema Files (MANDATORY)
+
+**Priority order (implement in this sequence):**
+
+**Phase 1: Generic Type Tests (CRITICAL - Must be first)**
+1. `with-generics-legacy.json` - Legacy C# backtick format
+2. `with-generics-underscore.json` - Underscore format
+3. `with-generics-pascalcase.json` - PascalCase format
+4. `with-generics-mixed.json` - All three formats together
+5. `with-false-positives.json` - ProfileData (not generic)
+
+**Phase 2: Core Features**
+6. `basic-crud.json` - Simple GET/POST/PUT/DELETE
+7. `cqrs-commands.json` - CQRS pattern
+8. `service-operations.json` - Service pattern
+9. `with-enums.json` - String and integer enums
+10. `with-enum-extensions.json` - x-enumNames extension
+
+**Phase 3: Advanced Features**
+11. `with-parameters.json` - Query, path, header parameters
+12. `with-collections.json` - Arrays and collections
+13. `with-nullable-types.json` - Required vs optional
+14. `with-allof-schemas.json` - Schema composition
+15. `with-dictionaries.json` - additionalProperties
+16. `with-multiple-responses.json` - Various HTTP codes
+17. `with-security.json` - Security schemes
+18. `with-nested-routes.json` - Deep route nesting
+19. `with-duplicate-operations.json` - Duplicate names
+
+**Phase 4: Real-World Examples**
+20. `azure-functions.json` - Azure Functions
+21. `petstore-simple.json` - PetStore example
+22. `comprehensive.json` - Combined features
+
+### Step 9: Implement All 35 Behavioral Tests (MANDATORY)
+
+**In `OpenApiDocumentMappingTests.cs`, implement:**
+- 4 CQRS pattern tests
+- 3 Service pattern tests
+- 9 Generic type tests (covering all 3 formats)
+- 4 DTO and enum tests
+- 4 HTTP metadata tests
+- 4 Route parsing tests
+- 4 Edge case tests
+- 3 Additional coverage tests
+
+**All tests must pass before PR submission.**
+
+### Step 10: Implement All 21 Snapshot Tests (MANDATORY)
+
+**In `OpenApiComprehensiveMappingTests.cs`, implement:**
+- All 21 snapshot tests listed in the test coverage table
+- Verify and approve all snapshot files
+- Ensure snapshots are committed to the repository
+
+**All snapshot tests must pass and be reviewed before PR submission.**
 
 ---
 
@@ -1211,13 +1299,15 @@ public class OpenApiDocumentMappingTests
 
 ## Validation Checklist
 
+**ALL items must be checked before submitting PR. This is not optional.**
+
 ### Pre-Implementation
 - [ ] Read and understand all three generic type formats
 - [ ] Review JSON Importer implementation pattern
 - [ ] Review RDBMS test patterns
 - [ ] Understand `ModuleTaskBase<T>` usage
 
-### During Implementation
+### Code Migration (Steps 1-5)
 - [ ] All CLI files copied to `Importer/` folder
 - [ ] Namespaces updated correctly
 - [ ] Logging replaced with `Intent.Utils.Logging.Log`
@@ -1226,37 +1316,87 @@ public class OpenApiDocumentMappingTests
 - [ ] `OpenApiImport.cs` refactored to use `ModuleTaskBase`
 - [ ] No process spawning code remains
 - [ ] `OpenApiImportInputModel` created
+- [ ] **Project compiles without errors**
 
-### Test Implementation
+### Test Project Setup (Steps 6-7) - MANDATORY
 - [ ] Test project created with correct structure
-- [ ] All factory classes implemented (Object Mother pattern)
-- [ ] 21 schema files created and embedded as resources
-- [ ] Behavioral tests cover all feature areas (35+ tests)
-- [ ] Snapshot tests use Verify library correctly (21 tests)
-- [ ] Generic type tests cover all 3 formats (minimum 9 tests)
-- [ ] Test data embedded as resources
-- [ ] OpenApiDocuments factory has all 21 methods
-- [ ] Each schema file documented with XML comments
+- [ ] All NuGet packages added (xunit, Shouldly, Verify.Xunit)
+- [ ] All 4 factory classes implemented (Object Mother pattern)
+- [ ] `OpenApiDocuments.cs` has all 21 methods with XML documentation
+- [ ] `ImportConfigurations.cs` has all 6 configuration presets
+- [ ] `PackageModels.cs` has all factory methods
+- [ ] **Test project compiles without errors**
 
-### Post-Implementation
-- [ ] All behavioral tests pass
-- [ ] All snapshot tests reviewed and approved
-- [ ] No compilation errors or warnings
-- [ ] Manual testing with actual OpenAPI files
+### Test Schema Files (Step 8) - MANDATORY
+- [ ] **Phase 1**: All 5 generic type schema files created (CRITICAL)
+- [ ] **Phase 2**: All 5 core feature schema files created
+- [ ] **Phase 3**: All 9 advanced feature schema files created
+- [ ] **Phase 4**: All 3 real-world example schema files created
+- [ ] All 21 schema files are valid OpenAPI 3.0.1+
+- [ ] All schema files embedded as resources in test project
+- [ ] Each schema file documented with description fields
+
+### Behavioral Tests (Step 9) - MANDATORY
+- [ ] All 4 CQRS pattern tests implemented and **PASSING**
+- [ ] All 3 Service pattern tests implemented and **PASSING**
+- [ ] All 9 Generic type tests implemented and **PASSING**
+- [ ] All 4 DTO and enum tests implemented and **PASSING**
+- [ ] All 4 HTTP metadata tests implemented and **PASSING**
+- [ ] All 4 Route parsing tests implemented and **PASSING**
+- [ ] All 4 Edge case tests implemented and **PASSING**
+- [ ] All 3 Additional tests implemented and **PASSING**
+- [ ] **Total: 35 behavioral tests - ALL PASSING**
+
+### Snapshot Tests (Step 10) - MANDATORY
+- [ ] All 21 snapshot tests implemented
+- [ ] All snapshot files generated and reviewed
+- [ ] All snapshot files committed to repository
+- [ ] **All 21 snapshot tests PASSING**
+
+### Final Validation - MANDATORY
+- [ ] **All 56 tests (35 behavioral + 21 snapshot) PASSING**
+- [ ] **Zero compilation errors or warnings**
+- [ ] **Zero test failures**
+- [ ] Manual smoke test with real OpenAPI file successful
 - [ ] CLI project marked as archived (README update)
-- [ ] Documentation updated
+- [ ] All code follows Intent Architect coding standards
+- [ ] PR description includes test coverage summary
+
+### PR Submission Requirements
+**The PR CANNOT be submitted until:**
+1. ✅ All 56 tests are implemented
+2. ✅ All 56 tests are passing
+3. ✅ Solution compiles without errors
+4. ✅ All 21 test schema files are created
+5. ✅ All snapshot files are committed
 
 ---
 
 ## Success Criteria
 
+**ALL criteria must be met before PR can be merged. No exceptions.**
+
 1. ✅ **No External Process**: Module executes OpenAPI import in-process
 2. ✅ **All Generics Work**: Three generic formats correctly parsed and mapped
 3. ✅ **Logging Consistent**: Uses `Intent.Utils.Logging.Log` throughout
-4. ✅ **Tests Comprehensive**: 35+ behavioral tests + 21 snapshot tests
-5. ✅ **Schema Coverage Complete**: 21 test schemas covering all OpenAPI features
-6. ✅ **Zero Regressions**: All existing OpenAPI import scenarios still work
-7. ✅ **CLI Archived**: CLI project no longer maintained but preserved for reference
+4. ✅ **Tests Comprehensive**: Exactly 35 behavioral tests + 21 snapshot tests = 56 total
+5. ✅ **All Tests Passing**: 56/56 tests passing (100% pass rate required)
+6. ✅ **Schema Coverage Complete**: All 21 test schemas created and embedded
+7. ✅ **Zero Compilation Errors**: Both main and test projects compile successfully
+8. ✅ **Zero Regressions**: All existing OpenAPI import scenarios still work
+9. ✅ **CLI Archived**: CLI project no longer maintained but preserved for reference
+10. ✅ **Snapshots Committed**: All Verify snapshot files committed to repository
+
+**Definition of Done:**
+- [ ] Code migration complete
+- [ ] Test project created
+- [ ] All 21 schema files created
+- [ ] All 35 behavioral tests implemented and passing
+- [ ] All 21 snapshot tests implemented and passing
+- [ ] Solution compiles without errors
+- [ ] No warnings in test output
+- [ ] Manual smoke test passed
+- [ ] PR approved by reviewer
 
 ---
 
@@ -1329,6 +1469,27 @@ If time permits, create these for edge cases:
 - Test schema files should be created incrementally - start with critical generics tests
 - Use existing CLI test data (`Intent.MetadataSynchronizer.OpenApi.CLI/Data/`) as reference
 
+**REMINDER**: Test implementation is NOT optional. The comprehensive test suite must be completed in the same PR as the code migration. This is a hard requirement to ensure the generic type handling fixes are properly validated and to prevent regressions.
+
+---
+
+## Implementation Time Estimates
+
+To help with planning, here are realistic time estimates:
+
+| Phase | Tasks | Estimated Time |
+|-------|-------|----------------|
+| **Code Migration** | Steps 1-5 | 2-3 hours |
+| **Test Project Setup** | Steps 6-7 | 1 hour |
+| **Schema Creation** | Step 8 (21 files) | 4-6 hours |
+| **Behavioral Tests** | Step 9 (35 tests) | 6-8 hours |
+| **Snapshot Tests** | Step 10 (21 tests) | 3-4 hours |
+| **Debugging & Fixes** | Get all tests passing | 2-4 hours |
+| **Documentation** | README, comments | 1 hour |
+| **TOTAL** | All steps | **19-27 hours** |
+
+This is significant effort but essential for ensuring import stability. Do not attempt to defer the test implementation.
+
 ---
 
 ## Questions?
@@ -1339,5 +1500,9 @@ If you encounter issues during implementation:
 3. Verify logging is using `Intent.Utils.Logging.Log`
 4. Ensure test factories follow Object Mother pattern
 5. Validate snapshot tests use Verify library correctly
+6. If tests are failing, check that schema files match expected format
+7. For snapshot test failures, review the generated snapshot files carefully
+
+**Remember**: The PR is not complete until all 56 tests are passing. Plan accordingly.
 
 Good luck with the implementation! 🚀
