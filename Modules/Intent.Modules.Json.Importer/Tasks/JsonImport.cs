@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Intent.Engine;
 using Intent.MetadataSynchronizer.Configuration;
-using Intent.MetadataSynchronizer.Json.CLI;
+using Intent.Modules.Json.Importer.Importer;
 using Intent.Modules.Json.Importer.Tasks.Helpers;
 using Intent.Modules.Json.Importer.Tasks.Models;
 using Intent.Utils;

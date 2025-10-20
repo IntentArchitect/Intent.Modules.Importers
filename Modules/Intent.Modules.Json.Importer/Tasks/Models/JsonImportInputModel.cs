@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Intent.MetadataSynchronizer.Json.CLI;
+using Intent.Modules.Json.Importer.Importer;
 
 namespace Intent.Modules.Json.Importer.Tasks.Models;
 
