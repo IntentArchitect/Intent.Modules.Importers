@@ -58,7 +58,8 @@ async function importJson(element: MacroApi.Context.IElementApi): Promise<void> 
     console.log(`executionResult = ${JSON.stringify(executionResult)}`);
 
     if ((executionResult.errors ?? []).length > 0) {
-        throw new Error(executionResult.errors.join("\r\n"));
+        await dialogService.error("Import failed with the following errors:\r\n\r\n" + executionResult.errors.join("\r\n"));
+        return;
     }
 
     const warnings = executionResult.warnings ?? [];

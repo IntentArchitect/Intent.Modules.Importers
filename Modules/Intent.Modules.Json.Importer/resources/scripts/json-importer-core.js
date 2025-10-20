@@ -48,7 +48,8 @@ async function importJson(element) {
     const executionResult = await executeImporterModuleTask("Intent.Modules.Json.Importer.Tasks.JsonImport", importConfig);
     console.log(`executionResult = ${JSON.stringify(executionResult)}`);
     if (((_a = executionResult.errors) !== null && _a !== void 0 ? _a : []).length > 0) {
-        throw new Error(executionResult.errors.join("\r\n"));
+        await dialogService.error("Import failed with the following errors:\r\n\r\n" + executionResult.errors.join("\r\n"));
+        return;
     }
     const warnings = (_b = executionResult.warnings) !== null && _b !== void 0 ? _b : [];
     if (warnings.length > 0) {

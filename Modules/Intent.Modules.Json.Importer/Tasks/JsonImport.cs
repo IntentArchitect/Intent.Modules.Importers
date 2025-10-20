@@ -81,7 +81,7 @@ public class JsonImport : ModuleTaskBase<JsonImportInputModel>
         Logging.Log.Info($"Starting JSON import from {config.SourceJsonFolder} into package {config.PackageId}");
 
         // Invoke the core synchronizer logic directly (no process spawn)
-        Intent.MetadataSynchronizer.Helpers.Execute(
+        Intent.MetadataSynchronizer.Helpers.ExecuteCore(
             intentSolutionPath: config.IslnFile,
             applicationName: config.ApplicationName,
             designerName: visitor.DesignerName,
