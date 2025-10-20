@@ -10,6 +10,7 @@ The profile used for the import is determined by the type of package you right-c
 
 - **Domain Designer**: Right-clicking on a `Domain Package` uses the `DomainDocumentDB` profile to import the JSON files as `Entities`.
 - **Services Designer**: Right-clicking on an `Eventing Package` uses the `EventingMessages` profile to import the JSON files as `Messages`.
+- **Services Designer**: Right-clicking on a `Services Package` uses the `ServicesDtos` profile to import the JSON files as `DTOs`.
 
 ![JSON Import context menu item](images/json-import.png)
 
@@ -117,3 +118,36 @@ This file will create a `UserRegistered` message with `userId`, `username`, and 
 Tree-view representation:
 
 ![Eventing Message](images/eventing-message.png)
+
+### `ServicesDtos` Profile
+
+When using the `ServicesDtos` profile, each `.json` file is treated as a `DTO` in the `Services Designer`. The filename (without the extension) is suffixed with `Dto` to create the DTO name. Nested objects are created as separate `DTOs` and referenced via `DTO-Field` elements with appropriate collection modifiers for arrays.
+
+**Example `user.json`:**
+
+This file will create a `UserDto` with fields like `id`, `firstName`, `lastName`, and `email`. It will also create an `AddressDto` and an `OrderDto`, and establish references from the `UserDto` to them. Arrays are handled with collection modifiers on the field references. The values `"guid"` and `"datetime"` are sentinel tokens used to infer `Guid` and `DateTime` types.
+
+```json
+{
+  "id": "guid",
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "createdAt": "datetime",
+  "address": {
+    "street": "123 Main St",
+    "city": "Anytown"
+  },
+  "orders": [
+    {
+      "orderId": "guid",
+      "orderDate": "datetime",
+      "total": 99.99
+    }
+  ]
+}
+```
+
+Tree-view representation:
+
+![Services DTOs](images/services-dtos.png)

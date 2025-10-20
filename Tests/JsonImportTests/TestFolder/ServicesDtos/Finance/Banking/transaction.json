@@ -1,0 +1,25 @@
+{
+  "transactionId": "guid",
+  "accountId": "guid",
+  "transactionType": "Transfer",
+  "amount": 500.00,
+  "currency": "USD",
+  "transactionDate": "datetime",
+  "status": "Completed",
+  "description": "Transfer to savings account",
+  "sourceAccount": {
+    "accountNumber": "1234567890",
+    "accountType": "Checking",
+    "balance": 5000.00
+  },
+  "destinationAccount": {
+    "accountNumber": "0987654321",
+    "accountType": "Savings",
+    "balance": 10000.00
+  },
+  "metadata": {
+    "ipAddress": "192.168.1.100",
+    "deviceId": "DEV-123",
+    "location": "New York, NY"
+  }
+}

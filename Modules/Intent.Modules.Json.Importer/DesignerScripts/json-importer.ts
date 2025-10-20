@@ -58,7 +58,8 @@ async function importJson(element: MacroApi.Context.IElementApi): Promise<void> 
     console.log(`executionResult = ${JSON.stringify(executionResult)}`);
 
     if ((executionResult.errors ?? []).length > 0) {
-        throw new Error(executionResult.errors.join("\r\n"));
+        await dialogService.error("Import failed with the following errors:\r\n\r\n" + executionResult.errors.join("\r\n"));
+        return;
     }
 
     const warnings = executionResult.warnings ?? [];
@@ -85,12 +86,33 @@ async function getJsonFilesAndPreview(folderPath: string, glob?: string): Promis
     return executionResult?.result || { rootPath: folderPath, rootName: "Unknown", files: [] };
 }
 
-function createFolderSelectionPage(element: MacroApi.Context.IElementApi): MacroApi.Context.IDynamicFormWizardPageConfig {
-    // Determine available profiles based on the designer
-    const packageModel = element.getPackage();
-    const profileOptions = getAvailableProfiles(packageModel);
+async function getAvailableProfilesFromBackend(packageModel: MacroApi.Context.IPackageApi): Promise<IProfileOption[]> {
+    const request = {
+        packageId: packageModel.id,
+        packageSpecialization: packageModel.specialization
+    };
+    const executionResult = await executeImporterModuleTask(
+        "Intent.Modules.Json.Importer.Tasks.GetAvailableProfiles",
+        request
+    );
+    if ((executionResult.errors ?? []).length > 0) {
+        throw new Error(executionResult.errors.join("\r\n"));
+    }
+    return executionResult?.result || [];
+}
 
+function createFolderSelectionPage(element: MacroApi.Context.IElementApi): MacroApi.Context.IDynamicFormWizardPageConfig {
     return {
+        onInitialize: async (formApi: MacroApi.Context.IDynamicFormApi) => {
+            // Get available profiles from backend
+            const packageModel = element.getPackage();
+            const profileOptions = await getAvailableProfilesFromBackend(packageModel);
+            
+            const profileField = formApi.getField("profile");
+            profileField.selectOptions = profileOptions;
+            profileField.value = profileOptions[0]?.id;
+            profileField.isHidden = profileOptions.length === 1;
+        },
         fields: [
             {
                 id: "sourceFolder",
@@ -118,9 +140,8 @@ function createFolderSelectionPage(element: MacroApi.Context.IElementApi): Macro
                 label: "Profile",
                 hint: "Select the import profile for these files.",
                 isRequired: true,
-                isHidden: profileOptions.length === 1,
-                selectOptions: profileOptions,
-                value: profileOptions[0]?.id
+                selectOptions: [], // Will be populated in onInitialize
+                value: ""
             },
             {
                 id: "casingConvention",
@@ -136,20 +157,6 @@ function createFolderSelectionPage(element: MacroApi.Context.IElementApi): Macro
             }
         ]
     };
-}
-
-function getAvailableProfiles(packageModel: MacroApi.Context.IPackageApi): IProfileOption[] {
-    const profiles: IProfileOption[] = [];
-
-    if (packageModel.specialization == "Domain Package") {
-        profiles.push({ id: "DomainDocumentDB", description: "Domain Document DB Profile" });
-    }
-
-    if (packageModel.specialization == "Eventing Package") {
-        profiles.push({ id: "EventingMessages", description: "Eventing Messages Profile" });
-    }
-
-    return profiles;
 }
 
 function createFileSelectionPage(): MacroApi.Context.IDynamicFormWizardPageConfig {

@@ -1,0 +1,21 @@
+{
+  "id": "guid",
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "dateOfBirth": "datetime",
+  "isActive": true,
+  "address": {
+    "street": "123 Main St",
+    "city": "Anytown",
+    "state": "CA",
+    "zipCode": "12345",
+    "country": "USA"
+  },
+  "phoneNumbers": [
+    {
+      "type": "Mobile",
+      "number": "+1-555-0100"
+    }
+  ]
+}

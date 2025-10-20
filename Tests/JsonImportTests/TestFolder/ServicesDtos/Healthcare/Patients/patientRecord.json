@@ -1,0 +1,44 @@
+{
+  "recordId": "guid",
+  "patientId": "guid",
+  "recordDate": "datetime",
+  "recordType": "Consultation",
+  "patient": {
+    "patientId": "guid",
+    "firstName": "Alice",
+    "lastName": "Johnson",
+    "dateOfBirth": "datetime",
+    "gender": "Female",
+    "contactNumber": "+1-555-0200",
+    "emergencyContact": {
+      "name": "Bob Johnson",
+      "relationship": "Spouse",
+      "phoneNumber": "+1-555-0201"
+    }
+  },
+  "practitioner": {
+    "practitionerId": "guid",
+    "name": "Dr. Sarah Williams",
+    "specialization": "General Practice",
+    "licenseNumber": "MD-123456"
+  },
+  "diagnosis": {
+    "code": "J06.9",
+    "description": "Acute upper respiratory infection",
+    "severity": "Mild"
+  },
+  "prescriptions": [
+    {
+      "medicationName": "Amoxicillin",
+      "dosage": "500mg",
+      "frequency": "Three times daily",
+      "duration": "7 days"
+    }
+  ],
+  "vitalSigns": {
+    "temperature": 98.6,
+    "bloodPressure": "120/80",
+    "heartRate": 72,
+    "respiratoryRate": 16
+  }
+}

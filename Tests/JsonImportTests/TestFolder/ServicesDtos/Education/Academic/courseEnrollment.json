@@ -1,0 +1,33 @@
+{
+  "enrollmentId": "guid",
+  "studentId": "guid",
+  "courseId": "guid",
+  "enrollmentDate": "datetime",
+  "status": "Active",
+  "student": {
+    "studentId": "guid",
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "email": "jane.smith@university.edu",
+    "studentNumber": "STU-2025-001"
+  },
+  "course": {
+    "courseId": "guid",
+    "courseCode": "CS-101",
+    "courseName": "Introduction to Computer Science",
+    "credits": 3,
+    "instructor": {
+      "instructorId": "guid",
+      "name": "Dr. Johnson",
+      "email": "johnson@university.edu"
+    }
+  },
+  "grades": [
+    {
+      "assessmentType": "Midterm",
+      "score": 85.5,
+      "maxScore": 100,
+      "gradedDate": "datetime"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "accountId": "guid",
+  "username": "johndoe",
+  "email": "john.doe@example.com",
+  "createdAt": "datetime",
+  "lastLoginAt": "datetime",
+  "isVerified": true,
+  "profile": {
+    "displayName": "John Doe",
+    "bio": "Software developer",
+    "avatarUrl": "https://example.com/avatar.jpg"
+  }
+}
