@@ -9,12 +9,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using OpenApiImporterTest.Api.Controllers.ResponseTypes;
 using OpenApiImporterTest.Application.Users;
 using OpenApiImporterTest.Application.Users.CreateUser;
 using OpenApiImporterTest.Application.Users.DeleteUser;
-using OpenApiImporterTest.Application.Users.GetLogin;
-using OpenApiImporterTest.Application.Users.GetLogout;
+using OpenApiImporterTest.Application.Users.GetLogins;
+using OpenApiImporterTest.Application.Users.GetLogouts;
 using OpenApiImporterTest.Application.Users.GetUser;
 using OpenApiImporterTest.Application.Users.UpdateUser;
 
@@ -99,31 +98,29 @@ namespace OpenApiImporterTest.Api.Controllers
         /// <response code="400">One or more validation errors have occurred.</response>
         /// <response code="404">One or more entities could not be found with the provided parameters.</response>
         [HttpGet("/user/login")]
-        [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(typeof(JsonResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<JsonResponse<string>>> GetLogin(
+        public async Task<ActionResult<string>> GetLogins(
             [FromQuery] string username,
             [FromQuery] string password,
             CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(new GetLoginQuery(username: username, password: password), cancellationToken);
-            return result == null ? NotFound() : Ok(new JsonResponse<string>(result));
+            var result = await _mediator.Send(new GetLoginsQuery(username: username, password: password), cancellationToken);
+            return result == null ? NotFound() : Ok(result);
         }
 
         /// <summary>
         /// </summary>
         /// <response code="200">Returns the specified int.</response>
         [HttpGet("/user/logout")]
-        [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(typeof(JsonResponse<int>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<JsonResponse<int>>> GetLogout(CancellationToken cancellationToken = default)
+        public async Task<ActionResult<int>> GetLogouts(CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(new GetLogoutQuery(), cancellationToken);
-            return Ok(new JsonResponse<int>(result));
+            var result = await _mediator.Send(new GetLogoutsQuery(), cancellationToken);
+            return Ok(result);
         }
 
         /// <summary>

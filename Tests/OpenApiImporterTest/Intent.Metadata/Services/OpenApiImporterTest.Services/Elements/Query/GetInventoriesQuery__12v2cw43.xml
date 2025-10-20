@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<class id="ed84cb77-2229-4398-9528-fbe18c924e7a" type="Query" typeId="e71b0662-e29d-4db2-868b-8a12464b25d0">
-  <name>GetInventoryQuery</name>
-  <display>GetInventoryQuery: Dictionary&lt;string, int&gt;</display>
-  <externalReference>Stores.GetInventoryQuery</externalReference>
+<class id="3096cb0f-fe82-4f98-8bcd-e540afaceea6" type="Query" typeId="e71b0662-e29d-4db2-868b-8a12464b25d0">
+  <name>GetInventoriesQuery</name>
+  <display>GetInventoriesQuery: Dictionary&lt;string, int&gt;</display>
+  <externalReference>Stores.GetInventoriesQuery</externalReference>
   <isAbstract>false</isAbstract>
   <genericTypes />
-  <typeReference id="2bf6c7db-3fe0-4c0b-8c48-ef0557f2466b">
+  <typeReference id="caf6e9f7-45ab-428d-a2ad-ff2c4cf1fdc2">
     <typeId>ac2b65c3-6a8f-454a-b520-b583350c43ef</typeId>
     <isNavigable>true</isNavigable>
     <isNullable>false</isNullable>
@@ -15,7 +15,7 @@
     <typePackageId>730e1275-0c32-44f7-991a-9619d07ca68d</typePackageId>
     <stereotypes />
     <genericTypeParameters>
-      <genericTypeParameter id="7a2b915e-8a77-4c9f-a6e8-30f9bda7dc3d">
+      <genericTypeParameter id="064f5edf-dd56-4354-84b1-a3c78f97b87c">
         <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -27,7 +27,7 @@
         <stereotypes />
         <genericTypeParameters />
       </genericTypeParameter>
-      <genericTypeParameter id="b702fb39-2350-406b-87dc-646137ab8f73">
+      <genericTypeParameter id="59a00b35-8a70-43a9-8ccf-4ca9eb64331d">
         <typeId>fb0a362d-e9e2-40de-b6ff-5ce8167cbe74</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -45,6 +45,11 @@
   <parentFolderId>c029e6b1-c515-4bc6-b02b-9c1d4f92f28f</parentFolderId>
   <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
   <packageName>OpenApiImporterTest.Services</packageName>
+  <traits>
+    <trait id="9e587d4d-f317-4ab8-9bbb-9394234d2a88" name="[Allow Comment]" />
+    <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+    <trait id="2b6729eb-e2ae-4b5f-86fe-4f611d1f912e" name="[Processing Handler]" />
+  </traits>
   <stereotypes>
     <stereotype stereotypeDefinitionId="b4581ed2-42ec-4ae2-83dd-dcdd5f0837b6" name="Http Settings">
       <addedByDefault>false</addedByDefault>
@@ -53,10 +58,11 @@
       <properties>
         <property name="801c3e61-4431-4d81-93fa-7e57d33cb3fa" display="Verb" value="GET" isActive="true" />
         <property name="5dd3e07d-76eb-45d4-9956-4325fb068acc" display="Route" value="/store/inventory" isActive="true" />
-        <property name="4490e212-1e99-43ce-b3dd-048ed2a6bae8" display="Return Type Mediatype" value="application/json" isActive="true" />
+        <property name="4490e212-1e99-43ce-b3dd-048ed2a6bae8" display="Return Type Mediatype" value="Default" isActive="true" />
+        <property name="e3870725-34b3-4684-85f2-ec4a667207fb" display="Success Response Code" isActive="true" />
       </properties>
     </stereotype>
-    <stereotype stereotypeDefinitionId="a9eade71-1d56-4be7-a80c-81046c0c978b" name="Authorize">
+    <stereotype stereotypeDefinitionId="a9eade71-1d56-4be7-a80c-81046c0c978b" name="Secured">
       <addedByDefault>false</addedByDefault>
       <definitionPackageName>Intent.Metadata.Security</definitionPackageName>
       <definitionPackageId>a6fa1088-0064-43e3-a7fc-36c97b2b9285</definitionPackageId>

@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OpenApiImporterTest.Application.Stores;
 using OpenApiImporterTest.Application.Stores.CreateOrder;
 using OpenApiImporterTest.Application.Stores.DeleteOrder;
-using OpenApiImporterTest.Application.Stores.GetInventory;
+using OpenApiImporterTest.Application.Stores.GetInventories;
 using OpenApiImporterTest.Application.Stores.GetOrder;
 
 [assembly: DefaultIntentManaged(Mode.Fully)]
@@ -71,14 +71,13 @@ namespace OpenApiImporterTest.Api.Controllers
         /// <response code="403">Forbidden request.</response>
         [HttpGet("/store/inventory")]
         [Authorize]
-        [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(Dictionary<string, int>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<Dictionary<string, int>>> GetInventory(CancellationToken cancellationToken = default)
+        public async Task<ActionResult<Dictionary<string, int>>> GetInventories(CancellationToken cancellationToken = default)
         {
-            var result = await _mediator.Send(new GetInventoryQuery(), cancellationToken);
+            var result = await _mediator.Send(new GetInventoriesQuery(), cancellationToken);
             return Ok(result);
         }
 
