@@ -733,6 +733,24 @@ internal class DbSchemaIntentMetadataMerger
                         throw new InvalidOperationException("Unexpected association creation status: " + associationResult.Status);
                 }
 
+                var sourcePkColumnNames = new HashSet<string>(
+                    table.Columns
+                        .Where(c => c.IsPrimaryKey)
+                        .Select(c => c.Name),
+                    StringComparer.OrdinalIgnoreCase);
+                var fkColumnNames = new HashSet<string>(
+                    foreignKey.Columns.Select(c => c.Name),
+                    StringComparer.OrdinalIgnoreCase);
+                var isSharedPrimaryKeyAssociation = sourcePkColumnNames.Count > 0 &&
+                                                    fkColumnNames.Count > 0 &&
+                                                    sourcePkColumnNames.SetEquals(fkColumnNames);
+
+                if (isSharedPrimaryKeyAssociation && associationResult.Association?.TargetEnd?.Id != null)
+                {
+                    RdbmsSchemaAnnotator.RemoveForeignKeysForAssociation(classElement, associationResult.Association.TargetEnd.Id);
+                    continue;
+                }
+
                 foreach (var fkColumn in foreignKey.Columns)
                 {
                     var columnExternalRef = ModelNamingUtilities.GetColumnExternalReference(table.Schema, table.Name, fkColumn.Name);

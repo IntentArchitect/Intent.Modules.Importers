@@ -176,8 +176,8 @@ public class DbSchemaIntentMetadataMergerTests
         classes.ShouldContain(c => c.Name == "Order");
         scenario.Package.Associations.ShouldHaveSingleItem();
         var association = scenario.Package.Associations.Single();
-        GetClassById(classes, association.SourceEnd.TypeReference.TypeId).Name.ShouldBe("Order");
-        GetClassById(classes, association.TargetEnd.TypeReference.TypeId).Name.ShouldBe("Customer");
+        GetClassById(classes, association.SourceEnd.TypeReference.TypeId!).Name.ShouldBe("Order");
+        GetClassById(classes, association.TargetEnd.TypeReference.TypeId!).Name.ShouldBe("Customer");
     }
 
     [Fact]
@@ -281,6 +281,25 @@ public class DbSchemaIntentMetadataMergerTests
         fkAttributes.Count.ShouldBe(2);
         fkAttributes.ShouldContain(a => a.Name == "ParentId");
         fkAttributes.ShouldContain(a => a.Name == "ParentId2");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_SharedPrimaryKeyForeignKey_DoesNotApplyForeignKeyStereotype()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.Create(DatabaseSchemas.WithCustomerAndRiskProfileSharedPrimaryKey(), PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        scenario.Package.Associations.ShouldHaveSingleItem();
+        var riskProfile = GetClasses(scenario.Package).Single(c => c.Name == "RiskProfile");
+        var idAttribute = riskProfile.ChildElements.Single(a => a.Name == "Id");
+        idAttribute.Stereotypes.ShouldContain(s => s.Name == "Primary Key");
+        idAttribute.Stereotypes.ShouldNotContain(s => s.Name == "Foreign Key");
     }
 
     [Fact]

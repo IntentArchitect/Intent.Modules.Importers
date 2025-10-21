@@ -39,6 +39,14 @@ internal static class DatabaseSchemas
         StoredProcedures = []
     };
 
+    public static DatabaseSchema WithCustomerAndRiskProfileSharedPrimaryKey() => new()
+    {
+        DatabaseName = "TestDatabase",
+        Tables = [Tables.PurchaseCustomer(), Tables.CustomerRiskProfileSharedPrimaryKey()],
+        Views = [],
+        StoredProcedures = []
+    };
+
     public static DatabaseSchema WithCustomerAndNewProduct()
     {
         var schema = WithSimpleCustomersTable();

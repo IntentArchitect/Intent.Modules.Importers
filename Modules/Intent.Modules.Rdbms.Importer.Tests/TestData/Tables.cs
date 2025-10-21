@@ -51,6 +51,51 @@ internal static class Tables
         Indexes = []
     };
 
+    public static TableSchema PurchaseCustomer() => new()
+    {
+        Schema = "purchase",
+        Name = "Customer",
+        Columns =
+        [
+            Column("Id", SqlDbType.UniqueIdentifier, isPrimaryKey: true, isNullable: false),
+            Column("Email", SqlDbType.NVarChar, length: 250, isNullable: true),
+            Column("PhoneNumber", SqlDbType.NVarChar, length: 50, isNullable: true)
+        ],
+        ForeignKeys = [],
+        Indexes = []
+    };
+
+    public static TableSchema CustomerRiskProfileSharedPrimaryKey() => new()
+    {
+        Schema = "Customer",
+        Name = "RiskProfile",
+        Columns =
+        [
+            Column("Id", SqlDbType.UniqueIdentifier, isPrimaryKey: true, isNullable: false),
+            Column("LastBureauDate", SqlDbType.Date, isNullable: true),
+            Column("CreditCheckPassed", SqlDbType.Bit, isNullable: true)
+        ],
+        ForeignKeys =
+        [
+            new()
+            {
+                Name = "FK_RiskProfile_Customer",
+                TableName = "RiskProfile",
+                ReferencedTableSchema = "purchase",
+                ReferencedTableName = "Customer",
+                Columns =
+                [
+                    new()
+                    {
+                        Name = "Id",
+                        ReferencedColumnName = "Id"
+                    }
+                ]
+            }
+        ],
+        Indexes = []
+    };
+
     public static TableSchema OrdersWithCustomerFk() => new()
     {
         Schema = "dbo",
