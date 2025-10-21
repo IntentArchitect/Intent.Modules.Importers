@@ -1,6 +1,6 @@
 # Intent.CSharp.Importer
 
-The C# importer adds a guided workflow to Intent Architect for pulling existing `.cs` files into Domain, Services, and Eventing designers. It replaces the need to run a standalone synchronizer by providing a wizard inside the designers that discovers types, lets you pick what to import, and materialises the corresponding Intent metadata.
+The C# importer adds a guided workflow to Intent Architect for pulling existing `.cs` files into Domain, and Services. The CSharp Importer Module makes it easier to integrate existing codebases by reverse-engineering model metadata directly from your C# source code.
 
 ## How it works
 
