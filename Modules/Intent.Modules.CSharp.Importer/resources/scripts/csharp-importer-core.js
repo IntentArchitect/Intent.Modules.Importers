@@ -92,19 +92,7 @@ function createFolderSelectionPage(element) {
                 hint: "Glob pattern to filter C# files (e.g., **/*.cs, data/*.cs, **/user*.cs).",
                 isRequired: true,
                 value: "**/*.cs"
-            },
-            // {
-            //     id: "casingConvention",
-            //     fieldType: "select",
-            //     label: "Casing Convention",
-            //     hint: "Select how property names should be cased when imported.",
-            //     isRequired: true,
-            //     selectOptions: [
-            //         { id: "PascalCase", description: "PascalCase", additionalInfo: "(e.g. FirstName)" },
-            //         { id: "AsIs", description: "As Is", additionalInfo: "(preserve original casing)" }
-            //     ],
-            //     value: "PascalCase"
-            // }
+            }
         ]
     };
 }
