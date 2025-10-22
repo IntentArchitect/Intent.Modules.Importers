@@ -1,3 +1,7 @@
+### Version 1.0.7
+
+- Fixed: Importing a table where a column with a PK also has a FK to another table's PK column should only be a 1 -> 1 and shouldn't import the FK too.
+
 ### Version 1.0.6
 
 - Fixed: Remove deleted database associations only for selected `Include` tables.
