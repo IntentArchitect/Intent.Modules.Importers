@@ -78,6 +78,7 @@ class DatabaseImportStrategy {
             fields: [],
             sections: [
                 {
+                    id: "connectionSettings",
                     name: "Connection & Settings",
                     fields: [
                         {
@@ -145,6 +146,7 @@ class DatabaseImportStrategy {
                     isHidden: false
                 },
                 {
+                    id: "importOptions",
                     name: "Import Options",
                     fields: [
                         {
@@ -212,6 +214,7 @@ class DatabaseImportStrategy {
                     isHidden: false
                 },
                 {
+                    id: "filteringOptions",
                     name: 'Filtering Options',
                     fields: [
                         {
@@ -262,6 +265,7 @@ class DatabaseImportStrategy {
                     isHidden: false
                 },
                 {
+                    id: "advancedOptions",
                     name: "Advanced",
                     fields: [
                         {

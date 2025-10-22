@@ -1,5 +1,3 @@
-/// <reference path="../../TypescriptCore/elementmacro.context.api.d.ts" />
-
 // Align with RDBMS importer UI task/error handling
 interface IExecutionResult {
     result?: any;

@@ -1,5 +1,3 @@
-/// <reference path="../../TypescriptCore/elementmacro.context.api.d.ts" />
-
 async function executeImporterModuleTask(taskTypeId: string, input: any): Promise<IExecutionResult> {
     const payload = JSON.stringify(input);
     console.log(`Executing Module Task ${taskTypeId} => ${payload}`);

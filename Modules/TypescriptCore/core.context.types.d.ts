@@ -3,12 +3,19 @@
 
 type IApplication = MacroApi.Context.IApplication;
 type IElementApi = MacroApi.Context.IElementApi;
+type IElementReadOnlyApi = MacroApi.Context.IElementReadOnlyApi;
 type IMappableElementApi = MacroApi.Context.IMappableElementApi;
+type IMappableElementReadOnlyApi = MacroApi.Context.IMappableElementReadOnlyApi;
+type IMappableAssociationApi = MacroApi.Context.IMappableAssociationReadOnlyApi;
+type IMappableAssociationReadOnlyApi = MacroApi.Context.IMappableAssociationReadOnlyApi;
 type IAssociationApi = MacroApi.Context.IAssociationApi;
 type IPackageApi = MacroApi.Context.IPackageApi;
 type IDialogService = MacroApi.Context.IDialogService;
 type IDiagramApi = MacroApi.Context.IDiagramApi;
+type IThemeApi = MacroApi.Context.IThemeApi;
 type IElementToElementMappingApi = MacroApi.Context.IElementToElementMappingApi;
+type IUserSettings = MacroApi.Context.IUserSettings;
+type IUserSettingsAccessor = MacroApi.Context.IUserSettingsAccessor;
 
 declare namespace MacroApi.Context {
     interface IDialogService {
@@ -63,7 +70,35 @@ declare namespace MacroApi.Context {
         openForm(config: IDynamicFormConfig): Promise<any>;
     }
 
-    interface IDynamicFormConfig {
+    interface IUserSettingsAccessor {
+        /**
+         * Loads the global user settings.
+         */
+        loadGlobalAsync(): Promise<IUserSettings>;
+    }
+
+    interface IUserSettings {
+        /**
+         * Gets the saved value for the specified key.
+         * @param key
+         */
+        get(key: string): any;
+
+        /**
+         * Sets and saves the provided value against the specified key
+         * @param key
+         * @param value
+         */
+        set(key: string, value: string | any): void;
+
+        /**
+         * Deletes any value stored against the specified key.
+         * @param key
+         */
+        delete(key: string): void;
+    }
+
+    interface IDynamicFormConfig extends IDynamicFormWizardPageConfig {
         /**
          * Sets the title of the dialog.
          */
@@ -129,7 +164,7 @@ declare namespace MacroApi.Context {
     }
 
     interface IDynamicFormSectionConfig {
-        id?: string;
+        id: string;
         name: string;
         isHidden: boolean;
         isCollapsed: boolean;
@@ -145,16 +180,34 @@ declare namespace MacroApi.Context {
         isDisabled?: boolean;
         placeholder?: string,
         hint?: string,
-        hintType?: "success" | "danger";
+        /**
+         * Experimental. This is likely to change.
+         */
+        columns?: number;
+        /**
+         * Determines the color and icon of the hint.
+         */
+        hintType?: "info" | "success" | "primary" | "secondary" | "warning" | "danger",
         value?: string | string[];
         errorMessage?: string;
-        columns?: number;
+        /**
+         * Determines the order of options in the dropdown. Only applicable to `select` and `multi-select` field types.
+         * Used intrinsic order of `selectOptions` by default.
+         */
+        sortBy?: string;
         selectOptions?: IDynamicFormFieldSelectOption[];
         treeViewOptions?: ISelectableTreeViewOptions;
         openFileOptions?: IDynamicFormOpenFileOptions;
         openDirectoryOptions?: IDynamicFormOpenDirectoryOptions;
         onClick?: (formApi: IDynamicFormApi) => Promise<void>;
         onChange?: (formApi: IDynamicFormApi) => void;
+    }
+
+    interface IDynamicFormFieldLayout {
+        columns?: number;
+        offset?: number;
+        marginTop?: string;
+        marginBottom?: string;
     }
 
     interface IDynamicFormFieldSelectOption {
@@ -167,6 +220,10 @@ declare namespace MacroApi.Context {
     interface IDynamicFormApi {
         getField(id: string): IDynamicFormFieldConfig;
         getSection(id: string): IDynamicFormSectionConfig;
+        /**
+         * Retrieves the current values of the form as a JSON object. 
+         * Note that this is a readonly object and that any changes to these values will not be reflected back in the form.
+         */
         getValues(): any;
     }
 
@@ -736,7 +793,7 @@ declare namespace MacroApi.Context {
          * Finds and returns the first child element that matches the provided function. The function will search all
          * children in the hierarchy if the provided searchHierarchy parameter is true.
          */
-        getChild(matchFunction: ((child: MacroApi.Context.IElementReadOnlyApi) => boolean), searchHierarchy?: boolean): IElementApi;
+        getChild(matchFunction: ((child: MacroApi.Context.IElementReadOnlyApi) => boolean), searchHierarchy?: boolean): IElementReadOnlyApi;
         /**
          * Returns this element's parent
          */
@@ -790,6 +847,14 @@ declare namespace MacroApi.Context {
          * Returns true if a metadata value exists for the specified key.
          */
         hasMetadata(key: string): boolean;
+        /**
+         * Returns true this association has any errors on it.
+         */
+        hasErrors(): boolean;
+        /**
+         * Returns true this association has any warnings on it.
+         */
+        hasWarnings(): boolean;
     }
 
     interface IElementApi extends IElementReadOnlyApi {
@@ -946,7 +1011,77 @@ declare namespace MacroApi.Context {
     }
 
     interface IMappableElementApi extends IElementApi {
-        getMappedToElements(): MacroApi.Context.IMappableElementApi[];
+        represents: string;
+        isTraversedChild: string;
+        typeReference: ITypeReference;
+        setType(model: ITypeReferenceData): void;
+
+        isHost(): boolean;
+        isHostSource(): boolean;
+        isHostTarget(): boolean;
+        getIsTraversable(): boolean;
+        getIsMappable(): boolean;
+        getIsMapped(): boolean;
+        hasMappings(): boolean;
+
+        // keep base params, narrow return types
+        getParents(type?: string): MacroApi.Context.IMappableElementApi[];
+        getParent(typeOrMatch?: string | ((element: MacroApi.Context.IElementReadOnlyApi) => boolean)): IMappableElementApi;
+        getPath(matchRoot?: (element: MacroApi.Context.IElementReadOnlyApi) => boolean): IMappableElementApi[];
+
+        getMappedToElements(): IMappableElementApi[];
+        getMappingPath(): string[];
+
+        getChildren(type?: string | string[]): IMappableElementApi[];
+        getChild(matchFunction: (child: MacroApi.Context.IElementReadOnlyApi) => boolean, searchHierarchy?: boolean): IMappableElementApi;
+    }
+
+    interface IMappableElementReadOnlyApi extends IElementReadOnlyApi {
+        represents: string;
+        isTraversedChild: string;
+        typeReference: ITypeReference;
+        setType(model: ITypeReferenceData): void;
+
+        isHost(): boolean;
+        isHostSource(): boolean;
+        isHostTarget(): boolean;
+        getIsTraversable(): boolean;
+        getIsMapped(): boolean;
+        hasMappings(): boolean;
+
+        // keep base params, narrow return types
+        getParent(type?: string): IMappableElementReadOnlyApi;
+        getPath(matchRoot?: (element: MacroApi.Context.IElementReadOnlyApi) => boolean): IMappableElementReadOnlyApi[];
+
+        getMappedToElements(): IMappableElementReadOnlyApi[];
+        getMappingPath(): string[];
+
+        getChildren(type?: string | string[]): IMappableElementReadOnlyApi[];
+        getChild(matchFunction: (child: MacroApi.Context.IElementReadOnlyApi) => boolean, searchHierarchy?: boolean): IMappableElementReadOnlyApi;
+    }
+
+    interface IMappableAssociationReadOnlyApi extends IAssociationReadOnlyApi {
+        represents: string;
+        isTraversedChild: string;
+        typeReference: ITypeReference;
+        setType(model: ITypeReferenceData): void;
+
+        isHost(): boolean;
+        isHostSource(): boolean;
+        isHostTarget(): boolean;
+        getIsTraversable(): boolean;
+        getIsMapped(): boolean;
+        hasMappings(): boolean;
+
+        // keep base params, narrow return types
+        getParent(type?: string): IMappableElementReadOnlyApi;
+        getPath(matchRoot?: (element: MacroApi.Context.IElementReadOnlyApi) => boolean): IMappableElementReadOnlyApi[];
+
+        getMappedToElements(): IMappableElementReadOnlyApi[];
+        getMappingPath(): string[];
+
+        getChildren(type?: string): IMappableElementReadOnlyApi[];
+        getChild(matchFunction: (child: MacroApi.Context.IElementReadOnlyApi) => boolean, searchHierarchy?: boolean): IMappableElementReadOnlyApi; // narrower than base's IElementApi
     }
 
     interface IBackwardCompatibleIAssociationReadOnlyApi extends IAssociationReadOnlyApi {
@@ -1038,12 +1173,12 @@ declare namespace MacroApi.Context {
          * Finds and returns the first child element that matches the provided function. The function will search all
          * children in the hierarchy if the provided searchHierarchy parameter is true.
          */
-        getChild(matchFunction: ((child: MacroApi.Context.IElementReadOnlyApi) => boolean), searchHierarchy?: boolean): IElementApi;
+        getChild(matchFunction: ((child: MacroApi.Context.IElementReadOnlyApi) => boolean), searchHierarchy?: boolean): IElementReadOnlyApi;
         /**
          * Returns all the child elements of this element. If a type argument is provided, the children will
          * be filtered to those that match on specialization. 
          */
-        getChildren(type: string): IElementApi[];
+        getChildren(type: string): IElementReadOnlyApi[];
         /**
          * Returns true if there are mappings associated with this association end.
          */
@@ -1056,6 +1191,14 @@ declare namespace MacroApi.Context {
          * Returns true if a metadata value exists for the specified key.
          */
         hasMetadata(key: string): boolean;
+        /**
+         * Returns true this association has any errors on it.
+         */
+        hasErrors(): boolean;
+        /**
+         * Returns true this association has any warnings on it.
+         */
+        hasWarnings(): boolean;
     }
 
     interface IAssociationApi extends IAssociationReadOnlyApi {
