@@ -14,7 +14,10 @@
           <dependencies>
             <dependency name="SqlImporterCore" id="78a9a7f3-202a-425d-bacc-6ceec01a1cf7" />
           </dependencies>
-          <script>await RdbmsImporterApi.importDatabase(element);</script>
+          <script>if (!await promptIfUnsavedChangesAsync()) {
+    return;
+}
+await RdbmsImporterApi.importDatabase(element);</script>
         </runScript>
       </contextMenuOptions>
       <creationOptions />
@@ -25,7 +28,10 @@
           <dependencies>
             <dependency name="SqlImporterCore" id="78a9a7f3-202a-425d-bacc-6ceec01a1cf7" />
           </dependencies>
-          <script>await RdbmsImporterApi.importDatabase(element);</script>
+          <script>if (!await promptIfUnsavedChangesAsync()) {
+    return;
+}
+await RdbmsImporterApi.importDatabase(element);</script>
         </option>
       </scriptOptions>
       <typeOrder />
