@@ -81,7 +81,7 @@ internal class DbSchemaIntentMetadataMerger
         {
             // Use unified lookup helper with 3-level precedence
             var tableExternalRef = ModelNamingUtilities.GetTableExternalReference(table.Schema, table.Name);
-            var className = ModelNamingUtilities.GetEntityName(table.Name, _config.EntityNameConvention, table.Schema, null);
+            var className = ModelNamingUtilities.GetEntityName(table.Name, _config.EntityNameConvention, table.Schema, null, ['_']);
             
             // Track this table as being imported
             importedTableExternalRefs.Add(tableExternalRef);

@@ -22,15 +22,16 @@ internal static class ModelNamingUtilities
         "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "using static", "virtual", "void", "volatile", "while"
     };
 
-    public static string GetEntityName(string tableName, EntityNameConvention convention, string schema, DeduplicationContext? deduplicationContext)
+    public static string GetEntityName(string tableName, EntityNameConvention convention, string schema, DeduplicationContext? deduplicationContext, 
+        HashSet<char> charsToPreserve)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(tableName);
         ArgumentException.ThrowIfNullOrWhiteSpace(schema);
         var normalized = convention switch
         {
-            EntityNameConvention.MatchTable => NormalizeTableName(tableName),
-            EntityNameConvention.SingularEntity => NormalizeTableName(tableName.Singularize()),
-            _ => NormalizeTableName(tableName)
+            EntityNameConvention.MatchTable => NormalizeTableName(tableName, charsToPreserve),
+            EntityNameConvention.SingularEntity => NormalizeTableName(tableName.Singularize(), []),
+            _ => NormalizeTableName(tableName, charsToPreserve)
         };
         return deduplicationContext?.DeduplicateTable(normalized, schema) ?? normalized;
     }
@@ -68,12 +69,12 @@ internal static class ModelNamingUtilities
         return deduplicationContext?.DeduplicateStoredProcedure(normalized, schema) ?? normalized;
     }
 
-    public static string GetParameterName(string paramName)
+    public static string GetParameterName(string paramName, HashSet<char>? charsToPreserve = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(paramName);
         // Remove @ prefix if present and convert to camelCase
         var normalized = paramName.StartsWith("@") ? paramName.Substring(1) : paramName;
-        normalized=ToCSharpIdentifier(normalized);
+        normalized = ToCSharpIdentifier(normalized, null, charsToPreserve);
         return normalized.ToCamelCase();
     }
     
@@ -218,14 +219,14 @@ internal static class ModelNamingUtilities
     {
         return "StoredProcedureRepository";
     }
-    
+
     /// <summary>
     /// Converts database identifier to valid C# identifier following C# naming conventions
     /// </summary>
     /// <param name="identifier">The database identifier to convert</param>
     /// <param name="prefixValue">Optional prefix to add if the identifier starts with a digit or is a reserved word</param>
     /// <returns>A valid C# identifier</returns>
-    private static string ToCSharpIdentifier(string? identifier, string? prefixValue = "Db")
+    private static string ToCSharpIdentifier(string? identifier, string? prefixValue = "Db", HashSet<char>? charsToPreserve = null)
     {
         if (string.IsNullOrWhiteSpace(identifier))
         {
@@ -241,22 +242,27 @@ internal static class ModelNamingUtilities
         //   on the identifier. The @ is not part of the identifier name. For example, @if
         //   declares an identifier named if. These verbatim identifiers are primarily for
         //   interoperability with identifiers declared in other languages.
-        
+
+        // Replace some known symbolic patterns with words
         identifier = identifier
             .Replace("#", "Sharp")
             .Replace("&", "And");
 
         var asCharArray = identifier.ToCharArray();
+
         for (var i = 0; i < asCharArray.Length; i++)
         {
-            // Underscore character conversion to space for processing
-            if (asCharArray[i] == '_')
+            var currentChar = asCharArray[i];
+
+            // Preserve explicitly allowed characters (e.g. '_', '-')
+            if (charsToPreserve != null && charsToPreserve.Contains(currentChar))
             {
-                asCharArray[i] = ' ';
                 continue;
             }
 
-            switch (char.GetUnicodeCategory(asCharArray[i]))
+            var category = char.GetUnicodeCategory(currentChar);
+
+            switch (category)
             {
                 case UnicodeCategory.DecimalDigitNumber:
                 case UnicodeCategory.LetterNumber:
@@ -305,11 +311,8 @@ internal static class ModelNamingUtilities
 
         // Convert to PascalCase
         identifier = string.Concat(identifier
-            .Split(' ')
-            .Where(element => !string.IsNullOrWhiteSpace(element))
-            .Select((element, index) => index == 0
-                ? element
-                : element.ToPascalCase()));
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Select((element, index) => index == 0 ? element : element.ToPascalCase()));
 
         // Ensure identifier starts with letter
         if (char.IsNumber(identifier[0]))
@@ -326,11 +329,11 @@ internal static class ModelNamingUtilities
         return identifier;
     }
 
-    private static string NormalizeTableName(string tableName)
+    private static string NormalizeTableName(string tableName, HashSet<char>? charsToPreserve = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(tableName);
         var normalized = tableName.RemovePrefix("tbl");
-        normalized = ToCSharpIdentifier(normalized, "Db");
+        normalized = ToCSharpIdentifier(normalized, "Db", charsToPreserve);
         normalized = normalized.Substring(0, 1).ToUpper() + normalized.Substring(1);
         return normalized;
     }
@@ -339,7 +342,7 @@ internal static class ModelNamingUtilities
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(colName);
         var normalized = colName != tableOrViewName ? colName : colName + "Value";
-        normalized = ToCSharpIdentifier(normalized, "db");
+        normalized = ToCSharpIdentifier(normalized, "db", ['_']);
 
         if (!normalizeName)
         {

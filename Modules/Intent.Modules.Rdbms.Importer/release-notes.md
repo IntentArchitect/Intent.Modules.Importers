@@ -2,6 +2,7 @@
 
 - Improvement: Importer now prompts to save unsaved changes before running.
 - Fixed: Importing a table where a column with a PK also has a FK to another table's PK column should only be a 1 -> 1 and shouldn't import the FK too.
+- Fixed: Importing "As-is" will now not remove underscores from table/column names.
 
 ### Version 1.0.6
 

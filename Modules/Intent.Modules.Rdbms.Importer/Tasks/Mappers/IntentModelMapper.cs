@@ -149,7 +149,7 @@ internal static class IntentModelMapper
         string? parentFolderId = null,
         DeduplicationContext? deduplicationContext = null)
     {
-        var className = ModelNamingUtilities.GetEntityName(table.Name, config.EntityNameConvention, table.Schema, deduplicationContext);
+        var className = ModelNamingUtilities.GetEntityName(table.Name, config.EntityNameConvention, table.Schema, deduplicationContext, ['_']);
         var classElement = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
@@ -590,7 +590,7 @@ internal static class IntentModelMapper
         DatabaseSchema databaseSchema)
     {
         var targetTableExternalRef = ModelNamingUtilities.GetTableExternalReference(foreignKey.ReferencedTableSchema, foreignKey.ReferencedTableName);
-        var targetTableEntity = ModelNamingUtilities.GetEntityName(foreignKey.ReferencedTableName, EntityNameConvention.SingularEntity, foreignKey.ReferencedTableSchema, null);
+        var targetTableEntity = ModelNamingUtilities.GetEntityName(foreignKey.ReferencedTableName, EntityNameConvention.SingularEntity, foreignKey.ReferencedTableSchema, null, []);
         
         // Use unified lookup helper with 3-level precedence
         var targetClass = FindElementWithPrecedence(
