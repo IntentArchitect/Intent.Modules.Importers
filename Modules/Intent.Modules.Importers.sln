@@ -6,8 +6,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MetadataSynchronizers", "Me
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intent.MetadataSynchronizer", "Intent.MetadataSynchronizer\Intent.MetadataSynchronizer.csproj", "{5FCD4F69-1170-49A5-ACFF-FA761098B928}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intent.MetadataSynchronizer.Java", "Intent.MetadataSynchronizer.Java\Intent.MetadataSynchronizer.Java.csproj", "{2DBAB0F4-C926-4A9F-8B08-F25D33724549}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intent.MetadataSynchronizer.OpenApi.CLI", "Intent.MetadataSynchronizer.OpenApi.CLI\Intent.MetadataSynchronizer.OpenApi.CLI.csproj", "{9FFE0207-1FE4-458E-AF7D-DA09563BF1F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intent.MetadataSynchronizer.OpenApi.CLI.Tests", "Intent.MetadataSynchronizer.OpenApi.CLI.Tests\Intent.MetadataSynchronizer.OpenApi.CLI.Tests.csproj", "{287C109A-2CCC-49BD-8751-4AAD2A28A624}"
@@ -48,10 +46,6 @@ Global
 		{5FCD4F69-1170-49A5-ACFF-FA761098B928}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FCD4F69-1170-49A5-ACFF-FA761098B928}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FCD4F69-1170-49A5-ACFF-FA761098B928}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2DBAB0F4-C926-4A9F-8B08-F25D33724549}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DBAB0F4-C926-4A9F-8B08-F25D33724549}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DBAB0F4-C926-4A9F-8B08-F25D33724549}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DBAB0F4-C926-4A9F-8B08-F25D33724549}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9FFE0207-1FE4-458E-AF7D-DA09563BF1F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9FFE0207-1FE4-458E-AF7D-DA09563BF1F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FFE0207-1FE4-458E-AF7D-DA09563BF1F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -102,7 +96,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5FCD4F69-1170-49A5-ACFF-FA761098B928} = {4BDFA0CD-A767-4B6B-A0DC-32FFA660C12D}
-		{2DBAB0F4-C926-4A9F-8B08-F25D33724549} = {4BDFA0CD-A767-4B6B-A0DC-32FFA660C12D}
 		{9FFE0207-1FE4-458E-AF7D-DA09563BF1F8} = {4BDFA0CD-A767-4B6B-A0DC-32FFA660C12D}
 		{287C109A-2CCC-49BD-8751-4AAD2A28A624} = {4BDFA0CD-A767-4B6B-A0DC-32FFA660C12D}
 		{CFC06753-BA2E-4844-BC2F-D0A146253EA1} = {48C8A411-F3BD-4278-A089-5F2115521276}
