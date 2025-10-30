@@ -97,6 +97,169 @@ public static class PackageModels
         };
     }
 
+    /// <summary>
+    /// Creates a domain package with an existing Customer class that matches the simple customer JSON.
+    /// Used for testing merge/re-import scenarios.
+    /// </summary>
+    public static PackageModelPersistable WithExistingCustomer()
+    {
+        var package = WithDomainTypes();
+        
+        var customerClass = CreateClass(
+            name: "Customer",
+            packageId: package.Id,
+            externalReference: "TestFolder/Domain/customer.json#/",
+            specializationType: "Class",
+            specializationTypeId: "04e12b51-ed12-42a3-9667-a6aa81bb6d10");
+        
+        // Add attributes that match simple customer JSON
+        customerClass.ChildElements.Add(CreateAttribute(
+            name: "CustomerId",
+            typeId: GetTypeId(package, "string"),
+            parentId: customerClass.Id,
+            externalReference: "TestFolder/Domain/customer.json#/customerId"));
+        
+        customerClass.ChildElements.Add(CreateAttribute(
+            name: "Email",
+            typeId: GetTypeId(package, "string"),
+            parentId: customerClass.Id,
+            externalReference: "TestFolder/Domain/customer.json#/email"));
+        
+        package.Classes.Add(customerClass);
+        return package;
+    }
+
+    /// <summary>
+    /// Creates a domain package with existing Customer and Invoice classes.
+    /// Used for testing merge scenarios with multiple existing elements.
+    /// </summary>
+    public static PackageModelPersistable WithCustomerAndInvoice()
+    {
+        var package = WithDomainTypes();
+        
+        var customerClass = CreateClass(
+            name: "Customer",
+            packageId: package.Id,
+            externalReference: "TestFolder/Domain/customer.json#/",
+            specializationType: "Class",
+            specializationTypeId: "04e12b51-ed12-42a3-9667-a6aa81bb6d10");
+        
+        customerClass.ChildElements.Add(CreateAttribute(
+            name: "CustomerId",
+            typeId: GetTypeId(package, "string"),
+            parentId: customerClass.Id,
+            externalReference: "TestFolder/Domain/customer.json#/customerId"));
+        
+        customerClass.ChildElements.Add(CreateAttribute(
+            name: "Email",
+            typeId: GetTypeId(package, "string"),
+            parentId: customerClass.Id,
+            externalReference: "TestFolder/Domain/customer.json#/email"));
+        
+        var invoiceClass = CreateClass(
+            name: "Invoice",
+            packageId: package.Id,
+            externalReference: "TestFolder/Domain/invoice.json#/",
+            specializationType: "Class",
+            specializationTypeId: "04e12b51-ed12-42a3-9667-a6aa81bb6d10");
+        
+        invoiceClass.ChildElements.Add(CreateAttribute(
+            name: "InvoiceNumber",
+            typeId: GetTypeId(package, "string"),
+            parentId: invoiceClass.Id,
+            externalReference: "TestFolder/Domain/invoice.json#/invoiceNumber"));
+        
+        invoiceClass.ChildElements.Add(CreateAttribute(
+            name: "TotalAmount",
+            typeId: GetTypeId(package, "decimal"),
+            parentId: invoiceClass.Id,
+            externalReference: "TestFolder/Domain/invoice.json#/totalAmount"));
+        
+        package.Classes.Add(customerClass);
+        package.Classes.Add(invoiceClass);
+        return package;
+    }
+
+    /// <summary>
+    /// Creates a services package with an existing Account DTO.
+    /// Used for testing merge/re-import scenarios.
+    /// </summary>
+    public static PackageModelPersistable WithExistingAccountDto()
+    {
+        var package = WithServicesTypes();
+        
+        var accountDto = CreateClass(
+            name: "Account",
+            packageId: package.Id,
+            externalReference: "TestFolder/Services/account.json#/",
+            specializationType: "DTO",
+            specializationTypeId: "c2188e49-2989-43f8-b1a4-3263d56af4f7");
+        
+        accountDto.ChildElements.Add(CreateAttribute(
+            name: "AccountId",
+            typeId: GetTypeId(package, "guid"),
+            parentId: accountDto.Id,
+            externalReference: "TestFolder/Services/account.json#/accountId"));
+        
+        accountDto.ChildElements.Add(CreateAttribute(
+            name: "AccountName",
+            typeId: GetTypeId(package, "string"),
+            parentId: accountDto.Id,
+            externalReference: "TestFolder/Services/account.json#/accountName"));
+        
+        package.Classes.Add(accountDto);
+        return package;
+    }
+
+    private static ElementPersistable CreateClass(
+        string name,
+        string packageId,
+        string externalReference,
+        string specializationType,
+        string specializationTypeId)
+    {
+        var classElement = ElementPersistable.Create(
+            specializationType: specializationType,
+            specializationTypeId: specializationTypeId,
+            name: name,
+            parentId: packageId,
+            externalReference: externalReference);
+        
+        classElement.PackageId = packageId;
+        classElement.ChildElements = new List<ElementPersistable>();
+        
+        return classElement;
+    }
+
+    private static ElementPersistable CreateAttribute(
+        string name,
+        string typeId,
+        string parentId,
+        string externalReference)
+    {
+        var attribute = ElementPersistable.Create(
+            specializationType: "Attribute",
+            specializationTypeId: "0090fb93-483e-49c5-84d7-adab0b58bdce",
+            name: name,
+            parentId: parentId,
+            externalReference: externalReference);
+        
+        attribute.TypeReference = new TypeReferencePersistable
+        {
+            TypeId = typeId
+        };
+        
+        return attribute;
+    }
+
+    private static string GetTypeId(PackageModelPersistable package, string typeName)
+    {
+        return package.Classes
+            .First(c => c.SpecializationType == TypeDefinitionModel.SpecializationType && 
+                       string.Equals(c.Name, typeName, StringComparison.OrdinalIgnoreCase))
+            .Id;
+    }
+
     private static ElementPersistable CreateTypeDefinition(string typeName, string packageId, string packageName)
     {
         var typeDefinition = ElementPersistable.Create(

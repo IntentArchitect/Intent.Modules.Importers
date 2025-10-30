@@ -26,4 +26,8 @@ public static class JsonDocuments
     // Specific file paths for individual file tests
     public static string SimpleCustomerFile() => Path.Combine(DomainFolder(), "simple-customer.json");
     public static string InvoiceFile() => Path.Combine(DomainFolder(), "invoice.json");
+    public static string CustomerWithExtraPropertyFile() => Path.Combine(DomainFolder(), "customer-with-extra-property.json");
+    public static string CustomerWithMissingPropertyFile() => Path.Combine(DomainFolder(), "customer-with-missing-property.json");
+    public static string ProductFile() => Path.Combine(DomainFolder(), "product.json");
+    public static string AccountWithExtraPropertyFile() => Path.Combine(ServicesFolder(), "account-with-extra-property.json");
 }
