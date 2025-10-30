@@ -22,7 +22,11 @@ namespace Intent.MetadataSynchronizer
             // Flatten the incoming elements hierarchy so MetadataLookup can index all elements (including children)
             var allIncomingElements = persistables.Elements.SelectMany(GetAllElements).ToArray();
             var incomingLookup = new MetadataLookup(allIncomingElements, persistables.Associations);
-            var packageLookup = new MetadataLookup(new[] { targetPackage });
+            
+            // Create packageLookup with ALL existing elements (including children) so they can be matched by ExternalReference
+            var allPackageElements = targetPackage.GetAllElements().ToArray();
+            var packageLookup = new MetadataLookup(allPackageElements, (IReadOnlyCollection<AssociationPersistable>)targetPackage.Associations);
+            
             var idMap = new Dictionary<string, string>();
             var matchedIds = new HashSet<string>();
 
@@ -46,8 +50,17 @@ namespace Intent.MetadataSynchronizer
                     stereotypeManagementMode: stereotypeManagementMode,
                     addToParent: element =>
                     {
+                        // Check if element already exists in packageLookup (by Id or ExternalReference)
                         if (packageLookup.TryGetElementById(element.Id, out _))
                         {
+                            Log.Debug(Indentation.Get() + "Skipping add for {Name} ({ExternalReference}) - Id already present", element.Name, element.ExternalReference);
+                            return;
+                        }
+                        
+                        // If the ExternalReference already exists in packageLookup, skip adding (prevents duplicate key exception)
+                        if (packageLookup.ContainsExternalReference(element.ExternalReference))
+                        {
+                            Log.Debug(Indentation.Get() + "Skipping add for {Name} ({ExternalReference}) - reference already present", element.Name, element.ExternalReference);
                             return;
                         }
 
@@ -56,6 +69,7 @@ namespace Intent.MetadataSynchronizer
                         if (element.ParentFolderId == null ||
                             element.ParentFolderId == targetPackage.Id)
                         {
+                            Log.Debug(Indentation.Get() + "Adding element to package root: {Name} ({ExternalReference})", element.Name, element.ExternalReference);
                             targetPackage.AddElement(element);
                             return;
                         }
@@ -65,6 +79,7 @@ namespace Intent.MetadataSynchronizer
                             throw new Exception("Unable to locate parent element.");
                         }
 
+                        Log.Debug(Indentation.Get() + "Adding element under parent {ParentName}: {Name} ({ExternalReference})", parentElement.Name, element.Name, element.ExternalReference);
                         parentElement.ChildElements.Add(element);
                     });
             }
@@ -341,6 +356,7 @@ namespace Intent.MetadataSynchronizer
                         incomingElement.SpecializationTypeId,
                         out var packageElement))
                 {
+                    Log.Debug(Indentation.Get() + "Matched element by reference: {Name} ({ExternalReference})", incomingElement.Name, incomingElement.ExternalReference);
                     return packageElement;
                 }
 
@@ -350,10 +366,12 @@ namespace Intent.MetadataSynchronizer
                                           x.SpecializationTypeId == incomingElement.SpecializationTypeId);
                 if (packageElement != null)
                 {
+                    Log.Debug(Indentation.Get() + "Matched element by name: {Name} ({ExternalReference})", incomingElement.Name, incomingElement.ExternalReference);
                     packageElement.ExternalReference = incomingElement.ExternalReference;
                     return packageElement;
                 }
 
+                Log.Debug(Indentation.Get() + "Adding new element: {Name} ({ExternalReference})", incomingElement.Name, incomingElement.ExternalReference);
                 addToParent(incomingElement);
                 return incomingElement;
             }

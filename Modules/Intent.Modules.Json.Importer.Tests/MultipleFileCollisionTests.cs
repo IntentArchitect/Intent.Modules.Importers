@@ -52,18 +52,21 @@ public class MultipleFileCollisionTests
         // Assert
         persistables.Elements.Count.ShouldBeGreaterThan(0);
 
-        // Check that Identity classes from both files have different ExternalReferences
+        // Check that Identity-derived classes from both files have different ExternalReferences
         var identityClasses = persistables.Elements
-            .Where(e => e.Name == "Identity")
+            .Where(e => e.ExternalReference?.Contains(".identities[0]", StringComparison.OrdinalIgnoreCase) == true)
             .ToList();
 
-        identityClasses.Count.ShouldBe(2, "Should have two Identity classes, one from each file");
+        identityClasses.Count.ShouldBe(2, "Should have two Identity-derived classes, one from each file");
 
-        var externalRefs = identityClasses.Select(c => c.ExternalReference).ToList();
-        externalRefs.ShouldContain(er => er.Contains("user.json"), "Should have Identity from user.json");
-        externalRefs.ShouldContain(er => er.Contains("users-by-email-response.json"), "Should have Identity from users-by-email-response.json");
+        var orderedNames = identityClasses.Select(c => c.Name).OrderBy(x => x).ToArray();
+        orderedNames.ShouldBe(new[] { "UserIdentity", "UsersByEmailResponseIdentity" });
 
-        // Verify they are distinct
-        externalRefs.Distinct().Count().ShouldBe(2, "ExternalReferences should be unique");
+        var externalRefs = identityClasses.Select(c => c.ExternalReference).OrderBy(x => x).ToArray();
+        externalRefs.ShouldBe(new[]
+        {
+            "user.json.identities[0]",
+            "users-by-email-response.json.identities[0]"
+        });
     }
 }

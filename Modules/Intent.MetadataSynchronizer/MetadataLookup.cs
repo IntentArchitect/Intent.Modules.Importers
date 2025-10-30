@@ -175,6 +175,11 @@ public class MetadataLookup
         return false;
     }
 
+    public bool ContainsExternalReference(string externalReference)
+    {
+        return !string.IsNullOrEmpty(externalReference) && _elementsByReference.ContainsKey(externalReference);
+    }
+
     public bool TryGetTypeDefinitionByName(string name, int genericParameterCount, out ElementPersistable element) =>
         _typeDefinitions.TryGetValue((name, genericParameterCount), out element);
 

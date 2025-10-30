@@ -46,14 +46,14 @@ public class JsonSynchronizerTests
     [Fact]
     public void Synchronize_NewPropertyAdded_AddsNewAttribute()
     {
-        // Arrange
-        var package = PackageModels.WithExistingCustomer();
+        // Arrange - Create package with customer that has ExternalReference matching the import file path
+        var package = PackageModels.WithExistingCustomerFromPath("ExtraProperty/simple-customer.json");
         var customerClassBefore = GetClasses(package).Single(c => c.Name == "SimpleCustomer");
         customerClassBefore.ChildElements.Count.ShouldBe(3, "Should start with 3 attributes");
         
         var config = ImportConfigurations.DomainProfile(JsonDocuments.DomainFolder());
 
-        // Act
+        // Act - Re-import the same file which now has 4 properties
         var persistables = JsonPersistableFactory.GetPersistables(config, [package], [JsonDocuments.CustomerWithExtraPropertyFile()]);
         Synchronizer.Execute(
             targetPackage: package,
@@ -72,14 +72,14 @@ public class JsonSynchronizerTests
     [Fact]
     public void Synchronize_PropertyRemovedWithoutDeleteExtra_KeepsAttribute()
     {
-        // Arrange
-        var package = PackageModels.WithExistingCustomer();
+        // Arrange - Create package with customer that has ExternalReference matching the import file path
+        var package = PackageModels.WithExistingCustomerFromPath("MissingProperty/simple-customer.json");
         var customerClassBefore = GetClasses(package).Single(c => c.Name == "SimpleCustomer");
         customerClassBefore.ChildElements.Count.ShouldBe(3);
         
         var config = ImportConfigurations.DomainProfile(JsonDocuments.DomainFolder());
 
-        // Act
+        // Act - Re-import the same file which now has only 1 property (Id)
         var persistables = JsonPersistableFactory.GetPersistables(config, [package], [JsonDocuments.CustomerWithMissingPropertyFile()]);
         Synchronizer.Execute(
             targetPackage: package,
@@ -98,14 +98,14 @@ public class JsonSynchronizerTests
     [Fact]
     public void Synchronize_PropertyRemovedWithDeleteExtra_RemovesAttribute()
     {
-        // Arrange
-        var package = PackageModels.WithExistingCustomer();
+        // Arrange - Create package with customer that has ExternalReference matching the import file path
+        var package = PackageModels.WithExistingCustomerFromPath("MissingProperty/simple-customer.json");
         var customerClassBefore = GetClasses(package).Single(c => c.Name == "SimpleCustomer");
         customerClassBefore.ChildElements.Count.ShouldBe(3);
         
         var config = ImportConfigurations.DomainProfile(JsonDocuments.DomainFolder());
 
-        // Act
+        // Act - Re-import the same file which now has only 1 property (Id)
         var persistables = JsonPersistableFactory.GetPersistables(config, [package], [JsonDocuments.CustomerWithMissingPropertyFile()]);
         Synchronizer.Execute(
             targetPackage: package,

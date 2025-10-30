@@ -136,6 +136,72 @@ public static class PackageModels
     }
 
     /// <summary>
+    /// Creates a domain package with an existing customer class at the specified path.
+    /// This is used for testing re-import scenarios where the import file path must match
+    /// the ExternalReference of the existing package model elements.
+    /// The method creates the necessary folder hierarchy to match the import structure.
+    /// </summary>
+    public static PackageModelPersistable WithExistingCustomerFromPath(string filePath)
+    {
+        var package = WithDomainTypes();
+        
+        // Extract directory path and create folder hierarchy if needed
+        var directoryPath = Path.GetDirectoryName(filePath)?.Replace('\\', '/');
+        string? parentFolderId = null;
+        
+        if (!string.IsNullOrEmpty(directoryPath) && directoryPath != ".")
+        {
+            // Create folder structure (e.g., "ExtraProperty" or "MissingProperty")
+            var pathParts = directoryPath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            var currentPath = "";
+            
+            foreach (var folderName in pathParts)
+            {
+                currentPath = string.IsNullOrEmpty(currentPath) ? folderName : $"{currentPath}/{folderName}";
+                
+                var folder = ElementPersistable.Create(
+                    specializationType: "Folder",
+                    specializationTypeId: "4d95d53a-8855-4f35-aa82-e312643f5c5f",
+                    name: folderName,
+                    parentId: parentFolderId ?? package.Id,
+                    externalReference: $"folder:{currentPath}");
+                
+                package.Classes.Add(folder);
+                parentFolderId = folder.Id;
+            }
+        }
+        
+        var customerClass = CreateClass(
+            name: "SimpleCustomer",
+            packageId: parentFolderId ?? package.Id,
+            externalReference: filePath,
+            specializationType: "Class",
+            specializationTypeId: "04e12b51-ed12-42a3-9667-a6aa81bb6d10");
+        
+        // Add attributes that match simple customer JSON
+        customerClass.ChildElements.Add(CreateAttribute(
+            name: "Id",
+            typeId: GetTypeId(package, "string"),
+            parentId: customerClass.Id,
+            externalReference: $"{filePath}.Id"));
+        
+        customerClass.ChildElements.Add(CreateAttribute(
+            name: "Name",
+            typeId: GetTypeId(package, "string"),
+            parentId: customerClass.Id,
+            externalReference: $"{filePath}.Name"));
+        
+        customerClass.ChildElements.Add(CreateAttribute(
+            name: "Email",
+            typeId: GetTypeId(package, "string"),
+            parentId: customerClass.Id,
+            externalReference: $"{filePath}.Email"));
+        
+        package.Classes.Add(customerClass);
+        return package;
+    }
+
+    /// <summary>
     /// Creates a domain package with existing Customer and Invoice classes.
     /// Used for testing merge scenarios with multiple existing elements.
     /// </summary>
@@ -257,7 +323,7 @@ public static class PackageModels
     {
         var attribute = ElementPersistable.Create(
             specializationType: "Attribute",
-            specializationTypeId: "0090fb93-483e-49c5-84d7-adab0b58bdce",
+            specializationTypeId: AttributeModel.SpecializationTypeId,
             name: name,
             parentId: parentId,
             externalReference: externalReference);
