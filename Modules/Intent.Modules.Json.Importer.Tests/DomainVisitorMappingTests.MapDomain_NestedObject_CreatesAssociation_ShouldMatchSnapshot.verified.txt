@@ -1,0 +1,75 @@
+﻿=== ELEMENTS ===
+
+Class: Address
+  Id: Guid_1
+  ExternalReference: customer-with-address.Address
+  Children:
+    Attribute: City
+      Id: Guid_2
+      ExternalReference: customer-with-address.Address.City
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+    Attribute: PostalCode
+      Id: Guid_4
+      ExternalReference: customer-with-address.Address.PostalCode
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+    Attribute: Street
+      Id: Guid_5
+      ExternalReference: customer-with-address.Address.Street
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+
+Class: CustomerWithAddress
+  Id: Guid_6
+  ExternalReference: customer-with-address.json
+  Children:
+    Attribute: Id
+      Id: Guid_7
+      ExternalReference: customer-with-address.Id
+      ParentFolderId: Guid_6
+      TypeReference:
+        TypeId: Guid_8
+        IsNavigable: True
+        IsCollection: False
+      Stereotypes:
+        - Primary Key (DefinitionId: Guid_9)
+      Metadata:
+        - is-managed-key: true
+
+    Attribute: Name
+      Id: Guid_10
+      ExternalReference: customer-with-address.Name
+      ParentFolderId: Guid_6
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+
+
+=== ASSOCIATIONS ===
+
+Association: CustomerWithAddress → Address
+  Type: Association
+  Source:
+    TypeId: Guid_6
+    IsNavigable: False
+    IsCollection: False
+  Target:
+    TypeId: Guid_1
+    IsNavigable: True
+    IsCollection: False
+

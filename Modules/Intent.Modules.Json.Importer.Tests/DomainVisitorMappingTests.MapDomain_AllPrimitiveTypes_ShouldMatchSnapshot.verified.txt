@@ -1,0 +1,69 @@
+﻿=== ELEMENTS ===
+
+Class: AllPrimitiveTypes
+  Id: Guid_1
+  ExternalReference: all-primitive-types.json
+  Children:
+    Attribute: Age
+      Id: Guid_2
+      ExternalReference: all-primitive-types.Age
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+    Attribute: Balance
+      Id: Guid_4
+      ExternalReference: all-primitive-types.Balance
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+    Attribute: CreatedAt
+      Id: Guid_5
+      ExternalReference: all-primitive-types.CreatedAt
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_6
+        IsNavigable: True
+        IsCollection: False
+
+    Attribute: Id
+      Id: Guid_7
+      ExternalReference: all-primitive-types.Id
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_8
+        IsNavigable: True
+        IsCollection: False
+      Stereotypes:
+        - Primary Key (DefinitionId: Guid_9)
+      Metadata:
+        - is-managed-key: true
+
+    Attribute: IsActive
+      Id: Guid_10
+      ExternalReference: all-primitive-types.IsActive
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_11
+        IsNavigable: True
+        IsCollection: False
+
+    Attribute: Name
+      Id: Guid_12
+      ExternalReference: all-primitive-types.Name
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_13
+        IsNavigable: True
+        IsCollection: False
+
+
+
+=== ASSOCIATIONS ===
+
+(none)

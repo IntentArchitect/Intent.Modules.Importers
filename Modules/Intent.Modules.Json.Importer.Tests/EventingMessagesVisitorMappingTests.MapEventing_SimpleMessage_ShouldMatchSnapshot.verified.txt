@@ -1,0 +1,47 @@
+﻿=== ELEMENTS ===
+
+Message: SimpleMessage
+  Id: Guid_1
+  ExternalReference: simple-message.json
+  Children:
+    Property: Action
+      Id: Guid_2
+      ExternalReference: simple-message.Action
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+    Property: CustomerId
+      Id: Guid_4
+      ExternalReference: simple-message.CustomerId
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_5
+        IsNavigable: True
+        IsCollection: False
+
+    Property: EventId
+      Id: Guid_6
+      ExternalReference: simple-message.EventId
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_5
+        IsNavigable: True
+        IsCollection: False
+
+    Property: Timestamp
+      Id: Guid_7
+      ExternalReference: simple-message.Timestamp
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_8
+        IsNavigable: True
+        IsCollection: False
+
+
+
+=== ASSOCIATIONS ===
+
+(none)

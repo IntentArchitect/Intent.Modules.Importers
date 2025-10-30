@@ -1,0 +1,82 @@
+﻿=== ELEMENTS ===
+
+Class: Category
+  Id: Guid_1
+  ExternalReference: nested-collections.Categories[0]
+  Children:
+    Attribute: Name
+      Id: Guid_2
+      ExternalReference: nested-collections.Categories[0].Name
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+
+Class: NestedCollections
+  Id: Guid_4
+  ExternalReference: nested-collections.json
+  Children:
+    Attribute: Id
+      Id: Guid_5
+      ExternalReference: nested-collections.Id
+      ParentFolderId: Guid_4
+      TypeReference:
+        TypeId: Guid_6
+        IsNavigable: True
+        IsCollection: False
+      Stereotypes:
+        - Primary Key (DefinitionId: Guid_7)
+      Metadata:
+        - is-managed-key: true
+
+
+Class: Product
+  Id: Guid_8
+  ExternalReference: nested-collections.Categories[0].Products[0]
+  Children:
+    Attribute: ProductId
+      Id: Guid_9
+      ExternalReference: nested-collections.Categories[0].Products[0].ProductId
+      ParentFolderId: Guid_8
+      TypeReference:
+        TypeId: Guid_6
+        IsNavigable: True
+        IsCollection: False
+
+    Attribute: Title
+      Id: Guid_10
+      ExternalReference: nested-collections.Categories[0].Products[0].Title
+      ParentFolderId: Guid_8
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+
+
+=== ASSOCIATIONS ===
+
+Association: Category → Products
+  Type: Association
+  Source:
+    TypeId: Guid_1
+    IsNavigable: False
+    IsCollection: False
+  Target:
+    TypeId: Guid_8
+    IsNavigable: True
+    IsCollection: True
+
+Association: NestedCollections → Categories
+  Type: Association
+  Source:
+    TypeId: Guid_4
+    IsNavigable: False
+    IsCollection: False
+  Target:
+    TypeId: Guid_1
+    IsNavigable: True
+    IsCollection: True
+

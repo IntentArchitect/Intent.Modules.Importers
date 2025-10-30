@@ -1,0 +1,84 @@
+﻿=== ELEMENTS ===
+
+Class: CustomerWithOrders
+  Id: Guid_1
+  ExternalReference: customer-with-orders.json
+  Children:
+    Attribute: Email
+      Id: Guid_2
+      ExternalReference: customer-with-orders.Email
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+    Attribute: Id
+      Id: Guid_4
+      ExternalReference: customer-with-orders.Id
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_5
+        IsNavigable: True
+        IsCollection: False
+      Stereotypes:
+        - Primary Key (DefinitionId: Guid_6)
+      Metadata:
+        - is-managed-key: true
+
+    Attribute: Name
+      Id: Guid_7
+      ExternalReference: customer-with-orders.Name
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+
+Class: Order
+  Id: Guid_8
+  ExternalReference: customer-with-orders.Orders[0]
+  Children:
+    Attribute: Amount
+      Id: Guid_9
+      ExternalReference: customer-with-orders.Orders[0].Amount
+      ParentFolderId: Guid_8
+      TypeReference:
+        TypeId: Guid_10
+        IsNavigable: True
+        IsCollection: False
+
+    Attribute: Id
+      Id: Guid_11
+      ExternalReference: customer-with-orders.Orders[0].Id
+      ParentFolderId: Guid_8
+      TypeReference:
+        TypeId: Guid_5
+        IsNavigable: True
+        IsCollection: False
+
+    Attribute: OrderDate
+      Id: Guid_12
+      ExternalReference: customer-with-orders.Orders[0].OrderDate
+      ParentFolderId: Guid_8
+      TypeReference:
+        TypeId: Guid_13
+        IsNavigable: True
+        IsCollection: False
+
+
+
+=== ASSOCIATIONS ===
+
+Association: CustomerWithOrders → Orders
+  Type: Association
+  Source:
+    TypeId: Guid_1
+    IsNavigable: False
+    IsCollection: False
+  Target:
+    TypeId: Guid_8
+    IsNavigable: True
+    IsCollection: True
+

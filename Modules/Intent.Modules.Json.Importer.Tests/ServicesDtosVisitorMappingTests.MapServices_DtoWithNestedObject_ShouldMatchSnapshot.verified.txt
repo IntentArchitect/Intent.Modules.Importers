@@ -1,0 +1,70 @@
+﻿=== ELEMENTS ===
+
+DTO: AddressDto
+  Id: Guid_1
+  ExternalReference: dto-with-nested-object.address
+  Children:
+    DTO-Field: City
+      Id: Guid_2
+      ExternalReference: dto-with-nested-object.address.city
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+    DTO-Field: Street
+      Id: Guid_4
+      ExternalReference: dto-with-nested-object.address.street
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+    DTO-Field: ZipCode
+      Id: Guid_5
+      ExternalReference: dto-with-nested-object.address.zipCode
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+
+DTO: DtoWithNestedObjectDto
+  Id: Guid_6
+  ExternalReference: dto-with-nested-object.json
+  Children:
+    DTO-Field: Address
+      Id: Guid_7
+      ExternalReference: dto-with-nested-object.address
+      ParentFolderId: Guid_6
+      TypeReference:
+        TypeId: Guid_1
+        IsNavigable: True
+        IsCollection: False
+
+    DTO-Field: FirstName
+      Id: Guid_8
+      ExternalReference: dto-with-nested-object.firstName
+      ParentFolderId: Guid_6
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+    DTO-Field: Id
+      Id: Guid_9
+      ExternalReference: dto-with-nested-object.id
+      ParentFolderId: Guid_6
+      TypeReference:
+        TypeId: Guid_10
+        IsNavigable: True
+        IsCollection: False
+
+
+
+=== ASSOCIATIONS ===
+
+(none)

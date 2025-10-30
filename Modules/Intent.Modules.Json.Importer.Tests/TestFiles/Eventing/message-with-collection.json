@@ -1,0 +1,12 @@
+{
+  "Id": "guid",
+  "Name": "string",
+  "Email": "string",
+  "Orders": [
+    {
+      "Id": "guid",
+      "Amount": 100.0,
+      "OrderDate": "datetime"
+    }
+  ]
+}

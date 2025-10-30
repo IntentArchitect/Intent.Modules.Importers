@@ -1,0 +1,43 @@
+﻿=== ELEMENTS ===
+
+Class: EmptyArray
+  Id: Guid_1
+  ExternalReference: empty-array.json
+  Children:
+    Attribute: Id
+      Id: Guid_2
+      ExternalReference: empty-array.Id
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+      Stereotypes:
+        - Primary Key (DefinitionId: Guid_4)
+      Metadata:
+        - is-managed-key: true
+
+    Attribute: Name
+      Id: Guid_5
+      ExternalReference: empty-array.Name
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_6
+        IsNavigable: True
+        IsCollection: False
+
+    Attribute: Tags
+      Id: Guid_7
+      ExternalReference: empty-array.Tags
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_8
+        IsNavigable: True
+        IsCollection: True
+        Comment: Array contained no elements so could not determine type.
+
+
+
+=== ASSOCIATIONS ===
+
+(none)

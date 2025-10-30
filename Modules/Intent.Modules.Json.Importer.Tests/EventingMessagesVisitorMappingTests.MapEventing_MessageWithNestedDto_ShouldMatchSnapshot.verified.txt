@@ -1,0 +1,61 @@
+﻿=== ELEMENTS ===
+
+Eventing DTO: OrderDetail
+  Id: Guid_1
+  ExternalReference: message-with-nested-dto.OrderDetails
+  Children:
+    Eventing DTO-Field: OrderId
+      Id: Guid_2
+      ExternalReference: message-with-nested-dto.OrderDetails.OrderId
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+    Eventing DTO-Field: TotalAmount
+      Id: Guid_4
+      ExternalReference: message-with-nested-dto.OrderDetails.TotalAmount
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_5
+        IsNavigable: True
+        IsCollection: False
+
+
+Message: MessageWithNestedDto
+  Id: Guid_6
+  ExternalReference: message-with-nested-dto.json
+  Children:
+    Property: EventId
+      Id: Guid_7
+      ExternalReference: message-with-nested-dto.EventId
+      ParentFolderId: Guid_6
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+    Property: OrderDetails
+      Id: Guid_8
+      ExternalReference: message-with-nested-dto.OrderDetails
+      ParentFolderId: Guid_6
+      TypeReference:
+        TypeId: Guid_1
+        IsNavigable: True
+        IsCollection: False
+
+    Property: Timestamp
+      Id: Guid_9
+      ExternalReference: message-with-nested-dto.Timestamp
+      ParentFolderId: Guid_6
+      TypeReference:
+        TypeId: Guid_10
+        IsNavigable: True
+        IsCollection: False
+
+
+
+=== ASSOCIATIONS ===
+
+(none)

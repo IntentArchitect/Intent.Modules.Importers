@@ -1,0 +1,79 @@
+﻿=== ELEMENTS ===
+
+Eventing DTO: Order
+  Id: Guid_1
+  ExternalReference: message-with-collection.Orders[0]
+  Children:
+    Eventing DTO-Field: Amount
+      Id: Guid_2
+      ExternalReference: message-with-collection.Orders[0].Amount
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+    Eventing DTO-Field: Id
+      Id: Guid_4
+      ExternalReference: message-with-collection.Orders[0].Id
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_5
+        IsNavigable: True
+        IsCollection: False
+
+    Eventing DTO-Field: OrderDate
+      Id: Guid_6
+      ExternalReference: message-with-collection.Orders[0].OrderDate
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_7
+        IsNavigable: True
+        IsCollection: False
+
+
+Message: MessageWithCollection
+  Id: Guid_8
+  ExternalReference: message-with-collection.json
+  Children:
+    Property: Email
+      Id: Guid_9
+      ExternalReference: message-with-collection.Email
+      ParentFolderId: Guid_8
+      TypeReference:
+        TypeId: Guid_10
+        IsNavigable: True
+        IsCollection: False
+
+    Property: Id
+      Id: Guid_11
+      ExternalReference: message-with-collection.Id
+      ParentFolderId: Guid_8
+      TypeReference:
+        TypeId: Guid_5
+        IsNavigable: True
+        IsCollection: False
+
+    Property: Name
+      Id: Guid_12
+      ExternalReference: message-with-collection.Name
+      ParentFolderId: Guid_8
+      TypeReference:
+        TypeId: Guid_10
+        IsNavigable: True
+        IsCollection: False
+
+    Property: Orders
+      Id: Guid_13
+      ExternalReference: message-with-collection.Orders[0]
+      ParentFolderId: Guid_8
+      TypeReference:
+        TypeId: Guid_1
+        IsNavigable: True
+        IsCollection: True
+
+
+
+=== ASSOCIATIONS ===
+
+(none)

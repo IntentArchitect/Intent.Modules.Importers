@@ -1,0 +1,42 @@
+﻿=== ELEMENTS ===
+
+Class: SimpleCustomer
+  Id: Guid_1
+  ExternalReference: simple-customer.json
+  Children:
+    Attribute: Email
+      Id: Guid_2
+      ExternalReference: simple-customer.Email
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+    Attribute: Id
+      Id: Guid_4
+      ExternalReference: simple-customer.Id
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_5
+        IsNavigable: True
+        IsCollection: False
+      Stereotypes:
+        - Primary Key (DefinitionId: Guid_6)
+      Metadata:
+        - is-managed-key: true
+
+    Attribute: Name
+      Id: Guid_7
+      ExternalReference: simple-customer.Name
+      ParentFolderId: Guid_1
+      TypeReference:
+        TypeId: Guid_3
+        IsNavigable: True
+        IsCollection: False
+
+
+
+=== ASSOCIATIONS ===
+
+(none)
