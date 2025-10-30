@@ -140,27 +140,88 @@ The JSON Importer uses a **visitor-based architecture**:
 3. Snapshot baselines (.verified.txt files)
 
 **Current Format**:
-- Root elements: `{relative-path-from-source-folder}` (e.g., `simple-customer.json`, `Domain/Customers/customer.json`)
-- Nested elements: `{relative-path}.{json-property-path}` (e.g., `simple-customer.json.Id`, `user.json.identities[0].connection`)
-- Array elements: Use `[index]` notation (e.g., `user.json.identities[0]`)
+# Intent.Modules.Json.Importer.Tests – AI Companion Guide
 
-**Why**: Including the full file path prevents ExternalReference collisions when multiple JSON files have similar structures. For example, if `user.json` and `users-by-email-response.json` both have an `identities` collection, the nested class would be `user.json.identities[0]` vs `users-by-email-response.json.identities[0]`.
+This guide describes the conventions, principles, and examples that keep the Intent JSON importer test suite predictable and maintainable.
 
-Following these guidelines keeps the suite expressive, fast, and easy for both humans and AI agents to evolve.
+## Testing Principles
 
-## Known Issues (As of 2025-10-30)
+- Prefer deterministic scenarios built from Object Mother factories; avoid ad hoc file manipulation during tests.
+- Treat every test class as a focused specification of behaviour. Name methods with `MethodUnderTest_Scenario_ExpectedOutcome` to surface intent instantly.
+- Follow the Arrange/Act/Assert pattern with explicit `// Arrange`, `// Act`, and `// Assert` comments and keep additional commentary to a minimum.
+- Assert on observable state: element counts, IDs, names, external references, stereotypes, and metadata. Skip assertions on log text or exception message formatting unless behaviour explicitly requires it.
+- When validating external references, assert both the presence of expected values and their uniqueness so that collisions are caught early.
+- Keep tests independent. Any required data should come from the supporting factories rather than shared state.
 
-### Synchronizer Tests (4 failing)
-The JsonSynchronizerTests are currently failing because the attributes (child elements) are not being properly matched during synchronization. The issue is that:
-1. The JsonPersistableFactory returns elements in a hierarchy (attributes are in the class's ChildElements collection)
-2. The Synchronizer was modified to flatten this hierarchy when creating the MetadataLookup (line 23 in Synchronizer.cs)
-3. However, the synchronization still fails to match attributes correctly
+### Good Assertion Example
+```csharp
+// Verify element was created with correct properties
+result.Elements.ShouldHaveSingleItem();
+var customer = result.Elements.First();
+customer.Name.ShouldBe("Customer");
+customer.SpecializationType.ShouldBe("Class");
+```
 
-**Root Cause**: The Synchronizer recursively processes children, but the matching logic for attributes may need adjustment. The attributes have correct ExternalReferences (e.g., `simple-customer.json.Id`) but aren't being found/matched.
+## Object Mother Usage
 
-**Next Steps**: Debug the SynchronizeElements recursive logic to understand why attributes aren't being matched even though their ExternalReferences are correct.
+Use the factories in `TestData/` to compose scenarios:
+- `JsonDocuments` supplies canonical file paths into the `TestFiles/` hierarchy.
+- `PackageModels` creates `PackageModelPersistable` instances, including variants that mirror folder structures and external references used by the importer.
+- `ImportConfigurations` builds `JsonConfig` objects for each profile with consistent defaults.
+- `SnapshotBuilder` produces readable text representations of `Persistables` for Verify-based snapshots.
 
-### MultipleFileCollisionTests (1 failing)
-The `ImportUserAndUsersByEmailResponse_CheckExternalReferences` test expects to find 2 Identity classes (one from each file), but finds 0. This test was created to verify that the ExternalReference collision fix works for nested objects with the same name from different files.
+Keep factory methods small, composable, and side-effect free so they can be reused across behavioural and snapshot tests.
 
-**Next Steps**: Investigate why nested classes named "Identity" aren't being created from the array elements in user.json and users-by-email-response.json.
+## Behavioural Test Pattern
+
+- Use Shouldly for readability: `ShouldContain`, `ShouldHaveSingleItem`, `ShouldBe`, and related helpers.
+- Validate only the properties meaningful to the behaviour under test. Avoid restating defaults that are already enforced elsewhere.
+- Prefer concrete samples over parameterised tests; clarity beats breadth when documenting behaviour.
+
+## Snapshot Test Pattern
+
+- Name tests `Map{Profile}_{Feature}_{Scenario}_ShouldMatchSnapshot` to communicate the visitor, focus, and expectation.
+- Perform lightweight structural assertions before snapshot verification (e.g., counts, key names) to surface intent even when snapshots change.
+- Capture output with `await Verify(snapshot).UseParameters("variant")` so each variation produces a dedicated baseline.
+- Review `.received.txt` snapshots carefully, approve intentional changes as `.verified.txt`, and commit the verified files.
+
+## Architectural Guidelines
+
+- Remember that `JsonPersistableFactory` orchestrates classification and delegates to profile-specific visitors. Tests should mirror this flow by using the factory entry points.
+- Each visitor (`DocumentDomainVisitor`, `EventingMessagesVisitor`, `ServicesDtosVisitor`) defines its own projections and should be validated with scenarios that highlight those rules.
+- Path-based disambiguation is central: duplicate class names are resolved by prepending path segments, so tests must cover cases where collisions would otherwise arise.
+
+## Coverage Expectations
+
+When expanding the suite, ensure scenarios exist for these areas:
+- Primitive properties: strings, numbers, bools, GUIDs, and datetimes.
+- Nested objects and collections, including arrays with zero or homogeneous elements.
+- JSON edge cases such as null values and empty arrays that trigger remarks about unknown types.
+- Folder hierarchies and nested file structures to confirm folder creation and reuse.
+- Casing behaviour for `PascalCase` and `AsIs` conventions.
+- Duplicate-name resolution and the resulting external references.
+- Synchronization flows that rely on matching by external reference.
+
+## Adding a New Test
+
+1. Define the behaviour or rule you want to document.
+2. Select the appropriate test style (behavioural vs. snapshot) based on how much structure needs to be captured.
+3. Assemble inputs through the factories, extending them only when a new reusable scenario is needed.
+4. Name the test with the established pattern and keep the body aligned to AAA.
+5. Assert only what the behaviour requires, leaving unrelated details for other tests.
+
+## Snapshot Workflow
+
+1. Write the test and run it to produce a `.received.txt` file.
+2. Inspect the generated snapshot to confirm it reflects the intended structure and naming.
+3. Promote the snapshot to `.verified.txt` (or use your diff tool) once the output is correct.
+4. Commit the verified snapshot so future changes surface as diffs.
+
+## External Reference Rules
+
+- Root elements use the relative file path from the JSON source folder (e.g., `simple-customer.json`).
+- Nested elements append the JSON property path with dot notation (e.g., `simple-customer.json.Id`).
+- Array elements include zero-based indices in bracket notation (e.g., `user.json.identities[0]`).
+- Synchronizer fixtures must mirror the importer’s external references so re-import tests exercise real matching behaviour.
+
+Applying these conventions keeps the suite expressive, predictable, and easy for both humans and AI agents to extend.
