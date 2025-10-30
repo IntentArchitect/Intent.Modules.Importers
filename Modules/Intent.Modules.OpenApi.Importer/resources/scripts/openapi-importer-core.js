@@ -64,17 +64,17 @@ async function importOpenApi(element) {
     };
     let jsonResponse = await executeModuleTask("Intent.Modules.OpenApi.Importer.Tasks.OpenApiImport", JSON.stringify(importConfig));
     let result = JSON.parse(jsonResponse);
-    if (result === null || result === void 0 ? void 0 : result.errorMessage) {
-        await dialogService.error(result === null || result === void 0 ? void 0 : result.errorMessage);
+    if ((result === null || result === void 0 ? void 0 : result.errors) && (result === null || result === void 0 ? void 0 : result.errors.length) > 0) {
+        await dialogService.error(result.errors.join("\n"));
+        return;
     }
-    else {
-        if (result === null || result === void 0 ? void 0 : result.warnings) {
-            await dialogService.warn("Import complete.\r\n\r\n" + (result === null || result === void 0 ? void 0 : result.warnings));
-        }
-        else {
-            await dialogService.info("Import complete.");
-        }
+
+    if ((result === null || result === void 0 ? void 0 : result.warnings) && (result === null || result === void 0 ? void 0 : result.warnings.length) > 0) {
+        await dialogService.warn("Import complete.\r\n\r\n" + result.warnings.join("\n"));
+        return;
     }
+
+    await dialogService.info("Import complete.");
 }
 function getDialogDefaults(element) {
     let package = element.getPackage();

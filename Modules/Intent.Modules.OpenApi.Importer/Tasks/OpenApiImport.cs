@@ -1,224 +1,169 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.Json;
 using Intent.Engine;
+using Intent.MetadataSynchronizer;
+using Intent.MetadataSynchronizer.Configuration;
+using Intent.Modules.Json.Importer.Tasks.Helpers;
+using Intent.Modules.Json.Importer.Tasks.Models;
+using Intent.Modules.OpenApi.Importer.Importer;
 using Intent.Plugins;
 using Intent.Utils;
 
-namespace Intent.Modules.OpenApi.Importer.Tasks
+namespace Intent.Modules.OpenApi.Importer.Tasks;
+
+public class OpenApiImport : ModuleTaskBase<ImportSettings, object?>
 {
-    public class OpenApiImport : IModuleTask
+    private readonly IMetadataManager _metadataManager;
+    private readonly IApplicationConfigurationProvider _configurationProvider;
+
+    public OpenApiImport(IMetadataManager metadataManager, IApplicationConfigurationProvider configurationProvider)
     {
-        private readonly IMetadataManager _metadataManager;
-        private readonly IApplicationConfigurationProvider _configurationProvider;
+        _metadataManager = metadataManager;
+        _configurationProvider = configurationProvider;
+    }
 
-        public OpenApiImport(IMetadataManager metadataManager, IApplicationConfigurationProvider configurationProvider)
+    public override string TaskTypeId => "Intent.Modules.OpenApi.Importer.Tasks.OpenApiImport";
+    public override string TaskTypeName => "OpenApi Document Import";
+
+    protected override ValidationResult ValidateInputModel(ImportSettings inputModel)
+    {
+        if (inputModel is null)
         {
-            _metadataManager = metadataManager;
-            _configurationProvider = configurationProvider;
+            return ValidationResult.ErrorResult("Invalid import request.");
         }
 
-        public string TaskTypeId => "Intent.Modules.OpenApi.Importer.Tasks.OpenApiImport";
-
-        public string TaskTypeName => "OpenApi Document Import";
-
-        public int Order => 0;
-
-        public string Execute(params string[] args)
+        if (string.IsNullOrWhiteSpace(inputModel.OpenApiSpecificationFile))
         {
-            if (!ValiadateRequest(args, out var openApiImportSettings, out var errorMessage))
-            {
-                return Fail(errorMessage!);
-            }
-
-            // I know why we had to do this for RDBMS but is it really necessary for OpenAPI
-            // when its just normal C# services being invoked with platform-agnostic binaries?
-            var toolDirectory = Path.Combine(Path.GetDirectoryName(typeof(OpenApiImport).Assembly.Location), @"../content/tool");
-            var executableName = "dotnet";
-            var executableArgs = $"\"{Path.Combine(toolDirectory, "Intent.MetadataSynchronizer.OpenApi.CLI.dll")}\" --serialized-config \"{openApiImportSettings}\"";
-
-            Logging.Log.Info($"Executing: {executableName} {executableArgs} ");
-
-            try
-            {
-                var process = new Process
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = executableName,
-                        Arguments = executableArgs,
-                        RedirectStandardInput = true,
-                        RedirectStandardOutput = true,
-                        CreateNoWindow = false,
-                        UseShellExecute = false,
-                        WorkingDirectory = toolDirectory,
-                        EnvironmentVariables =
-                        {
-                            ["DOTNET_CLI_UI_LANGUAGE"] = "en",
-                            ["DOTNET_ROLL_FORWARD"] = "LatestMajor"
-                        }
-                    }
-                };
-
-                bool? succeeded = null;
-                var sigStop = false;
-                var warnings = new StringBuilder();
-                var errors = new StringBuilder();
-                var errorLines = 0;
-
-                process.OutputDataReceived += (_, args) =>
-                {
-                    if (sigStop)
-                    {
-                        return;
-                    }
-
-                    Logging.Log.Debug(args.Data);
-                    if (args.Data?.Trim().Contains("Package saved successfully.") == true)
-                    {
-                        succeeded = true;
-                        sigStop = true;
-                    }
-                    else if (succeeded == false && args.Data?.Trim().Equals(".") == true)
-                    {
-                        sigStop = true;
-                        process.Kill(true);
-                    }
-                    else if (succeeded == false || (succeeded == null && args.Data?.Trim().Contains("Error:") == true))
-                    {
-                        succeeded = false;
-                        errors.AppendLine(args.Data?.Trim());
-                        errorLines++;
-                        if (errorLines > 15)
-                        {
-                            errors.AppendLine("...and more");
-                            sigStop = true;
-                            process.Kill(true);
-                        }
-                    }
-                    else if (succeeded != false && args.Data?.Trim().Contains("Warning:") == true)
-                    {
-                        warnings.AppendLine(args.Data);
-                    }
-                };
-
-                process.Start();
-                process.BeginOutputReadLine();
-                process.WaitForExit();
-
-                if (succeeded == false)
-                {
-                    return Fail(errors.ToString());
-                }
-
-                if (warnings.Length > 0)
-                {
-                    return $"{{\"warnings\": \"{warnings.Replace(Environment.NewLine, "\\n").ToString()}\"}}";
-                }
-                return "{}";
-            }
-            catch (Exception e)
-            {
-                Logging.Log.Failure($@"Failed to execute: ""Intent.MetadataSynchronizer.OpenApi.CLI.dll"".
-Please see reasons below:");
-                Logging.Log.Failure(e);
-                return Fail(e.GetBaseException().Message);
-            }
+            return ValidationResult.ErrorResult("OpenAPI file path or URL is required.");
         }
 
-        private bool ValiadateRequest(string[] args, out string? openApiImportSettings, out string? errorMessage)
+        if (string.IsNullOrWhiteSpace(inputModel.PackageId))
         {
-            openApiImportSettings = null;
-            errorMessage = null;
-
-            var serializerOptions = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            };
-            if (args.Length < 1)
-            {
-                errorMessage = $"Expected 1 argument received 0";
-                return false;
-            }
-            var settings = JsonSerializer.Deserialize<ImportSettings>(args[0], serializerOptions);
-            if (settings == null)
-            {
-                errorMessage = $"Unable to deserialize : {args[0]}";
-                return false;
-            }
-
-            var application = _configurationProvider.GetApplicationConfig();
-
-            var designer = _metadataManager.GetDesigner(application.Id, "Services");
-            if (designer == null)
-            {
-                errorMessage = $"Unable to find domain designer in application";
-                return false;
-            }
-
-            var package = designer.Packages.FirstOrDefault(p => p.Id == settings.PackageId);
-            if (package == null)
-            {
-                errorMessage = $"Unable to find package with Id : {settings.PackageId}. Check you have saved the Service Package.";
-                return false;
-            }
-
-            var installedModules = _configurationProvider.GetInstalledModules().Select(m => m.ModuleId).ToList();
-
-            if (!installedModules.Contains("Intent.Common.CSharp") && !installedModules.Contains("Intent.Common.Java"))
-            {
-                errorMessage = $"You need to Install the `Intent.Common.CSharp` OR `Intent.Common.Java` module. ";
-                return false;
-            }
-
-            var requiredModules = CalculateRequiredModules(settings, installedModules);
-
-            if (requiredModules.Any() && requiredModules.Except(installedModules).Any())
-            {
-                var missingModules = requiredModules.Except(installedModules);
-
-                errorMessage = $"Based on your selection, you need to Install the following modules.\n{string.Join("\n", missingModules)}";
-                return false;
-            }
-
-            settings.OpenApiSpecificationFile = settings.OpenApiSpecificationFile.Trim('"');
-
-            settings.ApplicationName = application.Name;
-
-            var file = Directory.GetFiles(_configurationProvider.GetSolutionConfig().SolutionRootLocation, "*.isln").First();
-            settings.IslnFile = file;
-            settings.PackageId = package.Id;
-            settings.IsAzureFunctions = application.Modules.Any(m => m.ModuleId == "Intent.AzureFunctions");
-
-            var sending = JsonSerializer.Serialize(settings);
-            openApiImportSettings = sending.Replace("\"", "\\\"");
-            return true;
+            return ValidationResult.ErrorResult("Package ID is required.");
         }
 
-        private List<string> CalculateRequiredModules(ImportSettings settings, IList<string> installedModules)
+        if (string.IsNullOrWhiteSpace(inputModel.ServiceType))
         {
-            var requiredModules = new List<string>();
-            if (settings.ServiceType.Equals("CQRS", StringComparison.OrdinalIgnoreCase))
-            {
-                if (installedModules.Contains("Intent.Common.CSharp"))
-                {
-                    requiredModules.Add("Intent.Modelers.Services.CQRS");
-                }
-            }
-            return requiredModules;
+            return ValidationResult.ErrorResult("Service type is required.");
         }
 
-        private string Fail(string reason)
+        if (!Enum.TryParse<ServiceType>(inputModel.ServiceType, true, out _))
         {
-            Logging.Log.Failure(reason);
-            var errorObject = new { errorMessage = reason };
-            string json = JsonSerializer.Serialize(errorObject);
-            return json;
+            return ValidationResult.ErrorResult($"Service type '{inputModel.ServiceType}' is not valid.");
         }
+
+        var persistenceValue = string.IsNullOrWhiteSpace(inputModel.SettingPersistence)
+            ? nameof(SettingPersistence.None)
+            : inputModel.SettingPersistence;
+        if (!Enum.TryParse<SettingPersistence>(persistenceValue, true, out _))
+        {
+            return ValidationResult.ErrorResult($"Persist Settings value '{inputModel.SettingPersistence}' is not valid.");
+        }
+
+        return ValidationResult.SuccessResult();
+    }
+
+    protected override ExecuteResult<object?> ExecuteModuleTask(ImportSettings inputModel)
+    {
+        var executionResult = new ExecuteResult<object?>();
+
+        var application = _configurationProvider.GetApplicationConfig();
+        var designer = _metadataManager.GetDesigner(application.Id, "Services");
+        if (designer == null)
+        {
+            executionResult.Errors.Add("Unable to find Services designer in application.");
+            return executionResult;
+        }
+
+        var package = designer.Packages.FirstOrDefault(p => p.Id == inputModel.PackageId);
+        if (package == null)
+        {
+            executionResult.Errors.Add($"Unable to find package with Id: {inputModel.PackageId}. Ensure the Service package is saved.");
+            return executionResult;
+        }
+
+        var installedModules = _configurationProvider.GetInstalledModules().Select(m => m.ModuleId).ToList();
+
+        if (!installedModules.Contains("Intent.Common.CSharp") && !installedModules.Contains("Intent.Common.Java"))
+        {
+            executionResult.Errors.Add("Install either 'Intent.Common.CSharp' or 'Intent.Common.Java' before running this import.");
+            return executionResult;
+        }
+
+        var requiredModules = CalculateRequiredModules(inputModel, installedModules);
+        var missingModules = requiredModules.Except(installedModules).ToList();
+        if (missingModules.Any())
+        {
+            executionResult.Errors.Add($"Based on your selection, install the following modules:{Environment.NewLine}{string.Join(Environment.NewLine, missingModules)}");
+            return executionResult;
+        }
+
+        var islnFile = Directory
+            .GetFiles(_configurationProvider.GetSolutionConfig().SolutionRootLocation, "*.isln")
+            .First();
+
+        var serviceType = Enum.Parse<ServiceType>(inputModel.ServiceType, true);
+        var persistence = Enum.TryParse<SettingPersistence>(inputModel.SettingPersistence, true, out var parsedPersistence)
+            ? parsedPersistence
+            : SettingPersistence.None;
+
+        var config = new OpenApiImportConfig
+        {
+            IslnFile = islnFile,
+            ApplicationName = application.Name,
+            OpenApiSpecificationFile = inputModel.OpenApiSpecificationFile.Trim('"'),
+            PackageId = package.Id,
+            TargetFolderId = inputModel.TargetFolderId,
+            AddPostFixes = inputModel.AddPostFixes,
+            AllowRemoval = inputModel.AllowRemoval,
+            IsAzureFunctions = application.Modules.Any(m => m.ModuleId == "Intent.AzureFunctions"),
+            ServiceType = serviceType,
+            SettingPersistence = persistence
+        };
+
+        Logging.Log.Info($"Starting OpenAPI import from {config.OpenApiSpecificationFile} into package {config.PackageId}");
+
+        var factory = new OpenApiPersistableFactory();
+
+        try
+        {
+            Helpers.ExecuteCore(
+                intentSolutionPath: config.IslnFile,
+                applicationName: config.ApplicationName,
+                designerName: "Services",
+                packageId: config.PackageId,
+                targetFolderId: config.TargetFolderId,
+                deleteExtra: config.AllowRemoval,
+                debug: false,
+                createAttributesWithUnknownTypes: true,
+                stereotypeManagementMode: StereotypeManagementMode.Merge,
+                additionalPreconditionChecks: null,
+                getPersistables: packages => factory.GetPersistables(config, packages),
+                persistAdditionalMetadata: factory.PersistAdditionalMetadata,
+                packageTypeId: "df45eaf6-9202-4c25-8dd5-677e9ba1e906");
+
+            executionResult.Warnings.AddRange(factory.Warnings);
+        }
+        catch (Exception exception)
+        {
+            Logging.Log.Failure(exception);
+            executionResult.Errors.Add(exception.GetBaseException().Message);
+        }
+
+        return executionResult;
+    }
+
+    private static List<string> CalculateRequiredModules(ImportSettings settings, IList<string> installedModules)
+    {
+        var requiredModules = new List<string>();
+        if (settings.ServiceType.Equals("CQRS", StringComparison.OrdinalIgnoreCase) && installedModules.Contains("Intent.Common.CSharp"))
+        {
+            requiredModules.Add("Intent.Modelers.Services.CQRS");
+        }
+
+        return requiredModules;
     }
 }
 
