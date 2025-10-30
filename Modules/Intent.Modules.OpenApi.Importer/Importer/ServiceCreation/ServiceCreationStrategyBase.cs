@@ -45,7 +45,7 @@ public abstract class ServiceCreationStrategyBase : IServiceCreationStrategy
 
     protected void AddWarning(string message)
     {
-        Logging.Log.Warning(message);
+        Logging.Log?.Warning(message);
         Warnings.Add(message);
     }
 

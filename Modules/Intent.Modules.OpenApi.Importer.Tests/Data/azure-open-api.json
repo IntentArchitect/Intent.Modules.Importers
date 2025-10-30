@@ -1,0 +1,520 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "NewApplication92 API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:7071/api"
+        }
+    ],
+    "paths": {
+        "/customers": {
+            "post": {
+                "tags": [
+                    "Customers"
+                ],
+                "description": "Create customer command",
+                "operationId": "CreateCustomerCommand",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/createCustomerCommand"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Payload of Guid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Payload of Object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Customers"
+                ],
+                "description": "Get customers query",
+                "operationId": "GetCustomersQuery",
+                "responses": {
+                    "200": {
+                        "description": "Payload of Array of CustomerDto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/customerDto"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Payload of Object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customers/{customerId}/orders": {
+            "post": {
+                "tags": [
+                    "Customers"
+                ],
+                "description": "Create customer order command",
+                "operationId": "CreateCustomerOrderCommand",
+                "parameters": [
+                    {
+                        "name": "customerId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/createCustomerOrderCommand"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Payload of Guid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Payload of Object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Customers"
+                ],
+                "description": "Get customer orders query",
+                "operationId": "GetCustomerOrdersQuery",
+                "parameters": [
+                    {
+                        "name": "customerId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payload of Array of CustomerOrderDto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/customerOrderDto"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Payload of Object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customers/{id}": {
+            "delete": {
+                "tags": [
+                    "Customers"
+                ],
+                "description": "Delete customer command",
+                "operationId": "DeleteCustomerCommand",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Payload of Object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Customers"
+                ],
+                "description": "Get customer by id query",
+                "operationId": "GetCustomerByIdQuery",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payload of CustomerDto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/customerDto"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Payload of Object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Customers"
+                ],
+                "description": "Update customer command",
+                "operationId": "UpdateCustomerCommand",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/updateCustomerCommand"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Payload of Object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customers/{customerId}/orders/{id}": {
+            "delete": {
+                "tags": [
+                    "Customers"
+                ],
+                "description": "Delete customer order command",
+                "operationId": "DeleteCustomerOrderCommand",
+                "parameters": [
+                    {
+                        "name": "customerId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Payload of Object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Customers"
+                ],
+                "description": "Get customer order by id query",
+                "operationId": "GetCustomerOrderByIdQuery",
+                "parameters": [
+                    {
+                        "name": "customerId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payload of CustomerOrderDto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/customerOrderDto"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Payload of Object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Customers"
+                ],
+                "description": "Update customer order command",
+                "operationId": "UpdateCustomerOrderCommand",
+                "parameters": [
+                    {
+                        "name": "customerId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/updateCustomerOrderCommand"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Payload of Object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "createCustomerCommand": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "active": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "createCustomerOrderCommand": {
+                "type": "object",
+                "properties": {
+                    "customerId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "refNo": {
+                        "type": "string"
+                    }
+                }
+            },
+            "customerDto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "active": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "customerOrderDto": {
+                "type": "object",
+                "properties": {
+                    "customerId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "refNo": {
+                        "type": "string"
+                    }
+                }
+            },
+            "updateCustomerCommand": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "active": {
+                        "type": "boolean"
+                    },
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                }
+            },
+            "updateCustomerOrderCommand": {
+                "type": "object",
+                "properties": {
+                    "customerId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "refNo": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                }
+            }
+        }
+    }
+}

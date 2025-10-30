@@ -8,7 +8,7 @@ namespace Intent.MetadataSynchronizer.OpenApi.CLI.Tests
 {
     public partial class ItShouldWork
     {
-        [Fact(Skip = "Guess it needs a running server?")]
+        [Fact]
         public void Test1()
         {
             // Arrange
@@ -36,15 +36,7 @@ namespace Intent.MetadataSynchronizer.OpenApi.CLI.Tests
                     stream: stream,
                     config: new ImportConfig
                     {
-                        IslnFile = null,
-                        ApplicationName = null,
-                        OpenApiSpecificationFile = null,
-                        TargetFolderId = null,
-                        PackageId = null,
-                        AddPostFixes = false,
-                        IsAzureFunctions = false,
                         ServiceType = ServiceType.CQRS,
-                        AllowRemoval = false,
                         SettingPersistence = SettingPersistence.None
                     },
                     packages: packageModelPersistables);
