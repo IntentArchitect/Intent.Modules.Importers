@@ -6,7 +6,7 @@ Class: AllPrimitiveTypes
   Children:
     Attribute: Age
       Id: Guid_2
-      ExternalReference: all-primitive-types.Age
+      ExternalReference: all-primitive-types.json.Age
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -15,7 +15,7 @@ Class: AllPrimitiveTypes
 
     Attribute: Balance
       Id: Guid_4
-      ExternalReference: all-primitive-types.Balance
+      ExternalReference: all-primitive-types.json.Balance
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -24,7 +24,7 @@ Class: AllPrimitiveTypes
 
     Attribute: CreatedAt
       Id: Guid_5
-      ExternalReference: all-primitive-types.CreatedAt
+      ExternalReference: all-primitive-types.json.CreatedAt
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_6
@@ -33,7 +33,7 @@ Class: AllPrimitiveTypes
 
     Attribute: Id
       Id: Guid_7
-      ExternalReference: all-primitive-types.Id
+      ExternalReference: all-primitive-types.json.Id
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_8
@@ -46,7 +46,7 @@ Class: AllPrimitiveTypes
 
     Attribute: IsActive
       Id: Guid_10
-      ExternalReference: all-primitive-types.IsActive
+      ExternalReference: all-primitive-types.json.IsActive
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_11
@@ -55,7 +55,7 @@ Class: AllPrimitiveTypes
 
     Attribute: Name
       Id: Guid_12
-      ExternalReference: all-primitive-types.Name
+      ExternalReference: all-primitive-types.json.Name
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_13

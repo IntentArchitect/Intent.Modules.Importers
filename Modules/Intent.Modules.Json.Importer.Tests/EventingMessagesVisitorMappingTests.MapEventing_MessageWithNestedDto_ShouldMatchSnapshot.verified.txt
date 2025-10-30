@@ -2,11 +2,11 @@
 
 Eventing DTO: OrderDetail
   Id: Guid_1
-  ExternalReference: message-with-nested-dto.OrderDetails
+  ExternalReference: message-with-nested-dto.json.OrderDetails
   Children:
     Eventing DTO-Field: OrderId
       Id: Guid_2
-      ExternalReference: message-with-nested-dto.OrderDetails.OrderId
+      ExternalReference: message-with-nested-dto.json.OrderDetails.OrderId
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -15,7 +15,7 @@ Eventing DTO: OrderDetail
 
     Eventing DTO-Field: TotalAmount
       Id: Guid_4
-      ExternalReference: message-with-nested-dto.OrderDetails.TotalAmount
+      ExternalReference: message-with-nested-dto.json.OrderDetails.TotalAmount
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_5
@@ -29,7 +29,7 @@ Message: MessageWithNestedDto
   Children:
     Property: EventId
       Id: Guid_7
-      ExternalReference: message-with-nested-dto.EventId
+      ExternalReference: message-with-nested-dto.json.EventId
       ParentFolderId: Guid_6
       TypeReference:
         TypeId: Guid_3
@@ -38,7 +38,7 @@ Message: MessageWithNestedDto
 
     Property: OrderDetails
       Id: Guid_8
-      ExternalReference: message-with-nested-dto.OrderDetails
+      ExternalReference: message-with-nested-dto.json.OrderDetails
       ParentFolderId: Guid_6
       TypeReference:
         TypeId: Guid_1
@@ -47,7 +47,7 @@ Message: MessageWithNestedDto
 
     Property: Timestamp
       Id: Guid_9
-      ExternalReference: message-with-nested-dto.Timestamp
+      ExternalReference: message-with-nested-dto.json.Timestamp
       ParentFolderId: Guid_6
       TypeReference:
         TypeId: Guid_10

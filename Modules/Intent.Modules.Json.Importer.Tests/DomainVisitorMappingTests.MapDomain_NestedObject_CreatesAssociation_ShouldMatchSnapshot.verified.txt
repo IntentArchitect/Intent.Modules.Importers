@@ -2,11 +2,11 @@
 
 Class: Address
   Id: Guid_1
-  ExternalReference: customer-with-address.Address
+  ExternalReference: customer-with-address.json.Address
   Children:
     Attribute: City
       Id: Guid_2
-      ExternalReference: customer-with-address.Address.City
+      ExternalReference: customer-with-address.json.Address.City
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -15,7 +15,7 @@ Class: Address
 
     Attribute: PostalCode
       Id: Guid_4
-      ExternalReference: customer-with-address.Address.PostalCode
+      ExternalReference: customer-with-address.json.Address.PostalCode
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -24,7 +24,7 @@ Class: Address
 
     Attribute: Street
       Id: Guid_5
-      ExternalReference: customer-with-address.Address.Street
+      ExternalReference: customer-with-address.json.Address.Street
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -38,7 +38,7 @@ Class: CustomerWithAddress
   Children:
     Attribute: Id
       Id: Guid_7
-      ExternalReference: customer-with-address.Id
+      ExternalReference: customer-with-address.json.Id
       ParentFolderId: Guid_6
       TypeReference:
         TypeId: Guid_8
@@ -51,7 +51,7 @@ Class: CustomerWithAddress
 
     Attribute: Name
       Id: Guid_10
-      ExternalReference: customer-with-address.Name
+      ExternalReference: customer-with-address.json.Name
       ParentFolderId: Guid_6
       TypeReference:
         TypeId: Guid_3

@@ -6,7 +6,7 @@ Class: CustomerWithOrders
   Children:
     Attribute: Email
       Id: Guid_2
-      ExternalReference: customer-with-orders.Email
+      ExternalReference: customer-with-orders.json.Email
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -15,7 +15,7 @@ Class: CustomerWithOrders
 
     Attribute: Id
       Id: Guid_4
-      ExternalReference: customer-with-orders.Id
+      ExternalReference: customer-with-orders.json.Id
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_5
@@ -28,7 +28,7 @@ Class: CustomerWithOrders
 
     Attribute: Name
       Id: Guid_7
-      ExternalReference: customer-with-orders.Name
+      ExternalReference: customer-with-orders.json.Name
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -38,11 +38,11 @@ Class: CustomerWithOrders
 
 Class: Order
   Id: Guid_8
-  ExternalReference: customer-with-orders.Orders[0]
+  ExternalReference: customer-with-orders.json.Orders[0]
   Children:
     Attribute: Amount
       Id: Guid_9
-      ExternalReference: customer-with-orders.Orders[0].Amount
+      ExternalReference: customer-with-orders.json.Orders[0].Amount
       ParentFolderId: Guid_8
       TypeReference:
         TypeId: Guid_10
@@ -51,7 +51,7 @@ Class: Order
 
     Attribute: Id
       Id: Guid_11
-      ExternalReference: customer-with-orders.Orders[0].Id
+      ExternalReference: customer-with-orders.json.Orders[0].Id
       ParentFolderId: Guid_8
       TypeReference:
         TypeId: Guid_5
@@ -60,7 +60,7 @@ Class: Order
 
     Attribute: OrderDate
       Id: Guid_12
-      ExternalReference: customer-with-orders.Orders[0].OrderDate
+      ExternalReference: customer-with-orders.json.Orders[0].OrderDate
       ParentFolderId: Guid_8
       TypeReference:
         TypeId: Guid_13

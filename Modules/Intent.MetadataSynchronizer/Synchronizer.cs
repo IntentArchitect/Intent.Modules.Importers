@@ -19,7 +19,9 @@ namespace Intent.MetadataSynchronizer
             bool createAttributesWithUnknownTypes,
             StereotypeManagementMode stereotypeManagementMode)
         {
-            var incomingLookup = new MetadataLookup(persistables.Elements, persistables.Associations);
+            // Flatten the incoming elements hierarchy so MetadataLookup can index all elements (including children)
+            var allIncomingElements = persistables.Elements.SelectMany(GetAllElements).ToArray();
+            var incomingLookup = new MetadataLookup(allIncomingElements, persistables.Associations);
             var packageLookup = new MetadataLookup(new[] { targetPackage });
             var idMap = new Dictionary<string, string>();
             var matchedIds = new HashSet<string>();
@@ -477,6 +479,18 @@ namespace Intent.MetadataSynchronizer
                 var incomingGenericTypeParameter = incoming.GenericTypeParameters[index];
                 package.GenericTypeParameters[index] ??= incomingGenericTypeParameter;
                 SynchronizeTypeReference(incomingGenericTypeParameter, package.GenericTypeParameters[index]);
+            }
+        }
+
+        private static IEnumerable<ElementPersistable> GetAllElements(ElementPersistable element)
+        {
+            yield return element;
+            foreach (var child in element.ChildElements)
+            {
+                foreach (var descendant in GetAllElements(child))
+                {
+                    yield return descendant;
+                }
             }
         }
     }

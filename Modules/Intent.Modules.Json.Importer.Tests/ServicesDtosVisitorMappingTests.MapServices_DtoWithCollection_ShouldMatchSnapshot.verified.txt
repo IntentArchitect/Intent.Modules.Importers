@@ -6,7 +6,7 @@ DTO: DtoWithCollectionDto
   Children:
     DTO-Field: Id
       Id: Guid_2
-      ExternalReference: dto-with-collection.id
+      ExternalReference: dto-with-collection.json.id
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -15,7 +15,7 @@ DTO: DtoWithCollectionDto
 
     DTO-Field: Name
       Id: Guid_4
-      ExternalReference: dto-with-collection.name
+      ExternalReference: dto-with-collection.json.name
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_5
@@ -24,7 +24,7 @@ DTO: DtoWithCollectionDto
 
     DTO-Field: PhoneNumbers
       Id: Guid_6
-      ExternalReference: dto-with-collection.phoneNumbers[0]
+      ExternalReference: dto-with-collection.json.phoneNumbers[0]
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_7
@@ -34,11 +34,11 @@ DTO: DtoWithCollectionDto
 
 DTO: PhoneNumberDto
   Id: Guid_7
-  ExternalReference: dto-with-collection.phoneNumbers[0]
+  ExternalReference: dto-with-collection.json.phoneNumbers[0]
   Children:
     DTO-Field: Number
       Id: Guid_8
-      ExternalReference: dto-with-collection.phoneNumbers[0].number
+      ExternalReference: dto-with-collection.json.phoneNumbers[0].number
       ParentFolderId: Guid_7
       TypeReference:
         TypeId: Guid_5
@@ -47,7 +47,7 @@ DTO: PhoneNumberDto
 
     DTO-Field: Type
       Id: Guid_9
-      ExternalReference: dto-with-collection.phoneNumbers[0].type
+      ExternalReference: dto-with-collection.json.phoneNumbers[0].type
       ParentFolderId: Guid_7
       TypeReference:
         TypeId: Guid_5

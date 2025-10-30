@@ -98,19 +98,22 @@ public static class JsonPersistableFactory
                 parentFolderId = CreateFolderHierarchy(directoryPath, createdFolders, classElements);
             }
 
+            var normalizedRelativePath = relativePath.Replace('\\', '/');
             var elementPersistable = visitor.VisitRoot(
                 name: Utils.Casing(config, fileNameWithoutExtension),
                 parentFolderId: parentFolderId,
-                externalReference: relativePath.Replace('\\', '/'));
+                externalReference: normalizedRelativePath);
 
             classElements.Add(new(elementPersistable, new Stack<string>(new[] { fileNameWithoutExtension })));
 
             // Parse the document and add to classElements and associations
+            // Use the full relative path (including file extension) for nested element ExternalReferences
+            // to avoid collisions when multiple files result in the same class name
             var (parsedClassElements, parsedAssociations) = Parse(
                 config: config,
                 jsonElement: document.RootElement,
                 intentElement: elementPersistable,
-                path: fileNameWithoutExtension,
+                path: normalizedRelativePath,
                 pathParts: [Utils.Casing(config, fileNameWithoutExtension)],
                 visitor: visitor,
                 typeLookups: typeLookups,

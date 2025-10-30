@@ -2,11 +2,11 @@
 
 Eventing DTO: Order
   Id: Guid_1
-  ExternalReference: message-with-collection.Orders[0]
+  ExternalReference: message-with-collection.json.Orders[0]
   Children:
     Eventing DTO-Field: Amount
       Id: Guid_2
-      ExternalReference: message-with-collection.Orders[0].Amount
+      ExternalReference: message-with-collection.json.Orders[0].Amount
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -15,7 +15,7 @@ Eventing DTO: Order
 
     Eventing DTO-Field: Id
       Id: Guid_4
-      ExternalReference: message-with-collection.Orders[0].Id
+      ExternalReference: message-with-collection.json.Orders[0].Id
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_5
@@ -24,7 +24,7 @@ Eventing DTO: Order
 
     Eventing DTO-Field: OrderDate
       Id: Guid_6
-      ExternalReference: message-with-collection.Orders[0].OrderDate
+      ExternalReference: message-with-collection.json.Orders[0].OrderDate
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_7
@@ -38,7 +38,7 @@ Message: MessageWithCollection
   Children:
     Property: Email
       Id: Guid_9
-      ExternalReference: message-with-collection.Email
+      ExternalReference: message-with-collection.json.Email
       ParentFolderId: Guid_8
       TypeReference:
         TypeId: Guid_10
@@ -47,7 +47,7 @@ Message: MessageWithCollection
 
     Property: Id
       Id: Guid_11
-      ExternalReference: message-with-collection.Id
+      ExternalReference: message-with-collection.json.Id
       ParentFolderId: Guid_8
       TypeReference:
         TypeId: Guid_5
@@ -56,7 +56,7 @@ Message: MessageWithCollection
 
     Property: Name
       Id: Guid_12
-      ExternalReference: message-with-collection.Name
+      ExternalReference: message-with-collection.json.Name
       ParentFolderId: Guid_8
       TypeReference:
         TypeId: Guid_10
@@ -65,7 +65,7 @@ Message: MessageWithCollection
 
     Property: Orders
       Id: Guid_13
-      ExternalReference: message-with-collection.Orders[0]
+      ExternalReference: message-with-collection.json.Orders[0]
       ParentFolderId: Guid_8
       TypeReference:
         TypeId: Guid_1

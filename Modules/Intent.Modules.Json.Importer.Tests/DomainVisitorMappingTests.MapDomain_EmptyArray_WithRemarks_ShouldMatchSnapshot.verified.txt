@@ -6,7 +6,7 @@ Class: EmptyArray
   Children:
     Attribute: Id
       Id: Guid_2
-      ExternalReference: empty-array.Id
+      ExternalReference: empty-array.json.Id
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -19,7 +19,7 @@ Class: EmptyArray
 
     Attribute: Name
       Id: Guid_5
-      ExternalReference: empty-array.Name
+      ExternalReference: empty-array.json.Name
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_6
@@ -28,7 +28,7 @@ Class: EmptyArray
 
     Attribute: Tags
       Id: Guid_7
-      ExternalReference: empty-array.Tags
+      ExternalReference: empty-array.json.Tags
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_8

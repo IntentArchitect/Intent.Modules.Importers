@@ -1,0 +1,18 @@
+{
+    "created_at": "2025-10-29T08:11:57.407Z",
+    "email": "john.doe@example.com",
+    "email_verified": true,
+    "identities": [
+        {
+            "connection": "Username-Password-Authentication",
+            "user_id": "abc123def456ghi789",
+            "provider": "auth0",
+            "isSocial": false
+        }
+    ],
+    "name": "john.doe@example.com",
+    "nickname": "johndoe",
+    "picture": "https://example.com/avatar/default.png",
+    "updated_at": "2025-10-29T08:11:57.407Z",
+    "user_id": "auth0|abc123def456ghi789"
+}

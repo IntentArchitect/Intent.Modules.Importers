@@ -6,7 +6,7 @@ Class: SimpleCustomer
   Children:
     Attribute: Email
       Id: Guid_2
-      ExternalReference: simple-customer.Email
+      ExternalReference: simple-customer.json.Email
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -15,7 +15,7 @@ Class: SimpleCustomer
 
     Attribute: Id
       Id: Guid_4
-      ExternalReference: simple-customer.Id
+      ExternalReference: simple-customer.json.Id
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_5
@@ -28,7 +28,7 @@ Class: SimpleCustomer
 
     Attribute: Name
       Id: Guid_7
-      ExternalReference: simple-customer.Name
+      ExternalReference: simple-customer.json.Name
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3

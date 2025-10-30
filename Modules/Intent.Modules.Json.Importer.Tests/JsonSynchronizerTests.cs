@@ -20,7 +20,7 @@ public class JsonSynchronizerTests
     {
         // Arrange
         var package = PackageModels.WithExistingCustomer();
-        var customerClassBefore = GetClasses(package).Single(c => c.Name == "Customer");
+        var customerClassBefore = GetClasses(package).Single(c => c.Name == "SimpleCustomer");
         var classIdBefore = customerClassBefore.Id;
         var attributeIdsBefore = customerClassBefore.ChildElements.Select(a => a.Id).ToList();
         
@@ -37,9 +37,9 @@ public class JsonSynchronizerTests
             stereotypeManagementMode: StereotypeManagementMode.Merge);
 
         // Assert
-        var customerClassAfter = GetClasses(package).Single(c => c.Name == "Customer");
+        var customerClassAfter = GetClasses(package).Single(c => c.Name == "SimpleCustomer");
         customerClassAfter.Id.ShouldBe(classIdBefore, "Class ID should remain unchanged");
-        customerClassAfter.ChildElements.Count.ShouldBe(2);
+        customerClassAfter.ChildElements.Count.ShouldBe(3);
         customerClassAfter.ChildElements.Select(a => a.Id).ShouldBe(attributeIdsBefore, "Attribute IDs should remain unchanged");
     }
 
@@ -48,8 +48,8 @@ public class JsonSynchronizerTests
     {
         // Arrange
         var package = PackageModels.WithExistingCustomer();
-        var customerClassBefore = GetClasses(package).Single(c => c.Name == "Customer");
-        customerClassBefore.ChildElements.Count.ShouldBe(2, "Should start with 2 attributes");
+        var customerClassBefore = GetClasses(package).Single(c => c.Name == "SimpleCustomer");
+        customerClassBefore.ChildElements.Count.ShouldBe(3, "Should start with 3 attributes");
         
         var config = ImportConfigurations.DomainProfile(JsonDocuments.DomainFolder());
 
@@ -64,9 +64,9 @@ public class JsonSynchronizerTests
             stereotypeManagementMode: StereotypeManagementMode.Merge);
 
         // Assert
-        var customerClassAfter = GetClasses(package).Single(c => c.Name == "Customer");
-        customerClassAfter.ChildElements.Count.ShouldBe(3, "Should now have 3 attributes");
-        GetAttributeNames(customerClassAfter).ShouldBe(new[] { "CustomerId", "Email", "PhoneNumber" });
+        var customerClassAfter = GetClasses(package).Single(c => c.Name == "SimpleCustomer");
+        customerClassAfter.ChildElements.Count.ShouldBe(4, "Should now have 4 attributes");
+        GetAttributeNames(customerClassAfter).ShouldBe(new[] { "Id", "Name", "Email", "PhoneNumber" });
     }
 
     [Fact]
@@ -74,8 +74,8 @@ public class JsonSynchronizerTests
     {
         // Arrange
         var package = PackageModels.WithExistingCustomer();
-        var customerClassBefore = GetClasses(package).Single(c => c.Name == "Customer");
-        customerClassBefore.ChildElements.Count.ShouldBe(2);
+        var customerClassBefore = GetClasses(package).Single(c => c.Name == "SimpleCustomer");
+        customerClassBefore.ChildElements.Count.ShouldBe(3);
         
         var config = ImportConfigurations.DomainProfile(JsonDocuments.DomainFolder());
 
@@ -90,9 +90,9 @@ public class JsonSynchronizerTests
             stereotypeManagementMode: StereotypeManagementMode.Merge);
 
         // Assert
-        var customerClassAfter = GetClasses(package).Single(c => c.Name == "Customer");
-        customerClassAfter.ChildElements.Count.ShouldBe(2, "Should still have 2 attributes (no deletion)");
-        GetAttributeNames(customerClassAfter).ShouldBe(new[] { "CustomerId", "Email" });
+        var customerClassAfter = GetClasses(package).Single(c => c.Name == "SimpleCustomer");
+        customerClassAfter.ChildElements.Count.ShouldBe(3, "Should still have 3 attributes (no deletion)");
+        GetAttributeNames(customerClassAfter).ShouldBe(new[] { "Id", "Name", "Email" });
     }
 
     [Fact]
@@ -100,8 +100,8 @@ public class JsonSynchronizerTests
     {
         // Arrange
         var package = PackageModels.WithExistingCustomer();
-        var customerClassBefore = GetClasses(package).Single(c => c.Name == "Customer");
-        customerClassBefore.ChildElements.Count.ShouldBe(2);
+        var customerClassBefore = GetClasses(package).Single(c => c.Name == "SimpleCustomer");
+        customerClassBefore.ChildElements.Count.ShouldBe(3);
         
         var config = ImportConfigurations.DomainProfile(JsonDocuments.DomainFolder());
 
@@ -116,9 +116,9 @@ public class JsonSynchronizerTests
             stereotypeManagementMode: StereotypeManagementMode.Merge);
 
         // Assert
-        var customerClassAfter = GetClasses(package).Single(c => c.Name == "Customer");
-        customerClassAfter.ChildElements.Count.ShouldBe(1, "Should only have 1 attribute (email deleted)");
-        GetAttributeNames(customerClassAfter).ShouldBe(new[] { "CustomerId" });
+        var customerClassAfter = GetClasses(package).Single(c => c.Name == "SimpleCustomer");
+        customerClassAfter.ChildElements.Count.ShouldBe(1, "Should only have 1 attribute (Name and Email deleted)");
+        GetAttributeNames(customerClassAfter).ShouldBe(new[] { "Id" });
     }
 
     [Fact]
@@ -143,7 +143,7 @@ public class JsonSynchronizerTests
         // Assert
         var classes = GetClasses(package).ToList();
         classes.Count.ShouldBe(2, "Should now have 2 classes");
-        classes.ShouldContain(c => c.Name == "Customer");
+        classes.ShouldContain(c => c.Name == "SimpleCustomer");
         classes.ShouldContain(c => c.Name == "Product");
     }
 

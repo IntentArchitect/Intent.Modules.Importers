@@ -6,7 +6,7 @@ DTO: SimpleDtoDto
   Children:
     DTO-Field: FirstName
       Id: Guid_2
-      ExternalReference: simple-dto.firstName
+      ExternalReference: simple-dto.json.firstName
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -15,7 +15,7 @@ DTO: SimpleDtoDto
 
     DTO-Field: Id
       Id: Guid_4
-      ExternalReference: simple-dto.id
+      ExternalReference: simple-dto.json.id
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_5
@@ -24,7 +24,7 @@ DTO: SimpleDtoDto
 
     DTO-Field: IsActive
       Id: Guid_6
-      ExternalReference: simple-dto.isActive
+      ExternalReference: simple-dto.json.isActive
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_7
@@ -33,7 +33,7 @@ DTO: SimpleDtoDto
 
     DTO-Field: LastName
       Id: Guid_8
-      ExternalReference: simple-dto.lastName
+      ExternalReference: simple-dto.json.lastName
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3

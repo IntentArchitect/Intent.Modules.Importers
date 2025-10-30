@@ -6,7 +6,7 @@ Message: SimpleMessage
   Children:
     Property: Action
       Id: Guid_2
-      ExternalReference: simple-message.Action
+      ExternalReference: simple-message.json.Action
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -15,7 +15,7 @@ Message: SimpleMessage
 
     Property: CustomerId
       Id: Guid_4
-      ExternalReference: simple-message.CustomerId
+      ExternalReference: simple-message.json.CustomerId
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_5
@@ -24,7 +24,7 @@ Message: SimpleMessage
 
     Property: EventId
       Id: Guid_6
-      ExternalReference: simple-message.EventId
+      ExternalReference: simple-message.json.EventId
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_5
@@ -33,7 +33,7 @@ Message: SimpleMessage
 
     Property: Timestamp
       Id: Guid_7
-      ExternalReference: simple-message.Timestamp
+      ExternalReference: simple-message.json.Timestamp
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_8

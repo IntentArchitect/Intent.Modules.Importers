@@ -1,0 +1,18 @@
+{
+    "created_at": "2025-10-29T07:49:45.584Z",
+    "email": "bob.jones@example.com",
+    "email_verified": true,
+    "identities": [
+        {
+            "connection": "Username-Password-Authentication",
+            "user_id": "xyz789uvw456rst123",
+            "provider": "auth0",
+            "isSocial": false
+        }
+    ],
+    "name": "bob.jones@example.com",
+    "nickname": "bobjones",
+    "picture": "https://example.com/avatar/user2.png",
+    "updated_at": "2025-10-29T07:49:45.584Z",
+    "user_id": "auth0|xyz789uvw456rst123"
+}

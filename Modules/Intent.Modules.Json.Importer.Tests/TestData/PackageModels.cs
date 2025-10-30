@@ -106,24 +106,30 @@ public static class PackageModels
         var package = WithDomainTypes();
         
         var customerClass = CreateClass(
-            name: "Customer",
+            name: "SimpleCustomer",
             packageId: package.Id,
-            externalReference: "TestFolder/Domain/customer.json#/",
+            externalReference: "simple-customer.json",
             specializationType: "Class",
             specializationTypeId: "04e12b51-ed12-42a3-9667-a6aa81bb6d10");
         
         // Add attributes that match simple customer JSON
         customerClass.ChildElements.Add(CreateAttribute(
-            name: "CustomerId",
+            name: "Id",
             typeId: GetTypeId(package, "string"),
             parentId: customerClass.Id,
-            externalReference: "TestFolder/Domain/customer.json#/customerId"));
+            externalReference: "simple-customer.json.Id"));
+        
+        customerClass.ChildElements.Add(CreateAttribute(
+            name: "Name",
+            typeId: GetTypeId(package, "string"),
+            parentId: customerClass.Id,
+            externalReference: "simple-customer.json.Name"));
         
         customerClass.ChildElements.Add(CreateAttribute(
             name: "Email",
             typeId: GetTypeId(package, "string"),
             parentId: customerClass.Id,
-            externalReference: "TestFolder/Domain/customer.json#/email"));
+            externalReference: "simple-customer.json.Email"));
         
         package.Classes.Add(customerClass);
         return package;
@@ -138,42 +144,54 @@ public static class PackageModels
         var package = WithDomainTypes();
         
         var customerClass = CreateClass(
-            name: "Customer",
+            name: "SimpleCustomer",
             packageId: package.Id,
-            externalReference: "TestFolder/Domain/customer.json#/",
+            externalReference: "simple-customer.json",
             specializationType: "Class",
             specializationTypeId: "04e12b51-ed12-42a3-9667-a6aa81bb6d10");
         
         customerClass.ChildElements.Add(CreateAttribute(
-            name: "CustomerId",
+            name: "Id",
             typeId: GetTypeId(package, "string"),
             parentId: customerClass.Id,
-            externalReference: "TestFolder/Domain/customer.json#/customerId"));
+            externalReference: "simple-customer.json.Id"));
+        
+        customerClass.ChildElements.Add(CreateAttribute(
+            name: "Name",
+            typeId: GetTypeId(package, "string"),
+            parentId: customerClass.Id,
+            externalReference: "simple-customer.json.Name"));
         
         customerClass.ChildElements.Add(CreateAttribute(
             name: "Email",
             typeId: GetTypeId(package, "string"),
             parentId: customerClass.Id,
-            externalReference: "TestFolder/Domain/customer.json#/email"));
+            externalReference: "simple-customer.json.Email"));
         
         var invoiceClass = CreateClass(
             name: "Invoice",
             packageId: package.Id,
-            externalReference: "TestFolder/Domain/invoice.json#/",
+            externalReference: "invoice.json",
             specializationType: "Class",
             specializationTypeId: "04e12b51-ed12-42a3-9667-a6aa81bb6d10");
+        
+        invoiceClass.ChildElements.Add(CreateAttribute(
+            name: "Id",
+            typeId: GetTypeId(package, "string"),
+            parentId: invoiceClass.Id,
+            externalReference: "invoice.json.Id"));
         
         invoiceClass.ChildElements.Add(CreateAttribute(
             name: "InvoiceNumber",
             typeId: GetTypeId(package, "string"),
             parentId: invoiceClass.Id,
-            externalReference: "TestFolder/Domain/invoice.json#/invoiceNumber"));
+            externalReference: "invoice.json.InvoiceNumber"));
         
         invoiceClass.ChildElements.Add(CreateAttribute(
-            name: "TotalAmount",
+            name: "Amount",
             typeId: GetTypeId(package, "decimal"),
             parentId: invoiceClass.Id,
-            externalReference: "TestFolder/Domain/invoice.json#/totalAmount"));
+            externalReference: "invoice.json.Amount"));
         
         package.Classes.Add(customerClass);
         package.Classes.Add(invoiceClass);
@@ -191,7 +209,7 @@ public static class PackageModels
         var accountDto = CreateClass(
             name: "Account",
             packageId: package.Id,
-            externalReference: "TestFolder/Services/account.json#/",
+            externalReference: "account.json",
             specializationType: "DTO",
             specializationTypeId: "c2188e49-2989-43f8-b1a4-3263d56af4f7");
         
@@ -199,13 +217,13 @@ public static class PackageModels
             name: "AccountId",
             typeId: GetTypeId(package, "guid"),
             parentId: accountDto.Id,
-            externalReference: "TestFolder/Services/account.json#/accountId"));
+            externalReference: "account.json.accountId"));
         
         accountDto.ChildElements.Add(CreateAttribute(
             name: "AccountName",
             typeId: GetTypeId(package, "string"),
             parentId: accountDto.Id,
-            externalReference: "TestFolder/Services/account.json#/accountName"));
+            externalReference: "account.json.accountName"));
         
         package.Classes.Add(accountDto);
         return package;

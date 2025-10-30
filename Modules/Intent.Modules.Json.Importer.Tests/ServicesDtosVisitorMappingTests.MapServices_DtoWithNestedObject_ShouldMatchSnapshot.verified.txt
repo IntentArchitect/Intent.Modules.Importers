@@ -2,11 +2,11 @@
 
 DTO: AddressDto
   Id: Guid_1
-  ExternalReference: dto-with-nested-object.address
+  ExternalReference: dto-with-nested-object.json.address
   Children:
     DTO-Field: City
       Id: Guid_2
-      ExternalReference: dto-with-nested-object.address.city
+      ExternalReference: dto-with-nested-object.json.address.city
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -15,7 +15,7 @@ DTO: AddressDto
 
     DTO-Field: Street
       Id: Guid_4
-      ExternalReference: dto-with-nested-object.address.street
+      ExternalReference: dto-with-nested-object.json.address.street
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -24,7 +24,7 @@ DTO: AddressDto
 
     DTO-Field: ZipCode
       Id: Guid_5
-      ExternalReference: dto-with-nested-object.address.zipCode
+      ExternalReference: dto-with-nested-object.json.address.zipCode
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -38,7 +38,7 @@ DTO: DtoWithNestedObjectDto
   Children:
     DTO-Field: Address
       Id: Guid_7
-      ExternalReference: dto-with-nested-object.address
+      ExternalReference: dto-with-nested-object.json.address
       ParentFolderId: Guid_6
       TypeReference:
         TypeId: Guid_1
@@ -47,7 +47,7 @@ DTO: DtoWithNestedObjectDto
 
     DTO-Field: FirstName
       Id: Guid_8
-      ExternalReference: dto-with-nested-object.firstName
+      ExternalReference: dto-with-nested-object.json.firstName
       ParentFolderId: Guid_6
       TypeReference:
         TypeId: Guid_3
@@ -56,7 +56,7 @@ DTO: DtoWithNestedObjectDto
 
     DTO-Field: Id
       Id: Guid_9
-      ExternalReference: dto-with-nested-object.id
+      ExternalReference: dto-with-nested-object.json.id
       ParentFolderId: Guid_6
       TypeReference:
         TypeId: Guid_10

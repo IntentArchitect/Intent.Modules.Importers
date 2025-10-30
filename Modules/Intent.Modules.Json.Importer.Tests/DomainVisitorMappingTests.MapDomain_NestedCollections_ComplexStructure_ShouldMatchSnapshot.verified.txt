@@ -2,11 +2,11 @@
 
 Class: Category
   Id: Guid_1
-  ExternalReference: nested-collections.Categories[0]
+  ExternalReference: nested-collections.json.Categories[0]
   Children:
     Attribute: Name
       Id: Guid_2
-      ExternalReference: nested-collections.Categories[0].Name
+      ExternalReference: nested-collections.json.Categories[0].Name
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_3
@@ -20,7 +20,7 @@ Class: NestedCollections
   Children:
     Attribute: Id
       Id: Guid_5
-      ExternalReference: nested-collections.Id
+      ExternalReference: nested-collections.json.Id
       ParentFolderId: Guid_4
       TypeReference:
         TypeId: Guid_6
@@ -34,11 +34,11 @@ Class: NestedCollections
 
 Class: Product
   Id: Guid_8
-  ExternalReference: nested-collections.Categories[0].Products[0]
+  ExternalReference: nested-collections.json.Categories[0].Products[0]
   Children:
     Attribute: ProductId
       Id: Guid_9
-      ExternalReference: nested-collections.Categories[0].Products[0].ProductId
+      ExternalReference: nested-collections.json.Categories[0].Products[0].ProductId
       ParentFolderId: Guid_8
       TypeReference:
         TypeId: Guid_6
@@ -47,7 +47,7 @@ Class: Product
 
     Attribute: Title
       Id: Guid_10
-      ExternalReference: nested-collections.Categories[0].Products[0].Title
+      ExternalReference: nested-collections.json.Categories[0].Products[0].Title
       ParentFolderId: Guid_8
       TypeReference:
         TypeId: Guid_3
