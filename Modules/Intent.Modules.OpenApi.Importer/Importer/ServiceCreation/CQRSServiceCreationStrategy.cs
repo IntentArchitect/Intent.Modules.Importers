@@ -96,6 +96,11 @@ internal class CQRSServiceCreationStrategy : ServiceCreationStrategyBase
             {
                 serviceElement.TypeReference = GetIntentType(serviceDefinition.ReturnType, folder);
             }
+            else if (serviceDefinition.RestType == "get")
+            {
+                AddWarning(
+                    $"Query '{serviceDefinition.OperationName}' has no return type defined. Queries should return data. Please add a response schema to the OpenAPI specification.");
+            }
 
             AddParameters(
                 serviceDefinition,

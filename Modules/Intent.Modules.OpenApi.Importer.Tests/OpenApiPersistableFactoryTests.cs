@@ -222,6 +222,28 @@ public class OpenApiPersistableFactoryTests
         commandsAndQueries.ShouldNotBeEmpty("Should create Commands and Queries");
     }
 
+    [Fact]
+    public void GetPersistables_PetStore_CQRS_WarnsAboutQueryWithNoReturnType()
+    {
+        // Arrange
+        var factory = new OpenApiPersistableFactory();
+        using var stream = OpenApiSpecs.GetStream("pet-store.yaml");
+        var config = ImportConfigurations.CQRSMode();
+        var package = PackageModels.WithTypeDefinitions();
+        PackageModelPersistable[] packages = [package];
+
+        // Act
+        var result = factory.GetPersistables(stream, config, packages);
+
+        // Assert
+        var logoutQuery = result.Elements.FirstOrDefault(e => e.Name.Contains("Logout", StringComparison.OrdinalIgnoreCase));
+        logoutQuery.ShouldNotBeNull("LogoutUser query should be created");
+        logoutQuery.TypeReference.ShouldBeNull("LogoutUser query should have null type reference");
+        
+        factory.Warnings.ShouldContain(w => w.Contains(logoutQuery.Name) && w.Contains("no return type"), 
+            $"Should warn about {logoutQuery.Name} having no return type. Actual warnings: {string.Join("; ", factory.Warnings)}");
+    }
+
     public static IEnumerable<object[]> GetAllSpecifications()
     {
         yield return new object[] { "PetStore", "pet-store.yaml" };
