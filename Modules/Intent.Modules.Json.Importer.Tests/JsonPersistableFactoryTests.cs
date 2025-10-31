@@ -78,6 +78,22 @@ public class JsonPersistableFactoryTests
     }
 
     [Fact]
+    public void GetPersistables_DuplicateFilePaths_AreDeduplicated()
+    {
+        // Arrange
+        var package = PackageModels.WithDomainTypes();
+        var config = ImportConfigurations.DomainProfile(JsonDocuments.DomainFolder());
+        var userFile = Path.Combine(JsonDocuments.DomainFolder(), "user.json");
+
+        // Act
+        var result = JsonPersistableFactory.GetPersistables(config, [package], [userFile, userFile]);
+
+        // Assert
+        result.Elements.Count(e => string.Equals(e.ExternalReference, "user.json", StringComparison.OrdinalIgnoreCase))
+            .ShouldBe(1);
+    }
+
+    [Fact]
     public void GetPersistables_DomainProfile_AddsPrimaryKeyStereotypeToRootId()
     {
         // Arrange
@@ -302,5 +318,53 @@ public class JsonPersistableFactoryTests
         entity.ChildElements.ShouldContain(e => e.Name == "IsActive");
         entity.ChildElements.ShouldContain(e => e.Name == "Balance");
         entity.ChildElements.ShouldContain(e => e.Name == "CreatedAt");
+    }
+
+    [Fact]
+    public void GetPersistables_UserJsonWithIdentities_ShouldNotDuplicateFields()
+    {
+        // Arrange - This tests the DVT scenario where user.json has nested identities array
+        var package = PackageModels.WithDomainTypes();
+        var config = ImportConfigurations.DomainProfile(JsonDocuments.DomainFolder());
+
+        // Act
+        var result = JsonPersistableFactory.GetPersistables(
+            config,
+            [package],
+            [Path.Combine(JsonDocuments.DomainFolder(), "user.json")]);
+
+        // Assert
+        var userClass = result.Elements.FirstOrDefault(e => e.Name == "User");
+        userClass.ShouldNotBeNull("User class should be created");
+
+        // Check that each field appears exactly once
+        var fieldNames = userClass.ChildElements.Select(e => e.Name).ToList();
+        var duplicates = fieldNames.GroupBy(name => name)
+            .Where(g => g.Count() > 1)
+            .Select(g => $"{g.Key} (appears {g.Count()} times)")
+            .ToList();
+
+        duplicates.ShouldBeEmpty($"Found duplicate fields: {string.Join(", ", duplicates)}");
+
+        // Verify User class has the expected number of fields (8 primitive fields + 1 association to Identities)
+        // The association/relationship to Identities collection is represented differently in Domain vs Services
+        userClass.ChildElements.Count.ShouldBeGreaterThanOrEqualTo(8, "Should have at least 8 fields");
+        
+        // Check for some key fields to ensure structure is correct
+        fieldNames.ShouldContain("Email");
+        fieldNames.ShouldContain("Name");
+
+        // Verify the nested Identity class was created (it gets singularized from "identities")
+        var identityClass = result.Elements.FirstOrDefault(e => e.Name.Contains("Identity"));
+        identityClass.ShouldNotBeNull($"Identity class should be created for the nested identities array. Available classes: {string.Join(", ", result.Elements.Select(e => e.Name))}");
+        
+        // Verify Identity has its own fields (no duplicates)
+        var identityFieldNames = identityClass.ChildElements.Select(e => e.Name).ToList();
+        var identityDuplicates = identityFieldNames.GroupBy(name => name)
+            .Where(g => g.Count() > 1)
+            .Select(g => $"{g.Key} (appears {g.Count()} times)")
+            .ToList();
+
+        identityDuplicates.ShouldBeEmpty($"Found duplicate fields in {identityClass.Name}: {string.Join(", ", identityDuplicates)}");
     }
 }

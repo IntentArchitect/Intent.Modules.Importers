@@ -1,3 +1,4 @@
+using System.CommandLine;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.Modules.Common.Types.Api;
@@ -106,6 +107,7 @@ public static class PackageModels
         var package = WithDomainTypes();
         
         var customerClass = CreateClass(
+            id: "e1bb6425-a920-4c90-998f-209c259a6d18",
             name: "SimpleCustomer",
             packageId: package.Id,
             externalReference: "simple-customer.json",
@@ -114,18 +116,21 @@ public static class PackageModels
         
         // Add attributes that match simple customer JSON
         customerClass.ChildElements.Add(CreateAttribute(
+            id: "1aa164ce-7369-4991-a94d-25217c6a86f6",
             name: "Id",
             typeId: GetTypeId(package, "string"),
             parentId: customerClass.Id,
             externalReference: "simple-customer.json.Id"));
         
         customerClass.ChildElements.Add(CreateAttribute(
+            id: "af83e34c-8cc6-4750-96cd-6bf31bc731ed",
             name: "Name",
             typeId: GetTypeId(package, "string"),
             parentId: customerClass.Id,
             externalReference: "simple-customer.json.Name"));
         
         customerClass.ChildElements.Add(CreateAttribute(
+            id: "f4c404cc-59d7-489c-b98e-1f24d5586728",
             name: "Email",
             typeId: GetTypeId(package, "string"),
             parentId: customerClass.Id,
@@ -139,59 +144,49 @@ public static class PackageModels
     /// Creates a domain package with an existing customer class at the specified path.
     /// This is used for testing re-import scenarios where the import file path must match
     /// the ExternalReference of the existing package model elements.
-    /// The method creates the necessary folder hierarchy to match the import structure.
     /// </summary>
-    public static PackageModelPersistable WithExistingCustomerFromPath(string filePath)
+    private static PackageModelPersistable WithExistingCustomerFromPath(string folderName)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(folderName);
+        
         var package = WithDomainTypes();
+
+        string filePath = $"{folderName}/simple-customer.json";
         
-        // Extract directory path and create folder hierarchy if needed
-        var directoryPath = Path.GetDirectoryName(filePath)?.Replace('\\', '/');
-        string? parentFolderId = null;
-        
-        if (!string.IsNullOrEmpty(directoryPath) && directoryPath != ".")
-        {
-            // Create folder structure (e.g., "ExtraProperty" or "MissingProperty")
-            var pathParts = directoryPath.Split('/', StringSplitOptions.RemoveEmptyEntries);
-            var currentPath = "";
-            
-            foreach (var folderName in pathParts)
-            {
-                currentPath = string.IsNullOrEmpty(currentPath) ? folderName : $"{currentPath}/{folderName}";
-                
-                var folder = ElementPersistable.Create(
-                    specializationType: "Folder",
-                    specializationTypeId: "4d95d53a-8855-4f35-aa82-e312643f5c5f",
-                    name: folderName,
-                    parentId: parentFolderId ?? package.Id,
-                    externalReference: $"folder:{currentPath}");
-                
-                package.Classes.Add(folder);
-                parentFolderId = folder.Id;
-            }
-        }
+        var folder = ElementPersistable.Create(
+            specializationType: "Folder",
+            specializationTypeId: "4d95d53a-8855-4f35-aa82-e312643f5c5f",
+            name: folderName,
+            parentId: package.Id,
+            externalReference: $"folder:Customers");
+        folder.Id = "b6a156be-19c5-476a-83fd-ca6ddd76c3b5";
+        package.Classes.Add(folder);
         
         var customerClass = CreateClass(
+            id: "ef412c0e-1575-43b1-85bf-2ae6852e650d",
             name: "SimpleCustomer",
-            packageId: parentFolderId ?? package.Id,
+            packageId: folder.Id,
             externalReference: filePath,
             specializationType: "Class",
             specializationTypeId: "04e12b51-ed12-42a3-9667-a6aa81bb6d10");
         
         // Add attributes that match simple customer JSON
         customerClass.ChildElements.Add(CreateAttribute(
+            id: "b5a03fe8-bbeb-41d2-aa90-54df772a79ff",
             name: "Id",
             typeId: GetTypeId(package, "string"),
             parentId: customerClass.Id,
             externalReference: $"{filePath}.Id"));
         
         customerClass.ChildElements.Add(CreateAttribute(
+            id: "47293caa-3905-45fd-a525-97288eb14534",
             name: "Name",
             typeId: GetTypeId(package, "string"),
             parentId: customerClass.Id,
             externalReference: $"{filePath}.Name"));
         
         customerClass.ChildElements.Add(CreateAttribute(
+            id: "d009819d-af3c-4686-8cde-25e465e4724f",
             name: "Email",
             typeId: GetTypeId(package, "string"),
             parentId: customerClass.Id,
@@ -199,6 +194,16 @@ public static class PackageModels
         
         package.Classes.Add(customerClass);
         return package;
+    }
+
+    public static PackageModelPersistable WithExistingCustomerWithExtraPropertyFromPath()
+    {
+        return WithExistingCustomerFromPath("ExtraProperty");
+    }
+    
+    public static PackageModelPersistable WithExistingCustomerWithMissingPropertyFromPath()
+    {
+        return WithExistingCustomerFromPath("MissingProperty");
     }
 
     /// <summary>
@@ -210,6 +215,7 @@ public static class PackageModels
         var package = WithDomainTypes();
         
         var customerClass = CreateClass(
+            id: "7aba8b08-45fc-4f4c-b0fe-5767ed212ed3",
             name: "SimpleCustomer",
             packageId: package.Id,
             externalReference: "simple-customer.json",
@@ -217,24 +223,28 @@ public static class PackageModels
             specializationTypeId: "04e12b51-ed12-42a3-9667-a6aa81bb6d10");
         
         customerClass.ChildElements.Add(CreateAttribute(
+            id: "56b7a24d-defc-497f-9fe9-904fd62f46cf",
             name: "Id",
             typeId: GetTypeId(package, "string"),
             parentId: customerClass.Id,
             externalReference: "simple-customer.json.Id"));
         
         customerClass.ChildElements.Add(CreateAttribute(
+            id: "f09d3895-61f0-462e-a209-a9d2f5f73018",
             name: "Name",
             typeId: GetTypeId(package, "string"),
             parentId: customerClass.Id,
             externalReference: "simple-customer.json.Name"));
         
         customerClass.ChildElements.Add(CreateAttribute(
+            id: "18e73681-56d7-44b1-814e-68c816afd216",
             name: "Email",
             typeId: GetTypeId(package, "string"),
             parentId: customerClass.Id,
             externalReference: "simple-customer.json.Email"));
         
         var invoiceClass = CreateClass(
+            id: "3d343600-2a02-4a0c-a92a-69a0dd4432f4",
             name: "Invoice",
             packageId: package.Id,
             externalReference: "invoice.json",
@@ -242,18 +252,21 @@ public static class PackageModels
             specializationTypeId: "04e12b51-ed12-42a3-9667-a6aa81bb6d10");
         
         invoiceClass.ChildElements.Add(CreateAttribute(
+            id: "0c8f3068-8918-4a6e-864e-2db25f846148",
             name: "Id",
             typeId: GetTypeId(package, "string"),
             parentId: invoiceClass.Id,
             externalReference: "invoice.json.Id"));
         
         invoiceClass.ChildElements.Add(CreateAttribute(
+            id: "50642e0b-b87c-4492-a4c1-3d304179e080",
             name: "InvoiceNumber",
             typeId: GetTypeId(package, "string"),
             parentId: invoiceClass.Id,
             externalReference: "invoice.json.InvoiceNumber"));
         
         invoiceClass.ChildElements.Add(CreateAttribute(
+            id: "fca00259-4fde-4013-ae48-216667751b6d",
             name: "Amount",
             typeId: GetTypeId(package, "decimal"),
             parentId: invoiceClass.Id,
@@ -273,6 +286,7 @@ public static class PackageModels
         var package = WithServicesTypes();
         
         var accountDto = CreateClass(
+            id: "b0b86a5f-251b-43a7-9d46-8098466e5f2a",
             name: "Account",
             packageId: package.Id,
             externalReference: "account.json",
@@ -280,12 +294,14 @@ public static class PackageModels
             specializationTypeId: "c2188e49-2989-43f8-b1a4-3263d56af4f7");
         
         accountDto.ChildElements.Add(CreateAttribute(
+            id: "8b86daf2-2915-4006-b9d5-fbf13f5caa95",
             name: "AccountId",
             typeId: GetTypeId(package, "guid"),
             parentId: accountDto.Id,
             externalReference: "account.json.accountId"));
         
         accountDto.ChildElements.Add(CreateAttribute(
+            id: "1fe08e9b-66f7-4ad4-be62-fd4bab3bd58f",
             name: "AccountName",
             typeId: GetTypeId(package, "string"),
             parentId: accountDto.Id,
@@ -296,6 +312,7 @@ public static class PackageModels
     }
 
     private static ElementPersistable CreateClass(
+        string id,
         string name,
         string packageId,
         string externalReference,
@@ -308,7 +325,8 @@ public static class PackageModels
             name: name,
             parentId: packageId,
             externalReference: externalReference);
-        
+
+        classElement.Id = id;
         classElement.PackageId = packageId;
         classElement.ChildElements = new List<ElementPersistable>();
         
@@ -316,6 +334,7 @@ public static class PackageModels
     }
 
     private static ElementPersistable CreateAttribute(
+        string id,
         string name,
         string typeId,
         string parentId,
@@ -327,6 +346,7 @@ public static class PackageModels
             name: name,
             parentId: parentId,
             externalReference: externalReference);
+        attribute.Id = id;
         
         attribute.TypeReference = new TypeReferencePersistable
         {

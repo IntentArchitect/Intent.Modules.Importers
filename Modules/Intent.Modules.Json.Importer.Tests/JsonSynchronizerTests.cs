@@ -47,7 +47,7 @@ public class JsonSynchronizerTests
     public void Synchronize_NewPropertyAdded_AddsNewAttribute()
     {
         // Arrange - Create package with customer that has ExternalReference matching the import file path
-        var package = PackageModels.WithExistingCustomerFromPath("ExtraProperty/simple-customer.json");
+        var package = PackageModels.WithExistingCustomerWithExtraPropertyFromPath();
         var customerClassBefore = GetClasses(package).Single(c => c.Name == "SimpleCustomer");
         customerClassBefore.ChildElements.Count.ShouldBe(3, "Should start with 3 attributes");
         
@@ -73,7 +73,7 @@ public class JsonSynchronizerTests
     public void Synchronize_PropertyRemovedWithoutDeleteExtra_KeepsAttribute()
     {
         // Arrange - Create package with customer that has ExternalReference matching the import file path
-        var package = PackageModels.WithExistingCustomerFromPath("MissingProperty/simple-customer.json");
+        var package = PackageModels.WithExistingCustomerWithMissingPropertyFromPath();
         var customerClassBefore = GetClasses(package).Single(c => c.Name == "SimpleCustomer");
         customerClassBefore.ChildElements.Count.ShouldBe(3);
         
@@ -99,7 +99,7 @@ public class JsonSynchronizerTests
     public void Synchronize_PropertyRemovedWithDeleteExtra_RemovesAttribute()
     {
         // Arrange - Create package with customer that has ExternalReference matching the import file path
-        var package = PackageModels.WithExistingCustomerFromPath("MissingProperty/simple-customer.json");
+        var package = PackageModels.WithExistingCustomerWithMissingPropertyFromPath();
         var customerClassBefore = GetClasses(package).Single(c => c.Name == "SimpleCustomer");
         customerClassBefore.ChildElements.Count.ShouldBe(3);
         
@@ -145,6 +145,130 @@ public class JsonSynchronizerTests
         classes.Count.ShouldBe(2, "Should now have 2 classes");
         classes.ShouldContain(c => c.Name == "SimpleCustomer");
         classes.ShouldContain(c => c.Name == "Product");
+    }
+
+    [Fact]
+    public void Synchronize_ReimportSameFileTwice_ShouldNotThrowDuplicateKeyException()
+    {
+        // Arrange - This might be what's happening in the DVT scenario
+        var package = PackageModels.WithDomainTypes();
+        var config = ImportConfigurations.DomainProfile(JsonDocuments.DomainFolder());
+
+        var userFile = Path.Combine(JsonDocuments.DomainFolder(), "user.json");
+
+        // Act - Import the same file twice (simulating a re-import scenario)
+        var exception = Record.Exception(() =>
+        {
+            // First import
+            var persistables1 = JsonPersistableFactory.GetPersistables(
+                config,
+                [package],
+                [userFile]);
+
+            Synchronizer.Execute(
+                targetPackage: package,
+                parentFolderId: package.Id,
+                persistables: persistables1,
+                deleteExtra: false,
+                createAttributesWithUnknownTypes: true,
+                stereotypeManagementMode: StereotypeManagementMode.Merge);
+
+            // Second import of the same file - this is where the error might occur
+            var persistables2 = JsonPersistableFactory.GetPersistables(
+                config,
+                [package],
+                [userFile]);
+
+            Synchronizer.Execute(
+                targetPackage: package,
+                parentFolderId: package.Id,
+                persistables: persistables2,
+                deleteExtra: false,
+                createAttributesWithUnknownTypes: true,
+                stereotypeManagementMode: StereotypeManagementMode.Merge);
+        });
+
+        // Assert
+        exception.ShouldBeNull("Should not throw duplicate key exception when reimporting the same file");
+    }
+
+    [Fact]
+    public void Import_SameFileInListTwice_ShouldDeduplicateAndNotThrow()
+    {
+        // Arrange - This tests if the file is accidentally in the list twice
+        var package = PackageModels.WithDomainTypes();
+        var config = ImportConfigurations.DomainProfile(JsonDocuments.DomainFolder());
+
+        var userFile = Path.Combine(JsonDocuments.DomainFolder(), "user.json");
+
+        // Act - Pass the same file twice in the list (this should be deduplicated)
+        var exception = Record.Exception(() =>
+        {
+            var persistables = JsonPersistableFactory.GetPersistables(
+                config,
+                [package],
+                [userFile, userFile]); // Same file twice!
+
+            Synchronizer.Execute(
+                targetPackage: package,
+                parentFolderId: package.Id,
+                persistables: persistables,
+                deleteExtra: false,
+                createAttributesWithUnknownTypes: true,
+                stereotypeManagementMode: StereotypeManagementMode.Merge);
+        });
+
+        // Assert
+        exception.ShouldBeNull("Should deduplicate files and not throw duplicate key exception");
+    }
+
+    [Fact]
+    public void Synchronize_UserJsonWithIdentities_ShouldNotDuplicateFields()
+    {
+        // Arrange - This tests the DVT scenario
+        var package = PackageModels.WithDomainTypes();
+        var config = ImportConfigurations.DomainProfile(JsonDocuments.DomainFolder());
+
+        var userFile = Path.Combine(JsonDocuments.DomainFolder(), "user.json");
+
+        // Act
+        var persistables = JsonPersistableFactory.GetPersistables(
+            config,
+            [package],
+            [userFile]);
+
+        Synchronizer.Execute(
+            targetPackage: package,
+            parentFolderId: package.Id,
+            persistables: persistables,
+            deleteExtra: false,
+            createAttributesWithUnknownTypes: true,
+            stereotypeManagementMode: StereotypeManagementMode.Merge);
+
+        // Assert - Check for duplicate fields in User class
+        var userClass = GetClasses(package).FirstOrDefault(c => c.Name == "User");
+        userClass.ShouldNotBeNull("User class should exist after import");
+
+        var fieldNames = userClass.ChildElements.Select(e => e.Name).ToList();
+        var duplicates = fieldNames.GroupBy(name => name)
+            .Where(g => g.Count() > 1)
+            .Select(g => $"{g.Key} (appears {g.Count()} times)")
+            .ToList();
+
+        duplicates.ShouldBeEmpty($"Found duplicate fields in User class: {string.Join(", ", duplicates)}");
+
+        // Also check the Identity class
+        var identityClass = GetClasses(package).FirstOrDefault(c => c.Name.Contains("Identity"));
+        if (identityClass != null)
+        {
+            var identityFieldNames = identityClass.ChildElements.Select(e => e.Name).ToList();
+            var identityDuplicates = identityFieldNames.GroupBy(name => name)
+                .Where(g => g.Count() > 1)
+                .Select(g => $"{g.Key} (appears {g.Count()} times)")
+                .ToList();
+
+            identityDuplicates.ShouldBeEmpty($"Found duplicate fields in {identityClass.Name}: {string.Join(", ", identityDuplicates)}");
+        }
     }
 
     private static IEnumerable<ElementPersistable> GetClasses(PackageModelPersistable package) =>

@@ -39,9 +39,9 @@ public static class JsonPersistableFactory
         IReadOnlyCollection<PackageModelPersistable> packages,
         IReadOnlyCollection<string>? selectedFiles)
     {
-        // Resolve profile strategy
-        var visitor = ProfileFactory.GetVisitorForProfile(config.Profile);
-        var lookups = new MetadataLookup(packages);
+    // Resolve profile strategy
+    var visitor = ProfileFactory.GetVisitorForProfile(config.Profile);
+    var lookups = new MetadataLookup(packages);
         if (!lookups.TryGetTypeDefinitionByName("bool", 0, out var boolType)) throw new Exception();
         if (!lookups.TryGetTypeDefinitionByName("object", 0, out var objectType)) throw new Exception();
         if (!lookups.TryGetTypeDefinitionByName("string", 0, out var stringType)) throw new Exception();
@@ -65,16 +65,22 @@ public static class JsonPersistableFactory
         var createdFolders = new Dictionary<string, ElementPersistable>(); // Track created folders by relative path
 
         // Determine which files to process
+        var sourceFolder = Path.GetFullPath(config.SourceJsonFolder);
         IEnumerable<string> filesToProcess;
         if (selectedFiles != null)
         {
-            // Use the provided selected files
-            filesToProcess = selectedFiles.Where(File.Exists);
+            // Use the provided selected files (deduplicated by full path)
+            filesToProcess = selectedFiles
+                .Where(File.Exists)
+                .Select(Path.GetFullPath)
+                .Distinct(StringComparer.OrdinalIgnoreCase);
         }
         else
         {
             // Default behavior: scan all JSON files in the source folder
-            filesToProcess = Directory.GetFiles(config.SourceJsonFolder, "*.json");
+            filesToProcess = Directory.GetFiles(sourceFolder, "*.json")
+                .Select(Path.GetFullPath)
+                .Distinct(StringComparer.OrdinalIgnoreCase);
         }
 
         foreach (var jsonFile in filesToProcess)
@@ -87,7 +93,7 @@ public static class JsonPersistableFactory
             var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(jsonFile);
 
             // Calculate relative path from source folder and create folder structure
-            var relativePath = Path.GetRelativePath(config.SourceJsonFolder, jsonFile);
+            var relativePath = Path.GetRelativePath(sourceFolder, jsonFile);
             var directoryPath = Path.GetDirectoryName(relativePath);
 
             string? parentFolderId = null;

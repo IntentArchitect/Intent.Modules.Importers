@@ -19,13 +19,8 @@ namespace Intent.MetadataSynchronizer
             bool createAttributesWithUnknownTypes,
             StereotypeManagementMode stereotypeManagementMode)
         {
-            // Flatten the incoming elements hierarchy so MetadataLookup can index all elements (including children)
-            var allIncomingElements = persistables.Elements.SelectMany(GetAllElements).ToArray();
-            var incomingLookup = new MetadataLookup(allIncomingElements, persistables.Associations);
-            
-            // Create packageLookup with ALL existing elements (including children) so they can be matched by ExternalReference
-            var allPackageElements = targetPackage.GetAllElements().ToArray();
-            var packageLookup = new MetadataLookup(allPackageElements, (IReadOnlyCollection<AssociationPersistable>)targetPackage.Associations);
+            var incomingLookup = new MetadataLookup(persistables.Elements, persistables.Associations);
+            var packageLookup = new MetadataLookup(targetPackage.Classes.ToArray(), targetPackage.Associations.ToArray());
             
             var idMap = new Dictionary<string, string>();
             var matchedIds = new HashSet<string>();
@@ -50,17 +45,8 @@ namespace Intent.MetadataSynchronizer
                     stereotypeManagementMode: stereotypeManagementMode,
                     addToParent: element =>
                     {
-                        // Check if element already exists in packageLookup (by Id or ExternalReference)
                         if (packageLookup.TryGetElementById(element.Id, out _))
                         {
-                            Log.Debug(Indentation.Get() + "Skipping add for {Name} ({ExternalReference}) - Id already present", element.Name, element.ExternalReference);
-                            return;
-                        }
-                        
-                        // If the ExternalReference already exists in packageLookup, skip adding (prevents duplicate key exception)
-                        if (packageLookup.ContainsExternalReference(element.ExternalReference))
-                        {
-                            Log.Debug(Indentation.Get() + "Skipping add for {Name} ({ExternalReference}) - reference already present", element.Name, element.ExternalReference);
                             return;
                         }
 
@@ -77,6 +63,13 @@ namespace Intent.MetadataSynchronizer
                         if (!packageLookup.TryGetElementById(idMap[element.ParentFolderId], out var parentElement))
                         {
                             throw new Exception("Unable to locate parent element.");
+                        }
+
+                        // Check if element is already a child to avoid duplicates
+                        if (parentElement.ChildElements.Any(c => c.Id == element.Id))
+                        {
+                            Log.Debug(Indentation.Get() + "Element already exists as child of {ParentName}: {Name} ({ExternalReference})", parentElement.Name, element.Name, element.ExternalReference);
+                            return;
                         }
 
                         Log.Debug(Indentation.Get() + "Adding element under parent {ParentName}: {Name} ({ExternalReference})", parentElement.Name, element.Name, element.ExternalReference);
@@ -356,7 +349,6 @@ namespace Intent.MetadataSynchronizer
                         incomingElement.SpecializationTypeId,
                         out var packageElement))
                 {
-                    Log.Debug(Indentation.Get() + "Matched element by reference: {Name} ({ExternalReference})", incomingElement.Name, incomingElement.ExternalReference);
                     return packageElement;
                 }
 
@@ -366,12 +358,10 @@ namespace Intent.MetadataSynchronizer
                                           x.SpecializationTypeId == incomingElement.SpecializationTypeId);
                 if (packageElement != null)
                 {
-                    Log.Debug(Indentation.Get() + "Matched element by name: {Name} ({ExternalReference})", incomingElement.Name, incomingElement.ExternalReference);
                     packageElement.ExternalReference = incomingElement.ExternalReference;
                     return packageElement;
                 }
 
-                Log.Debug(Indentation.Get() + "Adding new element: {Name} ({ExternalReference})", incomingElement.Name, incomingElement.ExternalReference);
                 addToParent(incomingElement);
                 return incomingElement;
             }
@@ -424,7 +414,8 @@ namespace Intent.MetadataSynchronizer
             IEnumerable<AssociationPersistable> incomingAssociations,
             IReadOnlyDictionary<string, string> idMap)
         {
-            foreach (var element in incomingElements)
+            // Recursively remap all elements including their children
+            void RemapElement(ElementPersistable element)
             {
                 if (idMap.ContainsKey(element.Id))
                 {
@@ -437,6 +428,17 @@ namespace Intent.MetadataSynchronizer
                 }
 
                 ReMapTypeReference(element.TypeReference);
+
+                // Recursively process child elements
+                foreach (var child in element.ChildElements)
+                {
+                    RemapElement(child);
+                }
+            }
+
+            foreach (var element in incomingElements)
+            {
+                RemapElement(element);
             }
 
             foreach (var association in incomingAssociations)
@@ -497,18 +499,6 @@ namespace Intent.MetadataSynchronizer
                 var incomingGenericTypeParameter = incoming.GenericTypeParameters[index];
                 package.GenericTypeParameters[index] ??= incomingGenericTypeParameter;
                 SynchronizeTypeReference(incomingGenericTypeParameter, package.GenericTypeParameters[index]);
-            }
-        }
-
-        private static IEnumerable<ElementPersistable> GetAllElements(ElementPersistable element)
-        {
-            yield return element;
-            foreach (var child in element.ChildElements)
-            {
-                foreach (var descendant in GetAllElements(child))
-                {
-                    yield return descendant;
-                }
             }
         }
     }

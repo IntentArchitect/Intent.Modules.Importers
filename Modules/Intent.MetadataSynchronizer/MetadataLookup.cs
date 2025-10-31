@@ -27,7 +27,22 @@ public class MetadataLookup
         IReadOnlyCollection<ElementPersistable> elements,
         IReadOnlyCollection<AssociationPersistable> associations)
     {
-        Index(elements, associations);
+        // Flatten elements to include all nested children for proper indexing by ExternalReference
+        var allElements = FlattenElements(elements);
+        Index(allElements, associations);
+    }
+
+    private static IEnumerable<ElementPersistable> FlattenElements(IEnumerable<ElementPersistable> elements)
+    {
+        foreach (var element in elements)
+        {
+            yield return element;
+
+            foreach (var childElement in FlattenElements(element.ChildElements))
+            {
+                yield return childElement;
+            }
+        }
     }
 
     private void Index(
@@ -66,6 +81,12 @@ public class MetadataLookup
                 grouping => grouping.Key ?? string.Empty,
                 grouping => (IReadOnlyCollection<ElementPersistable>)grouping.ToArray());
 
+        var temp = _elementsById.Values
+            .Where(x => !string.IsNullOrWhiteSpace(x.ExternalReference))
+            .Select(x => new { x.SpecializationType, x.Name, x.ExternalReference, x.Id })
+            .GroupBy(g => g.ExternalReference)
+            .ToArray();
+        
         _elementsByReference = _elementsById.Values
             .Where(x => !string.IsNullOrWhiteSpace(x.ExternalReference))
             .ToDictionary(x => x.ExternalReference);

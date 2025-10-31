@@ -28,12 +28,13 @@ internal sealed class EventingMessagesVisitor : IJsonElementVisitor
         var attrSpec = owner.SpecializationTypeId == "544f1d57-27ce-4985-a4ec-cc01568d72b0" ? "Eventing DTO-Field" : "Property";
         var attrSpecId = owner.SpecializationTypeId == "544f1d57-27ce-4985-a4ec-cc01568d72b0" ? "93eea5d7-a6a6-4fb8-9c87-d2e4c913fbe7" : "bde29850-5fb9-4f47-9941-b9e182fd9bdc";
 
+        // Eventing DTO-Field should have a unique ExternalReference that includes the source path to avoid collisions
         var ownerProperty = ElementPersistable.Create(
             specializationType: attrSpec,
             specializationTypeId: attrSpecId,
             name: Utils.Casing(config, property.Name),
             parentId: owner.Id,
-            externalReference: targetPath);
+            externalReference: $"{sourcePath}.{property.Name}");
 
         ownerProperty.TypeReference = TypeReferencePersistable.Create(
             typeId: compositeElement.Id,

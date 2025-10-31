@@ -24,7 +24,7 @@ DTO: DtoWithCollectionDto
 
     DTO-Field: PhoneNumbers
       Id: Guid_6
-      ExternalReference: dto-with-collection.json.phoneNumbers[0]
+      ExternalReference: dto-with-collection.json.phoneNumbers
       ParentFolderId: Guid_1
       TypeReference:
         TypeId: Guid_7

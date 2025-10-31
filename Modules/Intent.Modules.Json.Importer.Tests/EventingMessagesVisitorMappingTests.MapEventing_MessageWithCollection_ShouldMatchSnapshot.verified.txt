@@ -65,7 +65,7 @@ Message: MessageWithCollection
 
     Property: Orders
       Id: Guid_13
-      ExternalReference: message-with-collection.json.Orders[0]
+      ExternalReference: message-with-collection.json.Orders
       ParentFolderId: Guid_8
       TypeReference:
         TypeId: Guid_1
