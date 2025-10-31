@@ -25,13 +25,13 @@ internal sealed class ServicesDtosVisitor : IJsonElementVisitor
             parentId: parentFolderId,
             externalReference: targetPath);
 
-        // DTO-Field should have a unique ExternalReference that includes the source path to avoid collisions
+        // DTO-Field should have a unique ExternalReference with #field suffix to distinguish from the nested DTO class
         var ownerProperty = ElementPersistable.Create(
             specializationType: "DTO-Field",
             specializationTypeId: "7baed1fd-469b-4980-8fd9-4cefb8331eb2",
             name: Utils.Casing(config, property.Name),
             parentId: owner.Id,
-            externalReference: $"{sourcePath}.{property.Name}");
+            externalReference: $"{targetPath}#field");
 
         ownerProperty.TypeReference = TypeReferencePersistable.Create(
             typeId: compositeElement.Id,

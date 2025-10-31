@@ -38,7 +38,7 @@ Message: MessageWithNestedDto
 
     Property: OrderDetails
       Id: Guid_8
-      ExternalReference: message-with-nested-dto.json.OrderDetails
+      ExternalReference: message-with-nested-dto.json.OrderDetails#field
       ParentFolderId: Guid_6
       TypeReference:
         TypeId: Guid_1

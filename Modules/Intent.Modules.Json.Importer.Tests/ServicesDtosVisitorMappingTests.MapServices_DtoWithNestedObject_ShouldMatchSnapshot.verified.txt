@@ -38,7 +38,7 @@ DTO: DtoWithNestedObjectDto
   Children:
     DTO-Field: Address
       Id: Guid_7
-      ExternalReference: dto-with-nested-object.json.address
+      ExternalReference: dto-with-nested-object.json.address#field
       ParentFolderId: Guid_6
       TypeReference:
         TypeId: Guid_1

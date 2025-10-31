@@ -62,7 +62,9 @@ Type inference rules used by the importer:
 
 ### `DomainDocumentDB` Profile
 
-When using the `DomainDocumentDB` profile, each `.json` file is treated as a definition for a `Entity` in the `Domain Designer`. The filename (without the extension) is used as the name of the `Entity`. The JSON object's properties are imported as `Attributes` on that `Entity`.
+Operating in a DocumentDB technology stack (CosmosDB, MongoDB, etc.) and wanting to import JSON elements into the domain designer, use the `DomainDocumentDB` profile.
+
+Each `.json` file is treated as a definition for a `Entity` in the `Domain Designer`. The filename (without the extension) is used as the name of the `Entity`. The JSON object's properties are imported as `Attributes` on that `Entity`.
 
 Nested JSON objects will be modeled as separate `Entities` with composite (has-a) relationships between them. Arrays of objects will result in a composite relationship with a `many` cardinality.
 
