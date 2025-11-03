@@ -19,6 +19,7 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
             builder.Property(x => x.Fktableid)
                 .HasColumnName("fktableid")
                 .HasColumnType("int4")
+                .HasDefaultValueSql("nextval('fktable_fktableid_seq'::regclass)")
                 .ValueGeneratedOnAdd();
 
             builder.Property(x => x.Name)

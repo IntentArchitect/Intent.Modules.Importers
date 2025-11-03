@@ -8,6 +8,7 @@ namespace TestDataGenerator.Domain.ValueObjects
 {
     public class Money : ValueObject
     {
+        [IntentMerge]
         protected Money()
         {
             Currency = null!;
