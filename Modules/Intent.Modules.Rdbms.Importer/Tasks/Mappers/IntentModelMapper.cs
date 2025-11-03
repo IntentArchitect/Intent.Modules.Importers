@@ -662,6 +662,8 @@ internal static class IntentModelMapper
                 ? $"{targetName}Reference" 
                 : targetName;
 
+            var finalSourceName = isOneToOne ? sourceTable.Name.Singularize() : sourceTable.Name.Pluralize();
+
             var associationId = Guid.NewGuid().ToString();
             var newAssociation = new AssociationPersistable
             {
@@ -673,6 +675,8 @@ internal static class IntentModelMapper
                 {
                     Id = associationId, // Keep same as association ID for target end
                     Name = finalTargetName,
+                    SpecializationType = AssociationTargetEndModel.SpecializationType,
+                    SpecializationTypeId = AssociationTargetEndModel.SpecializationTypeId,
                     TypeReference = new TypeReferencePersistable
                     {
                         Id = Guid.NewGuid().ToString(),
@@ -687,6 +691,9 @@ internal static class IntentModelMapper
                 SourceEnd = new AssociationEndPersistable
                 {
                     Id = Guid.NewGuid().ToString(),
+                    Name = finalSourceName,
+                    SpecializationType = AssociationSourceEndModel.SpecializationType,
+                    SpecializationTypeId = AssociationSourceEndModel.SpecializationTypeId,
                     TypeReference = new TypeReferencePersistable
                     {
                         Id = Guid.NewGuid().ToString(),

@@ -1795,6 +1795,7 @@
       {
         ExternalReference: [dbo].[aspnetroleclaims].[fk_aspnetroleclaims_aspnetroles],
         Source: {
+          Name: AspNetRoleClaims,
           TypeReference: {
             TypeId: Guid_24,
             ResolvedName: AspNetRoleClaim,
@@ -1822,6 +1823,7 @@
       {
         ExternalReference: [dbo].[aspnetuserclaims].[fk_aspnetuserclaims_aspnetusers],
         Source: {
+          Name: AspNetUserClaims,
           TypeReference: {
             TypeId: Guid_26,
             ResolvedName: AspNetUserClaim,
@@ -1849,6 +1851,7 @@
       {
         ExternalReference: [dbo].[aspnetuserlogins].[fk_aspnetuserlogins_aspnetusers],
         Source: {
+          Name: AspNetUserLogins,
           TypeReference: {
             TypeId: Guid_28,
             ResolvedName: AspNetUserLogin,
@@ -1876,6 +1879,7 @@
       {
         ExternalReference: [dbo].[aspnetuserroles].[fk_aspnetuserroles_aspnetroles],
         Source: {
+          Name: AspNetUserRoles,
           TypeReference: {
             TypeId: Guid_29,
             ResolvedName: AspNetUserRole,
@@ -1903,6 +1907,7 @@
       {
         ExternalReference: [dbo].[aspnetuserroles].[fk_aspnetuserroles_aspnetusers],
         Source: {
+          Name: AspNetUserRoles,
           TypeReference: {
             TypeId: Guid_29,
             ResolvedName: AspNetUserRole,
@@ -1930,6 +1935,7 @@
       {
         ExternalReference: [dbo].[aspnetusertokens].[fk_aspnetusertokens_aspnetusers],
         Source: {
+          Name: AspNetUserTokens,
           TypeReference: {
             TypeId: Guid_30,
             ResolvedName: AspNetUserToken,

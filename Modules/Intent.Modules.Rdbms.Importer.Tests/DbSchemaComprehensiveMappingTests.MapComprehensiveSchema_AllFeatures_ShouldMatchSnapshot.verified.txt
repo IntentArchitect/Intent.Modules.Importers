@@ -702,6 +702,7 @@
       {
         ExternalReference: [dbo].[orders].[fk_orders_customers],
         Source: {
+          Name: Orders,
           TypeReference: {
             TypeId: Guid_25,
             ResolvedName: Order,

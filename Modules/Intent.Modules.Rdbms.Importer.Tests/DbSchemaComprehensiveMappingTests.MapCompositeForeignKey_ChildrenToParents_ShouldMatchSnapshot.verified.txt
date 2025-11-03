@@ -330,6 +330,7 @@
       {
         ExternalReference: [dbo].[children].[fk_children_parents],
         Source: {
+          Name: Children,
           TypeReference: {
             TypeId: Guid_14,
             ResolvedName: Child,
