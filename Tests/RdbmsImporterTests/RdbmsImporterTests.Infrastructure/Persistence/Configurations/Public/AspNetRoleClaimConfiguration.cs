@@ -18,7 +18,7 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
 
             builder.Property(x => x.Id)
                 .HasColumnType("int4")
-                .HasDefaultValueSql("nextval('"AspNetRoleClaims_Id_seq"'::regclass)")
+                .HasDefaultValueSql("nextval('\"AspNetRoleClaims_Id_seq\"'::regclass)")
                 .ValueGeneratedOnAdd();
 
             builder.Property(x => x.RoleId)

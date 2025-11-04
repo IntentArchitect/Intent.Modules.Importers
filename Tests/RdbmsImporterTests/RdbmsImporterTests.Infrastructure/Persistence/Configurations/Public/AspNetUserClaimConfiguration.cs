@@ -10,7 +10,7 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
 {
     public class AspNetUserClaimConfiguration : IEntityTypeConfiguration<AspNetUserClaim>
     {
-        public void Configure(EntityTypeBuilder<AspNetUserClaim> builder)
+        public void Configure(EntityTypeBuilder<AspNetUserClaim> builder)   
         {
             builder.ToTable("AspNetUserClaims", "public");
 
@@ -18,7 +18,7 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
 
             builder.Property(x => x.Id)
                 .HasColumnType("int4")
-                .HasDefaultValueSql("nextval('"AspNetUserClaims_Id_seq"'::regclass)")
+                .HasDefaultValueSql("nextval('\"AspNetUserClaims_Id_seq\"'::regclass)")
                 .ValueGeneratedOnAdd();
 
             builder.Property(x => x.UserId)

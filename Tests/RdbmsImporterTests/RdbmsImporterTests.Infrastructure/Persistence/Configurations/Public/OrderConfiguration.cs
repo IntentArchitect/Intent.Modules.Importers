@@ -31,12 +31,12 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
                 .IsRequired()
                 .HasColumnType("varchar(450)");
 
+            builder.HasIndex(x => new { x.CustomerId, x.OrderDate })
+                .HasDatabaseName("IX_Orders_CustomerId");
+
             builder.HasIndex(x => x.RefNo)
                 .IsUnique()
                 .HasDatabaseName("IX_Orders_RefNo");
-
-            builder.HasIndex(x => new { x.CustomerId, x.OrderDate })
-                .HasDatabaseName("IX_Orders_CustomerId");
 
             builder.HasOne(x => x.Customer)
                 .WithMany()
