@@ -1,155 +1,155 @@
-# Intent Architect Importers - AI Agent Guidelines
+# AI Agent Instructions: Intent Architect Importers
 
-## Purpose & Architecture
+This document provides guidelines for working with the Intent Architect Importers repository. It outlines the architecture, critical design patterns, testing strategy, and development practices. Follow these instructions to ensure consistency and correctness.
 
-This repository builds **Intent Architect modules** that import external metadata (JSON, C#, OpenAPI, RDBMS) into Intent's visual designers. Each importer follows a unified pattern:
+---
 
-1. **PersistableFactory** converts source data to `Persistables` (elements + associations)
-2. **MetadataSynchronizer** merges new persistables with existing package metadata by matching on `ExternalReference`
-3. **ModuleTask** orchestrates import via designer-invoked TypeScript scripts
+## 1. High-Level Goal & Architecture
+
+**Primary Goal:** Build and maintain **Intent Architect modules** that import external metadata (e.g., JSON, C#, OpenAPI, RDBMS schemas) into Intent's visual designers.
+
+### Core Architectural Pattern
+
+All importers follow a unified, three-step process:
+1.  **`PersistableFactory`**: Converts the source data (JSON file, C# class, DB table) into a standardized `Persistables` format (a collection of elements and associations).
+2.  **`MetadataSynchronizer`**: The central engine that intelligently merges the new `Persistables` with existing package metadata. It uses `ExternalReference` to match elements, preventing duplicates.
+3.  **`ModuleTask`**: Orchestrates the import process. It's invoked by TypeScript scripts in the Intent Architect designer.
 
 ### Core Projects
-- **`Intent.MetadataSynchronizer/`** - Shared reconciliation engine that merges imports without duplicating existing elements
-- **`Intent.Modules.Json.Importer/`** - Profile-based JSON importer (Domain/Eventing/Services)
-- **`Intent.Modules.CSharp.Importer/`** - Roslyn-based C# reverse engineer
-- **`Intent.Modules.OpenApi.Importer/`** - OpenAPI → CQRS/Service models
-- **`Intent.Modules.Rdbms.Importer/`** - Database schema importer
-- **`Intent.Modules.Shared.FileImporter/`** - Shared project for file-based import utilities
 
-### Module Anatomy
-Each importer module includes:
-- `*.imodspec` - Module manifest (dependencies, version, metadata)
-- `Importer/` - Factory classes producing `Persistables`
-- `Tasks/` - `ModuleTaskBase<TInput, TOutput>` implementations for designer integration
-- `DesignerScripts/*.ts` - TypeScript wizard UIs launched from designer context menus
-- `resources/scripts/*.js` - Bundled JavaScript for browser execution
-- `modelers/` - Designer metadata (settings, stereotypes)
+| Project | Description |
+| :--- | :--- |
+| **`Intent.MetadataSynchronizer/`** | The shared reconciliation engine for merging imports without duplicating elements. |
+| **`Intent.Modules.Shared.FileImporter/`** | Shared utilities for file-based importers. |
+| **`Intent.Modules.Json.Importer/`** | Profile-based JSON importer (Domain/Eventing/Services). |
+| **`Intent.Modules.CSharp.Importer/`** | Roslyn-based C# reverse engineer. |
+| **`Intent.Modules.OpenApi.Importer/`** | Imports OpenAPI specifications into CQRS/Service models. |
+| **`Intent.Modules.Rdbms.Importer/`** | Imports database schemas. |
 
-## Critical Patterns
+---
 
-### ExternalReference Format
-ExternalReferences **must** remain stable across re-imports to enable synchronization. Use:
-- **Root elements**: relative file path (e.g., `user.json`, `Namespace.ClassName`)
-- **Nested properties**: dot notation (e.g., `user.json.address.street`)
-- **Array elements**: bracket notation (e.g., `user.json.orders[0].total`)
+## 2. Core Design Patterns
 
-When modifying ExternalReference logic, update **both** factory code and test fixtures (`PackageModels` object mothers).
+These patterns are fundamental to the repository. Adhere to them strictly.
 
-### Visitor Pattern (JSON Importer)
-`ProfileFactory` returns `IJsonElementVisitor` implementations that define profile-specific projections:
-- **`DocumentDomainVisitor`** - Creates Domain Entities with associations
-- **`EventingMessagesVisitor`** - Creates Messages with nested Eventing DTOs (no associations)
-- **`ServicesDtosVisitor`** - Creates DTOs with DTO-Fields (no associations)
+### 2.1. The `ExternalReference` (CRITICAL)
 
-### Specialization Type IDs
-Intent metadata elements are identified by `SpecializationType` and `SpecializationTypeId` GUIDs. See `Constants.cs` in each importer for the canonical list. Examples:
-- **Folder**: `4d95d53a-8855-4f35-9820-3106413fec04`
-- **Type-Definition**: `d4e577cd-ad05-4180-9a2e-fff4ddea0e1e`
-- **Class** (Domain): Varies by designer
+The `ExternalReference` is the **most critical concept** for ensuring data synchronization and idempotency. It is a stable, unique identifier for an element derived from its source.
 
-## Testing Conventions
+- **Rule:** The `ExternalReference` **must remain stable** across re-imports. Any change will cause the synchronizer to see it as a new element.
+- **Rule:** When modifying `ExternalReference` generation logic, you **must** update both the factory code and the corresponding test fixtures (`PackageModels` object mothers).
 
-All test projects follow the **Object Mother** pattern with factories in `TestData/`:
-- **`PackageModels`** - Pre-existing Intent metadata for merge scenarios
-- **`ImportConfigurations`** - Input config objects
-- **Profile-specific factories** - Test data sources (JSON, OpenAPI specs, C# files)
+**Format Conventions:**
+- **RDBMS**: `[schema].[tablename].[columnname]` (e.g., `dbo.customers.email`)
+- **JSON**: Relative file path + dot notation for properties (e.g., `user.json.address.street`, `user.json.orders[0].total`)
+- **C#**: `Namespace.ClassName.PropertyName`
 
-### Test Structure (AAA Pattern)
-```csharp
-[Fact]
-public void MethodUnderTest_Scenario_ExpectedOutcome()
-{
-    // Arrange
-    var factory = new JsonPersistableFactory();
-    var config = ImportConfigurations.DomainProfile();
-    var packages = new[] { PackageModels.WithTypeDefinitions() };
+### 2.2. Synchronization Logic (`MetadataSynchronizer`/`DbSchemaIntentMetadataMerger`)
 
-    // Act
-    var result = factory.GetPersistables(config, packages);
+The synchronizer is a non-destructive "add-or-modify" engine.
+- It finds existing elements by matching `ExternalReference` and `SpecializationType`.
+- If a match is found, it updates the element's properties and stereotypes.
+- If no match is found, it adds a new element.
+- **Deletions are opt-in**: Elements are only removed if `deleteExtra: true` is set and the element has an `ExternalReference` within the scope of the current import.
 
-    // Assert
-    result.Elements.ShouldContain(e => e.Name == "Customer");
-}
-```
+### 2.3. Visitor Pattern (JSON Importer)
 
-### Assertion Guidelines
-- **DO** assert on observable state: element counts, names, specialization types, external references
-- **DO NOT** assert on warning/error message text (brittle to formatting changes)
-- Exception: message assertions are valid when explicitly testing warning/error generation logic
+The `ProfileFactory` in the JSON importer uses a visitor pattern to create different kinds of Intent models from the same JSON structure.
+- **`DocumentDomainVisitor`**: Creates Domain Entities with associations.
+- **`EventingMessagesVisitor`**: Creates Messages with nested Eventing DTOs (no associations).
+- **`ServicesDtosVisitor`**: Creates DTOs with DTO-Fields (no associations).
 
-### Snapshot Testing
-Mapping tests use **Verify** library for comprehensive output validation:
-1. Run test to generate `.received.txt`
-2. Review snapshot for correctness
-3. Rename to `.verified.txt` (or use DiffEngine)
-4. Commit `.verified.txt` as baseline
+### 2.4. Template Method Pattern (`ModuleTaskBase`)
 
-See `AI_GUIDE.md` in each test project for detailed conventions.
+The abstract `ModuleTaskBase<TInputModel>` class ensures a consistent execution flow for all module tasks:
+1.  Deserialize and validate the input JSON from the designer script.
+2.  Execute the core business logic via the abstract `ExecuteModuleTask` method.
+3.  Serialize and return a `ExecuteResult<T>` object containing the outcome, data, and any warnings.
 
-## Build & Development
+### 2.5. Configuration Object Pattern
 
-### Commands
+Use dedicated configuration classes (`ImportConfiguration`) to pass settings through the layers, avoiding long parameter lists. This improves readability and simplifies adding new options.
+
+---
+
+## 3. Testing Guide
+
+Testing is the backbone of this repository. All new features and bug fixes require comprehensive tests.
+
+### 3.1. Test Data Factories (Object Mother Pattern)
+
+**Rule:** All test data **must** be created using the Object Mother pattern. Factories exist in the `TestData/` folder of each test project. **Never use shared mutable state.**
+
+- **`ScenarioComposer` (RDBMS Tests)**: A fluent API for building complex test scenarios by composing schemas and packages.
+- **`DatabaseSchemas` / `Tables`**: Factories for creating database schema definitions.
+- **`PackageModels`**: Factories for creating pre-existing Intent Architect package metadata. **CRITICAL**: The `ExternalReference`s in these models must exactly match those generated from the test schemas.
+- **`ImportConfigurations`**: Factories for different import settings (e.g., `TablesOnly()`, `TablesWithDeletions()`, `DomainProfile(...)`).
+
+### 3.2. Testing Architecture: Behavioral vs. Snapshot
+
+| Test Type | Purpose | Naming Convention |
+| :--- | :--- | :--- |
+| **Behavioral** | Validate a single, specific behavior with explicit assertions. | `MethodUnderTest_Scenario_ExpectedOutcome` |
+| **Snapshot** | Verify complex object mappings and catch regressions across entire structures. | `Map{Component}_{Feature}_{Scenario}_ShouldMatchSnapshot` |
+
+### 3.3. Critical Testing Scenarios
+
+Your test coverage **must** include these scenarios where applicable.
+
+| Scenario | Description | Key Assertions |
+| :--- | :--- | :--- |
+| **Synchronization** | Verify that the `ExternalReference` logic is correct. Create a source model (e.g., `DatabaseSchema`) and a corresponding `PackageModel` with matching external references. | `ExternalReference` values are identical; elements are matched and updated, not duplicated. |
+| **Idempotency** | Re-import the exact same data. | Element count remains the same. Element IDs (`Id`) are unchanged. |
+| **Additions** | Import new items into an existing package. | New elements are added correctly. Existing elements are untouched. |
+| **Deletions** | Remove an item from the source (e.g., a column) and re-import. Test with both `deleteExtra: true` and `deleteExtra: false`. | **With `true`**: The corresponding element is removed. **With `false`**: The element is orphaned (kept). |
+
+### 3.4. Assertion & Snapshot Guidelines
+
+- **DO** use `Shouldly` for fluent assertions in behavioral tests.
+- **DO NOT** assert on the text of warning/error messages unless that is the specific behavior under test.
+- **DO NOT** create and/or use temp files for unit tests. Instead use in-memory objects or streams.
+- **DO** assert on observable state: element counts, names, IDs, types, and external references.
+- **Snapshot Workflow**:
+    1.  Write the test and run it to generate a `.received.txt` file.
+    2.  Carefully review the received snapshot for correctness.
+    3.  If correct, rename it to `.verified.txt` or use a diff tool to approve it.
+    4.  Commit the `.verified.txt` file as the new baseline.
+
+---
+
+## 4. Development & Build
+
+### Common Commands
+
 ```powershell
-# Build specific module (minimal output)
-dotnet build "Intent.Modules.Json.Importer/Intent.Modules.Json.Importer.csproj" --no-incremental --verbosity minimal --nologo
+# Build a specific module
+dotnet build "Intent.Modules.Json.Importer/Intent.Modules.Json.Importer.csproj" --verbosity minimal
 
-# Run all tests
+# Run all tests in the solution
 dotnet test Intent.Modules.Importers.sln
 
-# Test specific project
+# Run tests for a specific project
 dotnet test Intent.Modules.Json.Importer.Tests/Intent.Modules.Json.Importer.Tests.csproj
 ```
 
-### C# String Literals
-- Use verbatim strings (`@"..."`) for paths and strings with double quotes
-- Use raw string literals (`"""..."""`) for multi-line content
-
 ### Debugging Module Tasks
-Module tasks execute in Intent Architect's context. To debug:
-1. Attach debugger to `Intent.Architect.exe` process
-2. Set breakpoints in `ModuleTaskBase.Execute` implementations
-3. Invoke task from designer context menu
 
-## Integration Points
+Module tasks execute inside the Intent Architect application. To debug them:
+1.  Attach your debugger to the `Intent.Architect.exe` process.
+2.  Set breakpoints in your `ModuleTaskBase` implementation.
+3.  Invoke the task from the designer context menu in Intent Architect.
 
-### Designer Invocation
-TypeScript scripts in `DesignerScripts/` call `executeModuleTask(taskTypeId, inputJson)` which:
-1. Serializes input to JSON
-2. Loads module assembly via reflection
-3. Calls `IModuleTask.Execute(args)` with JSON args
-4. Returns serialized `ExecuteResult<T>` with errors/warnings/result
+### Common Pitfalls to Avoid
 
-### MetadataSynchronizer Usage
-```csharp
-Synchronizer.Execute(
-    targetPackage: packageModel,
-    parentFolderId: targetFolder.Id,
-    persistables: factoryResult,
-    deleteExtra: config.AllowRemoval,
-    createAttributesWithUnknownTypes: true,
-    stereotypeManagementMode: StereotypeManagementMode.Merge);
-```
+1.  **Folder Creation**: Folders must be created in path order (parent before child) with correct `ParentFolderId` references.
+2.  **Association Duplicates**: Always check for existing associations using `MetadataLookup.HasExistingAssociation()` before adding a new one.
+3.  **Test Isolation**: Always generate fresh test data using factories in each test. Never reuse mutable objects across tests.
+4.  **ExternalReference Collisions**: Ensure file-based importers include the full relative path in the reference to avoid clashes between files with similar structures.
 
-Matches elements by `ExternalReference`, updates existing, adds new, optionally removes unmatched.
+### Key Files for Orientation
 
-## Module Packaging
-`.imodspec` files define module metadata. Key sections:
-- `<dependencies>` - Required Intent modules (e.g., `Intent.Common`, `Intent.Common.Types`)
-- `<files>` - DLLs to include in packaged `.imod` file
-- `<metadata><install>` - Designer settings to inject on module install
-- `supportedClientVersions` - Semantic version range (e.g., `[4.5.18-a-a,5.0.0)`)
-
-## Common Pitfalls
-
-1. **Folder creation**: Folders must be created in path order (parent→child) with correct `ParentFolderId` references
-2. **Type resolution**: Unknown types become `Type-Definition` placeholders; ensure primitive types exist in `MetadataLookup`
-3. **Association duplicates**: Check `MetadataLookup.HasExistingAssociation()` before adding associations
-4. **Test isolation**: Use factory methods, never shared state between tests
-5. **ExternalReference collisions**: When multiple files have similar structures, include full file path in reference
-
-## Key Files for Orientation
-
-- `Intent.MetadataSynchronizer/Synchronizer.cs` - Core merge algorithm
-- `Intent.Modules.Json.Importer/Importer/ProfileFactory.cs` - Profile resolution
-- `Intent.Modules.Json.Importer.Tests/AI_GUIDE.md` - Comprehensive test guide
-- Each test project's `TestData/` folder - Object Mother examples
+- **Core Engine**: `Intent.MetadataSynchronizer/Synchronizer.cs`
+- **Lookup Index**: `Intent.MetadataSynchronizer/MetadataLookup.cs`
+- **RDBMS Tests**: `Intent.Modules.Rdbms.Importer.Tests/DbSchemaIntentMetadataMergerTests.cs`
+- **JSON Tests**: `Intent.Modules.Json.Importer.Tests/JsonSynchronizerTests.cs`
+- **Object Mother Examples**: `Intent.Modules.Rdbms.Importer.Tests/TestData/`
