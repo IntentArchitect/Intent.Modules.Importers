@@ -1,0 +1,450 @@
+﻿{
+  Elements: [
+    {
+      Id: Guid_1,
+      SpecializationType: Folder,
+      SpecializationTypeId: Guid_2,
+      Name: Accounts,
+      Display: Accounts,
+      ExternalReference: Accounts,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      IsChild: false
+    },
+    {
+      Id: Guid_3,
+      SpecializationType: Command,
+      SpecializationTypeId: Guid_4,
+      Name: CreateAccountCommand,
+      Display: CreateAccountCommand,
+      ExternalReference: Accounts.CreateAccountCommand,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_5,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: POST,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/accounts/,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_12,
+              Name: Success Response Code,
+              Value: 201 (Created),
+              IsActive: true
+            }
+          ]
+        },
+        {
+          DefinitionId: Guid_13,
+          Name: Secured,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.Security,
+          DefinitionPackageId: Guid_14
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_15,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_16,
+      Name: Name,
+      Display: Name,
+      ExternalReference: Accounts.CreateAccountCommand.Name,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_17,
+        TypeId: Guid_18,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      IsChild: false
+    },
+    {
+      Id: Guid_19,
+      SpecializationType: Query,
+      SpecializationTypeId: Guid_20,
+      Name: GetAccountsQuery,
+      Display: GetAccountsQuery,
+      ExternalReference: Accounts.GetAccountsQuery,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_21,
+        TypeId: Guid_22,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: true,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: GET,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/accounts/,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        },
+        {
+          DefinitionId: Guid_13,
+          Name: Secured,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.Security,
+          DefinitionPackageId: Guid_14
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_22,
+      SpecializationType: DTO,
+      SpecializationTypeId: Guid_23,
+      Name: AccountDto,
+      Display: AccountDto,
+      ExternalReference: Accounts.AccountDto,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      IsChild: false
+    },
+    {
+      Id: Guid_24,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_16,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Accounts.AccountDto.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_25,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_22,
+      IsChild: false
+    },
+    {
+      Id: Guid_26,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_16,
+      Name: Name,
+      Display: Name,
+      ExternalReference: Accounts.AccountDto.Name,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_27,
+        TypeId: Guid_18,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_22,
+      IsChild: false
+    },
+    {
+      Id: Guid_28,
+      SpecializationType: Command,
+      SpecializationTypeId: Guid_4,
+      Name: DeleteAccountCommand,
+      Display: DeleteAccountCommand,
+      ExternalReference: Accounts.DeleteAccountCommand,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: DELETE,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/accounts/{id},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_29,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_16,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Accounts.DeleteAccountCommand.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_30,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_28,
+      IsChild: false
+    },
+    {
+      Id: Guid_31,
+      SpecializationType: Command,
+      SpecializationTypeId: Guid_4,
+      Name: UpdateAccountCommand,
+      Display: UpdateAccountCommand,
+      ExternalReference: Accounts.UpdateAccountCommand,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: PUT,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/accounts/{id},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_12,
+              Name: Success Response Code,
+              Value: 204 (No Content),
+              IsActive: true
+            }
+          ]
+        },
+        {
+          DefinitionId: Guid_13,
+          Name: Secured,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.Security,
+          DefinitionPackageId: Guid_14
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_32,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_16,
+      Name: Name,
+      Display: Name,
+      ExternalReference: Accounts.UpdateAccountCommand.Name,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_33,
+        TypeId: Guid_18,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_31,
+      IsChild: false
+    },
+    {
+      Id: Guid_34,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_16,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Accounts.UpdateAccountCommand.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_35,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_31,
+      IsChild: false
+    },
+    {
+      Id: Guid_36,
+      SpecializationType: Query,
+      SpecializationTypeId: Guid_20,
+      Name: GetAccountQuery,
+      Display: GetAccountQuery,
+      ExternalReference: Accounts.GetAccountQuery,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_37,
+        TypeId: Guid_22,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: GET,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/accounts/{id},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        },
+        {
+          DefinitionId: Guid_13,
+          Name: Secured,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.Security,
+          DefinitionPackageId: Guid_14
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_38,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_16,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Accounts.GetAccountQuery.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_39,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_36,
+      IsChild: false
+    }
+  ]
+}

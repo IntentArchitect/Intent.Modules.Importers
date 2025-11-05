@@ -1,0 +1,2158 @@
+﻿{
+  Elements: [
+    {
+      Id: Guid_1,
+      SpecializationType: Folder,
+      SpecializationTypeId: Guid_2,
+      Name: Pets,
+      Display: Pets,
+      ExternalReference: Pets,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      IsChild: false
+    },
+    {
+      Id: Guid_3,
+      SpecializationType: Service,
+      SpecializationTypeId: Guid_4,
+      Name: PetService,
+      Display: PetService,
+      ExternalReference: PetService,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_5,
+          Name: Http Service Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_7,
+              Name: Route,
+              Value: /pet,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_8,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: UpdatePet,
+      Display: UpdatePet,
+      ExternalReference: PetService.UpdatePet,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_10,
+        TypeId: Guid_11,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: PUT,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: ,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        },
+        {
+          DefinitionId: Guid_16,
+          Name: Secured,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.Security,
+          DefinitionPackageId: Guid_17
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_11,
+      SpecializationType: DTO,
+      SpecializationTypeId: Guid_18,
+      Name: Pet,
+      Display: Pet,
+      ExternalReference: Pets.Pet,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      IsChild: false
+    },
+    {
+      Id: Guid_19,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Pets.Pet.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_21,
+        TypeId: Guid_22,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_11,
+      IsChild: false
+    },
+    {
+      Id: Guid_23,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Name,
+      Display: Name,
+      ExternalReference: Pets.Pet.Name,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_24,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_11,
+      IsChild: false
+    },
+    {
+      Id: Guid_26,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Category,
+      Display: Category,
+      ExternalReference: Pets.Pet.Category,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_27,
+        TypeId: Guid_28,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_11,
+      IsChild: false
+    },
+    {
+      Id: Guid_28,
+      SpecializationType: DTO,
+      SpecializationTypeId: Guid_18,
+      Name: Category,
+      Display: Category,
+      ExternalReference: Pets.Category,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      IsChild: false
+    },
+    {
+      Id: Guid_29,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Pets.Category.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_30,
+        TypeId: Guid_22,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_28,
+      IsChild: false
+    },
+    {
+      Id: Guid_31,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Name,
+      Display: Name,
+      ExternalReference: Pets.Category.Name,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_32,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_28,
+      IsChild: false
+    },
+    {
+      Id: Guid_33,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: PhotoUrls,
+      Display: PhotoUrls,
+      ExternalReference: Pets.Pet.PhotoUrls,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_34,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: true,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_11,
+      IsChild: false
+    },
+    {
+      Id: Guid_35,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Tags,
+      Display: Tags,
+      ExternalReference: Pets.Pet.Tags,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_36,
+        TypeId: Guid_37,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: true,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_11,
+      IsChild: false
+    },
+    {
+      Id: Guid_37,
+      SpecializationType: DTO,
+      SpecializationTypeId: Guid_18,
+      Name: Tag,
+      Display: Tag,
+      ExternalReference: Pets.Tag,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      IsChild: false
+    },
+    {
+      Id: Guid_38,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Pets.Tag.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_39,
+        TypeId: Guid_22,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_37,
+      IsChild: false
+    },
+    {
+      Id: Guid_40,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Name,
+      Display: Name,
+      ExternalReference: Pets.Tag.Name,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_41,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_37,
+      IsChild: false
+    },
+    {
+      Id: Guid_42,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Status,
+      Display: Status,
+      ExternalReference: Pets.Pet.Status,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_43,
+        TypeId: Guid_44,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_11,
+      IsChild: false
+    },
+    {
+      Id: Guid_44,
+      SpecializationType: Enum,
+      SpecializationTypeId: Guid_45,
+      Name: StatusType,
+      Display: StatusType,
+      ExternalReference: Pets.StatusType,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      IsChild: false
+    },
+    {
+      Id: Guid_46,
+      SpecializationType: Enum-Literal,
+      SpecializationTypeId: Guid_47,
+      Name: Available,
+      Display: Available,
+      ExternalReference: Pets.StatusType.Available,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_44,
+      IsChild: false
+    },
+    {
+      Id: Guid_48,
+      SpecializationType: Enum-Literal,
+      SpecializationTypeId: Guid_47,
+      Name: Pending,
+      Display: Pending,
+      ExternalReference: Pets.StatusType.Pending,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_44,
+      IsChild: false
+    },
+    {
+      Id: Guid_49,
+      SpecializationType: Enum-Literal,
+      SpecializationTypeId: Guid_47,
+      Name: Sold,
+      Display: Sold,
+      ExternalReference: Pets.StatusType.Sold,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_44,
+      IsChild: false
+    },
+    {
+      Id: Guid_50,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: dto,
+      Display: dto,
+      ExternalReference: PetService.UpdatePet.dto,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_52,
+        TypeId: Guid_11,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_8,
+      IsChild: false
+    },
+    {
+      Id: Guid_53,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: CreatePet,
+      Display: CreatePet,
+      ExternalReference: PetService.CreatePet,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_54,
+        TypeId: Guid_11,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: POST,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: ,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        },
+        {
+          DefinitionId: Guid_16,
+          Name: Secured,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.Security,
+          DefinitionPackageId: Guid_17
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_55,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: dto,
+      Display: dto,
+      ExternalReference: PetService.CreatePet.dto,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_56,
+        TypeId: Guid_11,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_53,
+      IsChild: false
+    },
+    {
+      Id: Guid_57,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: GetByStatuses,
+      Display: GetByStatuses,
+      ExternalReference: PetService.GetByStatuses,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_58,
+        TypeId: Guid_11,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: true,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: GET,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: findByStatus,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        },
+        {
+          DefinitionId: Guid_16,
+          Name: Secured,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.Security,
+          DefinitionPackageId: Guid_17
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_59,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: status,
+      Display: status,
+      ExternalReference: PetService.GetByStatuses.status,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_60,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_57,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_61,
+          Name: Parameter Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_62,
+              Name: Source,
+              Value: From Query,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_63,
+              Name: Header Name,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_64,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: GetByTags,
+      Display: GetByTags,
+      ExternalReference: PetService.GetByTags,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_65,
+        TypeId: Guid_11,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: true,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: GET,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: findByTags,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        },
+        {
+          DefinitionId: Guid_16,
+          Name: Secured,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.Security,
+          DefinitionPackageId: Guid_17
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_66,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: tags,
+      Display: tags,
+      ExternalReference: PetService.GetByTags.tags,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_67,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: true,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_64,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_61,
+          Name: Parameter Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_62,
+              Name: Source,
+              Value: From Query,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_63,
+              Name: Header Name,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_68,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: GetPet,
+      Display: GetPet,
+      ExternalReference: PetService.GetPet,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_69,
+        TypeId: Guid_11,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: GET,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: {petId},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        },
+        {
+          DefinitionId: Guid_16,
+          Name: Secured,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.Security,
+          DefinitionPackageId: Guid_17
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_70,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: petId,
+      Display: petId,
+      ExternalReference: PetService.GetPet.petId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_71,
+        TypeId: Guid_22,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_68,
+      IsChild: false
+    },
+    {
+      Id: Guid_72,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: DeletePet,
+      Display: DeletePet,
+      ExternalReference: PetService.DeletePet,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: DELETE,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: {petId},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        },
+        {
+          DefinitionId: Guid_16,
+          Name: Secured,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.Security,
+          DefinitionPackageId: Guid_17
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_73,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: api_key,
+      Display: api_key,
+      ExternalReference: PetService.DeletePet.api_key,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_74,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_72,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_61,
+          Name: Parameter Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_62,
+              Name: Source,
+              Value: From Header,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_63,
+              Name: Header Name,
+              Value: api_key,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_75,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: petId,
+      Display: petId,
+      ExternalReference: PetService.DeletePet.petId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_76,
+        TypeId: Guid_22,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_72,
+      IsChild: false
+    },
+    {
+      Id: Guid_77,
+      SpecializationType: Folder,
+      SpecializationTypeId: Guid_2,
+      Name: Stores,
+      Display: Stores,
+      ExternalReference: Stores,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      IsChild: false
+    },
+    {
+      Id: Guid_78,
+      SpecializationType: Service,
+      SpecializationTypeId: Guid_4,
+      Name: StoreService,
+      Display: StoreService,
+      ExternalReference: StoreService,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_5,
+          Name: Http Service Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_7,
+              Name: Route,
+              Value: /store,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_79,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: GetInventories,
+      Display: GetInventories,
+      ExternalReference: StoreService.GetInventories,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_80,
+        TypeId: Guid_81,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false,
+        GenericTypeParameters: [
+          {
+            Id: Guid_82,
+            TypeId: Guid_25,
+            IsNavigable: true,
+            IsNullable: false,
+            IsCollection: false,
+            IsRequired: false
+          },
+          {
+            Id: Guid_83,
+            TypeId: Guid_22,
+            IsNavigable: true,
+            IsNullable: false,
+            IsCollection: false,
+            IsRequired: false
+          }
+        ]
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_78,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: GET,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: inventory,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        },
+        {
+          DefinitionId: Guid_16,
+          Name: Secured,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.Security,
+          DefinitionPackageId: Guid_17
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_84,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: CreateOrder,
+      Display: CreateOrder,
+      ExternalReference: StoreService.CreateOrder,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_85,
+        TypeId: Guid_86,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_78,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: POST,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: order,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_86,
+      SpecializationType: DTO,
+      SpecializationTypeId: Guid_18,
+      Name: Order,
+      Display: Order,
+      ExternalReference: Stores.Order,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_77,
+      IsChild: false
+    },
+    {
+      Id: Guid_87,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Stores.Order.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_88,
+        TypeId: Guid_22,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_86,
+      IsChild: false
+    },
+    {
+      Id: Guid_89,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: PetId,
+      Display: PetId,
+      ExternalReference: Stores.Order.PetId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_90,
+        TypeId: Guid_22,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_86,
+      IsChild: false
+    },
+    {
+      Id: Guid_91,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Quantity,
+      Display: Quantity,
+      ExternalReference: Stores.Order.Quantity,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_92,
+        TypeId: Guid_22,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_86,
+      IsChild: false
+    },
+    {
+      Id: Guid_93,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: ShipDate,
+      Display: ShipDate,
+      ExternalReference: Stores.Order.ShipDate,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_94,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_86,
+      IsChild: false
+    },
+    {
+      Id: Guid_95,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Status,
+      Display: Status,
+      ExternalReference: Stores.Order.Status,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_96,
+        TypeId: Guid_97,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_86,
+      IsChild: false
+    },
+    {
+      Id: Guid_97,
+      SpecializationType: Enum,
+      SpecializationTypeId: Guid_45,
+      Name: StatusType,
+      Display: StatusType,
+      ExternalReference: Stores.StatusType,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_77,
+      IsChild: false
+    },
+    {
+      Id: Guid_98,
+      SpecializationType: Enum-Literal,
+      SpecializationTypeId: Guid_47,
+      Name: Placed,
+      Display: Placed,
+      ExternalReference: Stores.StatusType.Placed,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_97,
+      IsChild: false
+    },
+    {
+      Id: Guid_99,
+      SpecializationType: Enum-Literal,
+      SpecializationTypeId: Guid_47,
+      Name: Approved,
+      Display: Approved,
+      ExternalReference: Stores.StatusType.Approved,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_97,
+      IsChild: false
+    },
+    {
+      Id: Guid_100,
+      SpecializationType: Enum-Literal,
+      SpecializationTypeId: Guid_47,
+      Name: Delivered,
+      Display: Delivered,
+      ExternalReference: Stores.StatusType.Delivered,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_97,
+      IsChild: false
+    },
+    {
+      Id: Guid_101,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Complete,
+      Display: Complete,
+      ExternalReference: Stores.Order.Complete,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_102,
+        TypeId: Guid_103,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_86,
+      IsChild: false
+    },
+    {
+      Id: Guid_104,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: dto,
+      Display: dto,
+      ExternalReference: StoreService.CreateOrder.dto,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_105,
+        TypeId: Guid_86,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_84,
+      IsChild: false
+    },
+    {
+      Id: Guid_106,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: GetOrder,
+      Display: GetOrder,
+      ExternalReference: StoreService.GetOrder,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_107,
+        TypeId: Guid_86,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_78,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: GET,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: order/{orderId},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_108,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: orderId,
+      Display: orderId,
+      ExternalReference: StoreService.GetOrder.orderId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_109,
+        TypeId: Guid_22,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_106,
+      IsChild: false
+    },
+    {
+      Id: Guid_110,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: DeleteOrder,
+      Display: DeleteOrder,
+      ExternalReference: StoreService.DeleteOrder,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_78,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: DELETE,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: order/{orderId},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_111,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: orderId,
+      Display: orderId,
+      ExternalReference: StoreService.DeleteOrder.orderId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_112,
+        TypeId: Guid_22,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_110,
+      IsChild: false
+    },
+    {
+      Id: Guid_113,
+      SpecializationType: Folder,
+      SpecializationTypeId: Guid_2,
+      Name: Users,
+      Display: Users,
+      ExternalReference: Users,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      IsChild: false
+    },
+    {
+      Id: Guid_114,
+      SpecializationType: Service,
+      SpecializationTypeId: Guid_4,
+      Name: UserService,
+      Display: UserService,
+      ExternalReference: UserService,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_5,
+          Name: Http Service Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_7,
+              Name: Route,
+              Value: /user,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_115,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: CreateUser,
+      Display: CreateUser,
+      ExternalReference: UserService.CreateUser,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_114,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: POST,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: ,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_116,
+      SpecializationType: DTO,
+      SpecializationTypeId: Guid_18,
+      Name: User,
+      Display: User,
+      ExternalReference: Users.User,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_113,
+      IsChild: false
+    },
+    {
+      Id: Guid_117,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Users.User.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_118,
+        TypeId: Guid_22,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_116,
+      IsChild: false
+    },
+    {
+      Id: Guid_119,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Username,
+      Display: Username,
+      ExternalReference: Users.User.Username,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_120,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_116,
+      IsChild: false
+    },
+    {
+      Id: Guid_121,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: FirstName,
+      Display: FirstName,
+      ExternalReference: Users.User.FirstName,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_122,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_116,
+      IsChild: false
+    },
+    {
+      Id: Guid_123,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: LastName,
+      Display: LastName,
+      ExternalReference: Users.User.LastName,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_124,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_116,
+      IsChild: false
+    },
+    {
+      Id: Guid_125,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Email,
+      Display: Email,
+      ExternalReference: Users.User.Email,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_126,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_116,
+      IsChild: false
+    },
+    {
+      Id: Guid_127,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Password,
+      Display: Password,
+      ExternalReference: Users.User.Password,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_128,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_116,
+      IsChild: false
+    },
+    {
+      Id: Guid_129,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: Phone,
+      Display: Phone,
+      ExternalReference: Users.User.Phone,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_130,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_116,
+      IsChild: false
+    },
+    {
+      Id: Guid_131,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_20,
+      Name: UserStatus,
+      Display: UserStatus,
+      ExternalReference: Users.User.UserStatus,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_132,
+        TypeId: Guid_22,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_116,
+      IsChild: false
+    },
+    {
+      Id: Guid_133,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: dto,
+      Display: dto,
+      ExternalReference: UserService.CreateUser.dto,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_134,
+        TypeId: Guid_116,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_115,
+      IsChild: false
+    },
+    {
+      Id: Guid_135,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: CreateWithList,
+      Display: CreateWithList,
+      ExternalReference: UserService.CreateWithList,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_136,
+        TypeId: Guid_116,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_114,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: POST,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: createWithList,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_137,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: dto,
+      Display: dto,
+      ExternalReference: UserService.CreateWithList.dto,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_138,
+        TypeId: Guid_116,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: true,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_135,
+      IsChild: false
+    },
+    {
+      Id: Guid_139,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: GetLogins,
+      Display: GetLogins,
+      ExternalReference: UserService.GetLogins,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_140,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_114,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: GET,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: login,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_141,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: username,
+      Display: username,
+      ExternalReference: UserService.GetLogins.username,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_142,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_139,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_61,
+          Name: Parameter Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_62,
+              Name: Source,
+              Value: From Query,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_63,
+              Name: Header Name,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_143,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: password,
+      Display: password,
+      ExternalReference: UserService.GetLogins.password,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_144,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_139,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_61,
+          Name: Parameter Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_62,
+              Name: Source,
+              Value: From Query,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_63,
+              Name: Header Name,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_145,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: GetLogouts,
+      Display: GetLogouts,
+      ExternalReference: UserService.GetLogouts,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_114,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: GET,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: logout,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_146,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: GetUser,
+      Display: GetUser,
+      ExternalReference: UserService.GetUser,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_147,
+        TypeId: Guid_116,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_114,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: GET,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: {username},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_148,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: username,
+      Display: username,
+      ExternalReference: UserService.GetUser.username,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_149,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_146,
+      IsChild: false
+    },
+    {
+      Id: Guid_150,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: UpdateUser,
+      Display: UpdateUser,
+      ExternalReference: UserService.UpdateUser,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_114,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: PUT,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: {username},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_151,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: dto,
+      Display: dto,
+      ExternalReference: UserService.UpdateUser.dto,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_152,
+        TypeId: Guid_116,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_150,
+      IsChild: false
+    },
+    {
+      Id: Guid_153,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: username,
+      Display: username,
+      ExternalReference: UserService.UpdateUser.username,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_154,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_150,
+      IsChild: false
+    },
+    {
+      Id: Guid_155,
+      SpecializationType: Operation,
+      SpecializationTypeId: Guid_9,
+      Name: DeleteUser,
+      Display: DeleteUser,
+      ExternalReference: UserService.DeleteUser,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_114,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_12,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_6,
+          Properties: [
+            {
+              DefinitionId: Guid_13,
+              Name: Verb,
+              Value: DELETE,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_14,
+              Name: Route,
+              Value: {username},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_15,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_156,
+      SpecializationType: Parameter,
+      SpecializationTypeId: Guid_51,
+      Name: username,
+      Display: username,
+      ExternalReference: UserService.DeleteUser.username,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_157,
+        TypeId: Guid_25,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_155,
+      IsChild: false
+    }
+  ]
+}

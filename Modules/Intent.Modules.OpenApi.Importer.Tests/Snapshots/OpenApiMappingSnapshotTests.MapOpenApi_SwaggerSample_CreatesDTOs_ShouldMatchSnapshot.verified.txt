@@ -1,0 +1,1350 @@
+﻿{
+  Elements: [
+    {
+      Id: Guid_1,
+      SpecializationType: Folder,
+      SpecializationTypeId: Guid_2,
+      Name: Customers,
+      Display: Customers,
+      ExternalReference: Customers,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      IsChild: false
+    },
+    {
+      Id: Guid_3,
+      SpecializationType: Command,
+      SpecializationTypeId: Guid_4,
+      Name: CreateCustomerCommand,
+      Display: CreateCustomerCommand,
+      ExternalReference: Customers.CreateCustomerCommand,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_5,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: POST,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/customers/,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_12,
+              Name: Success Response Code,
+              Value: 201 (Created),
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_13,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Name,
+      Display: Name,
+      ExternalReference: Customers.CreateCustomerCommand.Name,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_15,
+        TypeId: Guid_16,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      IsChild: false
+    },
+    {
+      Id: Guid_17,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Isac,
+      Display: Isac,
+      ExternalReference: Customers.CreateCustomerCommand.Isac,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_18,
+        TypeId: Guid_19,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      IsChild: false
+    },
+    {
+      Id: Guid_20,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Address,
+      Display: Address,
+      ExternalReference: Customers.CreateCustomerCommand.Address,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_21,
+        TypeId: Guid_22,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      IsChild: false
+    },
+    {
+      Id: Guid_22,
+      SpecializationType: DTO,
+      SpecializationTypeId: Guid_23,
+      Name: CreateCustomerAddressDto,
+      Display: CreateCustomerAddressDto,
+      ExternalReference: Customers.CreateCustomerAddressDto,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      IsChild: false
+    },
+    {
+      Id: Guid_24,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Line1,
+      Display: Line1,
+      ExternalReference: Customers.CreateCustomerAddressDto.Line1,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_25,
+        TypeId: Guid_16,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_22,
+      IsChild: false
+    },
+    {
+      Id: Guid_26,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: NullableString,
+      Display: NullableString,
+      ExternalReference: Customers.CreateCustomerCommand.NullableString,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_27,
+        TypeId: Guid_16,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      IsChild: false
+    },
+    {
+      Id: Guid_28,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: NullableBool,
+      Display: NullableBool,
+      ExternalReference: Customers.CreateCustomerCommand.NullableBool,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_29,
+        TypeId: Guid_19,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      IsChild: false
+    },
+    {
+      Id: Guid_30,
+      SpecializationType: Query,
+      SpecializationTypeId: Guid_31,
+      Name: GetCustomersQuery,
+      Display: GetCustomersQuery,
+      ExternalReference: Customers.GetCustomersQuery,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_32,
+        TypeId: Guid_33,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: true,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: GET,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/customers/,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_33,
+      SpecializationType: DTO,
+      SpecializationTypeId: Guid_23,
+      Name: CustomerDto,
+      Display: CustomerDto,
+      ExternalReference: Customers.CustomerDto,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      IsChild: false
+    },
+    {
+      Id: Guid_34,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Customers.CustomerDto.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_35,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_33,
+      IsChild: false
+    },
+    {
+      Id: Guid_36,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Name,
+      Display: Name,
+      ExternalReference: Customers.CustomerDto.Name,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_37,
+        TypeId: Guid_16,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_33,
+      IsChild: false
+    },
+    {
+      Id: Guid_38,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Isac,
+      Display: Isac,
+      ExternalReference: Customers.CustomerDto.Isac,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_39,
+        TypeId: Guid_19,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_33,
+      IsChild: false
+    },
+    {
+      Id: Guid_40,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Address,
+      Display: Address,
+      ExternalReference: Customers.CustomerDto.Address,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_41,
+        TypeId: Guid_42,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_33,
+      IsChild: false
+    },
+    {
+      Id: Guid_42,
+      SpecializationType: DTO,
+      SpecializationTypeId: Guid_23,
+      Name: CustomerAddressDto,
+      Display: CustomerAddressDto,
+      ExternalReference: Customers.CustomerAddressDto,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      IsChild: false
+    },
+    {
+      Id: Guid_43,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Line1,
+      Display: Line1,
+      ExternalReference: Customers.CustomerAddressDto.Line1,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_44,
+        TypeId: Guid_16,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_42,
+      IsChild: false
+    },
+    {
+      Id: Guid_45,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Customers.CustomerAddressDto.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_46,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_42,
+      IsChild: false
+    },
+    {
+      Id: Guid_47,
+      SpecializationType: Command,
+      SpecializationTypeId: Guid_4,
+      Name: CreateOrderCommand,
+      Display: CreateOrderCommand,
+      ExternalReference: Customers.CreateOrderCommand,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_48,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: POST,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/customers/{customerId}/orders,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_12,
+              Name: Success Response Code,
+              Value: 201 (Created),
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_49,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: CustomerId,
+      Display: CustomerId,
+      ExternalReference: Customers.CreateOrderCommand.CustomerId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_50,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_47,
+      IsChild: false
+    },
+    {
+      Id: Guid_51,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: RefNo,
+      Display: RefNo,
+      ExternalReference: Customers.CreateOrderCommand.RefNo,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_52,
+        TypeId: Guid_16,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_47,
+      IsChild: false
+    },
+    {
+      Id: Guid_53,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Price,
+      Display: Price,
+      ExternalReference: Customers.CreateOrderCommand.Price,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_54,
+        TypeId: Guid_55,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_47,
+      IsChild: false
+    },
+    {
+      Id: Guid_56,
+      SpecializationType: Query,
+      SpecializationTypeId: Guid_31,
+      Name: GetOrdersQuery,
+      Display: GetOrdersQuery,
+      ExternalReference: Customers.GetOrdersQuery,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_57,
+        TypeId: Guid_58,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: true,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: GET,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/customers/{customerId}/orders,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_58,
+      SpecializationType: DTO,
+      SpecializationTypeId: Guid_23,
+      Name: CustomerOrderDto,
+      Display: CustomerOrderDto,
+      ExternalReference: Customers.CustomerOrderDto,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      IsChild: false
+    },
+    {
+      Id: Guid_59,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: CustomerId,
+      Display: CustomerId,
+      ExternalReference: Customers.CustomerOrderDto.CustomerId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_60,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_58,
+      IsChild: false
+    },
+    {
+      Id: Guid_61,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Customers.CustomerOrderDto.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_62,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_58,
+      IsChild: false
+    },
+    {
+      Id: Guid_63,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: RefNo,
+      Display: RefNo,
+      ExternalReference: Customers.CustomerOrderDto.RefNo,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_64,
+        TypeId: Guid_16,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_58,
+      IsChild: false
+    },
+    {
+      Id: Guid_65,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Price,
+      Display: Price,
+      ExternalReference: Customers.CustomerOrderDto.Price,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_66,
+        TypeId: Guid_55,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_58,
+      IsChild: false
+    },
+    {
+      Id: Guid_67,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Customer,
+      Display: Customer,
+      ExternalReference: Customers.CustomerOrderDto.Customer,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_68,
+        TypeId: Guid_69,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_58,
+      IsChild: false
+    },
+    {
+      Id: Guid_69,
+      SpecializationType: DTO,
+      SpecializationTypeId: Guid_23,
+      Name: CustomerOrderCustomerDto,
+      Display: CustomerOrderCustomerDto,
+      ExternalReference: Customers.CustomerOrderCustomerDto,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      IsChild: false
+    },
+    {
+      Id: Guid_70,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Name,
+      Display: Name,
+      ExternalReference: Customers.CustomerOrderCustomerDto.Name,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_71,
+        TypeId: Guid_16,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_69,
+      IsChild: false
+    },
+    {
+      Id: Guid_72,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Isac,
+      Display: Isac,
+      ExternalReference: Customers.CustomerOrderCustomerDto.Isac,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_73,
+        TypeId: Guid_19,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_69,
+      IsChild: false
+    },
+    {
+      Id: Guid_74,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Customers.CustomerOrderCustomerDto.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_75,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_69,
+      IsChild: false
+    },
+    {
+      Id: Guid_76,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: CustomerId,
+      Display: CustomerId,
+      ExternalReference: Customers.GetOrdersQuery.CustomerId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_77,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_56,
+      IsChild: false
+    },
+    {
+      Id: Guid_78,
+      SpecializationType: Command,
+      SpecializationTypeId: Guid_4,
+      Name: DeleteCustomerCommand,
+      Display: DeleteCustomerCommand,
+      ExternalReference: Customers.DeleteCustomerCommand,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: DELETE,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/customers/{id},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_79,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Customers.DeleteCustomerCommand.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_80,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_78,
+      IsChild: false
+    },
+    {
+      Id: Guid_81,
+      SpecializationType: Command,
+      SpecializationTypeId: Guid_4,
+      Name: UpdateCustomerCommand,
+      Display: UpdateCustomerCommand,
+      ExternalReference: Customers.UpdateCustomerCommand,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: PUT,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/customers/{id},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_12,
+              Name: Success Response Code,
+              Value: 204 (No Content),
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_82,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Name,
+      Display: Name,
+      ExternalReference: Customers.UpdateCustomerCommand.Name,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_83,
+        TypeId: Guid_16,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_81,
+      IsChild: false
+    },
+    {
+      Id: Guid_84,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Isac,
+      Display: Isac,
+      ExternalReference: Customers.UpdateCustomerCommand.Isac,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_85,
+        TypeId: Guid_19,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_81,
+      IsChild: false
+    },
+    {
+      Id: Guid_86,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Customers.UpdateCustomerCommand.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_87,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_81,
+      IsChild: false
+    },
+    {
+      Id: Guid_88,
+      SpecializationType: Query,
+      SpecializationTypeId: Guid_31,
+      Name: GetCustomerQuery,
+      Display: GetCustomerQuery,
+      ExternalReference: Customers.GetCustomerQuery,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_89,
+        TypeId: Guid_33,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: GET,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/customers/{id},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_90,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Customers.GetCustomerQuery.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_91,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_88,
+      IsChild: false
+    },
+    {
+      Id: Guid_92,
+      SpecializationType: Command,
+      SpecializationTypeId: Guid_4,
+      Name: DeleteOrderCommand,
+      Display: DeleteOrderCommand,
+      ExternalReference: Customers.DeleteOrderCommand,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: DELETE,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/customers/{customerId}/orders/{id},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_93,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: CustomerId,
+      Display: CustomerId,
+      ExternalReference: Customers.DeleteOrderCommand.CustomerId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_94,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_92,
+      IsChild: false
+    },
+    {
+      Id: Guid_95,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Customers.DeleteOrderCommand.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_96,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_92,
+      IsChild: false
+    },
+    {
+      Id: Guid_97,
+      SpecializationType: Command,
+      SpecializationTypeId: Guid_4,
+      Name: UpdateOrderCommand,
+      Display: UpdateOrderCommand,
+      ExternalReference: Customers.UpdateOrderCommand,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: PUT,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/customers/{customerId}/orders/{id},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_12,
+              Name: Success Response Code,
+              Value: 204 (No Content),
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_98,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: CustomerId,
+      Display: CustomerId,
+      ExternalReference: Customers.UpdateOrderCommand.CustomerId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_99,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_97,
+      IsChild: false
+    },
+    {
+      Id: Guid_100,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: RefNo,
+      Display: RefNo,
+      ExternalReference: Customers.UpdateOrderCommand.RefNo,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_101,
+        TypeId: Guid_16,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_97,
+      IsChild: false
+    },
+    {
+      Id: Guid_102,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Price,
+      Display: Price,
+      ExternalReference: Customers.UpdateOrderCommand.Price,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_103,
+        TypeId: Guid_55,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_97,
+      IsChild: false
+    },
+    {
+      Id: Guid_104,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Customers.UpdateOrderCommand.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_105,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_97,
+      IsChild: false
+    },
+    {
+      Id: Guid_106,
+      SpecializationType: Query,
+      SpecializationTypeId: Guid_31,
+      Name: GetOrderQuery,
+      Display: GetOrderQuery,
+      ExternalReference: Customers.GetOrderQuery,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_107,
+        TypeId: Guid_58,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: GET,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/customers/{customerId}/orders/{id},
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_108,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: CustomerId,
+      Display: CustomerId,
+      ExternalReference: Customers.GetOrderQuery.CustomerId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_109,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_106,
+      IsChild: false
+    },
+    {
+      Id: Guid_110,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_14,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Customers.GetOrderQuery.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_111,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_106,
+      IsChild: false
+    }
+  ]
+}

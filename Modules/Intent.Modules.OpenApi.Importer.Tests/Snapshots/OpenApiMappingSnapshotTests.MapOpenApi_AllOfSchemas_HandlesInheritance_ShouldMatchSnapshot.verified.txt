@@ -1,0 +1,545 @@
+﻿{
+  Elements: [
+    {
+      Id: Guid_1,
+      SpecializationType: Folder,
+      SpecializationTypeId: Guid_2,
+      Name: Players,
+      Display: Players,
+      ExternalReference: Players,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      IsChild: false
+    },
+    {
+      Id: Guid_3,
+      SpecializationType: Command,
+      SpecializationTypeId: Guid_4,
+      Name: CreateBetsMaxCommand,
+      Display: CreateBetsMaxCommand,
+      ExternalReference: Players.CreateBetsMaxCommand,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_5,
+        TypeId: Guid_6,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      Stereotypes: [
+        {
+          DefinitionId: Guid_7,
+          Name: Http Settings,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.WebApi,
+          DefinitionPackageId: Guid_8,
+          Properties: [
+            {
+              DefinitionId: Guid_9,
+              Name: Verb,
+              Value: POST,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_10,
+              Name: Route,
+              Value: /api/players/{playerId}/Bets/max,
+              IsActive: true
+            },
+            {
+              DefinitionId: Guid_11,
+              Name: Return Type Mediatype,
+              Value: Default,
+              IsActive: true
+            }
+          ]
+        },
+        {
+          DefinitionId: Guid_12,
+          Name: Secured,
+          AddedByDefault: false,
+          DefinitionPackageName: Intent.Metadata.Security,
+          DefinitionPackageId: Guid_13
+        }
+      ],
+      IsChild: false
+    },
+    {
+      Id: Guid_14,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: Id,
+      Display: Id,
+      ExternalReference: Players.CreateBetsMaxCommand.Id,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_16,
+        TypeId: Guid_17,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      IsChild: false
+    },
+    {
+      Id: Guid_18,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: Player,
+      Display: Player,
+      ExternalReference: Players.CreateBetsMaxCommand.Player,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_19,
+        TypeId: Guid_20,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      IsChild: false
+    },
+    {
+      Id: Guid_20,
+      SpecializationType: DTO,
+      SpecializationTypeId: Guid_21,
+      Name: PlayerType,
+      Display: PlayerType,
+      ExternalReference: Players.PlayerType,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      IsChild: false
+    },
+    {
+      Id: Guid_22,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: DeviceId,
+      Display: DeviceId,
+      ExternalReference: Players.PlayerType.DeviceId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_23,
+        TypeId: Guid_17,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_20,
+      IsChild: false
+    },
+    {
+      Id: Guid_24,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: LanguageId,
+      Display: LanguageId,
+      ExternalReference: Players.PlayerType.LanguageId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_25,
+        TypeId: Guid_17,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_20,
+      IsChild: false
+    },
+    {
+      Id: Guid_26,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: Ip,
+      Display: Ip,
+      ExternalReference: Players.PlayerType.Ip,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_27,
+        TypeId: Guid_17,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_20,
+      IsChild: false
+    },
+    {
+      Id: Guid_28,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: SegmentId,
+      Display: SegmentId,
+      ExternalReference: Players.PlayerType.SegmentId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_29,
+        TypeId: Guid_30,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_20,
+      IsChild: false
+    },
+    {
+      Id: Guid_31,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: Channel,
+      Display: Channel,
+      ExternalReference: Players.PlayerType.Channel,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_32,
+        TypeId: Guid_17,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_20,
+      IsChild: false
+    },
+    {
+      Id: Guid_33,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: Amount,
+      Display: Amount,
+      ExternalReference: Players.CreateBetsMaxCommand.Amount,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_34,
+        TypeId: Guid_35,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      IsChild: false
+    },
+    {
+      Id: Guid_36,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: PriceChange,
+      Display: PriceChange,
+      ExternalReference: Players.CreateBetsMaxCommand.PriceChange,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_37,
+        TypeId: Guid_38,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      IsChild: false
+    },
+    {
+      Id: Guid_38,
+      SpecializationType: Enum,
+      SpecializationTypeId: Guid_39,
+      Name: PriceChangeType,
+      Display: PriceChangeType,
+      ExternalReference: Players.PriceChangeType,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      IsChild: false
+    },
+    {
+      Id: Guid_40,
+      SpecializationType: Enum-Literal,
+      SpecializationTypeId: Guid_41,
+      Name: None,
+      Display: None,
+      ExternalReference: Players.PriceChangeType.None,
+      IsAbstract: false,
+      IsStatic: false,
+      Value: 0,
+      IsMapped: false,
+      ParentFolderId: Guid_38,
+      IsChild: false
+    },
+    {
+      Id: Guid_42,
+      SpecializationType: Enum-Literal,
+      SpecializationTypeId: Guid_41,
+      Name: Any,
+      Display: Any,
+      ExternalReference: Players.PriceChangeType.Any,
+      IsAbstract: false,
+      IsStatic: false,
+      Value: 1,
+      IsMapped: false,
+      ParentFolderId: Guid_38,
+      IsChild: false
+    },
+    {
+      Id: Guid_43,
+      SpecializationType: Enum-Literal,
+      SpecializationTypeId: Guid_41,
+      Name: Higher,
+      Display: Higher,
+      ExternalReference: Players.PriceChangeType.Higher,
+      IsAbstract: false,
+      IsStatic: false,
+      Value: 2,
+      IsMapped: false,
+      ParentFolderId: Guid_38,
+      IsChild: false
+    },
+    {
+      Id: Guid_44,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: Items,
+      Display: Items,
+      ExternalReference: Players.CreateBetsMaxCommand.Items,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_45,
+        TypeId: Guid_46,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: true,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      IsChild: false
+    },
+    {
+      Id: Guid_46,
+      SpecializationType: DTO,
+      SpecializationTypeId: Guid_21,
+      Name: BetItemViewModel,
+      Display: BetItemViewModel,
+      ExternalReference: Players.BetItemViewModel,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      IsChild: false
+    },
+    {
+      Id: Guid_47,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: EventId,
+      Display: EventId,
+      ExternalReference: Players.BetItemViewModel.EventId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_48,
+        TypeId: Guid_30,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_46,
+      IsChild: false
+    },
+    {
+      Id: Guid_49,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: MarketId,
+      Display: MarketId,
+      ExternalReference: Players.BetItemViewModel.MarketId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_50,
+        TypeId: Guid_30,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_46,
+      IsChild: false
+    },
+    {
+      Id: Guid_51,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: SelectionId,
+      Display: SelectionId,
+      ExternalReference: Players.BetItemViewModel.SelectionId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_52,
+        TypeId: Guid_30,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_46,
+      IsChild: false
+    },
+    {
+      Id: Guid_53,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: RacingSelection,
+      Display: RacingSelection,
+      ExternalReference: Players.BetItemViewModel.RacingSelection,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_54,
+        TypeId: Guid_17,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_46,
+      IsChild: false
+    },
+    {
+      Id: Guid_55,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: Price,
+      Display: Price,
+      ExternalReference: Players.BetItemViewModel.Price,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_56,
+        TypeId: Guid_35,
+        IsNavigable: true,
+        IsNullable: true,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_46,
+      IsChild: false
+    },
+    {
+      Id: Guid_6,
+      SpecializationType: DTO,
+      SpecializationTypeId: Guid_21,
+      Name: MaxBetResultViewModel,
+      Display: MaxBetResultViewModel,
+      ExternalReference: Players.MaxBetResultViewModel,
+      IsAbstract: false,
+      IsStatic: false,
+      IsMapped: false,
+      ParentFolderId: Guid_1,
+      IsChild: false
+    },
+    {
+      Id: Guid_57,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: RejectReason,
+      Display: RejectReason,
+      ExternalReference: Players.MaxBetResultViewModel.RejectReason,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_58,
+        TypeId: Guid_30,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_6,
+      IsChild: false
+    },
+    {
+      Id: Guid_59,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: Amount,
+      Display: Amount,
+      ExternalReference: Players.MaxBetResultViewModel.Amount,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_60,
+        TypeId: Guid_35,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_6,
+      IsChild: false
+    },
+    {
+      Id: Guid_61,
+      SpecializationType: DTO-Field,
+      SpecializationTypeId: Guid_15,
+      Name: PlayerId,
+      Display: PlayerId,
+      ExternalReference: Players.CreateBetsMaxCommand.PlayerId,
+      IsAbstract: false,
+      IsStatic: false,
+      TypeReference: {
+        Id: Guid_62,
+        TypeId: Guid_17,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
+      IsMapped: false,
+      ParentFolderId: Guid_3,
+      IsChild: false
+    }
+  ]
+}

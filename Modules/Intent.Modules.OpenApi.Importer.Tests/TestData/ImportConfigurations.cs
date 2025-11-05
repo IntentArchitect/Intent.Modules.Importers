@@ -44,14 +44,36 @@ public static class ImportConfigurations
         };
     }
 
+    public static OpenApiImportConfig CQRSWithDeletions()
+    {
+        return new OpenApiImportConfig
+        {
+            ServiceType = ServiceType.CQRS,
+            SettingPersistence = SettingPersistence.All,
+            AllowRemoval = true
+        };
+    }
+
+    public static OpenApiImportConfig ServiceWithDeletions()
+    {
+        return new OpenApiImportConfig
+        {
+            ServiceType = ServiceType.Service,
+            SettingPersistence = SettingPersistence.All,
+            AllowRemoval = true
+        };
+    }
+
     public static OpenApiImportConfig Custom(
         ServiceType serviceType,
-        SettingPersistence settingPersistence)
+        SettingPersistence settingPersistence,
+        bool allowRemoval = false)
     {
         return new OpenApiImportConfig
         {
             ServiceType = serviceType,
-            SettingPersistence = settingPersistence
+            SettingPersistence = settingPersistence,
+            AllowRemoval = allowRemoval
         };
     }
 }
