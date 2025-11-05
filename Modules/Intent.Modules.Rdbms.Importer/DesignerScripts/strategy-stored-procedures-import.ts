@@ -98,17 +98,13 @@ class StoredProceduresImportStrategy {
                         let connectionStringStr = settingPersistenceValue == "InheritDb" ? defaults.inheritedConnectionString : connectionStringValue;
                         let dataTypeStr = settingPersistenceValue == "InheritDb" ? defaults.inheritedDatabaseType : databaseTypeValue;
 
-                        try {
-                            let storedProcNames = form.getField("storedProcNames").value as string;
-                            let capturedStoredProcs = (storedProcNames).split(",").map(x => x.trim());
+                        let storedProcNames = form.getField("storedProcNames").value as string;
+                        let capturedStoredProcs = (storedProcNames).split(",").map(x => x.trim());
 
-                            const selectedProcs = await this.openStoredProcedureBrowseDialog(connectionStringStr, dataTypeStr, capturedStoredProcs);
-                            if (selectedProcs.length > 0) {
-                                const storedProcNamesField = form.getField("storedProcNames");
-                                storedProcNamesField.value = selectedProcs.join(", ");
-                            }
-                        } catch (e) {
-                            await dialogService.error("Error browsing stored procedures: " + e);
+                        const selectedProcs = await this.openStoredProcedureBrowseDialog(connectionStringStr, dataTypeStr, capturedStoredProcs);
+                        if (selectedProcs.length > 0) {
+                            const storedProcNamesField = form.getField("storedProcNames");
+                            storedProcNamesField.value = selectedProcs.join(", ");
                         }
                     }
                 },
@@ -198,52 +194,47 @@ class StoredProceduresImportStrategy {
             }
         };
 
-        try {
-            const input: IStoredProcListInputModel = {
-                connectionString: connectionString,
-                databaseType: databaseType
-            };
-            let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcList", input);
-
-            if (executionResult.errors?.length > 0) {
-                await displayExecutionResultErrors(executionResult);
-                return [];
-            }
-
-            let spListResult = executionResult.result as IStoredProcListResultModel;
-
-            storedProcSelection.treeViewOptions.rootNode = {
-                id: "database",
-                specializationId: "Database",
-                label: "Database",
-                icon: Icons.databaseIcon,
-                children: Object.keys(spListResult.storedProcs).map(schemaName => {
-                    return {
-                        id: `schema.${schemaName}`,
-                        label: schemaName,
-                        specializationId: "Schema",
-                        icon: Icons.schemaIcon,
-                        isSelected: inputProcs.some(x => x.startsWith(`sp.${schemaName}`)),
-                        children: spListResult.storedProcs[schemaName].map(sp => {
-                            return {
-                                id: `sp.${schemaName}.${sp}`,
-                                label: sp,
-                                specializationId: "Stored-Procedure",
-                                icon: Icons.storedProcIcon,
-                                isSelected: inputProcs.some(x => x == `sp.${schemaName}.${sp}`)
-                            } as MacroApi.Context.ISelectableTreeNode;
-                        })
-                    } as MacroApi.Context.ISelectableTreeNode;
-                })
-            };
-
-        } catch (e) {
-            await dialogService.error(e);
-            return [];
-        }
-
         let browseFormConfig: MacroApi.Context.IDynamicFormConfig = {
             title: "Browse Stored Procedures",
+            onInitialize: async (form: MacroApi.Context.IDynamicFormApi) => {
+                const input: IStoredProcListInputModel = {
+                    connectionString: connectionString,
+                    databaseType: databaseType
+                };
+                let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcList", input);
+
+                if (executionResult.errors?.length > 0) {
+                    await displayExecutionResultErrors(executionResult);
+                    return;
+                }
+
+                let spListResult = executionResult.result as IStoredProcListResultModel;
+
+                form.getField("storedProcSelection").treeViewOptions.rootNode = {
+                    id: "database",
+                    specializationId: "Database",
+                    label: "Database",
+                    icon: Icons.databaseIcon,
+                    children: Object.keys(spListResult.storedProcs).map(schemaName => {
+                        return {
+                            id: `schema.${schemaName}`,
+                            label: schemaName,
+                            specializationId: "Schema",
+                            icon: Icons.schemaIcon,
+                            isSelected: inputProcs.some(x => x.startsWith(`sp.${schemaName}`)),
+                            children: spListResult.storedProcs[schemaName].map(sp => {
+                                return {
+                                    id: `sp.${schemaName}.${sp}`,
+                                    label: sp,
+                                    specializationId: "Stored-Procedure",
+                                    icon: Icons.storedProcIcon,
+                                    isSelected: inputProcs.some(x => x == `sp.${schemaName}.${sp}`)
+                                } as MacroApi.Context.ISelectableTreeNode;
+                            })
+                        } as MacroApi.Context.ISelectableTreeNode;
+                    })
+                };
+            },
             fields: [
                 storedProcSelection
             ]

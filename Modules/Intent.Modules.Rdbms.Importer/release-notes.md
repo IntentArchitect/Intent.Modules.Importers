@@ -1,3 +1,7 @@
+### Version 1.0.8
+
+- Fixed: Repository Importer did not register the selected stored procedures from the import dialog.
+
 ### Version 1.0.7
 
 - Improvement: Importer now prompts to save unsaved changes before running.

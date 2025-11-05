@@ -929,17 +929,12 @@ class StoredProceduresImportStrategy {
                         }
                         let connectionStringStr = settingPersistenceValue == "InheritDb" ? defaults.inheritedConnectionString : connectionStringValue;
                         let dataTypeStr = settingPersistenceValue == "InheritDb" ? defaults.inheritedDatabaseType : databaseTypeValue;
-                        try {
-                            let storedProcNames = form.getField("storedProcNames").value;
-                            let capturedStoredProcs = (storedProcNames).split(",").map(x => x.trim());
-                            const selectedProcs = await this.openStoredProcedureBrowseDialog(connectionStringStr, dataTypeStr, capturedStoredProcs);
-                            if (selectedProcs.length > 0) {
-                                const storedProcNamesField = form.getField("storedProcNames");
-                                storedProcNamesField.value = selectedProcs.join(", ");
-                            }
-                        }
-                        catch (e) {
-                            await dialogService.error("Error browsing stored procedures: " + e);
+                        let storedProcNames = form.getField("storedProcNames").value;
+                        let capturedStoredProcs = (storedProcNames).split(",").map(x => x.trim());
+                        const selectedProcs = await this.openStoredProcedureBrowseDialog(connectionStringStr, dataTypeStr, capturedStoredProcs);
+                        if (selectedProcs.length > 0) {
+                            const storedProcNamesField = form.getField("storedProcNames");
+                            storedProcNamesField.value = selectedProcs.join(", ");
                         }
                     }
                 },
@@ -992,7 +987,6 @@ class StoredProceduresImportStrategy {
         return persistedValue ? persistedValue : defaultValue;
     }
     async openStoredProcedureBrowseDialog(connectionString, databaseType, preSelectedStoredProcs) {
-        var _a;
         let inputProcs = this.sanitizePreSelectedStoredProcs(preSelectedStoredProcs);
         let storedProcSelection = {
             id: "storedProcSelection",
@@ -1020,48 +1014,45 @@ class StoredProceduresImportStrategy {
                 ]
             }
         };
-        try {
-            const input = {
-                connectionString: connectionString,
-                databaseType: databaseType
-            };
-            let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcList", input);
-            if (((_a = executionResult.errors) === null || _a === void 0 ? void 0 : _a.length) > 0) {
-                await displayExecutionResultErrors(executionResult);
-                return [];
-            }
-            let spListResult = executionResult.result;
-            storedProcSelection.treeViewOptions.rootNode = {
-                id: "database",
-                specializationId: "Database",
-                label: "Database",
-                icon: Icons.databaseIcon,
-                children: Object.keys(spListResult.storedProcs).map(schemaName => {
-                    return {
-                        id: `schema.${schemaName}`,
-                        label: schemaName,
-                        specializationId: "Schema",
-                        icon: Icons.schemaIcon,
-                        isSelected: inputProcs.some(x => x.startsWith(`sp.${schemaName}`)),
-                        children: spListResult.storedProcs[schemaName].map(sp => {
-                            return {
-                                id: `sp.${schemaName}.${sp}`,
-                                label: sp,
-                                specializationId: "Stored-Procedure",
-                                icon: Icons.storedProcIcon,
-                                isSelected: inputProcs.some(x => x == `sp.${schemaName}.${sp}`)
-                            };
-                        })
-                    };
-                })
-            };
-        }
-        catch (e) {
-            await dialogService.error(e);
-            return [];
-        }
         let browseFormConfig = {
             title: "Browse Stored Procedures",
+            onInitialize: async (form) => {
+                var _a;
+                const input = {
+                    connectionString: connectionString,
+                    databaseType: databaseType
+                };
+                let executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcList", input);
+                if (((_a = executionResult.errors) === null || _a === void 0 ? void 0 : _a.length) > 0) {
+                    await displayExecutionResultErrors(executionResult);
+                    return;
+                }
+                let spListResult = executionResult.result;
+                form.getField("storedProcSelection").treeViewOptions.rootNode = {
+                    id: "database",
+                    specializationId: "Database",
+                    label: "Database",
+                    icon: Icons.databaseIcon,
+                    children: Object.keys(spListResult.storedProcs).map(schemaName => {
+                        return {
+                            id: `schema.${schemaName}`,
+                            label: schemaName,
+                            specializationId: "Schema",
+                            icon: Icons.schemaIcon,
+                            isSelected: inputProcs.some(x => x.startsWith(`sp.${schemaName}`)),
+                            children: spListResult.storedProcs[schemaName].map(sp => {
+                                return {
+                                    id: `sp.${schemaName}.${sp}`,
+                                    label: sp,
+                                    specializationId: "Stored-Procedure",
+                                    icon: Icons.storedProcIcon,
+                                    isSelected: inputProcs.some(x => x == `sp.${schemaName}.${sp}`)
+                                };
+                            })
+                        };
+                    })
+                };
+            },
             fields: [
                 storedProcSelection
             ]
