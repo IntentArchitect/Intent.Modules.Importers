@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -167,22 +168,13 @@ public class OpenApiPersistableFactory : IOpenApiPersistableFactory
 
                 var operationDetails = GetServiceDetails(restType, url, operation);
                 operations.Add(operationDetails);
-                ResolvedType? response = null;
-                var successResponses = operation.Responses.FirstOrDefault(r => r.Key.StartsWith("2", StringComparison.Ordinal)).Value;
-                if (successResponses?.Content != null && successResponses.Content.Count > 0)
-                {
-                    if (!successResponses.Content.TryGetValue("application/json", out var content))
-                    {
-                        content = successResponses.Content.FirstOrDefault().Value;
-                    }
 
-                    if (!IsNull(content.Schema))
+                //May need to adjust the name based on the response type
+                if (TryGetResponseType(operation, operationDetails, out var response ))
+                {
+                    if (response.IsCollection)
                     {
-                        response = Resolve(content.Schema, operationDetails.OperationName);
-                        if (response.IsCollection)
-                        {
-                            operationDetails.PluralizeOperationName();
-                        }
+                        operationDetails.PluralizeOperationName();
                     }
                 }
             }
@@ -202,25 +194,7 @@ public class OpenApiPersistableFactory : IOpenApiPersistableFactory
         foreach (var operationDetails in operations)
         {
             var operation = operationDetails.Operation;
-            ResolvedType? response = null;
-            var successResponses = operation.Responses.FirstOrDefault(r => r.Key.StartsWith("2", StringComparison.Ordinal)).Value;
-            if (successResponses?.Content != null && successResponses.Content.Count > 0)
-            {
-                if (!successResponses.Content.TryGetValue("application/json", out var content))
-                {
-                    content = successResponses.Content.FirstOrDefault().Value;
-                }
-
-                if (!IsNull(content.Schema))
-                {
-                    response = Resolve(content.Schema, operationDetails.OperationName);
-                    if (response.IsCollection)
-                    {
-                        operationDetails.PluralizeOperationName();
-                        response = Resolve(content.Schema, operationDetails.OperationName);
-                    }
-                }
-            }
+            TryGetResponseType(operation, operationDetails, out var response);
 
             string? restSuccessCode = null;
             if (operation.Responses.Count(r => r.Key.StartsWith("2", StringComparison.Ordinal)) == 1)
@@ -264,6 +238,30 @@ public class OpenApiPersistableFactory : IOpenApiPersistableFactory
         }
 
         return result;
+    }
+
+    private bool TryGetResponseType(OpenApiOperation operation, OperationDetails operationDetails, out ResolvedType response)
+    {
+        var successResponses = operation.Responses.FirstOrDefault(r => r.Key.StartsWith("2", StringComparison.Ordinal)).Value;
+        if (successResponses == null)
+        {
+            operation.Responses.TryGetValue("default", out successResponses);
+        }
+        if (successResponses?.Content != null && successResponses.Content.Count > 0)
+        {
+            if (!successResponses.Content.TryGetValue("application/json", out var content))
+            {
+                content = successResponses.Content.FirstOrDefault().Value;
+            }
+
+            if (!IsNull(content.Schema))
+            {
+                response = Resolve(content.Schema, operationDetails.OperationName);
+                return true;
+            }
+        }
+        response = null;
+        return false;
     }
 
     private void Configure(IReadOnlyCollection<PackageModelPersistable> packages, OpenApiImportConfig config, OpenApiDocument document)

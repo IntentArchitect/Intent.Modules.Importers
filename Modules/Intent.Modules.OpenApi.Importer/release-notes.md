@@ -1,3 +1,7 @@
+### Version 1.1.11
+
+- Fixed: Reponses where only only modeled for `2xx` response codes, we now do `default` if no `2xx` response code is present. 
+
 ### Version 1.1.10
 
 - Improvement: Enhanced OpenAPI importer to handle generic types using new simplified naming format (e.g., PagedResult_Of_ClientDto).
