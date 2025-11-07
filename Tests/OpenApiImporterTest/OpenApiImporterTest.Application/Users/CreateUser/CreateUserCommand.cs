@@ -7,7 +7,7 @@ using OpenApiImporterTest.Application.Common.Interfaces;
 
 namespace OpenApiImporterTest.Application.Users.CreateUser
 {
-    public class CreateUserCommand : IRequest, ICommand
+    public class CreateUserCommand : IRequest<User>, ICommand
     {
         public CreateUserCommand(int id,
             string username,

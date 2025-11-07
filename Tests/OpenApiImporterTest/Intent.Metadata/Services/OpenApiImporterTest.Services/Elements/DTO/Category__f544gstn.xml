@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<class id="614432ce-4c81-4516-823f-15bec3867fe5" type="DTO" typeId="fee0edca-4aa0-4f77-a524-6bbd84e78734">
-  <name>Tag</name>
-  <display>Tag</display>
-  <externalReference>Pets.Tag</externalReference>
+<class id="6db97ebe-7c70-48c1-8bee-4f7bf332ade4" type="DTO" typeId="fee0edca-4aa0-4f77-a524-6bbd84e78734">
+  <name>Category</name>
+  <display>Category</display>
+  <externalReference>Pets.Category</externalReference>
   <isAbstract>false</isAbstract>
   <sort-children>by-type-then-manually</sort-children>
   <genericTypes />
   <isMapped>false</isMapped>
-  <parentFolderId>50a9bf06-b0e1-4ccf-8660-0c0d4d6ed4a1</parentFolderId>
+  <parentFolderId>b6d34d0f-ea46-4ec5-9ef2-74e066193e10</parentFolderId>
   <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
   <packageName>OpenApiImporterTest.Services</packageName>
   <stereotypes />
   <metadata />
   <childElements>
-    <childElement id="ed866918-7031-4766-8ffd-6f05064cf223" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+    <childElement id="533d39b8-475e-4d31-bcaa-7d445bf06dd1" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
       <name>Id</name>
       <display>Id: int</display>
-      <externalReference>Pets.Tag.Id</externalReference>
+      <externalReference>Pets.Category.Id</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="1e97fb12-7e16-4cb2-beeb-e2d6cfcb6a46">
+      <typeReference id="6bc4be1e-ff77-4854-b615-54aafc26fc37">
         <typeId>fb0a362d-e9e2-40de-b6ff-5ce8167cbe74</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -31,7 +31,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>614432ce-4c81-4516-823f-15bec3867fe5</parentFolderId>
+      <parentFolderId>6db97ebe-7c70-48c1-8bee-4f7bf332ade4</parentFolderId>
       <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
       <packageName>OpenApiImporterTest.Services</packageName>
       <stereotypes>
@@ -64,13 +64,13 @@
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="469b018c-fb96-48ab-8ce4-15fc96eb0b4d" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+    <childElement id="df03e451-d632-4382-a909-76357f55ec2e" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
       <name>Name</name>
       <display>Name: string</display>
-      <externalReference>Pets.Tag.Name</externalReference>
+      <externalReference>Pets.Category.Name</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="b14d215f-65e3-456b-a92f-32aee1fbddd5">
+      <typeReference id="6a04f4c0-1ad4-45ae-81e6-b0458830fd18">
         <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -82,7 +82,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>614432ce-4c81-4516-823f-15bec3867fe5</parentFolderId>
+      <parentFolderId>6db97ebe-7c70-48c1-8bee-4f7bf332ade4</parentFolderId>
       <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
       <packageName>OpenApiImporterTest.Services</packageName>
       <stereotypes>

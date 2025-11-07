@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
 using Intent.RoslynWeaver.Attributes;
@@ -36,7 +35,6 @@ namespace OpenApiImporterTest.Api.Controllers
         /// <response code="201">Successfully created.</response>
         /// <response code="400">One or more validation errors have occurred.</response>
         [HttpPost("/store/order")]
-        [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(Order), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -87,7 +85,6 @@ namespace OpenApiImporterTest.Api.Controllers
         /// <response code="400">One or more validation errors have occurred.</response>
         /// <response code="404">No Order could be found with the provided parameters.</response>
         [HttpGet("/store/order/{orderId}")]
-        [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(Order), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

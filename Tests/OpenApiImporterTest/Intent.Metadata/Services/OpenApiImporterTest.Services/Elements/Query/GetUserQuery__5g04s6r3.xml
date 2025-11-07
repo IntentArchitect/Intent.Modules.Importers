@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<class id="c9d6304d-14c3-401f-ae2b-ba61695a1a4e" type="Command" typeId="ccf14eb6-3a55-4d81-b5b9-d27311c70cb9">
-  <name>DeleteUserCommand</name>
-  <display>DeleteUserCommand: void</display>
-  <externalReference>Users.DeleteUserCommand</externalReference>
+<class id="78ebe14e-a7e6-4238-8e77-69fef4dfafc7" type="Query" typeId="e71b0662-e29d-4db2-868b-8a12464b25d0">
+  <name>GetUserQuery</name>
+  <display>GetUserQuery: User</display>
+  <externalReference>Users.GetUserQuery</externalReference>
   <isAbstract>false</isAbstract>
   <sort-children>by-type-then-manually</sort-children>
   <genericTypes />
-  <typeReference id="45825162-7b11-4252-9554-f29a72468b4e">
+  <typeReference id="ad199e53-6ed9-4067-9eb1-63fdb30619ea">
+    <typeId>1c14bac6-06fe-4abd-ae6d-19c6e4bddecd</typeId>
     <isNavigable>true</isNavigable>
     <isNullable>false</isNullable>
     <isCollection>false</isCollection>
     <isRequired>true</isRequired>
+    <typePackageName>OpenApiImporterTest.Services</typePackageName>
+    <typePackageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</typePackageId>
     <stereotypes />
     <genericTypeParameters />
   </typeReference>
   <isMapped>false</isMapped>
-  <parentFolderId>53250c2f-f170-44c0-ae74-58e8774769a3</parentFolderId>
+  <parentFolderId>c523043d-f951-407c-b4c1-1a2ebcfdc5ab</parentFolderId>
   <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
   <packageName>OpenApiImporterTest.Services</packageName>
   <traits>
@@ -29,22 +32,22 @@
       <definitionPackageName>Intent.Metadata.WebApi</definitionPackageName>
       <definitionPackageId>0011387a-b122-45d7-9cdb-8e21b315ab9f</definitionPackageId>
       <properties>
-        <property name="801c3e61-4431-4d81-93fa-7e57d33cb3fa" display="Verb" value="DELETE" isActive="true" />
+        <property name="801c3e61-4431-4d81-93fa-7e57d33cb3fa" display="Verb" value="GET" isActive="true" />
         <property name="5dd3e07d-76eb-45d4-9956-4325fb068acc" display="Route" value="/user/{username}" isActive="true" />
-        <property name="4490e212-1e99-43ce-b3dd-048ed2a6bae8" display="Return Type Mediatype" value="application/json" isActive="true" />
+        <property name="4490e212-1e99-43ce-b3dd-048ed2a6bae8" display="Return Type Mediatype" value="Default" isActive="true" />
         <property name="e3870725-34b3-4684-85f2-ec4a667207fb" display="Success Response Code" isActive="true" />
       </properties>
     </stereotype>
   </stereotypes>
   <metadata />
   <childElements>
-    <childElement id="1c9d4cc2-6b63-422f-a7cf-88e843a101e9" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+    <childElement id="b438f070-b0a5-4879-982c-2d952fe4003b" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
       <name>Username</name>
       <display>Username: string</display>
-      <externalReference>Users.DeleteUserCommand.Username</externalReference>
+      <externalReference>Users.GetUserQuery.Username</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="d2305dd9-5130-4f0a-8e59-85020496b950">
+      <typeReference id="65ed84fd-23a7-40fa-998d-d50f49791365">
         <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -56,7 +59,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>c9d6304d-14c3-401f-ae2b-ba61695a1a4e</parentFolderId>
+      <parentFolderId>78ebe14e-a7e6-4238-8e77-69fef4dfafc7</parentFolderId>
       <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
       <packageName>OpenApiImporterTest.Services</packageName>
       <stereotypes>

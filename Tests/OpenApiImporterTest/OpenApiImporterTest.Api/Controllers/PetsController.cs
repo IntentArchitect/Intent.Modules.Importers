@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
 using Intent.RoslynWeaver.Attributes;
@@ -41,7 +40,6 @@ namespace OpenApiImporterTest.Api.Controllers
         /// <response code="403">Forbidden request.</response>
         [HttpPost("/pet/")]
         [Authorize]
-        [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(Pet), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -87,7 +85,6 @@ namespace OpenApiImporterTest.Api.Controllers
         /// <response code="403">Forbidden request.</response>
         [HttpPut("/pet/")]
         [Authorize]
-        [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(Pet), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -109,7 +106,6 @@ namespace OpenApiImporterTest.Api.Controllers
         /// <response code="403">Forbidden request.</response>
         [HttpGet("/pet/findByStatus")]
         [Authorize]
-        [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(List<Pet>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -131,7 +127,6 @@ namespace OpenApiImporterTest.Api.Controllers
         /// <response code="403">Forbidden request.</response>
         [HttpGet("/pet/findByTags")]
         [Authorize]
-        [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(List<Pet>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -154,7 +149,6 @@ namespace OpenApiImporterTest.Api.Controllers
         /// <response code="404">No Pet could be found with the provided parameters.</response>
         [HttpGet("/pet/{petId}")]
         [Authorize]
-        [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(Pet), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

@@ -1,50 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<class id="dd852db0-d834-4df0-ab80-1da17883f856" type="Command" typeId="ccf14eb6-3a55-4d81-b5b9-d27311c70cb9">
-  <name>UpdateUserCommand</name>
-  <display>UpdateUserCommand: void</display>
-  <externalReference>Users.UpdateUserCommand</externalReference>
+<class id="1c14bac6-06fe-4abd-ae6d-19c6e4bddecd" type="DTO" typeId="fee0edca-4aa0-4f77-a524-6bbd84e78734">
+  <name>User</name>
+  <display>User</display>
+  <externalReference>Users.User</externalReference>
   <isAbstract>false</isAbstract>
   <sort-children>by-type-then-manually</sort-children>
   <genericTypes />
-  <typeReference id="bc582d16-23c5-4642-9583-8320ec0602e5">
-    <isNavigable>true</isNavigable>
-    <isNullable>false</isNullable>
-    <isCollection>false</isCollection>
-    <isRequired>true</isRequired>
-    <stereotypes />
-    <genericTypeParameters />
-  </typeReference>
   <isMapped>false</isMapped>
-  <parentFolderId>53250c2f-f170-44c0-ae74-58e8774769a3</parentFolderId>
+  <parentFolderId>c523043d-f951-407c-b4c1-1a2ebcfdc5ab</parentFolderId>
   <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
   <packageName>OpenApiImporterTest.Services</packageName>
-  <traits>
-    <trait id="9e587d4d-f317-4ab8-9bbb-9394234d2a88" name="[Allow Comment]" />
-    <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
-    <trait id="2b6729eb-e2ae-4b5f-86fe-4f611d1f912e" name="[Processing Handler]" />
-  </traits>
-  <stereotypes>
-    <stereotype stereotypeDefinitionId="b4581ed2-42ec-4ae2-83dd-dcdd5f0837b6" name="Http Settings">
-      <addedByDefault>false</addedByDefault>
-      <definitionPackageName>Intent.Metadata.WebApi</definitionPackageName>
-      <definitionPackageId>0011387a-b122-45d7-9cdb-8e21b315ab9f</definitionPackageId>
-      <properties>
-        <property name="801c3e61-4431-4d81-93fa-7e57d33cb3fa" display="Verb" value="PUT" isActive="true" />
-        <property name="5dd3e07d-76eb-45d4-9956-4325fb068acc" display="Route" value="/user/{username}" isActive="true" />
-        <property name="4490e212-1e99-43ce-b3dd-048ed2a6bae8" display="Return Type Mediatype" value="application/json" isActive="true" />
-        <property name="e3870725-34b3-4684-85f2-ec4a667207fb" display="Success Response Code" isActive="true" />
-      </properties>
-    </stereotype>
-  </stereotypes>
+  <stereotypes />
   <metadata />
   <childElements>
-    <childElement id="dbf3034a-3475-4bfb-aab8-03ac772621a7" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+    <childElement id="78e58a53-df76-4d66-8cc6-ec47cbd76aa6" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
       <name>Id</name>
       <display>Id: int</display>
-      <externalReference>Users.UpdateUserCommand.Id</externalReference>
+      <externalReference>Users.User.Id</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="dc47a53a-d3fb-477b-a45e-890a0e5ff8ee">
+      <typeReference id="2cc36392-9fd3-49e5-b874-dcf031b437f5">
         <typeId>fb0a362d-e9e2-40de-b6ff-5ce8167cbe74</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -56,7 +31,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>dd852db0-d834-4df0-ab80-1da17883f856</parentFolderId>
+      <parentFolderId>1c14bac6-06fe-4abd-ae6d-19c6e4bddecd</parentFolderId>
       <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
       <packageName>OpenApiImporterTest.Services</packageName>
       <stereotypes>
@@ -89,13 +64,13 @@
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="800dd446-4c6b-4e9c-a6be-cdb5955edb03" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+    <childElement id="e3984ceb-1e7a-40f9-a673-53f215712b9f" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
       <name>Username</name>
       <display>Username: string</display>
-      <externalReference>Users.UpdateUserCommand.Username</externalReference>
+      <externalReference>Users.User.Username</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="116cc9ad-ffce-4dcc-8bb0-b39ac4b84ce8">
+      <typeReference id="d6b498dc-fd0b-494b-83aa-5e3bea8041ef">
         <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -107,7 +82,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>dd852db0-d834-4df0-ab80-1da17883f856</parentFolderId>
+      <parentFolderId>1c14bac6-06fe-4abd-ae6d-19c6e4bddecd</parentFolderId>
       <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
       <packageName>OpenApiImporterTest.Services</packageName>
       <stereotypes>
@@ -140,13 +115,13 @@
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="a0b9bb3b-cccf-4977-beac-79ba03f6746f" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+    <childElement id="86196757-26cd-4653-b6e5-e83f9f852d30" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
       <name>FirstName</name>
       <display>FirstName: string</display>
-      <externalReference>Users.UpdateUserCommand.FirstName</externalReference>
+      <externalReference>Users.User.FirstName</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="4022992e-3d8e-4196-b934-498e6ff6f6d7">
+      <typeReference id="87597c1b-c102-4be0-98a9-91e2e97d81df">
         <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -158,7 +133,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>dd852db0-d834-4df0-ab80-1da17883f856</parentFolderId>
+      <parentFolderId>1c14bac6-06fe-4abd-ae6d-19c6e4bddecd</parentFolderId>
       <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
       <packageName>OpenApiImporterTest.Services</packageName>
       <stereotypes>
@@ -191,13 +166,13 @@
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="a38660b3-dcbf-4a6d-87cc-e762db66bcd5" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+    <childElement id="a7a6041f-dc9e-46bb-aef3-0e53bccb8408" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
       <name>LastName</name>
       <display>LastName: string</display>
-      <externalReference>Users.UpdateUserCommand.LastName</externalReference>
+      <externalReference>Users.User.LastName</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="cd4cdd39-e2e1-4dba-8090-57c486e055c9">
+      <typeReference id="791050de-20b3-4ec2-83f6-77013a7230fb">
         <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -209,7 +184,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>dd852db0-d834-4df0-ab80-1da17883f856</parentFolderId>
+      <parentFolderId>1c14bac6-06fe-4abd-ae6d-19c6e4bddecd</parentFolderId>
       <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
       <packageName>OpenApiImporterTest.Services</packageName>
       <stereotypes>
@@ -242,13 +217,13 @@
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="78eaf999-433a-45f6-a9e4-cd9b8245ab35" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+    <childElement id="934fd788-dca0-4481-af3c-89c58758d7e6" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
       <name>Email</name>
       <display>Email: string</display>
-      <externalReference>Users.UpdateUserCommand.Email</externalReference>
+      <externalReference>Users.User.Email</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="02c4de0a-aed6-4226-a48e-330181a11223">
+      <typeReference id="0d1afa64-6261-4ba1-b5ab-b0761503a070">
         <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -260,7 +235,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>dd852db0-d834-4df0-ab80-1da17883f856</parentFolderId>
+      <parentFolderId>1c14bac6-06fe-4abd-ae6d-19c6e4bddecd</parentFolderId>
       <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
       <packageName>OpenApiImporterTest.Services</packageName>
       <stereotypes>
@@ -293,13 +268,13 @@
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="7559d339-6d1e-4548-9bc2-0069cb4018aa" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+    <childElement id="c48c68f4-e307-4423-a754-6be52b581120" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
       <name>Password</name>
       <display>Password: string</display>
-      <externalReference>Users.UpdateUserCommand.Password</externalReference>
+      <externalReference>Users.User.Password</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="7d902b7f-e05b-4bb5-b5b5-7a6320bdc46d">
+      <typeReference id="8cfbc225-bb84-4595-933f-1ba01e79ee30">
         <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -311,7 +286,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>dd852db0-d834-4df0-ab80-1da17883f856</parentFolderId>
+      <parentFolderId>1c14bac6-06fe-4abd-ae6d-19c6e4bddecd</parentFolderId>
       <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
       <packageName>OpenApiImporterTest.Services</packageName>
       <stereotypes>
@@ -344,13 +319,13 @@
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="dfd575e4-c554-4e0d-82aa-6a00c055945f" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+    <childElement id="f337e8cf-22bf-4e84-b1e2-561d0e0dc115" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
       <name>Phone</name>
       <display>Phone: string</display>
-      <externalReference>Users.UpdateUserCommand.Phone</externalReference>
+      <externalReference>Users.User.Phone</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="32a56250-e2fa-4da8-8c29-0956579b6861">
+      <typeReference id="009c9e3f-4e4c-40ad-b48c-0c8c7cb55a26">
         <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -362,7 +337,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>dd852db0-d834-4df0-ab80-1da17883f856</parentFolderId>
+      <parentFolderId>1c14bac6-06fe-4abd-ae6d-19c6e4bddecd</parentFolderId>
       <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
       <packageName>OpenApiImporterTest.Services</packageName>
       <stereotypes>
@@ -395,13 +370,13 @@
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="270fb503-d9c6-4b5b-bdd6-857d67080a1e" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+    <childElement id="bea2555d-24c6-4918-8fb3-d93f9f1db443" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
       <name>UserStatus</name>
       <display>UserStatus: int</display>
-      <externalReference>Users.UpdateUserCommand.UserStatus</externalReference>
+      <externalReference>Users.User.UserStatus</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="0c846db4-7ea7-4388-aad0-808f2264909b">
+      <typeReference id="7da6fa2c-98d9-42c7-b28d-4bbc6151fd62">
         <typeId>fb0a362d-e9e2-40de-b6ff-5ce8167cbe74</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -413,7 +388,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>dd852db0-d834-4df0-ab80-1da17883f856</parentFolderId>
+      <parentFolderId>1c14bac6-06fe-4abd-ae6d-19c6e4bddecd</parentFolderId>
       <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
       <packageName>OpenApiImporterTest.Services</packageName>
       <stereotypes>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<class id="45fce068-04f4-43d5-97aa-1539e0d08a9a" type="Query" typeId="e71b0662-e29d-4db2-868b-8a12464b25d0">
+<class id="58457e8e-fdcc-426f-9d84-13173fe2173b" type="Query" typeId="e71b0662-e29d-4db2-868b-8a12464b25d0">
   <name>GetLogoutsQuery</name>
   <display>GetLogoutsQuery: int</display>
   <externalReference>Users.GetLogoutsQuery</externalReference>
   <isAbstract>false</isAbstract>
   <genericTypes />
-  <typeReference id="26bc27f7-64e6-4fd4-a589-fc42225162bd">
+  <typeReference id="5df1b268-5cb4-4de4-8d01-740e5d3337b3">
     <typeId>fb0a362d-e9e2-40de-b6ff-5ce8167cbe74</typeId>
     <isNavigable>true</isNavigable>
     <isNullable>false</isNullable>
@@ -17,7 +17,7 @@
     <genericTypeParameters />
   </typeReference>
   <isMapped>false</isMapped>
-  <parentFolderId>53250c2f-f170-44c0-ae74-58e8774769a3</parentFolderId>
+  <parentFolderId>c523043d-f951-407c-b4c1-1a2ebcfdc5ab</parentFolderId>
   <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
   <packageName>OpenApiImporterTest.Services</packageName>
   <traits>

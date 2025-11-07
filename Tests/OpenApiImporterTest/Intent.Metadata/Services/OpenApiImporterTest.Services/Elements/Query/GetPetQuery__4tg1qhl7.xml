@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<class id="12342e85-35ec-4bc5-a1ec-23be48fec1d8" type="Query" typeId="e71b0662-e29d-4db2-868b-8a12464b25d0">
+<class id="5bc2c145-f8e3-40c8-80af-5cd0b1f424b8" type="Query" typeId="e71b0662-e29d-4db2-868b-8a12464b25d0">
   <name>GetPetQuery</name>
   <display>GetPetQuery: Pet</display>
   <externalReference>Pets.GetPetQuery</externalReference>
   <isAbstract>false</isAbstract>
   <sort-children>by-type-then-manually</sort-children>
   <genericTypes />
-  <typeReference id="de3d11ee-3d31-447e-b2b1-cb5405357f11">
-    <typeId>55fb12b6-c7d9-4dc2-9ec4-4f90f49b3b0f</typeId>
+  <typeReference id="e0e558ce-4bcb-4ccd-ad97-375db28232d8">
+    <typeId>99b9b051-e891-4d88-b8c7-36d511c5f44a</typeId>
     <isNavigable>true</isNavigable>
     <isNullable>false</isNullable>
     <isCollection>false</isCollection>
@@ -18,7 +18,7 @@
     <genericTypeParameters />
   </typeReference>
   <isMapped>false</isMapped>
-  <parentFolderId>50a9bf06-b0e1-4ccf-8660-0c0d4d6ed4a1</parentFolderId>
+  <parentFolderId>b6d34d0f-ea46-4ec5-9ef2-74e066193e10</parentFolderId>
   <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
   <packageName>OpenApiImporterTest.Services</packageName>
   <traits>
@@ -34,7 +34,7 @@
       <properties>
         <property name="801c3e61-4431-4d81-93fa-7e57d33cb3fa" display="Verb" value="GET" isActive="true" />
         <property name="5dd3e07d-76eb-45d4-9956-4325fb068acc" display="Route" value="/pet/{petId}" isActive="true" />
-        <property name="4490e212-1e99-43ce-b3dd-048ed2a6bae8" display="Return Type Mediatype" value="application/json" isActive="true" />
+        <property name="4490e212-1e99-43ce-b3dd-048ed2a6bae8" display="Return Type Mediatype" value="Default" isActive="true" />
         <property name="e3870725-34b3-4684-85f2-ec4a667207fb" display="Success Response Code" isActive="true" />
       </properties>
     </stereotype>
@@ -52,13 +52,13 @@
   </stereotypes>
   <metadata />
   <childElements>
-    <childElement id="041b99d9-86a9-4b6d-bd45-704e04ee9072" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
+    <childElement id="4eb01106-f432-44a4-a321-c5937f682d53" type="DTO-Field" typeId="7baed1fd-469b-4980-8fd9-4cefb8331eb2">
       <name>PetId</name>
       <display>PetId: int</display>
       <externalReference>Pets.GetPetQuery.PetId</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
-      <typeReference id="a0c59670-66a1-4e21-84d6-07e07493956b">
+      <typeReference id="b38e52a7-f749-4f71-ac8d-f9f71bfbb90a">
         <typeId>fb0a362d-e9e2-40de-b6ff-5ce8167cbe74</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -70,7 +70,7 @@
         <genericTypeParameters />
       </typeReference>
       <isMapped>false</isMapped>
-      <parentFolderId>12342e85-35ec-4bc5-a1ec-23be48fec1d8</parentFolderId>
+      <parentFolderId>5bc2c145-f8e3-40c8-80af-5cd0b1f424b8</parentFolderId>
       <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
       <packageName>OpenApiImporterTest.Services</packageName>
       <stereotypes>

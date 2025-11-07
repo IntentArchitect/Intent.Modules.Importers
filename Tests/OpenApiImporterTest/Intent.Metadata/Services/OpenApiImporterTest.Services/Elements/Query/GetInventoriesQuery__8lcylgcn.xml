@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<class id="3096cb0f-fe82-4f98-8bcd-e540afaceea6" type="Query" typeId="e71b0662-e29d-4db2-868b-8a12464b25d0">
+<class id="d6a7557c-2bd0-40da-aee6-4d210c8d8105" type="Query" typeId="e71b0662-e29d-4db2-868b-8a12464b25d0">
   <name>GetInventoriesQuery</name>
   <display>GetInventoriesQuery: Dictionary&lt;string, int&gt;</display>
   <externalReference>Stores.GetInventoriesQuery</externalReference>
   <isAbstract>false</isAbstract>
   <genericTypes />
-  <typeReference id="caf6e9f7-45ab-428d-a2ad-ff2c4cf1fdc2">
+  <typeReference id="6c9503b2-c4be-4ee0-90ea-cef060713996">
     <typeId>ac2b65c3-6a8f-454a-b520-b583350c43ef</typeId>
     <isNavigable>true</isNavigable>
     <isNullable>false</isNullable>
@@ -15,7 +15,7 @@
     <typePackageId>730e1275-0c32-44f7-991a-9619d07ca68d</typePackageId>
     <stereotypes />
     <genericTypeParameters>
-      <genericTypeParameter id="064f5edf-dd56-4354-84b1-a3c78f97b87c">
+      <genericTypeParameter id="65a0b675-ff56-4f39-8496-1165b9871884">
         <typeId>d384db9c-a279-45e1-801e-e4e8099625f2</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -27,7 +27,7 @@
         <stereotypes />
         <genericTypeParameters />
       </genericTypeParameter>
-      <genericTypeParameter id="59a00b35-8a70-43a9-8ccf-4ca9eb64331d">
+      <genericTypeParameter id="0da5c42f-bfb6-4277-bafe-9c74b7f9e0d9">
         <typeId>fb0a362d-e9e2-40de-b6ff-5ce8167cbe74</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -42,7 +42,7 @@
     </genericTypeParameters>
   </typeReference>
   <isMapped>false</isMapped>
-  <parentFolderId>c029e6b1-c515-4bc6-b02b-9c1d4f92f28f</parentFolderId>
+  <parentFolderId>c8f16722-dfdd-45ad-acdb-e44a49c8acca</parentFolderId>
   <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
   <packageName>OpenApiImporterTest.Services</packageName>
   <traits>

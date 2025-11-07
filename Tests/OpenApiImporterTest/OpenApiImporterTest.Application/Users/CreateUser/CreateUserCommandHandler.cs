@@ -10,7 +10,7 @@ using MediatR;
 namespace OpenApiImporterTest.Application.Users.CreateUser
 {
     [IntentManaged(Mode.Merge, Signature = Mode.Fully)]
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, User>
     {
         [IntentManaged(Mode.Merge)]
         public CreateUserCommandHandler()
@@ -18,7 +18,7 @@ namespace OpenApiImporterTest.Application.Users.CreateUser
         }
 
         [IntentManaged(Mode.Fully, Body = Mode.Merge)]
-        public async Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<User> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             // TODO: Implement Handle (CreateUserCommandHandler) functionality
             throw new NotImplementedException("Your implementation here...");

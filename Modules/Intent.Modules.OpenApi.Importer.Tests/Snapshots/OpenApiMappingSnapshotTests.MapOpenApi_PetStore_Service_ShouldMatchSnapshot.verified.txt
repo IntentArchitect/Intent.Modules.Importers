@@ -1452,6 +1452,14 @@
       ExternalReference: UserService.CreateUser,
       IsAbstract: false,
       IsStatic: false,
+      TypeReference: {
+        Id: Guid_116,
+        TypeId: Guid_117,
+        IsNavigable: true,
+        IsNullable: false,
+        IsCollection: false,
+        IsRequired: false
+      },
       IsMapped: false,
       ParentFolderId: Guid_114,
       Stereotypes: [
@@ -1486,7 +1494,7 @@
       IsChild: false
     },
     {
-      Id: Guid_116,
+      Id: Guid_117,
       SpecializationType: DTO,
       SpecializationTypeId: Guid_18,
       Name: User,
@@ -1499,7 +1507,7 @@
       IsChild: false
     },
     {
-      Id: Guid_117,
+      Id: Guid_118,
       SpecializationType: DTO-Field,
       SpecializationTypeId: Guid_20,
       Name: Id,
@@ -1508,7 +1516,7 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_118,
+        Id: Guid_119,
         TypeId: Guid_22,
         IsNavigable: true,
         IsNullable: false,
@@ -1516,11 +1524,11 @@
         IsRequired: false
       },
       IsMapped: false,
-      ParentFolderId: Guid_116,
+      ParentFolderId: Guid_117,
       IsChild: false
     },
     {
-      Id: Guid_119,
+      Id: Guid_120,
       SpecializationType: DTO-Field,
       SpecializationTypeId: Guid_20,
       Name: Username,
@@ -1529,7 +1537,7 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_120,
+        Id: Guid_121,
         TypeId: Guid_25,
         IsNavigable: true,
         IsNullable: false,
@@ -1537,11 +1545,11 @@
         IsRequired: false
       },
       IsMapped: false,
-      ParentFolderId: Guid_116,
+      ParentFolderId: Guid_117,
       IsChild: false
     },
     {
-      Id: Guid_121,
+      Id: Guid_122,
       SpecializationType: DTO-Field,
       SpecializationTypeId: Guid_20,
       Name: FirstName,
@@ -1550,7 +1558,7 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_122,
+        Id: Guid_123,
         TypeId: Guid_25,
         IsNavigable: true,
         IsNullable: false,
@@ -1558,11 +1566,11 @@
         IsRequired: false
       },
       IsMapped: false,
-      ParentFolderId: Guid_116,
+      ParentFolderId: Guid_117,
       IsChild: false
     },
     {
-      Id: Guid_123,
+      Id: Guid_124,
       SpecializationType: DTO-Field,
       SpecializationTypeId: Guid_20,
       Name: LastName,
@@ -1571,7 +1579,7 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_124,
+        Id: Guid_125,
         TypeId: Guid_25,
         IsNavigable: true,
         IsNullable: false,
@@ -1579,11 +1587,11 @@
         IsRequired: false
       },
       IsMapped: false,
-      ParentFolderId: Guid_116,
+      ParentFolderId: Guid_117,
       IsChild: false
     },
     {
-      Id: Guid_125,
+      Id: Guid_126,
       SpecializationType: DTO-Field,
       SpecializationTypeId: Guid_20,
       Name: Email,
@@ -1592,7 +1600,7 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_126,
+        Id: Guid_127,
         TypeId: Guid_25,
         IsNavigable: true,
         IsNullable: false,
@@ -1600,11 +1608,11 @@
         IsRequired: false
       },
       IsMapped: false,
-      ParentFolderId: Guid_116,
+      ParentFolderId: Guid_117,
       IsChild: false
     },
     {
-      Id: Guid_127,
+      Id: Guid_128,
       SpecializationType: DTO-Field,
       SpecializationTypeId: Guid_20,
       Name: Password,
@@ -1613,7 +1621,7 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_128,
+        Id: Guid_129,
         TypeId: Guid_25,
         IsNavigable: true,
         IsNullable: false,
@@ -1621,11 +1629,11 @@
         IsRequired: false
       },
       IsMapped: false,
-      ParentFolderId: Guid_116,
+      ParentFolderId: Guid_117,
       IsChild: false
     },
     {
-      Id: Guid_129,
+      Id: Guid_130,
       SpecializationType: DTO-Field,
       SpecializationTypeId: Guid_20,
       Name: Phone,
@@ -1634,7 +1642,7 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_130,
+        Id: Guid_131,
         TypeId: Guid_25,
         IsNavigable: true,
         IsNullable: false,
@@ -1642,11 +1650,11 @@
         IsRequired: false
       },
       IsMapped: false,
-      ParentFolderId: Guid_116,
+      ParentFolderId: Guid_117,
       IsChild: false
     },
     {
-      Id: Guid_131,
+      Id: Guid_132,
       SpecializationType: DTO-Field,
       SpecializationTypeId: Guid_20,
       Name: UserStatus,
@@ -1655,7 +1663,7 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_132,
+        Id: Guid_133,
         TypeId: Guid_22,
         IsNavigable: true,
         IsNullable: false,
@@ -1663,11 +1671,11 @@
         IsRequired: false
       },
       IsMapped: false,
-      ParentFolderId: Guid_116,
+      ParentFolderId: Guid_117,
       IsChild: false
     },
     {
-      Id: Guid_133,
+      Id: Guid_134,
       SpecializationType: Parameter,
       SpecializationTypeId: Guid_51,
       Name: dto,
@@ -1676,8 +1684,8 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_134,
-        TypeId: Guid_116,
+        Id: Guid_135,
+        TypeId: Guid_117,
         IsNavigable: true,
         IsNullable: false,
         IsCollection: false,
@@ -1688,7 +1696,7 @@
       IsChild: false
     },
     {
-      Id: Guid_135,
+      Id: Guid_136,
       SpecializationType: Operation,
       SpecializationTypeId: Guid_9,
       Name: CreateWithList,
@@ -1697,8 +1705,8 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_136,
-        TypeId: Guid_116,
+        Id: Guid_137,
+        TypeId: Guid_117,
         IsNavigable: true,
         IsNullable: false,
         IsCollection: false,
@@ -1738,7 +1746,7 @@
       IsChild: false
     },
     {
-      Id: Guid_137,
+      Id: Guid_138,
       SpecializationType: Parameter,
       SpecializationTypeId: Guid_51,
       Name: dto,
@@ -1747,19 +1755,19 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_138,
-        TypeId: Guid_116,
+        Id: Guid_139,
+        TypeId: Guid_117,
         IsNavigable: true,
         IsNullable: false,
         IsCollection: true,
         IsRequired: false
       },
       IsMapped: false,
-      ParentFolderId: Guid_135,
+      ParentFolderId: Guid_136,
       IsChild: false
     },
     {
-      Id: Guid_139,
+      Id: Guid_140,
       SpecializationType: Operation,
       SpecializationTypeId: Guid_9,
       Name: GetLogins,
@@ -1768,7 +1776,7 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_140,
+        Id: Guid_141,
         TypeId: Guid_25,
         IsNavigable: true,
         IsNullable: false,
@@ -1809,7 +1817,7 @@
       IsChild: false
     },
     {
-      Id: Guid_141,
+      Id: Guid_142,
       SpecializationType: Parameter,
       SpecializationTypeId: Guid_51,
       Name: username,
@@ -1818,7 +1826,7 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_142,
+        Id: Guid_143,
         TypeId: Guid_25,
         IsNavigable: true,
         IsNullable: false,
@@ -1826,7 +1834,7 @@
         IsRequired: false
       },
       IsMapped: false,
-      ParentFolderId: Guid_139,
+      ParentFolderId: Guid_140,
       Stereotypes: [
         {
           DefinitionId: Guid_61,
@@ -1852,7 +1860,7 @@
       IsChild: false
     },
     {
-      Id: Guid_143,
+      Id: Guid_144,
       SpecializationType: Parameter,
       SpecializationTypeId: Guid_51,
       Name: password,
@@ -1861,7 +1869,7 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_144,
+        Id: Guid_145,
         TypeId: Guid_25,
         IsNavigable: true,
         IsNullable: false,
@@ -1869,7 +1877,7 @@
         IsRequired: false
       },
       IsMapped: false,
-      ParentFolderId: Guid_139,
+      ParentFolderId: Guid_140,
       Stereotypes: [
         {
           DefinitionId: Guid_61,
@@ -1895,7 +1903,7 @@
       IsChild: false
     },
     {
-      Id: Guid_145,
+      Id: Guid_146,
       SpecializationType: Operation,
       SpecializationTypeId: Guid_9,
       Name: GetLogouts,
@@ -1937,7 +1945,7 @@
       IsChild: false
     },
     {
-      Id: Guid_146,
+      Id: Guid_147,
       SpecializationType: Operation,
       SpecializationTypeId: Guid_9,
       Name: GetUser,
@@ -1946,8 +1954,8 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_147,
-        TypeId: Guid_116,
+        Id: Guid_148,
+        TypeId: Guid_117,
         IsNavigable: true,
         IsNullable: false,
         IsCollection: false,
@@ -1987,7 +1995,7 @@
       IsChild: false
     },
     {
-      Id: Guid_148,
+      Id: Guid_149,
       SpecializationType: Parameter,
       SpecializationTypeId: Guid_51,
       Name: username,
@@ -1996,7 +2004,7 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_149,
+        Id: Guid_150,
         TypeId: Guid_25,
         IsNavigable: true,
         IsNullable: false,
@@ -2004,11 +2012,11 @@
         IsRequired: false
       },
       IsMapped: false,
-      ParentFolderId: Guid_146,
+      ParentFolderId: Guid_147,
       IsChild: false
     },
     {
-      Id: Guid_150,
+      Id: Guid_151,
       SpecializationType: Operation,
       SpecializationTypeId: Guid_9,
       Name: UpdateUser,
@@ -2050,7 +2058,7 @@
       IsChild: false
     },
     {
-      Id: Guid_151,
+      Id: Guid_152,
       SpecializationType: Parameter,
       SpecializationTypeId: Guid_51,
       Name: dto,
@@ -2059,19 +2067,19 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_152,
-        TypeId: Guid_116,
+        Id: Guid_153,
+        TypeId: Guid_117,
         IsNavigable: true,
         IsNullable: false,
         IsCollection: false,
         IsRequired: false
       },
       IsMapped: false,
-      ParentFolderId: Guid_150,
+      ParentFolderId: Guid_151,
       IsChild: false
     },
     {
-      Id: Guid_153,
+      Id: Guid_154,
       SpecializationType: Parameter,
       SpecializationTypeId: Guid_51,
       Name: username,
@@ -2080,7 +2088,7 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_154,
+        Id: Guid_155,
         TypeId: Guid_25,
         IsNavigable: true,
         IsNullable: false,
@@ -2088,11 +2096,11 @@
         IsRequired: false
       },
       IsMapped: false,
-      ParentFolderId: Guid_150,
+      ParentFolderId: Guid_151,
       IsChild: false
     },
     {
-      Id: Guid_155,
+      Id: Guid_156,
       SpecializationType: Operation,
       SpecializationTypeId: Guid_9,
       Name: DeleteUser,
@@ -2134,7 +2142,7 @@
       IsChild: false
     },
     {
-      Id: Guid_156,
+      Id: Guid_157,
       SpecializationType: Parameter,
       SpecializationTypeId: Guid_51,
       Name: username,
@@ -2143,7 +2151,7 @@
       IsAbstract: false,
       IsStatic: false,
       TypeReference: {
-        Id: Guid_157,
+        Id: Guid_158,
         TypeId: Guid_25,
         IsNavigable: true,
         IsNullable: false,
@@ -2151,7 +2159,7 @@
         IsRequired: false
       },
       IsMapped: false,
-      ParentFolderId: Guid_155,
+      ParentFolderId: Guid_156,
       IsChild: false
     }
   ]

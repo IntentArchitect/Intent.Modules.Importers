@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
 using Intent.RoslynWeaver.Attributes;
@@ -38,15 +37,15 @@ namespace OpenApiImporterTest.Api.Controllers
         /// <response code="201">Successfully created.</response>
         /// <response code="400">One or more validation errors have occurred.</response>
         [HttpPost("/user/")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(User), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> CreateUser(
+        public async Task<ActionResult<User>> CreateUser(
             [FromBody] CreateUserCommand command,
             CancellationToken cancellationToken = default)
         {
-            await _mediator.Send(command, cancellationToken);
-            return Created(string.Empty, null);
+            var result = await _mediator.Send(command, cancellationToken);
+            return Created(string.Empty, result);
         }
 
         /// <summary>
@@ -129,7 +128,6 @@ namespace OpenApiImporterTest.Api.Controllers
         /// <response code="400">One or more validation errors have occurred.</response>
         /// <response code="404">No User could be found with the provided parameters.</response>
         [HttpGet("/user/{username}")]
-        [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

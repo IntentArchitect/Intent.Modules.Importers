@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<class id="62b20ca6-d81f-4c9b-8f12-08bec844f05e" type="Enum" typeId="85fba0e9-9161-4c85-a603-a229ef312beb">
+<class id="038f1fd8-184e-463e-bee0-4cf0b68635b4" type="Enum" typeId="85fba0e9-9161-4c85-a603-a229ef312beb">
   <name>StatusType</name>
   <display>StatusType</display>
-  <externalReference>Pets.StatusType</externalReference>
+  <externalReference>Stores.StatusType</externalReference>
   <isAbstract>false</isAbstract>
   <sort-children>by-type-then-manually</sort-children>
   <genericTypes />
   <isMapped>false</isMapped>
-  <parentFolderId>50a9bf06-b0e1-4ccf-8660-0c0d4d6ed4a1</parentFolderId>
+  <parentFolderId>c8f16722-dfdd-45ad-acdb-e44a49c8acca</parentFolderId>
   <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
   <packageName>OpenApiImporterTest.Services</packageName>
   <stereotypes />
   <metadata />
   <childElements>
-    <childElement id="95494edd-54c9-43e9-bae9-ed78ec22b891" type="Enum-Literal" typeId="4215f417-25d2-4509-9309-5076a1452eaa">
-      <name>Available</name>
-      <display>Available</display>
-      <externalReference>Pets.StatusType.Available</externalReference>
+    <childElement id="434b66b7-d0c0-44de-a8a4-1f77ffa96eb4" type="Enum-Literal" typeId="4215f417-25d2-4509-9309-5076a1452eaa">
+      <name>Placed</name>
+      <display>Placed</display>
+      <externalReference>Stores.StatusType.Placed</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
       <isMapped>false</isMapped>
-      <parentFolderId>62b20ca6-d81f-4c9b-8f12-08bec844f05e</parentFolderId>
+      <parentFolderId>038f1fd8-184e-463e-bee0-4cf0b68635b4</parentFolderId>
       <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
       <packageName>OpenApiImporterTest.Services</packageName>
       <stereotypes />
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="e7520ae3-c131-4360-a6ae-84f29835b021" type="Enum-Literal" typeId="4215f417-25d2-4509-9309-5076a1452eaa">
-      <name>Pending</name>
-      <display>Pending</display>
-      <externalReference>Pets.StatusType.Pending</externalReference>
+    <childElement id="21a3c2ba-2b0a-44ea-b20a-8069f911c4a6" type="Enum-Literal" typeId="4215f417-25d2-4509-9309-5076a1452eaa">
+      <name>Approved</name>
+      <display>Approved</display>
+      <externalReference>Stores.StatusType.Approved</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
       <isMapped>false</isMapped>
-      <parentFolderId>62b20ca6-d81f-4c9b-8f12-08bec844f05e</parentFolderId>
+      <parentFolderId>038f1fd8-184e-463e-bee0-4cf0b68635b4</parentFolderId>
       <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
       <packageName>OpenApiImporterTest.Services</packageName>
       <stereotypes />
       <metadata />
       <childElements />
     </childElement>
-    <childElement id="e219e3e3-fe8f-473b-8f7c-1978c6720837" type="Enum-Literal" typeId="4215f417-25d2-4509-9309-5076a1452eaa">
-      <name>Sold</name>
-      <display>Sold</display>
-      <externalReference>Pets.StatusType.Sold</externalReference>
+    <childElement id="1657d0b3-7684-44f0-8b90-c22a440c3655" type="Enum-Literal" typeId="4215f417-25d2-4509-9309-5076a1452eaa">
+      <name>Delivered</name>
+      <display>Delivered</display>
+      <externalReference>Stores.StatusType.Delivered</externalReference>
       <isAbstract>false</isAbstract>
       <genericTypes />
       <isMapped>false</isMapped>
-      <parentFolderId>62b20ca6-d81f-4c9b-8f12-08bec844f05e</parentFolderId>
+      <parentFolderId>038f1fd8-184e-463e-bee0-4cf0b68635b4</parentFolderId>
       <packageId>616d535d-8fa9-416f-bc2a-2b5c8eb15472</packageId>
       <packageName>OpenApiImporterTest.Services</packageName>
       <stereotypes />
