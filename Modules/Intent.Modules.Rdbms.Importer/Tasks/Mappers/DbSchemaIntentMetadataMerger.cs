@@ -693,6 +693,10 @@ internal class DbSchemaIntentMetadataMerger
                 ModelNamingUtilities.GetTableExternalReference(t.Schema, t.Name)),
             StringComparer.OrdinalIgnoreCase);
 
+        // Track processed FKs to detect duplicates within the current import batch
+        // Key format: "sourceTable|targetTable|column1,column2,..."
+        var processedFkSignatures = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
         foreach (var table in databaseSchema.Tables)
         {
             var tableExternalRef = ModelNamingUtilities.GetTableExternalReference(table.Schema, table.Name);
@@ -709,6 +713,27 @@ internal class DbSchemaIntentMetadataMerger
                 var fkExternalRef = ModelNamingUtilities.GetForeignKeyExternalReference(table.Schema, table.Name, foreignKey.Name);
                 sourceFkExternalRefs.Add(fkExternalRef);
 
+                // Check for duplicate FKs within the current import batch
+                var sourceTableKey = $"{table.Schema}.{table.Name}";
+                var targetTableKey = $"{foreignKey.ReferencedTableSchema}.{foreignKey.ReferencedTableName}";
+                var columnsKey = string.Join(",", foreignKey.Columns.Select(c => c.Name).OrderBy(n => n, StringComparer.OrdinalIgnoreCase));
+                var fkSignature = $"{sourceTableKey}|{targetTableKey}|{columnsKey}";
+
+                if (processedFkSignatures.TryGetValue(fkSignature, out var firstFkName))
+                {
+                    // Duplicate FK detected - skip this one and warn the user
+                    result.Warnings.Add(
+                        $"Duplicate foreign key detected: Foreign key '{foreignKey.Name}' creates a duplicate association " +
+                        $"from '{sourceTableKey}' to '{targetTableKey}'. " +
+                        $"Keeping existing FK '{firstFkName}' (first encountered). " +
+                        $"Both foreign keys reference the same column(s): [{string.Join(", ", foreignKey.Columns.Select(c => c.Name))}]. " +
+                        $"Please review your database schema and consider removing one of the duplicate foreign key constraints.");
+                    continue;
+                }
+
+                // Track this FK signature as processed
+                processedFkSignatures[fkSignature] = foreignKey.Name;
+
                 var associationResult = IntentModelMapper.GetOrCreateAssociation(foreignKey, table, classElement, package, databaseSchema);
                 
                 switch (associationResult.Status)
@@ -718,10 +743,6 @@ internal class DbSchemaIntentMetadataMerger
                         break;
                         
                     case AssociationCreationStatus.TargetClassNotFound:
-                        result.Warnings.Add(associationResult.Reason!);
-                        continue;
-                        
-                    case AssociationCreationStatus.DuplicateSkipped:
                         result.Warnings.Add(associationResult.Reason!);
                         continue;
                         

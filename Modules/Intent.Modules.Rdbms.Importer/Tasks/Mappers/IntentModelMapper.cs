@@ -1028,4 +1028,5 @@ internal static class IntentModelMapper
         // If we reach here, the foreign key is valid for association creation
         return null;
     }
+
 }

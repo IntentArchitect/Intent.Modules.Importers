@@ -1,0 +1,369 @@
+﻿{
+  Package: {
+    Name: TestPackage,
+    Metadata: [],
+    Folders: [
+      {
+        Name: Dbo,
+        SpecializationType: Folder,
+        ExternalReference: schema:[dbo],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [
+          {
+            Name: Schema,
+            DefinitionId: Guid_1,
+            Properties: [
+              {
+                Name: Name,
+                DefinitionId: Guid_2,
+                Value: dbo,
+                IsActive: true
+              }
+            ]
+          }
+        ],
+        Children: []
+      }
+    ],
+    Classes: [
+      {
+        Name: Category,
+        SpecializationType: Class,
+        ExternalReference: [dbo].[category],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [
+          {
+            Name: Table,
+            DefinitionId: Guid_3,
+            Properties: [
+              {
+                Name: Schema,
+                DefinitionId: Guid_4,
+                IsActive: true
+              },
+              {
+                Name: Name,
+                DefinitionId: Guid_5,
+                Value: Category,
+                IsActive: true
+              }
+            ]
+          }
+        ],
+        Children: [
+          {
+            Name: CategoryId,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[category].[categoryid],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_6,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Column,
+                DefinitionId: Guid_7,
+                Properties: [
+                  {
+                    Name: Name,
+                    DefinitionId: Guid_8,
+                    Value: CategoryID,
+                    IsActive: true
+                  },
+                  {
+                    Name: Type,
+                    DefinitionId: Guid_9,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_10,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_11,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: Name,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[category].[name],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_12,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_13,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_14,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_15,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_16,
+                    Value: 50,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      },
+      {
+        Name: Item,
+        SpecializationType: Class,
+        ExternalReference: [dbo].[item],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [
+          {
+            Name: Table,
+            DefinitionId: Guid_3,
+            Properties: [
+              {
+                Name: Schema,
+                DefinitionId: Guid_4,
+                IsActive: true
+              },
+              {
+                Name: Name,
+                DefinitionId: Guid_5,
+                Value: Item,
+                IsActive: true
+              }
+            ]
+          }
+        ],
+        Children: [
+          {
+            Name: CategoryId,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[item].[categoryid],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_6,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: association,
+                Value: Guid_17
+              },
+              {
+                Key: fk-original-name,
+                Value: CategoryId
+              },
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Column,
+                DefinitionId: Guid_7,
+                Properties: [
+                  {
+                    Name: Name,
+                    DefinitionId: Guid_8,
+                    Value: CategoryID,
+                    IsActive: true
+                  },
+                  {
+                    Name: Type,
+                    DefinitionId: Guid_9,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Foreign Key,
+                DefinitionId: Guid_18,
+                Properties: [
+                  {
+                    Name: Association,
+                    DefinitionId: Guid_19,
+                    Value: Guid_17,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: Description,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[item].[description],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_12,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_13,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_14,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_15,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_16,
+                    Value: 50,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: ItemId,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[item].[itemid],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_6,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [
+              {
+                Key: is-managed-key,
+                Value: true
+              }
+            ],
+            Stereotypes: [
+              {
+                Name: Column,
+                DefinitionId: Guid_7,
+                Properties: [
+                  {
+                    Name: Name,
+                    DefinitionId: Guid_8,
+                    Value: ItemID,
+                    IsActive: true
+                  },
+                  {
+                    Name: Type,
+                    DefinitionId: Guid_9,
+                    IsActive: true
+                  }
+                ]
+              },
+              {
+                Name: Primary Key,
+                DefinitionId: Guid_10,
+                Properties: [
+                  {
+                    Name: Data source,
+                    DefinitionId: Guid_11,
+                    Value: Auto-generated,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      }
+    ],
+    Associations: [
+      {
+        ExternalReference: [dbo].[item].[fk__item__category__5f6c19d1],
+        Source: {
+          Name: Items,
+          TypeReference: {
+            TypeId: Guid_20,
+            ResolvedName: Item,
+            IsNullable: false,
+            IsCollection: true,
+            IsNavigable: false,
+            IsRequired: true
+          },
+          Stereotypes: []
+        },
+        Target: {
+          Name: Category,
+          ExternalReference: [dbo].[item].[fk__item__category__5f6c19d1],
+          TypeReference: {
+            TypeId: Guid_21,
+            ResolvedName: Category,
+            IsNullable: false,
+            IsCollection: false,
+            IsNavigable: true,
+            IsRequired: true
+          },
+          Stereotypes: []
+        }
+      }
+    ]
+  }
+}
