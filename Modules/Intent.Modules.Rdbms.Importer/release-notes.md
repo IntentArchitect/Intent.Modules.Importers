@@ -1,5 +1,9 @@
 ### Version 1.0.8
 
+- Improvement: Updated module documentation to use centralized documentation site.
+
+### Version 1.0.8
+
 - Fixed: Repository Importer did not register the selected stored procedures from the import dialog.
 - Fixed: Duplicate foreign keys with different names now correctly handled by preferring explicitly named FKs over auto-generated ones.
 
