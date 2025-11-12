@@ -10,7 +10,7 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
 {
     public class AspNetUserClaimConfiguration : IEntityTypeConfiguration<AspNetUserClaim>
     {
-        public void Configure(EntityTypeBuilder<AspNetUserClaim> builder)   
+        public void Configure(EntityTypeBuilder<AspNetUserClaim> builder)
         {
             builder.ToTable("AspNetUserClaims", "public");
 
