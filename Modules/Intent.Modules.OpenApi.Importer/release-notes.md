@@ -1,7 +1,11 @@
+### Version 1.1.12
+
+- Improvement: Added ProjectUrl link.
+
 ### Version 1.1.11
 
 - Improvement: Updated module documentation to use centralized documentation site.
-- Fixed: Reponses where only only modeled for `2xx` response codes, we now do `default` if no `2xx` response code is present. 
+- Fixed: Responses where only modeled for `2xx` response codes, we now do `default` if no `2xx` response code is present. 
 
 ### Version 1.1.10
 
