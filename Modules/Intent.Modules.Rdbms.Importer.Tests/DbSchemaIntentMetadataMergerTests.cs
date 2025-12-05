@@ -6,6 +6,8 @@ using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.Modelers.Domain.Api;
 using Intent.Modules.Rdbms.Importer.Tasks.Mappers;
 using Intent.Modules.Rdbms.Importer.Tests.TestData;
+using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
+using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Shouldly;
 
 namespace Intent.Modules.Rdbms.Importer.Tests;
@@ -858,6 +860,296 @@ public class DbSchemaIntentMetadataMergerTests
         
         // Should have warning about duplicate
         result.Warnings.ShouldContain(w => w.Contains("Duplicate foreign key detected"));
+    }
+
+    #endregion
+
+    #region Stored Procedure Mapping Idempotency Tests
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcWithOutputParams_CreatesInvocationMappings()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.TestWithOutParam()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsOperations());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        // Should have created the stored procedure invocation association
+        scenario.Package.Associations.ShouldHaveSingleItem();
+        var association = scenario.Package.Associations.Single();
+        association.AssociationType.ShouldBe("Stored Procedure Invocation");
+        
+        // Should have two mappings: Invocation and Result
+        var mappings = association.TargetEnd.Mappings;
+        mappings.ShouldNotBeNull();
+        mappings.Count.ShouldBe(2);
+        mappings.ShouldContain(m => m.Type == "Stored Procedure Invocation");
+        mappings.ShouldContain(m => m.Type == "Stored Procedure Result");
+        
+        // Result mapping should have mapped ends for result set and output parameter
+        var resultMapping = mappings.Single(m => m.Type == "Stored Procedure Result");
+        resultMapping.MappedEnds.Count.ShouldBeGreaterThan(1);
+        resultMapping.MappedEnds.ShouldContain(e => e.MappingExpression.Contains("result"));
+        resultMapping.MappedEnds.ShouldContain(e => e.MappingExpression.Contains("errorMessage"));
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcReimported_MappingIdsRemainStable()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.TestWithOutParam()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsOperations());
+        
+        // Initial import
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        
+        // Capture all IDs
+        var association = scenario.Package.Associations.Single();
+        var associationId = association.Id;
+        var targetEndId = association.TargetEnd.Id;
+        var mappingIds = association.TargetEnd.Mappings.Select(m => (m.Type, m.TypeId)).ToList();
+        var mappedEndExpressions = association.TargetEnd.Mappings
+            .SelectMany(m => m.MappedEnds.Select(e => e.MappingExpression))
+            .ToList();
+        
+        // Capture path target IDs from all mappings
+        var allPathTargetIds = association.TargetEnd.Mappings
+            .SelectMany(m => m.MappedEnds)
+            .SelectMany(e => e.TargetPath.Select(p => (p.Name, p.Id, p.SpecializationId)))
+            .ToList();
+        
+        // Capture TypeReference IDs from static-mappable path segments
+        var staticMappableTypeRefIds = association.TargetEnd.Mappings
+            .SelectMany(m => m.MappedEnds)
+            .SelectMany(e => e.Sources ?? Enumerable.Empty<Intent.IArchitect.Agent.Persistence.Model.Mappings.ElementToElementMappedEndSourcePersistable>())
+            .SelectMany(s => s.Path)
+            .Where(p => p.Type == "static-mappable" && p.TypeReference != null)
+            .Select(p => (p.Name, TypeRefId: p.TypeReference.Id))
+            .ToList();
+
+        // Act - Re-import with identical data
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        // Verify association ID is stable
+        var associationAfter = scenario.Package.Associations.Single();
+        associationAfter.Id.ShouldBe(associationId, "Association ID should remain unchanged");
+        associationAfter.TargetEnd.Id.ShouldBe(targetEndId, "Target end ID should remain unchanged");
+        
+        // Verify mapping IDs are stable
+        var mappingIdsAfter = associationAfter.TargetEnd.Mappings.Select(m => (m.Type, m.TypeId)).ToList();
+        mappingIdsAfter.ShouldBe(mappingIds, "Mapping Type/TypeId pairs should remain unchanged");
+        
+        // Verify mapped end expressions are stable
+        var mappedEndExpressionsAfter = associationAfter.TargetEnd.Mappings
+            .SelectMany(m => m.MappedEnds.Select(e => e.MappingExpression))
+            .ToList();
+        mappedEndExpressionsAfter.ShouldBe(mappedEndExpressions, "Mapped end expressions should remain unchanged");
+        
+        // Verify path target IDs are stable
+        var allPathTargetIdsAfter = associationAfter.TargetEnd.Mappings
+            .SelectMany(m => m.MappedEnds)
+            .SelectMany(e => e.TargetPath.Select(p => (p.Name, p.Id, p.SpecializationId)))
+            .ToList();
+        allPathTargetIdsAfter.ShouldBe(allPathTargetIds, "All path target IDs should remain unchanged");
+        
+        // Verify TypeReference IDs in static-mappable segments are stable (THE BUG WE FIXED)
+        var staticMappableTypeRefIdsAfter = associationAfter.TargetEnd.Mappings
+            .SelectMany(m => m.MappedEnds)
+            .SelectMany(e => e.Sources ?? Enumerable.Empty<Intent.IArchitect.Agent.Persistence.Model.Mappings.ElementToElementMappedEndSourcePersistable>())
+            .SelectMany(s => s.Path)
+            .Where(p => p.Type == "static-mappable" && p.TypeReference != null)
+            .Select(p => (p.Name, TypeRefId: p.TypeReference.Id))
+            .ToList();
+        staticMappableTypeRefIdsAfter.ShouldBe(staticMappableTypeRefIds, "TypeReference IDs in static-mappable paths should remain unchanged");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcOutputParamRenamed_UpdatesExpression()
+    {
+        // Arrange - Initial import with ErrorMessage parameter
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.TestWithOutParam()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsOperations());
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        
+        // Capture association ID
+        var association = scenario.Package.Associations.Single();
+        var associationId = association.Id;
+        var resultMapping = association.TargetEnd.Mappings.Single(m => m.Type == "Stored Procedure Result");
+        var originalCount = resultMapping.MappedEnds.Count;
+        
+        // Now change parameter name to ErrorCode
+        var modifiedProc = StoredProcedures.TestWithOutParam();
+        modifiedProc.Parameters[1].Name = "@ErrorCode";
+        scenario.Schema.StoredProcedures = [modifiedProc];
+
+        // Act - Re-import with renamed parameter
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        var associationAfter = scenario.Package.Associations.Single();
+        associationAfter.Id.ShouldBe(associationId, "Association ID should remain stable");
+        
+        var resultMappingAfter = associationAfter.TargetEnd.Mappings.Single(m => m.Type == "Stored Procedure Result");
+        
+        // Verify the mapping count remains stable (not growing indefinitely)
+        resultMappingAfter.MappedEnds.Count.ShouldBe(originalCount, 
+            "Should have same number of mapped ends - the wrapper DC is regenerated on each import");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_MultipleStoredProcsReimported_EachMappingRemainsStable()
+    {
+        // Arrange - Import multiple stored procedures
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [
+                StoredProcedures.TestWithOutParam(),
+                StoredProcedures.CreateCustomer(),
+                StoredProcedures.UpdateCustomerBalance()
+            ]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsOperations());
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        
+        // Capture IDs for each association
+        var associationData = scenario.Package.Associations.Select(a => new
+        {
+            AssociationId = a.Id,
+            TargetEndId = a.TargetEnd.Id,
+            MappingCount = a.TargetEnd.Mappings.Count,
+            MappedEndCount = a.TargetEnd.Mappings.Sum(m => m.MappedEnds.Count)
+        }).ToList();
+
+        // Act - Re-import all with identical data
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        var associationDataAfter = scenario.Package.Associations.Select(a => new
+        {
+            AssociationId = a.Id,
+            TargetEndId = a.TargetEnd.Id,
+            MappingCount = a.TargetEnd.Mappings.Count,
+            MappedEndCount = a.TargetEnd.Mappings.Sum(m => m.MappedEnds.Count)
+        }).ToList();
+        
+        associationDataAfter.ShouldBe(associationData, "All association data should remain unchanged across re-import");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcWithoutOutputParams_DoesNotCreateAssociation()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerNoOutParams()] // No output params
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsOperations());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        // Should not create association when there are no output parameters
+        scenario.Package.Associations.ShouldBeEmpty("No association should be created for stored procedures without output parameters");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcPathSegmentIds_RemainStableOnReimport()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.TestWithOutParam()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsOperations());
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        
+        // Capture all path segment details from Result mapping
+        var association = scenario.Package.Associations.Single();
+        var resultMapping = association.TargetEnd.Mappings.Single(m => m.Type == "Stored Procedure Result");
+        var errorMsgEnd = resultMapping.MappedEnds.Single(e => e.MappingExpression.Contains("errorMessage"));
+        var sourcePath = errorMsgEnd.Sources.First().Path;
+        
+        var pathSegments = sourcePath.Select(p => new
+        {
+            p.Name,
+            p.Id,
+            p.SpecializationId,
+            p.Type,
+            p.Specialization,
+            TypeRefId = p.TypeReference?.Id
+        }).ToList();
+
+        // Act - Re-import
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        var associationAfter = scenario.Package.Associations.Single();
+        var resultMappingAfter = associationAfter.TargetEnd.Mappings.Single(m => m.Type == "Stored Procedure Result");
+        var errorMsgEndAfter = resultMappingAfter.MappedEnds.Single(e => e.MappingExpression.Contains("errorMessage"));
+        var sourcePathAfter = errorMsgEndAfter.Sources.First().Path;
+        
+        var pathSegmentsAfter = sourcePathAfter.Select(p => new
+        {
+            p.Name,
+            p.Id,
+            p.SpecializationId,
+            p.Type,
+            p.Specialization,
+            TypeRefId = p.TypeReference?.Id
+        }).ToList();
+        
+        // All path segments should have identical IDs, SpecializationIds, and TypeReference IDs
+        pathSegmentsAfter.ShouldBe(pathSegments, "All path segment IDs and TypeReference IDs should remain stable");
     }
 
     #endregion
