@@ -98,6 +98,12 @@ internal static class Constants
             public const string SpecializationTypeId = "5b7b5e77-e627-464b-a157-6d01f2042641";
         }
 
+        public static class Attribute
+        {
+            public const string SpecializationType = "Attribute";
+            public const string SpecializationTypeId = "0090fb93-483e-41af-a11d-5ad2dc796adf";
+        }
+
         public static class Association
         {
             public const string SpecializationType = "Association";

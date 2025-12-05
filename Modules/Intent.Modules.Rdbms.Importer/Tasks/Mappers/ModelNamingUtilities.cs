@@ -142,6 +142,40 @@ internal static class ModelNamingUtilities
     }
 
     /// <summary>
+    /// Generates ExternalReference for wrapper data contract following stored procedure external ref + .Wrapper pattern
+    /// </summary>
+    public static string GetWrapperDataContractExternalReference(string schema, string procName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
+        ArgumentException.ThrowIfNullOrWhiteSpace(procName);
+        return $"{GetStoredProcedureExternalReference(schema, procName)}.Wrapper";
+    }
+
+    /// <summary>
+    /// Generates ExternalReference for stored procedure parameter following [schema].[procname].[paramname] pattern
+    /// </summary>
+    public static string GetStoredProcedureParameterExternalReference(string schema, string procName, string paramName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
+        ArgumentException.ThrowIfNullOrWhiteSpace(procName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(paramName);
+        return $"[{schema.ToLowerInvariant()}].[{procName.ToLowerInvariant()}].[{paramName.ToLowerInvariant()}]";
+    }
+
+    /// <summary>
+    /// Generates ExternalReference for stored procedure OUTPUT parameter following [schema].[procname].OUT.[paramname] pattern
+    /// This format matches the wrapper attribute external reference to enable proper mapping
+    /// </summary>
+    public static string GetStoredProcedureOutputParameterExternalReference(string schema, string procName, string paramName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(schema);
+        ArgumentException.ThrowIfNullOrWhiteSpace(procName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(paramName);
+        var normalizedParamName = GetParameterName(paramName);
+        return $"[{schema.ToLowerInvariant()}].[{procName.ToLowerInvariant()}].OUT.{normalizedParamName}";
+    }
+
+    /// <summary>
     /// Generates ExternalReference for foreign key following [schema].[tablename].[fkname] pattern
     /// </summary>
     public static string GetForeignKeyExternalReference(string schema, string tableName, string fkName)
@@ -378,8 +412,21 @@ internal static class ModelNamingUtilities
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(storeProcName);
         var normalized = ToCSharpIdentifier(storeProcName);
+        
+        // Remove common stored procedure prefixes
         normalized = normalized.RemovePrefix("prc")
             .RemovePrefix("Prc");
+        
+        // Remove "sp" prefix (common convention like sp_GetCustomer becomes GetCustomer)
+        // Be careful with names starting with "sp" like "space", "special", "specific"
+        // Check if the letter after "sp" is a capital letter or a non-letter character
+        if (normalized.StartsWith("sp") &&
+            (normalized.Length < 3 || !char.IsLetter(normalized[2]) || char.IsUpper(normalized[2])))
+        {
+            normalized = normalized.RemovePrefix("sp");
+        }
+        normalized = normalized.RemovePrefix("Sp");
+        
         // We need to be careful with the "proc" prefix since a name could start with:
         // procedure, procurement, process, etc.
         // So what we can do is check if the letter after "proc" is a capital letter or a non-letter character.

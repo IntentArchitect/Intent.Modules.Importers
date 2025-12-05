@@ -48,4 +48,34 @@ internal static class ImportConfigurations
         TableStereotype = TableStereotype.WhenDifferent,
         ImportFilterFilePath = "test-filter.json" // This would contain the filter configuration
     };
+
+    public static ImportConfiguration StoredProceduresAsOperations() => new()
+    {
+        TypesToExport = [ExportType.StoredProcedure],
+        AllowDeletions = false,
+        EntityNameConvention = EntityNameConvention.SingularEntity,
+        AttributeNameConvention = AttributeNameConvention.Default,
+        TableStereotype = TableStereotype.WhenDifferent,
+        StoredProcedureType = StoredProcedureType.RepositoryOperation
+    };
+
+    public static ImportConfiguration StoredProceduresAsElements() => new()
+    {
+        TypesToExport = [ExportType.StoredProcedure],
+        AllowDeletions = false,
+        EntityNameConvention = EntityNameConvention.SingularEntity,
+        AttributeNameConvention = AttributeNameConvention.Default,
+        TableStereotype = TableStereotype.WhenDifferent,
+        StoredProcedureType = StoredProcedureType.StoredProcedureElement
+    };
+
+    public static ImportConfiguration StoredProceduresInDefaultMode() => new()
+    {
+        TypesToExport = [ExportType.StoredProcedure],
+        AllowDeletions = false,
+        EntityNameConvention = EntityNameConvention.SingularEntity,
+        AttributeNameConvention = AttributeNameConvention.Default,
+        TableStereotype = TableStereotype.WhenDifferent,
+        StoredProcedureType = StoredProcedureType.Default
+    };
 }

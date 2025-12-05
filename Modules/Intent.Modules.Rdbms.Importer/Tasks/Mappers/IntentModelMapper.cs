@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
+using Intent.IArchitect.Agent.Persistence.Model.Mappings;
 using Intent.Modelers.Domain.Api;
 using Intent.Modules.Common.Templates;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
@@ -320,7 +320,7 @@ internal static class IntentModelMapper
         // Map parameters
         foreach (var parameter in storedProc.Parameters)
         {
-            var paramElement = MapStoredProcParameterToElement(parameter, procElement.Id, package, udtDataContracts);
+            var paramElement = MapStoredProcParameterToElement(parameter, storedProc, procElement.Id, package, udtDataContracts);
             procElement.ChildElements.Add(paramElement);
         }
         
@@ -808,9 +808,13 @@ internal static class IntentModelMapper
     /// <summary>
     /// Maps a stored procedure parameter to a stored procedure element with UserDefinedTable DataContract support
     /// </summary>
-    private static ElementPersistable MapStoredProcParameterToElement(StoredProcedureParameterSchema parameter, string storedProcId, PackageModelPersistable package, Dictionary<string, string>? udtDataContracts)
+    private static ElementPersistable MapStoredProcParameterToElement(StoredProcedureParameterSchema parameter, StoredProcedureSchema storedProc, string storedProcId, PackageModelPersistable package, Dictionary<string, string>? udtDataContracts)
     {
         var paramName = ModelNamingUtilities.GetParameterName(parameter.Name);
+        var isOutputParam = parameter.Direction == StoredProcedureParameterDirection.Out || parameter.Direction == StoredProcedureParameterDirection.Both;
+        var externalRef = isOutputParam 
+            ? ModelNamingUtilities.GetStoredProcedureOutputParameterExternalReference(storedProc.Schema, storedProc.Name, parameter.Name)
+            : paramName.ToLowerInvariant();
 
         return new ElementPersistable
         {
@@ -819,7 +823,7 @@ internal static class IntentModelMapper
             SpecializationTypeId = Constants.SpecializationTypes.StoredProcedureParameter.SpecializationTypeId,
             Name = paramName,
             Display = paramName,
-            ExternalReference = paramName.ToLowerInvariant(),
+            ExternalReference = externalRef,
             IsAbstract = false,
             GenericTypes = [],
             TypeReference = GetParameterTypeReference(parameter, udtDataContracts),
@@ -1029,4 +1033,518 @@ internal static class IntentModelMapper
         return null;
     }
 
+    /// <summary>
+    /// Checks if a stored procedure has any output parameters.
+    /// </summary>
+    /// <param name="storedProc">The stored procedure to check</param>
+    /// <returns>True if the stored procedure has at least one output parameter, false otherwise</returns>
+    public static bool HasOutputParameters(StoredProcedureSchema storedProc)
+    {
+        return storedProc.Parameters.Any(p => 
+            p.Direction == StoredProcedureParameterDirection.Out || 
+            p.Direction == StoredProcedureParameterDirection.Both);
+    }
+
+    /// <summary>
+    /// Creates a wrapper Data Contract for a stored procedure operation with output parameters.
+    /// The wrapper contains:
+    /// - A "Results" field pointing to the underlying result set Data Contract
+    /// - One attribute per output parameter
+    /// </summary>
+    public static ElementPersistable CreateWrapperDataContractForStoredProcedure(
+        StoredProcedureSchema storedProc,
+        string operationName,
+        string underlyingResultDataContractId,
+        string schemaFolderId,
+        PackageModelPersistable package)
+    {
+        var wrapperName = $"{operationName}Result";
+        
+        var wrapperDataContract = new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            SpecializationType = Constants.SpecializationTypes.DataContract.SpecializationType,
+            SpecializationTypeId = Constants.SpecializationTypes.DataContract.SpecializationTypeId,
+            Name = wrapperName,
+            Display = wrapperName,
+            ExternalReference = ModelNamingUtilities.GetWrapperDataContractExternalReference(storedProc.Schema, storedProc.Name),
+            IsAbstract = false,
+            SortChildren = SortChildrenOptions.SortByTypeThenManually,
+            GenericTypes = [],
+            IsMapped = false,
+            ParentFolderId = schemaFolderId,
+            PackageId = package.Id,
+            PackageName = package.Name,
+            Stereotypes = [],
+            Metadata = [],
+            ChildElements = []
+        };
+
+        // Add "Results" attribute pointing to the underlying result set Data Contract
+        var resultsAttribute = new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            SpecializationType = AttributeModel.SpecializationType,
+            SpecializationTypeId = AttributeModel.SpecializationTypeId,
+            Name = "Results",
+            Display = "Results",
+            IsAbstract = false,
+            GenericTypes = [],
+            TypeReference = new TypeReferencePersistable
+            {
+                Id = Guid.NewGuid().ToString(),
+                TypeId = underlyingResultDataContractId,
+                IsNavigable = true,
+                IsNullable = false,
+                IsCollection = true, // Results are a collection
+                IsRequired = true,
+                Stereotypes = [],
+                GenericTypeParameters = []
+            },
+            IsMapped = false,
+            ParentFolderId = wrapperDataContract.Id,
+            PackageId = package.Id,
+            PackageName = package.Name,
+            Stereotypes = [],
+            Metadata = [],
+            ChildElements = []
+        };
+        wrapperDataContract.ChildElements.Add(resultsAttribute);
+
+        // Add one attribute per output parameter (no @ prefix - that's only for mapping expressions)
+        foreach (var parameter in storedProc.Parameters.Where(p => 
+            p.Direction == StoredProcedureParameterDirection.Out || 
+            p.Direction == StoredProcedureParameterDirection.Both))
+        {
+            var paramName = ModelNamingUtilities.GetParameterName(parameter.Name).ToPascalCase();
+            var outputParamAttribute = new ElementPersistable
+            {
+                Id = Guid.NewGuid().ToString(),
+                SpecializationType = AttributeModel.SpecializationType,
+                SpecializationTypeId = AttributeModel.SpecializationTypeId,
+                Name = paramName,
+                Display = paramName,
+                IsAbstract = false,
+                GenericTypes = [],
+                TypeReference = TypeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter),
+                IsMapped = false,
+                ParentFolderId = wrapperDataContract.Id,
+                PackageId = package.Id,
+                PackageName = package.Name,
+                // External reference: Match the stored procedure output parameter format
+                ExternalReference = ModelNamingUtilities.GetStoredProcedureOutputParameterExternalReference(storedProc.Schema, storedProc.Name, parameter.Name),
+                Stereotypes = [],
+                Metadata = [],
+                ChildElements = []
+            };
+            wrapperDataContract.ChildElements.Add(outputParamAttribute);
+        }
+
+        return wrapperDataContract;
+    }
+
+    /// <summary>
+    /// Creates a Stored Procedure Invocation association between an Operation and a Stored Procedure Element.
+    /// Includes complete mappings for parameters, result sets, and output parameters.
+    /// </summary>
+    public static AssociationPersistable CreateStoredProcedureInvocationAssociation(
+        ElementPersistable operationElement,
+        ElementPersistable storedProcElement,
+        ElementPersistable wrapperDataContract,
+        PackageModelPersistable package)
+    {
+        var associationId = Guid.NewGuid().ToString();
+        var sourceEndId = Guid.NewGuid().ToString();
+        
+        var association = new AssociationPersistable
+        {
+            Id = associationId,
+            AssociationType = "Stored Procedure Invocation",
+            AssociationTypeId = "adf062ed-c0a4-421f-9940-318a91e9a52c",
+            SourceEnd = new AssociationEndPersistable
+            {
+                Id = sourceEndId,
+                SpecializationType = "Stored Procedure Invocation Source End",
+                SpecializationTypeId = "7b7d3fd8-5e32-4f8c-b4cc-7b92f45a8577",
+                Name = operationElement.Name,
+                Display = $": {operationElement.Name}",
+                Order = 0,
+                TypeReference = new TypeReferencePersistable
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    TypeId = operationElement.Id,
+                    IsNavigable = false,
+                    IsNullable = false,
+                    IsCollection = false,
+                    IsRequired = true,
+                    TypePackageName = package.Name,
+                    TypePackageId = package.Id,
+                    Stereotypes = [],
+                    GenericTypeParameters = []
+                },
+                Stereotypes = [],
+                Metadata = [],
+                ChildElements = []
+            },
+            TargetEnd = new AssociationEndPersistable
+            {
+                Id = associationId, // Target end uses same ID as association
+                SpecializationType = "Stored Procedure Invocation Target End",
+                SpecializationTypeId = "d0b0b24a-db0f-4aff-873a-a0e9c2dce12d",
+                Name = "mappedResult",
+                Display = $"mappedResult: {storedProcElement.Name}",
+                Order = 1,
+                TypeReference = new TypeReferencePersistable
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    TypeId = storedProcElement.Id,
+                    IsNavigable = true,
+                    IsNullable = false,
+                    IsCollection = false,
+                    IsRequired = true,
+                    TypePackageName = package.Name,
+                    TypePackageId = package.Id,
+                    Stereotypes = [],
+                    GenericTypeParameters = []
+                },
+                Stereotypes = [],
+                Mappings = CreateInvocationMappings(associationId, operationElement, storedProcElement, wrapperDataContract, package),
+                Metadata = [],
+                ChildElements = []
+            },
+            Stereotypes = []
+        };
+
+        return association;
+    }
+
+    /// <summary>
+    /// Creates the mapping structure for Stored Procedure Invocation associations.
+    /// Generates two mappings:
+    /// 1. Stored Procedure Invocation mapping - maps operation call to stored procedure with parameter mappings
+    /// 2. Stored Procedure Result mapping - maps result set and output parameters to wrapper data contract attributes
+    /// </summary>
+    private static List<ElementToElementMappingPersistable> CreateInvocationMappings(
+        string associationId,
+        ElementPersistable operationElement,
+        ElementPersistable storedProcElement,
+        ElementPersistable wrapperDataContract,
+        PackageModelPersistable package)
+    {
+        var mappings = new List<ElementToElementMappingPersistable>();
+
+        // Mapping 1: Stored Procedure Invocation (operation -> stored procedure)
+        var invocationMappedEnds = new List<ElementToElementMappedEndPersistable>();
+
+        // Map the operation itself to the stored procedure
+        invocationMappedEnds.Add(new ElementToElementMappedEndPersistable
+        {
+            MappingExpression = $"{{{operationElement.Name}}}",
+            TargetPath = new List<MappedPathTargetPersistable>
+            {
+                new MappedPathTargetPersistable
+                {
+                    Id = storedProcElement.Id,
+                    Name = storedProcElement.Name,
+                    Type = "element",
+                    Specialization = "Stored Procedure",
+                    SpecializationId = "575edd35-9438-406d-b0a7-b99d6f29b560"
+                }
+            },
+            Sources = new List<ElementToElementMappedEndSourcePersistable>
+            {
+                new ElementToElementMappedEndSourcePersistable
+                {
+                    ExpressionIdentifier = operationElement.Name,
+                    MappingType = "Invocation Mapping",
+                    MappingTypeId = "125fe452-48cc-4082-bfde-3d65470ab345",
+                    Path = new List<MappedPathTargetPersistable>
+                    {
+                        new MappedPathTargetPersistable
+                        {
+                            Id = operationElement.Id,
+                            Name = operationElement.Name,
+                            Type = "element",
+                            Specialization = "Operation",
+                            SpecializationId = "e042bb67-a1df-480c-9935-b26210f78591"
+                        }
+                    }
+                }
+            }
+        });
+
+        // Map each input parameter from operation to stored procedure parameter
+        // Input parameters: those without output parameter stereotype property set to true
+        var storedProcInputParams = storedProcElement.ChildElements
+            .Where(e => e.SpecializationType == "Stored Procedure Parameter")
+            .Where(p => !p.Stereotypes.Any(s => 
+                s.DefinitionId == Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.DefinitionId && 
+                s.Properties.Any(prop => prop.DefinitionId == Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.IsOutputParam && prop.Value == "true")))
+            .ToList();
+
+        foreach (var storedProcParam in storedProcInputParams)
+        {
+            var operationParam = operationElement.ChildElements
+                .FirstOrDefault(e => e.Name.Equals(storedProcParam.Name, StringComparison.OrdinalIgnoreCase));
+
+            if (operationParam != null)
+            {
+                invocationMappedEnds.Add(new ElementToElementMappedEndPersistable
+                {
+                    MappingExpression = $"{{{operationParam.Name}}}",
+                    TargetPath = new List<MappedPathTargetPersistable>
+                    {
+                        new MappedPathTargetPersistable
+                        {
+                            Id = storedProcElement.Id,
+                            Name = storedProcElement.Name,
+                            Type = "element",
+                            Specialization = "Stored Procedure",
+                            SpecializationId = "575edd35-9438-406d-b0a7-b99d6f29b560"
+                        },
+                        new MappedPathTargetPersistable
+                        {
+                            Id = storedProcParam.Id,
+                            Name = storedProcParam.Name,
+                            Type = "element",
+                            Specialization = "Stored Procedure Parameter",
+                            SpecializationId = "5823b192-eb03-47c8-90d8-5501c922e9a5"
+                        }
+                    },
+                    Sources = new List<ElementToElementMappedEndSourcePersistable>
+                    {
+                        new ElementToElementMappedEndSourcePersistable
+                        {
+                            ExpressionIdentifier = operationParam.Name,
+                            MappingType = "Data Mapping",
+                            MappingTypeId = "d4c1f7fe-1f40-4e01-8e83-1120acb6143b",
+                            Path = new List<MappedPathTargetPersistable>
+                            {
+                                new MappedPathTargetPersistable
+                                {
+                                    Id = operationElement.Id,
+                                    Name = operationElement.Name,
+                                    Type = "element",
+                                    Specialization = "Operation",
+                                    SpecializationId = "e042bb67-a1df-480c-9935-b26210f78591"
+                                },
+                                new MappedPathTargetPersistable
+                                {
+                                    Id = operationParam.Id,
+                                    Name = operationParam.Name,
+                                    Type = "element",
+                                    Specialization = "Parameter",
+                                    SpecializationId = "c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b"
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        mappings.Add(new ElementToElementMappingPersistable
+        {
+            Type = "Stored Procedure Invocation",
+            TypeId = "a7dbfc5c-f4f4-4f61-a176-6b652192ebfc",
+            Source = new ElementSolutionIdentifierPersistable
+            {
+                ApplicationId = package.ApplicationId,
+                DesignerId = Constants.Mapping.Index.MetadataId,
+                ElementId = operationElement.Id
+            },
+            Target = new ElementSolutionIdentifierPersistable
+            {
+                ApplicationId = package.ApplicationId,
+                DesignerId = Constants.Mapping.Index.MetadataId,
+                ElementId = storedProcElement.Id
+            },
+            MappedEnds = invocationMappedEnds
+        });
+
+        // Mapping 2: Stored Procedure Result (stored procedure results -> wrapper data contract)
+        var resultMappedEnds = new List<ElementToElementMappedEndPersistable>();
+
+        // Map result set to "Results" attribute in wrapper DC
+        var resultsAttribute = wrapperDataContract.ChildElements.FirstOrDefault(e => e.Name == "Results");
+        if (resultsAttribute != null && storedProcElement.TypeReference?.TypeId != null)
+        {
+            resultMappedEnds.Add(new ElementToElementMappedEndPersistable
+            {
+                MappingExpression = "{mappedResult.result}",
+                TargetPath = new List<MappedPathTargetPersistable>
+                {
+                    new MappedPathTargetPersistable
+                    {
+                        Id = wrapperDataContract.Id,
+                        Name = wrapperDataContract.Name,
+                        Type = "element",
+                        Specialization = "Data Contract",
+                        SpecializationId = "4464fabe-c59e-4d90-81fc-c9245bdd1afd"
+                    },
+                    new MappedPathTargetPersistable
+                    {
+                        Id = resultsAttribute.Id,
+                        Name = resultsAttribute.Name,
+                        Type = "element",
+                        Specialization = "Attribute",
+                        SpecializationId = "0090fb93-483e-41af-a11d-5ad2dc796adf"
+                    }
+                },
+                Sources = new List<ElementToElementMappedEndSourcePersistable>
+                {
+                    new ElementToElementMappedEndSourcePersistable
+                    {
+                        ExpressionIdentifier = "mappedResult.result",
+                        MappingType = "Data Mapping",
+                        MappingTypeId = "654a66b5-6ed4-41d2-abb3-25aaa12af829",
+                        Path = new List<MappedPathTargetPersistable>
+                        {
+                            new MappedPathTargetPersistable
+                            {
+                                Id = operationElement.Id,
+                                Name = operationElement.Name,
+                                Type = "element",
+                                Specialization = "Operation",
+                                SpecializationId = "e042bb67-a1df-480c-9935-b26210f78591"
+                            },
+                            new MappedPathTargetPersistable
+                            {
+                                Id = associationId,
+                                Name = "mappedResult",
+                                Type = "association",
+                                Specialization = "Stored Procedure Invocation Target End",
+                                SpecializationId = "d0b0b24a-db0f-4aff-873a-a0e9c2dce12d"
+                            },
+                            new MappedPathTargetPersistable
+                            {
+                                Id = "1eba9280-3bf0-46f8-981c-414dee8e35c3",
+                                Name = "result",
+                                Type = "static-mappable",
+                                Specialization = "result",
+                                SpecializationId = "1eba9280-3bf0-46f8-981c-414dee8e35c3",
+                                TypeReference = new TypeReferencePersistable
+                                {
+                                    Id = Guid.NewGuid().ToString(),
+                                    TypeId = storedProcElement.TypeReference.TypeId,
+                                    IsNavigable = true,
+                                    IsNullable = false,
+                                    IsCollection = true,
+                                    IsRequired = true,
+                                    TypePackageName = package.Name,
+                                    TypePackageId = package.Id,
+                                    Stereotypes = [],
+                                    GenericTypeParameters = []
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Map each output parameter to its corresponding attribute in the wrapper DC
+        // Output parameters: those with output parameter stereotype property set to true
+        var storedProcOutputParams = storedProcElement.ChildElements
+            .Where(e => e.SpecializationType == "Stored Procedure Parameter")
+            .Where(p => p.Stereotypes.Any(s => 
+                s.DefinitionId == Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.DefinitionId && 
+                s.Properties.Any(prop => prop.DefinitionId == Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.IsOutputParam && prop.Value == "true")))
+            .ToList();
+
+        foreach (var storedProcParam in storedProcOutputParams)
+        {
+            // Normalize the stored proc param name (strip @ prefix to get camelCase version)
+            var normalizedParamName = ModelNamingUtilities.GetParameterName(storedProcParam.Name);
+            
+            // Find the wrapper attribute by external reference - must match the stored proc parameter's external reference
+            var wrapperAttribute = wrapperDataContract.ChildElements
+                .FirstOrDefault(e => e.ExternalReference == storedProcParam.ExternalReference);
+
+            if (wrapperAttribute != null)
+            {
+                resultMappedEnds.Add(new ElementToElementMappedEndPersistable
+                {
+                    MappingExpression = $"{{mappedResult.{normalizedParamName}}}",
+                    TargetPath = new List<MappedPathTargetPersistable>
+                    {
+                        new MappedPathTargetPersistable
+                        {
+                            Id = wrapperDataContract.Id,
+                            Name = wrapperDataContract.Name,
+                            Type = "element",
+                            Specialization = "Data Contract",
+                            SpecializationId = "4464fabe-c59e-4d90-81fc-c9245bdd1afd"
+                        },
+                        new MappedPathTargetPersistable
+                        {
+                            Id = wrapperAttribute.Id,
+                            Name = wrapperAttribute.Name,
+                            Type = "element",
+                            Specialization = "Attribute",
+                            SpecializationId = "0090fb93-483e-41af-a11d-5ad2dc796adf"
+                        }
+                    },
+                    Sources = new List<ElementToElementMappedEndSourcePersistable>
+                    {
+                        new ElementToElementMappedEndSourcePersistable
+                        {
+                            ExpressionIdentifier = $"mappedResult.{normalizedParamName}",
+                            MappingType = "Data Mapping",
+                            MappingTypeId = "654a66b5-6ed4-41d2-abb3-25aaa12af829",
+                            Path = new List<MappedPathTargetPersistable>
+                            {
+                                new MappedPathTargetPersistable
+                                {
+                                    Id = operationElement.Id,
+                                    Name = operationElement.Name,
+                                    Type = "element",
+                                    Specialization = "Operation",
+                                    SpecializationId = "e042bb67-a1df-480c-9935-b26210f78591"
+                                },
+                                new MappedPathTargetPersistable
+                                {
+                                    Id = associationId,
+                                    Name = "mappedResult",
+                                    Type = "association",
+                                    Specialization = "Stored Procedure Invocation Target End",
+                                    SpecializationId = "d0b0b24a-db0f-4aff-873a-a0e9c2dce12d"
+                                },
+                                new MappedPathTargetPersistable
+                                {
+                                    Id = storedProcParam.Id,
+                                    Name = normalizedParamName,
+                                    Type = "static-mappable",
+                                    Specialization = normalizedParamName,
+                                    SpecializationId = storedProcParam.Id,
+                                    TypeReference = storedProcParam.TypeReference
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        mappings.Add(new ElementToElementMappingPersistable
+        {
+            Type = "Stored Procedure Result",
+            TypeId = "0af211bd-11c4-4981-b7bc-c42923a884d8",
+            Source = new ElementSolutionIdentifierPersistable
+            {
+                ApplicationId = package.ApplicationId,
+                DesignerId = Constants.Mapping.Index.MetadataId,
+                ElementId = operationElement.Id
+            },
+            Target = new ElementSolutionIdentifierPersistable
+            {
+                ApplicationId = package.ApplicationId,
+                DesignerId = Constants.Mapping.Index.MetadataId,
+                ElementId = wrapperDataContract.Id
+            },
+            MappedEnds = resultMappedEnds
+        });
+
+        return mappings;
+    }
 }

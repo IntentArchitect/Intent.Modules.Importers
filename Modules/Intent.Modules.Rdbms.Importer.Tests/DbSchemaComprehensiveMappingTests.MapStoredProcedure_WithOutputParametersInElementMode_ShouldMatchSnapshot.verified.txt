@@ -1,0 +1,280 @@
+﻿{
+  Package: {
+    Name: TestPackage,
+    Metadata: [],
+    Folders: [
+      {
+        Name: Dbo,
+        SpecializationType: Folder,
+        ExternalReference: schema:[dbo],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [
+          {
+            Name: Schema,
+            DefinitionId: Guid_1,
+            Properties: [
+              {
+                Name: Name,
+                DefinitionId: Guid_2,
+                Value: dbo,
+                IsActive: true
+              }
+            ]
+          }
+        ],
+        Children: []
+      }
+    ],
+    Classes: [
+      {
+        Name: StoredProcedureRepository,
+        SpecializationType: Repository,
+        ExternalReference: StoredProcedureRepository,
+        IsAbstract: false,
+        IsMapped: false,
+        TypeReference: {
+          IsNullable: false,
+          IsCollection: false,
+          IsNavigable: true,
+          IsRequired: true
+        },
+        Metadata: [],
+        Stereotypes: [],
+        Children: [
+          {
+            Name: TestWithOutParam,
+            SpecializationType: Stored Procedure,
+            ExternalReference: [dbo].[sp_testwithoutparam],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              ResolvedName: TestWithOutParamResponse,
+              IsNullable: false,
+              IsCollection: true,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Stored Procedure Settings,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: Name in Schema,
+                    DefinitionId: Guid_5,
+                    Value: sp_TestWithOutParam,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: [
+              {
+                Name: errorMessage,
+                SpecializationType: Stored Procedure Parameter,
+                ExternalReference: [dbo].[sp_testwithoutparam].OUT.errorMessage,
+                IsAbstract: false,
+                IsMapped: false,
+                TypeReference: {
+                  TypeId: Guid_6,
+                  IsNullable: false,
+                  IsCollection: false,
+                  IsNavigable: true,
+                  IsRequired: true
+                },
+                Metadata: [],
+                Stereotypes: [
+                  {
+                    Name: Stored Procedure Parameter Settings,
+                    DefinitionId: Guid_7,
+                    Properties: [
+                      {
+                        Name: Is Output Parameter,
+                        DefinitionId: Guid_8,
+                        Value: true,
+                        IsActive: true
+                      },
+                      {
+                        Name: Scale,
+                        DefinitionId: Guid_9,
+                        IsActive: true
+                      },
+                      {
+                        Name: Precision,
+                        DefinitionId: Guid_10,
+                        IsActive: true
+                      },
+                      {
+                        Name: SQL String Type,
+                        DefinitionId: Guid_11,
+                        Value: NVarChar,
+                        IsActive: true
+                      },
+                      {
+                        Name: Size,
+                        DefinitionId: Guid_12,
+                        Value: 255,
+                        IsActive: true
+                      }
+                    ]
+                  }
+                ],
+                Children: []
+              },
+              {
+                Name: id,
+                SpecializationType: Stored Procedure Parameter,
+                ExternalReference: id,
+                IsAbstract: false,
+                IsMapped: false,
+                TypeReference: {
+                  TypeId: Guid_13,
+                  IsNullable: true,
+                  IsCollection: false,
+                  IsNavigable: true,
+                  IsRequired: true
+                },
+                Metadata: [],
+                Stereotypes: [
+                  {
+                    Name: Stored Procedure Parameter Settings,
+                    DefinitionId: Guid_7,
+                    Properties: [
+                      {
+                        Name: Is Output Parameter,
+                        DefinitionId: Guid_8,
+                        Value: false,
+                        IsActive: true
+                      },
+                      {
+                        Name: Scale,
+                        DefinitionId: Guid_9,
+                        IsActive: true
+                      },
+                      {
+                        Name: Precision,
+                        DefinitionId: Guid_10,
+                        IsActive: true
+                      },
+                      {
+                        Name: SQL String Type,
+                        DefinitionId: Guid_11,
+                        IsActive: true
+                      },
+                      {
+                        Name: Size,
+                        DefinitionId: Guid_12,
+                        IsActive: true
+                      }
+                    ]
+                  }
+                ],
+                Children: []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        Name: TestWithOutParamResponse,
+        SpecializationType: Data Contract,
+        ExternalReference: [dbo].[sp_testwithoutparam].Response,
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [],
+        Children: [
+          {
+            Name: TestResult1,
+            SpecializationType: Attribute,
+            ExternalReference: [[dbo].[sp_testwithoutparam].response].[testresult1],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_6,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_14,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_15,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_16,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_17,
+                    Value: 100,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: TestResult2,
+            SpecializationType: Attribute,
+            ExternalReference: [[dbo].[sp_testwithoutparam].response].[testresult2],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_6,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_14,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_15,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_16,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_17,
+                    Value: 100,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      }
+    ],
+    Associations: []
+  }
+}

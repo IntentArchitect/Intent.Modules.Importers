@@ -349,7 +349,7 @@ internal static class RdbmsSchemaAnnotator
             var sqlProcParam = sqlStoredProc.Parameters[paramIndex];
             var paramStereotype = elementParam.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.DefinitionId, InitStoredProcParamStereotype);
             paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.IsOutputParam).Value =
-                sqlProcParam.Direction == StoredProcedureParameterDirection.Out ? "true" : "false";
+                (sqlProcParam.Direction == StoredProcedureParameterDirection.Out || sqlProcParam.Direction == StoredProcedureParameterDirection.Both) ? "true" : "false";
 
             switch (sqlProcParam.Direction)
             {

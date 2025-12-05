@@ -117,6 +117,165 @@
         ]
       },
       {
+        Name: IX_Orders_CustomerId,
+        SpecializationType: Index,
+        ExternalReference: index:[dbo].[orders].[ix_orders_customerid],
+        IsAbstract: false,
+        IsMapped: true,
+        Metadata: [],
+        Stereotypes: [
+          {
+            Name: Settings,
+            DefinitionId: Guid_11,
+            Properties: [
+              {
+                Name: Use Default Name,
+                DefinitionId: Guid_12,
+                Value: false,
+                IsActive: true
+              },
+              {
+                Name: Unique,
+                DefinitionId: Guid_13,
+                Value: false,
+                IsActive: true
+              },
+              {
+                Name: Filter,
+                DefinitionId: Guid_14,
+                Value: Default,
+                IsActive: true
+              }
+            ]
+          }
+        ],
+        Children: [
+          {
+            Name: CustomerId,
+            SpecializationType: Index Column,
+            ExternalReference: customerid,
+            IsAbstract: false,
+            IsMapped: true,
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Settings,
+                DefinitionId: Guid_15,
+                Properties: [
+                  {
+                    Name: Type,
+                    DefinitionId: Guid_16,
+                    Value: Key,
+                    IsActive: true
+                  },
+                  {
+                    Name: Sort Direction,
+                    DefinitionId: Guid_17,
+                    Value: Ascending,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          },
+          {
+            Name: OrderDate,
+            SpecializationType: Index Column,
+            ExternalReference: orderdate,
+            IsAbstract: false,
+            IsMapped: true,
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Settings,
+                DefinitionId: Guid_15,
+                Properties: [
+                  {
+                    Name: Type,
+                    DefinitionId: Guid_16,
+                    Value: Included,
+                    IsActive: true
+                  },
+                  {
+                    Name: Sort Direction,
+                    DefinitionId: Guid_17,
+                    Value: Ascending,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      },
+      {
+        Name: IX_Orders_RefNo,
+        SpecializationType: Index,
+        ExternalReference: index:[dbo].[orders].[ix_orders_refno],
+        IsAbstract: false,
+        IsMapped: true,
+        Metadata: [],
+        Stereotypes: [
+          {
+            Name: Settings,
+            DefinitionId: Guid_11,
+            Properties: [
+              {
+                Name: Use Default Name,
+                DefinitionId: Guid_12,
+                Value: false,
+                IsActive: true
+              },
+              {
+                Name: Unique,
+                DefinitionId: Guid_13,
+                Value: true,
+                IsActive: true
+              },
+              {
+                Name: Filter,
+                DefinitionId: Guid_14,
+                Value: Default,
+                IsActive: true
+              }
+            ]
+          }
+        ],
+        Children: [
+          {
+            Name: RefNo,
+            SpecializationType: Index Column,
+            ExternalReference: refno,
+            IsAbstract: false,
+            IsMapped: true,
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Settings,
+                DefinitionId: Guid_15,
+                Properties: [
+                  {
+                    Name: Type,
+                    DefinitionId: Guid_16,
+                    Value: Key,
+                    IsActive: true
+                  },
+                  {
+                    Name: Sort Direction,
+                    DefinitionId: Guid_17,
+                    Value: Ascending,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      },
+      {
         Name: Order,
         SpecializationType: Class,
         ExternalReference: [dbo].[orders],
@@ -132,7 +291,7 @@
             IsAbstract: false,
             IsMapped: false,
             TypeReference: {
-              TypeId: Guid_11,
+              TypeId: Guid_18,
               IsNullable: false,
               IsCollection: false,
               IsNavigable: true,
@@ -141,7 +300,7 @@
             Metadata: [
               {
                 Key: association,
-                Value: Guid_12
+                Value: Guid_19
               },
               {
                 Key: fk-original-name,
@@ -155,12 +314,12 @@
             Stereotypes: [
               {
                 Name: Foreign Key,
-                DefinitionId: Guid_13,
+                DefinitionId: Guid_20,
                 Properties: [
                   {
                     Name: Association,
-                    DefinitionId: Guid_14,
-                    Value: Guid_12,
+                    DefinitionId: Guid_21,
+                    Value: Guid_19,
                     IsActive: true
                   }
                 ]
@@ -175,7 +334,7 @@
             IsAbstract: false,
             IsMapped: false,
             TypeReference: {
-              TypeId: Guid_11,
+              TypeId: Guid_18,
               IsNullable: false,
               IsCollection: false,
               IsNavigable: true,
@@ -210,7 +369,7 @@
             IsAbstract: false,
             IsMapped: false,
             TypeReference: {
-              TypeId: Guid_15,
+              TypeId: Guid_22,
               IsNullable: false,
               IsCollection: false,
               IsNavigable: true,
@@ -220,16 +379,16 @@
             Stereotypes: [
               {
                 Name: Column,
-                DefinitionId: Guid_16,
+                DefinitionId: Guid_23,
                 Properties: [
                   {
                     Name: Name,
-                    DefinitionId: Guid_17,
+                    DefinitionId: Guid_24,
                     IsActive: true
                   },
                   {
                     Name: Type,
-                    DefinitionId: Guid_18,
+                    DefinitionId: Guid_25,
                     Value: datetime,
                     IsActive: true
                   }
@@ -289,7 +448,7 @@
         Source: {
           Name: Orders,
           TypeReference: {
-            TypeId: Guid_19,
+            TypeId: Guid_26,
             ResolvedName: Order,
             IsNullable: false,
             IsCollection: true,
@@ -302,7 +461,7 @@
           Name: Customer,
           ExternalReference: [dbo].[orders].[fk_orders_customers],
           TypeReference: {
-            TypeId: Guid_20,
+            TypeId: Guid_27,
             ResolvedName: Customer,
             IsNullable: false,
             IsCollection: false,

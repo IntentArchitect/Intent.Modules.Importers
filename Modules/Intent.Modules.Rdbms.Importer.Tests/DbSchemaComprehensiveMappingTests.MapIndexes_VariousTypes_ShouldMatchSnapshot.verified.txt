@@ -29,6 +29,76 @@
     ],
     Classes: [
       {
+        Name: IX_Customers_Email_Unique,
+        SpecializationType: Index,
+        ExternalReference: index:[dbo].[products].[ix_customers_email_unique],
+        IsAbstract: false,
+        IsMapped: true,
+        Metadata: [],
+        Stereotypes: [
+          {
+            Name: Settings,
+            DefinitionId: Guid_3,
+            Properties: [
+              {
+                Name: Use Default Name,
+                DefinitionId: Guid_4,
+                Value: false,
+                IsActive: true
+              },
+              {
+                Name: Unique,
+                DefinitionId: Guid_5,
+                Value: true,
+                IsActive: true
+              },
+              {
+                Name: Filter,
+                DefinitionId: Guid_6,
+                Value: Default,
+                IsActive: true
+              }
+            ]
+          }
+        ],
+        Children: []
+      },
+      {
+        Name: IX_Orders_CustomerId_OrderDate,
+        SpecializationType: Index,
+        ExternalReference: index:[dbo].[products].[ix_orders_customerid_orderdate],
+        IsAbstract: false,
+        IsMapped: true,
+        Metadata: [],
+        Stereotypes: [
+          {
+            Name: Settings,
+            DefinitionId: Guid_3,
+            Properties: [
+              {
+                Name: Use Default Name,
+                DefinitionId: Guid_4,
+                Value: false,
+                IsActive: true
+              },
+              {
+                Name: Unique,
+                DefinitionId: Guid_5,
+                Value: false,
+                IsActive: true
+              },
+              {
+                Name: Filter,
+                DefinitionId: Guid_6,
+                Value: Default,
+                IsActive: true
+              }
+            ]
+          }
+        ],
+        Children: []
+      },
+      {
         Name: Product,
         SpecializationType: Class,
         ExternalReference: [dbo].[products],
@@ -44,7 +114,7 @@
             IsAbstract: false,
             IsMapped: false,
             TypeReference: {
-              TypeId: Guid_3,
+              TypeId: Guid_7,
               IsNullable: false,
               IsCollection: false,
               IsNavigable: true,
@@ -59,11 +129,11 @@
             Stereotypes: [
               {
                 Name: Primary Key,
-                DefinitionId: Guid_4,
+                DefinitionId: Guid_8,
                 Properties: [
                   {
                     Name: Data source,
-                    DefinitionId: Guid_5,
+                    DefinitionId: Guid_9,
                     Value: Auto-generated,
                     IsActive: true
                   }
@@ -79,7 +149,7 @@
             IsAbstract: false,
             IsMapped: false,
             TypeReference: {
-              TypeId: Guid_6,
+              TypeId: Guid_10,
               IsNullable: false,
               IsCollection: false,
               IsNavigable: true,
@@ -89,23 +159,23 @@
             Stereotypes: [
               {
                 Name: Text Constraints,
-                DefinitionId: Guid_7,
+                DefinitionId: Guid_11,
                 Properties: [
                   {
                     Name: SQL Data Type,
-                    DefinitionId: Guid_8,
+                    DefinitionId: Guid_12,
                     Value: NVARCHAR,
                     IsActive: true
                   },
                   {
                     Name: IsUnicode,
-                    DefinitionId: Guid_9,
+                    DefinitionId: Guid_13,
                     Value: true,
                     IsActive: true
                   },
                   {
                     Name: MaxLength,
-                    DefinitionId: Guid_10,
+                    DefinitionId: Guid_14,
                     Value: 200,
                     IsActive: true
                   }
@@ -121,7 +191,7 @@
             IsAbstract: false,
             IsMapped: false,
             TypeReference: {
-              TypeId: Guid_11,
+              TypeId: Guid_15,
               IsNullable: false,
               IsCollection: false,
               IsNavigable: true,
@@ -131,17 +201,17 @@
             Stereotypes: [
               {
                 Name: Decimal Constraints,
-                DefinitionId: Guid_12,
+                DefinitionId: Guid_16,
                 Properties: [
                   {
                     Name: Precision,
-                    DefinitionId: Guid_13,
+                    DefinitionId: Guid_17,
                     Value: 18,
                     IsActive: true
                   },
                   {
                     Name: Scale,
-                    DefinitionId: Guid_14,
+                    DefinitionId: Guid_18,
                     Value: 2,
                     IsActive: true
                   }
@@ -157,7 +227,7 @@
             IsAbstract: false,
             IsMapped: false,
             TypeReference: {
-              TypeId: Guid_6,
+              TypeId: Guid_10,
               IsNullable: false,
               IsCollection: false,
               IsNavigable: true,
@@ -167,23 +237,23 @@
             Stereotypes: [
               {
                 Name: Text Constraints,
-                DefinitionId: Guid_7,
+                DefinitionId: Guid_11,
                 Properties: [
                   {
                     Name: SQL Data Type,
-                    DefinitionId: Guid_8,
+                    DefinitionId: Guid_12,
                     Value: NVARCHAR,
                     IsActive: true
                   },
                   {
                     Name: IsUnicode,
-                    DefinitionId: Guid_9,
+                    DefinitionId: Guid_13,
                     Value: true,
                     IsActive: true
                   },
                   {
                     Name: MaxLength,
-                    DefinitionId: Guid_10,
+                    DefinitionId: Guid_14,
                     Value: 50,
                     IsActive: true
                   }
@@ -199,7 +269,7 @@
             IsAbstract: false,
             IsMapped: false,
             TypeReference: {
-              TypeId: Guid_6,
+              TypeId: Guid_10,
               IsNullable: false,
               IsCollection: false,
               IsNavigable: true,
@@ -209,23 +279,23 @@
             Stereotypes: [
               {
                 Name: Text Constraints,
-                DefinitionId: Guid_7,
+                DefinitionId: Guid_11,
                 Properties: [
                   {
                     Name: SQL Data Type,
-                    DefinitionId: Guid_8,
+                    DefinitionId: Guid_12,
                     Value: NVARCHAR,
                     IsActive: true
                   },
                   {
                     Name: IsUnicode,
-                    DefinitionId: Guid_9,
+                    DefinitionId: Guid_13,
                     Value: true,
                     IsActive: true
                   },
                   {
                     Name: MaxLength,
-                    DefinitionId: Guid_10,
+                    DefinitionId: Guid_14,
                     Value: 20,
                     IsActive: true
                   }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
+using Intent.IArchitect.Agent.Persistence.Model.Mappings;
 using Intent.Modelers.Domain.Api;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
@@ -190,61 +191,294 @@ internal class DbSchemaIntentMetadataMerger
     {
         // First pass: Create UserDefinedTable DataContracts for deduplication
         var udtDataContracts = ProcessUserDefinedTableDataContracts(databaseSchema, package, result, deduplicationContext);
+        
         foreach (var storedProc in databaseSchema.StoredProcedures)
         {
-            // Create repository first if it doesn't exist
-            var repositoryElement = GetOrCreateRepository(_config.RepositoryElementId, package);
+            // Check if we need special handling for stored procedures with output parameters
+            bool hasOutputParameters = IntentModelMapper.HasOutputParameters(storedProc);
+            bool isOperationMode = _config.StoredProcedureType == StoredProcedureType.Default || 
+                                   _config.StoredProcedureType == StoredProcedureType.RepositoryOperation;
+            bool useOutputParameterStrategy = isOperationMode && hasOutputParameters;
 
-            // Check if stored procedure already exists
-            var spExternalRef = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Schema, storedProc.Name);
-            var expectedSpecializationType = _config.StoredProcedureType == StoredProcedureType.StoredProcedureElement 
-                ? Constants.SpecializationTypes.StoredProcedure.SpecializationType 
-                : Constants.SpecializationTypes.Operation.SpecializationType;
-
-            var existingElement = repositoryElement.ChildElements.FirstOrDefault(c => 
-                c.ExternalReference == spExternalRef && 
-                c.SpecializationType == expectedSpecializationType);
-
-            ElementPersistable procElement;
-
-            if (existingElement != null)
+            if (useOutputParameterStrategy)
             {
-                // Update existing stored procedure element
-                if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
-                {
-                    var updatedElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, package, null, udtDataContracts);
-                    SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
-                    RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingElement);
-                }
-                else
-                {
-                    var updatedElement = IntentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, package, null, udtDataContracts);
-                    SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
-                    RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingElement);
-                }
-                
-                procElement = existingElement;
+                // New strategy: Create SP Element + Operation + Wrapper DC + Association
+                ProcessStoredProcedureWithOutputParameters(storedProc, package, deduplicationContext, result, udtDataContracts);
             }
             else
             {
-                // Create new stored procedure element
-                if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
-                {
-                    procElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
-                    RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, procElement);
-                }
-                else
-                {
-                    procElement = IntentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
-                    RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, procElement);
-                }
-                
-                repositoryElement.ChildElements.Add(procElement);
+                // Existing strategy: Create single element (Operation or SP Element)
+                ProcessStoredProcedureStandard(storedProc, package, deduplicationContext, result, udtDataContracts);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Handles standard stored procedure import (no output parameters or StoredProcedureElement mode)
+    /// </summary>
+    private void ProcessStoredProcedureStandard(
+        StoredProcedureSchema storedProc,
+        PackageModelPersistable package,
+        DeduplicationContext? deduplicationContext,
+        MergeResult result,
+        Dictionary<string, string>? udtDataContracts)
+    {
+        // Create repository first if it doesn't exist
+        var repositoryElement = GetOrCreateRepository(_config.RepositoryElementId, package);
+
+        // Check if stored procedure already exists
+        var spExternalRef = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Schema, storedProc.Name);
+        var expectedSpecializationType = _config.StoredProcedureType == StoredProcedureType.StoredProcedureElement 
+            ? Constants.SpecializationTypes.StoredProcedure.SpecializationType 
+            : Constants.SpecializationTypes.Operation.SpecializationType;
+
+        var existingElement = repositoryElement.ChildElements.FirstOrDefault(c => 
+            c.ExternalReference == spExternalRef && 
+            c.SpecializationType == expectedSpecializationType);
+
+        ElementPersistable procElement;
+
+        if (existingElement != null)
+        {
+            // Update existing stored procedure element
+            if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
+            {
+                var updatedElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, package, null, udtDataContracts);
+                SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+                RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingElement);
+            }
+            else
+            {
+                var updatedElement = IntentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, package, null, udtDataContracts);
+                SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+                RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingElement);
+            }
+            
+            procElement = existingElement;
+        }
+        else
+        {
+            // Create new stored procedure element
+            if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
+            {
+                procElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
+                RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, procElement);
+            }
+            else
+            {
+                procElement = IntentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
+                RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, procElement);
+            }
+            
+            repositoryElement.ChildElements.Add(procElement);
+        }
+
+        if (storedProc.ResultSetColumns.Count > 0)
+        {
+            ProcessStoredProcedureDataContract(storedProc, procElement, package, result, deduplicationContext);
+        }
+    }
+
+    /// <summary>
+    /// Handles stored procedures with output parameters using the advanced strategy:
+    /// - Creates a Stored Procedure Element (at package level, not in repository)
+    /// - Creates an Operation (in repository, with only input parameters)
+    /// - Creates a Wrapper Data Contract (contains Results + output parameters)
+    /// - Creates a Stored Procedure Invocation association with mappings
+    /// </summary>
+    private void ProcessStoredProcedureWithOutputParameters(
+        StoredProcedureSchema storedProc,
+        PackageModelPersistable package,
+        DeduplicationContext? deduplicationContext,
+        MergeResult result,
+        Dictionary<string, string>? udtDataContracts)
+    {
+        var repositoryElement = GetOrCreateRepository(_config.RepositoryElementId, package);
+        var schemaFolder = GetOrCreateSchemaFolder(storedProc.Schema, package);
+        var procName = ModelNamingUtilities.GetStoredProcedureName(storedProc.Name, storedProc.Schema, deduplicationContext);
+
+        // 1. Get or create the Stored Procedure Element (at package level)
+        var spExternalRef = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Schema, storedProc.Name);
+        var existingSpElement = package.Classes.FirstOrDefault(c => 
+            c.ExternalReference == spExternalRef && 
+            c.SpecializationType == Constants.SpecializationTypes.StoredProcedure.SpecializationType);
+
+        ElementPersistable storedProcElement;
+        if (existingSpElement != null)
+        {
+            // Update existing - but don't change parentFolderId (user may have moved it)
+            var updatedElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, existingSpElement.ParentFolderId, package, null, udtDataContracts);
+            SyncElements(package, existingSpElement, updatedElement, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+            RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingSpElement);
+            storedProcElement = existingSpElement;
+        }
+        else
+        {
+            // Create new - place at package level initially (pass null for repositoryId to avoid "Sp" prefix)
+            storedProcElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, null, package, deduplicationContext, udtDataContracts);
+            storedProcElement.ParentFolderId = package.Id; // Set parent to package level
+            RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, storedProcElement);
+            package.Classes.Add(storedProcElement);
+        }
+
+        // 2. Get or create the underlying result set Data Contract (if there are result columns)
+        ElementPersistable? underlyingResultDataContract = null;
+        if (storedProc.ResultSetColumns.Count > 0)
+        {
+            var dataContractExternalRef = ModelNamingUtilities.GetDataContractExternalReference(storedProc.Schema, storedProc.Name);
+            var dataContractName = $"{procName}Response";
+            
+            var existingDataContract = IntentModelMapper.FindElementWithPrecedence(
+                package.Classes,
+                dataContractExternalRef,
+                dataContractName,
+                storedProc.Schema,
+                Constants.SpecializationTypes.DataContract.SpecializationType,
+                package);
+
+            if (existingDataContract != null)
+            {
+                var updatedDataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procName, _config, package, deduplicationContext);
+                SyncElements(package, existingDataContract, updatedDataContract, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+                ApplyDataContractStereotypes(storedProc, existingDataContract);
+                underlyingResultDataContract = existingDataContract;
+            }
+            else
+            {
+                underlyingResultDataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procName, _config, package, deduplicationContext);
+                ApplyDataContractStereotypes(storedProc, underlyingResultDataContract);
+                package.Classes.Add(underlyingResultDataContract);
             }
 
-            if (storedProc.ResultSetColumns.Count > 0)
+            // Set the stored procedure element's return type to the underlying result DC
+            storedProcElement.TypeReference.TypeId = underlyingResultDataContract.Id;
+            storedProcElement.TypeReference.IsCollection = true;
+            storedProcElement.TypeReference.IsNullable = false;
+        }
+
+        // 3. Create the Operation (with only input parameters)
+        var operationExternalRef = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Schema, storedProc.Name);
+        var existingOperation = repositoryElement.ChildElements.FirstOrDefault(c => 
+            c.ExternalReference == operationExternalRef && 
+            c.SpecializationType == Constants.SpecializationTypes.Operation.SpecializationType);
+
+        ElementPersistable operationElement;
+        if (existingOperation != null)
+        {
+            // Update - create temp operation with only input parameters
+            var tempStoredProc = new StoredProcedureSchema
             {
-                ProcessStoredProcedureDataContract(storedProc, procElement, package, result, deduplicationContext);
+                Name = storedProc.Name,
+                Schema = storedProc.Schema,
+                Parameters = storedProc.Parameters.Where(p => p.Direction == StoredProcedureParameterDirection.In).ToList(),
+                ResultSetColumns = [], // Operation doesn't have direct result set
+                Metadata = storedProc.Metadata
+            };
+            var updatedOperation = IntentModelMapper.MapStoredProcedureToOperation(tempStoredProc, repositoryElement.Id, package, null, udtDataContracts);
+            SyncElements(package, existingOperation, updatedOperation, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+            RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingOperation);
+            operationElement = existingOperation;
+        }
+        else
+        {
+            // Create - operation with only input parameters
+            var tempStoredProc = new StoredProcedureSchema
+            {
+                Name = storedProc.Name,
+                Schema = storedProc.Schema,
+                Parameters = storedProc.Parameters.Where(p => p.Direction == StoredProcedureParameterDirection.In).ToList(),
+                ResultSetColumns = [],
+                Metadata = storedProc.Metadata
+            };
+            operationElement = IntentModelMapper.MapStoredProcedureToOperation(tempStoredProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
+            RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, operationElement);
+            repositoryElement.ChildElements.Add(operationElement);
+        }
+
+        // 4. Create the Wrapper Data Contract (only if there are output parameters)
+        ElementPersistable wrapperDataContract;
+        var outputParameters = storedProc.Parameters.Where(p => 
+            p.Direction == StoredProcedureParameterDirection.Out || 
+            p.Direction == StoredProcedureParameterDirection.Both).ToList();
+        
+        if (outputParameters.Any())
+        {
+            var wrapperExternalRef = ModelNamingUtilities.GetWrapperDataContractExternalReference(storedProc.Schema, storedProc.Name);
+            var wrapperName = $"{procName}Result";
+            
+            var existingWrapper = IntentModelMapper.FindElementWithPrecedence(
+                package.Classes,
+                wrapperExternalRef,
+                wrapperName,
+                storedProc.Schema,
+                Constants.SpecializationTypes.DataContract.SpecializationType,
+                package);
+
+            if (existingWrapper != null)
+            {
+                var updatedWrapper = IntentModelMapper.CreateWrapperDataContractForStoredProcedure(
+                    storedProc, 
+                    procName, 
+                    underlyingResultDataContract?.Id ?? string.Empty, 
+                    schemaFolder.Id, 
+                    package);
+                SyncElements(package, existingWrapper, updatedWrapper, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+                wrapperDataContract = existingWrapper;
+            }
+            else
+            {
+                wrapperDataContract = IntentModelMapper.CreateWrapperDataContractForStoredProcedure(
+                    storedProc, 
+                    procName, 
+                    underlyingResultDataContract?.Id ?? string.Empty, 
+                    schemaFolder.Id, 
+                    package);
+                package.Classes.Add(wrapperDataContract);
+            }
+
+            // Set the operation's return type to the wrapper
+            operationElement.TypeReference.TypeId = wrapperDataContract.Id;
+            operationElement.TypeReference.IsCollection = false;
+            operationElement.TypeReference.IsNullable = false;
+        }
+        else
+        {
+            // No output parameters, so operation returns the underlying result DC directly
+            if (underlyingResultDataContract != null)
+            {
+                operationElement.TypeReference.TypeId = underlyingResultDataContract.Id;
+                operationElement.TypeReference.IsCollection = true;
+                operationElement.TypeReference.IsNullable = false;
+            }
+            wrapperDataContract = null!;
+        }
+
+        // 5. Create or update the Stored Procedure Invocation association (only if wrapper DC was created)
+        if (outputParameters.Any())
+        {
+            var existingAssociation = package.Associations.FirstOrDefault(a => 
+                a.SourceEnd.TypeReference.TypeId == operationElement.Id &&
+                a.TargetEnd.TypeReference.TypeId == storedProcElement.Id &&
+                a.AssociationType == "Stored Procedure Invocation");
+
+            if (existingAssociation == null)
+            {
+                var association = IntentModelMapper.CreateStoredProcedureInvocationAssociation(
+                    operationElement,
+                    storedProcElement,
+                    wrapperDataContract,
+                    package);
+                package.Associations.Add(association);
+            }
+            else
+            {
+                // Update existing association with fresh mappings, preserving existing IDs
+                var updatedAssociation = IntentModelMapper.CreateStoredProcedureInvocationAssociation(
+                    operationElement,
+                    storedProcElement,
+                    wrapperDataContract,
+                    package);
+                SyncMappings(existingAssociation.TargetEnd.Mappings, updatedAssociation.TargetEnd.Mappings);
             }
         }
     }
@@ -1060,6 +1294,166 @@ internal class DbSchemaIntentMetadataMerger
             DefaultConstraint = null, // Result set columns don't have defaults
             ComputedColumn = null     // Result set columns aren't computed
         };
+    }
+
+    /// <summary>
+    /// Synchronizes mappings by updating existing ones and adding new ones while preserving IDs.
+    /// This prevents all IDs from changing on re-import.
+    /// </summary>
+    private static void SyncMappings(
+        List<ElementToElementMappingPersistable> existingMappings,
+        List<ElementToElementMappingPersistable> updatedMappings)
+    {
+        foreach (var updatedMapping in updatedMappings)
+        {
+            // Find matching existing mapping by Type
+            var existingMapping = existingMappings.FirstOrDefault(m => m.Type == updatedMapping.Type);
+
+            if (existingMapping == null)
+            {
+                // New mapping - add it
+                existingMappings.Add(updatedMapping);
+            }
+            else
+            {
+                // Sync the mapped ends while preserving IDs
+                SyncMappedEnds(existingMapping.MappedEnds, updatedMapping.MappedEnds);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Synchronizes mapped ends by matching on expression and preserving existing IDs in the path.
+    /// </summary>
+    private static void SyncMappedEnds(
+        List<ElementToElementMappedEndPersistable> existingEnds,
+        List<ElementToElementMappedEndPersistable> updatedEnds)
+    {
+        // Track which existing ends we've matched
+        var matchedIndices = new HashSet<int>();
+
+        foreach (var updatedEnd in updatedEnds)
+        {
+            // Try to find matching existing end by expression
+            var matchingIndex = -1;
+            for (var i = 0; i < existingEnds.Count; i++)
+            {
+                if (matchedIndices.Contains(i)) continue;
+                
+                if (existingEnds[i].MappingExpression == updatedEnd.MappingExpression)
+                {
+                    matchingIndex = i;
+                    break;
+                }
+            }
+
+            if (matchingIndex >= 0)
+            {
+                // Found a match - sync the paths while preserving IDs
+                var existingEnd = existingEnds[matchingIndex];
+                matchedIndices.Add(matchingIndex);
+                
+                // Sync target path
+                SyncMappedPath(existingEnd.TargetPath, updatedEnd.TargetPath);
+                
+                // Sync sources
+                if (existingEnd.Sources != null && updatedEnd.Sources != null)
+                {
+                    SyncMappedEndSources(existingEnd.Sources, updatedEnd.Sources);
+                }
+            }
+            else
+            {
+                // No match - add as new
+                existingEnds.Add(updatedEnd);
+            }
+        }
+
+        // Remove unmatched existing ends (those not in the updated set)
+        for (var i = existingEnds.Count - 1; i >= 0; i--)
+        {
+            if (!matchedIndices.Contains(i))
+            {
+                existingEnds.RemoveAt(i);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Synchronizes a mapped path by preserving IDs where possible.
+    /// </summary>
+    private static void SyncMappedPath(
+        List<MappedPathTargetPersistable> existingPath,
+        List<MappedPathTargetPersistable> updatedPath)
+    {
+        // Match path segments by position and type, preserving IDs
+        for (var i = 0; i < updatedPath.Count && i < existingPath.Count; i++)
+        {
+            var existingTarget = existingPath[i];
+            var updatedTarget = updatedPath[i];
+
+            // If the target represents the same thing (by type and specialization), preserve the ID
+            if (existingTarget.Type == updatedTarget.Type &&
+                existingTarget.Specialization == updatedTarget.Specialization)
+            {
+                // Preserve the existing ID
+                updatedTarget.Id = existingTarget.Id;
+                updatedTarget.SpecializationId = existingTarget.SpecializationId;
+            }
+        }
+
+        // Replace the existing path with the updated one (now with preserved IDs)
+        existingPath.Clear();
+        existingPath.AddRange(updatedPath);
+    }
+
+    /// <summary>
+    /// Synchronizes mapped end sources by matching on identifier.
+    /// </summary>
+    private static void SyncMappedEndSources(
+        List<ElementToElementMappedEndSourcePersistable> existingSources,
+        List<ElementToElementMappedEndSourcePersistable> updatedSources)
+    {
+        var matchedIndices = new HashSet<int>();
+
+        foreach (var updatedSource in updatedSources)
+        {
+            // Try to find matching existing source by expression identifier
+            var matchingIndex = -1;
+            for (var i = 0; i < existingSources.Count; i++)
+            {
+                if (matchedIndices.Contains(i)) continue;
+                
+                if (existingSources[i].ExpressionIdentifier == updatedSource.ExpressionIdentifier)
+                {
+                    matchingIndex = i;
+                    break;
+                }
+            }
+
+            if (matchingIndex >= 0)
+            {
+                // Found a match - sync the path
+                var existingSource = existingSources[matchingIndex];
+                matchedIndices.Add(matchingIndex);
+                
+                SyncMappedPath(existingSource.Path, updatedSource.Path);
+            }
+            else
+            {
+                // No match - add as new
+                existingSources.Add(updatedSource);
+            }
+        }
+
+        // Remove unmatched existing sources
+        for (var i = existingSources.Count - 1; i >= 0; i--)
+        {
+            if (!matchedIndices.Contains(i))
+            {
+                existingSources.RemoveAt(i);
+            }
+        }
     }
 }
 

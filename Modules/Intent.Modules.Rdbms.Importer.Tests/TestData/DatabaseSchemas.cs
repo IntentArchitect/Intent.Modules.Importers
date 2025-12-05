@@ -229,4 +229,26 @@ internal static class DatabaseSchemas
         Views = [],
         StoredProcedures = []
     };
+
+    /// <summary>
+    /// Stored procedure with output parameter
+    /// </summary>
+    public static DatabaseSchema WithStoredProcedureWithOutputParam() => new()
+    {
+        DatabaseName = "TestDatabase",
+        Tables = [],
+        Views = [],
+        StoredProcedures = [StoredProcedures.TestWithOutParam()]
+    };
+
+    /// <summary>
+    /// Stored procedure without output parameters
+    /// </summary>
+    public static DatabaseSchema WithStoredProcedureNoOutputParams() => new()
+    {
+        DatabaseName = "TestDatabase",
+        Tables = [],
+        Views = [],
+        StoredProcedures = [StoredProcedures.GetCustomerNoOutParams()]
+    };
 }

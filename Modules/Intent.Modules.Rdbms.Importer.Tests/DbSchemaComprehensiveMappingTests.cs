@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
+using Intent.IArchitect.Agent.Persistence.Model.Mappings;
 using Intent.Modelers.Domain.Api;
 using Intent.Modules.Rdbms.Importer.Tasks.Mappers;
 using Intent.Modules.Rdbms.Importer.Tests.TestData;
@@ -870,7 +871,8 @@ public class DbSchemaComprehensiveMappingTests
         string.Equals(element.SpecializationType, MapperConstants.SpecializationTypes.Folder.SpecializationType, StringComparison.OrdinalIgnoreCase);
 
     private static bool IsClass(ElementPersistable element) =>
-        string.Equals(element.SpecializationType, ClassModel.SpecializationType, StringComparison.OrdinalIgnoreCase);
+        !IsFolder(element) && 
+        element.ParentFolderId != null; // Top-level elements only (excludes child elements like Parameters, Attributes, Triggers, Indexes)
 
     #endregion
 
@@ -940,6 +942,78 @@ public class DbSchemaComprehensiveMappingTests
         
         var snapshot = BuildPackageSnapshot(package);
         await Verify(snapshot).UseParameters("duplicate-fks-both-named");
+    }
+
+    #endregion
+
+    #region Stored Procedure with Output Parameters Tests
+
+    [Fact]
+    public async Task MapStoredProcedure_WithOutputParametersInOperationMode_ShouldMatchSnapshot()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.SchemaOnly(DatabaseSchemas.WithStoredProcedureWithOutputParam());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsOperations());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        var snapshot = BuildPackageSnapshot(scenario.Package);
+        await Verify(snapshot).UseParameters("sp-output-params-operation-mode");
+    }
+
+    [Fact]
+    public async Task MapStoredProcedure_WithOutputParametersInElementMode_ShouldMatchSnapshot()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.SchemaOnly(DatabaseSchemas.WithStoredProcedureWithOutputParam());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsElements());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        var snapshot = BuildPackageSnapshot(scenario.Package);
+        await Verify(snapshot).UseParameters("sp-output-params-element-mode");
+    }
+
+    [Fact]
+    public async Task MapStoredProcedure_WithoutOutputParameters_ShouldMatchSnapshot()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.SchemaOnly(DatabaseSchemas.WithStoredProcedureNoOutputParams());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsOperations());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        var snapshot = BuildPackageSnapshot(scenario.Package);
+        await Verify(snapshot).UseParameters("sp-no-output-params");
+    }
+
+    [Fact]
+    public async Task MapStoredProcedure_WithOutputParametersInDefaultMode_ShouldMatchSnapshot()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.SchemaOnly(DatabaseSchemas.WithStoredProcedureWithOutputParam());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresInDefaultMode());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        var snapshot = BuildPackageSnapshot(scenario.Package);
+        await Verify(snapshot).UseParameters("sp-output-params-default-mode");
     }
 
     #endregion

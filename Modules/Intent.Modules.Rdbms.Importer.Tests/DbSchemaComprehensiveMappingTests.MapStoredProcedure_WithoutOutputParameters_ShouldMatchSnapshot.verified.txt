@@ -1,0 +1,192 @@
+﻿{
+  Package: {
+    Name: TestPackage,
+    Metadata: [],
+    Folders: [
+      {
+        Name: Dbo,
+        SpecializationType: Folder,
+        ExternalReference: schema:[dbo],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [
+          {
+            Name: Schema,
+            DefinitionId: Guid_1,
+            Properties: [
+              {
+                Name: Name,
+                DefinitionId: Guid_2,
+                Value: dbo,
+                IsActive: true
+              }
+            ]
+          }
+        ],
+        Children: []
+      }
+    ],
+    Classes: [
+      {
+        Name: GetCustomerResponse,
+        SpecializationType: Data Contract,
+        ExternalReference: [dbo].[sp_getcustomer].Response,
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [],
+        Children: [
+          {
+            Name: Name,
+            SpecializationType: Attribute,
+            ExternalReference: [[dbo].[sp_getcustomer].response].[name],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_3,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Text Constraints,
+                DefinitionId: Guid_4,
+                Properties: [
+                  {
+                    Name: SQL Data Type,
+                    DefinitionId: Guid_5,
+                    Value: NVARCHAR,
+                    IsActive: true
+                  },
+                  {
+                    Name: IsUnicode,
+                    DefinitionId: Guid_6,
+                    Value: true,
+                    IsActive: true
+                  },
+                  {
+                    Name: MaxLength,
+                    DefinitionId: Guid_7,
+                    Value: 100,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      },
+      {
+        Name: StoredProcedureRepository,
+        SpecializationType: Repository,
+        ExternalReference: StoredProcedureRepository,
+        IsAbstract: false,
+        IsMapped: false,
+        TypeReference: {
+          IsNullable: false,
+          IsCollection: false,
+          IsNavigable: true,
+          IsRequired: true
+        },
+        Metadata: [],
+        Stereotypes: [],
+        Children: [
+          {
+            Name: GetCustomer,
+            SpecializationType: Operation,
+            ExternalReference: [dbo].[sp_getcustomer],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_8,
+              ResolvedName: GetCustomerResponse,
+              IsNullable: false,
+              IsCollection: true,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Stored Procedure,
+                DefinitionId: Guid_9,
+                Properties: [
+                  {
+                    Name: Name in Schema,
+                    DefinitionId: Guid_10,
+                    Value: sp_GetCustomer,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: [
+              {
+                Name: customerId,
+                SpecializationType: Parameter,
+                ExternalReference: customerid,
+                IsAbstract: false,
+                IsMapped: false,
+                TypeReference: {
+                  TypeId: Guid_11,
+                  IsNullable: true,
+                  IsCollection: false,
+                  IsNavigable: true,
+                  IsRequired: true
+                },
+                Metadata: [],
+                Stereotypes: [
+                  {
+                    Name: Stored Procedure Parameter Settings,
+                    DefinitionId: Guid_12,
+                    Properties: [
+                      {
+                        Name: Scale,
+                        DefinitionId: Guid_13,
+                        IsActive: true
+                      },
+                      {
+                        Name: Direction,
+                        DefinitionId: Guid_14,
+                        Value: In,
+                        IsActive: true
+                      },
+                      {
+                        Name: Name,
+                        DefinitionId: Guid_15,
+                        Value: @CustomerId,
+                        IsActive: true
+                      },
+                      {
+                        Name: SQL String Type,
+                        DefinitionId: Guid_16,
+                        IsActive: true
+                      },
+                      {
+                        Name: Size,
+                        DefinitionId: Guid_17,
+                        IsActive: true
+                      },
+                      {
+                        Name: Precision,
+                        DefinitionId: Guid_18,
+                        IsActive: true
+                      }
+                    ]
+                  }
+                ],
+                Children: []
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    Associations: []
+  }
+}
