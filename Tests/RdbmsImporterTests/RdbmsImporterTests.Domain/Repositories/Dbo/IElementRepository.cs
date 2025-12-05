@@ -10,11 +10,10 @@ using RdbmsImporterTests.Domain.Contracts.Dbo;
 
 namespace RdbmsImporterTests.Domain.Repositories.Dbo
 {
-    public interface IStoredProcedureRepository
+    public interface IElementRepository
     {
         Task<List<GetCustomerOrdersResponse>> GetCustomerOrders(Guid? customerId, CancellationToken cancellationToken = default);
         Task<List<GetOrderItemDetailsResponse>> GetOrderItemDetails(Guid? orderId, CancellationToken cancellationToken = default);
-        Task<GetProductDetailsAndCountResult> GetProductDetailsAndCount2(Guid? productId, CancellationToken cancellationToken = default);
         Task InsertBrand(IEnumerable<BrandTypeModel>? brand, CancellationToken cancellationToken = default);
     }
 }

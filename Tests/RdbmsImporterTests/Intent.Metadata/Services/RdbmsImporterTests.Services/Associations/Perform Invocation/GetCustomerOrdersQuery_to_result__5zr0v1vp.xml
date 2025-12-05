@@ -9,7 +9,7 @@
       <isNullable>false</isNullable>
       <isCollection>false</isCollection>
       <isRequired>true</isRequired>
-      <typePackageName>SqlServerImporterTests.Services</typePackageName>
+      <typePackageName>RdbmsImporterTests.Services</typePackageName>
       <typePackageId>2e97ac00-7126-447c-839f-d3d0b69b5f27</typePackageId>
       <stereotypes />
       <genericTypeParameters />
@@ -20,13 +20,13 @@
   </sourceEnd>
   <targetEnd id="2ee0b156-3af0-4dd4-8871-143b3bbeefcc" type="Perform Invocation Target End" typeId="093e5909-ffe4-4510-b3ea-532f30212f3c">
     <name>result</name>
-    <display>[call] result: GetCustomerOrders(...): GetCustomerOrdersResponse[*]</display>
+    <display>[call] result = GetCustomerOrders(...): GetCustomerOrdersResponse[*]</display>
     <order>1</order>
     <traits>
       <trait id="d00a2ab0-9a23-4192-b8bb-166798fc7dba" name="[Processing Action]" />
     </traits>
     <typeReference id="77899e75-d4de-4369-9f1e-0a6c957e7815">
-      <typeId>24054d4c-b5aa-410d-a4bf-463f76632015</typeId>
+      <typeId>28bec6d8-9d90-404a-b1c4-3d18a9662af8</typeId>
       <isNavigable>true</isNavigable>
       <isNullable>false</isNullable>
       <isCollection>true</isCollection>
@@ -39,18 +39,18 @@
     <stereotypes />
     <mappings>
       <mapping type="Invocation Mapping" typeId="a4c4c5cc-76df-48ed-9d4e-c35caf44b567">
-        <source applicationId="a5bda094-e905-46f8-8348-5afef353db68" designerId="81104ae6-2bc5-4bae-b05a-f987b0372d81" elementId="8a0f7c8a-70e8-4791-ab05-a450ae32901a" location="[SqlServerImporterTests].[Services].[GetCustomerOrdersQuery]" />
-        <target applicationId="a5bda094-e905-46f8-8348-5afef353db68" designerId="6ab29b31-27af-4f56-a67c-986d82097d63" elementId="24054d4c-b5aa-410d-a4bf-463f76632015" location="[SqlServerImporterTests].[Services].[GetCustomerOrders]" />
+        <source applicationId="a5bda094-e905-46f8-8348-5afef353db68" designerId="81104ae6-2bc5-4bae-b05a-f987b0372d81" elementId="8a0f7c8a-70e8-4791-ab05-a450ae32901a" location="[RdbmsImporterTests].[Services].[GetCustomerOrdersQuery]" />
+        <target applicationId="a5bda094-e905-46f8-8348-5afef353db68" designerId="6ab29b31-27af-4f56-a67c-986d82097d63" elementId="28bec6d8-9d90-404a-b1c4-3d18a9662af8" location="[RdbmsImporterTests].[Services].[GetCustomerOrders]" />
         <mappedEnds>
           <mappedEnd>
             <expression>{GetCustomerOrdersQuery}</expression>
             <path>
-              <target id="24054d4c-b5aa-410d-a4bf-463f76632015" name="GetCustomerOrders" type="element" specialization="Operation" />
+              <target id="28bec6d8-9d90-404a-b1c4-3d18a9662af8" name="GetCustomerOrders" type="element" specialization="Operation" specializationId="e042bb67-a1df-480c-9935-b26210f78591" />
             </path>
             <sources>
-              <source identifier="GetCustomerOrdersQuery" mappingType="Invocation Mapping" mappingTypeId="10fc25ac-92c7-49a5-9c42-4dd842a97500">
+              <source identifier="GetCustomerOrdersQuery" mappingType="Invocation Mapping" mappingTypeId="7ca5c18a-bdbe-434b-a68a-421899a077e7">
                 <path>
-                  <target id="8a0f7c8a-70e8-4791-ab05-a450ae32901a" name="GetCustomerOrdersQuery" type="element" specialization="Query" />
+                  <target id="8a0f7c8a-70e8-4791-ab05-a450ae32901a" name="GetCustomerOrdersQuery" type="element" specialization="Query" specializationId="e71b0662-e29d-4db2-868b-8a12464b25d0" />
                 </path>
               </source>
             </sources>
@@ -58,14 +58,14 @@
           <mappedEnd>
             <expression>{CustomerID}</expression>
             <path>
-              <target id="24054d4c-b5aa-410d-a4bf-463f76632015" name="GetCustomerOrders" type="element" specialization="Operation" />
-              <target id="5e547446-a60d-4499-b3e7-13ee1cf8e638" name="customerId" type="element" specialization="Parameter" />
+              <target id="28bec6d8-9d90-404a-b1c4-3d18a9662af8" name="GetCustomerOrders" type="element" specialization="Operation" specializationId="e042bb67-a1df-480c-9935-b26210f78591" />
+              <target id="fc2fa312-b743-4e12-8481-bb7085563658" name="customerId" type="element" specialization="Parameter" specializationId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b" />
             </path>
             <sources>
-              <source identifier="CustomerID" mappingType="Data Mapping" mappingTypeId="7d27572c-2171-430e-8ab5-dc68fd02fb6c">
+              <source identifier="CustomerID" mappingType="Data Mapping" mappingTypeId="1ad97d12-2aa8-4f03-8cb0-3a8a4e71b4d9">
                 <path>
-                  <target id="8a0f7c8a-70e8-4791-ab05-a450ae32901a" name="GetCustomerOrdersQuery" type="element" specialization="Query" />
-                  <target id="586f827d-2b76-44dd-ac0e-50bd100e8e6d" name="CustomerID" type="element" specialization="DTO-Field" />
+                  <target id="8a0f7c8a-70e8-4791-ab05-a450ae32901a" name="GetCustomerOrdersQuery" type="element" specialization="Query" specializationId="e71b0662-e29d-4db2-868b-8a12464b25d0" />
+                  <target id="586f827d-2b76-44dd-ac0e-50bd100e8e6d" name="CustomerID" type="element" specialization="DTO-Field" specializationId="7baed1fd-469b-4980-8fd9-4cefb8331eb2" />
                 </path>
               </source>
             </sources>

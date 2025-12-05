@@ -16,11 +16,11 @@ using RdbmsImporterTests.Infrastructure.Repositories.ExtensionMethods.Dbo;
 
 namespace RdbmsImporterTests.Infrastructure.Repositories.Dbo
 {
-    public class StoredProcedureRepository : IStoredProcedureRepository
+    public class ElementRepository : IElementRepository
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public StoredProcedureRepository(ApplicationDbContext dbContext)
+        public ElementRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -47,27 +47,6 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Dbo
                 .ToListAsync(cancellationToken);
 
             return results;
-        }
-
-        public async Task<GetProductDetailsAndCountResult> GetProductDetailsAndCount2(
-            Guid? productId,
-            CancellationToken cancellationToken = default)
-        {
-            var priceCountParameter = new SqlParameter
-            {
-                Direction = ParameterDirection.Output,
-                SqlDbType = SqlDbType.Int,
-                ParameterName = "@priceCount"
-            };
-
-            var results = await _dbContext.GetProductDetailsAndCountResponses
-                .FromSqlInterpolated($"EXECUTE GetProductDetailsAndCount {productId}, {priceCountParameter} OUTPUT")
-                .IgnoreQueryFilters()
-                .ToListAsync(cancellationToken);
-
-            return new GetProductDetailsAndCountResult(
-                results: results,
-                priceCount: (int?)priceCountParameter.Value);
         }
 
         public async Task InsertBrand(IEnumerable<BrandTypeModel>? brand, CancellationToken cancellationToken = default)

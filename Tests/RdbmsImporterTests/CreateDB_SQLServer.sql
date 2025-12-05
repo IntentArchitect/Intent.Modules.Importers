@@ -681,6 +681,43 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[GetProductDetailsAndCount]
+    @ProductId UNIQUEIDENTIFIER,         -- Input Parameter: The ID of the product to retrieve
+    @PriceCount INT OUTPUT               -- Output Parameter: The total number of price records for the product
+AS
+BEGIN
+    -- Set the output parameter value
+    SELECT @PriceCount = COUNT(Id)
+    FROM SqlServerImporterTest.dbo.Prices
+    WHERE ProductId = @ProductId;
+
+    -- Return the result set (Table Result)
+    SELECT
+        P.Id,
+        P.Name,
+        P.Description,
+        P.IsActive,
+        OA.Amount AS CurrentPrice,
+        @PriceCount AS TotalPriceRecords -- Include the output value in the result set for convenience
+    FROM
+        dbo.Products P
+    OUTER APPLY (
+        -- Find the latest active price that is currently valid (ActiveFrom is in the past or present)
+        SELECT TOP 1
+            pr.Amount
+        FROM
+            dbo.Prices pr
+        WHERE
+            pr.ProductId = P.Id
+            AND pr.ActiveFrom <= GETDATE() -- Price must be active now
+        ORDER BY
+            pr.ActiveFrom DESC            -- Get the one with the latest effective date
+    ) AS OA
+    WHERE
+        P.Id = @ProductId;
+END
+GO
+
 CREATE TABLE FKTable (
                          FKTableId INT PRIMARY KEY IDENTITY(1,1),
                          Name NVARCHAR(100) NOT NULL

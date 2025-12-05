@@ -30,6 +30,7 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
 
         public DbSet<GetCustomerOrdersResponse> GetCustomerOrdersResponses { get; set; }
         public DbSet<GetOrderItemDetailsResponse> GetOrderItemDetailsResponses { get; set; }
+        public DbSet<GetProductDetailsAndCountResponse> GetProductDetailsAndCountResponses { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<AspNetRole> AspNetRoles { get; set; }
         public DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; }
@@ -77,6 +78,7 @@ namespace RdbmsImporterTests.Infrastructure.Persistence
             ConfigureModel(modelBuilder);
             modelBuilder.ApplyConfiguration(new GetCustomerOrdersResponseConfiguration());
             modelBuilder.ApplyConfiguration(new GetOrderItemDetailsResponseConfiguration());
+            modelBuilder.ApplyConfiguration(new GetProductDetailsAndCountResponseConfiguration());
             modelBuilder.ApplyConfiguration(new AddressConfiguration());
             modelBuilder.ApplyConfiguration(new AspNetRoleConfiguration());
             modelBuilder.ApplyConfiguration(new AspNetRoleClaimConfiguration());

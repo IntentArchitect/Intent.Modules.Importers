@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class id="55be0193-657e-4f00-8dec-addd1aa9ab92" type="Stored Procedure" typeId="575edd35-9438-406d-b0a7-b99d6f29b560">
+  <name>GetProductDetailsAndCount1</name>
+  <display>GetProductDetailsAndCount1(productId: guid?, out priceCount: int?): GetProductDetailsAndCountResponse[*]</display>
+  <externalReference>[dbo].[getproductdetailsandcount]</externalReference>
+  <isAbstract>false</isAbstract>
+  <sort-children>manually</sort-children>
+  <genericTypes />
+  <typeReference id="6668b158-dcfe-4580-a35a-7f2573787dba">
+    <typeId>2de6595d-14f9-40fd-a1f4-fd322a104b02</typeId>
+    <isNavigable>true</isNavigable>
+    <isNullable>false</isNullable>
+    <isCollection>true</isCollection>
+    <isRequired>true</isRequired>
+    <typePackageName>SqlServerImporterTests</typePackageName>
+    <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
+    <stereotypes />
+    <genericTypeParameters />
+  </typeReference>
+  <isMapped>false</isMapped>
+  <parentFolderId>c5137fb3-11a7-4f59-9a42-74623ae698a3</parentFolderId>
+  <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
+  <packageName>SqlServerImporterTests</packageName>
+  <traits>
+    <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+  </traits>
+  <stereotypes>
+    <stereotype stereotypeDefinitionId="8ca606b1-406a-4b16-a7e7-8ffe1a215ecf" name="Stored Procedure Settings">
+      <addedByDefault>false</addedByDefault>
+      <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
+      <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
+      <properties>
+        <property name="1ae41308-484e-41e1-ac94-66f33bc88c36" display="Name in Schema" value="GetProductDetailsAndCount" isActive="true" />
+      </properties>
+    </stereotype>
+  </stereotypes>
+  <metadata />
+  <childElements>
+    <childElement id="6f9e0c39-42f3-4da7-a0da-0f554117cbce" type="Stored Procedure Parameter" typeId="5823b192-eb03-47c8-90d8-5501c922e9a5">
+      <name>productId</name>
+      <display>productId: guid?</display>
+      <externalReference>productid</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="6d2a3fbe-923d-4a84-93eb-5c8d5dfbd2a3">
+        <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>true</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>55be0193-657e-4f00-8dec-addd1aa9ab92</parentFolderId>
+      <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
+      <packageName>SqlServerImporterTests</packageName>
+      <stereotypes>
+        <stereotype stereotypeDefinitionId="5332b774-6499-4b4b-9fdb-e3eef13bdee4" name="Stored Procedure Parameter Settings">
+          <addedByDefault>false</addedByDefault>
+          <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
+          <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
+          <properties>
+            <property name="17aa77a0-c531-49ec-bed0-9cbb125f6ce3" display="Is Output Parameter" value="false" isActive="true" />
+            <property name="dfa55cca-142e-4d76-b772-6f86a9c99b0f" display="SQL String Type" isActive="false" />
+            <property name="febc9d55-6c43-4549-bef8-9f2aee7811c9" display="Size" isActive="false" />
+            <property name="ccf2fa26-234b-49c9-ad0b-0e33d570f2df" display="Precision" isActive="false" />
+            <property name="4ac97c2e-d789-4174-9343-47758b4f4938" display="Scale" isActive="false" />
+          </properties>
+        </stereotype>
+      </stereotypes>
+      <metadata />
+      <childElements />
+    </childElement>
+    <childElement id="1acb01ce-b55a-4f6d-a2fa-966f4e88397c" type="Stored Procedure Parameter" typeId="5823b192-eb03-47c8-90d8-5501c922e9a5">
+      <name>priceCount</name>
+      <display>out priceCount: int?</display>
+      <externalReference>[dbo].[getproductdetailsandcount].OUT.priceCount</externalReference>
+      <isAbstract>false</isAbstract>
+      <genericTypes />
+      <typeReference id="d65d1dc1-5563-4502-888c-42cea434969f">
+        <typeId>fb0a362d-e9e2-40de-b6ff-5ce8167cbe74</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>true</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>Intent.Common.Types</typePackageName>
+        <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>55be0193-657e-4f00-8dec-addd1aa9ab92</parentFolderId>
+      <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
+      <packageName>SqlServerImporterTests</packageName>
+      <stereotypes>
+        <stereotype stereotypeDefinitionId="5332b774-6499-4b4b-9fdb-e3eef13bdee4" name="Stored Procedure Parameter Settings">
+          <addedByDefault>false</addedByDefault>
+          <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
+          <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
+          <properties>
+            <property name="17aa77a0-c531-49ec-bed0-9cbb125f6ce3" display="Is Output Parameter" value="true" isActive="true" />
+            <property name="dfa55cca-142e-4d76-b772-6f86a9c99b0f" display="SQL String Type" isActive="false" />
+            <property name="febc9d55-6c43-4549-bef8-9f2aee7811c9" display="Size" isActive="false" />
+            <property name="ccf2fa26-234b-49c9-ad0b-0e33d570f2df" display="Precision" isActive="false" />
+            <property name="4ac97c2e-d789-4174-9343-47758b4f4938" display="Scale" isActive="false" />
+          </properties>
+        </stereotype>
+      </stereotypes>
+      <metadata />
+      <childElements />
+    </childElement>
+  </childElements>
+</class>

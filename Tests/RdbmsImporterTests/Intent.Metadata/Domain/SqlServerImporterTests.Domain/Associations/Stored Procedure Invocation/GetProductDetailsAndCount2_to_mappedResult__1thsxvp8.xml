@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<association id="1132601a-f7a5-4314-aa60-0325bb83adf1">
+  <sourceEnd id="a56019ed-35c4-4663-8f11-4bdd4b5e0b67" type="Stored Procedure Invocation Source End" typeId="7b7d3fd8-5e32-4f8c-b4cc-7b92f45a8577">
+    <display>: GetProductDetailsAndCount2</display>
+    <order>0</order>
+    <typeReference id="7231ca42-593d-41f7-825a-caaddcf98722">
+      <typeId>88d78853-fefe-47f0-8433-826a0ef87298</typeId>
+      <isNavigable>false</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>SqlServerImporterTests</typePackageName>
+      <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <metadata />
+    <childElements />
+  </sourceEnd>
+  <targetEnd id="1132601a-f7a5-4314-aa60-0325bb83adf1" type="Stored Procedure Invocation Target End" typeId="d0b0b24a-db0f-4aff-873a-a0e9c2dce12d">
+    <name>mappedResult</name>
+    <display>mappedResult: GetProductDetailsAndCount1</display>
+    <order>1</order>
+    <typeReference id="59acb7f6-90c8-47f2-90e0-b8f5f471f6c3">
+      <typeId>55be0193-657e-4f00-8dec-addd1aa9ab92</typeId>
+      <isNavigable>true</isNavigable>
+      <isNullable>false</isNullable>
+      <isCollection>false</isCollection>
+      <isRequired>true</isRequired>
+      <typePackageName>SqlServerImporterTests</typePackageName>
+      <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
+      <stereotypes />
+      <genericTypeParameters />
+    </typeReference>
+    <stereotypes />
+    <mappings>
+      <mapping type="Stored Procedure Invocation" typeId="a7dbfc5c-f4f4-4f61-a176-6b652192ebfc">
+        <source applicationId="a5bda094-e905-46f8-8348-5afef353db68" designerId="6ab29b31-27af-4f56-a67c-986d82097d63" elementId="88d78853-fefe-47f0-8433-826a0ef87298" location="[RdbmsImporterTests].[Domain].[GetProductDetailsAndCount2]" />
+        <target applicationId="a5bda094-e905-46f8-8348-5afef353db68" designerId="6ab29b31-27af-4f56-a67c-986d82097d63" elementId="55be0193-657e-4f00-8dec-addd1aa9ab92" location="[RdbmsImporterTests].[Domain].[GetProductDetailsAndCount1]" />
+        <mappedEnds>
+          <mappedEnd>
+            <expression>{GetProductDetailsAndCount2}</expression>
+            <path>
+              <target id="55be0193-657e-4f00-8dec-addd1aa9ab92" name="GetProductDetailsAndCount1" type="element" specialization="Stored Procedure" specializationId="575edd35-9438-406d-b0a7-b99d6f29b560" />
+            </path>
+            <sources>
+              <source identifier="GetProductDetailsAndCount2" mappingType="Invocation Mapping" mappingTypeId="125fe452-48cc-4082-bfde-3d65470ab345">
+                <path>
+                  <target id="88d78853-fefe-47f0-8433-826a0ef87298" name="GetProductDetailsAndCount2" type="element" specialization="Operation" specializationId="e042bb67-a1df-480c-9935-b26210f78591" />
+                </path>
+              </source>
+            </sources>
+          </mappedEnd>
+          <mappedEnd>
+            <expression>{productId}</expression>
+            <path>
+              <target id="55be0193-657e-4f00-8dec-addd1aa9ab92" name="GetProductDetailsAndCount1" type="element" specialization="Stored Procedure" specializationId="575edd35-9438-406d-b0a7-b99d6f29b560" />
+              <target id="6f9e0c39-42f3-4da7-a0da-0f554117cbce" name="productId" type="element" specialization="Stored Procedure Parameter" specializationId="5823b192-eb03-47c8-90d8-5501c922e9a5" />
+            </path>
+            <sources>
+              <source identifier="productId" mappingType="Data Mapping" mappingTypeId="d4c1f7fe-1f40-4e01-8e83-1120acb6143b">
+                <path>
+                  <target id="88d78853-fefe-47f0-8433-826a0ef87298" name="GetProductDetailsAndCount2" type="element" specialization="Operation" specializationId="e042bb67-a1df-480c-9935-b26210f78591" />
+                  <target id="ce1f1ae9-d8cd-4dd3-96fd-1d60335f1e23" name="productId" type="element" specialization="Parameter" specializationId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b" />
+                </path>
+              </source>
+            </sources>
+          </mappedEnd>
+        </mappedEnds>
+      </mapping>
+      <mapping type="Stored Procedure Result" typeId="0af211bd-11c4-4981-b7bc-c42923a884d8">
+        <source applicationId="a5bda094-e905-46f8-8348-5afef353db68" designerId="6ab29b31-27af-4f56-a67c-986d82097d63" elementId="88d78853-fefe-47f0-8433-826a0ef87298" location="[RdbmsImporterTests].[Domain].[GetProductDetailsAndCount2]" />
+        <target applicationId="a5bda094-e905-46f8-8348-5afef353db68" designerId="6ab29b31-27af-4f56-a67c-986d82097d63" elementId="2955fb01-f1a8-480f-89b4-14c89adbb896" location="[RdbmsImporterTests].[Domain].[GetProductDetailsAndCountResult]" />
+        <mappedEnds>
+          <mappedEnd>
+            <expression>{mappedResult.result}</expression>
+            <path>
+              <target id="2955fb01-f1a8-480f-89b4-14c89adbb896" name="GetProductDetailsAndCountResult" type="element" specialization="Data Contract" specializationId="4464fabe-c59e-4d90-81fc-c9245bdd1afd" />
+              <target id="78001fc5-9892-4ecb-8430-dfe8d4e36ce6" name="Results" type="element" specialization="Attribute" specializationId="0090fb93-483e-41af-a11d-5ad2dc796adf" />
+            </path>
+            <sources>
+              <source identifier="mappedResult.result" mappingType="Data Mapping" mappingTypeId="654a66b5-6ed4-41d2-abb3-25aaa12af829">
+                <path>
+                  <target id="88d78853-fefe-47f0-8433-826a0ef87298" name="GetProductDetailsAndCount2" type="element" specialization="Operation" specializationId="e042bb67-a1df-480c-9935-b26210f78591" />
+                  <target id="1132601a-f7a5-4314-aa60-0325bb83adf1" name="mappedResult" type="association" specialization="Stored Procedure Invocation Target End" specializationId="d0b0b24a-db0f-4aff-873a-a0e9c2dce12d" />
+                  <target id="1eba9280-3bf0-46f8-981c-414dee8e35c3" name="result" type="static-mappable" specialization="result" specializationId="1eba9280-3bf0-46f8-981c-414dee8e35c3">
+                    <typeReference>
+                      <typeId>2de6595d-14f9-40fd-a1f4-fd322a104b02</typeId>
+                      <isNavigable>true</isNavigable>
+                      <isNullable>false</isNullable>
+                      <isCollection>true</isCollection>
+                      <isRequired>true</isRequired>
+                      <typePackageName>SqlServerImporterTests</typePackageName>
+                      <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
+                      <stereotypes />
+                      <genericTypeParameters />
+                    </typeReference>
+                  </target>
+                </path>
+              </source>
+            </sources>
+          </mappedEnd>
+          <mappedEnd>
+            <expression>{mappedResult.priceCount}</expression>
+            <path>
+              <target id="2955fb01-f1a8-480f-89b4-14c89adbb896" name="GetProductDetailsAndCountResult" type="element" specialization="Data Contract" specializationId="4464fabe-c59e-4d90-81fc-c9245bdd1afd" />
+              <target id="d5898036-9951-4b8f-93c3-3942751597b7" name="PriceCount" type="element" specialization="Attribute" specializationId="0090fb93-483e-41af-a11d-5ad2dc796adf" />
+            </path>
+            <sources>
+              <source identifier="mappedResult.priceCount" mappingType="Data Mapping" mappingTypeId="654a66b5-6ed4-41d2-abb3-25aaa12af829">
+                <path>
+                  <target id="88d78853-fefe-47f0-8433-826a0ef87298" name="GetProductDetailsAndCount2" type="element" specialization="Operation" specializationId="e042bb67-a1df-480c-9935-b26210f78591" />
+                  <target id="1132601a-f7a5-4314-aa60-0325bb83adf1" name="mappedResult" type="association" specialization="Stored Procedure Invocation Target End" specializationId="d0b0b24a-db0f-4aff-873a-a0e9c2dce12d" />
+                  <target id="1acb01ce-b55a-4f6d-a2fa-966f4e88397c" name="priceCount" type="element" specialization="Stored Procedure Parameter" specializationId="5823b192-eb03-47c8-90d8-5501c922e9a5" />
+                </path>
+              </source>
+            </sources>
+          </mappedEnd>
+        </mappedEnds>
+      </mapping>
+    </mappings>
+    <metadata />
+    <childElements />
+  </targetEnd>
+  <associationType>Stored Procedure Invocation</associationType>
+  <associationTypeId>adf062ed-c0a4-421f-9940-318a91e9a52c</associationTypeId>
+  <stereotypes />
+</association>

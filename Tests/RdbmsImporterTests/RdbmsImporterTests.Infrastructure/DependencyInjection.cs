@@ -43,7 +43,7 @@ namespace RdbmsImporterTests.Infrastructure
                 options.UseLazyLoadingProxies();
             });
             services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<ApplicationDbContext>());
-            services.AddTransient<IOperationRepository, OperationRepository>();
+            services.AddTransient<IElementRepository, ElementRepository>();
             services.AddTransient<Domain.Repositories.Dbo.IStoredProcedureRepository, Repositories.Dbo.StoredProcedureRepository>();
             services.AddTransient<Domain.Repositories.Public.IStoredProcedureRepository, Repositories.Public.StoredProcedureRepository>();
             services.AddTransient<Domain.Repositories.Dbo.IAddressRepository, Repositories.Dbo.AddressRepository>();

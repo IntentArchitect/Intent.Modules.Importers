@@ -21,14 +21,14 @@
   <stereotypes />
   <metadata />
   <childElements>
-    <childElement id="25c2cd48-bca2-40a2-a6d1-6d64d25bd5a7" type="Stored Procedure" typeId="575edd35-9438-406d-b0a7-b99d6f29b560">
+    <childElement id="28bec6d8-9d90-404a-b1c4-3d18a9662af8" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
       <name>GetCustomerOrders</name>
       <display>GetCustomerOrders(customerId: guid?): GetCustomerOrdersResponse[*]</display>
       <externalReference>[dbo].[getcustomerorders]</externalReference>
       <isAbstract>false</isAbstract>
-      <sort-children>manually</sort-children>
+      <sort-children>by-type-then-manually</sort-children>
       <genericTypes />
-      <typeReference id="2dc5bf42-da2a-422d-8021-cf47df3f58b7">
+      <typeReference id="b04ceb1c-52f6-4045-b58c-98d884fcc54e">
         <typeId>fbcb1b73-7a16-47d5-9512-481ac622fed3</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -47,24 +47,24 @@
         <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
       </traits>
       <stereotypes>
-        <stereotype stereotypeDefinitionId="8ca606b1-406a-4b16-a7e7-8ffe1a215ecf" name="Stored Procedure Settings">
+        <stereotype stereotypeDefinitionId="f40ff84c-68ad-405f-bda0-1237dd15fc92" name="Stored Procedure">
           <addedByDefault>false</addedByDefault>
-          <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
-          <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
+          <definitionPackageName>Intent.Modules.Modelers.Domain.StoredProcedures</definitionPackageName>
+          <definitionPackageId>e3eb7873-c66f-4636-a7c8-8cb1f7b34d71</definitionPackageId>
           <properties>
-            <property name="1ae41308-484e-41e1-ac94-66f33bc88c36" display="Name in Schema" isActive="true" />
+            <property name="4e2a3f58-6b6e-43c5-9398-f9c3fde593f6" display="Name in Schema" isActive="true" />
           </properties>
         </stereotype>
       </stereotypes>
       <metadata />
       <childElements>
-        <childElement id="4422a5f5-43d8-40a5-b281-4abfbbf3bcc8" type="Stored Procedure Parameter" typeId="5823b192-eb03-47c8-90d8-5501c922e9a5">
+        <childElement id="fc2fa312-b743-4e12-8481-bb7085563658" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
           <name>customerId</name>
-          <display>customerId: guid?</display>
-          <externalReference>@customerid</externalReference>
+          <display>in : customerId: guid?</display>
+          <externalReference>customerid</externalReference>
           <isAbstract>false</isAbstract>
           <genericTypes />
-          <typeReference id="9899ae14-b8e6-4fb0-9143-a91a2bb13097">
+          <typeReference id="a04f7525-56f5-4590-b399-35511434263f">
             <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
             <isNavigable>true</isNavigable>
             <isNullable>true</isNullable>
@@ -76,20 +76,21 @@
             <genericTypeParameters />
           </typeReference>
           <isMapped>false</isMapped>
-          <parentFolderId>25c2cd48-bca2-40a2-a6d1-6d64d25bd5a7</parentFolderId>
+          <parentFolderId>28bec6d8-9d90-404a-b1c4-3d18a9662af8</parentFolderId>
           <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
           <packageName>SqlServerImporterTests</packageName>
           <stereotypes>
-            <stereotype stereotypeDefinitionId="5332b774-6499-4b4b-9fdb-e3eef13bdee4" name="Stored Procedure Parameter Settings">
+            <stereotype stereotypeDefinitionId="6ac91fd5-206c-49da-b4a2-b6ea2cad11f7" name="Stored Procedure Parameter Settings">
               <addedByDefault>false</addedByDefault>
-              <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
-              <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
+              <definitionPackageName>Intent.Modules.Modelers.Domain.StoredProcedures</definitionPackageName>
+              <definitionPackageId>e3eb7873-c66f-4636-a7c8-8cb1f7b34d71</definitionPackageId>
               <properties>
-                <property name="17aa77a0-c531-49ec-bed0-9cbb125f6ce3" display="Is Output Parameter" value="false" isActive="true" />
-                <property name="dfa55cca-142e-4d76-b772-6f86a9c99b0f" display="SQL String Type" value="VarChar" isActive="false" />
-                <property name="febc9d55-6c43-4549-bef8-9f2aee7811c9" display="Size" value="255" isActive="false" />
-                <property name="ccf2fa26-234b-49c9-ad0b-0e33d570f2df" display="Precision" isActive="false" />
-                <property name="4ac97c2e-d789-4174-9343-47758b4f4938" display="Scale" isActive="false" />
+                <property name="714a95a6-c3ef-4117-a66c-24876c675cd5" display="Name" value="@customerId" isActive="true" />
+                <property name="39491728-8327-4b94-b9a2-9851dd4b4a01" display="Direction" value="In" isActive="true" />
+                <property name="8ba486d3-853c-42b8-acfb-bafb1e2cdb6e" display="SQL String Type" isActive="false" />
+                <property name="a2df34af-2fb9-49e3-ab6e-caff7a27bf99" display="Size" isActive="false" />
+                <property name="ed35ae5c-a708-457d-a22a-145b3b2f1148" display="Precision" isActive="false" />
+                <property name="38d3c607-ac3b-41ea-86b2-b43fa81e101c" display="Scale" isActive="false" />
               </properties>
             </stereotype>
           </stereotypes>
@@ -98,14 +99,14 @@
         </childElement>
       </childElements>
     </childElement>
-    <childElement id="d96cdf1c-8319-4168-9a3e-b988ad513b53" type="Stored Procedure" typeId="575edd35-9438-406d-b0a7-b99d6f29b560">
+    <childElement id="80c775fd-5a14-4bd1-9a99-9c7f443b73ff" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
       <name>GetOrderItemDetails</name>
       <display>GetOrderItemDetails(orderId: guid?): GetOrderItemDetailsResponse[*]</display>
       <externalReference>[dbo].[getorderitemdetails]</externalReference>
       <isAbstract>false</isAbstract>
-      <sort-children>manually</sort-children>
+      <sort-children>by-type-then-manually</sort-children>
       <genericTypes />
-      <typeReference id="54f6634c-2028-4fe0-a231-82cdebb3335a">
+      <typeReference id="7ba83c84-9e08-43ef-86eb-a22fd2853949">
         <typeId>1a24dfe1-2760-406f-ae81-fe3d10be4918</typeId>
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
@@ -124,24 +125,24 @@
         <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
       </traits>
       <stereotypes>
-        <stereotype stereotypeDefinitionId="8ca606b1-406a-4b16-a7e7-8ffe1a215ecf" name="Stored Procedure Settings">
+        <stereotype stereotypeDefinitionId="f40ff84c-68ad-405f-bda0-1237dd15fc92" name="Stored Procedure">
           <addedByDefault>false</addedByDefault>
-          <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
-          <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
+          <definitionPackageName>Intent.Modules.Modelers.Domain.StoredProcedures</definitionPackageName>
+          <definitionPackageId>e3eb7873-c66f-4636-a7c8-8cb1f7b34d71</definitionPackageId>
           <properties>
-            <property name="1ae41308-484e-41e1-ac94-66f33bc88c36" display="Name in Schema" isActive="true" />
+            <property name="4e2a3f58-6b6e-43c5-9398-f9c3fde593f6" display="Name in Schema" isActive="true" />
           </properties>
         </stereotype>
       </stereotypes>
       <metadata />
       <childElements>
-        <childElement id="e52d69c4-770d-4342-8936-03bf58e929fc" type="Stored Procedure Parameter" typeId="5823b192-eb03-47c8-90d8-5501c922e9a5">
+        <childElement id="79da7401-ebf4-44c3-b3dd-09c960e7d3bf" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
           <name>orderId</name>
-          <display>orderId: guid?</display>
-          <externalReference>@orderid</externalReference>
+          <display>in : orderId: guid?</display>
+          <externalReference>orderid</externalReference>
           <isAbstract>false</isAbstract>
           <genericTypes />
-          <typeReference id="820df75b-5816-45ea-9170-0cef9f03f2e9">
+          <typeReference id="c2616752-7efa-4bca-a115-0f6b59ae08cb">
             <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
             <isNavigable>true</isNavigable>
             <isNullable>true</isNullable>
@@ -153,20 +154,21 @@
             <genericTypeParameters />
           </typeReference>
           <isMapped>false</isMapped>
-          <parentFolderId>d96cdf1c-8319-4168-9a3e-b988ad513b53</parentFolderId>
+          <parentFolderId>80c775fd-5a14-4bd1-9a99-9c7f443b73ff</parentFolderId>
           <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
           <packageName>SqlServerImporterTests</packageName>
           <stereotypes>
-            <stereotype stereotypeDefinitionId="5332b774-6499-4b4b-9fdb-e3eef13bdee4" name="Stored Procedure Parameter Settings">
+            <stereotype stereotypeDefinitionId="6ac91fd5-206c-49da-b4a2-b6ea2cad11f7" name="Stored Procedure Parameter Settings">
               <addedByDefault>false</addedByDefault>
-              <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
-              <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
+              <definitionPackageName>Intent.Modules.Modelers.Domain.StoredProcedures</definitionPackageName>
+              <definitionPackageId>e3eb7873-c66f-4636-a7c8-8cb1f7b34d71</definitionPackageId>
               <properties>
-                <property name="17aa77a0-c531-49ec-bed0-9cbb125f6ce3" display="Is Output Parameter" value="false" isActive="true" />
-                <property name="dfa55cca-142e-4d76-b772-6f86a9c99b0f" display="SQL String Type" value="VarChar" isActive="false" />
-                <property name="febc9d55-6c43-4549-bef8-9f2aee7811c9" display="Size" value="255" isActive="false" />
-                <property name="ccf2fa26-234b-49c9-ad0b-0e33d570f2df" display="Precision" isActive="false" />
-                <property name="4ac97c2e-d789-4174-9343-47758b4f4938" display="Scale" isActive="false" />
+                <property name="714a95a6-c3ef-4117-a66c-24876c675cd5" display="Name" value="@orderId" isActive="true" />
+                <property name="39491728-8327-4b94-b9a2-9851dd4b4a01" display="Direction" value="In" isActive="true" />
+                <property name="8ba486d3-853c-42b8-acfb-bafb1e2cdb6e" display="SQL String Type" isActive="false" />
+                <property name="a2df34af-2fb9-49e3-ab6e-caff7a27bf99" display="Size" isActive="false" />
+                <property name="ed35ae5c-a708-457d-a22a-145b3b2f1148" display="Precision" isActive="false" />
+                <property name="38d3c607-ac3b-41ea-86b2-b43fa81e101c" display="Scale" isActive="false" />
               </properties>
             </stereotype>
           </stereotypes>
@@ -175,14 +177,92 @@
         </childElement>
       </childElements>
     </childElement>
-    <childElement id="b318391b-7090-4c0f-a3ce-8b3e591c9af7" type="Stored Procedure" typeId="575edd35-9438-406d-b0a7-b99d6f29b560">
+    <childElement id="88d78853-fefe-47f0-8433-826a0ef87298" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
+      <name>GetProductDetailsAndCount2</name>
+      <display>GetProductDetailsAndCount2(productId: guid?): GetProductDetailsAndCountResult</display>
+      <externalReference>[dbo].[getproductdetailsandcount]</externalReference>
+      <isAbstract>false</isAbstract>
+      <sort-children>by-type-then-manually</sort-children>
+      <genericTypes />
+      <typeReference id="31d644aa-a200-4657-b4c0-036d3d49472e">
+        <typeId>2955fb01-f1a8-480f-89b4-14c89adbb896</typeId>
+        <isNavigable>true</isNavigable>
+        <isNullable>false</isNullable>
+        <isCollection>false</isCollection>
+        <isRequired>true</isRequired>
+        <typePackageName>SqlServerImporterTests</typePackageName>
+        <typePackageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</typePackageId>
+        <stereotypes />
+        <genericTypeParameters />
+      </typeReference>
+      <isMapped>false</isMapped>
+      <parentFolderId>6c5c1a9f-f4a2-40fe-8bd8-13ee7e3c11bf</parentFolderId>
+      <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
+      <packageName>SqlServerImporterTests</packageName>
+      <traits>
+        <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
+      </traits>
+      <stereotypes>
+        <stereotype stereotypeDefinitionId="f40ff84c-68ad-405f-bda0-1237dd15fc92" name="Stored Procedure">
+          <addedByDefault>false</addedByDefault>
+          <definitionPackageName>Intent.Modules.Modelers.Domain.StoredProcedures</definitionPackageName>
+          <definitionPackageId>e3eb7873-c66f-4636-a7c8-8cb1f7b34d71</definitionPackageId>
+          <properties>
+            <property name="4e2a3f58-6b6e-43c5-9398-f9c3fde593f6" display="Name in Schema" value="GetProductDetailsAndCount" isActive="true" />
+          </properties>
+        </stereotype>
+      </stereotypes>
+      <metadata />
+      <childElements>
+        <childElement id="ce1f1ae9-d8cd-4dd3-96fd-1d60335f1e23" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
+          <name>productId</name>
+          <display>in : productId: guid?</display>
+          <externalReference>productid</externalReference>
+          <isAbstract>false</isAbstract>
+          <genericTypes />
+          <typeReference id="2ffd0a40-ede3-4795-bc20-c39c3ff3b968">
+            <typeId>6b649125-18ea-48fd-a6ba-0bfff0d8f488</typeId>
+            <isNavigable>true</isNavigable>
+            <isNullable>true</isNullable>
+            <isCollection>false</isCollection>
+            <isRequired>true</isRequired>
+            <typePackageName>Intent.Common.Types</typePackageName>
+            <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+            <stereotypes />
+            <genericTypeParameters />
+          </typeReference>
+          <isMapped>false</isMapped>
+          <parentFolderId>88d78853-fefe-47f0-8433-826a0ef87298</parentFolderId>
+          <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
+          <packageName>SqlServerImporterTests</packageName>
+          <stereotypes>
+            <stereotype stereotypeDefinitionId="6ac91fd5-206c-49da-b4a2-b6ea2cad11f7" name="Stored Procedure Parameter Settings">
+              <addedByDefault>false</addedByDefault>
+              <definitionPackageName>Intent.Modules.Modelers.Domain.StoredProcedures</definitionPackageName>
+              <definitionPackageId>e3eb7873-c66f-4636-a7c8-8cb1f7b34d71</definitionPackageId>
+              <properties>
+                <property name="714a95a6-c3ef-4117-a66c-24876c675cd5" display="Name" value="@ProductId" isActive="true" />
+                <property name="39491728-8327-4b94-b9a2-9851dd4b4a01" display="Direction" value="In" isActive="true" />
+                <property name="8ba486d3-853c-42b8-acfb-bafb1e2cdb6e" display="SQL String Type" isActive="false" />
+                <property name="a2df34af-2fb9-49e3-ab6e-caff7a27bf99" display="Size" isActive="false" />
+                <property name="ed35ae5c-a708-457d-a22a-145b3b2f1148" display="Precision" isActive="false" />
+                <property name="38d3c607-ac3b-41ea-86b2-b43fa81e101c" display="Scale" isActive="false" />
+              </properties>
+            </stereotype>
+          </stereotypes>
+          <metadata />
+          <childElements />
+        </childElement>
+      </childElements>
+    </childElement>
+    <childElement id="25696d77-6349-40d6-bb83-1b2fbe9e30c4" type="Operation" typeId="e042bb67-a1df-480c-9935-b26210f78591">
       <name>InsertBrand</name>
       <display>InsertBrand(brand: BrandTypeModel[*]?): void</display>
       <externalReference>[dbo].[insertbrand]</externalReference>
       <isAbstract>false</isAbstract>
-      <sort-children>manually</sort-children>
+      <sort-children>by-type-then-manually</sort-children>
       <genericTypes />
-      <typeReference id="7d3e6be7-0afa-4d2d-b60c-7c1b0642172b">
+      <typeReference id="c9dd7454-a227-4920-a045-325c509f6613">
         <isNavigable>true</isNavigable>
         <isNullable>false</isNullable>
         <isCollection>false</isCollection>
@@ -198,24 +278,24 @@
         <trait id="0a932465-ea1f-42e7-b1eb-9f90aa8961fd" name="[Invokable]" />
       </traits>
       <stereotypes>
-        <stereotype stereotypeDefinitionId="8ca606b1-406a-4b16-a7e7-8ffe1a215ecf" name="Stored Procedure Settings">
+        <stereotype stereotypeDefinitionId="f40ff84c-68ad-405f-bda0-1237dd15fc92" name="Stored Procedure">
           <addedByDefault>false</addedByDefault>
-          <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
-          <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
+          <definitionPackageName>Intent.Modules.Modelers.Domain.StoredProcedures</definitionPackageName>
+          <definitionPackageId>e3eb7873-c66f-4636-a7c8-8cb1f7b34d71</definitionPackageId>
           <properties>
-            <property name="1ae41308-484e-41e1-ac94-66f33bc88c36" display="Name in Schema" isActive="true" />
+            <property name="4e2a3f58-6b6e-43c5-9398-f9c3fde593f6" display="Name in Schema" isActive="true" />
           </properties>
         </stereotype>
       </stereotypes>
       <metadata />
       <childElements>
-        <childElement id="e2725975-a19a-4a88-b2f8-af1f7f13597c" type="Stored Procedure Parameter" typeId="5823b192-eb03-47c8-90d8-5501c922e9a5">
+        <childElement id="97287c3e-8749-4d84-8e4b-2cfcbd16632f" type="Parameter" typeId="c26d8d0a-a26b-4b5f-b449-e9bdb60b3a4b">
           <name>brand</name>
-          <display>brand: BrandTypeModel[*]?</display>
-          <externalReference>@brand</externalReference>
+          <display>in : brand: BrandTypeModel[*]?</display>
+          <externalReference>brand</externalReference>
           <isAbstract>false</isAbstract>
           <genericTypes />
-          <typeReference id="9ac2777e-8078-4631-8565-ac2443fb047c">
+          <typeReference id="ad14bfcd-552f-45e0-8325-214d4c744e4c">
             <typeId>a7488f8b-653a-41fc-b9ab-8611d6cc08a9</typeId>
             <isNavigable>true</isNavigable>
             <isNullable>true</isNullable>
@@ -227,20 +307,21 @@
             <genericTypeParameters />
           </typeReference>
           <isMapped>false</isMapped>
-          <parentFolderId>b318391b-7090-4c0f-a3ce-8b3e591c9af7</parentFolderId>
+          <parentFolderId>25696d77-6349-40d6-bb83-1b2fbe9e30c4</parentFolderId>
           <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
           <packageName>SqlServerImporterTests</packageName>
           <stereotypes>
-            <stereotype stereotypeDefinitionId="5332b774-6499-4b4b-9fdb-e3eef13bdee4" name="Stored Procedure Parameter Settings">
+            <stereotype stereotypeDefinitionId="6ac91fd5-206c-49da-b4a2-b6ea2cad11f7" name="Stored Procedure Parameter Settings">
               <addedByDefault>false</addedByDefault>
-              <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
-              <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
+              <definitionPackageName>Intent.Modules.Modelers.Domain.StoredProcedures</definitionPackageName>
+              <definitionPackageId>e3eb7873-c66f-4636-a7c8-8cb1f7b34d71</definitionPackageId>
               <properties>
-                <property name="17aa77a0-c531-49ec-bed0-9cbb125f6ce3" display="Is Output Parameter" value="false" isActive="true" />
-                <property name="dfa55cca-142e-4d76-b772-6f86a9c99b0f" display="SQL String Type" value="VarChar" isActive="false" />
-                <property name="febc9d55-6c43-4549-bef8-9f2aee7811c9" display="Size" value="255" isActive="false" />
-                <property name="ccf2fa26-234b-49c9-ad0b-0e33d570f2df" display="Precision" isActive="false" />
-                <property name="4ac97c2e-d789-4174-9343-47758b4f4938" display="Scale" isActive="false" />
+                <property name="714a95a6-c3ef-4117-a66c-24876c675cd5" display="Name" value="@brand" isActive="true" />
+                <property name="39491728-8327-4b94-b9a2-9851dd4b4a01" display="Direction" value="In" isActive="true" />
+                <property name="8ba486d3-853c-42b8-acfb-bafb1e2cdb6e" display="SQL String Type" isActive="false" />
+                <property name="a2df34af-2fb9-49e3-ab6e-caff7a27bf99" display="Size" isActive="false" />
+                <property name="ed35ae5c-a708-457d-a22a-145b3b2f1148" display="Precision" isActive="false" />
+                <property name="38d3c607-ac3b-41ea-86b2-b43fa81e101c" display="Scale" isActive="false" />
               </properties>
             </stereotype>
           </stereotypes>

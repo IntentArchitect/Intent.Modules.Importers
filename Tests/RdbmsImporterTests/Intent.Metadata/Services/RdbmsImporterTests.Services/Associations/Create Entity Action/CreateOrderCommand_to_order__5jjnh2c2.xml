@@ -5,11 +5,11 @@
     <order>0</order>
     <typeReference id="8f92df32-43aa-4920-9f51-ebbca08a4ad9">
       <typeId>90cc7e61-aaf7-4102-96b2-c4675551dc44</typeId>
-      <isNavigable>true</isNavigable>
+      <isNavigable>false</isNavigable>
       <isNullable>false</isNullable>
       <isCollection>false</isCollection>
       <isRequired>true</isRequired>
-      <typePackageName>SqlServerImporterTests.Services</typePackageName>
+      <typePackageName>RdbmsImporterTests.Services</typePackageName>
       <typePackageId>2e97ac00-7126-447c-839f-d3d0b69b5f27</typePackageId>
       <stereotypes />
       <genericTypeParameters />
