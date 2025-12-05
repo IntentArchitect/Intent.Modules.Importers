@@ -1381,24 +1381,51 @@ internal class DbSchemaIntentMetadataMerger
 
     /// <summary>
     /// Synchronizes a mapped path by preserving IDs where possible.
+    /// Matches path segments by position, name, and type to ensure stable IDs across re-imports.
     /// </summary>
     private static void SyncMappedPath(
         List<MappedPathTargetPersistable> existingPath,
         List<MappedPathTargetPersistable> updatedPath)
     {
-        // Match path segments by position and type, preserving IDs
-        for (var i = 0; i < updatedPath.Count && i < existingPath.Count; i++)
+        // Try to match each updated path segment with an existing one
+        for (var i = 0; i < updatedPath.Count; i++)
         {
-            var existingTarget = existingPath[i];
             var updatedTarget = updatedPath[i];
-
-            // If the target represents the same thing (by type and specialization), preserve the ID
-            if (existingTarget.Type == updatedTarget.Type &&
-                existingTarget.Specialization == updatedTarget.Specialization)
+            
+            // Try to find a matching existing target at the same position
+            if (i < existingPath.Count)
             {
-                // Preserve the existing ID
-                updatedTarget.Id = existingTarget.Id;
-                updatedTarget.SpecializationId = existingTarget.SpecializationId;
+                var existingTarget = existingPath[i];
+                
+                // Match by name (most specific), then by type and specialization
+                if (existingTarget.Name == updatedTarget.Name &&
+                    (existingTarget.Type == updatedTarget.Type || 
+                     (existingTarget.Type == "element" && updatedTarget.Type == "static-mappable") ||
+                     (existingTarget.Type == "static-mappable" && updatedTarget.Type == "element")))
+                {
+                    // Same element - preserve ID and TypeReference ID
+                    updatedTarget.Id = existingTarget.Id;
+                    updatedTarget.SpecializationId = existingTarget.SpecializationId;
+                    
+                    // Also preserve TypeReference ID if both have one
+                    if (existingTarget.TypeReference != null && updatedTarget.TypeReference != null)
+                    {
+                        updatedTarget.TypeReference.Id = existingTarget.TypeReference.Id;
+                    }
+                }
+                else if (existingTarget.Type == updatedTarget.Type &&
+                         existingTarget.Specialization == updatedTarget.Specialization)
+                {
+                    // Same type/specialization but different name - still preserve ID and TypeReference ID
+                    updatedTarget.Id = existingTarget.Id;
+                    updatedTarget.SpecializationId = existingTarget.SpecializationId;
+                    
+                    // Also preserve TypeReference ID if both have one
+                    if (existingTarget.TypeReference != null && updatedTarget.TypeReference != null)
+                    {
+                        updatedTarget.TypeReference.Id = existingTarget.TypeReference.Id;
+                    }
+                }
             }
         }
 
