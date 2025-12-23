@@ -10,7 +10,16 @@
   <parentFolderId>1ed16ca5-03fd-4918-9479-61557ddf4d5e</parentFolderId>
   <packageId>5a5b2715-8ca3-407c-8914-c2478a684f5a</packageId>
   <packageName>PostgreSqlImporterTests</packageName>
-  <stereotypes />
+  <stereotypes>
+    <stereotype stereotypeDefinitionId="43937e01-7079-4ab1-b5c4-b3cb0dee9dcd" name="User-Defined Table Type Settings">
+      <addedByDefault>false</addedByDefault>
+      <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
+      <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
+      <properties>
+        <property name="fe47cbcb-5976-462c-8f85-7dbffcfea97d" display="Name" value="BrandType" isActive="true" />
+      </properties>
+    </stereotype>
+  </stereotypes>
   <metadata />
   <childElements>
     <childElement id="1fd5d52d-872c-4960-8218-aad55c0a9acf" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">

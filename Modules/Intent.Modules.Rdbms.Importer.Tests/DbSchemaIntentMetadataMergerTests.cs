@@ -1152,5 +1152,52 @@ public class DbSchemaIntentMetadataMergerTests
         pathSegmentsAfter.ShouldBe(pathSegments, "All path segment IDs and TypeReference IDs should remain stable");
     }
 
+    [Fact]
+    public async Task MergeSchemaAndPackage_StoredProcWithUserDefinedTableType_CreatesDataContractWithUdtSettingsStereotype()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.WithUserDefinedTableTypeParameter()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsOperations());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        // Verify DataContract was created for the UDT
+        var dataContracts = scenario.Package.Classes
+            .Where(c => c.SpecializationType == "Data Contract")
+            .ToList();
+        dataContracts.Count.ShouldBeGreaterThan(0);
+        
+        var dataContract = dataContracts.FirstOrDefault(c => c.Name == "OrderTableTypeModel");
+        dataContract.ShouldNotBeNull();
+        
+        // Verify the UDT Settings stereotype is applied
+        var udtSettingsStereotype = dataContract.Stereotypes.FirstOrDefault(s => 
+            s.DefinitionId == "43937e01-7079-4ab1-b5c4-b3cb0dee9dcd");
+        udtSettingsStereotype.ShouldNotBeNull();
+        
+        // Verify the Name property is set to the original SQL name
+        var nameProp = udtSettingsStereotype.Properties.FirstOrDefault(p => 
+            p.DefinitionId == "fe47cbcb-5976-462c-8f85-7dbffcfea97d");
+        nameProp.ShouldNotBeNull();
+        nameProp.Value.ShouldBe("OrderTableType");
+        
+        // Verify the UDT columns are created as attributes
+        var attributes = dataContract.ChildElements.Where(e => e.SpecializationType == "Attribute").ToList();
+        attributes.Count.ShouldBe(4);
+    }
+
+
+
     #endregion
 }

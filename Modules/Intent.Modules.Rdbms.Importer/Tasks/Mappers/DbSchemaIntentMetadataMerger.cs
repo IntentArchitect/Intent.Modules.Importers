@@ -1248,6 +1248,9 @@ internal class DbSchemaIntentMetadataMerger
     /// </summary>
     private static void ApplyUserDefinedTableStereotypes(UserDefinedTableTypeSchema udtSchema, ElementPersistable dataContract)
     {
+        // Apply UDT-level stereotypes
+        RdbmsSchemaAnnotator.ApplyUserDefinedTableTypeSettings(udtSchema, dataContract);
+
         // Apply stereotypes to UDT columns
         foreach (var column in udtSchema.Columns)
         {

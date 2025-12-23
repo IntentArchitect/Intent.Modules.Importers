@@ -67,6 +67,26 @@ internal static class RdbmsSchemaAnnotator
         }
     }
 
+    public static void ApplyUserDefinedTableTypeSettings(UserDefinedTableTypeSchema udtSchema, ElementPersistable dataContract)
+    {
+        var stereotype = dataContract.GetOrCreateStereotype(
+            Constants.Stereotypes.Rdbms.UserDefinedTableTypeSettings.DefinitionId,
+            InitUdtSettingsStereotype);
+        stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.UserDefinedTableTypeSettings.PropertyId.Name).Value = udtSchema.Name;
+
+        return;
+
+        static void InitUdtSettingsStereotype(StereotypePersistable stereotype)
+        {
+            stereotype.Name = Constants.Stereotypes.Rdbms.UserDefinedTableTypeSettings.Name;
+            stereotype.DefinitionPackageId = Constants.Packages.Rdbms.DefinitionPackageId;
+            stereotype.DefinitionPackageName = Constants.Packages.Rdbms.DefinitionPackageName;
+            stereotype.GetOrCreateProperty(
+                Constants.Stereotypes.Rdbms.UserDefinedTableTypeSettings.PropertyId.Name,
+                prop => { prop.Name = Constants.Stereotypes.Rdbms.UserDefinedTableTypeSettings.PropertyId.NameName; });
+        }
+    }
+
     public static void ApplyPrimaryKey(ColumnSchema column, ElementPersistable attribute)
     {
         if (!column.IsPrimaryKey)

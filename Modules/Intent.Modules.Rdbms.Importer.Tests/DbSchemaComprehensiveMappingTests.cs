@@ -575,6 +575,30 @@ public class DbSchemaComprehensiveMappingTests
         await Verify(snapshot).UseParameters("sp-complex");
     }
 
+    [Fact]
+    public async Task MapStoredProcedure_WithUserDefinedTableType_ShouldMatchSnapshot()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.WithUserDefinedTableTypeParameter()]
+        };
+        var package = PackageModels.Empty();
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsOperations());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(schema, package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        
+        var snapshot = BuildPackageSnapshot(package);
+        await Verify(snapshot).UseParameters("sp-user-defined-table-type");
+    }
+
     #endregion
 
     #region Comprehensive Integration Tests

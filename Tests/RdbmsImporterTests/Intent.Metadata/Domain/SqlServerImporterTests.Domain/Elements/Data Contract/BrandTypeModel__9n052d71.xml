@@ -10,7 +10,16 @@
   <parentFolderId>40472696-51b0-4441-b322-2d05d222bc68</parentFolderId>
   <packageId>c5137fb3-11a7-4f59-9a42-74623ae698a3</packageId>
   <packageName>SqlServerImporterTests</packageName>
-  <stereotypes />
+  <stereotypes>
+    <stereotype stereotypeDefinitionId="43937e01-7079-4ab1-b5c4-b3cb0dee9dcd" name="User-Defined Table Type Settings">
+      <addedByDefault>false</addedByDefault>
+      <definitionPackageName>Intent.EntityFrameworkCore.Repositories</definitionPackageName>
+      <definitionPackageId>5869084c-2a08-4e40-a5c9-ff26220470c8</definitionPackageId>
+      <properties>
+        <property name="fe47cbcb-5976-462c-8f85-7dbffcfea97d" display="Name" value="BrandType" isActive="true" />
+      </properties>
+    </stereotype>
+  </stereotypes>
   <metadata />
   <childElements>
     <childElement id="7daf6de5-198c-4174-a268-399182f80db3" type="Attribute" typeId="0090fb93-483e-41af-a11d-5ad2dc796adf">

@@ -1,3 +1,7 @@
+### Version 1.0.11
+
+- Fixed: User-Defined Table Type stereotype settings applied to Types for Stored Procedures.
+
 ### Version 1.0.10
 
 - Fixed: Importing Stored procedures with `OUT` parameters will generate Operations that invoke underlying Stored Procedures and return with an adequately mapped return type where the OUT parameter will be stored.

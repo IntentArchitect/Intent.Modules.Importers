@@ -56,7 +56,7 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Dbo
                 IsNullable = true,
                 SqlDbType = SqlDbType.Structured,
                 Value = brand.ToDataTable(),
-                TypeName = "BrandTypeModel"
+                TypeName = "BrandType"
             };
 
             await _dbContext.Database.ExecuteSqlInterpolatedAsync($"EXECUTE InsertBrand {brandParameter}", cancellationToken);

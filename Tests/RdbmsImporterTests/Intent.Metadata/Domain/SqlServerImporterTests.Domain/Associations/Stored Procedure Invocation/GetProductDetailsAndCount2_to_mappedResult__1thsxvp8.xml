@@ -112,7 +112,19 @@
                 <path>
                   <target id="88d78853-fefe-47f0-8433-826a0ef87298" name="GetProductDetailsAndCount2" type="element" specialization="Operation" specializationId="e042bb67-a1df-480c-9935-b26210f78591" />
                   <target id="1132601a-f7a5-4314-aa60-0325bb83adf1" name="mappedResult" type="association" specialization="Stored Procedure Invocation Target End" specializationId="d0b0b24a-db0f-4aff-873a-a0e9c2dce12d" />
-                  <target id="1acb01ce-b55a-4f6d-a2fa-966f4e88397c" name="priceCount" type="element" specialization="Stored Procedure Parameter" specializationId="5823b192-eb03-47c8-90d8-5501c922e9a5" />
+                  <target id="1acb01ce-b55a-4f6d-a2fa-966f4e88397c" name="priceCount" type="static-mappable" specialization="priceCount" specializationId="5823b192-eb03-47c8-90d8-5501c922e9a5">
+                    <typeReference id="d65d1dc1-5563-4502-888c-42cea434969f">
+                      <typeId>fb0a362d-e9e2-40de-b6ff-5ce8167cbe74</typeId>
+                      <isNavigable>true</isNavigable>
+                      <isNullable>true</isNullable>
+                      <isCollection>false</isCollection>
+                      <isRequired>true</isRequired>
+                      <typePackageName>Intent.Common.Types</typePackageName>
+                      <typePackageId>870ad967-cbd4-4ea9-b86d-9c3a5d55ea67</typePackageId>
+                      <stereotypes />
+                      <genericTypeParameters />
+                    </typeReference>
+                  </target>
                 </path>
               </source>
             </sources>

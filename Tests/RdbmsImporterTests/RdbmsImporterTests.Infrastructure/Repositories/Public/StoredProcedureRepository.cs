@@ -58,7 +58,7 @@ namespace RdbmsImporterTests.Infrastructure.Repositories.Public
                 IsNullable = true,
                 NpgsqlDbType = NpgsqlDbType.Unknown,
                 Value = brands.ToDataTable(),
-                DataTypeName = "BrandTypeModel"
+                DataTypeName = "BrandType"
             };
 
             await _dbContext.Database.ExecuteSqlInterpolatedAsync($"CALL public.InsertBrand({brandsParameter})", cancellationToken);

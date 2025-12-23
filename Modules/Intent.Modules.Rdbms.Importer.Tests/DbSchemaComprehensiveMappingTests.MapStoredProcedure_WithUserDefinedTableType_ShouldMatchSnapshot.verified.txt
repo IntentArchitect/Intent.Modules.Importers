@@ -1,0 +1,249 @@
+﻿{
+  Package: {
+    Name: TestPackage,
+    Metadata: [],
+    Folders: [
+      {
+        Name: Dbo,
+        SpecializationType: Folder,
+        ExternalReference: schema:[dbo],
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [
+          {
+            Name: Schema,
+            DefinitionId: Guid_1,
+            Properties: [
+              {
+                Name: Name,
+                DefinitionId: Guid_2,
+                Value: dbo,
+                IsActive: true
+              }
+            ]
+          }
+        ],
+        Children: []
+      }
+    ],
+    Classes: [
+      {
+        Name: OrderTableTypeModel,
+        SpecializationType: Data Contract,
+        ExternalReference: [dbo].[ordertabletype].UDT,
+        IsAbstract: false,
+        IsMapped: false,
+        Metadata: [],
+        Stereotypes: [
+          {
+            Name: User-Defined Table Type Settings,
+            DefinitionId: Guid_3,
+            Properties: [
+              {
+                Name: Name,
+                DefinitionId: Guid_4,
+                Value: OrderTableType,
+                IsActive: true
+              }
+            ]
+          }
+        ],
+        Children: [
+          {
+            Name: CustomerId,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[ordertabletype].UDT.[customerid],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_5,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [],
+            Children: []
+          },
+          {
+            Name: OrderDate,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[ordertabletype].UDT.[orderdate],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_6,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [],
+            Children: []
+          },
+          {
+            Name: OrderId,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[ordertabletype].UDT.[orderid],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_5,
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [],
+            Children: []
+          },
+          {
+            Name: Total,
+            SpecializationType: Attribute,
+            ExternalReference: [dbo].[ordertabletype].UDT.[total],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              TypeId: Guid_7,
+              IsNullable: true,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Decimal Constraints,
+                DefinitionId: Guid_8,
+                Properties: [
+                  {
+                    Name: Precision,
+                    DefinitionId: Guid_9,
+                    Value: 18,
+                    IsActive: true
+                  },
+                  {
+                    Name: Scale,
+                    DefinitionId: Guid_10,
+                    Value: 2,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: []
+          }
+        ]
+      },
+      {
+        Name: StoredProcedureRepository,
+        SpecializationType: Repository,
+        ExternalReference: StoredProcedureRepository,
+        IsAbstract: false,
+        IsMapped: false,
+        TypeReference: {
+          IsNullable: false,
+          IsCollection: false,
+          IsNavigable: true,
+          IsRequired: true
+        },
+        Metadata: [],
+        Stereotypes: [],
+        Children: [
+          {
+            Name: InsertOrders,
+            SpecializationType: Operation,
+            ExternalReference: [dbo].[sp_insertorders],
+            IsAbstract: false,
+            IsMapped: false,
+            TypeReference: {
+              IsNullable: false,
+              IsCollection: false,
+              IsNavigable: true,
+              IsRequired: true
+            },
+            Metadata: [],
+            Stereotypes: [
+              {
+                Name: Stored Procedure,
+                DefinitionId: Guid_11,
+                Properties: [
+                  {
+                    Name: Name in Schema,
+                    DefinitionId: Guid_12,
+                    Value: sp_InsertOrders,
+                    IsActive: true
+                  }
+                ]
+              }
+            ],
+            Children: [
+              {
+                Name: ordersTable,
+                SpecializationType: Parameter,
+                ExternalReference: orderstable,
+                IsAbstract: false,
+                IsMapped: false,
+                TypeReference: {
+                  TypeId: Guid_13,
+                  ResolvedName: OrderTableTypeModel,
+                  IsNullable: true,
+                  IsCollection: true,
+                  IsNavigable: true,
+                  IsRequired: true
+                },
+                Metadata: [],
+                Stereotypes: [
+                  {
+                    Name: Stored Procedure Parameter Settings,
+                    DefinitionId: Guid_14,
+                    Properties: [
+                      {
+                        Name: Scale,
+                        DefinitionId: Guid_15,
+                        IsActive: true
+                      },
+                      {
+                        Name: Direction,
+                        DefinitionId: Guid_16,
+                        Value: In,
+                        IsActive: true
+                      },
+                      {
+                        Name: Name,
+                        DefinitionId: Guid_17,
+                        Value: @OrdersTable,
+                        IsActive: true
+                      },
+                      {
+                        Name: SQL String Type,
+                        DefinitionId: Guid_18,
+                        IsActive: true
+                      },
+                      {
+                        Name: Size,
+                        DefinitionId: Guid_19,
+                        IsActive: true
+                      },
+                      {
+                        Name: Precision,
+                        DefinitionId: Guid_20,
+                        IsActive: true
+                      }
+                    ]
+                  }
+                ],
+                Children: []
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    Associations: []
+  }
+}

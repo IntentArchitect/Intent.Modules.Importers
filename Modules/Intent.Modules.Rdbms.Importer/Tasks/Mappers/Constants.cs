@@ -387,6 +387,18 @@ internal static class Constants
                 }
             }
 
+            public static class UserDefinedTableTypeSettings
+            {
+                public const string DefinitionId = "43937e01-7079-4ab1-b5c4-b3cb0dee9dcd";
+                public const string Name = "User-Defined Table Type Settings";
+
+                public static class PropertyId
+                {
+                    public const string Name = "fe47cbcb-5976-462c-8f85-7dbffcfea97d";
+                    public const string NameName = "Name";
+                }
+            }
+
             public static class RelationalDatabase
             {
                 public const string DefinitionId = "51a7bcf5-0eb9-4c9a-855e-3ead1048729c";

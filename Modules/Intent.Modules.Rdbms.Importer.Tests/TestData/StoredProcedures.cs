@@ -188,4 +188,68 @@ internal static class StoredProcedures
         ],
         Metadata = new()
     };
+
+    public static StoredProcedureSchema WithUserDefinedTableTypeParameter() => new()
+    {
+        Schema = "dbo",
+        Name = "sp_InsertOrders",
+        Parameters =
+        [
+            new StoredProcedureParameterSchema
+            {
+                Name = "@OrdersTable",
+                Direction = StoredProcedureParameterDirection.In,
+                UserDefinedTableType = new UserDefinedTableTypeSchema
+                {
+                    Schema = "dbo",
+                    Name = "OrderTableType",
+                    Columns =
+                    [
+                        new ColumnSchema
+                        {
+                            Name = "OrderId",
+                            DbDataType = "int",
+                            LanguageDataType = "int",
+                            IsNullable = false,
+                            IsPrimaryKey = false,
+                            IsIdentity = false
+                        },
+                        new ColumnSchema
+                        {
+                            Name = "CustomerId",
+                            DbDataType = "int",
+                            LanguageDataType = "int",
+                            IsNullable = false,
+                            IsPrimaryKey = false,
+                            IsIdentity = false
+                        },
+                        new ColumnSchema
+                        {
+                            Name = "OrderDate",
+                            DbDataType = "datetime2",
+                            LanguageDataType = "datetime",
+                            IsNullable = false,
+                            IsPrimaryKey = false,
+                            IsIdentity = false
+                        },
+                        new ColumnSchema
+                        {
+                            Name = "Total",
+                            DbDataType = "decimal",
+                            LanguageDataType = "decimal",
+                            IsNullable = true,
+                            IsPrimaryKey = false,
+                            IsIdentity = false,
+                            NumericPrecision = 18,
+                            NumericScale = 2
+                        }
+                    ],
+                    Metadata = new()
+                },
+                Metadata = new()
+            }
+        ],
+        ResultSetColumns = [],
+        Metadata = new()
+    };
 }
