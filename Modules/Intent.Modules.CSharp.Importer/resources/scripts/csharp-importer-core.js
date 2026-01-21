@@ -97,6 +97,8 @@ function createFolderSelectionPage(element) {
 }
 function getAvailableProfiles(packageModel) {
     const profiles = [];
+    // Available in all package types
+    profiles.push({ id: "type-definitions-only", description: "Type Definitions Only" });
     if (packageModel.specialization == "Domain Package") {
         profiles.push({ id: "domain-classes", description: "Classes" });
         if (application.installedModules.some(x => x.id == "Intent.Modelers.Domain.Events")) {

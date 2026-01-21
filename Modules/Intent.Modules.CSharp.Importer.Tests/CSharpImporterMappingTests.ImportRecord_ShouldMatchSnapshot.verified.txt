@@ -1,0 +1,30 @@
+﻿{
+  Classes: [
+    {
+      Name: C:,
+      SpecializationType: Folder,
+      Properties: [
+        {
+          Name: Users,
+          SpecializationType: Folder
+        }
+      ]
+    },
+    {
+      Name: PersonRecord,
+      SpecializationType: Class,
+      Properties: [
+        {
+          Name: Email,
+          SpecializationType: Attribute
+        }
+      ]
+    },
+    {
+      Name: string,
+      SpecializationType: Type-Definition,
+      Properties: []
+    }
+  ],
+  Associations: []
+}

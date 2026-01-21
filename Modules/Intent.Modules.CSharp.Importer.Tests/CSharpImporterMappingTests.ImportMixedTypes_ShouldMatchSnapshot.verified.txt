@@ -1,0 +1,57 @@
+﻿{
+  Classes: [
+    {
+      Name: C:,
+      SpecializationType: Folder,
+      Properties: [
+        {
+          Name: Users,
+          SpecializationType: Folder
+        }
+      ]
+    },
+    {
+      Name: Status,
+      SpecializationType: Enum,
+      Properties: [
+        {
+          Name: Active,
+          SpecializationType: Enum Literal
+        },
+        {
+          Name: Inactive,
+          SpecializationType: Enum Literal
+        }
+      ]
+    },
+    {
+      Name: Customer,
+      SpecializationType: Class,
+      Properties: [
+        {
+          Name: Id,
+          SpecializationType: Attribute
+        },
+        {
+          Name: Name,
+          SpecializationType: Attribute
+        },
+        {
+          Name: Status,
+          SpecializationType: Attribute
+        }
+      ]
+    },
+    {
+      Name: int,
+      SpecializationType: Type-Definition,
+      Properties: []
+    },
+    {
+      Name: string,
+      SpecializationType: Type-Definition,
+      Properties: []
+    }
+  ],
+  Associations: []
+}

@@ -58,6 +58,14 @@ namespace Intent.Modules.CSharp.Importer.Tasks
         private ImportProfileConfig GetProfile(string identifier, IApplicationDesignerPersistable designer)
         {
             var profiles = new[] {
+                //----------------- UNIVERSAL -----------------//
+                new ImportProfileConfig()
+                {
+                    Identifier = "type-definitions-only",
+                    MapClassesTo = designer.GetElementSettings("d4e577cd-ad05-4180-9a2e-fff4ddea0e1e"),
+                    MapInterfacesTo = designer.GetElementSettings("d4e577cd-ad05-4180-9a2e-fff4ddea0e1e"),
+                },
+
                 //----------------- DOMAIN -----------------//
                 new ImportProfileConfig()
                 {

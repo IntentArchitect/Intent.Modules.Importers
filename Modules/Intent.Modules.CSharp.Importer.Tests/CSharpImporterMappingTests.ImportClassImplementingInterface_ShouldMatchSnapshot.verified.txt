@@ -1,0 +1,39 @@
+﻿{
+  Classes: [
+    {
+      Name: C:,
+      SpecializationType: Folder,
+      Properties: [
+        {
+          Name: Users,
+          SpecializationType: Folder
+        }
+      ]
+    },
+    {
+      Name: Customer,
+      SpecializationType: Class,
+      Properties: [
+        {
+          Name: Id,
+          SpecializationType: Attribute
+        },
+        {
+          Name: Name,
+          SpecializationType: Attribute
+        }
+      ]
+    },
+    {
+      Name: int,
+      SpecializationType: Type-Definition,
+      Properties: []
+    },
+    {
+      Name: string,
+      SpecializationType: Type-Definition,
+      Properties: []
+    }
+  ],
+  Associations: []
+}

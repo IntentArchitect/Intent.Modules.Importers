@@ -1,0 +1,38 @@
+﻿{
+  Classes: [
+    {
+      Name: C:,
+      SpecializationType: Folder,
+      Properties: [
+        {
+          Name: Users,
+          SpecializationType: Folder
+        }
+      ]
+    },
+    {
+      Name: IRepository,
+      SpecializationType: Class,
+      Properties: [
+        {
+          Name: Save,
+          SpecializationType: Operation
+        },
+        {
+          Name: Delete,
+          SpecializationType: Operation
+        },
+        {
+          Name: Get,
+          SpecializationType: Operation
+        }
+      ]
+    },
+    {
+      Name: int,
+      SpecializationType: Type-Definition,
+      Properties: []
+    }
+  ],
+  Associations: []
+}

@@ -1,0 +1,37 @@
+﻿{
+  Classes: [
+    {
+      Name: C:,
+      SpecializationType: Folder,
+      Properties: [
+        {
+          Name: Users,
+          SpecializationType: Folder
+        }
+      ]
+    },
+    {
+      Name: OrderStatus,
+      SpecializationType: Enum,
+      Properties: [
+        {
+          Name: Pending,
+          SpecializationType: Enum Literal
+        },
+        {
+          Name: Processing,
+          SpecializationType: Enum Literal
+        },
+        {
+          Name: Shipped,
+          SpecializationType: Enum Literal
+        },
+        {
+          Name: Delivered,
+          SpecializationType: Enum Literal
+        }
+      ]
+    }
+  ],
+  Associations: []
+}

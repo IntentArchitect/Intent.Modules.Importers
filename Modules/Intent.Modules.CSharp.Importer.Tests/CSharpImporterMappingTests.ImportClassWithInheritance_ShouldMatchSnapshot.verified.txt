@@ -1,0 +1,58 @@
+﻿{
+  Classes: [
+    {
+      Name: C:,
+      SpecializationType: Folder,
+      Properties: [
+        {
+          Name: Users,
+          SpecializationType: Folder
+        }
+      ]
+    },
+    {
+      Name: BaseEntity,
+      SpecializationType: Class,
+      Properties: [
+        {
+          Name: Id,
+          SpecializationType: Attribute
+        }
+      ]
+    },
+    {
+      Name: Product,
+      SpecializationType: Class,
+      Properties: [
+        {
+          Name: Name,
+          SpecializationType: Attribute
+        },
+        {
+          Name: Price,
+          SpecializationType: Attribute
+        }
+      ]
+    },
+    {
+      Name: int,
+      SpecializationType: Type-Definition,
+      Properties: []
+    },
+    {
+      Name: string,
+      SpecializationType: Type-Definition,
+      Properties: []
+    },
+    {
+      Name: decimal,
+      SpecializationType: Type-Definition,
+      Properties: []
+    }
+  ],
+  Associations: [
+    {
+      AssociationType: Generalization
+    }
+  ]
+}
