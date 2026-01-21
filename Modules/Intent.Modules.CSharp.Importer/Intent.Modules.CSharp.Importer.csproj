@@ -29,6 +29,12 @@
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Intent.Modules.CSharp.Importer.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
   <Import Project="..\Intent.Modules.Shared.FileImporter\Intent.Modules.Shared.FileImporter.projitems" Label="Shared" />
 
 </Project>
