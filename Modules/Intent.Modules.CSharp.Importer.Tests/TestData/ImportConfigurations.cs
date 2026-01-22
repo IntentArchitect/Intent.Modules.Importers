@@ -9,9 +9,9 @@ namespace Intent.Modules.CSharp.Importer.Tests.TestData;
 /// </summary>
 public static class ImportConfigurations
 {
-    public static CSharpConfig DomainClassesProfile() => new()
+    public static CSharpConfig DomainClassesProfile(string? targetFolder = null) => new()
     {
-        TargetFolder = ".",  // Provide valid folder path for file organization logic
+        TargetFolder = targetFolder ?? ".",  // Provide valid folder path for file organization logic
         ImportProfile = new ImportProfileConfig
         {
             Identifier = "domain-classes",
@@ -28,9 +28,9 @@ public static class ImportConfigurations
         }
     };
 
-    public static CSharpConfig DomainEnumsProfile() => new()
+    public static CSharpConfig DomainEnumsProfile(string? targetFolder = null) => new()
     {
-        TargetFolder = ".",  // Provide valid folder path for file organization logic
+        TargetFolder = targetFolder ?? ".",  // Provide valid folder path for file organization logic
         ImportProfile = new ImportProfileConfig
         {
             Identifier = "domain-enums",
@@ -39,9 +39,9 @@ public static class ImportConfigurations
         }
     };
 
-    public static CSharpConfig DomainInterfacesProfile() => new()
+    public static CSharpConfig DomainInterfacesProfile(string? targetFolder = null) => new()
     {
-        TargetFolder = ".",  // Provide valid folder path for file organization logic
+        TargetFolder = targetFolder ?? ".",  // Provide valid folder path for file organization logic
         ImportProfile = new ImportProfileConfig
         {
             Identifier = "domain-interfaces",
@@ -51,9 +51,9 @@ public static class ImportConfigurations
         }
     };
 
-    public static CSharpConfig TypeDefinitionsOnlyProfile() => new()
+    public static CSharpConfig TypeDefinitionsOnlyProfile(string? targetFolder = null) => new()
     {
-        TargetFolder = ".",  // Provide valid folder path for file organization logic
+        TargetFolder = targetFolder ?? ".",  // Provide valid folder path for file organization logic
         ImportProfile = new ImportProfileConfig
         {
             Identifier = "all-types-as-type-definition",

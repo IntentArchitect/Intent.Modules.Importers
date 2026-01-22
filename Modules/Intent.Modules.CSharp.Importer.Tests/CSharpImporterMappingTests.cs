@@ -22,9 +22,9 @@ public class CSharpImporterMappingTests
     public async Task ImportSimpleClass_BasicProperties_ShouldMatchSnapshot()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
         var package = PackageModels.Empty();
-        var config = ImportConfigurations.DomainClassesProfile();
+        var config = ImportConfigurations.DomainClassesProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -39,9 +39,9 @@ public class CSharpImporterMappingTests
     public async Task ImportTwoClasses_ShouldMatchSnapshot()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.TwoClasses);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.TwoClasses);
         var package = PackageModels.Empty();
-        var config = ImportConfigurations.DomainClassesProfile();
+        var config = ImportConfigurations.DomainClassesProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -56,9 +56,9 @@ public class CSharpImporterMappingTests
     public async Task ImportClassWithMethods_ShouldMatchSnapshot()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.ClassWithMethods);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.ClassWithMethods);
         var package = PackageModels.Empty();
-        var config = ImportConfigurations.DomainInterfacesProfile();
+        var config = ImportConfigurations.DomainInterfacesProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -72,9 +72,9 @@ public class CSharpImporterMappingTests
     public async Task ImportSimpleInterface_ShouldMatchSnapshot()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleInterface);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleInterface);
         var package = PackageModels.Empty();
-        var config = ImportConfigurations.DomainInterfacesProfile();
+        var config = ImportConfigurations.DomainInterfacesProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -88,9 +88,9 @@ public class CSharpImporterMappingTests
     public async Task ImportSimpleEnum_ShouldMatchSnapshot()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleEnum);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleEnum);
         var package = PackageModels.Empty();
-        var config = ImportConfigurations.DomainEnumsProfile();
+        var config = ImportConfigurations.DomainEnumsProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -104,9 +104,9 @@ public class CSharpImporterMappingTests
     public async Task ImportClassWithInheritance_ShouldMatchSnapshot()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.ClassWithInheritance);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.ClassWithInheritance);
         var package = PackageModels.Empty();
-        var config = ImportConfigurations.DomainClassesProfile();
+        var config = ImportConfigurations.DomainClassesProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -120,9 +120,9 @@ public class CSharpImporterMappingTests
     public async Task ImportClassImplementingInterface_ShouldMatchSnapshot()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.ClassImplementingInterface);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.ClassImplementingInterface);
         var package = PackageModels.Empty();
-        var config = ImportConfigurations.DomainClassesProfile();
+        var config = ImportConfigurations.DomainClassesProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -136,9 +136,9 @@ public class CSharpImporterMappingTests
     public async Task ImportRecord_ShouldMatchSnapshot()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.Record);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.Record);
         var package = PackageModels.Empty();
-        var config = ImportConfigurations.DomainClassesProfile();
+        var config = ImportConfigurations.DomainClassesProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -152,9 +152,9 @@ public class CSharpImporterMappingTests
     public async Task ImportTypeDefinitionsOnly_IgnoresMembers_ShouldMatchSnapshot()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
         var package = PackageModels.Empty();
-        var config = ImportConfigurations.TypeDefinitionsOnlyProfile();
+        var config = ImportConfigurations.TypeDefinitionsOnlyProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -169,9 +169,9 @@ public class CSharpImporterMappingTests
     public async Task ImportMixedTypes_ShouldMatchSnapshot()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.MixedTypes);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.MixedTypes);
         var package = PackageModels.Empty();
-        var config = ImportConfigurations.DomainClassesProfile();
+        var config = ImportConfigurations.DomainClassesProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -183,7 +183,7 @@ public class CSharpImporterMappingTests
 
     // Helper methods
 
-    private async Task<CoreTypesData> AnalyzeCodeInMemory(string code)
+    private async Task<(CoreTypesData, string)> AnalyzeCodeInMemory(string code)
     {
         var tempPath = Path.Combine(Path.GetTempPath(), $"csharp-test-{Guid.NewGuid()}");
         var filePath = Path.Combine(tempPath, "TestFile.cs");
@@ -192,7 +192,8 @@ public class CSharpImporterMappingTests
         {
             Directory.CreateDirectory(tempPath);
             await File.WriteAllTextAsync(filePath, code);
-            return await CSharpCodeAnalyzer.ImportMetadataFromFiles(new[] { filePath });
+            var coreTypesData = await CSharpCodeAnalyzer.ImportMetadataFromFiles(new[] { filePath });
+            return (coreTypesData, tempPath);
         }
         finally
         {

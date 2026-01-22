@@ -20,9 +20,9 @@ public class CSharpImporterMergerTests
     public async Task ReimportSameClass_RemainsIdempotent()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
         var package = PackageModels.Empty();
-        var config = ImportConfigurations.DomainClassesProfile();
+        var config = ImportConfigurations.DomainClassesProfile(tempPath);
 
         // Act - First import
         package.ImportCSharpTypes(coreTypes, config);
@@ -45,10 +45,10 @@ public class CSharpImporterMergerTests
     public async Task ImportToExistingPackage_WithMatchingClass_UpdatesInPlace()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
         var package = PackageModels.WithCustomerClass(); // Already has Customer with Id and Email
         var existingClassId = package.Classes.Single().Id;
-        var config = ImportConfigurations.DomainClassesProfile();
+        var config = ImportConfigurations.DomainClassesProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -62,9 +62,9 @@ public class CSharpImporterMergerTests
     public async Task ImportToExistingPackage_WithNewClass_AddsClass()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.TwoClasses);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.TwoClasses);
         var package = PackageModels.WithCustomerClass(); // Only has Customer
-        var config = ImportConfigurations.DomainClassesProfile();
+        var config = ImportConfigurations.DomainClassesProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -85,8 +85,8 @@ public class CSharpImporterMergerTests
         var existingPropertyCount = existingClass.ChildElements.Count();
 
         // Code now has Name property added
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
-        var config = ImportConfigurations.DomainClassesProfile();
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
+        var config = ImportConfigurations.DomainClassesProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -102,9 +102,9 @@ public class CSharpImporterMergerTests
     public async Task TypeDefinitionsOnlyProfile_AppliesCSharpStereotypeWithNamespace()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
         var package = PackageModels.Empty();
-        var config = ImportConfigurations.TypeDefinitionsOnlyProfile();
+        var config = ImportConfigurations.TypeDefinitionsOnlyProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -123,9 +123,9 @@ public class CSharpImporterMergerTests
     public async Task TypeDefinitionsOnlyProfile_DoesNotImportProperties()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
         var package = PackageModels.Empty();
-        var config = ImportConfigurations.TypeDefinitionsOnlyProfile();
+        var config = ImportConfigurations.TypeDefinitionsOnlyProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -140,9 +140,9 @@ public class CSharpImporterMergerTests
     public async Task TypeDefinitionsOnlyProfile_ImportsAllTypesAsTypeDefinitions()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.MixedTypes);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.MixedTypes);
         var package = PackageModels.Empty();
-        var config = ImportConfigurations.TypeDefinitionsOnlyProfile();
+        var config = ImportConfigurations.TypeDefinitionsOnlyProfile(tempPath);
 
         // Act
         package.ImportCSharpTypes(coreTypes, config);
@@ -157,9 +157,9 @@ public class CSharpImporterMergerTests
     public async Task ImportMultipleTimes_MaintainsStability()
     {
         // Arrange
-        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.TwoClasses);
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.TwoClasses);
         var package = PackageModels.Empty();
-        var config = ImportConfigurations.DomainClassesProfile();
+        var config = ImportConfigurations.DomainClassesProfile(tempPath);
 
         // Act - Import 3 times
         package.ImportCSharpTypes(coreTypes, config);
@@ -179,7 +179,7 @@ public class CSharpImporterMergerTests
 
     // Helper methods
 
-    private async Task<CoreTypesData> AnalyzeCodeInMemory(string code)
+    private async Task<(CoreTypesData, string)> AnalyzeCodeInMemory(string code)
     {
         var syntaxTree = CSharpSyntaxTree.ParseText(code, path: "TestFile.cs");
         var tempPath = Path.Combine(Path.GetTempPath(), $"csharp-test-{Guid.NewGuid()}");
@@ -189,13 +189,21 @@ public class CSharpImporterMergerTests
         
         try
         {
-            return await CSharpCodeAnalyzer.ImportMetadataFromFiles(new[] { filePath });
+            var coreTypesData = await CSharpCodeAnalyzer.ImportMetadataFromFiles(new[] { filePath });
+            return (coreTypesData, tempPath);
         }
         finally
         {
             if (Directory.Exists(tempPath))
             {
-                Directory.Delete(tempPath, recursive: true);
+                try
+                {
+                    Directory.Delete(tempPath, recursive: true);
+                }
+                catch
+                {
+                    // Ignore cleanup failures - temp folder will be cleaned up by OS eventually
+                }
             }
         }
     }

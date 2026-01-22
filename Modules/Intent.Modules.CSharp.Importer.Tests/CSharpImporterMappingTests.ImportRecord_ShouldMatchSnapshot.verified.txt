@@ -1,16 +1,6 @@
 ﻿{
   Classes: [
     {
-      Name: C:,
-      SpecializationType: Folder,
-      Properties: [
-        {
-          Name: Users,
-          SpecializationType: Folder
-        }
-      ]
-    },
-    {
       Name: PersonRecord,
       SpecializationType: Class,
       Properties: [
