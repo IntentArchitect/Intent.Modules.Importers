@@ -10,6 +10,8 @@ namespace Intent.Modules.CSharp.Importer.Importer;
 
 internal static class CSharpImporterExtensions
 {
+    private const string TypeDefinitionProfileId = "type-definition";
+
     public static void ImportCSharpTypes(this IPackageModelPersistable package, CoreTypesData csharpTypes, CSharpConfig csConfig)
     {
         if (!string.IsNullOrWhiteSpace(csConfig.TargetFolderId) && package.GetElementById(csConfig.TargetFolderId) is null)
@@ -50,7 +52,7 @@ internal static class CSharpImporterExtensions
                           ?? builderMetadataManager.CreateElement(settings, classData.Name, classData.FilePath, classData.GetIdentifier(), targetFolderId);
             
             // Apply C# stereotype with namespace only for all-types-as-type-definition profile
-            if (IsTypeDefinitionsOnlyProfile(profile))
+            if (IsTypeDefinitionProfile(profile))
             {
                 ApplyCSharpStereotype(element, classData.Namespace);
             }
@@ -76,7 +78,7 @@ internal static class CSharpImporterExtensions
                           ?? builderMetadataManager.CreateElement(settings, classData.Name, classData.FilePath, classData.GetIdentifier(), targetFolderId);
             
             // Apply C# stereotype with namespace only for all-types-as-type-definition profile
-            if (IsTypeDefinitionsOnlyProfile(profile))
+            if (IsTypeDefinitionProfile(profile))
             {
                 ApplyCSharpStereotype(element, classData.Namespace);
             }
@@ -97,7 +99,7 @@ internal static class CSharpImporterExtensions
                           ?? builderMetadataManager.CreateElement(profile.MapEnumsTo, enumData.Name, enumData.FilePath, enumData.GetIdentifier(), targetFolderId);
             
             // Apply C# stereotype with namespace only for all-types-as-type-definition profile
-            if (IsTypeDefinitionsOnlyProfile(profile))
+            if (IsTypeDefinitionProfile(profile))
             {
                 ApplyCSharpStereotype(element, enumData.Namespace);
             }
@@ -331,9 +333,9 @@ internal static class CSharpImporterExtensions
         }
     }
 
-    private static bool IsTypeDefinitionsOnlyProfile(ImportProfileConfig profile)
+    private static bool IsTypeDefinitionProfile(ImportProfileConfig profile)
     {
-        return profile.Identifier == "all-types-as-type-definition";
+        return profile.Identifier == TypeDefinitionProfileId;
     }
 
     private static void ApplyCSharpStereotype(IElementPersistable element, string csharpNamespace)
