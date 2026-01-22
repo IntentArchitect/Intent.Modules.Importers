@@ -185,21 +185,27 @@ public class CSharpImporterMappingTests
 
     private async Task<CoreTypesData> AnalyzeCodeInMemory(string code)
     {
-        var syntaxTree = CSharpSyntaxTree.ParseText(code, path: "TestFile.cs");
         var tempPath = Path.Combine(Path.GetTempPath(), $"csharp-test-{Guid.NewGuid()}");
-        Directory.CreateDirectory(tempPath);
         var filePath = Path.Combine(tempPath, "TestFile.cs");
-        await File.WriteAllTextAsync(filePath, code);
         
         try
         {
+            Directory.CreateDirectory(tempPath);
+            await File.WriteAllTextAsync(filePath, code);
             return await CSharpCodeAnalyzer.ImportMetadataFromFiles(new[] { filePath });
         }
         finally
         {
             if (Directory.Exists(tempPath))
             {
-                Directory.Delete(tempPath, recursive: true);
+                try
+                {
+                    Directory.Delete(tempPath, recursive: true);
+                }
+                catch
+                {
+                    // Ignore cleanup failures - temp folder will be cleaned up by OS eventually
+                }
             }
         }
     }
