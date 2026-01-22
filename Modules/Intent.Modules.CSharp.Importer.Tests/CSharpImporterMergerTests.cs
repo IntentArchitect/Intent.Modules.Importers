@@ -99,6 +99,27 @@ public class CSharpImporterMergerTests
     }
 
     [Fact]
+    public async Task TypeDefinitionsOnlyProfile_AppliesCSharpStereotypeWithNamespace()
+    {
+        // Arrange
+        var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
+        var package = PackageModels.Empty();
+        var config = ImportConfigurations.TypeDefinitionsOnlyProfile();
+
+        // Act
+        package.ImportCSharpTypes(coreTypes, config);
+
+        // Assert - Class created with C# stereotype containing namespace
+        var typeDefinition = package.Classes.Single(c => c.SpecializationType == "Type-Definition");
+        typeDefinition.Stereotypes.ShouldNotBeEmpty();
+        var csharpStereotype = typeDefinition.Stereotypes.FirstOrDefault(s => s.Name == "C#");
+        csharpStereotype.ShouldNotBeNull();
+        var namespaceProperty = csharpStereotype.Properties.FirstOrDefault(p => p.Name == "Namespace");
+        namespaceProperty.ShouldNotBeNull();
+        namespaceProperty.Value.ShouldNotBeNullOrWhiteSpace();
+    }
+
+    [Fact]
     public async Task TypeDefinitionsOnlyProfile_DoesNotImportProperties()
     {
         // Arrange

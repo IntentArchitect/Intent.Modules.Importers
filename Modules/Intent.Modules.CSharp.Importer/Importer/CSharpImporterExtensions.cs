@@ -1,5 +1,7 @@
 ﻿using Intent.MetadataSynchronizer;
 using Intent.Persistence;
+using Intent.IArchitect.Agent.Persistence.Model;
+using Intent.IArchitect.Agent.Persistence.Model.Common;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using IElementPersistable = Intent.Persistence.IElementPersistable;
 
@@ -23,12 +25,12 @@ internal static class CSharpImporterExtensions
         }
         if (csConfig.ImportProfile.MapClassesTo != null)
         {
-            var classElementsMap = CreateElements(csConfig.ImportProfile.MapClassesTo, csharpTypes.Classes, csConfig.TargetFolderId, builderMetadataManager);
+            var classElementsMap = CreateElements(csConfig.ImportProfile.MapClassesTo, csharpTypes.Classes, csConfig.TargetFolderId, builderMetadataManager, csConfig.ImportProfile);
             ProcessClassElements(csConfig.ImportProfile, classElementsMap, builderMetadataManager);
         }
         if (csConfig.ImportProfile.MapInterfacesTo != null)
         {
-            var interfaceElementsMap = CreateElements(csConfig.ImportProfile.MapInterfacesTo, csharpTypes.Interfaces, csConfig.TargetFolderId, builderMetadataManager);
+            var interfaceElementsMap = CreateElements(csConfig.ImportProfile.MapInterfacesTo, csharpTypes.Interfaces, csConfig.TargetFolderId, builderMetadataManager, csConfig.ImportProfile);
             ProcessInterfaceElements(csConfig.ImportProfile, interfaceElementsMap, builderMetadataManager);
         }
     }
@@ -37,7 +39,8 @@ internal static class CSharpImporterExtensions
         IElementSettings settings,
         IList<ClassData> csharpTypes,
         string? targetFolderId,
-        BuilderMetadataManager builderMetadataManager)
+        BuilderMetadataManager builderMetadataManager,
+        ImportProfileConfig profile)
     {
         var result = new List<(ClassData, IElementPersistable)>();
 
@@ -45,6 +48,13 @@ internal static class CSharpImporterExtensions
         {
             var element = builderMetadataManager.GetElementByReference(classData.GetIdentifier())
                           ?? builderMetadataManager.CreateElement(settings, classData.Name, classData.FilePath, classData.GetIdentifier(), targetFolderId);
+            
+            // Apply C# stereotype with namespace only for type-definitions-only profile
+            if (IsTypeDefinitionsOnlyProfile(profile))
+            {
+                ApplyCSharpStereotype(element, classData.Namespace);
+            }
+            
             result.Add((classData, element));
         }
 
@@ -55,7 +65,8 @@ internal static class CSharpImporterExtensions
         IElementSettings settings,
         IList<InterfaceData> csharpTypes,
         string? targetFolderId,
-        BuilderMetadataManager builderMetadataManager)
+        BuilderMetadataManager builderMetadataManager,
+        ImportProfileConfig profile)
     {
         var result = new List<(InterfaceData, IElementPersistable)>();
 
@@ -63,6 +74,13 @@ internal static class CSharpImporterExtensions
         {
             var element = builderMetadataManager.GetElementByReference(classData.GetIdentifier())
                           ?? builderMetadataManager.CreateElement(settings, classData.Name, classData.FilePath, classData.GetIdentifier(), targetFolderId);
+            
+            // Apply C# stereotype with namespace only for type-definitions-only profile
+            if (IsTypeDefinitionsOnlyProfile(profile))
+            {
+                ApplyCSharpStereotype(element, classData.Namespace);
+            }
+            
             result.Add((classData, element));
         }
 
@@ -77,6 +95,12 @@ internal static class CSharpImporterExtensions
         {
             var element = builderMetadataManager.GetElementByReference(enumData.GetIdentifier())
                           ?? builderMetadataManager.CreateElement(profile.MapEnumsTo, enumData.Name, enumData.FilePath, enumData.GetIdentifier(), targetFolderId);
+            
+            // Apply C# stereotype with namespace only for type-definitions-only profile
+            if (IsTypeDefinitionsOnlyProfile(profile))
+            {
+                ApplyCSharpStereotype(element, enumData.Namespace);
+            }
             var settings = profile.MapEnumLiteralsTo;
             if (settings != null)
             {
@@ -305,5 +329,35 @@ internal static class CSharpImporterExtensions
                 builderMetadataManager.SetTypeReference(newParam, parameter.Type, parameter.IsNullable, parameter.IsCollection);
             }
         }
+    }
+
+    private static bool IsTypeDefinitionsOnlyProfile(ImportProfileConfig profile)
+    {
+        return profile.Identifier == "type-definitions-only";
+    }
+
+    private static void ApplyCSharpStereotype(IElementPersistable element, string csharpNamespace)
+    {
+        if (element is not ElementPersistable persistable)
+        {
+            return;
+        }
+
+        const string CSharpStereotypeDefinitionId = "30c5995e-17ab-4cc7-8881-3e9561ab06fe";
+        const string NamespacePropertyDefinitionId = "8CCCD630-6AF9-41FA-8E5F-414860AD89BB";
+        
+        var stereotype = persistable.GetOrCreateStereotype(
+            CSharpStereotypeDefinitionId,
+            init =>
+            {
+                init.Name = "C#";
+                init.DefinitionPackageId = "730e1275-0c32-44f7-991a-9619d07ca68d";
+                init.DefinitionPackageName = "Intent.Common.CSharp";
+            });
+        
+        stereotype.GetOrCreateProperty(NamespacePropertyDefinitionId, prop =>
+        {
+            prop.Name = "Namespace";
+        }).Value = csharpNamespace;
     }
 }
