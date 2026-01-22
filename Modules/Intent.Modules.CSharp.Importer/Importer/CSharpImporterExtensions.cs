@@ -49,7 +49,7 @@ internal static class CSharpImporterExtensions
             var element = builderMetadataManager.GetElementByReference(classData.GetIdentifier())
                           ?? builderMetadataManager.CreateElement(settings, classData.Name, classData.FilePath, classData.GetIdentifier(), targetFolderId);
             
-            // Apply C# stereotype with namespace only for type-definitions-only profile
+            // Apply C# stereotype with namespace only for all-types-as-type-definition profile
             if (IsTypeDefinitionsOnlyProfile(profile))
             {
                 ApplyCSharpStereotype(element, classData.Namespace);
@@ -75,7 +75,7 @@ internal static class CSharpImporterExtensions
             var element = builderMetadataManager.GetElementByReference(classData.GetIdentifier())
                           ?? builderMetadataManager.CreateElement(settings, classData.Name, classData.FilePath, classData.GetIdentifier(), targetFolderId);
             
-            // Apply C# stereotype with namespace only for type-definitions-only profile
+            // Apply C# stereotype with namespace only for all-types-as-type-definition profile
             if (IsTypeDefinitionsOnlyProfile(profile))
             {
                 ApplyCSharpStereotype(element, classData.Namespace);
@@ -96,7 +96,7 @@ internal static class CSharpImporterExtensions
             var element = builderMetadataManager.GetElementByReference(enumData.GetIdentifier())
                           ?? builderMetadataManager.CreateElement(profile.MapEnumsTo, enumData.Name, enumData.FilePath, enumData.GetIdentifier(), targetFolderId);
             
-            // Apply C# stereotype with namespace only for type-definitions-only profile
+            // Apply C# stereotype with namespace only for all-types-as-type-definition profile
             if (IsTypeDefinitionsOnlyProfile(profile))
             {
                 ApplyCSharpStereotype(element, enumData.Namespace);
@@ -333,7 +333,7 @@ internal static class CSharpImporterExtensions
 
     private static bool IsTypeDefinitionsOnlyProfile(ImportProfileConfig profile)
     {
-        return profile.Identifier == "type-definitions-only";
+        return profile.Identifier == "all-types-as-type-definition";
     }
 
     private static void ApplyCSharpStereotype(IElementPersistable element, string csharpNamespace)

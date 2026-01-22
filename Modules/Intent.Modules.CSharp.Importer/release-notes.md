@@ -1,3 +1,7 @@
+### Version 1.0.4
+
+- Improvement: Import any C# type as a `Type-Definition` inside a Services or Domain designer.
+
 ### Version 1.0.3
 
 - Improvement: Added ProjectUrl link.

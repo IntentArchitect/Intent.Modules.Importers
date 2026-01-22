@@ -56,7 +56,7 @@ public static class ImportConfigurations
         TargetFolder = ".",  // Provide valid folder path for file organization logic
         ImportProfile = new ImportProfileConfig
         {
-            Identifier = "type-definitions-only",
+            Identifier = "all-types-as-type-definition",
             MapClassesTo = new ElementSettings("d4e577cd-ad05-4180-9a2e-fff4ddea0e1e", "Type-Definition"),
             MapInterfacesTo = new ElementSettings("d4e577cd-ad05-4180-9a2e-fff4ddea0e1e", "Type-Definition"),
             MapEnumsTo = new ElementSettings("d4e577cd-ad05-4180-9a2e-fff4ddea0e1e", "Type-Definition"),

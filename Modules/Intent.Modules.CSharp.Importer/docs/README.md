@@ -31,6 +31,10 @@ Repeated runs track external references (`Namespace.TypeName`) so updated files 
 
 Profiles map Roslyn symbols to Intent elements and may pull in dependent artefacts such as DTOs.
 
+### Universal
+
+- **All Types as Type Definition** (`all-types-as-type-definition`): Imports all C# types (classes, interfaces, enums) as `Type-Definition` elements without members. Each definition is annotated with a C# stereotype containing the detected namespace, enabling later specialization into specific types.
+
 ### Domain designer
 
 - **Classes** (`domain-classes`): Entities and records with attributes, associations, and inheritance.
@@ -61,6 +65,7 @@ Profiles map Roslyn symbols to Intent elements and may pull in dependent artefac
 - **Constructors & methods** (where supported) capture signatures, async flags, returns, and generics.
 - **Enums** carry literal values when explicitly assigned.
 - **Type resolution** maps known primitives; unknown types become `Type-Definition` placeholders for later mapping.
+- **C# stereotype** (when using the "All Types as Type Definition" profile) annotates each element with the source C# namespace, enabling type-safe reference resolution and later conversion to specialized types.
 
 ## Tips
 

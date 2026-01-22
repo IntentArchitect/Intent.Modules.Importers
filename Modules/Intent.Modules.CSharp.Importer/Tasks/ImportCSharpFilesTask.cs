@@ -61,7 +61,7 @@ namespace Intent.Modules.CSharp.Importer.Tasks
                 //----------------- UNIVERSAL -----------------//
                 new ImportProfileConfig()
                 {
-                    Identifier = "type-definitions-only",
+                    Identifier = "all-types-as-type-definition",
                     MapClassesTo = designer.GetElementSettings("d4e577cd-ad05-4180-9a2e-fff4ddea0e1e"),
                     MapInterfacesTo = designer.GetElementSettings("d4e577cd-ad05-4180-9a2e-fff4ddea0e1e"),
                 },

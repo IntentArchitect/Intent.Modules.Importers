@@ -124,7 +124,7 @@ function getAvailableProfiles(packageModel: MacroApi.Context.IPackageApi): IProf
     const profiles: IProfileOption[] = [];
     
     // Available in all package types
-    profiles.push({ id: "type-definitions-only", description: "Type Definitions Only" });
+    profiles.push({ id: "all-types-as-type-definition", description: "All Types as Type Definition" });
     
     if (packageModel.specialization == "Domain Package") {
         profiles.push({ id: "domain-classes", description: "Classes" });
