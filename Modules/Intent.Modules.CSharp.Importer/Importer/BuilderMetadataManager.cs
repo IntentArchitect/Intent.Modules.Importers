@@ -50,7 +50,8 @@ public class BuilderMetadataManager
             var pathToHere = string.Join("-", parts.Take(partIndex + 1));
             var externalReference = $"Folder-{pathToHere}";
 
-            if (!_metadataLookup.TryGetElementByReference(externalReference, out var folderElement))
+            if (!_metadataLookup.TryGetElementByReference(externalReference, out IElementPersistable folderElement) &&
+                !_metadataLookup.TryGetElementByName(targetFolder?.Name, targetFolder?.ParentFolderId, out folderElement))
             {
                 folderElement = (parentFolder?.ChildElements ?? _package.Classes).Add(
                     id: Guid.NewGuid().ToString().ToLower(),
@@ -87,6 +88,13 @@ public class BuilderMetadataManager
     public IElementPersistable? GetElementByReference(string externalReference)
     {
         return !_metadataLookup.TryGetElementByReference(externalReference, out var element)
+            ? null
+            : element;
+    }
+
+    public IElementPersistable? GetElementByName(string name)
+    {
+        return !_metadataLookup.TryGetElementByName(name, out var element)
             ? null
             : element;
     }

@@ -49,6 +49,7 @@ internal static class CSharpImporterExtensions
         foreach (var classData in csharpTypes)
         {
             var element = builderMetadataManager.GetElementByReference(classData.GetIdentifier())
+                          ?? builderMetadataManager.GetElementByName(classData.Name) 
                           ?? builderMetadataManager.CreateElement(settings, classData.Name, classData.FilePath, classData.GetIdentifier(), targetFolderId);
             
             // Apply C# stereotype with namespace only for all-types-as-type-definition profile
@@ -75,6 +76,7 @@ internal static class CSharpImporterExtensions
         foreach (var classData in csharpTypes)
         {
             var element = builderMetadataManager.GetElementByReference(classData.GetIdentifier())
+                          ?? builderMetadataManager.GetElementByName(classData.Name)
                           ?? builderMetadataManager.CreateElement(settings, classData.Name, classData.FilePath, classData.GetIdentifier(), targetFolderId);
             
             // Apply C# stereotype with namespace only for all-types-as-type-definition profile
@@ -96,6 +98,7 @@ internal static class CSharpImporterExtensions
         foreach (var enumData in enums)
         {
             var element = builderMetadataManager.GetElementByReference(enumData.GetIdentifier())
+                          ?? builderMetadataManager.GetElementByName(enumData.Name)
                           ?? builderMetadataManager.CreateElement(profile.MapEnumsTo, enumData.Name, enumData.FilePath, enumData.GetIdentifier(), targetFolderId);
             
             // Apply C# stereotype with namespace only for all-types-as-type-definition profile

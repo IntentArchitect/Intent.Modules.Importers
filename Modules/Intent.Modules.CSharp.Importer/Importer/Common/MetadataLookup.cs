@@ -77,8 +77,30 @@ public class MetadataLookup
                 grouping => grouping.Key ?? string.Empty,
                 grouping => (IReadOnlyCollection<IElementPersistable>)grouping.ToArray());
 
+        // when building the _elementsByReference collection, only build the collection using the  "main" element types
+        // which classes/interfaces/enums can be mapped to.
+        // In theory we do not care about main parent items for duplicates, and then the children of those items
+        // should have unique external references under that parent.
+        var allowedTypes = new List<string>
+        {
+            { "04e12b51-ed12-42a3-9667-a6aa81bb6d10" }, // domain class
+            { "85fba0e9-9161-4c85-a603-a229ef312beb" }, // enum
+            { "0814e459-fb9b-47db-b7eb-32ce30397e8a" }, // domain event
+            { "4464fabe-c59e-4d90-81fc-c9245bdd1afd" }, // domain contract
+            { "b16578a5-27b1-4047-a8df-f0b783d706bd" }, // service
+            { "ccf14eb6-3a55-4d81-b5b9-d27311c70cb9" }, // commands
+            { "e71b0662-e29d-4db2-868b-8a12464b25d0" }, // queries
+            { "fee0edca-4aa0-4f77-a524-6bbd84e78734" }, // dtos
+            { "d4e577cd-ad05-4180-9a2e-fff4ddea0e1e" }, // type definition
+            { "cbe970af-5bad-4d92-a3ed-a24b9fdaa23e" }, // integration message
+            { "7f01ca8e-0e3c-4735-ae23-a45169f71625" }, // integration command
+            { "544f1d57-27ce-4985-a4ec-cc01568d72b0" }, // event dto
+            { "4d95d53a-8855-4f35-aa82-e312643f5c5f" }, // folders
+        };
+
         _elementsByReference = _elementsById.Values
             .Where(x => !string.IsNullOrWhiteSpace(x.ExternalReference))
+            .Where(x => allowedTypes.Contains(x.SpecializationTypeId))
             .ToDictionary(x => x.ExternalReference);
 
         foreach (var association in associations)
@@ -196,6 +218,25 @@ public class MetadataLookup
         {
             element = elements[0];
             return true;
+        }
+
+        element = default;
+        return false;
+    }
+
+    // Used specifically for folders (but can be used for other elements too)
+    public bool TryGetElementByName(string name, string? parentId, out IElementPersistable element)
+    {
+        if (_elementsByName.TryGetValue(name, out var elements))
+        {
+            if(parentId != null)
+            {
+                element = elements.FirstOrDefault(e => e.ParentFolderId == parentId) ?? default;
+                return true;
+            }
+
+            element = default;
+            return false;
         }
 
         element = default;
