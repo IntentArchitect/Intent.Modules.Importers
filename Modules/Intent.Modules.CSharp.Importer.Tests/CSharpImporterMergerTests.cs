@@ -116,7 +116,7 @@ public class CSharpImporterMergerTests
     }
 
     [Fact]
-    public async Task TypeDefinitionsOnlyProfile_DoesNotImportEnums()
+    public async Task TypeDefinitionsOnlyProfile_ImportsAllTypesAsTypeDefinitions()
     {
         // Arrange
         var coreTypes = await AnalyzeCodeInMemory(CSharpCodeSamples.MixedTypes);
@@ -126,9 +126,10 @@ public class CSharpImporterMergerTests
         // Act
         package.ImportCSharpTypes(coreTypes, config);
 
-        // Assert - Should import class and interface but NOT enum
-        package.Classes.Count().ShouldBeGreaterThanOrEqualTo(1);
-        // Enums should not be imported with type-definitions-only profile
+        // Assert - Should import class, interface, and enum all as Type-Definition
+        var typeDefinitions = package.Classes.Where(c => c.SpecializationType == "Type-Definition").ToList();
+        typeDefinitions.Count().ShouldBeGreaterThanOrEqualTo(3); // class, interface, enum
+        typeDefinitions.ShouldAllBe(t => t.ChildElements.Count() == 0); // No members
     }
 
     [Fact]

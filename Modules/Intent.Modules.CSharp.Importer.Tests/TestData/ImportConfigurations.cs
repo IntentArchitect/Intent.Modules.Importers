@@ -59,6 +59,7 @@ public static class ImportConfigurations
             Identifier = "type-definitions-only",
             MapClassesTo = new ElementSettings("d4e577cd-ad05-4180-9a2e-fff4ddea0e1e", "Type-Definition"),
             MapInterfacesTo = new ElementSettings("d4e577cd-ad05-4180-9a2e-fff4ddea0e1e", "Type-Definition"),
+            MapEnumsTo = new ElementSettings("d4e577cd-ad05-4180-9a2e-fff4ddea0e1e", "Type-Definition"),
         }
     };
 
