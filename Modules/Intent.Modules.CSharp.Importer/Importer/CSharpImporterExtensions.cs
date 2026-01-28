@@ -307,7 +307,7 @@ internal static class CSharpImporterExtensions
             {
                 break;
             }
-            var existingMethod = element.ChildElements.SingleOrDefault(x => x.ExternalReference == method.GetIdentifier());
+            var existingMethod = element.ChildElements.SingleOrDefault(x => x.ExternalReference == $"{classData.GetIdentifier()}+{method.GetIdentifier()}");
             var newMethod = existingMethod ?? element.ChildElements.Add(
                 id: Guid.NewGuid().ToString().ToLower(),
                 specializationType: profile.MapMethodsTo.SpecializationType,
@@ -315,6 +315,12 @@ internal static class CSharpImporterExtensions
                 name: method.Name,
                 parentId: element.Id,
                 externalReference: $"{classData.GetIdentifier()}+{method.GetIdentifier()}");
+
+            if (method.ReturnType is not null)
+            {
+                builderMetadataManager.SetTypeReference(newMethod, method.ReturnType, method.ReturnType?.Contains('?') ?? false, method.ReturnsCollection);
+            }
+
             foreach (var parameter in method.Parameters)
             {
                 if (profile.MapMethodParametersTo is null)

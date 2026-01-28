@@ -1,3 +1,7 @@
+### Version 1.0.5
+
+- Fixed: Return types correct set on service operations when importing from C# files.
+
 ### Version 1.0.4
 
 - Improvement: Import any C# type as a `Type-Definition` inside a Services or Domain designer.

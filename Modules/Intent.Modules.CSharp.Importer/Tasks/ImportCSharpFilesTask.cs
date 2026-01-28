@@ -34,7 +34,6 @@ namespace Intent.Modules.CSharp.Importer.Tasks
 
         protected override ExecuteResult<int> ExecuteModuleTask(ImportCSharpFileInputModel importModel)
         {
-            //Debugger.Launch();
             var importedTypes = CSharpCodeAnalyzer.ImportMetadataFromFiles(importModel.SelectedFiles).GetAwaiter().GetResult();
 
             var application = _persistenceLoader.LoadCurrentApplication();
