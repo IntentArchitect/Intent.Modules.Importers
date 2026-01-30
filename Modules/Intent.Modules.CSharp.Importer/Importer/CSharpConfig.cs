@@ -18,6 +18,12 @@ public record ImportProfileConfig
     public IAssociationSettings? MapAssociationsTo { get; init; }
     public IAssociationSettings? MapInheritanceTo { get; init; }
     public ImportProfileConfig? DependencyProfile { get; set; }
+    // Usage example: Service creation from Interface. If an interface implements another interface, should the parent interface methods be created on the child
+    // or or their own element (or both)
+    public ImportTypes MapBaseMethodsToChildTypes { get; init; }
+    // Usage example: Service creation from Interface. If an interface implements another interface, should the parent interface result in their own element
+    // or should it be skipped, usually used in conjunction with MapBaseMethodsToChildTypes
+    public ImportTypes SkipBaseElementCreation { get; init; }
 }
 
 public record CSharpConfig
@@ -25,4 +31,11 @@ public record CSharpConfig
     public required ImportProfileConfig ImportProfile { get; init; }
     public string? TargetFolder { get; init; }
     public string? TargetFolderId { get; init; }
+}
+
+[Flags]
+public enum ImportTypes
+{
+    Class = 1,
+    Interface = 2
 }

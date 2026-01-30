@@ -32,9 +32,88 @@ internal static class CSharpImporterExtensions
         }
         if (csConfig.ImportProfile.MapInterfacesTo != null)
         {
-            var interfaceElementsMap = CreateElements(csConfig.ImportProfile.MapInterfacesTo, csharpTypes.Interfaces, csConfig.TargetFolderId, builderMetadataManager, csConfig.ImportProfile);
+            var interfaceElementsMap = CreateElements(csConfig.ImportProfile.MapInterfacesTo, GetQualifyingInterfaces(csConfig.ImportProfile, csharpTypes.Interfaces), csConfig.TargetFolderId, builderMetadataManager, csConfig.ImportProfile);
             ProcessInterfaceElements(csConfig.ImportProfile, interfaceElementsMap, builderMetadataManager);
         }
+    }
+
+    private static IList<InterfaceData> GetQualifyingInterfaces(ImportProfileConfig profile, IList<InterfaceData> interfaces)
+    {
+        // build a lookup of all interface names that are used as base interfaces
+        var baseInterfaceNames = interfaces
+            .SelectMany(x => x.Interfaces)
+            .ToHashSet(StringComparer.Ordinal);
+
+        // build a lookup of interface name to interface data for quick access
+        var interfaceLookup = interfaces
+            .SelectMany(i => new[]
+            {
+                (Key: i.Name, Interface: i),
+                (Key: $"{i.Namespace}.{i.Name}", Interface: i)
+            })
+            .ToLookup(x => x.Key, x => x.Interface, StringComparer.Ordinal);
+
+        var qualifyingInterfaces = interfaces;
+
+        if((profile.SkipBaseElementCreation & ImportTypes.Interface) == ImportTypes.Interface)
+        {
+            // filter out interfaces that are used as base interfaces
+            qualifyingInterfaces = [.. interfaces
+                .Where(i => !baseInterfaceNames.Contains(i.Name) &&
+                            !baseInterfaceNames.Contains($"{i.Namespace}.{i.Name}"))];
+        }
+
+        var methodCache = new Dictionary<string, List<MethodData>>(StringComparer.Ordinal);
+
+        if ((profile.MapBaseMethodsToChildTypes & ImportTypes.Interface) == ImportTypes.Interface)
+        {
+            // recursively gather inherited methods for each qualifying interface
+            foreach (var item in qualifyingInterfaces)
+            {
+                var inheritedMethods = new List<MethodData>();
+
+                foreach (var baseInterfaceName in item.Interfaces)
+                {
+                    foreach (var baseInterface in interfaceLookup[baseInterfaceName])
+                    {
+                        inheritedMethods.AddRange(GetAllMethodsRecursive(baseInterface, interfaceLookup, methodCache));
+                    }
+                }
+
+                if (inheritedMethods.Count > 0)
+                {
+                    item.Methods = [.. item.Methods, .. inheritedMethods];
+                }
+            }
+        }
+
+        return qualifyingInterfaces;
+    }
+
+    private static List<MethodData> GetAllMethodsRecursive(
+        InterfaceData interfaceData, 
+        ILookup<string, InterfaceData> interfaceLookup, 
+        Dictionary<string, List<MethodData>> cache)
+    {
+        var cacheKey = $"{interfaceData.Namespace}.{interfaceData.Name}";
+        
+        if (cache.TryGetValue(cacheKey, out var cachedMethods))
+        {
+            return cachedMethods;
+        }
+        
+        var allMethods = new List<MethodData>(interfaceData.Methods);
+        
+        foreach (var baseInterfaceName in interfaceData.Interfaces)
+        {
+            foreach (var baseInterface in interfaceLookup[baseInterfaceName])
+            {
+                allMethods.AddRange(GetAllMethodsRecursive(baseInterface, interfaceLookup, cache));
+            }
+        }
+        
+        cache[cacheKey] = allMethods;
+        return allMethods;
     }
 
     private static List<(ClassData, IElementPersistable)> CreateElements(

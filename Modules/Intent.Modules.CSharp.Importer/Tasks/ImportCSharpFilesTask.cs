@@ -111,6 +111,8 @@ namespace Intent.Modules.CSharp.Importer.Tasks
                     MapMethodParametersTo = designer.GetElementSettings("00208d20-469d-41cb-8501-768fd5eb796b"),
                     MapEnumsTo = designer.GetElementSettings("85fba0e9-9161-4c85-a603-a229ef312beb"),
                     MapEnumLiteralsTo = designer.GetElementSettings("4215f417-25d2-4509-9309-5076a1452eaa"),
+                    MapBaseMethodsToChildTypes = ImportTypes.Interface,
+                    SkipBaseElementCreation = ImportTypes.Interface,
                 },
                 new ImportProfileConfig()
                 {

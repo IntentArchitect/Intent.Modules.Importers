@@ -25,7 +25,7 @@ public record TypeDeclarationData
     public IReadOnlyList<string> Interfaces { get; init; }
     public IReadOnlyList<string> Attributes { get; init; }
     public IReadOnlyList<PropertyData> Properties { get; init; }
-    public IReadOnlyList<MethodData> Methods { get; init; }
+    public IReadOnlyList<MethodData> Methods { get; set; }
 
     public string GetIdentifier()
     {

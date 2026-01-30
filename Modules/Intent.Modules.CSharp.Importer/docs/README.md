@@ -66,6 +66,7 @@ Profiles map Roslyn symbols to Intent elements and may pull in dependent artefac
 - **Enums** carry literal values when explicitly assigned.
 - **Type resolution** maps known primitives; unknown types become `Type-Definition` placeholders for later mapping.
 - **C# stereotype** (when using the "Type Definition" profile) annotates each element with the source C# namespace, enabling type-safe reference resolution and later conversion to specialized types.
+- **Interfaces to service** import will include all methods on any base interfaces as well, provided the base interfaces are included in the import selection. Services are not created for the base interfaces.
 
 ## Tips
 
