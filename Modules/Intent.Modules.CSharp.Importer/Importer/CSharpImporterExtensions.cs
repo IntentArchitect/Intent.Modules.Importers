@@ -298,6 +298,7 @@ internal static class CSharpImporterExtensions
                 name: prop.Name,
                 parentId: element.Id,
                 externalReference: $"{classData.GetIdentifier()}+{prop.GetIdentifier()}");
+
             builderMetadataManager.SetTypeReference(attribute, prop.Type, prop.IsNullable, prop.IsCollection);
         }
 
@@ -319,6 +320,10 @@ internal static class CSharpImporterExtensions
             if (method.ReturnType is not null)
             {
                 builderMetadataManager.SetTypeReference(newMethod, method.ReturnType, method.ReturnType?.Contains('?') ?? false, method.ReturnsCollection);
+            }
+            else
+            {
+                builderMetadataManager.SetTypeReference(newMethod, null, method.ReturnType?.Contains('?') ?? false, method.ReturnsCollection);
             }
 
             foreach (var parameter in method.Parameters)

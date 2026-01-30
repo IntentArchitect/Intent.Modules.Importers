@@ -218,6 +218,11 @@ public class BuilderMetadataManager
         targetElement.TypeReference.IsNullable = isNullable;
         targetElement.TypeReference.IsCollection = isCollection;
 
+        if(type is null)
+        {
+            return;
+        }
+                
         if (_metadataLookup.TryGetTypeDefinitionByName(type, 0, out var typeDefElement))
         {
             targetElement.TypeReference.TypeId = typeDefElement.Id;
