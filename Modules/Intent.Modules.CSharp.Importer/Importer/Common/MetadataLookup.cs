@@ -225,9 +225,9 @@ public class MetadataLookup
     }
 
     // Used specifically for folders (but can be used for other elements too)
-    public bool TryGetElementByName(string name, string? parentId, out IElementPersistable element)
+    public bool TryGetElementByName(string? name, string? parentId, out IElementPersistable element)
     {
-        if (_elementsByName.TryGetValue(name, out var elements))
+        if (name is not null && _elementsByName.TryGetValue(name, out var elements))
         {
             if(parentId != null)
             {
