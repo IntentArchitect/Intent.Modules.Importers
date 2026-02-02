@@ -5,11 +5,11 @@ using System.Linq;
 using Intent.Engine;
 using Intent.MetadataSynchronizer;
 using Intent.MetadataSynchronizer.Configuration;
-using Intent.Modules.Json.Importer.Tasks.Helpers;
-using Intent.Modules.Json.Importer.Tasks.Models;
 using Intent.Modules.OpenApi.Importer.Importer;
 using Intent.Plugins;
 using Intent.Utils;
+using Intent.Modules.Shared.Importer.Tasks.Helpers;
+using Intent.Modules.Shared.Importer.Tasks.Models;
 
 namespace Intent.Modules.OpenApi.Importer.Tasks;
 

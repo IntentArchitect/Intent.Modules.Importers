@@ -3,6 +3,7 @@
 - Improvement: When importing Interfaces as Services, inherited interfaces are now taken into account and imported onto the Service as well.
 - Fixed: Return types correct set on service operations when importing from C# files.
 - Fixed: Software Factory will no longer crash after importing C# files without first saving the designer.
+- Fixed: Internal refactor to ensure that `Intent.Modules.Importer.FileDirectoryPreviewTask` no longer exists as other importers who have shared code could end up registering the same Task ID and cause a crash.
 
 ### Version 1.0.4
 

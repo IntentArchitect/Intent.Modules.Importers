@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Intent.Modules.Json.Importer.Tasks.Helpers;
+namespace Intent.Modules.Shared.Importer.Tasks.Helpers;
 
 internal static class SerializationHelper
 {

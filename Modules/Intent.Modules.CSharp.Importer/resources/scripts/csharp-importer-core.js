@@ -50,7 +50,7 @@ async function getCharpFilesAndPreview(folderPath, glob) {
         sourceFolder: folderPath,
         pattern: glob != null && glob != "" ? glob : "**/*.cs",
     };
-    const executionResult = await executeImporterModuleTask("Intent.Modules.Importer.FileDirectoryPreviewTask", request);
+    const executionResult = await executeImporterModuleTask("Intent.Modules.Importer.CSharp.FileDirectoryPreviewTask", request);
     if (((_a = executionResult.errors) !== null && _a !== void 0 ? _a : []).length > 0) {
         throw new Error(executionResult.errors.join("\r\n"));
     }

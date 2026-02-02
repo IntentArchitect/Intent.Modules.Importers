@@ -70,7 +70,7 @@ async function getCharpFilesAndPreview(folderPath: string, glob?: string): Promi
         pattern: glob != null && glob != "" ? glob : "**/*.cs",
     };
     const executionResult = await executeImporterModuleTask(
-        "Intent.Modules.Importer.FileDirectoryPreviewTask",
+        "Intent.Modules.Importer.CSharp.FileDirectoryPreviewTask",
         request
     );
     if ((executionResult.errors ?? []).length > 0) {

@@ -1,4 +1,4 @@
-namespace Intent.Modules.Json.Importer.Tasks.Models;
+namespace Intent.Modules.Shared.Importer.Tasks.Models;
 
 public class FilePreviewInputModel
 {

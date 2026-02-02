@@ -3,7 +3,7 @@ using System.Linq;
 using Intent.Engine;
 using Intent.Metadata.Models;
 
-namespace Intent.Modules.Json.Importer.Tasks.Helpers;
+namespace Intent.Modules.Shared.Importer.Tasks.Helpers;
 
 internal static class MetadataManagerExtensions
 {

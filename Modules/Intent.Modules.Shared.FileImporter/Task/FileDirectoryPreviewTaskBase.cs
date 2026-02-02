@@ -1,16 +1,17 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
-using Intent.Modules.Json.Importer.Tasks.Helpers;
-using Intent.Modules.Json.Importer.Tasks.Models;
+using Intent.Modules.Shared.Importer.Tasks.Helpers;
+using Intent.Modules.Shared.Importer.Tasks.Models;
 using Microsoft.Extensions.FileSystemGlobbing;
 using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
 
-namespace Intent.Modules.Json.Importer.Tasks
+namespace Intent.Modules.Shared.Importer.Tasks
 {
-    public class FileDirectoryPreviewTask : ModuleTaskBase<FilePreviewInputModel, DirectoryPreview>
+    public abstract class FileDirectoryPreviewTaskBase : ModuleTaskBase<FilePreviewInputModel, DirectoryPreview>
     {
-        public override string TaskTypeId => "Intent.Modules.Importer.FileDirectoryPreviewTask";
+        public override string TaskTypeId => throw new NotImplementedException("Override TaskTypeId and supply unique Task Name.");
+
         public override string TaskTypeName => "File Preview";
 
         protected override ValidationResult ValidateInputModel(FilePreviewInputModel inputModel)

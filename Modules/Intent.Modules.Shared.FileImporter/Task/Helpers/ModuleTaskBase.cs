@@ -1,10 +1,10 @@
 using System;
 using System.Text.Json;
-using Intent.Modules.Json.Importer.Tasks.Models;
+using Intent.Modules.Shared.Importer.Tasks.Models;
 using Intent.Plugins;
 using Intent.Utils;
 
-namespace Intent.Modules.Json.Importer.Tasks.Helpers;
+namespace Intent.Modules.Shared.Importer.Tasks.Helpers;
 
 public abstract class ModuleTaskBase<TInputModel, TOutputModel> : IModuleTask
     where TInputModel : class

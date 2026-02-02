@@ -12,7 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Task\Helpers\MetadataManagerExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Task\Helpers\ModuleTaskBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Task\Helpers\SerializationHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Task\FileDirectoryPreviewTask.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Task\FileDirectoryPreviewTaskBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Task\Models\ExecuteResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Task\Models\Models.cs" />
   </ItemGroup>
