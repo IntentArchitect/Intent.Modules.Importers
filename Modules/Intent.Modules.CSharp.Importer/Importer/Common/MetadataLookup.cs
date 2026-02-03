@@ -1,8 +1,4 @@
-﻿using Intent.IArchitect.Agent.Persistence.Model;
-using Intent.IArchitect.Agent.Persistence.Model.Common;
-using Intent.IArchitect.Agent.Persistence.Model.Module;
-using Intent.IArchitect.Agent.Persistence.Serialization;
-using Intent.Persistence;
+﻿using Intent.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Intent.Architect.Persistence" Version="3.7.4-pre.0" />
+	<PackageReference Include="Intent.Architect.Persistence" Version="3.7.4-pre.0" />
     <PackageReference Include="Intent.Modules.Common" Version="3.7.2" />
     <PackageReference Include="Intent.Packager" Version="3.6.0">
       <PrivateAssets>all</PrivateAssets>

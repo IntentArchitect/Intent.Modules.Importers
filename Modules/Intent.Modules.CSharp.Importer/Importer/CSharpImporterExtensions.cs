@@ -1,7 +1,6 @@
-﻿using Intent.MetadataSynchronizer;
+﻿using Intent.Metadata.Models;
+using Intent.MetadataSynchronizer;
 using Intent.Persistence;
-using Intent.IArchitect.Agent.Persistence.Model;
-using Intent.IArchitect.Agent.Persistence.Model.Common;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using IElementPersistable = Intent.Persistence.IElementPersistable;
 
@@ -433,26 +432,13 @@ internal static class CSharpImporterExtensions
 
     private static void ApplyCSharpStereotype(IElementPersistable element, string csharpNamespace)
     {
-        if (element is not ElementPersistable persistable)
-        {
-            return;
-        }
 
         const string CSharpStereotypeDefinitionId = "30c5995e-17ab-4cc7-8881-3e9561ab06fe";
         const string NamespacePropertyDefinitionId = "8CCCD630-6AF9-41FA-8E5F-414860AD89BB";
+
+        var stereotype = element.GetOrCreateStereotype(CSharpStereotypeDefinitionId, "C#", "730e1275-0c32-44f7-991a-9619d07ca68d", "Intent.Common.CSharp");
+        var property = stereotype.GetOrCreateProperty(NamespacePropertyDefinitionId, "Namespace", csharpNamespace);
         
-        var stereotype = persistable.GetOrCreateStereotype(
-            CSharpStereotypeDefinitionId,
-            init =>
-            {
-                init.Name = "C#";
-                init.DefinitionPackageId = "730e1275-0c32-44f7-991a-9619d07ca68d";
-                init.DefinitionPackageName = "Intent.Common.CSharp";
-            });
-        
-        stereotype.GetOrCreateProperty(NamespacePropertyDefinitionId, prop =>
-        {
-            prop.Name = "Namespace";
-        }).Value = csharpNamespace;
+        property.Value = csharpNamespace;
     }
 }

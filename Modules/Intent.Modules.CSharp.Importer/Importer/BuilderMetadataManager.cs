@@ -2,10 +2,10 @@
 using Intent.Persistence;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using Intent.IArchitect.Agent.Persistence.Model;
 using IElementPersistable = Intent.Persistence.IElementPersistable;
 using Intent.MetadataSynchronizer;
 using Intent.MetadataSynchronizer.CSharp.Importer;
+using Intent.IArchitect.Agent.Persistence.Model;
 
 namespace Intent.Modules.CSharp.Importer.Importer;
 
