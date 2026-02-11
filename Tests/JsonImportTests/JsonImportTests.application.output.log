@@ -3,7 +3,7 @@
   <ApplicationId>6cefaeaa-836d-4830-baac-dcd1bb9a8caa</ApplicationId>
   <FileLogs>
     <FileLog>
-      <CorrelationId>Intent.VisualStudio.Projects.GitIgnore#cc0e25b3-9afd-4aaf-a5a9-bbe4a2410267</CorrelationId>
+      <CorrelationId>Intent.VisualStudio.Projects.GitIgnore#a7cba691-c3c7-400c-8d05-1e1fbcfcaf90</CorrelationId>
       <OverwriteBehaviour>overwrite-disabled</OverwriteBehaviour>
       <ApplicationRelativeFilePath>.gitignore</ApplicationRelativeFilePath>
       <IsIgnored>false</IsIgnored>
@@ -78,6 +78,14 @@
       <OverwriteBehaviour>always</OverwriteBehaviour>
       <ApplicationRelativeFilePath>JsonImportTests.Api/Filters/ExceptionFilter.cs</ApplicationRelativeFilePath>
       <ProjectRelativeFilePath>ExceptionFilter.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>99d5397c-b634-4573-b4d9-186f201b6907</ProjectId>
+      <CorrelationId>Intent.AspNetCore.Swashbuckle.HideRouteParametersFromBodyOperationFilter#b3486a79-e7f4-4e47-94ca-fc445aeff148</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Api/Filters/HideRouteParametersFromBodyOperationFilter.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>HideRouteParametersFromBodyOperationFilter.cs</ProjectRelativeFilePath>
       <IsIgnored>false</IsIgnored>
     </FileLog>
     <FileLog>
@@ -6393,7 +6401,7 @@
       <IsIgnored>false</IsIgnored>
     </FileLog>
     <FileLog>
-      <CorrelationId>Intent.VisualStudio.Projects.VisualStudioSolution#cc0e25b3-9afd-4aaf-a5a9-bbe4a2410267</CorrelationId>
+      <CorrelationId>Intent.VisualStudio.Projects.VisualStudioSolution#a7cba691-c3c7-400c-8d05-1e1fbcfcaf90</CorrelationId>
       <OverwriteBehaviour>always</OverwriteBehaviour>
       <ApplicationRelativeFilePath>JsonImportTests.sln</ApplicationRelativeFilePath>
       <IsIgnored>false</IsIgnored>

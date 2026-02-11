@@ -4,6 +4,7 @@ using Asp.Versioning.ApiExplorer;
 using Intent.RoslynWeaver.Attributes;
 using JsonImportTests.Api.Filters;
 using JsonImportTests.Application;
+using JsonImportTests.Domain.Common.Exceptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
@@ -39,6 +40,13 @@ namespace JsonImportTests.Api.Configuration
                         options.IncludeXmlComments(applicationXmlFile);
                     }
 
+                    var domainXmlFile = Path.Combine(AppContext.BaseDirectory, $"{typeof(NotFoundException).Assembly.GetName().Name}.xml");
+                    if (File.Exists(domainXmlFile))
+                    {
+                        options.IncludeXmlComments(domainXmlFile);
+                    }
+
+                    options.OperationFilter<HideRouteParametersFromBodyOperationFilter>();
                     options.OperationFilter<AuthorizeCheckOperationFilter>();
 
                     var securityScheme = new OpenApiSecurityScheme()

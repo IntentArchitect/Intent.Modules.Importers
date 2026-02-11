@@ -16,6 +16,14 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Dbo
 
             builder.HasKey(x => new { x.UserId, x.RoleId });
 
+            builder.Property(x => x.UserId)
+                .IsRequired()
+                .HasColumnType("nvarchar(450)");
+
+            builder.Property(x => x.RoleId)
+                .IsRequired()
+                .HasColumnType("nvarchar(450)");
+
             builder.HasOne(x => x.RoleIdAspNetRoles)
                 .WithMany()
                 .HasForeignKey(x => x.RoleId)

@@ -16,6 +16,10 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
 
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Id)
+                .IsRequired()
+                .HasColumnType("varchar(450)");
+
             builder.Property(x => x.RefreshToken)
                 .HasColumnType("text");
 

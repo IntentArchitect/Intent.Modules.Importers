@@ -16,6 +16,14 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Public
 
             builder.HasKey(x => new { x.UserId, x.RoleId });
 
+            builder.Property(x => x.UserId)
+                .IsRequired()
+                .HasColumnType("varchar(450)");
+
+            builder.Property(x => x.RoleId)
+                .IsRequired()
+                .HasColumnType("varchar(450)");
+
             builder.HasIndex(x => x.RoleId)
                 .HasDatabaseName("IX_AspNetUserRoles_RoleId");
 

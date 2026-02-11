@@ -15,6 +15,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using TestDataGenerator.Api.Filters;
 using TestDataGenerator.Application;
+using TestDataGenerator.Domain.Common.Exceptions;
 
 [assembly: DefaultIntentManaged(Mode.Fully)]
 [assembly: IntentTemplate("Intent.AspNetCore.Swashbuckle.SwashbuckleConfiguration", Version = "1.0")]
@@ -44,6 +45,13 @@ namespace TestDataGenerator.Api.Configuration
                     {
                         options.IncludeXmlComments(applicationXmlFile);
                     }
+
+                    var domainXmlFile = Path.Combine(AppContext.BaseDirectory, $"{typeof(NotFoundException).Assembly.GetName().Name}.xml");
+                    if (File.Exists(domainXmlFile))
+                    {
+                        options.IncludeXmlComments(domainXmlFile);
+                    }
+                    options.OperationFilter<HideRouteParametersFromBodyOperationFilter>();
                     options.SchemaFilter<TypeSchemaFilter>();
                 });
             return services;

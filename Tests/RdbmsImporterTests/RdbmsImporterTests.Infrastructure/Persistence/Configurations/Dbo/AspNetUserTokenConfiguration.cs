@@ -16,6 +16,18 @@ namespace RdbmsImporterTests.Infrastructure.Persistence.Configurations.Dbo
 
             builder.HasKey(x => new { x.UserId, x.LoginProvider, x.Name });
 
+            builder.Property(x => x.UserId)
+                .IsRequired()
+                .HasColumnType("nvarchar(450)");
+
+            builder.Property(x => x.LoginProvider)
+                .IsRequired()
+                .HasColumnType("nvarchar(450)");
+
+            builder.Property(x => x.Name)
+                .IsRequired()
+                .HasColumnType("nvarchar(450)");
+
             builder.Property(x => x.Value)
                 .HasColumnType("nvarchar(max)");
 

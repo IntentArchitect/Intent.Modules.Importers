@@ -7,6 +7,7 @@ using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using ImportTest.Api.Filters;
 using ImportTest.Application;
+using ImportTest.Domain.Common.Exceptions;
 using Intent.RoslynWeaver.Attributes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -44,6 +45,13 @@ namespace ImportTest.Api.Configuration
                     {
                         options.IncludeXmlComments(applicationXmlFile);
                     }
+
+                    var domainXmlFile = Path.Combine(AppContext.BaseDirectory, $"{typeof(NotFoundException).Assembly.GetName().Name}.xml");
+                    if (File.Exists(domainXmlFile))
+                    {
+                        options.IncludeXmlComments(domainXmlFile);
+                    }
+                    options.OperationFilter<HideRouteParametersFromBodyOperationFilter>();
                     options.SchemaFilter<TypeSchemaFilter>();
                 });
             return services;
