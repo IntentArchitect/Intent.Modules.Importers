@@ -1,3 +1,7 @@
+### Version 1.0.12
+
+- Improvement: Updated referenced `Microsoft.Data.SqlClient` package version.
+
 ### Version 1.0.11
 
 - Fixed: User-Defined Table Type stereotype settings applied to Types for Stored Procedures.
