@@ -1,3 +1,7 @@
+### Version 1.0.6
+
+- Fixed: Issue when multiple packages had folders with the same external reference value.
+
 ### Version 1.0.5
 
 - Improvement: When importing Interfaces as Services, inherited interfaces are now taken into account and imported onto the Service as well.

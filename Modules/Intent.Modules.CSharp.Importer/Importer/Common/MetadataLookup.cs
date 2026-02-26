@@ -18,9 +18,11 @@ public class MetadataLookup
     /// <remarks>Contains each association twice, so that can be found by key either way.</remarks>
     private readonly Dictionary<string, IAssociationPersistable> _associationsByReference = new();
     private readonly Dictionary<string, HashSet<IAssociationPersistable>> _associationsByTypeId = new();
+    private readonly IPackageModelPersistable _package;
 
     public MetadataLookup(IPackageModelPersistable package)
     {
+        _package = package;
         var references = package.GetReferencedPackages();
         var packages = new[] { package }.Concat(references).ToList();
         Index(packages.SelectMany(x => x.GetAllElements()), packages.SelectMany(x => x.Associations));
@@ -94,10 +96,20 @@ public class MetadataLookup
             { "4d95d53a-8855-4f35-aa82-e312643f5c5f" }, // folders
         };
 
+        // only look at folders in the current package
+        var packageLimitedTypes = new List<string>
+        {
+            { "4d95d53a-8855-4f35-aa82-e312643f5c5f" }, // folders
+        };
+
         _elementsByReference = _elementsById.Values
-            .Where(x => !string.IsNullOrWhiteSpace(x.ExternalReference))
-            .Where(x => allowedTypes.Contains(x.SpecializationTypeId))
-            .ToDictionary(x => x.ExternalReference);
+        .Where(x => !string.IsNullOrWhiteSpace(x.ExternalReference))
+        // get only the allowed types
+        .Where(x => allowedTypes.Contains(x.SpecializationTypeId))
+        // filter out types which are limited by package and not in the current package
+        .Where(x => !packageLimitedTypes.Contains(x.SpecializationTypeId) ||
+            _package != null && x.PackageId == _package.Id)
+        .ToDictionary(x => x.ExternalReference);
 
         foreach (var association in associations)
         {
@@ -225,7 +237,7 @@ public class MetadataLookup
     {
         if (name is not null && _elementsByName.TryGetValue(name, out var elements))
         {
-            if(parentId != null)
+            if (parentId != null)
             {
                 element = elements.FirstOrDefault(e => e.ParentFolderId == parentId) ?? default;
                 return true;

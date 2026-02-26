@@ -6,6 +6,7 @@ using IElementPersistable = Intent.Persistence.IElementPersistable;
 using Intent.MetadataSynchronizer;
 using Intent.MetadataSynchronizer.CSharp.Importer;
 using Intent.IArchitect.Agent.Persistence.Model;
+using System.Diagnostics;
 
 namespace Intent.Modules.CSharp.Importer.Importer;
 
