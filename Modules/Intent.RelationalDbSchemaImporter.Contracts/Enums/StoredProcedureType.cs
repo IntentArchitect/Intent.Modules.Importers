@@ -4,5 +4,6 @@ public enum StoredProcedureType
 {
     Default,
     StoredProcedureElement,
-    RepositoryOperation
+    RepositoryOperation,
+    RepositoryOperationMapping
 }

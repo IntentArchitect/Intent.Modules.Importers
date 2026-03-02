@@ -200,10 +200,10 @@ internal class DbSchemaIntentMetadataMerger
                                    _config.StoredProcedureType == StoredProcedureType.RepositoryOperation;
             bool useOutputParameterStrategy = isOperationMode && hasOutputParameters;
 
-            if (useOutputParameterStrategy)
+            if (useOutputParameterStrategy || _config.StoredProcedureType == StoredProcedureType.RepositoryOperationMapping)
             {
                 // New strategy: Create SP Element + Operation + Wrapper DC + Association
-                ProcessStoredProcedureWithOutputParameters(storedProc, package, deduplicationContext, result, udtDataContracts);
+                ProcessStoredProcedureWithOperationMapping(storedProc, package, deduplicationContext, result, udtDataContracts);
             }
             else
             {
@@ -286,7 +286,7 @@ internal class DbSchemaIntentMetadataMerger
     /// - Creates a Wrapper Data Contract (contains Results + output parameters)
     /// - Creates a Stored Procedure Invocation association with mappings
     /// </summary>
-    private void ProcessStoredProcedureWithOutputParameters(
+    private void ProcessStoredProcedureWithOperationMapping(
         StoredProcedureSchema storedProc,
         PackageModelPersistable package,
         DeduplicationContext? deduplicationContext,
@@ -401,7 +401,7 @@ internal class DbSchemaIntentMetadataMerger
             p.Direction == StoredProcedureParameterDirection.Out || 
             p.Direction == StoredProcedureParameterDirection.Both).ToList();
         
-        if (outputParameters.Any())
+        if (outputParameters.Count != 0 || _config.StoredProcedureType == StoredProcedureType.RepositoryOperationMapping)
         {
             var wrapperExternalRef = ModelNamingUtilities.GetWrapperDataContractExternalReference(storedProc.Schema, storedProc.Name);
             var wrapperName = $"{procName}Result";
@@ -454,7 +454,7 @@ internal class DbSchemaIntentMetadataMerger
         }
 
         // 5. Create or update the Stored Procedure Invocation association (only if wrapper DC was created)
-        if (outputParameters.Any())
+        if (outputParameters.Count != 0 || _config.StoredProcedureType == StoredProcedureType.RepositoryOperationMapping)
         {
             var existingAssociation = package.Associations.FirstOrDefault(a => 
                 a.SourceEnd.TypeReference.TypeId == operationElement.Id &&

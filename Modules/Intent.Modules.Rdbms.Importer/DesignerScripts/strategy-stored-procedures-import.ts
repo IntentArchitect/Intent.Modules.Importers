@@ -64,7 +64,8 @@ class StoredProceduresImportStrategy {
                     selectOptions: [
                         { id: "", description: "(default or inherited setting)" },
                         { id: "StoredProcedureElement", description: "Stored Procedure Element" },
-                        { id: "RepositoryOperation", description: "Stored Procedure Operation" }
+                        { id: "RepositoryOperation", description: "Stored Procedure Operation" },
+                        { id: "RepositoryOperationMapping", description: "Stored Procedure Operation mapped to Element" }
                     ]
                 },
                 {

@@ -1,0 +1,38 @@
+﻿{
+  Classes: [
+    {
+      Name: Folder,
+      SpecializationType: Folder,
+      Properties: []
+    },
+    {
+      Name: Customer,
+      SpecializationType: DTO,
+      Properties: [
+        {
+          Name: Id,
+          SpecializationType: DTO-Field
+        },
+        {
+          Name: Name,
+          SpecializationType: DTO-Field
+        },
+        {
+          Name: Email,
+          SpecializationType: DTO-Field
+        }
+      ]
+    },
+    {
+      Name: int,
+      SpecializationType: Type-Definition,
+      Properties: []
+    },
+    {
+      Name: string,
+      SpecializationType: Type-Definition,
+      Properties: []
+    }
+  ],
+  Associations: []
+}

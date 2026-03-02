@@ -1,5 +1,6 @@
 ### Version 1.0.12
 
+- Improvement: Added `Stored Procedure Operation mapped to Element` option for stored procedure imports. Will explicitly create the mapping from operation to stored procedure.
 - Improvement: Updated referenced `Microsoft.Data.SqlClient` package version.
 
 ### Version 1.0.11

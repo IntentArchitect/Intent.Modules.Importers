@@ -1197,7 +1197,73 @@ public class DbSchemaIntentMetadataMergerTests
         attributes.Count.ShouldBe(4);
     }
 
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProc_MapToOperation_CreatesInvocationMappings()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerNoOutParams()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresMappedToOperation());
 
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        // Should have created the stored procedure invocation association
+        scenario.Package.Associations.ShouldHaveSingleItem();
+        var association = scenario.Package.Associations.Single();
+        association.AssociationType.ShouldBe("Stored Procedure Invocation");
+
+        // Should have one mappings, just the invocation, no result
+        var mappings = association.TargetEnd.Mappings;
+        mappings.ShouldNotBeNull();
+        mappings.Count.ShouldBe(2);
+        mappings.ShouldContain(m => m.Type == "Stored Procedure Invocation");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProc_MapToOperation_CreatesInvocationAndResponseMappings()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.WithMultipleResultSets()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresMappedToOperation());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        // Should have created the stored procedure invocation association
+        scenario.Package.Associations.ShouldHaveSingleItem();
+        var association = scenario.Package.Associations.Single();
+        association.AssociationType.ShouldBe("Stored Procedure Invocation");
+
+        // Should have two mappings: Invocation and Result
+        var mappings = association.TargetEnd.Mappings;
+        mappings.ShouldNotBeNull();
+        mappings.Count.ShouldBe(2);
+        mappings.ShouldContain(m => m.Type == "Stored Procedure Invocation");
+
+        // Result mapping should have mapped ends for result set and output parameter
+        var resultMapping = mappings.Single(m => m.Type == "Stored Procedure Result");
+        resultMapping.MappedEnds.Count.ShouldBe(1);
+    }
 
     #endregion
 }

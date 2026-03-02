@@ -3,6 +3,7 @@ using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.MetadataSynchronizer.CSharp.Importer;
 using Intent.Modules.CSharp.Importer.Importer;
 using Intent.Modules.CSharp.Importer.Tests.TestData;
+using Intent.Persistence;
 using Microsoft.CodeAnalysis.CSharp;
 using Shouldly;
 using VerifyXunit;
@@ -179,6 +180,26 @@ public class CSharpImporterMappingTests
         // Assert
         var snapshot = BuildPackageSnapshot(package);
         await Verify(snapshot).UseParameters("mixed-types");
+    }
+
+    [Fact]
+    public async Task ImportSimpleClass_DuplicateFolder_MultiplePackages()
+    {
+        // Arrange
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.SimpleClass);
+        var domainOne = PackageModels.WithFolder("DomainOne");
+        var domainTwo = PackageModels.WithFolder("DomainTwo");
+        var services = PackageModels.WithFolder("Services", [domainOne, domainTwo]);
+
+        var config = ImportConfigurations.ServiceDtoProfile(tempPath);
+
+        // Act
+        services.ImportCSharpTypes(coreTypes, config);
+
+        // Assert
+        services.Classes.Count(c => c.SpecializationType == "DTO").ShouldBe(1);
+        var snapshot = BuildPackageSnapshot(services);
+        await Verify(snapshot).UseParameters("simple-class");
     }
 
     // Helper methods

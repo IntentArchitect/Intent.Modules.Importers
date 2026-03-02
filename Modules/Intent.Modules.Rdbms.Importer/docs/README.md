@@ -82,6 +82,10 @@ Choose between using Repository Elements and Repository Operations to represent 
 
   ![Stored Procedure Operation](images/stored-procedure-operation.png)
 
+- **Stored Procedure Operation mapped to Element** - Represent the stored procedure and the operation as two dedicated elements, with a mapping between them. Best when you want the stored procedure’s external representation to differ from its internal implementation.
+
+  ![Stored Procedure Mapping](images/stored-procedure-mapping.png)
+
 ### Filtering Options Section
 
 ![Import Filtering](images/db-import-dialog-import-filtering.png)

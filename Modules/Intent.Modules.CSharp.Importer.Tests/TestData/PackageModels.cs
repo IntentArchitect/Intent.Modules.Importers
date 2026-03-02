@@ -109,4 +109,36 @@ internal static class PackageModels
         
         return new TestPackageWrapper(package);
     }
+
+    public static IPackageModelPersistable WithFolder(string packageName, IEnumerable<IPackageModelPersistable> referencedPackages = null)
+    {
+        var package = new PackageModelPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = packageName,
+            Classes = new List<ElementPersistable>(),
+            Associations = new List<AssociationPersistable>()
+        };
+
+        var dboFolder = new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "Folder",
+            SpecializationType = "Folder",
+            SpecializationTypeId = "4d95d53a-8855-4f35-aa82-e312643f5c5f",
+            ExternalReference = "dbo.folder",
+            PackageId = package.Id
+        };
+
+        package.ChildElements.Add(dboFolder);
+
+        var wrapper = new TestPackageWrapper(package);
+
+        if(referencedPackages is not null)
+        {
+            wrapper.SetReferencedPackages(referencedPackages);
+        }
+
+        return wrapper;
+    }
 }

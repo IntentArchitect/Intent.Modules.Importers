@@ -19,6 +19,7 @@ namespace Intent.Modules.CSharp.Importer.Tests.TestData;
 internal class TestPackageWrapper : IPackageModelPersistable
 {
     private readonly IPackageModelPersistable _inner;
+    private List<IPackageModelPersistable> _referencedPackages;
 
     public TestPackageWrapper(IPackageModelPersistable inner)
     {
@@ -28,7 +29,7 @@ internal class TestPackageWrapper : IPackageModelPersistable
     // Stub setup - returns empty to avoid designer dependency
     public IEnumerable<IPackageModelPersistable> GetReferencedPackages()
     {
-         return Enumerable.Empty<IPackageModelPersistable>();
+        return _referencedPackages is null ? Enumerable.Empty<IPackageModelPersistable>() : _referencedPackages;
     }
 
     // Properties with correct types and setters where needed
@@ -51,6 +52,7 @@ internal class TestPackageWrapper : IPackageModelPersistable
     public IElementPersistable GetElementById(string id) => _inner.GetElementById(id);
     public IReadOnlyCollection<IElementPersistable> FindChildElements(Func<IElementPersistable, bool> predicate) => _inner.FindChildElements(predicate);
     public IApplicationDesignerPersistable GetDesigner() => _inner.GetDesigner();
+    public void SetReferencedPackages(IEnumerable<IPackageModelPersistable> packages) => _referencedPackages = [.. packages];
 
     // Collections with correct types
     public IEnumerable<IPackageReferenceModelPersistable> References => _inner.References;

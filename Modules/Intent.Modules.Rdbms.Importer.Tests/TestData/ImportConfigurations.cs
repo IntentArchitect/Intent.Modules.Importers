@@ -78,4 +78,14 @@ internal static class ImportConfigurations
         TableStereotype = TableStereotype.WhenDifferent,
         StoredProcedureType = StoredProcedureType.Default
     };
+
+    public static ImportConfiguration StoredProceduresMappedToOperation() => new()
+    {
+        TypesToExport = [ExportType.StoredProcedure],
+        AllowDeletions = false,
+        EntityNameConvention = EntityNameConvention.SingularEntity,
+        AttributeNameConvention = AttributeNameConvention.Default,
+        TableStereotype = TableStereotype.WhenDifferent,
+        StoredProcedureType = StoredProcedureType.RepositoryOperationMapping
+    };
 }

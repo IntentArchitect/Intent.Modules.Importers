@@ -63,6 +63,18 @@ public static class ImportConfigurations
         }
     };
 
+    public static CSharpConfig ServiceDtoProfile(string? targetFolder = null) => new()
+    {
+
+        TargetFolder = targetFolder ?? ".",  // Provide valid folder path for file organization logic
+        ImportProfile = new ImportProfileConfig
+        {
+            Identifier = "services-dtos",
+            MapClassesTo = new ElementSettings("fee0edca-4aa0-4f77-a524-6bbd84e78734", "DTO"),
+            MapPropertiesTo = new ElementSettings("7baed1fd-469b-4980-8fd9-4cefb8331eb2", "DTO-Field")
+        }
+    };
+
     // Helper classes mirroring the internal ones from ImportCSharpFileInputModel
     private class ElementSettings(string specializationTypeId, string specializationType) : IElementSettings
     {
