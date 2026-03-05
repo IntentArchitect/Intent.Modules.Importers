@@ -105,6 +105,25 @@ internal static class StoredProcedures
         Metadata = new()
     };
 
+    public static StoredProcedureSchema WithMultipleResultSetsWithOutParameter() => new()
+    {
+        Schema = "dbo",
+        Name = "sp_GetCustomerOrderDetails",
+        Parameters =
+        [
+            Parameter("@CustomerId", SqlDbType.Int, StoredProcedureParameterDirection.In),
+            Parameter("@NewCustomerId", SqlDbType.Int, StoredProcedureParameterDirection.Out)
+        ],
+        // Note: Current schema only supports single result set - using first result set
+        ResultSetColumns =
+        [
+            ResultColumn("Id", SqlDbType.Int, isNullable: false),
+            ResultColumn("Email", SqlDbType.NVarChar, length: 255, isNullable: false),
+            ResultColumn("TotalOrders", SqlDbType.Int, isNullable: false)
+        ],
+        Metadata = new()
+    };
+
     public static StoredProcedureParameterSchema Parameter(
         string name,
         SqlDbType type,
