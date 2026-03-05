@@ -43,8 +43,8 @@ internal static class IntentModelMapper
         // Level 1: ExternalReference + SpecializationType
         if (!string.IsNullOrWhiteSpace(externalReference))
         {
-            var byExternalRef = elementList.FirstOrDefault(e => 
-                e.ExternalReference == externalReference && 
+            var byExternalRef = elementList.FirstOrDefault(e =>
+                e.ExternalReference == externalReference &&
                 e.SpecializationType == specializationType);
             if (byExternalRef != null)
                 return byExternalRef;
@@ -53,7 +53,7 @@ internal static class IntentModelMapper
         // Level 2: Name + DB Schema + SpecializationType (using stereotype extraction)
         if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(dbSchema))
         {
-            var byNameAndSchema = elementList.FirstOrDefault(e => 
+            var byNameAndSchema = elementList.FirstOrDefault(e =>
                 e.Name.Equals(name, StringComparison.OrdinalIgnoreCase) &&
                 e.SpecializationType == specializationType &&
                 GetElementDbSchema(e, package) == dbSchema);
@@ -64,12 +64,12 @@ internal static class IntentModelMapper
         // Level 3: Name + SpecializationType (but avoid matching if schemas conflict)
         if (!string.IsNullOrWhiteSpace(name))
         {
-            var byName = elementList.FirstOrDefault(e => 
+            var byName = elementList.FirstOrDefault(e =>
                 e.Name.Equals(name, StringComparison.OrdinalIgnoreCase) &&
                 e.SpecializationType == specializationType &&
                 // Only match if schemas are compatible (both null/empty or both equal)
-                (string.IsNullOrWhiteSpace(dbSchema) || 
-                 string.IsNullOrWhiteSpace(GetElementDbSchema(e, package)) || 
+                (string.IsNullOrWhiteSpace(dbSchema) ||
+                 string.IsNullOrWhiteSpace(GetElementDbSchema(e, package)) ||
                  GetElementDbSchema(e, package) == dbSchema));
             if (byName != null)
                 return byName;
@@ -137,14 +137,14 @@ internal static class IntentModelMapper
     private static ElementPersistable? FindFolderById(PackageModelPersistable package, string folderId)
     {
         // Folders are stored in the Classes collection with Folder specialization type
-        return package.Classes.FirstOrDefault(e => 
-            e.Id == folderId && 
+        return package.Classes.FirstOrDefault(e =>
+            e.Id == folderId &&
             e.SpecializationType == Constants.SpecializationTypes.Folder.SpecializationType);
     }
 
     public static ElementPersistable MapTableToClass(
-        TableSchema table, 
-        ImportConfiguration config, 
+        TableSchema table,
+        ImportConfiguration config,
         PackageModelPersistable package,
         string? parentFolderId = null,
         DeduplicationContext? deduplicationContext = null)
@@ -186,7 +186,7 @@ internal static class IntentModelMapper
         {
             var triggerExternalRef = ModelNamingUtilities.GetTriggerExternalReference(table.Schema, table.Name, trigger.Name);
             var triggerElement = package.Classes
-                .FirstOrDefault(x => x.ExternalReference == triggerExternalRef && 
+                .FirstOrDefault(x => x.ExternalReference == triggerExternalRef &&
                                      x.SpecializationType == Constants.SpecializationTypes.Trigger.SpecializationType);
             if (triggerElement is null)
             {
@@ -199,10 +199,10 @@ internal static class IntentModelMapper
     }
 
     public static ElementPersistable MapViewToClass(
-        ViewSchema view, 
-        ImportConfiguration config, 
+        ViewSchema view,
+        ImportConfiguration config,
         PackageModelPersistable package,
-        string? parentFolderId = null, 
+        string? parentFolderId = null,
         DeduplicationContext? deduplicationContext = null)
     {
         var className = ModelNamingUtilities.GetViewName(view.Name, config.EntityNameConvention, view.Schema, deduplicationContext);
@@ -239,7 +239,7 @@ internal static class IntentModelMapper
 
         return classElement;
     }
-    
+
     /// <summary>
     /// Creates a repository element for containing stored procedures/operations
     /// </summary>
@@ -280,14 +280,13 @@ internal static class IntentModelMapper
     /// Maps stored procedure to an element in Repository with UserDefinedTable DataContract support
     /// </summary>
     public static ElementPersistable MapStoredProcedureToElement(
-        StoredProcedureSchema storedProc, 
-        string? repositoryId, 
-        PackageModelPersistable package, 
+        string procName,
+        StoredProcedureSchema storedProc,
+        string? repositoryId,
+        PackageModelPersistable package,
         DeduplicationContext? deduplicationContext,
         Dictionary<string, string>? udtDataContracts)
     {
-        var procName = ModelNamingUtilities.GetStoredProcedureName(storedProc.Name, storedProc.Schema, deduplicationContext);
-
         var procElement = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
@@ -323,7 +322,7 @@ internal static class IntentModelMapper
             var paramElement = MapStoredProcParameterToElement(parameter, storedProc, procElement.Id, package, udtDataContracts);
             procElement.ChildElements.Add(paramElement);
         }
-        
+
         return procElement;
     }
 
@@ -331,14 +330,13 @@ internal static class IntentModelMapper
     /// Maps a stored procedure to an operation (Operation mode) with UserDefinedTable DataContract support
     /// </summary>
     public static ElementPersistable MapStoredProcedureToOperation(
-        StoredProcedureSchema storedProc, 
-        string repositoryId, 
-        PackageModelPersistable package, 
+        string procName,
+        StoredProcedureSchema storedProc,
+        string repositoryId,
+        PackageModelPersistable package,
         DeduplicationContext? deduplicationContext,
         Dictionary<string, string>? udtDataContracts)
     {
-        var procName = ModelNamingUtilities.GetStoredProcedureName(storedProc.Name, storedProc.Schema, deduplicationContext);
-
         var operationElement = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
@@ -364,7 +362,7 @@ internal static class IntentModelMapper
             ParentFolderId = repositoryId, // Operations belong to repository
             PackageId = package.Id,
             PackageName = package.Name,
-            Traits = 
+            Traits =
             [
                 new ImplementedTraitPersistable
                 {
@@ -394,7 +392,7 @@ internal static class IntentModelMapper
     public static ElementPersistable CreateDataContractForStoredProcedure(StoredProcedureSchema storedProc, string schemaFolderId, string storedProcElementName, ImportConfiguration config, PackageModelPersistable package, DeduplicationContext? deduplicationContext)
     {
         var dataContractName = $"{storedProcElementName}Response";
-        
+
         var dataContract = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
@@ -432,14 +430,14 @@ internal static class IntentModelMapper
     /// Follows a similar pattern to CreateDataContractForStoredProcedure but for UDT columns
     /// </summary>
     public static ElementPersistable CreateDataContractForUserDefinedTable(
-        UserDefinedTableTypeSchema udtSchema, 
-        string schemaFolderId, 
+        UserDefinedTableTypeSchema udtSchema,
+        string schemaFolderId,
         ImportConfiguration config,
-        PackageModelPersistable package, 
+        PackageModelPersistable package,
         DeduplicationContext? deduplicationContext)
     {
         var dataContractName = ModelNamingUtilities.GetDataContractName(udtSchema.Name);
-        
+
         var dataContract = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
@@ -471,7 +469,7 @@ internal static class IntentModelMapper
 
         return dataContract;
     }
-    
+
     /// <summary>
     /// Creates an index element with proper mapping to attributes
     /// </summary>
@@ -529,7 +527,7 @@ internal static class IntentModelMapper
     {
         ArgumentException.ThrowIfNullOrEmpty(indexId);
         ArgumentException.ThrowIfNullOrEmpty(attributeId);
-        
+
         var mapping = new BasicMappingModelPersistable
         {
             MappingSettingsId = Constants.Mapping.Index.MappingSettingsId, // Column mapping settings ID
@@ -571,7 +569,7 @@ internal static class IntentModelMapper
 
         return columnIndex;
     }
-    
+
     /// <summary>
     /// Gets or creates an association based on foreign key information
     /// Ported from original DatabaseSchemaToModelMapper.GetOrCreateAssociation
@@ -583,15 +581,15 @@ internal static class IntentModelMapper
     /// <param name="databaseSchema">The complete database schema for validation</param>
     /// <returns>Status indicating the outcome of the association creation attempt</returns>
     public static AssociationCreationResult GetOrCreateAssociation(
-        ForeignKeySchema foreignKey, 
-        TableSchema sourceTable, 
-        ElementPersistable sourceClass, 
+        ForeignKeySchema foreignKey,
+        TableSchema sourceTable,
+        ElementPersistable sourceClass,
         PackageModelPersistable package,
         DatabaseSchema databaseSchema)
     {
         var targetTableExternalRef = ModelNamingUtilities.GetTableExternalReference(foreignKey.ReferencedTableSchema, foreignKey.ReferencedTableName);
         var targetTableEntity = ModelNamingUtilities.GetEntityName(foreignKey.ReferencedTableName, EntityNameConvention.SingularEntity, foreignKey.ReferencedTableSchema, null, []);
-        
+
         // Use unified lookup helper with 3-level precedence
         var targetClass = FindElementWithPrecedence(
             package.Classes,
@@ -619,7 +617,7 @@ internal static class IntentModelMapper
         var firstColumnName = foreignKey.Columns.First().Name;
 
         // NOTE: If you make any changes in here, make sure the RDBMS FK naming convention is also up to date!
-        
+
         // Determine association target name based on column naming patterns
         // For multiple FKs to the same table, use the column name + target table name for uniqueness
         if (firstColumnName.Equals($"{singularTableName}Id", StringComparison.OrdinalIgnoreCase))
@@ -650,16 +648,16 @@ internal static class IntentModelMapper
             // Determine if this is a one-to-one relationship (FK columns are all primary keys)
             var sourcePkColumns = sourceTable.Columns.Where(c => c.IsPrimaryKey).Select(c => c.Name).ToHashSet();
             var fkColumnNames = foreignKey.Columns.Select(c => c.Name).ToHashSet();
-            var isOneToOne = sourcePkColumns.Count == fkColumnNames.Count && 
+            var isOneToOne = sourcePkColumns.Count == fkColumnNames.Count &&
                            fkColumnNames.All(fk => sourcePkColumns.Contains(fk));
 
             // Check if any FK columns are nullable to determine association nullability
-            var isNullable = foreignKey.Columns.Any(fkCol => 
+            var isNullable = foreignKey.Columns.Any(fkCol =>
                 sourceTable.Columns.Any(col => col.Name == fkCol.Name && col.IsNullable));
 
             // Avoid naming conflicts with source table name
-            var finalTargetName = targetName.Equals(sourceTable.Name.Singularize(), StringComparison.OrdinalIgnoreCase) 
-                ? $"{targetName}Reference" 
+            var finalTargetName = targetName.Equals(sourceTable.Name.Singularize(), StringComparison.OrdinalIgnoreCase)
+                ? $"{targetName}Reference"
                 : targetName;
 
             var finalSourceName = isOneToOne ? sourceTable.Name.Singularize() : sourceTable.Name.Pluralize();
@@ -712,13 +710,13 @@ internal static class IntentModelMapper
                 package.Associations ??= new List<AssociationPersistable>();
                 package.Associations.Add(newAssociation);
             }
-            
+
             return AssociationCreationResult.Success(newAssociation);
         }
-        
+
         return AssociationCreationResult.Success(existingAssociation);
     }
-    
+
     /// <summary>
     /// Creates a folder element for schema organization
     /// </summary>
@@ -746,22 +744,22 @@ internal static class IntentModelMapper
         };
 
         // Schema stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
-        
+
         return folder;
     }
 
     private static ElementPersistable MapColumnToAttribute(
-        ColumnSchema column, 
-        string tableName, 
-        string className, 
-        string schema, 
+        ColumnSchema column,
+        string tableName,
+        string className,
+        string schema,
         ImportConfiguration config,
         PackageModelPersistable package,
-        string? parentClassId = null, 
+        string? parentClassId = null,
         DeduplicationContext? deduplicationContext = null)
     {
         var attributeName = ModelNamingUtilities.GetAttributeName(column.Name, tableName, className, schema, config.AttributeNameConvention, deduplicationContext);
-        
+
         return new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
@@ -794,7 +792,7 @@ internal static class IntentModelMapper
             var udtExternalRef = ModelNamingUtilities.GetUserDefinedTableDataContractExternalReference(
                 parameter.UserDefinedTableType.Schema,
                 parameter.UserDefinedTableType.Name);
-            
+
             if (udtDataContracts.TryGetValue(udtExternalRef, out var dataContractId))
             {
                 return TypeReferenceMapper.MapStoredProcedureParameterTypeToTypeReference(parameter, dataContractId);
@@ -812,7 +810,7 @@ internal static class IntentModelMapper
     {
         var paramName = ModelNamingUtilities.GetParameterName(parameter.Name);
         var isOutputParam = parameter.Direction == StoredProcedureParameterDirection.Out || parameter.Direction == StoredProcedureParameterDirection.Both;
-        var externalRef = isOutputParam 
+        var externalRef = isOutputParam
             ? ModelNamingUtilities.GetStoredProcedureOutputParameterExternalReference(storedProc.Schema, storedProc.Name, parameter.Name)
             : paramName.ToLowerInvariant();
 
@@ -871,7 +869,7 @@ internal static class IntentModelMapper
     private static ElementPersistable MapResultSetColumnToAttribute(ResultSetColumnSchema resultColumn, string dataContractId, string procName, string schema, string resultColumnName, ImportConfiguration config, DeduplicationContext? deduplicationContext)
     {
         var attributeName = ModelNamingUtilities.GetAttributeName(resultColumnName, null, procName, schema, config.AttributeNameConvention, deduplicationContext);
-        
+
         return new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
@@ -896,7 +894,7 @@ internal static class IntentModelMapper
     private static ElementPersistable MapUserDefinedTableColumnToAttribute(ColumnSchema column, string dataContractId, string udtName, string schema, string columnName, ImportConfiguration config, DeduplicationContext? deduplicationContext)
     {
         var attributeName = ModelNamingUtilities.GetAttributeName(columnName, null, udtName, schema, config.AttributeNameConvention, deduplicationContext);
-        
+
         return new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
@@ -914,7 +912,7 @@ internal static class IntentModelMapper
             ChildElements = []
         };
     }
-    
+
     private static string GetClassNameById(string classId, PackageModelPersistable package)
     {
         var element = package.Classes.FirstOrDefault(c => c.Id == classId);
@@ -948,7 +946,7 @@ internal static class IntentModelMapper
     private static ElementPersistable MapTriggerToElement(TriggerSchema trigger, string tableName, string schema, string parentClassId, PackageModelPersistable package)
     {
         var triggerName = trigger.Name; // Names are typically unique and descriptive
-        
+
         var triggerElement = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
@@ -967,7 +965,7 @@ internal static class IntentModelMapper
             Metadata = [],
             ChildElements = []
         };
-        
+
         return triggerElement;
     }
 
@@ -979,13 +977,13 @@ internal static class IntentModelMapper
     /// <param name="databaseSchema">The complete database schema for validation</param>
     /// <returns>AssociationCreationResult with error details if validation fails, null if validation passes</returns>
     private static AssociationCreationResult? ValidateForeignKeyForAssociation(
-        ForeignKeySchema foreignKey, 
-        TableSchema sourceTable, 
+        ForeignKeySchema foreignKey,
+        TableSchema sourceTable,
         DatabaseSchema databaseSchema)
     {
         // Find the referenced table from the imported schema
         // Note: This only checks tables that are being imported in this operation
-        var referencedTable = databaseSchema.Tables.FirstOrDefault(t => 
+        var referencedTable = databaseSchema.Tables.FirstOrDefault(t =>
             string.Equals(t.Name, foreignKey.ReferencedTableName, StringComparison.OrdinalIgnoreCase) &&
             string.Equals(t.Schema, foreignKey.ReferencedTableSchema, StringComparison.OrdinalIgnoreCase));
 
@@ -996,7 +994,7 @@ internal static class IntentModelMapper
             // 1. It's an inclusive import and the table wasn't selected
             // 2. The table genuinely doesn't exist in the database
             // We'll return UnsupportedForeignKey with a clear message for inclusive imports
-            return AssociationCreationResult.UnsupportedForeignKey(foreignKey, 
+            return AssociationCreationResult.UnsupportedForeignKey(foreignKey,
                 $"Referenced table '{foreignKey.ReferencedTableSchema}.{foreignKey.ReferencedTableName}' is not included in the current import. " +
                 $"This may be due to an inclusive import where only specific tables are selected, or the table could not be found in the database schema being imported.",
                 sourceTable.Schema);
@@ -1019,7 +1017,7 @@ internal static class IntentModelMapper
         var foreignKeyReferencedColumns = foreignKey.Columns
             .Select(c => c.ReferencedColumnName)
             .ToHashSet(StringComparer.OrdinalIgnoreCase);
-        
+
         if (!foreignKeyReferencedColumns.SetEquals(referencedTablePrimaryKeys))
         {
             return AssociationCreationResult.UnsupportedForeignKey(foreignKey,
@@ -1040,8 +1038,8 @@ internal static class IntentModelMapper
     /// <returns>True if the stored procedure has at least one output parameter, false otherwise</returns>
     public static bool HasOutputParameters(StoredProcedureSchema storedProc)
     {
-        return storedProc.Parameters.Any(p => 
-            p.Direction == StoredProcedureParameterDirection.Out || 
+        return storedProc.Parameters.Any(p =>
+            p.Direction == StoredProcedureParameterDirection.Out ||
             p.Direction == StoredProcedureParameterDirection.Both);
     }
 
@@ -1059,7 +1057,7 @@ internal static class IntentModelMapper
         PackageModelPersistable package)
     {
         var wrapperName = $"{operationName}Result";
-        
+
         var wrapperDataContract = new ElementPersistable
         {
             Id = Guid.NewGuid().ToString(),
@@ -1112,8 +1110,8 @@ internal static class IntentModelMapper
         wrapperDataContract.ChildElements.Add(resultsAttribute);
 
         // Add one attribute per output parameter (no @ prefix - that's only for mapping expressions)
-        foreach (var parameter in storedProc.Parameters.Where(p => 
-            p.Direction == StoredProcedureParameterDirection.Out || 
+        foreach (var parameter in storedProc.Parameters.Where(p =>
+            p.Direction == StoredProcedureParameterDirection.Out ||
             p.Direction == StoredProcedureParameterDirection.Both))
         {
             var paramName = ModelNamingUtilities.GetParameterName(parameter.Name).ToPascalCase();
@@ -1155,7 +1153,7 @@ internal static class IntentModelMapper
     {
         var associationId = Guid.NewGuid().ToString();
         var sourceEndId = Guid.NewGuid().ToString();
-        
+
         var association = new AssociationPersistable
         {
             Id = associationId,
@@ -1277,8 +1275,8 @@ internal static class IntentModelMapper
         // Input parameters: those without output parameter stereotype property set to true
         var storedProcInputParams = storedProcElement.ChildElements
             .Where(e => e.SpecializationType == "Stored Procedure Parameter")
-            .Where(p => !p.Stereotypes.Any(s => 
-                s.DefinitionId == Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.DefinitionId && 
+            .Where(p => !p.Stereotypes.Any(s =>
+                s.DefinitionId == Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.DefinitionId &&
                 s.Properties.Any(prop => prop.DefinitionId == Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.IsOutputParam && prop.Value == "true")))
             .ToList();
 
@@ -1442,13 +1440,80 @@ internal static class IntentModelMapper
                 }
             });
         }
+        else
+        {
+            resultMappedEnds.Add(new ElementToElementMappedEndPersistable
+            {
+                MappingExpression = "{mappedResult.result}",
+                TargetPath = new List<MappedPathTargetPersistable>
+                {
+                    new MappedPathTargetPersistable
+                    {
+                        Id = wrapperDataContract.Id,
+                        Name = wrapperDataContract.Name,
+                        Type = "element",
+                        Specialization = "Data Contract",
+                        SpecializationId = "4464fabe-c59e-4d90-81fc-c9245bdd1afd"
+                    }
+                },
+                Sources = new List<ElementToElementMappedEndSourcePersistable>
+                {
+                    new ElementToElementMappedEndSourcePersistable
+                    {
+                        ExpressionIdentifier = "mappedResult.result",
+                        MappingType = "Data Mapping",
+                        MappingTypeId = "654a66b5-6ed4-41d2-abb3-25aaa12af829",
+                        Path = new List<MappedPathTargetPersistable>
+                        {
+                            new MappedPathTargetPersistable
+                            {
+                                Id = operationElement.Id,
+                                Name = operationElement.Name,
+                                Type = "element",
+                                Specialization = "Operation",
+                                SpecializationId = "e042bb67-a1df-480c-9935-b26210f78591"
+                            },
+                            new MappedPathTargetPersistable
+                            {
+                                Id = associationId,
+                                Name = "mappedResult",
+                                Type = "association",
+                                Specialization = "Stored Procedure Invocation Target End",
+                                SpecializationId = "d0b0b24a-db0f-4aff-873a-a0e9c2dce12d"
+                            },
+                            new MappedPathTargetPersistable
+                            {
+                                Id = "1eba9280-3bf0-46f8-981c-414dee8e35c3",
+                                Name = "result",
+                                Type = "static-mappable",
+                                Specialization = "result",
+                                SpecializationId = "1eba9280-3bf0-46f8-981c-414dee8e35c3",
+                                TypeReference = new TypeReferencePersistable
+                                {
+                                    Id = Guid.NewGuid().ToString(),
+                                    TypeId = storedProcElement.TypeReference.TypeId,
+                                    IsNavigable = true,
+                                    IsNullable = false,
+                                    IsCollection = true,
+                                    IsRequired = true,
+                                    TypePackageName = package.Name,
+                                    TypePackageId = package.Id,
+                                    Stereotypes = [],
+                                    GenericTypeParameters = []
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
         // Map each output parameter to its corresponding attribute in the wrapper DC
         // Output parameters: those with output parameter stereotype property set to true
         var storedProcOutputParams = storedProcElement.ChildElements
             .Where(e => e.SpecializationType == "Stored Procedure Parameter")
-            .Where(p => p.Stereotypes.Any(s => 
-                s.DefinitionId == Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.DefinitionId && 
+            .Where(p => p.Stereotypes.Any(s =>
+                s.DefinitionId == Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.DefinitionId &&
                 s.Properties.Any(prop => prop.DefinitionId == Constants.Stereotypes.Rdbms.StoredProcedureElementParameter.PropertyId.IsOutputParam && prop.Value == "true")))
             .ToList();
 
@@ -1456,7 +1521,7 @@ internal static class IntentModelMapper
         {
             // Normalize the stored proc param name (strip @ prefix to get camelCase version)
             var normalizedParamName = ModelNamingUtilities.GetParameterName(storedProcParam.Name);
-            
+
             // Find the wrapper attribute by external reference - must match the stored proc parameter's external reference
             var wrapperAttribute = wrapperDataContract.ChildElements
                 .FirstOrDefault(e => e.ExternalReference == storedProcParam.ExternalReference);

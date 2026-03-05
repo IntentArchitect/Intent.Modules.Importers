@@ -226,6 +226,8 @@ internal class DbSchemaIntentMetadataMerger
         // Create repository first if it doesn't exist
         var repositoryElement = GetOrCreateRepository(_config.RepositoryElementId, package);
 
+        var procName = ModelNamingUtilities.GetStoredProcedureName(storedProc.Name, storedProc.Schema, deduplicationContext);
+
         // Check if stored procedure already exists
         var spExternalRef = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Schema, storedProc.Name);
         var expectedSpecializationType = _config.StoredProcedureType == StoredProcedureType.StoredProcedureElement 
@@ -243,13 +245,13 @@ internal class DbSchemaIntentMetadataMerger
             // Update existing stored procedure element
             if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
             {
-                var updatedElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, package, null, udtDataContracts);
+                var updatedElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, repositoryElement.Id, package, null, udtDataContracts);
                 SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
                 RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingElement);
             }
             else
             {
-                var updatedElement = IntentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, package, null, udtDataContracts);
+                var updatedElement = IntentModelMapper.MapStoredProcedureToOperation(procName, storedProc, repositoryElement.Id, package, null, udtDataContracts);
                 SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
                 RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingElement);
             }
@@ -261,12 +263,12 @@ internal class DbSchemaIntentMetadataMerger
             // Create new stored procedure element
             if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
             {
-                procElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
+                procElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
                 RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, procElement);
             }
             else
             {
-                procElement = IntentModelMapper.MapStoredProcedureToOperation(storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
+                procElement = IntentModelMapper.MapStoredProcedureToOperation(procName, storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
                 RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, procElement);
             }
             
@@ -307,7 +309,7 @@ internal class DbSchemaIntentMetadataMerger
         if (existingSpElement != null)
         {
             // Update existing - but don't change parentFolderId (user may have moved it)
-            var updatedElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, existingSpElement.ParentFolderId, package, null, udtDataContracts);
+            var updatedElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, existingSpElement.ParentFolderId, package, null, udtDataContracts);
             SyncElements(package, existingSpElement, updatedElement, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
             RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingSpElement);
             storedProcElement = existingSpElement;
@@ -315,7 +317,7 @@ internal class DbSchemaIntentMetadataMerger
         else
         {
             // Create new - place at package level initially (pass null for repositoryId to avoid "Sp" prefix)
-            storedProcElement = IntentModelMapper.MapStoredProcedureToElement(storedProc, null, package, deduplicationContext, udtDataContracts);
+            storedProcElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, null, package, deduplicationContext, udtDataContracts);
             storedProcElement.ParentFolderId = package.Id; // Set parent to package level
             RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, storedProcElement);
             package.Classes.Add(storedProcElement);
@@ -374,7 +376,8 @@ internal class DbSchemaIntentMetadataMerger
                 ResultSetColumns = [], // Operation doesn't have direct result set
                 Metadata = storedProc.Metadata
             };
-            var updatedOperation = IntentModelMapper.MapStoredProcedureToOperation(tempStoredProc, repositoryElement.Id, package, null, udtDataContracts);
+
+            var updatedOperation = IntentModelMapper.MapStoredProcedureToOperation(procName, tempStoredProc, repositoryElement.Id, package, null, udtDataContracts);
             SyncElements(package, existingOperation, updatedOperation, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
             RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingOperation);
             operationElement = existingOperation;
@@ -390,7 +393,8 @@ internal class DbSchemaIntentMetadataMerger
                 ResultSetColumns = [],
                 Metadata = storedProc.Metadata
             };
-            operationElement = IntentModelMapper.MapStoredProcedureToOperation(tempStoredProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
+            
+            operationElement = IntentModelMapper.MapStoredProcedureToOperation(procName, tempStoredProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
             RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, operationElement);
             repositoryElement.ChildElements.Add(operationElement);
         }
@@ -400,8 +404,9 @@ internal class DbSchemaIntentMetadataMerger
         var outputParameters = storedProc.Parameters.Where(p => 
             p.Direction == StoredProcedureParameterDirection.Out || 
             p.Direction == StoredProcedureParameterDirection.Both).ToList();
-        
-        if (outputParameters.Count != 0 || _config.StoredProcedureType == StoredProcedureType.RepositoryOperationMapping)
+
+        // only create the wrapper if output parameters
+        if (outputParameters.Count != 0)
         {
             var wrapperExternalRef = ModelNamingUtilities.GetWrapperDataContractExternalReference(storedProc.Schema, storedProc.Name);
             var wrapperName = $"{procName}Result";
@@ -466,7 +471,7 @@ internal class DbSchemaIntentMetadataMerger
                 var association = IntentModelMapper.CreateStoredProcedureInvocationAssociation(
                     operationElement,
                     storedProcElement,
-                    wrapperDataContract,
+                    wrapperDataContract ?? underlyingResultDataContract,
                     package);
                 package.Associations.Add(association);
             }
@@ -476,7 +481,7 @@ internal class DbSchemaIntentMetadataMerger
                 var updatedAssociation = IntentModelMapper.CreateStoredProcedureInvocationAssociation(
                     operationElement,
                     storedProcElement,
-                    wrapperDataContract,
+                    wrapperDataContract ?? underlyingResultDataContract,
                     package);
                 SyncMappings(existingAssociation.TargetEnd.Mappings, updatedAssociation.TargetEnd.Mappings);
             }
