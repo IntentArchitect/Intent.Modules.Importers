@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
@@ -643,22 +644,42 @@ internal static class IntentModelMapper
         // Check if the association already exists by foreign key external reference
         var existingAssociation = package.Associations?.FirstOrDefault(a => a.ExternalReference == fkExternalRef);
 
+        // if we did not find an association by external reference, we should check if an association
+        // already exists with the same source/target and compatible multiplicity/nullability. I.e. There is a match
+        // on the association about to be created
+        if (existingAssociation is null)
+        {
+            existingAssociation = package.Associations?.FirstOrDefault(
+                a => a.TargetEnd?.TypeReference?.TypeId == targetClass.Id &&
+                a.TargetEnd?.TypeReference?.IsNavigable == true &&
+                a.TargetEnd?.TypeReference?.IsCollection == false &&
+                a.TargetEnd?.TypeReference.IsNullable == IsNullable(foreignKey, sourceTable) &&
+                a.SourceEnd?.TypeReference?.TypeId == sourceClass.Id &&
+                a.SourceEnd?.TypeReference?.IsNavigable == false &&
+                a.SourceEnd?.TypeReference?.IsCollection == !IsOneToOne(foreignKey, sourceTable) &&
+                a.TargetEnd?.TypeReference.IsNullable == false);
+        }
+
         if (existingAssociation == null)
         {
-            // Determine if this is a one-to-one relationship (FK columns are all primary keys)
-            var sourcePkColumns = sourceTable.Columns.Where(c => c.IsPrimaryKey).Select(c => c.Name).ToHashSet();
-            var fkColumnNames = foreignKey.Columns.Select(c => c.Name).ToHashSet();
-            var isOneToOne = sourcePkColumns.Count == fkColumnNames.Count &&
-                           fkColumnNames.All(fk => sourcePkColumns.Contains(fk));
-
-            // Check if any FK columns are nullable to determine association nullability
-            var isNullable = foreignKey.Columns.Any(fkCol =>
-                sourceTable.Columns.Any(col => col.Name == fkCol.Name && col.IsNullable));
+            bool isOneToOne = IsOneToOne(foreignKey, sourceTable);
+            bool isNullable = IsNullable(foreignKey, sourceTable);
 
             // Avoid naming conflicts with source table name
             var finalTargetName = targetName.Equals(sourceTable.Name.Singularize(), StringComparison.OrdinalIgnoreCase)
                 ? $"{targetName}Reference"
                 : targetName;
+
+            // if there is already an association for this entity weith the same name
+            // suffix with a number to make it unique
+            var targetNameSuffix = 1;
+            while (package.Associations?.Any(a =>
+                a.TargetEnd?.TypeReference?.TypeId == targetClass.Id &&
+                a.TargetEnd?.Name?.Equals(finalTargetName, StringComparison.OrdinalIgnoreCase) == true) == true)
+            {
+                finalTargetName = $"{targetName}{targetNameSuffix}";
+                targetNameSuffix++;
+            }
 
             var finalSourceName = isOneToOne ? sourceTable.Name.Singularize() : sourceTable.Name.Pluralize();
 
@@ -705,16 +726,37 @@ internal static class IntentModelMapper
             };
 
             // Check for reverse ownership (manually modeled associations)
-            if (!SameAssociationExistsWithReverseOwnership(package.Associations?.ToList(), newAssociation))
+            if (!TryGetSameAssociationWithReverseOwnership(package.Associations?.ToList(), newAssociation, out var invertAssociation))
             {
                 package.Associations ??= new List<AssociationPersistable>();
                 package.Associations.Add(newAssociation);
+
+                return AssociationCreationResult.Success(newAssociation);
             }
 
-            return AssociationCreationResult.Success(newAssociation);
+            // invertAssociation will never be null here. If it is null, then the TryGetSameAssociationWithReverseOwnership call would have returned
+            // false the the above block would have been invoked
+            return AssociationCreationResult.Success(invertAssociation!);
         }
 
         return AssociationCreationResult.Success(existingAssociation);
+    }
+
+    private static bool IsNullable(ForeignKeySchema foreignKey, TableSchema sourceTable)
+    {
+        // Check if any FK columns are nullable to determine association nullability
+        return foreignKey.Columns.Any(fkCol =>
+            sourceTable.Columns.Any(col => col.Name == fkCol.Name && col.IsNullable));
+    }
+
+    private static bool IsOneToOne(ForeignKeySchema foreignKey, TableSchema sourceTable)
+    {
+        // Determine if this is a one-to-one relationship (FK columns are all primary keys)
+        var sourcePkColumns = sourceTable.Columns.Where(c => c.IsPrimaryKey).Select(c => c.Name).ToHashSet();
+        var fkColumnNames = foreignKey.Columns.Select(c => c.Name).ToHashSet();
+        var isOneToOne = sourcePkColumns.Count == fkColumnNames.Count &&
+                       fkColumnNames.All(fk => sourcePkColumns.Contains(fk));
+        return isOneToOne;
     }
 
     /// <summary>
@@ -933,14 +975,38 @@ internal static class IntentModelMapper
     /// <summary>
     /// Checks if the same association exists with reverse ownership (manually modeled)
     /// </summary>
-    private static bool SameAssociationExistsWithReverseOwnership(List<AssociationPersistable>? associations, AssociationPersistable newAssociation)
+    private static bool TryGetSameAssociationWithReverseOwnership(List<AssociationPersistable>? associations, AssociationPersistable newAssociation, 
+        out AssociationPersistable? invertAssociation)
     {
-        if (associations == null) return false;
+        if (associations == null)
+        {
+            invertAssociation = null;
+            return false;
+        }
 
-        return associations.Any(existing =>
+        var requiredTargetIsCollection = false;
+        var requiredSourceIsCollection = false;
+
+        // if the source and target are both collection or both not collection, then the invert would have the same value
+        if (newAssociation.TargetEnd.TypeReference?.IsCollection == newAssociation.SourceEnd.TypeReference?.IsCollection)
+        {
+            requiredTargetIsCollection = requiredSourceIsCollection = newAssociation.TargetEnd.TypeReference?.IsCollection ?? false;
+        }
+
+        // if they not the same, then the values to check should be opposite
+        if(newAssociation.TargetEnd.TypeReference?.IsCollection != newAssociation.SourceEnd.TypeReference?.IsCollection)
+        {
+            requiredTargetIsCollection = (!newAssociation.TargetEnd.TypeReference?.IsCollection) ?? false;
+            requiredSourceIsCollection = (!newAssociation.SourceEnd.TypeReference?.IsCollection) ?? false;
+        }
+
+        invertAssociation = associations.FirstOrDefault(existing =>
             existing.TargetEnd.TypeReference?.TypeId == newAssociation.SourceEnd.TypeReference?.TypeId &&
-            existing.SourceEnd.TypeReference?.TypeId == newAssociation.TargetEnd.TypeReference?.TypeId &&
-            existing.SourceEnd.TypeReference?.IsNavigable == true);
+            existing.SourceEnd.TypeReference?.TypeId == newAssociation.TargetEnd.TypeReference?.TypeId && 
+            existing.TargetEnd.TypeReference?.IsCollection == requiredTargetIsCollection && 
+            existing.SourceEnd.TypeReference?.IsCollection == requiredSourceIsCollection);
+
+        return !(invertAssociation is null);
     }
 
     private static ElementPersistable MapTriggerToElement(TriggerSchema trigger, string tableName, string schema, string parentClassId, PackageModelPersistable package)
