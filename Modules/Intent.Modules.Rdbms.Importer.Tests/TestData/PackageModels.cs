@@ -71,6 +71,46 @@ internal static class PackageModels
         return package;
     }
 
+    public static PackageModelPersistable WithCustomerAndOrderTablesNoFKReference()
+    {
+        var package = WithCustomerAndOrderTables();
+
+        foreach (var item in package.Associations)
+        {
+            item.ExternalReference = null;
+        }
+
+        return package;
+    }
+
+    public static PackageModelPersistable WithPersonAddressTables()
+    {
+        var package = Empty();
+        var persons = Elements.SimplePersonsTable();
+        var addresses = Elements.AddressTableWithPersonFk();
+
+        package.Classes.Add(persons);
+        package.Classes.Add(addresses);
+        var association = Associations.PersonsToAddressesFk(addresses.Id, persons.Id);
+        package.Associations.Add(association);
+
+        return package;
+    }
+
+    public static PackageModelPersistable WithPersonAddressTablesInvertAssociation()
+    {
+        var package = Empty();
+        var persons = Elements.SimplePersonsTable();
+        var addresses = Elements.AddressTableWithPersonFk();
+
+        package.Classes.Add(persons);
+        package.Classes.Add(addresses);
+        var association = Associations.PersonsToAddressesInvertFk(addresses.Id, persons.Id);
+        package.Associations.Add(association);
+
+        return package;
+    }
+
     public static PackageModelPersistable WithExistingCustomer()
     {
         var package = Empty();

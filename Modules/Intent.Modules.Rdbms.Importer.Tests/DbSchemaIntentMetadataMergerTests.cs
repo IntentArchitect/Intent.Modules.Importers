@@ -161,6 +161,81 @@ public class DbSchemaIntentMetadataMergerTests
     }
 
     [Fact]
+    /// If we have a manually modelled association which has the same name and same configuration as the
+    /// association that would be created by the importer then do not create a new association
+    public void MergeSchemaAndPackage_ManuallyCreatedAssociationImported_RemainsIdempotent()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.Create(DatabaseSchemas.WithCustomersAndOrders(), PackageModels.WithCustomerAndOrderTablesNoFKReference());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+        var classIdsBefore = GetClasses(scenario.Package).Select(c => c.Id).ToList();
+        var associationIdsBefore = scenario.Package.Associations.Select(a => a.Id).ToList();
+        var externalRefBefore = scenario.Package.Associations.Select(a => a.ExternalReference).ToList();
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        var classes = GetClasses(scenario.Package).ToList();
+        classes.Count.ShouldBe(2);
+        classes.Select(c => c.Id).ShouldBe(classIdsBefore);
+        scenario.Package.Associations.ShouldHaveSingleItem();
+        scenario.Package.Associations.Select(a => a.Id).ShouldBe(associationIdsBefore);
+        scenario.Package.Associations.Select(a => a.ExternalReference).ShouldBe(externalRefBefore);
+    }
+
+    [Fact]
+    /// If we have a manually modelled association which has the same name as the association that would be created by the importer
+    /// but which is of a different type (in this case a 1 -> 0..1 exists, and importer is creating * -> 1)
+    /// then a new association is created with a different name
+    public void MergeSchemaAndPackage_ManuallyCreatedAssociationSameNameImported_NewAssociation()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.Create(DatabaseSchemas.WithPersonAddresses(), PackageModels.WithPersonAddressTables());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+        var classIdsBefore = GetClasses(scenario.Package).Select(c => c.Id).ToList();
+        var associationIdsBefore = scenario.Package.Associations.Select(a => a.Id).ToList();
+        var externalRefBefore = scenario.Package.Associations.Select(a => a.ExternalReference).ToList();
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        var classes = GetClasses(scenario.Package).ToList();
+        classes.Count.ShouldBe(2);
+        classes.Select(c => c.Id).ShouldBe(classIdsBefore);
+        scenario.Package.Associations.Count.ShouldBe(2);
+        scenario.Package.Associations.DistinctBy(a => a.TargetEnd.Name).Count().ShouldBe(2);
+        scenario.Package.Associations.Where(a => a.ExternalReference is not null).Count().ShouldBe(1);
+    }
+
+    [Fact]
+    /// If there is an association modelled (either manually or with importer) which is the "invert"
+    /// of the association being imported, then do not create a new association
+    public void MergeSchemaAndPackage_ManuallyInvertedAssociationDeffNameImported_NoChange()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.Create(DatabaseSchemas.WithPersonAddresses(), PackageModels.WithPersonAddressTablesInvertAssociation());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesOnly());
+        var classIdsBefore = GetClasses(scenario.Package).Select(c => c.Id).ToList();
+        var associationIdsBefore = scenario.Package.Associations.Select(a => a.Id).ToList();
+        var externalRefBefore = scenario.Package.Associations.Select(a => a.ExternalReference).ToList();
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        var classes = GetClasses(scenario.Package).ToList();
+        classes.Count.ShouldBe(2);
+        classes.Select(c => c.Id).ShouldBe(classIdsBefore);
+        scenario.Package.Associations.Count.ShouldBe(1);
+        scenario.Package.Associations.Where(a => a.ExternalReference is not null).Count().ShouldBe(0);
+    }
+
+    [Fact]
     public void MergeSchemaAndPackage_NewTableWithForeignKeyToExistingTable_CreatesClassAndAssociation()
     {
         // Arrange

@@ -42,6 +42,70 @@ internal static class Associations
         Stereotypes = [Stereotypes.ForeignKey("CustomerId")]
     };
 
+    public static AssociationPersistable PersonsToAddressesFk(
+        string addressClassId,
+        string personClassId,
+        string? id = null) => new()
+        {
+            Id = id ?? Guid.NewGuid().ToString(),
+            SourceEnd = new AssociationEndPersistable
+            {
+                Id = Guid.NewGuid().ToString(),
+                TypeReference = new TypeReferencePersistable
+                {
+                    TypeId = addressClassId,
+                    IsNavigable = false,
+                    IsNullable = false,
+                    IsCollection = false
+                }
+            },
+            TargetEnd = new AssociationEndPersistable
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "Person",
+                TypeReference = new TypeReferencePersistable
+                {
+                    TypeId = personClassId,
+                    IsNavigable = true,
+                    IsNullable = true,
+                    IsCollection = false
+                }
+            },
+            Stereotypes = [Stereotypes.ForeignKey("PersonId")]
+        };
+
+    public static AssociationPersistable PersonsToAddressesInvertFk(
+        string addressClassId,
+        string personClassId,
+        string? id = null) => new()
+        {
+            Id = id ?? Guid.NewGuid().ToString(),
+            TargetEnd = new AssociationEndPersistable
+            {
+                Id = Guid.NewGuid().ToString(),
+                TypeReference = new TypeReferencePersistable
+                {
+                    TypeId = addressClassId,
+                    IsNavigable = true,
+                    IsNullable = false,
+                    IsCollection = true
+                }
+            },
+            SourceEnd = new AssociationEndPersistable
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "Person",
+                TypeReference = new TypeReferencePersistable
+                {
+                    TypeId = personClassId,
+                    IsNavigable = false,
+                    IsNullable = false,
+                    IsCollection = false
+                }
+            },
+            Stereotypes = [Stereotypes.ForeignKey("PersonId")]
+        };
+
     public static AssociationPersistable Simple(
         string sourceClassId,
         string targetClassId,

@@ -64,6 +64,44 @@ internal static class Elements
         }
     };
 
+    public static ElementPersistable SimplePersonsTable(string? id = null) => new()
+    {
+        Id = id ?? Guid.NewGuid().ToString(),
+        Name = "Person",
+        SpecializationType = ClassModel.SpecializationType,
+        SpecializationTypeId = ClassModel.SpecializationTypeId,
+        ExternalReference = ModelNamingUtilities.GetTableExternalReference("dbo", "Persons"),
+        Stereotypes = new List<StereotypePersistable>
+        {
+            Stereotypes.Table("dbo", "Persons")
+        },
+        ChildElements = new List<ElementPersistable>
+        {
+            Attribute("Id", "int", ModelNamingUtilities.GetColumnExternalReference("dbo", "Person", "Id"), isPrimaryKey: true),
+            Attribute("Email", "string", ModelNamingUtilities.GetColumnExternalReference("dbo", "Person", "Email"))
+        }
+    };
+
+    public static ElementPersistable AddressTableWithPersonFk(string? id = null) => new()
+    {
+        Id = id ?? Guid.NewGuid().ToString(),
+        Name = "Address",
+        SpecializationType = ClassModel.SpecializationType,
+        SpecializationTypeId = ClassModel.SpecializationTypeId,
+        ExternalReference = ModelNamingUtilities.GetTableExternalReference("dbo", "Addresses"),
+        Stereotypes = new List<StereotypePersistable>
+        {
+            Stereotypes.Table("dbo", "Addresses")
+        },
+        ChildElements = new List<ElementPersistable>
+        {
+            Attribute("Id", "int", ModelNamingUtilities.GetColumnExternalReference("dbo", "Address", "Id"), isPrimaryKey: true),
+            Attribute("Line1", "string", ModelNamingUtilities.GetColumnExternalReference("dbo", "Address", "Line1")),
+            Attribute("Line2", "string", ModelNamingUtilities.GetColumnExternalReference("dbo", "Address", "Line2")),
+            Attribute("PersonId", "int", ModelNamingUtilities.GetColumnExternalReference("dbo", "Address", "PersonId"))
+        }
+    };
+
     public static ElementPersistable Attribute(
         string name, 
         string typeId, 

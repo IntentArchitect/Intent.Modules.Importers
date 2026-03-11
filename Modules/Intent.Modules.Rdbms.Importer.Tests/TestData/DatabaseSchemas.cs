@@ -251,4 +251,12 @@ internal static class DatabaseSchemas
         Views = [],
         StoredProcedures = [StoredProcedures.GetCustomerNoOutParams()]
     };
+
+    public static DatabaseSchema WithPersonAddresses() => new()
+    {
+        DatabaseName = "TestDatabase",
+        Tables = [Tables.SimplePerson(), Tables.SimpleAddress()],
+        Views = [],
+        StoredProcedures = []
+    };
 }
