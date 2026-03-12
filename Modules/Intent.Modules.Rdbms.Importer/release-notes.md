@@ -1,6 +1,7 @@
 ### Version 1.0.13
 
 - Improvement: Better detection of associations to prevent duplicate associations being created.
+- Fixed: Issue where duplicate stored procedures where created on import if in a folder.
 
 ### Version 1.0.12
 

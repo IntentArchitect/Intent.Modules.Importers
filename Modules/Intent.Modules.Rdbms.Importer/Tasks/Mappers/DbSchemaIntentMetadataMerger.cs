@@ -301,9 +301,18 @@ internal class DbSchemaIntentMetadataMerger
 
         // 1. Get or create the Stored Procedure Element (at package level)
         var spExternalRef = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Schema, storedProc.Name);
+
+        // The SP will only be classified as a class if its in the root of the package. Hence the need for the additional check below
         var existingSpElement = package.Classes.FirstOrDefault(c => 
             c.ExternalReference == spExternalRef && 
             c.SpecializationType == Constants.SpecializationTypes.StoredProcedure.SpecializationType);
+
+        // if it didn't find it in the root look through all folders to see if the SP is there
+        existingSpElement ??= package.ChildElements
+               .Where(c => c.SpecializationType == Constants.SpecializationTypes.Folder.SpecializationType)
+               .SelectMany(f => f.ChildElements)
+               .FirstOrDefault(c => c.ExternalReference == spExternalRef &&
+                    c.SpecializationType == Constants.SpecializationTypes.StoredProcedure.SpecializationType);
 
         ElementPersistable storedProcElement;
         if (existingSpElement != null)
