@@ -96,7 +96,7 @@ internal static class PackageModels
 
         return package;
     }
-
+    
     public static PackageModelPersistable WithPersonAddressTablesInvertAssociation()
     {
         var package = Empty();

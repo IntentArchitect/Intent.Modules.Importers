@@ -1,7 +1,9 @@
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.Modelers.Domain.Api;
+using Intent.Modules.Common.Types.Api;
 using Intent.Modules.Rdbms.Importer.Tasks.Mappers;
+using System;
 
 namespace Intent.Modules.Rdbms.Importer.Tests.TestData;
 
@@ -81,13 +83,13 @@ internal static class Elements
             Attribute("Email", "string", ModelNamingUtilities.GetColumnExternalReference("dbo", "Person", "Email"))
         }
     };
-
+        
     public static ElementPersistable AddressTableWithPersonFk(string? id = null) => new()
     {
         Id = id ?? Guid.NewGuid().ToString(),
         Name = "Address",
-        SpecializationType = ClassModel.SpecializationType,
-        SpecializationTypeId = ClassModel.SpecializationTypeId,
+        SpecializationType = FolderModel.SpecializationType,
+        SpecializationTypeId = FolderModel.SpecializationTypeId,
         ExternalReference = ModelNamingUtilities.GetTableExternalReference("dbo", "Addresses"),
         Stereotypes = new List<StereotypePersistable>
         {
@@ -103,8 +105,8 @@ internal static class Elements
     };
 
     public static ElementPersistable Attribute(
-        string name, 
-        string typeId, 
+        string name,
+        string typeId,
         string? externalReference = null,
         bool isPrimaryKey = false,
         bool isNullable = false,
@@ -114,8 +116,8 @@ internal static class Elements
         {
             Id = Guid.NewGuid().ToString(),
             Name = name,
-            SpecializationType = AttributeModel.SpecializationType,
-            SpecializationTypeId = AttributeModel.SpecializationTypeId,
+            SpecializationType = Intent.Modelers.Domain.Api.AttributeModel.SpecializationType,
+            SpecializationTypeId = Intent.Modelers.Domain.Api.AttributeModel.SpecializationTypeId,
             ExternalReference = externalReference,
             TypeReference = new TypeReferencePersistable
             {
@@ -149,29 +151,29 @@ internal static class Elements
     };
 
     public static ElementPersistable StoredProcedureOperation(
-        string name, 
+        string name,
         string? externalReference = null,
         List<ElementPersistable>? parameters = null) => new()
-    {
-        Id = Guid.NewGuid().ToString(),
-        Name = name,
-        SpecializationType = OperationModel.SpecializationType,
-        SpecializationTypeId = OperationModel.SpecializationTypeId,
-        ExternalReference = externalReference,
-        ChildElements = parameters ?? new List<ElementPersistable>()
-    };
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = name,
+            SpecializationType = Intent.Modelers.Domain.Api.OperationModel.SpecializationType,
+            SpecializationTypeId = Intent.Modelers.Domain.Api.OperationModel.SpecializationTypeId,
+            ExternalReference = externalReference,
+            ChildElements = parameters ?? new List<ElementPersistable>()
+        };
 
     public static ElementPersistable DataContract(
-        string name, 
+        string name,
         string? externalReference = null,
         List<ElementPersistable>? properties = null) => new()
-    {
-        Id = Guid.NewGuid().ToString(),
-        Name = name,
-        SpecializationType = "Data Contract",
-        ExternalReference = externalReference,
-        ChildElements = properties ?? new List<ElementPersistable>()
-    };
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = name,
+            SpecializationType = "Data Contract",
+            ExternalReference = externalReference,
+            ChildElements = properties ?? new List<ElementPersistable>()
+        };
 
     /// <summary>
     /// Table A element for three-table scenario testing.
@@ -244,27 +246,27 @@ internal static class Elements
     /// Creates an attribute with Foreign Key stereotype
     /// </summary>
     public static ElementPersistable AttributeWithForeignKey(
-        string name, 
-        string typeId, 
+        string name,
+        string typeId,
         string? externalReference = null,
         bool isNullable = false) => new()
-    {
-        Id = Guid.NewGuid().ToString(),
-        Name = name,
-        SpecializationType = AttributeModel.SpecializationType,
-        SpecializationTypeId = AttributeModel.SpecializationTypeId,
-        ExternalReference = externalReference,
-        TypeReference = new TypeReferencePersistable
         {
-            TypeId = typeId,
-            IsNullable = isNullable,
-            IsCollection = false
-        },
-        Stereotypes = new List<StereotypePersistable>
+            Id = Guid.NewGuid().ToString(),
+            Name = name,
+            SpecializationType = Intent.Modelers.Domain.Api.AttributeModel.SpecializationType,
+            SpecializationTypeId = Intent.Modelers.Domain.Api.AttributeModel.SpecializationTypeId,
+            ExternalReference = externalReference,
+            TypeReference = new TypeReferencePersistable
+            {
+                TypeId = typeId,
+                IsNullable = isNullable,
+                IsCollection = false
+            },
+            Stereotypes = new List<StereotypePersistable>
         {
             Stereotypes.ForeignKey(name)
         }
-    };
+        };
 
     /// <summary>
     /// Category table element for duplicate FK testing

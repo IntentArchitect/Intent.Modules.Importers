@@ -1382,5 +1382,40 @@ public class DbSchemaIntentMetadataMergerTests
         resultMapping.MappedEnds.Count.ShouldBe(2);
     }
 
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProc_SubFolder_MapToOperation_NoDuplicate()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetOrdersSummary()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresMappedToOperation());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        var sp = scenario.Package.Classes.First(x => x.Name == "GetOrdersSummary");
+        var schemaFolder = scenario.Package.ChildElements.First(x => x.Name.Equals(StoredProcedures.GetOrdersSummary().Schema, StringComparison.InvariantCultureIgnoreCase));
+        scenario.Package.Classes.Remove(sp);
+        schemaFolder.ChildElements.Add(sp);
+
+        var beforeClassCount = scenario.Package.Classes.Count;
+        var schemaFolderChildCount = schemaFolder.ChildElements.Count;
+
+        // run it again
+        var secondResult = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        scenario.Package.Classes.Count.ShouldBe(beforeClassCount, "No duplicate Stored Proc should be created on re-import");
+        scenario.Package.ChildElements.First(x => x.Name.Equals(StoredProcedures.GetOrdersSummary().Schema, StringComparison.InvariantCultureIgnoreCase)).ChildElements.Count.ShouldBe(schemaFolderChildCount, "No duplicate SPs should be created in the schema folder on re-import");
+    }
+
     #endregion
 }

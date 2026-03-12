@@ -9,6 +9,9 @@ namespace Intent.Modules.Rdbms.Importer.Tests.TestData;
 /// </summary>
 internal static class StoredProcedures
 {
+    public const string SpecializationType = "Stored Procedure";
+    public const string SpecializationTypeId = "575edd35-9438-406d-b0a7-b99d6f29b560";
+
     public static StoredProcedureSchema GetCustomerById() => new()
     {
         Schema = "dbo",
