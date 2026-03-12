@@ -88,8 +88,8 @@ internal static class Elements
     {
         Id = id ?? Guid.NewGuid().ToString(),
         Name = "Address",
-        SpecializationType = FolderModel.SpecializationType,
-        SpecializationTypeId = FolderModel.SpecializationTypeId,
+        SpecializationType = ClassModel.SpecializationType,
+        SpecializationTypeId = ClassModel.SpecializationTypeId,
         ExternalReference = ModelNamingUtilities.GetTableExternalReference("dbo", "Addresses"),
         Stereotypes = new List<StereotypePersistable>
         {

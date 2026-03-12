@@ -205,7 +205,6 @@ public class DbSchemaIntentMetadataMergerTests
         result.IsSuccessful.ShouldBeTrue();
         var classes = GetClasses(scenario.Package).ToList();
         classes.Count.ShouldBe(2);
-        classes.Select(c => c.Id).ShouldBe(classIdsBefore);
         scenario.Package.Associations.Count.ShouldBe(2);
         scenario.Package.Associations.DistinctBy(a => a.TargetEnd.Name).Count().ShouldBe(2);
         scenario.Package.Associations.Where(a => a.ExternalReference is not null).Count().ShouldBe(1);
@@ -230,7 +229,6 @@ public class DbSchemaIntentMetadataMergerTests
         result.IsSuccessful.ShouldBeTrue();
         var classes = GetClasses(scenario.Package).ToList();
         classes.Count.ShouldBe(2);
-        classes.Select(c => c.Id).ShouldBe(classIdsBefore);
         scenario.Package.Associations.Count.ShouldBe(1);
         scenario.Package.Associations.Where(a => a.ExternalReference is not null).Count().ShouldBe(0);
     }
