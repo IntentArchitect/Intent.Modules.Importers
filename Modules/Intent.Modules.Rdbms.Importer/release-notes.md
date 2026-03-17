@@ -2,6 +2,7 @@
 
 - Improvement: Better detection of associations to prevent duplicate associations being created.
 - Fixed: Issue where duplicate stored procedures where created on import if in a folder.
+- Fixed: Error when importing stored procedure which used a temp table, and response DataContract could not be determined.
 
 ### Version 1.0.12
 

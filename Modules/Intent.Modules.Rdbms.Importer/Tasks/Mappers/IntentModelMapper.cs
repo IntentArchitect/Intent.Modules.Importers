@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Intent.IArchitect.Agent.Persistence.Model;
 using Intent.IArchitect.Agent.Persistence.Model.Common;
 using Intent.IArchitect.Agent.Persistence.Model.Mappings;
@@ -9,6 +5,9 @@ using Intent.Modelers.Domain.Api;
 using Intent.Modules.Common.Templates;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Intent.Modules.Rdbms.Importer.Tasks.Mappers;
 
@@ -975,7 +974,7 @@ internal static class IntentModelMapper
     /// <summary>
     /// Checks if the same association exists with reverse ownership (manually modeled)
     /// </summary>
-    private static bool TryGetSameAssociationWithReverseOwnership(List<AssociationPersistable>? associations, AssociationPersistable newAssociation, 
+    private static bool TryGetSameAssociationWithReverseOwnership(List<AssociationPersistable>? associations, AssociationPersistable newAssociation,
         out AssociationPersistable? invertAssociation)
     {
         if (associations == null)
@@ -994,7 +993,7 @@ internal static class IntentModelMapper
         }
 
         // if they not the same, then the values to check should be opposite
-        if(newAssociation.TargetEnd.TypeReference?.IsCollection != newAssociation.SourceEnd.TypeReference?.IsCollection)
+        if (newAssociation.TargetEnd.TypeReference?.IsCollection != newAssociation.SourceEnd.TypeReference?.IsCollection)
         {
             requiredTargetIsCollection = (!newAssociation.TargetEnd.TypeReference?.IsCollection) ?? false;
             requiredSourceIsCollection = (!newAssociation.SourceEnd.TypeReference?.IsCollection) ?? false;
@@ -1002,8 +1001,8 @@ internal static class IntentModelMapper
 
         invertAssociation = associations.FirstOrDefault(existing =>
             existing.TargetEnd.TypeReference?.TypeId == newAssociation.SourceEnd.TypeReference?.TypeId &&
-            existing.SourceEnd.TypeReference?.TypeId == newAssociation.TargetEnd.TypeReference?.TypeId && 
-            existing.TargetEnd.TypeReference?.IsCollection == requiredTargetIsCollection && 
+            existing.SourceEnd.TypeReference?.TypeId == newAssociation.TargetEnd.TypeReference?.TypeId &&
+            existing.TargetEnd.TypeReference?.IsCollection == requiredTargetIsCollection &&
             existing.SourceEnd.TypeReference?.IsCollection == requiredSourceIsCollection);
 
         return !(invertAssociation is null);
@@ -1430,13 +1429,15 @@ internal static class IntentModelMapper
         var resultMappedEnds = new List<ElementToElementMappedEndPersistable>();
 
         // Map result set to "Results" attribute in wrapper DC
-        var resultsAttribute = wrapperDataContract.ChildElements.FirstOrDefault(e => e.Name == "Results");
-        if (resultsAttribute != null && storedProcElement.TypeReference?.TypeId != null)
+        if (wrapperDataContract is not null)
         {
-            resultMappedEnds.Add(new ElementToElementMappedEndPersistable
+            var resultsAttribute = wrapperDataContract.ChildElements.FirstOrDefault(e => e.Name == "Results");
+            if (resultsAttribute != null && storedProcElement.TypeReference?.TypeId != null)
             {
-                MappingExpression = "{mappedResult.result}",
-                TargetPath = new List<MappedPathTargetPersistable>
+                resultMappedEnds.Add(new ElementToElementMappedEndPersistable
+                {
+                    MappingExpression = "{mappedResult.result}",
+                    TargetPath = new List<MappedPathTargetPersistable>
                 {
                     new MappedPathTargetPersistable
                     {
@@ -1455,7 +1456,7 @@ internal static class IntentModelMapper
                         SpecializationId = "0090fb93-483e-41af-a11d-5ad2dc796adf"
                     }
                 },
-                Sources = new List<ElementToElementMappedEndSourcePersistable>
+                    Sources = new List<ElementToElementMappedEndSourcePersistable>
                 {
                     new ElementToElementMappedEndSourcePersistable
                     {
@@ -1504,14 +1505,14 @@ internal static class IntentModelMapper
                         }
                     }
                 }
-            });
-        }
-        else
-        {
-            resultMappedEnds.Add(new ElementToElementMappedEndPersistable
+                });
+            }
+            else
             {
-                MappingExpression = "{mappedResult.result}",
-                TargetPath = new List<MappedPathTargetPersistable>
+                resultMappedEnds.Add(new ElementToElementMappedEndPersistable
+                {
+                    MappingExpression = "{mappedResult.result}",
+                    TargetPath = new List<MappedPathTargetPersistable>
                 {
                     new MappedPathTargetPersistable
                     {
@@ -1522,7 +1523,7 @@ internal static class IntentModelMapper
                         SpecializationId = "4464fabe-c59e-4d90-81fc-c9245bdd1afd"
                     }
                 },
-                Sources = new List<ElementToElementMappedEndSourcePersistable>
+                    Sources = new List<ElementToElementMappedEndSourcePersistable>
                 {
                     new ElementToElementMappedEndSourcePersistable
                     {
@@ -1571,7 +1572,8 @@ internal static class IntentModelMapper
                         }
                     }
                 }
-            });
+                });
+            }
         }
 
         // Map each output parameter to its corresponding attribute in the wrapper DC
@@ -1657,24 +1659,27 @@ internal static class IntentModelMapper
             }
         }
 
-        mappings.Add(new ElementToElementMappingPersistable
+        if (wrapperDataContract is not null)
         {
-            Type = "Stored Procedure Result",
-            TypeId = "0af211bd-11c4-4981-b7bc-c42923a884d8",
-            Source = new ElementSolutionIdentifierPersistable
+            mappings.Add(new ElementToElementMappingPersistable
             {
-                ApplicationId = package.ApplicationId,
-                DesignerId = Constants.Mapping.Index.MetadataId,
-                ElementId = operationElement.Id
-            },
-            Target = new ElementSolutionIdentifierPersistable
-            {
-                ApplicationId = package.ApplicationId,
-                DesignerId = Constants.Mapping.Index.MetadataId,
-                ElementId = wrapperDataContract.Id
-            },
-            MappedEnds = resultMappedEnds
-        });
+                Type = "Stored Procedure Result",
+                TypeId = "0af211bd-11c4-4981-b7bc-c42923a884d8",
+                Source = new ElementSolutionIdentifierPersistable
+                {
+                    ApplicationId = package.ApplicationId,
+                    DesignerId = Constants.Mapping.Index.MetadataId,
+                    ElementId = operationElement.Id
+                },
+                Target = new ElementSolutionIdentifierPersistable
+                {
+                    ApplicationId = package.ApplicationId,
+                    DesignerId = Constants.Mapping.Index.MetadataId,
+                    ElementId = wrapperDataContract.Id
+                },
+                MappedEnds = resultMappedEnds
+            });
+        }
 
         return mappings;
     }
