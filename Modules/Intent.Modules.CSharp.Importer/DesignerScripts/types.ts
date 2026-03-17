@@ -16,6 +16,7 @@ interface IImportConfig {
     importProfileId: string;
     selectedFiles: string[];
     casingConvention: string;
+    preserveAsync: boolean;
 }
 
 interface IFileData {

@@ -31,6 +31,8 @@ public record CSharpConfig
     public required ImportProfileConfig ImportProfile { get; init; }
     public string? TargetFolder { get; init; }
     public string? TargetFolderId { get; init; }
+    public bool PreserveAsync { get; init; }
+
 }
 
 [Flags]

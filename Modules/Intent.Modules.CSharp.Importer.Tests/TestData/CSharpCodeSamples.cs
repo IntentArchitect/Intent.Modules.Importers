@@ -60,6 +60,17 @@ namespace TestApp.Contracts
     }
 }";
 
+    public const string AsyncInterface = @"
+namespace TestApp.Contracts
+{
+    public interface IRepository
+    {
+        void SyncMethod();
+        Task AsyncNoToken();
+        Task AsyncWithToken(CancellationToken token);
+    }
+}";
+
     public const string SimpleEnum = @"
 namespace TestApp.Domain
 {

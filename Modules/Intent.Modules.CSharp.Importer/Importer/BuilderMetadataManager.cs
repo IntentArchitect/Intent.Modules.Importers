@@ -213,7 +213,7 @@ public class BuilderMetadataManager
         return association;
     }
 
-    public void SetTypeReference(IElementPersistable targetElement, string type, bool isNullable, bool isCollection)
+    public void SetTypeReference(IElementPersistable targetElement, string? type, bool isNullable, bool isCollection)
     {
         targetElement.TypeReference = new TypeReferencePersistable();
         targetElement.TypeReference.IsNullable = isNullable;

@@ -1,6 +1,8 @@
 ﻿using Intent.Metadata.Models;
 using Intent.MetadataSynchronizer;
 using Intent.Persistence;
+using JetBrains.Annotations;
+using System.Diagnostics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using IElementPersistable = Intent.Persistence.IElementPersistable;
 
@@ -10,6 +12,7 @@ namespace Intent.Modules.CSharp.Importer.Importer;
 internal static class CSharpImporterExtensions
 {
     private const string TypeDefinitionProfileId = "type-definition";
+    private const string ServicesProfileId = "services-services";
 
     public static void ImportCSharpTypes(this IPackageModelPersistable package, CoreTypesData csharpTypes, CSharpConfig csConfig)
     {
@@ -27,12 +30,12 @@ internal static class CSharpImporterExtensions
         if (csConfig.ImportProfile.MapClassesTo != null)
         {
             var classElementsMap = CreateElements(csConfig.ImportProfile.MapClassesTo, csharpTypes.Classes, csConfig.TargetFolderId, builderMetadataManager, csConfig.ImportProfile);
-            ProcessClassElements(csConfig.ImportProfile, classElementsMap, builderMetadataManager);
+            ProcessClassElements(csConfig, classElementsMap, builderMetadataManager);
         }
         if (csConfig.ImportProfile.MapInterfacesTo != null)
         {
             var interfaceElementsMap = CreateElements(csConfig.ImportProfile.MapInterfacesTo, GetQualifyingInterfaces(csConfig.ImportProfile, csharpTypes.Interfaces), csConfig.TargetFolderId, builderMetadataManager, csConfig.ImportProfile);
-            ProcessInterfaceElements(csConfig.ImportProfile, interfaceElementsMap, builderMetadataManager);
+            ProcessInterfaceElements(csConfig, interfaceElementsMap, builderMetadataManager);
         }
     }
 
@@ -206,41 +209,44 @@ internal static class CSharpImporterExtensions
     }
 
     private static void ProcessClassElements(
-        ImportProfileConfig profile,
+        CSharpConfig config,
         List<(ClassData ClassData, IElementPersistable Element)> classDataAndBuilders,
         BuilderMetadataManager builderMetadataManager)
     {
+        var profile = config.ImportProfile;
+
         ProcessElementDependencies(profile, classDataAndBuilders.Select(x => ((TypeDeclarationData)x.ClassData, x.Element)).ToList(), builderMetadataManager);
 
         foreach (var (interfaceData, element) in classDataAndBuilders)
         {
             if (element.SpecializationTypeId == profile.DependencyProfile?.MapClassesTo?.SpecializationTypeId)
             {
-                ProcessClassElement(profile.DependencyProfile, builderMetadataManager, interfaceData, element);
+                ProcessClassElement(profile.DependencyProfile, builderMetadataManager, interfaceData, element, config);
             }
             else
             {
-                ProcessClassElement(profile, builderMetadataManager, interfaceData, element);
+                ProcessClassElement(profile, builderMetadataManager, interfaceData, element, config);
             }
         }
     }
 
     private static void ProcessInterfaceElements(
-        ImportProfileConfig profile,
+        CSharpConfig config,
         List<(InterfaceData InterfaceData, IElementPersistable Element)> classDataAndBuilders,
         BuilderMetadataManager builderMetadataManager)
     {
+        var profile = config.ImportProfile;
         ProcessElementDependencies(profile, classDataAndBuilders.Select(x => ((TypeDeclarationData)x.InterfaceData, x.Element)).ToList(), builderMetadataManager);
 
         foreach (var (interfaceData, element) in classDataAndBuilders)
         {
             if (element.SpecializationTypeId == profile.DependencyProfile?.MapClassesTo?.SpecializationTypeId)
             {
-                ProcessTypeElement(profile.DependencyProfile, builderMetadataManager, interfaceData, element);
+                ProcessTypeElement(profile.DependencyProfile, builderMetadataManager, interfaceData, element, config);
             }
             else
             {
-                ProcessTypeElement(profile, builderMetadataManager, interfaceData, element);
+                ProcessTypeElement(profile, builderMetadataManager, interfaceData, element, config);
             }
         }
     }
@@ -305,7 +311,7 @@ internal static class CSharpImporterExtensions
         }
     }
 
-    private static void ProcessClassElement(ImportProfileConfig profile, BuilderMetadataManager builderMetadataManager, ClassData classData, IElementPersistable element)
+    private static void ProcessClassElement(ImportProfileConfig profile, BuilderMetadataManager builderMetadataManager, ClassData classData, IElementPersistable element, CSharpConfig config)
     {
         var baseType = classData.BaseType != null ? builderMetadataManager.GetElementByReference(classData.BaseType) : null;
         if (baseType != null && profile.MapInheritanceTo != null)
@@ -354,10 +360,10 @@ internal static class CSharpImporterExtensions
             }
         }
 
-        ProcessTypeElement(profile, builderMetadataManager, (TypeDeclarationData)classData, element);
+        ProcessTypeElement(profile, builderMetadataManager, (TypeDeclarationData)classData, element, config);
     }
 
-    private static void ProcessTypeElement(ImportProfileConfig profile, BuilderMetadataManager builderMetadataManager, TypeDeclarationData classData, IElementPersistable element)
+    private static void ProcessTypeElement(ImportProfileConfig profile, BuilderMetadataManager builderMetadataManager, TypeDeclarationData classData, IElementPersistable element, CSharpConfig config)
     {
         foreach (var prop in classData.Properties.Where(p =>
                      profile.MapAssociationsTo == null || // was not handled as an association.
@@ -395,21 +401,16 @@ internal static class CSharpImporterExtensions
                 parentId: element.Id,
                 externalReference: $"{classData.GetIdentifier()}+{method.GetIdentifier()}");
 
-            if (method.ReturnType is not null)
-            {
-                builderMetadataManager.SetTypeReference(newMethod, method.ReturnType, method.ReturnType?.Contains('?') ?? false, method.ReturnsCollection);
-            }
-            else
-            {
-                builderMetadataManager.SetTypeReference(newMethod, null, method.ReturnType?.Contains('?') ?? false, method.ReturnsCollection);
-            }
+            builderMetadataManager.SetTypeReference(newMethod, method.ReturnType, method.ReturnType?.Contains('?') ?? false, method.ReturnsCollection);
+            ApplySyncAsyncStereotypes(profile, newMethod, method, config);
 
             foreach (var parameter in method.Parameters)
             {
-                if (profile.MapMethodParametersTo is null)
+                if (profile.MapMethodParametersTo is null || parameter.IsCancellationToken())
                 {
                     break;
                 }
+
                 var existingParam = newMethod.ChildElements.SingleOrDefault(x => x.ExternalReference == parameter.GetIdentifier());
                 var newParam = existingParam ?? newMethod.ChildElements.Add(
                     id: Guid.NewGuid().ToString().ToLower(),
@@ -430,6 +431,11 @@ internal static class CSharpImporterExtensions
         return profile.Identifier == TypeDefinitionProfileId;
     }
 
+    private static bool IsServicesProfile(ImportProfileConfig profile)
+    {
+        return profile.Identifier == ServicesProfileId;
+    }
+
     private static void ApplyCSharpStereotype(IElementPersistable element, string csharpNamespace)
     {
 
@@ -440,5 +446,47 @@ internal static class CSharpImporterExtensions
         var property = stereotype.GetOrCreateProperty(NamespacePropertyDefinitionId, "Namespace", csharpNamespace);
         
         property.Value = csharpNamespace;
+    }
+
+    private static void ApplySyncAsyncStereotypes(ImportProfileConfig profile, IElementPersistable element, MethodData method, CSharpConfig config)
+    {
+        // if not service import, or the preserve async option is not enabled, then we don't want to apply any stereotypes and can return early
+        // This will default to async methods with cancellation tokens
+        if (!IsServicesProfile(profile) || !config.PreserveAsync)
+        {
+            return;
+        }
+
+        // if the method is not async, then we can apply the synchronous stereotype and return early
+        if (!method.IsAsync)
+        {
+            const string synchronousStereotypeId = "2db1104b-ca3c-47a6-ad82-a0d2ee915c06";
+            element.GetOrCreateStereotype(synchronousStereotypeId, "Synchronous", "b258d75f-f895-43b9-bb91-6500664716f9", "Intent.Application.Contracts");
+
+            return;
+        }
+
+        if(!method.Parameters.Any(x => x.IsCancellationToken()))
+        {
+            const string asynchronousStereotypeId = "A225C795-33E9-417D-8D58-E22826A08224";
+            const string suppressCancellationTokenId = "2801e2a9-5797-406f-b289-43af8fbb2d7e";
+
+            var stereotype = element.GetOrCreateStereotype(asynchronousStereotypeId, "Asynchronous", "b258d75f-f895-43b9-bb91-6500664716f9", "Intent.Application.Contracts");
+            var property = stereotype.GetOrCreateProperty(suppressCancellationTokenId, "Suppress Cancellation Token", "true");
+
+            return;
+        }
+
+    }    
+
+    private static bool IsCancellationToken(this ParameterData parameter)
+    {
+        HashSet<string> ignoredParameterTypes = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "System.Threading.CancellationToken",
+            "Cancellationtoken"
+        };
+
+        return ignoredParameterTypes.Contains(parameter?.Type ?? "");
     }
 }

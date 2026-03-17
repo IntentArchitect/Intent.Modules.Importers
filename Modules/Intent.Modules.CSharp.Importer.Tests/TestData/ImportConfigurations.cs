@@ -75,6 +75,23 @@ public static class ImportConfigurations
         }
     };
 
+    public static CSharpConfig ServiceServiceProfile(string? targetFolder = null, bool preserveAsync = true) => new()
+    {
+
+        TargetFolder = targetFolder ?? ".",  // Provide valid folder path for file organization logic
+        ImportProfile = new ImportProfileConfig
+        {
+            Identifier = "services-services",
+            MapClassesTo = new ElementSettings("b16578a5-27b1-4047-a8df-f0b783d706bd", "Service"),
+            MapInterfacesTo = new ElementSettings("b16578a5-27b1-4047-a8df-f0b783d706bd", "Service"),
+            MapMethodsTo = new ElementSettings("e030c97a-e066-40a7-8188-808c275df3cb", "Operation"),
+            MapMethodParametersTo = new ElementSettings("00208d20-469d-41cb-8501-768fd5eb796b", "Parameter"),
+            MapBaseMethodsToChildTypes = ImportTypes.Interface,
+            SkipBaseElementCreation = ImportTypes.Interface
+        },
+        PreserveAsync = preserveAsync
+    };
+
     // Helper classes mirroring the internal ones from ImportCSharpFileInputModel
     private class ElementSettings(string specializationTypeId, string specializationType) : IElementSettings
     {

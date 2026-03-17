@@ -1,0 +1,23 @@
+﻿{
+  Classes: [
+    {
+      Name: IRepository,
+      SpecializationType: Service,
+      Properties: [
+        {
+          Name: SyncMethod,
+          SpecializationType: Operation
+        },
+        {
+          Name: AsyncNoToken,
+          SpecializationType: Operation
+        },
+        {
+          Name: AsyncWithToken,
+          SpecializationType: Operation
+        }
+      ]
+    }
+  ],
+  Associations: []
+}

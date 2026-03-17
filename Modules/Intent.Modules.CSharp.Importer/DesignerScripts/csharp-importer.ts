@@ -44,6 +44,7 @@ async function importJson(element: MacroApi.Context.IElementApi): Promise<void> 
         importProfileId: inputs.importProfileId,
         selectedFiles: selectedFiles,
         casingConvention: inputs.casingConvention,
+        preserveAsync: inputs.async === "true"
     };
 
     // Execute import task with structured result handling
@@ -105,7 +106,17 @@ function createFolderSelectionPage(element: MacroApi.Context.IElementApi): Macro
                 isRequired: true,
                 isHidden: profileOptions.length === 1,
                 selectOptions: profileOptions,
-                value: null
+                value: null,
+                onChange: async (form) => {
+
+                    if (form.getField("importProfileId").value === "services-services") {
+                        form.getField("async").isHidden = false;
+                    } else {
+                        form.getField("async").isHidden = true;
+                    }
+                    
+                    
+                }
             },
             {
                 id: "pattern",
@@ -115,6 +126,15 @@ function createFolderSelectionPage(element: MacroApi.Context.IElementApi): Macro
                 hint: "Glob pattern to filter C# files (e.g., **/*.cs, data/*.cs, **/user*.cs).",
                 isRequired: true,
                 value: "**/*.cs"
+            },
+            {
+                id: "async",
+                fieldType: "checkbox",
+                label: "Preserve original sync/async method definitions",
+                hint: "Keep the imported method sync/async declaration; otherwise defaults to async.",
+                isRequired: true,
+                value: "true",
+                isHidden: true
             }
         ]
     };

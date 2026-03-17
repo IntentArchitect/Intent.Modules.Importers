@@ -1,3 +1,7 @@
+### Version 1.0.7
+
+- Improvement: Added option to `Preserve original sync/async method definitions` when importing services, which will add the appropriate `async/sync` stereotypes
+
 ### Version 1.0.6
 
 - Fixed: Issue when multiple packages had folders with the same external reference value.

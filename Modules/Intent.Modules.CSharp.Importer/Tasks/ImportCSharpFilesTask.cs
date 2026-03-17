@@ -46,7 +46,8 @@ namespace Intent.Modules.CSharp.Importer.Tasks
             {
                 ImportProfile = profile,
                 TargetFolder = importModel.SourceFolder,
-                TargetFolderId = importModel.TargetFolderId
+                TargetFolderId = importModel.TargetFolderId,
+                PreserveAsync = importModel.PreserveAsync
             });
 
             targetPackage.Save();

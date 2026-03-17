@@ -15,6 +15,7 @@ public class ImportCSharpFileInputModel
     public string PackageId { get; set; }
     public string ImportProfileId { get; set; }
     public string? TargetFolderId { get; set; }
+    public bool PreserveAsync { get; set; }
 }
 
 class ElementSettings(string specializationTypeId, string specializationType) : IElementSettings

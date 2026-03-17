@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Diagnostics;
 
 namespace Intent.Modules.CSharp.Importer.Importer;
 
@@ -69,6 +70,11 @@ public static class TypeAnalysis
 
     public static bool IsCollection(ITypeSymbol? typeSymbol, CSharpCompilation compilation)
     {
+        if (IsTaskLike(typeSymbol, compilation))
+        {
+            typeSymbol = TryGetTaskResultType(typeSymbol, compilation) ?? typeSymbol;
+        }
+
         if (typeSymbol is IArrayTypeSymbol)
         {
             return true;
@@ -118,6 +124,8 @@ public static class TypeAnalysis
 
     public static string? GetFullTypeName(ITypeSymbol? typeSymbol, CSharpCompilation compilation)
     {
+        
+
         if (typeSymbol is null)
         {
             return null;
@@ -147,6 +155,53 @@ public static class TypeAnalysis
         }
 
         return typeName;
+    }
+
+    public static bool IsTaskLike(ITypeSymbol? typeSymbol, Compilation compilation)
+    {
+        if(typeSymbol is null)
+        {
+            return false;
+        }
+
+        return IsNonGenericTask(typeSymbol, compilation) || IsGenericTask(typeSymbol, compilation);
+    }
+
+    public static bool IsNonGenericTask(ITypeSymbol typeSymbol, Compilation compilation)
+    {
+        var task = compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
+        return task != null && SymbolEqualityComparer.Default.Equals(typeSymbol, task);
+    }
+
+    public static bool IsGenericTask(ITypeSymbol typeSymbol, Compilation compilation)
+    {
+        var taskOfT = compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
+        if (taskOfT is null) return false;
+
+        // Task<T> will be an INamedTypeSymbol
+        if (typeSymbol is not INamedTypeSymbol named) return false;
+
+        // Compare the open generic definition
+        return SymbolEqualityComparer.Default.Equals(named.OriginalDefinition, taskOfT);
+    }
+
+    public static ITypeSymbol? TryGetTaskResultType(ITypeSymbol? typeSymbol, Compilation compilation)
+    {
+        if(typeSymbol is null)
+        {
+            return null;
+        }
+
+        var taskOfT = compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
+        if (taskOfT is null) return null;
+
+        if (typeSymbol is not INamedTypeSymbol named) return null;
+
+        if (!SymbolEqualityComparer.Default.Equals(named.OriginalDefinition, taskOfT))
+            return null;
+
+        // Task<T> has exactly one type argument: T
+        return named.TypeArguments.Length == 1 ? named.TypeArguments[0] : null;
     }
 
     private static ITypeSymbol GetBaseTypeSymbol(ITypeSymbol typeSymbol, CSharpCompilation compilation)

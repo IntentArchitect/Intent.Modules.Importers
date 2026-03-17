@@ -202,6 +202,58 @@ public class CSharpImporterMappingTests
         await Verify(snapshot).UseParameters("simple-class");
     }
 
+    [Fact]
+    public async Task ImportInterface_AsyncAndSyncOperations_PreserveMethodAsyncDeclarations()
+    {
+        // Arrange
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.AsyncInterface);
+        var services = PackageModels.Empty();
+
+        var config = ImportConfigurations.ServiceServiceProfile(tempPath);
+
+        // Act
+        services.ImportCSharpTypes(coreTypes, config);
+
+        // Assert
+        services.Classes.Count().ShouldBe(1);
+        var snapshot = BuildPackageSnapshot(services);
+        await Verify(snapshot).UseParameters("async-interface");
+
+        var service = services.Classes.First();
+        service.ChildElements.Count().ShouldBe(3);
+
+        service.ChildElements.Count(e => e.Stereotypes.Any(s => s.DefinitionId == "2db1104b-ca3c-47a6-ad82-a0d2ee915c06")).ShouldBe(1);
+        
+        var asyncOperations = service.ChildElements.Where(e => e.Stereotypes.Any(s => s.DefinitionId == "A225C795-33E9-417D-8D58-E22826A08224"));
+        asyncOperations.Count().ShouldBe(1);
+        var asyncOperation = asyncOperations.First();
+
+        var stereotype = asyncOperation.GetOrCreateStereotype("A225C795-33E9-417D-8D58-E22826A08224", "", "", "");
+        stereotype.Properties.Count(s => s.DefinitionId == "2801e2a9-5797-406f-b289-43af8fbb2d7e" && s.Value == "true").ShouldBe(1);
+    }
+
+    [Fact]
+    public async Task ImportInterface_AsyncAndSyncOperations_DoNotPreserveMethodAsyncDeclarations()
+    {
+        // Arrange
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.AsyncInterface);
+        var services = PackageModels.Empty();
+
+        var config = ImportConfigurations.ServiceServiceProfile(tempPath, false);
+
+        // Act
+        services.ImportCSharpTypes(coreTypes, config);
+
+        // Assert
+        services.Classes.Count().ShouldBe(1);
+        var snapshot = BuildPackageSnapshot(services);
+        await Verify(snapshot).UseParameters("async-interface");
+
+        var service = services.Classes.First();
+        service.ChildElements.Count().ShouldBe(3);
+        service.ChildElements.Count(e => e.Stereotypes.Any(s => s.DefinitionId == "2db1104b-ca3c-47a6-ad82-a0d2ee915c06")).ShouldBe(0);
+    }
+
     // Helper methods
 
     private async Task<(CoreTypesData, string)> AnalyzeCodeInMemory(string code)
