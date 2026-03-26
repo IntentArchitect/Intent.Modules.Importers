@@ -14,6 +14,7 @@ namespace Intent.Modules.Rdbms.Importer.Tests;
 
 public class DbSchemaIntentMetadataMergerTests
 {
+
     [Fact]
     public void MergeSchemaAndPackage_TableWithColumns_CreatesClassElementWithAttributes()
     {
@@ -1378,6 +1379,70 @@ public class DbSchemaIntentMetadataMergerTests
         // Result mapping should have mapped ends for result set and output parameter
         var resultMapping = mappings.Single(m => m.Type == "Stored Procedure Result");
         resultMapping.MappedEnds.Count.ShouldBe(2);
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProc_MapToOperation_NoResult_CorrectDataContract()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.TestWithOutParamNoResult()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresMappedToOperation());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        // Should have created the stored procedure invocation association
+        scenario.Package.Associations.ShouldHaveSingleItem();
+        var association = scenario.Package.Associations.Single();
+        association.AssociationType.ShouldBe("Stored Procedure Invocation");
+
+        // data contracts
+        var dataContracts = scenario.Package.Classes.Where(x => x.SpecializationTypeId == "4464fabe-c59e-4d90-81fc-c9245bdd1afd");
+        dataContracts.ShouldHaveSingleItem();
+
+        var dataContract = dataContracts.Single();
+        dataContract.ChildElements.Count.ShouldBe(1);
+        dataContract.ChildElements.Where(c => c.Name == "Results").Count().ShouldBe(0);
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProc_MapToOperation_NoResultNoOut_NoDataContract()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.TestWithNoOutParamNoResult()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresMappedToOperation());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        // Should have created the stored procedure invocation association
+        scenario.Package.Associations.ShouldHaveSingleItem();
+        var association = scenario.Package.Associations.Single();
+        association.AssociationType.ShouldBe("Stored Procedure Invocation");
+
+        // data contracts
+        var dataContracts = scenario.Package.Classes.Where(x => x.SpecializationTypeId == "4464fabe-c59e-4d90-81fc-c9245bdd1afd");
+        dataContracts.Count().ShouldBe(0);
     }
 
     [Fact]

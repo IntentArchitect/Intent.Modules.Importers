@@ -211,6 +211,31 @@ internal static class StoredProcedures
         Metadata = new()
     };
 
+    public static StoredProcedureSchema TestWithOutParamNoResult() => new()
+    {
+        Schema = "dbo",
+        Name = "sp_TestWithOutParam",
+        Parameters =
+        [
+            Parameter("@Id", SqlDbType.UniqueIdentifier, StoredProcedureParameterDirection.In),
+            Parameter("@ErrorMessage", SqlDbType.NVarChar, StoredProcedureParameterDirection.Out, length: 255)
+        ],
+        ResultSetColumns = [ ],
+        Metadata = new()
+    };
+
+    public static StoredProcedureSchema TestWithNoOutParamNoResult() => new()
+    {
+        Schema = "dbo",
+        Name = "sp_TestWithOutParam",
+        Parameters =
+        [
+            Parameter("@Id", SqlDbType.UniqueIdentifier, StoredProcedureParameterDirection.In)
+        ],
+        ResultSetColumns = [],
+        Metadata = new()
+    };
+
     public static StoredProcedureSchema WithUserDefinedTableTypeParameter() => new()
     {
         Schema = "dbo",

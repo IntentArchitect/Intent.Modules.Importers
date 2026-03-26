@@ -1,3 +1,8 @@
+### Version 1.0.14
+
+- Fixed: Issue where DataContract was created with "Results" attribute incorrectly when importing a stored procedure.
+- Fixed: Issue where Stored Procedure return mapping wasn't setting `IsCollection` correctly.
+
 ### Version 1.0.13
 
 - Improvement: Better detection of associations to prevent duplicate associations being created.

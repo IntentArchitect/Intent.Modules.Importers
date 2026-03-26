@@ -1143,36 +1143,39 @@ internal static class IntentModelMapper
             ChildElements = []
         };
 
-        // Add "Results" attribute pointing to the underlying result set Data Contract
-        var resultsAttribute = new ElementPersistable
+        if (!string.IsNullOrWhiteSpace(underlyingResultDataContractId))
         {
-            Id = Guid.NewGuid().ToString(),
-            SpecializationType = AttributeModel.SpecializationType,
-            SpecializationTypeId = AttributeModel.SpecializationTypeId,
-            Name = "Results",
-            Display = "Results",
-            IsAbstract = false,
-            GenericTypes = [],
-            TypeReference = new TypeReferencePersistable
+            // Add "Results" attribute pointing to the underlying result set Data Contract
+            var resultsAttribute = new ElementPersistable
             {
                 Id = Guid.NewGuid().ToString(),
-                TypeId = underlyingResultDataContractId,
-                IsNavigable = true,
-                IsNullable = false,
-                IsCollection = true, // Results are a collection
-                IsRequired = true,
+                SpecializationType = AttributeModel.SpecializationType,
+                SpecializationTypeId = AttributeModel.SpecializationTypeId,
+                Name = "Results",
+                Display = "Results",
+                IsAbstract = false,
+                GenericTypes = [],
+                TypeReference = new TypeReferencePersistable
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    TypeId = underlyingResultDataContractId,
+                    IsNavigable = true,
+                    IsNullable = false,
+                    IsCollection = true, // Results are a collection
+                    IsRequired = true,
+                    Stereotypes = [],
+                    GenericTypeParameters = []
+                },
+                IsMapped = false,
+                ParentFolderId = wrapperDataContract.Id,
+                PackageId = package.Id,
+                PackageName = package.Name,
                 Stereotypes = [],
-                GenericTypeParameters = []
-            },
-            IsMapped = false,
-            ParentFolderId = wrapperDataContract.Id,
-            PackageId = package.Id,
-            PackageName = package.Name,
-            Stereotypes = [],
-            Metadata = [],
-            ChildElements = []
-        };
-        wrapperDataContract.ChildElements.Add(resultsAttribute);
+                Metadata = [],
+                ChildElements = []
+            };
+            wrapperDataContract.ChildElements.Add(resultsAttribute);
+        }
 
         // Add one attribute per output parameter (no @ prefix - that's only for mapping expressions)
         foreach (var parameter in storedProc.Parameters.Where(p =>
@@ -1438,73 +1441,73 @@ internal static class IntentModelMapper
                 {
                     MappingExpression = "{mappedResult.result}",
                     TargetPath = new List<MappedPathTargetPersistable>
-                {
-                    new MappedPathTargetPersistable
                     {
-                        Id = wrapperDataContract.Id,
-                        Name = wrapperDataContract.Name,
-                        Type = "element",
-                        Specialization = "Data Contract",
-                        SpecializationId = "4464fabe-c59e-4d90-81fc-c9245bdd1afd"
-                    },
-                    new MappedPathTargetPersistable
-                    {
-                        Id = resultsAttribute.Id,
-                        Name = resultsAttribute.Name,
-                        Type = "element",
-                        Specialization = "Attribute",
-                        SpecializationId = "0090fb93-483e-41af-a11d-5ad2dc796adf"
-                    }
-                },
-                    Sources = new List<ElementToElementMappedEndSourcePersistable>
-                {
-                    new ElementToElementMappedEndSourcePersistable
-                    {
-                        ExpressionIdentifier = "mappedResult.result",
-                        MappingType = "Data Mapping",
-                        MappingTypeId = "654a66b5-6ed4-41d2-abb3-25aaa12af829",
-                        Path = new List<MappedPathTargetPersistable>
+                        new MappedPathTargetPersistable
                         {
-                            new MappedPathTargetPersistable
+                            Id = wrapperDataContract.Id,
+                            Name = wrapperDataContract.Name,
+                            Type = "element",
+                            Specialization = "Data Contract",
+                            SpecializationId = "4464fabe-c59e-4d90-81fc-c9245bdd1afd"
+                        },
+                        new MappedPathTargetPersistable
+                        {
+                            Id = resultsAttribute.Id,
+                            Name = resultsAttribute.Name,
+                            Type = "element",
+                            Specialization = "Attribute",
+                            SpecializationId = "0090fb93-483e-41af-a11d-5ad2dc796adf"
+                        }
+                    },
+                    Sources = new List<ElementToElementMappedEndSourcePersistable>
+                    {
+                        new ElementToElementMappedEndSourcePersistable
+                        {
+                            ExpressionIdentifier = "mappedResult.result",
+                            MappingType = "Data Mapping",
+                            MappingTypeId = "654a66b5-6ed4-41d2-abb3-25aaa12af829",
+                            Path = new List<MappedPathTargetPersistable>
                             {
-                                Id = operationElement.Id,
-                                Name = operationElement.Name,
-                                Type = "element",
-                                Specialization = "Operation",
-                                SpecializationId = "e042bb67-a1df-480c-9935-b26210f78591"
-                            },
-                            new MappedPathTargetPersistable
-                            {
-                                Id = associationId,
-                                Name = "mappedResult",
-                                Type = "association",
-                                Specialization = "Stored Procedure Invocation Target End",
-                                SpecializationId = "d0b0b24a-db0f-4aff-873a-a0e9c2dce12d"
-                            },
-                            new MappedPathTargetPersistable
-                            {
-                                Id = "1eba9280-3bf0-46f8-981c-414dee8e35c3",
-                                Name = "result",
-                                Type = "static-mappable",
-                                Specialization = "result",
-                                SpecializationId = "1eba9280-3bf0-46f8-981c-414dee8e35c3",
-                                TypeReference = new TypeReferencePersistable
+                                new MappedPathTargetPersistable
                                 {
-                                    Id = Guid.NewGuid().ToString(),
-                                    TypeId = storedProcElement.TypeReference.TypeId,
-                                    IsNavigable = true,
-                                    IsNullable = false,
-                                    IsCollection = true,
-                                    IsRequired = true,
-                                    TypePackageName = package.Name,
-                                    TypePackageId = package.Id,
-                                    Stereotypes = [],
-                                    GenericTypeParameters = []
+                                    Id = operationElement.Id,
+                                    Name = operationElement.Name,
+                                    Type = "element",
+                                    Specialization = "Operation",
+                                    SpecializationId = "e042bb67-a1df-480c-9935-b26210f78591"
+                                },
+                                new MappedPathTargetPersistable
+                                {
+                                    Id = associationId,
+                                    Name = "mappedResult",
+                                    Type = "association",
+                                    Specialization = "Stored Procedure Invocation Target End",
+                                    SpecializationId = "d0b0b24a-db0f-4aff-873a-a0e9c2dce12d"
+                                },
+                                new MappedPathTargetPersistable
+                                {
+                                    Id = "1eba9280-3bf0-46f8-981c-414dee8e35c3",
+                                    Name = "result",
+                                    Type = "static-mappable",
+                                    Specialization = "result",
+                                    SpecializationId = "1eba9280-3bf0-46f8-981c-414dee8e35c3",
+                                    TypeReference = new TypeReferencePersistable
+                                    {
+                                        Id = Guid.NewGuid().ToString(),
+                                        TypeId = storedProcElement.TypeReference.TypeId,
+                                        IsNavigable = true,
+                                        IsNullable = false,
+                                        IsCollection = operationElement?.TypeReference?.IsCollection ?? true,
+                                        IsRequired = true,
+                                        TypePackageName = package.Name,
+                                        TypePackageId = package.Id,
+                                        Stereotypes = [],
+                                        GenericTypeParameters = []
+                                    }
                                 }
                             }
                         }
                     }
-                }
                 });
             }
             else
@@ -1513,65 +1516,65 @@ internal static class IntentModelMapper
                 {
                     MappingExpression = "{mappedResult.result}",
                     TargetPath = new List<MappedPathTargetPersistable>
-                {
-                    new MappedPathTargetPersistable
                     {
-                        Id = wrapperDataContract.Id,
-                        Name = wrapperDataContract.Name,
-                        Type = "element",
-                        Specialization = "Data Contract",
-                        SpecializationId = "4464fabe-c59e-4d90-81fc-c9245bdd1afd"
-                    }
-                },
-                    Sources = new List<ElementToElementMappedEndSourcePersistable>
-                {
-                    new ElementToElementMappedEndSourcePersistable
-                    {
-                        ExpressionIdentifier = "mappedResult.result",
-                        MappingType = "Data Mapping",
-                        MappingTypeId = "654a66b5-6ed4-41d2-abb3-25aaa12af829",
-                        Path = new List<MappedPathTargetPersistable>
+                        new MappedPathTargetPersistable
                         {
-                            new MappedPathTargetPersistable
+                            Id = wrapperDataContract.Id,
+                            Name = wrapperDataContract.Name,
+                            Type = "element",
+                            Specialization = "Data Contract",
+                            SpecializationId = "4464fabe-c59e-4d90-81fc-c9245bdd1afd"
+                        }
+                    },
+                    Sources = new List<ElementToElementMappedEndSourcePersistable>
+                    {
+                        new ElementToElementMappedEndSourcePersistable
+                        {
+                            ExpressionIdentifier = "mappedResult.result",
+                            MappingType = "Data Mapping",
+                            MappingTypeId = "654a66b5-6ed4-41d2-abb3-25aaa12af829",
+                            Path = new List<MappedPathTargetPersistable>
                             {
-                                Id = operationElement.Id,
-                                Name = operationElement.Name,
-                                Type = "element",
-                                Specialization = "Operation",
-                                SpecializationId = "e042bb67-a1df-480c-9935-b26210f78591"
-                            },
-                            new MappedPathTargetPersistable
-                            {
-                                Id = associationId,
-                                Name = "mappedResult",
-                                Type = "association",
-                                Specialization = "Stored Procedure Invocation Target End",
-                                SpecializationId = "d0b0b24a-db0f-4aff-873a-a0e9c2dce12d"
-                            },
-                            new MappedPathTargetPersistable
-                            {
-                                Id = "1eba9280-3bf0-46f8-981c-414dee8e35c3",
-                                Name = "result",
-                                Type = "static-mappable",
-                                Specialization = "result",
-                                SpecializationId = "1eba9280-3bf0-46f8-981c-414dee8e35c3",
-                                TypeReference = new TypeReferencePersistable
+                                new MappedPathTargetPersistable
                                 {
-                                    Id = Guid.NewGuid().ToString(),
-                                    TypeId = storedProcElement.TypeReference.TypeId,
-                                    IsNavigable = true,
-                                    IsNullable = false,
-                                    IsCollection = true,
-                                    IsRequired = true,
-                                    TypePackageName = package.Name,
-                                    TypePackageId = package.Id,
-                                    Stereotypes = [],
-                                    GenericTypeParameters = []
+                                    Id = operationElement.Id,
+                                    Name = operationElement.Name,
+                                    Type = "element",
+                                    Specialization = "Operation",
+                                    SpecializationId = "e042bb67-a1df-480c-9935-b26210f78591"
+                                },
+                                new MappedPathTargetPersistable
+                                {
+                                    Id = associationId,
+                                    Name = "mappedResult",
+                                    Type = "association",
+                                    Specialization = "Stored Procedure Invocation Target End",
+                                    SpecializationId = "d0b0b24a-db0f-4aff-873a-a0e9c2dce12d"
+                                },
+                                new MappedPathTargetPersistable
+                                {
+                                    Id = "1eba9280-3bf0-46f8-981c-414dee8e35c3",
+                                    Name = "result",
+                                    Type = "static-mappable",
+                                    Specialization = "result",
+                                    SpecializationId = "1eba9280-3bf0-46f8-981c-414dee8e35c3",
+                                    TypeReference = new TypeReferencePersistable
+                                    {
+                                        Id = Guid.NewGuid().ToString(),
+                                        TypeId = storedProcElement.TypeReference.TypeId,
+                                        IsNavigable = true,
+                                        IsNullable = false,
+                                        IsCollection = operationElement?.TypeReference?.IsCollection ?? true,
+                                        IsRequired = true,
+                                        TypePackageName = package.Name,
+                                        TypePackageId = package.Id,
+                                        Stereotypes = [],
+                                        GenericTypeParameters = []
+                                    }
                                 }
                             }
                         }
                     }
-                }
                 });
             }
         }
