@@ -104,10 +104,16 @@ internal class DbSchemaIntentMetadataMerger
 
             if (existingClass is not null)
             {
+                SyncElementType preserveElementTypes = SyncElementType.None;
+                if(_config.PreserveAttributeTypes)
+                {
+                    preserveElementTypes = SyncElementType.AttributeType;
+                }
+
                 // Update existing class without moving it (keep existing ParentFolderId)
                 // Don't use deduplication context for updates to preserve existing names
                 var updatedClassElement = IntentModelMapper.MapTableToClass(table, _config, package, existingClass.ParentFolderId);
-                SyncElements(package, existingClass, updatedClassElement, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+                SyncElements(package, existingClass, updatedClassElement, _config.AllowDeletions, preserveElementTypes, result);
 
                 // Re-evaluate stereotypes on existing class after sync to ensure renamed attributes get proper Column stereotypes
                 ApplyTableStereotypes(table, existingClass, _config);
@@ -161,10 +167,16 @@ internal class DbSchemaIntentMetadataMerger
 
             if (existingClass != null)
             {
+                SyncElementType preserveElementTypes = SyncElementType.None;
+                if (_config.PreserveAttributeTypes)
+                {
+                    preserveElementTypes = SyncElementType.AttributeType;
+                }
+
                 // Update existing class without moving it (keep existing ParentFolderId)
                 // Don't use deduplication context for updates to preserve existing names
                 var updatedClassElement = IntentModelMapper.MapViewToClass(view, _config, package, existingClass.ParentFolderId);
-                SyncElements(package, existingClass, updatedClassElement, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+                SyncElements(package, existingClass, updatedClassElement, _config.AllowDeletions, preserveElementTypes, result);
                 
                 // Apply view stereotypes after sync
                 ApplyViewStereotypes(view, existingClass);
@@ -242,17 +254,23 @@ internal class DbSchemaIntentMetadataMerger
 
         if (existingElement != null)
         {
+            SyncElementType preserveElementTypes = SyncElementType.None | SyncElementType.IsCollection;
+            if (_config.PreserveAttributeTypes)
+            {
+                preserveElementTypes = SyncElementType.AttributeType | SyncElementType.IsCollection;
+            }
+
             // Update existing stored procedure element
             if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
             {
                 var updatedElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, repositoryElement.Id, package, null, udtDataContracts);
-                SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+                SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, preserveElementTypes, result);
                 RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingElement);
             }
             else
             {
                 var updatedElement = IntentModelMapper.MapStoredProcedureToOperation(procName, storedProc, repositoryElement.Id, package, null, udtDataContracts);
-                SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+                SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, preserveElementTypes, result);
                 RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingElement);
             }
             
@@ -277,7 +295,9 @@ internal class DbSchemaIntentMetadataMerger
 
         if (storedProc.ResultSetColumns.Count > 0)
         {
-            ProcessStoredProcedureDataContract(storedProc, procElement, package, result, deduplicationContext);
+            ProcessStoredProcedureDataContract(storedProc, procElement, package, result, deduplicationContext, existingElement != null);
+
+            procElement.TypeReference.IsCollection = existingElement?.TypeReference.IsCollection ?? true;
         }
     }
 
@@ -317,9 +337,18 @@ internal class DbSchemaIntentMetadataMerger
         ElementPersistable storedProcElement;
         if (existingSpElement != null)
         {
+            // for Stored Procedures, we always keep whatever is modelled in Intent.
+            // This is to cater for when a SP returns a dataset, but only one row (e.g. SELECT @VAR1, @VAR2)
+            // This will initially be modelled as a collection, and if the user corrects it to non-collection, we want to keep that
+            SyncElementType preserveElementTypes = SyncElementType.None | SyncElementType.IsCollection;
+            if (_config.PreserveAttributeTypes)
+            {
+                preserveElementTypes = SyncElementType.AttributeType | SyncElementType.IsCollection;
+            }
+
             // Update existing - but don't change parentFolderId (user may have moved it)
             var updatedElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, existingSpElement.ParentFolderId, package, null, udtDataContracts);
-            SyncElements(package, existingSpElement, updatedElement, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+            SyncElements(package, existingSpElement, updatedElement, _config.AllowDeletions, preserveElementTypes, result);
             RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingSpElement);
             storedProcElement = existingSpElement;
         }
@@ -349,8 +378,14 @@ internal class DbSchemaIntentMetadataMerger
 
             if (existingDataContract != null)
             {
+                SyncElementType preserveElementTypes = SyncElementType.None;
+                if (_config.PreserveAttributeTypes)
+                {
+                    preserveElementTypes = SyncElementType.AttributeType;
+                }
+
                 var updatedDataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procName, _config, package, deduplicationContext);
-                SyncElements(package, existingDataContract, updatedDataContract, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+                SyncElements(package, existingDataContract, updatedDataContract, _config.AllowDeletions, preserveElementTypes, result);
                 ApplyDataContractStereotypes(storedProc, existingDataContract);
                 underlyingResultDataContract = existingDataContract;
             }
@@ -363,7 +398,7 @@ internal class DbSchemaIntentMetadataMerger
 
             // Set the stored procedure element's return type to the underlying result DC
             storedProcElement.TypeReference.TypeId = underlyingResultDataContract.Id;
-            storedProcElement.TypeReference.IsCollection = true;
+            storedProcElement.TypeReference.IsCollection = existingSpElement?.TypeReference?.IsCollection ?? true;
             storedProcElement.TypeReference.IsNullable = false;
         }
 
@@ -386,8 +421,14 @@ internal class DbSchemaIntentMetadataMerger
                 Metadata = storedProc.Metadata
             };
 
+            SyncElementType preserveElementTypes = SyncElementType.None | SyncElementType.IsCollection;
+            if (_config.PreserveAttributeTypes)
+            {
+                preserveElementTypes = SyncElementType.AttributeType | SyncElementType.IsCollection;
+            }
+
             var updatedOperation = IntentModelMapper.MapStoredProcedureToOperation(procName, tempStoredProc, repositoryElement.Id, package, null, udtDataContracts);
-            SyncElements(package, existingOperation, updatedOperation, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+            SyncElements(package, existingOperation, updatedOperation, _config.AllowDeletions, preserveElementTypes, result);
             RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingOperation);
             operationElement = existingOperation;
         }
@@ -402,7 +443,7 @@ internal class DbSchemaIntentMetadataMerger
                 ResultSetColumns = [],
                 Metadata = storedProc.Metadata
             };
-            
+
             operationElement = IntentModelMapper.MapStoredProcedureToOperation(procName, tempStoredProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
             RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, operationElement);
             repositoryElement.ChildElements.Add(operationElement);
@@ -430,13 +471,19 @@ internal class DbSchemaIntentMetadataMerger
 
             if (existingWrapper != null)
             {
+                SyncElementType preserveElementTypes = SyncElementType.None;
+                if (_config.PreserveAttributeTypes)
+                {
+                    preserveElementTypes = SyncElementType.AttributeType;
+                }
+
                 var updatedWrapper = IntentModelMapper.CreateWrapperDataContractForStoredProcedure(
                     storedProc, 
                     procName, 
                     underlyingResultDataContract?.Id ?? string.Empty, 
                     schemaFolder.Id, 
                     package);
-                SyncElements(package, existingWrapper, updatedWrapper, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+                SyncElements(package, existingWrapper, updatedWrapper, _config.AllowDeletions, preserveElementTypes, result);
                 wrapperDataContract = existingWrapper;
             }
             else
@@ -461,7 +508,7 @@ internal class DbSchemaIntentMetadataMerger
             if (underlyingResultDataContract != null)
             {
                 operationElement.TypeReference.TypeId = underlyingResultDataContract.Id;
-                operationElement.TypeReference.IsCollection = true;
+                operationElement.TypeReference.IsCollection = existingOperation?.TypeReference?.IsCollection ?? true;
                 operationElement.TypeReference.IsNullable = false;
             }
             wrapperDataContract = null!;
@@ -561,7 +608,7 @@ internal class DbSchemaIntentMetadataMerger
         ElementPersistable existingElement, 
         ElementPersistable sourceElement,
         bool allowDeletions = false,
-        bool preserveAttributeTypes = false,
+        SyncElementType preserveElementTypes = SyncElementType.None,
         MergeResult? result = null)
     {
         // Extract parent element's schema for child element lookups
@@ -573,7 +620,7 @@ internal class DbSchemaIntentMetadataMerger
             sourceElement: sourceElement,
             parentSchema: parentSchema,
             allowDeletions: allowDeletions,
-            preserveAttributeTypes: preserveAttributeTypes,
+            preserveElementTypes: preserveElementTypes,
             result: result,
             visitedElements: new HashSet<ElementPersistable>(EqualityComparer<ElementPersistable>.Create(
                 (a, b) =>
@@ -598,7 +645,7 @@ internal class DbSchemaIntentMetadataMerger
             ElementPersistable sourceElement,
             string? parentSchema,
             bool allowDeletions,
-            bool preserveAttributeTypes,
+            SyncElementType preserveElementTypes,
             MergeResult? result,
             HashSet<ElementPersistable> visitedElements)
         {
@@ -609,7 +656,7 @@ internal class DbSchemaIntentMetadataMerger
                 existingElement.TypeReference ??= new TypeReferencePersistable();
                 
                 // Only overwrite TypeId if not preserving types or if it's a new element
-                if (!preserveAttributeTypes || string.IsNullOrEmpty(existingElement.TypeReference.TypeId))
+                if ((preserveElementTypes & SyncElementType.AttributeType) == 0 || string.IsNullOrEmpty(existingElement.TypeReference.TypeId))
                 {
                     existingElement.TypeReference.TypeId = sourceElement.TypeReference.TypeId;
                 }
@@ -624,11 +671,23 @@ internal class DbSchemaIntentMetadataMerger
                 //         : $"{parentSchema}.{existingElement.Name}";
                 //     result?.Warnings.Add($"Preserved user-specified type for '{elementIdentifier}'. Database type would have changed it to '{sourceElement.TypeReference.TypeName}'.");
                 // }
-                
-                existingElement.TypeReference.GenericTypeId = sourceElement.TypeReference.GenericTypeId;
-                existingElement.TypeReference.IsCollection = sourceElement.TypeReference.IsCollection;
-                existingElement.TypeReference.IsNullable = sourceElement.TypeReference.IsNullable;
-                SyncStereotypeCollection(existingElement.Stereotypes, sourceElement.Stereotypes);
+
+                if ((preserveElementTypes & SyncElementType.GenericType) == 0)
+                {
+                    existingElement.TypeReference.GenericTypeId = sourceElement.TypeReference.GenericTypeId;
+                }
+                if ((preserveElementTypes & SyncElementType.IsCollection) == 0)
+                {
+                    existingElement.TypeReference.IsCollection = sourceElement.TypeReference.IsCollection;
+                }
+                if ((preserveElementTypes & SyncElementType.IsNullable) == 0)
+                {
+                    existingElement.TypeReference.IsNullable = sourceElement.TypeReference.IsNullable;
+                }
+                if ((preserveElementTypes & SyncElementType.Stereotypes) == 0)
+                {
+                    SyncStereotypeCollection(existingElement.Stereotypes, sourceElement.Stereotypes);
+                }
             }
 
             if (string.IsNullOrWhiteSpace(existingElement.ExternalReference))
@@ -678,7 +737,7 @@ internal class DbSchemaIntentMetadataMerger
                     var childSchema = IntentModelMapper.GetElementDbSchema(existingChild) ?? parentSchema;
                         
                     // Recursively sync the child element
-                    InternSyncElements(package, existingChild, sourceChild, childSchema, allowDeletions, preserveAttributeTypes, result, visitedElements);
+                    InternSyncElements(package, existingChild, sourceChild, childSchema, allowDeletions, preserveElementTypes, result, visitedElements);
                 }
             }
             
@@ -1056,7 +1115,8 @@ internal class DbSchemaIntentMetadataMerger
         ElementPersistable procElement,
         PackageModelPersistable package,
         MergeResult result,
-        DeduplicationContext? deduplicationContext)
+        DeduplicationContext? deduplicationContext, 
+        bool isExistingStoredProc)
     {
         if (storedProc.ResultSetColumns.Count > 0)
         {
@@ -1078,9 +1138,15 @@ internal class DbSchemaIntentMetadataMerger
             ElementPersistable dataContract;
             if (existingDataContract != null)
             {
+                SyncElementType preserveElementTypes = SyncElementType.None;
+                if (_config.PreserveAttributeTypes)
+                {
+                    preserveElementTypes = SyncElementType.AttributeType;
+                }
+
                 // Update existing data contract
                 dataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procElement.Name, _config, package, deduplicationContext);
-                SyncElements(package, existingDataContract, dataContract, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+                SyncElements(package, existingDataContract, dataContract, _config.AllowDeletions, preserveElementTypes, result);
                 dataContract = existingDataContract; // Use the existing data contract for TypeReference
             }
             else
@@ -1094,7 +1160,8 @@ internal class DbSchemaIntentMetadataMerger
             ApplyDataContractStereotypes(storedProc, dataContract);
 
             procElement.TypeReference.TypeId = dataContract.Id; // Point to the data contract element ID
-            procElement.TypeReference.IsCollection = true; // Result sets are collections
+            // if existing, use the current IsCollection value to avoid unintended changes, otherwise default to true for new stored procedures
+            procElement.TypeReference.IsCollection = isExistingStoredProc ? procElement.TypeReference.IsCollection : true;
             procElement.TypeReference.IsNullable = false; // Collections themselves are typically not nullable
         }
     }
@@ -1152,10 +1219,16 @@ internal class DbSchemaIntentMetadataMerger
             ElementPersistable dataContract;
             if (existingDataContract != null)
             {
+                SyncElementType preserveElementTypes = SyncElementType.None;
+                if (_config.PreserveAttributeTypes)
+                {
+                    preserveElementTypes = SyncElementType.AttributeType;
+                }
+
                 // Update existing DataContract
                 var schemaFolder = GetOrCreateSchemaFolder(udtSchema.Schema, package);
                 dataContract = IntentModelMapper.CreateDataContractForUserDefinedTable(udtSchema, schemaFolder.Id, _config, package, deduplicationContext);
-                SyncElements(package, existingDataContract, dataContract, _config.AllowDeletions, _config.PreserveAttributeTypes, result);
+                SyncElements(package, existingDataContract, dataContract, _config.AllowDeletions, preserveElementTypes, result);
                 dataContract = existingDataContract; // Use existing for mapping
             }
             else

@@ -223,6 +223,27 @@ The filter file should follow this JSON structure:
 > [!TIP]
 > The wizard's visual selection tree automatically manages the filter file for you. Any selections made in the tree view are saved to the specified filter file when you complete the wizard.
 
+## Stored Procedure Imports
+
+### Single-Row Result Sets
+
+When a stored procedure returns a result set, the importer cannot determine whether it will always return a single row or multiple rows. As a result, on the first import, the stored procedure (and any associated repository operations) is modeled with a **collection return type**.
+
+For example, the following stored procedure will be imported with `IsCollection` set to `true`:
+
+``` sql
+CREATE PROCEDURE [dbo].[sp_SingleRowReturn]
+  @InputValueOne int,
+  @InputValueTwo int
+AS
+BEGIN
+  SELECT @InputValueOne as 'InputOne', @InputValueTwo as 'InputTwo'
+END
+```
+
+After import, you can manually update the stored procedure (and any associated operations) to return a single item instead of a collection. If the stored procedure is imported again, the **return type will not be reset to a collection** and will remain at the manually configured value.
+
+
 ## Trigger imports
 
 By default, if a qualifying table has a trigger, it will be imported and modeled as follows:
@@ -232,3 +253,4 @@ By default, if a qualifying table has a trigger, it will be imported and modeled
 > [!NOTE]
 > 
 > The actual `trigger` implementation is not modeled in the `Domain Designer`. The `trigger` stereotype is used only to mark to the underlying provider (specifically, Entity Framework Core) that the table has an existing trigger. This allows Entity Framework to correctly generate the appropriate SQL statements.
+

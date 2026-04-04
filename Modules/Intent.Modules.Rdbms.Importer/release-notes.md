@@ -1,7 +1,9 @@
 ### Version 1.0.14
 
+- Improvement: Return type for stored procedures and linked operations, can have the `IsCollection` changed in the designer without reimporting overwriting it.
 - Fixed: Issue where DataContract was created with "Results" attribute incorrectly when importing a stored procedure.
 - Fixed: Issue where Stored Procedure return mapping wasn't setting `IsCollection` correctly.
+- Fixed: Issue where OUT parameters on stored procedures were inaccurately mapped to an operation parameter.
 
 ### Version 1.0.13
 

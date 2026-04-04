@@ -462,12 +462,19 @@ internal static class RdbmsSchemaAnnotator
             prop.Value = GetSchemaStoredProcedureName(sqlStoredProc);
         }
 
-        for (var paramIndex = 0; paramIndex < sqlStoredProc.Parameters.Count && paramIndex < elementStoredProc.ChildElements.Count; paramIndex++)
+        var outParameterOffSet = 0;
+        for (var paramIndex = 0; paramIndex < sqlStoredProc.Parameters.Count && (paramIndex - outParameterOffSet) < elementStoredProc.ChildElements.Count; paramIndex++)
         {
-            var elementParam = elementStoredProc.ChildElements[paramIndex];
+            var elementParam = elementStoredProc.ChildElements[paramIndex - outParameterOffSet];
             var sqlProcParam = sqlStoredProc.Parameters[paramIndex];
             var paramStereotype =
                 elementParam.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.DefinitionId, InitStoredProcOperationParamStereotype);
+
+            if(sqlProcParam.Direction == StoredProcedureParameterDirection.Out || sqlProcParam.Direction == StoredProcedureParameterDirection.Both)
+            {
+                outParameterOffSet++;
+                continue; // Skip out parameters, as they won't match on the operation
+            }
 
             paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.ParameterName).Value = sqlProcParam.Name;
             paramStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperationParameter.PropertyId.Direction).Value = sqlProcParam.Direction switch

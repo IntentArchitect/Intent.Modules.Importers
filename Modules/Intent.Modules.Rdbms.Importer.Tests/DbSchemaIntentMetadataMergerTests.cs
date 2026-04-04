@@ -1446,6 +1446,102 @@ public class DbSchemaIntentMetadataMergerTests
     }
 
     [Fact]
+    public void MergeSchemaAndPackage_StoredProc_MapToOperation_NoCollection_ReturnType()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.TestWithSingleRowResultSet()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresMappedToOperation());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        // First import creates the operation and SP
+        // and make sure the return type is a collection (the default)
+        // Get the operation
+        var repositories = scenario.Package.Classes.Where(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        repositories.Count().ShouldBe(1);
+        var repository = repositories.Single();
+        repository.ChildElements.Count.ShouldBe(1);
+        var operation = repository.ChildElements.Single();
+
+        operation.TypeReference.IsCollection.ShouldBeTrue();
+
+        // Get the SP element
+        var storedProcs = scenario.Package.Classes.Where(x => x.SpecializationTypeId == "575edd35-9438-406d-b0a7-b99d6f29b560");
+        storedProcs.Count().ShouldBe(1);
+        var sp = storedProcs.Single();
+
+        sp.TypeReference.IsCollection.ShouldBeTrue();
+
+        // Act #2 - import the exact same thing again
+        result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        sp.TypeReference.IsCollection.ShouldBeTrue();
+        operation.TypeReference.IsCollection.ShouldBeTrue();
+
+        // Act #3 - import the same, but with the modelled items not returning collections
+        operation.TypeReference.IsCollection = false;
+        sp.TypeReference.IsCollection = false;
+
+        result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        sp.TypeReference.IsCollection.ShouldBeFalse();
+        operation.TypeReference.IsCollection.ShouldBeFalse();
+
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProc_StoredProcOperation_NoCollection_ReturnType()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.TestWithSingleRowResultSet()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsOperations());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        // First import creates the operation
+        // and make sure the return type is a collection (the default)
+        // Get the operation
+        var repositories = scenario.Package.Classes.Where(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        repositories.Count().ShouldBe(1);
+        var repository = repositories.Single();
+        repository.ChildElements.Count.ShouldBe(1);
+        var operation = repository.ChildElements.Single();
+
+        operation.TypeReference.IsCollection.ShouldBeTrue();
+
+        // Act #2 - import the exact same thing again
+        result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        operation.TypeReference.IsCollection.ShouldBeTrue();
+
+        // Act #3 - import the same, but with the modelled items not returning collections
+        operation.TypeReference.IsCollection = false;
+        result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        operation.TypeReference.IsCollection.ShouldBeFalse();
+    }
+
+    [Fact]
     public void MergeSchemaAndPackage_StoredProc_SubFolder_MapToOperation_NoDuplicate()
     {
         // Arrange
@@ -1478,6 +1574,80 @@ public class DbSchemaIntentMetadataMergerTests
 
         scenario.Package.Classes.Count.ShouldBe(beforeClassCount, "No duplicate Stored Proc should be created on re-import");
         scenario.Package.ChildElements.First(x => x.Name.Equals(StoredProcedures.GetOrdersSummary().Schema, StringComparison.InvariantCultureIgnoreCase)).ChildElements.Count.ShouldBe(schemaFolderChildCount, "No duplicate SPs should be created in the schema folder on re-import");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcWithOutAndInputParams_CorrectStereotype_AsOperation()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.TestWithInAndOutParams()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsOperations());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        var repositories = scenario.Package.Classes.Where(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        repositories.Count().ShouldBe(1);
+        var repository = repositories.Single();
+        repository.ChildElements.Count.ShouldBe(1);
+        var operation = repository.ChildElements.Single();
+
+        operation.ChildElements.Count().ShouldBe(3);
+        operation.ChildElements[0].Stereotypes.Count.ShouldBe(1);
+        operation.ChildElements[0].Stereotypes[0].Properties.Where(p => p.Name == "Name" && p.Value == "@InputOne").Count().ShouldBe(1);
+
+        operation.ChildElements[1].Stereotypes.Count.ShouldBe(1);
+        operation.ChildElements[1].Stereotypes[0].Properties.Where(p => p.Name == "Name" && p.Value == "@InputTwo").Count().ShouldBe(1);
+
+        operation.ChildElements[2].Stereotypes.Count.ShouldBe(1);
+        operation.ChildElements[2].Stereotypes[0].Properties.Where(p => p.Name == "Name" && p.Value == "@InputThree").Count().ShouldBe(1);
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcWithOutAndInputParams_CorrectStereotype_ProcMappedToOperation()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.TestWithInAndOutParams()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresMappedToOperation());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        var repositories = scenario.Package.Classes.Where(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        repositories.Count().ShouldBe(1);
+        var repository = repositories.Single();
+        repository.ChildElements.Count.ShouldBe(1);
+        var operation = repository.ChildElements.Single();
+
+        operation.ChildElements.Count().ShouldBe(3);
+        operation.ChildElements[0].Stereotypes.Count.ShouldBe(1);
+        operation.ChildElements[0].Stereotypes[0].Properties.Where(p => p.Name == "Name" && p.Value == "@InputOne").Count().ShouldBe(1);
+
+        operation.ChildElements[1].Stereotypes.Count.ShouldBe(1);
+        operation.ChildElements[1].Stereotypes[0].Properties.Where(p => p.Name == "Name" && p.Value == "@InputTwo").Count().ShouldBe(1);
+
+        operation.ChildElements[2].Stereotypes.Count.ShouldBe(1);
+        operation.ChildElements[2].Stereotypes[0].Properties.Where(p => p.Name == "Name" && p.Value == "@InputThree").Count().ShouldBe(1);
     }
 
     #endregion

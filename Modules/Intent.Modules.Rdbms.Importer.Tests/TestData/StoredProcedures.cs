@@ -196,6 +196,24 @@ internal static class StoredProcedures
         Metadata = new()
     };
 
+    public static StoredProcedureSchema TestWithInAndOutParams() => new()
+    {
+        Schema = "dbo",
+        Name = "sp_TestOutAndInParams",
+        Parameters =
+        [
+            Parameter("@ResultValue", SqlDbType.Int, StoredProcedureParameterDirection.Out),
+            Parameter("@InputOne", SqlDbType.Int, StoredProcedureParameterDirection.In),
+            Parameter("@InputTwo", SqlDbType.Int, StoredProcedureParameterDirection.In),
+            Parameter("@InputThree", SqlDbType.Int, StoredProcedureParameterDirection.In),
+            Parameter("@ErrMessage", SqlDbType.NVarChar, StoredProcedureParameterDirection.Out, 255)
+        ],
+        ResultSetColumns =
+        [
+        ],
+        Metadata = new()
+    };
+
     public static StoredProcedureSchema GetCustomerNoOutParams() => new()
     {
         Schema = "dbo",
@@ -233,6 +251,22 @@ internal static class StoredProcedures
             Parameter("@Id", SqlDbType.UniqueIdentifier, StoredProcedureParameterDirection.In)
         ],
         ResultSetColumns = [],
+        Metadata = new()
+    };
+
+    public static StoredProcedureSchema TestWithSingleRowResultSet() => new()
+    {
+        Schema = "dbo",
+        Name = "sp_SelectVariable",
+        Parameters =
+        [
+            Parameter("@InputOne", SqlDbType.Int, StoredProcedureParameterDirection.In),
+            Parameter("@InputTwo", SqlDbType.Int, StoredProcedureParameterDirection.In)
+        ],
+        ResultSetColumns = [
+            ResultColumn("InputOne", SqlDbType.Int),
+            ResultColumn("InputTwo", SqlDbType.Int)
+        ],
         Metadata = new()
     };
 
