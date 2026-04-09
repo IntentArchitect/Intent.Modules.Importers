@@ -254,6 +254,137 @@ public class CSharpImporterMappingTests
         service.ChildElements.Count(e => e.Stereotypes.Any(s => s.DefinitionId == "2db1104b-ca3c-47a6-ad82-a0d2ee915c06")).ShouldBe(0);
     }
 
+    [Fact]
+    public async Task ImportInterface_SimpleComplexGenericReturnOperations()
+    {
+        var typeDefinitionSpecializationId = "d4e577cd-ad05-4180-9a2e-fff4ddea0e1e";
+
+        // Arrange
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.InterfaceMethodGenericReturn);
+        var services = PackageModels.Empty();
+
+        var config = ImportConfigurations.ServiceServiceProfile(tempPath);
+
+        // Act
+        services.ImportCSharpTypes(coreTypes, config);
+
+        // Assert
+        services.Classes.Count().ShouldBe(4);
+        var snapshot = BuildPackageSnapshot(services);
+        await Verify(snapshot).UseParameters("generic-return-type");
+
+        // the service
+        var service = services.Classes.First(x => x.SpecializationTypeId == "b16578a5-27b1-4047-a8df-f0b783d706bd");
+        service.ChildElements.Count().ShouldBe(2);
+
+        services.Classes.Count(c => c.Name == "IRepository").ShouldBe(1);
+        services.Classes.Count(c => c.Name == "CustomPagedList" && c.SpecializationTypeId == typeDefinitionSpecializationId).ShouldBe(1);
+        services.Classes.Count(c => c.Name == "UserDto" && c.SpecializationTypeId == typeDefinitionSpecializationId).ShouldBe(1);
+        services.Classes.Count(c => c.Name == "int" && c.SpecializationTypeId == typeDefinitionSpecializationId).ShouldBe(1);
+
+        var listType = services.Classes.First(c => c.Name == "CustomPagedList" && c.SpecializationTypeId == typeDefinitionSpecializationId);
+        var userDtoType = services.Classes.First(c => c.Name == "UserDto" && c.SpecializationTypeId == typeDefinitionSpecializationId);
+        var intType = services.Classes.First(c => c.Name == "int" && c.SpecializationTypeId == typeDefinitionSpecializationId);
+
+        // make sure all the generic types are setup correctly
+        service.ChildElements.OrderBy(o => o.Name).First().TypeReference.TypeId.ShouldBe(listType.Id);
+        service.ChildElements.OrderBy(o => o.Name).Last().TypeReference.TypeId.ShouldBe(listType.Id);
+
+        service.ChildElements.OrderBy(o => o.Name).First().TypeReference.GenericTypeParameters.Count().ShouldBe(1);
+        service.ChildElements.OrderBy(o => o.Name).Last().TypeReference.GenericTypeParameters.Count().ShouldBe(1);
+
+        service.ChildElements.OrderBy(o => o.Name).First().TypeReference.GenericTypeParameters.First().TypeId.ShouldBe(userDtoType.Id);
+        service.ChildElements.OrderBy(o => o.Name).Last().TypeReference.GenericTypeParameters.First().TypeId.ShouldBe(intType.Id);
+    }
+
+    [Fact]
+    public async Task ImportInterface_ComplexGenericReturnAndParameterOperation()
+    {
+        var typeDefinitionSpecializationId = "d4e577cd-ad05-4180-9a2e-fff4ddea0e1e";
+
+        // Arrange
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.InterfaceMethodGenericParameter);
+        var services = PackageModels.Empty();
+
+        var config = ImportConfigurations.ServiceServiceProfile(tempPath);
+
+        // Act
+        services.ImportCSharpTypes(coreTypes, config);
+
+        // Assert
+        services.Classes.Count().ShouldBe(4);
+        var snapshot = BuildPackageSnapshot(services);
+        await Verify(snapshot).UseParameters("generic-return-and-param");
+
+        // the service
+        var service = services.Classes.First(x => x.SpecializationTypeId == "b16578a5-27b1-4047-a8df-f0b783d706bd");
+        service.ChildElements.Count().ShouldBe(1);
+
+        services.Classes.Count(c => c.Name == "IRepository").ShouldBe(1);
+        services.Classes.Count(c => c.Name == "CustomPagedList" && c.SpecializationTypeId == typeDefinitionSpecializationId).ShouldBe(1);
+        services.Classes.Count(c => c.Name == "UserDto" && c.SpecializationTypeId == typeDefinitionSpecializationId).ShouldBe(1);
+        services.Classes.Count(c => c.Name == "int" && c.SpecializationTypeId == typeDefinitionSpecializationId).ShouldBe(1);
+
+        var listType = services.Classes.First(c => c.Name == "CustomPagedList" && c.SpecializationTypeId == typeDefinitionSpecializationId);
+        var userDtoType = services.Classes.First(c => c.Name == "UserDto" && c.SpecializationTypeId == typeDefinitionSpecializationId);
+        var intType = services.Classes.First(c => c.Name == "int" && c.SpecializationTypeId == typeDefinitionSpecializationId);
+
+        // one parameter
+        service.ChildElements.First().ChildElements.Count().ShouldBe(1);
+        service.ChildElements.First().ChildElements.First().TypeReference.TypeId.ShouldBe(listType.Id);
+        service.ChildElements.First().ChildElements.First().TypeReference.GenericTypeParameters.First().TypeId.ShouldBe(intType.Id);
+
+        // make sure all the generic types are setup correctly
+        service.ChildElements.First().TypeReference.TypeId.ShouldBe(listType.Id);
+        service.ChildElements.First().TypeReference.GenericTypeParameters.Count().ShouldBe(1);
+        service.ChildElements.First().TypeReference.GenericTypeParameters.First().TypeId.ShouldBe(userDtoType.Id);
+    }
+
+    [Fact]
+    public async Task ImportInterface_ComplexMultiGenericReturnOperation()
+    {
+        var typeDefinitionSpecializationId = "d4e577cd-ad05-4180-9a2e-fff4ddea0e1e";
+
+        // Arrange
+        var (coreTypes, tempPath) = await AnalyzeCodeInMemory(CSharpCodeSamples.InterfaceMethodMultiGenericParameter);
+        var services = PackageModels.Empty();
+
+        var config = ImportConfigurations.ServiceServiceProfile(tempPath);
+
+        // Act
+        services.ImportCSharpTypes(coreTypes, config);
+
+        // Assert
+        services.Classes.Count().ShouldBe(5);
+        var snapshot = BuildPackageSnapshot(services);
+        await Verify(snapshot).UseParameters("multi-generic-return");
+
+        // the service
+        var service = services.Classes.First(x => x.SpecializationTypeId == "b16578a5-27b1-4047-a8df-f0b783d706bd");
+        service.ChildElements.Count().ShouldBe(1);
+
+        services.Classes.Count(c => c.Name == "IRepository").ShouldBe(1);
+        services.Classes.Count(c => c.Name == "CustomPagedList" && c.SpecializationTypeId == typeDefinitionSpecializationId).ShouldBe(1);
+        services.Classes.Count(c => c.Name == "UserDto" && c.SpecializationTypeId == typeDefinitionSpecializationId).ShouldBe(1);
+        services.Classes.Count(c => c.Name == "UserDetail" && c.SpecializationTypeId == typeDefinitionSpecializationId).ShouldBe(1);
+        services.Classes.Count(c => c.Name == "int" && c.SpecializationTypeId == typeDefinitionSpecializationId).ShouldBe(1);
+
+        var listType = services.Classes.First(c => c.Name == "CustomPagedList" && c.SpecializationTypeId == typeDefinitionSpecializationId);
+        var userDtoType = services.Classes.First(c => c.Name == "UserDto" && c.SpecializationTypeId == typeDefinitionSpecializationId);
+        var userDetailType = services.Classes.First(c => c.Name == "UserDetail" && c.SpecializationTypeId == typeDefinitionSpecializationId);
+        var intType = services.Classes.First(c => c.Name == "int" && c.SpecializationTypeId == typeDefinitionSpecializationId);
+
+        // one parameter
+        service.ChildElements.First().ChildElements.Count().ShouldBe(1);
+        service.ChildElements.First().ChildElements.First().TypeReference.TypeId.ShouldBe(intType.Id);
+
+        // make sure all the generic types are setup correctly
+        service.ChildElements.First().TypeReference.TypeId.ShouldBe(listType.Id);
+        service.ChildElements.First().TypeReference.GenericTypeParameters.Count().ShouldBe(2);
+        service.ChildElements.First().TypeReference.GenericTypeParameters.First().TypeId.ShouldBe(userDtoType.Id);
+        service.ChildElements.First().TypeReference.GenericTypeParameters.Last().TypeId.ShouldBe(userDetailType.Id);
+    }
+
     // Helper methods
 
     private async Task<(CoreTypesData, string)> AnalyzeCodeInMemory(string code)

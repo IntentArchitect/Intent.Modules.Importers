@@ -1,0 +1,35 @@
+﻿{
+  Classes: [
+    {
+      Name: IRepository,
+      SpecializationType: Service,
+      Properties: [
+        {
+          Name: ComplexTypeCollection,
+          SpecializationType: Operation
+        }
+      ]
+    },
+    {
+      Name: CustomPagedList,
+      SpecializationType: Type-Definition,
+      Properties: []
+    },
+    {
+      Name: UserDto,
+      SpecializationType: Type-Definition,
+      Properties: []
+    },
+    {
+      Name: UserDetail,
+      SpecializationType: Type-Definition,
+      Properties: []
+    },
+    {
+      Name: int,
+      SpecializationType: Type-Definition,
+      Properties: []
+    }
+  ],
+  Associations: []
+}

@@ -71,6 +71,34 @@ namespace TestApp.Contracts
     }
 }";
 
+    public const string InterfaceMethodGenericReturn = @"
+namespace TestApp.Contracts
+{
+    public interface IRepository
+    {
+        Task<CustomPagedList<int>> SimpleTypeCollection();
+        Task<CustomPagedList<UserDto>> ComplexTypeCollection();
+    }
+}";
+
+    public const string InterfaceMethodGenericParameter = @"
+namespace TestApp.Contracts
+{
+    public interface IRepository
+    {
+        Task<CustomPagedList<UserDto>> ComplexTypeCollection(CustomPagedList<int> input);
+    }
+}";
+
+    public const string InterfaceMethodMultiGenericParameter = @"
+namespace TestApp.Contracts
+{
+    public interface IRepository
+    {
+        Task<CustomPagedList<UserDto, UserDetail>> ComplexTypeCollection(int input);
+    }
+}";
+
     public const string SimpleEnum = @"
 namespace TestApp.Domain
 {
