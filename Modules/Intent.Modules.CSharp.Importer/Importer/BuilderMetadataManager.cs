@@ -215,16 +215,22 @@ public class BuilderMetadataManager
 
     public void SetTypeReference(IElementPersistable targetElement, string? type, bool isNullable, bool isCollection)
     {
-        targetElement.TypeReference = new TypeReferencePersistable();
-        targetElement.TypeReference.IsNullable = isNullable;
-        targetElement.TypeReference.IsCollection = isCollection;
+        // Check and process the type for generic type parameters (e.g. List<string> would have a base type of List and a generic type parameter of string)
+        var (baseType, genericTypeParameters) = ProcessGenericType(type);
 
-        if(type is null)
+        targetElement.TypeReference = new TypeReferencePersistable
+        {
+            GenericTypeParameters = genericTypeParameters,
+            IsNullable = isNullable,
+            IsCollection = isCollection
+        };
+
+        if (baseType is null)
         {
             return;
         }
                 
-        if (_metadataLookup.TryGetTypeDefinitionByName(type, 0, out var typeDefElement))
+        if (_metadataLookup.TryGetTypeDefinitionByName(baseType, 0, out var typeDefElement))
         {
             targetElement.TypeReference.TypeId = typeDefElement.Id;
             targetElement.TypeReference.TypePackageId = typeDefElement.PackageId;
@@ -232,7 +238,7 @@ public class BuilderMetadataManager
             return;
         }
 
-        if (_metadataLookup.TryGetElementByReference(type, out var element))
+        if (_metadataLookup.TryGetElementByReference(baseType, out var element))
         {
             targetElement.TypeReference.TypeId = element.Id;
             targetElement.TypeReference.TypePackageId = element.PackageId;
@@ -240,7 +246,7 @@ public class BuilderMetadataManager
             return;
         }
 
-        if (_metadataLookup.TryGetElementByName(type, out element))
+        if (_metadataLookup.TryGetElementByName(baseType, out element))
         {
             targetElement.TypeReference.TypeId = element.Id;
             targetElement.TypeReference.TypePackageId = element.PackageId;
@@ -248,14 +254,13 @@ public class BuilderMetadataManager
             return;
         }
 
-        // Couldn't find an appropriate type. Let's create a Type-Def:
         var typeDefCustomElement = _package.Classes.Add(
             id: Guid.NewGuid().ToString().ToLower(),
             specializationType: TypeDefinitionModel.SpecializationType,
             specializationTypeId: TypeDefinitionModel.SpecializationTypeId,
-            name: type,
+            name: baseType,
             parentId: _package.Id,
-            externalReference: type);
+            externalReference: baseType);
         _metadataLookup.AddElement(typeDefCustomElement);
         _elementsToAdd.Add(typeDefCustomElement);
 
@@ -267,6 +272,178 @@ public class BuilderMetadataManager
     public Persistables GetPersistables()
     {
         return new Persistables(_elementsToAdd, _associationsToAdd);
+    }
+
+    private (string? BaseType, List<TypeReferencePersistable> GenericTypeParameters) ProcessGenericType(string? type)
+    {
+        var genericTypeParameters = new List<TypeReferencePersistable>();
+
+        // First, parse the type to see if it's a generic type (e.g. List<string> would have a base type of List and a generic type parameter of string)
+        if (!TryParseGenericType(type, out var genericTypeInfo))
+        {
+            return (type, genericTypeParameters);
+        }
+
+        // Get or create the generic type definition element (e.g. List) 
+        var genTypeDefElement = GetOrCreateGenericTypeDefinition(genericTypeInfo);
+
+        // Go through each generic type parameter and get or create a type definition element for it,
+        // then add it to the list of generic type parameters for the type reference
+        for (int i = 0; i < genericTypeInfo.TypeParameters.Count(); i++)
+        {
+            var genericTypeParameter = genericTypeInfo.TypeParameters.ToArray()[i];
+            var genericTypeParameterElement = GetOrCreateTypeDefinition(genericTypeParameter);
+
+            genericTypeParameters.Add(new TypeReferencePersistable
+            {
+                GenericTypeId = genTypeDefElement.GenericTypes.ElementAt(i).Id,
+                TypeId = genericTypeParameterElement.Id,
+                TypePackageId = genericTypeParameterElement.PackageId,
+                TypePackageName = genericTypeParameterElement.PackageName
+            });
+        }
+
+        return (genericTypeInfo.BaseName, genericTypeParameters);
+    }
+
+    private IElementPersistable GetOrCreateGenericTypeDefinition(GenericDataType genericTypeInfo)
+    {
+        if (_metadataLookup.TryGetTypeDefinitionByName(genericTypeInfo.BaseName, genericTypeInfo.TypeParameters.Count(), out var existingElement))
+        {
+            return existingElement;
+        }
+
+        var genTypeDefElement = _package.Classes.Add(
+            id: Guid.NewGuid().ToString().ToLower(),
+            specializationType: TypeDefinitionModel.SpecializationType,
+            specializationTypeId: TypeDefinitionModel.SpecializationTypeId,
+            name: genericTypeInfo.BaseName,
+            parentId: _package.Id,
+            externalReference: genericTypeInfo.BaseName);
+
+        for (int i = 0; i < genericTypeInfo.TypeParameters.Count(); i++)
+        {
+            genTypeDefElement.GenericTypes.Add(Guid.NewGuid().ToString().ToLower(), $"T{(i == 0 ? "" : i)}");
+        }
+
+        _metadataLookup.AddElement(genTypeDefElement);
+        _metadataLookup.AddTypeDefinition(genTypeDefElement);
+        _elementsToAdd.Add(genTypeDefElement);
+
+        return genTypeDefElement;
+    }
+
+    private IElementPersistable GetOrCreateTypeDefinition(string typeName)
+    {
+        var existingElement = LookupGenericParameterTypeByName(typeName);
+        if (existingElement != null)
+        {
+            return existingElement;
+        }
+
+        var typeDefElement = _package.Classes.Add(
+            id: Guid.NewGuid().ToString().ToLower(),
+            specializationType: TypeDefinitionModel.SpecializationType,
+            specializationTypeId: TypeDefinitionModel.SpecializationTypeId,
+            name: typeName,
+            parentId: _package.Id,
+            externalReference: typeName);
+
+        _metadataLookup.AddElement(typeDefElement);
+        _metadataLookup.AddTypeDefinition(typeDefElement);
+        _elementsToAdd.Add(typeDefElement);
+
+        return typeDefElement;
+    }
+
+    
+
+    private bool TryParseGenericType(string? type, out GenericDataType? genericType)
+    {
+        if (string.IsNullOrWhiteSpace(type))
+        {
+            genericType = null;
+            return false;
+        }
+
+        var genericStart = type.IndexOf('<');
+        if (genericStart == -1)
+        {
+            genericType = null;
+            return false;
+        }
+
+        var baseType = type[..genericStart];
+        var genericEnd = type.LastIndexOf('>');
+        
+        if (genericEnd <= genericStart)
+        {
+            genericType = null;
+            return false;
+        }
+
+        var genericPart = type.Substring(genericStart + 1, genericEnd - genericStart - 1);
+        var arguments = SplitGenericArguments(genericPart);
+
+        genericType = new GenericDataType(baseType, arguments);
+        return true;
+    }
+
+    private List<string> SplitGenericArguments(string genericPart)
+    {
+        var arguments = new List<string>();
+        var depth = 0;
+        var currentArg = new System.Text.StringBuilder();
+        
+        foreach (var ch in genericPart)
+        {
+            if (ch == '<')
+            {
+                depth++;
+                currentArg.Append(ch);
+            }
+            else if (ch == '>')
+            {
+                depth--;
+                currentArg.Append(ch);
+            }
+            else if (ch == ',' && depth == 0)
+            {
+                arguments.Add(currentArg.ToString().Trim());
+                currentArg.Clear();
+            }
+            else
+            {
+                currentArg.Append(ch);
+            }
+        }
+        
+        if (currentArg.Length > 0)
+        {
+            arguments.Add(currentArg.ToString().Trim());
+        }
+        
+        return arguments;
+    }
+
+    private IElementPersistable? LookupGenericParameterTypeByName(string type)
+    {
+        if (_metadataLookup.TryGetTypeDefinitionByName(type, 0, out var typeDefElement))
+        {
+            return typeDefElement;
+        }
+
+        if (_metadataLookup.TryGetElementByReference(type, out var element))
+        {
+            return element;
+        }
+
+        if (_metadataLookup.TryGetElementByName(type, out element))
+        {
+            return element;
+        }
+
+        return null;
     }
 
     private static string GetRelativeLocation(string? curFilePath, string targetFolder)

@@ -192,6 +192,16 @@ public class MetadataLookup
         _elementsByReference.Add(element.ExternalReference, element);
     }
 
+    public void AddTypeDefinition(IElementPersistable element)
+    {
+        if(_typeDefinitions.ContainsKey((element.Name, element.GenericTypes.Count())))
+        {
+            return;
+        }
+
+        _typeDefinitions.Add((element.Name, element.GenericTypes.Count()), element);
+    }
+
     public IReadOnlyCollection<IAssociationPersistable> GetAssociationsFor(IElementPersistable element) =>
         GetAssociationsFor(element.Id);
 

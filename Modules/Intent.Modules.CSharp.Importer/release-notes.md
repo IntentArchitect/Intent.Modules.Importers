@@ -1,3 +1,7 @@
+### Version 1.0.8
+
+- Improvement: Support around generic types has been improved - the generic type as well as the generic type parameters will now be imported as separate elements, with the correct references to the types where the generic type is used.
+
 ### Version 1.0.7
 
 - Improvement: Added option to `Preserve original sync/async method definitions` when importing services, which will add the appropriate `async/sync` stereotypes
