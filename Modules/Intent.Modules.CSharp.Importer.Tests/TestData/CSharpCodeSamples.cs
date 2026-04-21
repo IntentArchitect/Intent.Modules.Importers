@@ -167,6 +167,21 @@ namespace TestApp.Domain
     }
 }";
 
+    public const string InterfaceWithTaskWrappedCollectionReturn = @"
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace TestApp.Contracts
+{
+    public class Row { }
+
+    public interface IDataService
+    {
+        Task<IEnumerable<Row>> GetAllRows(int objectID);
+        IEnumerable<Row> GetAllRowsSync(int objectID);
+    }
+}";
+
     public const string MixedTypes = @"
 namespace TestApp.Domain
 {

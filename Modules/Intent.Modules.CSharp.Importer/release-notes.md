@@ -1,3 +1,7 @@
+### Version 1.0.9
+
+- Fixed: Methods returning `Task<IEnumerable<T>>` (or other collection types wrapped in `Task<>`) were not being imported with `IsCollection = true`.
+
 ### Version 1.0.8
 
 - Improvement: Support around generic types has been improved - the generic type as well as the generic type parameters will now be imported as separate elements, with the correct references to the types where the generic type is used.

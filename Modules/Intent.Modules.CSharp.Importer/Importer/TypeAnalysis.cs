@@ -74,6 +74,13 @@ public static class TypeAnalysis
         {
             typeSymbol = TryGetTaskResultType(typeSymbol, compilation) ?? typeSymbol;
         }
+        else if (typeSymbol is INamedTypeSymbol { IsGenericType: true } namedTask &&
+                 namedTask.ConstructedFrom.Name is "Task" or "ValueTask" &&
+                 namedTask.TypeArguments.Length == 1)
+        {
+            // Name-based fallback when symbol resolution is incomplete (e.g. compilation missing references)
+            typeSymbol = namedTask.TypeArguments[0];
+        }
 
         if (typeSymbol is IArrayTypeSymbol)
         {
