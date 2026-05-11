@@ -1650,5 +1650,90 @@ public class DbSchemaIntentMetadataMergerTests
         operation.ChildElements[2].Stereotypes[0].Properties.Where(p => p.Name == "Name" && p.Value == "@InputThree").Count().ShouldBe(1);
     }
 
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcOperationMovedToSecondaryRepository_ReimportShouldNotCreateDuplicate()
+    {
+        // Arrange - Initial import: Create stored procedure in default StoredProcedureRepository
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetOrdersSummary()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsOperations());
+
+        // First import - creates operation in default repo
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        result.IsSuccessful.ShouldBeTrue();
+
+        // Verify initial state: operation is in StoredProcedureRepository
+        var allRepositories = scenario.Package.Classes.Where(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3").ToList();
+        allRepositories.Count.ShouldBe(1, "Should have exactly one repository (StoredProcedureRepository)");
+        
+        var defaultRepo = allRepositories.Single();
+        defaultRepo.Name.ShouldBe("StoredProcedureRepository");
+        defaultRepo.ChildElements.Count.ShouldBe(1, "StoredProcedureRepository should have 1 operation");
+        
+        var operation = defaultRepo.ChildElements.Single();
+        operation.Name.ShouldBe("GetOrdersSummary");
+        var operationExternalRef = operation.ExternalReference;
+
+        // Act - Manually move the operation to a secondary repository
+        // 1. Create secondary repository
+        var secondaryRepo = new ElementPersistable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = "SecondaryRepository",
+            Display = "SecondaryRepository",
+            SpecializationType = "Repository",
+            SpecializationTypeId = "96ffceb2-a70a-4b69-869b-0df436c470c3",
+            ExternalReference = "repository:secondary",
+            ParentFolderId = scenario.Package.Id,
+            PackageId = scenario.Package.Id,
+            PackageName = scenario.Package.Name,
+            ChildElements = []
+        };
+        scenario.Package.Classes.Add(secondaryRepo);
+
+        // 2. Move operation from StoredProcedureRepository to SecondaryRepository
+        defaultRepo.ChildElements.Remove(operation);
+        operation.ParentFolderId = secondaryRepo.Id;
+        secondaryRepo.ChildElements.Add(operation);
+
+        // Verify move was successful
+        defaultRepo.ChildElements.Count.ShouldBe(0, "StoredProcedureRepository should be empty after move");
+        secondaryRepo.ChildElements.Count.ShouldBe(1, "SecondaryRepository should have the operation");
+        operation.ParentFolderId.ShouldBe(secondaryRepo.Id);
+
+        // Act - Re-import the same stored procedure
+        var reImportResult = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        reImportResult.IsSuccessful.ShouldBeTrue();
+
+        // Count total operations across all repositories
+        var allRepositoriesAfter = scenario.Package.Classes
+            .Where(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3")
+            .ToList();
+        
+        var totalOperationsAfter = allRepositoriesAfter.SelectMany(r => r.ChildElements).ToList();
+        
+        totalOperationsAfter.Count.ShouldBe(1, 
+            "Should have exactly 1 operation total (not duplicated). " +
+            $"StoredProcedureRepository has {defaultRepo.ChildElements.Count}, " +
+            $"SecondaryRepository has {secondaryRepo.ChildElements.Count}");
+
+        // The operation should still be in SecondaryRepository, retaining its external reference
+        secondaryRepo.ChildElements.Count.ShouldBe(1, "Operation should remain in SecondaryRepository");
+        defaultRepo.ChildElements.Count.ShouldBe(0, "No duplicate should be created in StoredProcedureRepository");
+        
+        var operationAfter = secondaryRepo.ChildElements.Single();
+        operationAfter.Name.ShouldBe("GetOrdersSummary");
+        operationAfter.ExternalReference.ShouldBe(operationExternalRef, "External reference should be preserved");
+    }
+
+
     #endregion
 }

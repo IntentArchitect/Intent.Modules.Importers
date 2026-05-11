@@ -246,9 +246,8 @@ internal class DbSchemaIntentMetadataMerger
             ? Constants.SpecializationTypes.StoredProcedure.SpecializationType 
             : Constants.SpecializationTypes.Operation.SpecializationType;
 
-        var existingElement = repositoryElement.ChildElements.FirstOrDefault(c => 
-            c.ExternalReference == spExternalRef && 
-            c.SpecializationType == expectedSpecializationType);
+        // Level 1: Search globally across all repositories for existing operation (re-import idempotency)
+        var existingElement = FindOperationGloballyByExternalReference(package, spExternalRef, expectedSpecializationType);
 
         ElementPersistable procElement;
 
@@ -263,13 +262,15 @@ internal class DbSchemaIntentMetadataMerger
             // Update existing stored procedure element
             if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
             {
-                var updatedElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, repositoryElement.Id, package, null, udtDataContracts);
+                // Preserve parent folder ID - don't move the element (user may have moved it)
+                var updatedElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, existingElement.ParentFolderId, package, null, udtDataContracts);
                 SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, preserveElementTypes, result);
                 RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingElement);
             }
             else
             {
-                var updatedElement = IntentModelMapper.MapStoredProcedureToOperation(procName, storedProc, repositoryElement.Id, package, null, udtDataContracts);
+                // Preserve parent repository ID - don't move the element (user may have moved it)
+                var updatedElement = IntentModelMapper.MapStoredProcedureToOperation(procName, storedProc, existingElement.ParentFolderId, package, null, udtDataContracts);
                 SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, preserveElementTypes, result);
                 RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingElement);
             }
@@ -278,7 +279,7 @@ internal class DbSchemaIntentMetadataMerger
         }
         else
         {
-            // Create new stored procedure element
+            // Create new stored procedure element in the configured repository
             if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
             {
                 procElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
@@ -404,9 +405,9 @@ internal class DbSchemaIntentMetadataMerger
 
         // 3. Create the Operation (with only input parameters)
         var operationExternalRef = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Schema, storedProc.Name);
-        var existingOperation = repositoryElement.ChildElements.FirstOrDefault(c => 
-            c.ExternalReference == operationExternalRef && 
-            c.SpecializationType == Constants.SpecializationTypes.Operation.SpecializationType);
+        
+        // Level 1: Search globally across all repositories for existing operation (re-import idempotency)
+        var existingOperation = FindOperationGloballyByExternalReference(package, operationExternalRef, Constants.SpecializationTypes.Operation.SpecializationType);
 
         ElementPersistable operationElement;
         if (existingOperation != null)
@@ -427,7 +428,8 @@ internal class DbSchemaIntentMetadataMerger
                 preserveElementTypes = SyncElementType.AttributeType | SyncElementType.IsCollection;
             }
 
-            var updatedOperation = IntentModelMapper.MapStoredProcedureToOperation(procName, tempStoredProc, repositoryElement.Id, package, null, udtDataContracts);
+            // Preserve parent repository ID - don't move the element (user may have moved it)
+            var updatedOperation = IntentModelMapper.MapStoredProcedureToOperation(procName, tempStoredProc, existingOperation.ParentFolderId, package, null, udtDataContracts);
             SyncElements(package, existingOperation, updatedOperation, _config.AllowDeletions, preserveElementTypes, result);
             RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingOperation);
             operationElement = existingOperation;
@@ -946,6 +948,33 @@ internal class DbSchemaIntentMetadataMerger
 
         _schemaFolders[schemaName] = folder;
         return folder;
+    }
+
+    /// <summary>
+    /// Finds an operation/element globally across all repositories by ExternalReference and SpecializationType.
+    /// Supports re-import idempotency by matching across repositories, not just within a specific one.
+    /// </summary>
+    private static ElementPersistable? FindOperationGloballyByExternalReference(
+        PackageModelPersistable package,
+        string externalReference,
+        string specializationType)
+    {
+        // Search across all repositories for an existing operation with the same external reference
+        var allRepositories = package.Classes.Where(c => c.SpecializationType == Constants.SpecializationTypes.Repository.SpecializationType);
+        
+        foreach (var repo in allRepositories)
+        {
+            var existingElement = repo.ChildElements.FirstOrDefault(c =>
+                c.ExternalReference == externalReference &&
+                c.SpecializationType == specializationType);
+
+            if (existingElement != null)
+            {
+                return existingElement;
+            }
+        }
+
+        return null;
     }
 
     /// <summary>

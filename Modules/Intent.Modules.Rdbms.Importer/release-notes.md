@@ -1,3 +1,7 @@
+### Version 1.0.15
+
+- Fixed: Issue where stored procedure operations moved to different repositories would be duplicated on re-import instead of being updated in place. Now uses global ExternalReference matching to find operations across all repositories.
+
 ### Version 1.0.14
 
 - Improvement: Return type for stored procedures and linked operations, can have the `IsCollection` changed in the designer without reimporting overwriting it.
