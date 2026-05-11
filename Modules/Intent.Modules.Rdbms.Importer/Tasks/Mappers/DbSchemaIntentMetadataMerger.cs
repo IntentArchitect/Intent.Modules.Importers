@@ -259,6 +259,9 @@ internal class DbSchemaIntentMetadataMerger
                 preserveElementTypes = SyncElementType.AttributeType | SyncElementType.IsCollection;
             }
 
+            // Preserve user's manual IsNullable setting before sync overwrites it
+            var preservedIsNullable = existingElement.TypeReference.IsNullable;
+
             // Update existing stored procedure element
             if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
             {
@@ -274,6 +277,9 @@ internal class DbSchemaIntentMetadataMerger
                 SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, preserveElementTypes, result);
                 RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingElement);
             }
+            
+            // Restore the preserved IsNullable setting after sync
+            existingElement.TypeReference.IsNullable = preservedIsNullable;
             
             procElement = existingElement;
         }
@@ -347,10 +353,17 @@ internal class DbSchemaIntentMetadataMerger
                 preserveElementTypes = SyncElementType.AttributeType | SyncElementType.IsCollection;
             }
 
+            // Preserve user's manual IsNullable setting before sync overwrites it
+            var preservedIsNullable = existingSpElement.TypeReference.IsNullable;
+
             // Update existing - but don't change parentFolderId (user may have moved it)
             var updatedElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, existingSpElement.ParentFolderId, package, null, udtDataContracts);
             SyncElements(package, existingSpElement, updatedElement, _config.AllowDeletions, preserveElementTypes, result);
             RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingSpElement);
+            
+            // Restore the preserved IsNullable setting after sync
+            existingSpElement.TypeReference.IsNullable = preservedIsNullable;
+            
             storedProcElement = existingSpElement;
         }
         else
@@ -398,9 +411,11 @@ internal class DbSchemaIntentMetadataMerger
             }
 
             // Set the stored procedure element's return type to the underlying result DC
+            // Preserve the user's IsNullable setting one more time before setting TypeId
+            var preservedSpIsNullable = storedProcElement.TypeReference.IsNullable;
             storedProcElement.TypeReference.TypeId = underlyingResultDataContract.Id;
             storedProcElement.TypeReference.IsCollection = existingSpElement?.TypeReference?.IsCollection ?? true;
-            storedProcElement.TypeReference.IsNullable = false;
+            storedProcElement.TypeReference.IsNullable = preservedSpIsNullable;
         }
 
         // 3. Create the Operation (with only input parameters)
@@ -428,10 +443,17 @@ internal class DbSchemaIntentMetadataMerger
                 preserveElementTypes = SyncElementType.AttributeType | SyncElementType.IsCollection;
             }
 
+            // Preserve user's manual IsNullable setting before sync overwrites it
+            var preservedOperationIsNullable = existingOperation.TypeReference.IsNullable;
+
             // Preserve parent repository ID - don't move the element (user may have moved it)
             var updatedOperation = IntentModelMapper.MapStoredProcedureToOperation(procName, tempStoredProc, existingOperation.ParentFolderId, package, null, udtDataContracts);
             SyncElements(package, existingOperation, updatedOperation, _config.AllowDeletions, preserveElementTypes, result);
             RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingOperation);
+            
+            // Restore the preserved IsNullable setting after sync
+            existingOperation.TypeReference.IsNullable = preservedOperationIsNullable;
+            
             operationElement = existingOperation;
         }
         else
@@ -502,7 +524,6 @@ internal class DbSchemaIntentMetadataMerger
             // Set the operation's return type to the wrapper
             operationElement.TypeReference.TypeId = wrapperDataContract.Id;
             operationElement.TypeReference.IsCollection = false;
-            operationElement.TypeReference.IsNullable = false;
         }
         else
         {
@@ -511,7 +532,6 @@ internal class DbSchemaIntentMetadataMerger
             {
                 operationElement.TypeReference.TypeId = underlyingResultDataContract.Id;
                 operationElement.TypeReference.IsCollection = existingOperation?.TypeReference?.IsCollection ?? true;
-                operationElement.TypeReference.IsNullable = false;
             }
             wrapperDataContract = null!;
         }
@@ -1191,7 +1211,8 @@ internal class DbSchemaIntentMetadataMerger
             procElement.TypeReference.TypeId = dataContract.Id; // Point to the data contract element ID
             // if existing, use the current IsCollection value to avoid unintended changes, otherwise default to true for new stored procedures
             procElement.TypeReference.IsCollection = isExistingStoredProc ? procElement.TypeReference.IsCollection : true;
-            procElement.TypeReference.IsNullable = false; // Collections themselves are typically not nullable
+            // if existing, preserve the current IsNullable value to avoid unintended changes, otherwise default to false for new stored procedures
+            procElement.TypeReference.IsNullable = isExistingStoredProc ? procElement.TypeReference.IsNullable : false;
         }
     }
 
@@ -1516,11 +1537,12 @@ internal class DbSchemaIntentMetadataMerger
             {
                 var existingTarget = existingPath[i];
                 
-                // Match by name (most specific), then by type and specialization
+                // Preserve IDs only when the path node kind is still the same.
+                // If a node changed from static-mappable to element (or vice versa),
+                // let the new structure replace the old one completely.
                 if (existingTarget.Name == updatedTarget.Name &&
-                    (existingTarget.Type == updatedTarget.Type || 
-                     (existingTarget.Type == "element" && updatedTarget.Type == "static-mappable") ||
-                     (existingTarget.Type == "static-mappable" && updatedTarget.Type == "element")))
+                    existingTarget.Type == updatedTarget.Type &&
+                    existingTarget.Specialization == updatedTarget.Specialization)
                 {
                     // Same element - preserve ID and TypeReference ID
                     updatedTarget.Id = existingTarget.Id;

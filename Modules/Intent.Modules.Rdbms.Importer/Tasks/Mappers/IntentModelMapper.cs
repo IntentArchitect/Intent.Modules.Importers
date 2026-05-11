@@ -1497,7 +1497,7 @@ internal static class IntentModelMapper
                                         TypeId = storedProcElement.TypeReference.TypeId,
                                         IsNavigable = true,
                                         IsNullable = false,
-                                        IsCollection = operationElement?.TypeReference?.IsCollection ?? true,
+                                        IsCollection = storedProcElement?.TypeReference?.IsCollection ?? true,
                                         IsRequired = true,
                                         TypePackageName = package.Name,
                                         TypePackageId = package.Id,
@@ -1564,7 +1564,7 @@ internal static class IntentModelMapper
                                         TypeId = storedProcElement.TypeReference.TypeId,
                                         IsNavigable = true,
                                         IsNullable = false,
-                                        IsCollection = operationElement?.TypeReference?.IsCollection ?? true,
+                                        IsCollection = storedProcElement?.TypeReference?.IsCollection ?? true,
                                         IsRequired = true,
                                         TypePackageName = package.Name,
                                         TypePackageId = package.Id,
@@ -1649,11 +1649,10 @@ internal static class IntentModelMapper
                                 new MappedPathTargetPersistable
                                 {
                                     Id = storedProcParam.Id,
-                                    Name = normalizedParamName,
-                                    Type = "static-mappable",
-                                    Specialization = normalizedParamName,
-                                    SpecializationId = storedProcParam.Id,
-                                    TypeReference = storedProcParam.TypeReference
+                                    Name = storedProcParam.Name,
+                                    Type = "element",
+                                    Specialization = "Stored Procedure Parameter",
+                                    SpecializationId = "5823b192-eb03-47c8-90d8-5501c922e9a5"
                                 }
                             }
                         }

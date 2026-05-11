@@ -1,6 +1,7 @@
 ### Version 1.0.15
 
 - Fixed: Issue where stored procedure operations moved to different repositories would be duplicated on re-import instead of being updated in place. Now uses global ExternalReference matching to find operations across all repositories.
+- Fixed: Issue where the `IsNullable` property on the return type of operations and stored procedure elements would be reset to false on re-import if it had been manually changed to true.
 
 ### Version 1.0.14
 

@@ -1060,6 +1060,45 @@ public class DbSchemaIntentMetadataMergerTests
     }
 
     [Fact]
+    public void MergeSchemaAndPackage_StoredProcWithOutputParams_ResultMappingUsesStoredProcedureShape()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.TestWithOutParam()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsOperations());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        var storedProcElement = scenario.Package.Classes
+            .First(e => e.Name == "TestWithOutParam" && e.SpecializationType == "Stored Procedure");
+        var association = scenario.Package.Associations.Single();
+        var resultMapping = association.TargetEnd.Mappings.Single(m => m.Type == "Stored Procedure Result");
+
+        var resultMappedEnd = resultMapping.MappedEnds.Single(e => e.MappingExpression == "{mappedResult.result}");
+        var resultSourceLeaf = resultMappedEnd.Sources.Single().Path.Last();
+        resultSourceLeaf.Type.ShouldBe("static-mappable");
+        resultSourceLeaf.TypeReference.ShouldNotBeNull();
+        resultSourceLeaf.TypeReference.IsCollection.ShouldBe(
+            storedProcElement.TypeReference.IsCollection,
+            "The mapping source for mappedResult.result should follow the stored procedure result shape, not the wrapper operation return shape.");
+
+        var outputParamMappedEnd = resultMapping.MappedEnds.Single(e => e.MappingExpression == "{mappedResult.errorMessage}");
+        var outputParamSourceLeaf = outputParamMappedEnd.Sources.Single().Path.Last();
+        outputParamSourceLeaf.Type.ShouldBe("element");
+        outputParamSourceLeaf.Specialization.ShouldBe("Stored Procedure Parameter");
+    }
+
+    [Fact]
     public void MergeSchemaAndPackage_StoredProcOutputParamRenamed_UpdatesExpression()
     {
         // Arrange - Initial import with ErrorMessage parameter
@@ -1095,6 +1134,15 @@ public class DbSchemaIntentMetadataMergerTests
         associationAfter.Id.ShouldBe(associationId, "Association ID should remain stable");
         
         var resultMappingAfter = associationAfter.TargetEnd.Mappings.Single(m => m.Type == "Stored Procedure Result");
+        var outputParamMappedEnds = resultMappingAfter.MappedEnds
+            .Where(e => e.MappingExpression != "{mappedResult.result}")
+            .ToList();
+        outputParamMappedEnds.ShouldNotBeEmpty();
+        outputParamMappedEnds.All(e =>
+        {
+            var sourceLeaf = e.Sources.Single().Path.Last();
+            return sourceLeaf.Type == "element" && sourceLeaf.Specialization == "Stored Procedure Parameter";
+        }).ShouldBeTrue();
         
         // Verify the mapping count remains stable (not growing indefinitely)
         resultMappingAfter.MappedEnds.Count.ShouldBe(originalCount, 
@@ -1734,6 +1782,100 @@ public class DbSchemaIntentMetadataMergerTests
         operationAfter.ExternalReference.ShouldBe(operationExternalRef, "External reference should be preserved");
     }
 
+    [Fact]
+    public void MergeSchemaAndPackage_OperationReturnTypeIsNullableChanged_ReimportPreservesNullable()
+    {
+        // Arrange - Initial import
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetOrdersSummary()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsOperations());
+
+        // First import
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        result.IsSuccessful.ShouldBeTrue();
+
+        // Get the imported operation
+        var repository = scenario.Package.Classes
+            .First(x => x.SpecializationType == "Repository");
+        
+        var operation = repository.ChildElements.First();
+        operation.Name.ShouldBe("GetOrdersSummary");
+
+        // Verify initial state: IsNullable should be false
+        operation.TypeReference.IsNullable.ShouldBeFalse("Initial import should have IsNullable = false");
+
+        // Act - User manually changes IsNullable to true
+        operation.TypeReference.IsNullable = true;
+
+        // Re-import the same stored procedure
+        var reImportResult = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        reImportResult.IsSuccessful.ShouldBeTrue();
+
+        // Find the operation after re-import
+        var operationAfter = repository.ChildElements.First();
+        operationAfter.Name.ShouldBe("GetOrdersSummary");
+
+        // IsNullable should still be true (preserved from user's manual change)
+        operationAfter.TypeReference.IsNullable.ShouldBeTrue(
+            "IsNullable should be preserved from user's manual change, not reset to false");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcedureElementReturnTypeIsNullableChanged_ReimportPreservesNullable()
+    {
+        // Arrange - Initial import with StoredProcedureElement mode
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetOrdersSummary()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsElements());
+
+        // First import
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        result.IsSuccessful.ShouldBeTrue();
+
+        // Get the imported SP element regardless of whether it is in the package root or nested under a folder/repository
+        var spElement = scenario.Package.Classes
+            .Concat(scenario.Package.Classes.SelectMany(e => e.ChildElements))
+            .Concat(scenario.Package.ChildElements.SelectMany(e => e.ChildElements))
+            .FirstOrDefault(e => e.Name == "GetOrdersSummary" && e.SpecializationType == "Stored Procedure");
+        spElement.ShouldNotBeNull("Stored Procedure Element should exist");
+
+        // Verify initial state: IsNullable should be false
+        spElement.TypeReference.IsNullable.ShouldBeFalse("Initial import should have IsNullable = false");
+
+        // Act - User manually changes IsNullable to true
+        spElement.TypeReference.IsNullable = true;
+
+        // Re-import the same stored procedure
+        var reImportResult = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        reImportResult.IsSuccessful.ShouldBeTrue();
+
+        // Find the SP element after re-import
+        var spElementAfter = scenario.Package.Classes
+            .Concat(scenario.Package.Classes.SelectMany(e => e.ChildElements))
+            .Concat(scenario.Package.ChildElements.SelectMany(e => e.ChildElements))
+            .FirstOrDefault(e => e.Name == "GetOrdersSummary" && e.SpecializationType == "Stored Procedure");
+        spElementAfter.ShouldNotBeNull("Stored Procedure Element should still exist");
+
+        // IsNullable should still be true (preserved from user's manual change)
+        spElementAfter.TypeReference.IsNullable.ShouldBeTrue(
+            "IsNullable should be preserved from user's manual change, not reset to false");
+    }
 
     #endregion
 }
