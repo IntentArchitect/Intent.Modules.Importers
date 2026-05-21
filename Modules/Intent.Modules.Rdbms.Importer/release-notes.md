@@ -1,3 +1,8 @@
+### Version 1.0.16
+
+- Fixed: Issue where association names would be incorrect if more than one association was present.
+- Fixed: Issue where the schema was not correctly being set on table import.
+
 ### Version 1.0.15
 
 - Fixed: Issue where stored procedure operations moved to different repositories would be duplicated on re-import instead of being updated in place. Now uses global ExternalReference matching to find operations across all repositories.

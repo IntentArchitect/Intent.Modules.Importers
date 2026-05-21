@@ -192,4 +192,15 @@ internal static class PackageModels
         
         return package;
     }
+
+    /// <summary>
+    /// Package containing a pre-existing setting.Attachment class, as it would appear after
+    /// a previous import. Used to test that importing tasks.Attachment does not corrupt it.
+    /// </summary>
+    public static PackageModelPersistable WithSchemaATableC()
+    {
+        var package = Empty();
+        package.Classes.Add(Elements.TableCInASchema());
+        return package;
+    }
 }

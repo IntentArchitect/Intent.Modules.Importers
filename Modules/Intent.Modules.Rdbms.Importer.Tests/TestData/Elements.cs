@@ -269,6 +269,41 @@ internal static class Elements
         };
 
     /// <summary>
+    /// Pre-existing setting.Attachment class element, as it would appear after a previous import.
+    /// Uses the real Table stereotype DefinitionId so GetElementDbSchema resolves the schema correctly.
+    /// </summary>
+    public static ElementPersistable TableCInASchema(string? id = null) => new()
+    {
+        Id = id ?? Guid.NewGuid().ToString(),
+        Name = "TableC",
+        SpecializationType = ClassModel.SpecializationType,
+        SpecializationTypeId = ClassModel.SpecializationTypeId,
+        ExternalReference = ModelNamingUtilities.GetTableExternalReference("schemaA", "TableC"),
+        Stereotypes = new List<StereotypePersistable>
+        {
+            new StereotypePersistable
+            {
+                Name = "Table",
+                DefinitionId = "dd205b32-b48b-4c77-98f5-faefb2c047ce",    // Constants.Stereotypes.Rdbms.Table.DefinitionId
+                DefinitionPackageId = "AF8F3810-745C-42A2-93C8-798860DC45B1", // Constants.Packages.Rdbms.DefinitionPackageId
+                DefinitionPackageName = "Intent.Metadata.RDBMS",
+                Properties = new List<StereotypePropertyPersistable>
+                {
+                    new() { DefinitionId = "13e6101f-0e37-4eda-a6ae-ec48cd9f8f4b", Name = "Schema", Value = "schemaA", IsActive = true }, // Table.PropertyId.Schema
+                    new() { DefinitionId = "2b3a9df7-65e1-4800-b919-bef1a6b8f5a9", Name = "Name",   Value = "TableC", IsActive = true }  // Table.PropertyId.Name
+                }
+            }
+        },
+        ChildElements = new List<ElementPersistable>
+        {
+            Attribute("TableCId", "int", ModelNamingUtilities.GetColumnExternalReference("schemaA", "TableC", "AttachmentId"), isPrimaryKey: true),
+            Attribute("Name", "string", ModelNamingUtilities.GetColumnExternalReference("schemaA", "TableC", "Name")),
+            Attribute("MimeType", "string", ModelNamingUtilities.GetColumnExternalReference("schemaA", "TableC", "MimeType")),
+            Attribute("Data", "binary", ModelNamingUtilities.GetColumnExternalReference("schemaA", "TableC", "Data"))
+        }
+    };
+
+    /// <summary>
     /// Category table element for duplicate FK testing
     /// </summary>
     public static ElementPersistable CategoryTable(string? id = null) => new()

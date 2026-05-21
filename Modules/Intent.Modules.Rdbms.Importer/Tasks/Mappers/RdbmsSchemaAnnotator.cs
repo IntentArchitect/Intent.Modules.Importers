@@ -17,12 +17,21 @@ internal static class RdbmsSchemaAnnotator
     {
         if (!RequiresTableStereoType(config, table, @class))
         {
+            // Even if the Table stereotype isn't required for naming purposes,
+            // we still need the Schema property set so GetElementDbSchema works correctly
+            // for cross-schema disambiguation (e.g. schema1.Table vs schema2.Table)
+            if (!string.IsNullOrWhiteSpace(table.Schema))
+            {
+                var schemaOnlyStereotype = @class.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.Table.DefinitionId, InitTableStereotype);
+                schemaOnlyStereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Table.PropertyId.Schema).Value = table.Schema;
+            }
             return;
         }
 
         var stereotype = @class.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.Table.DefinitionId, InitTableStereotype);
         //For now always set this in case generated table names don't match the generated names due to things like pluralization
         stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Table.PropertyId.Name).Value = table.Name;
+        stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.Table.PropertyId.Schema).Value = table.Schema;
         return;
 
         static bool RequiresTableStereoType(ImportConfiguration config, TableSchema table, ElementPersistable @class)

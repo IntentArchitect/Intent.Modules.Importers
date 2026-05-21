@@ -259,4 +259,16 @@ internal static class DatabaseSchemas
         Views = [],
         StoredProcedures = []
     };
+
+    /// <summary>
+    /// Only tasks.Attachment — used to test that importing it does not corrupt an
+    /// already-modelled setting.Attachment that shares the same class name.
+    /// </summary>
+    public static DatabaseSchema WithSchemaBTableOnly() => new()
+    {
+        DatabaseName = "TestDatabase",
+        Tables = [Tables.TableInBSchema()],
+        Views = [],
+        StoredProcedures = []
+    };
 }

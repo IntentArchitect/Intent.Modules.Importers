@@ -1807,7 +1807,7 @@
           Stereotypes: []
         },
         Target: {
-          Name: RoleAspNetRole1,
+          Name: RoleAspNetRole,
           ExternalReference: [dbo].[aspnetroleclaims].[fk_aspnetroleclaims_aspnetroles],
           TypeReference: {
             TypeId: Guid_25,
@@ -1835,7 +1835,7 @@
           Stereotypes: []
         },
         Target: {
-          Name: UserAspNetUser1,
+          Name: UserAspNetUser,
           ExternalReference: [dbo].[aspnetuserclaims].[fk_aspnetuserclaims_aspnetusers],
           TypeReference: {
             TypeId: Guid_27,
@@ -1863,7 +1863,7 @@
           Stereotypes: []
         },
         Target: {
-          Name: UserAspNetUser2,
+          Name: UserAspNetUser,
           ExternalReference: [dbo].[aspnetuserlogins].[fk_aspnetuserlogins_aspnetusers],
           TypeReference: {
             TypeId: Guid_27,
@@ -1947,7 +1947,7 @@
           Stereotypes: []
         },
         Target: {
-          Name: UserAspNetUser3,
+          Name: UserAspNetUser,
           ExternalReference: [dbo].[aspnetusertokens].[fk_aspnetusertokens_aspnetusers],
           TypeReference: {
             TypeId: Guid_27,

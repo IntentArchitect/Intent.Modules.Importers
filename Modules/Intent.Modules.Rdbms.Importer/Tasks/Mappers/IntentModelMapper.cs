@@ -669,11 +669,12 @@ internal static class IntentModelMapper
                 ? $"{targetName}Reference"
                 : targetName;
 
-            // if there is already an association for this entity weith the same name
+            // if there is already an association for this entity with the same name
             // suffix with a number to make it unique
             var targetNameSuffix = 1;
             while (package.Associations?.Any(a =>
                 a.TargetEnd?.TypeReference?.TypeId == targetClass.Id &&
+                a.SourceEnd?.TypeReference?.TypeId == sourceClass.Id &&
                 a.TargetEnd?.Name?.Equals(finalTargetName, StringComparison.OrdinalIgnoreCase) == true) == true)
             {
                 finalTargetName = $"{targetName}{targetNameSuffix}";

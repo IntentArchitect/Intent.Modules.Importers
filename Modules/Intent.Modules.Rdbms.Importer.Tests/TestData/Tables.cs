@@ -217,6 +217,35 @@ internal static class Tables
         Indexes = []
     };
 
+    public static TableSchema TableInASchema() => new()
+    {
+        Schema = "schemaA",
+        Name = "TableC",
+        Columns =
+        [
+            Column("TableCId", SqlDbType.Int, isPrimaryKey: true),
+            Column("Name", SqlDbType.NVarChar, length: 255, isNullable: false),
+            Column("MimeType", SqlDbType.NVarChar, length: 100, isNullable: false),
+            Column("Data", SqlDbType.VarBinary, isNullable: false)
+        ],
+        ForeignKeys = [],
+        Indexes = []
+    };
+
+    public static TableSchema TableInBSchema() => new()
+    {
+        Schema = "schemaB",
+        Name = "TableC",
+        Columns =
+        [
+            Column("TableCId", SqlDbType.Int, isPrimaryKey: true),
+            Column("Title", SqlDbType.NVarChar, length: 500, isNullable: false),
+            Column("FileSize", SqlDbType.BigInt, isNullable: false)
+        ],
+        ForeignKeys = [],
+        Indexes = []
+    };
+
     public static TableSchema TableWithConstraints() => new()
     {
         Schema = "dbo",

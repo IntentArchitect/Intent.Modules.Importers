@@ -1878,4 +1878,69 @@ public class DbSchemaIntentMetadataMergerTests
     }
 
     #endregion
+
+    #region Cross-Schema Same-Name Tests
+
+    [Fact]
+    public void MergeSchemaAndPackage_ImportTasksAttachment_DoesNotCorruptExistingSettingAttachment()
+    {
+        // Arrange
+        var scenario = ScenarioComposer.Create(
+            DatabaseSchemas.WithSchemaBTableOnly(),
+            PackageModels.WithSchemaATableC());
+
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.TablesWithDeletions());
+
+        var schemaATableCBefore = scenario.Package.Classes
+            .Single(c => c.ExternalReference == ModelNamingUtilities.GetTableExternalReference("schemaA", "TableC"));
+        var schemaATableCColumnsBefore = schemaATableCBefore.ChildElements
+            .Where(e => e.SpecializationType == AttributeModel.SpecializationType)
+            .Select(e => e.Name)
+            .OrderBy(n => n)
+            .ToList();
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        result.Warnings.ShouldNotContain(w => w.Contains("schemaA") || w.Contains("TableC"),
+            "No warnings should reference schemaA.TableC — it is not part of this import");
+
+        var classes = GetClasses(scenario.Package)
+            .Where(c => c.Name == "TableC")
+            .ToList();
+
+        classes.Count.ShouldBe(2, "Both schemaA.TableC and schemaB.TableC should exist");
+
+        // setting.Attachment must be untouched
+        var schemaATableC = classes.SingleOrDefault(c =>
+            c.ExternalReference == ModelNamingUtilities.GetTableExternalReference("schemaA", "TableC"));
+        schemaATableC.ShouldNotBeNull("schemaA.TableC should still exist");
+
+        var schemaASchema = IntentModelMapper.GetElementDbSchema(schemaATableC, scenario.Package);
+        schemaASchema.ShouldBe("schemaA", "schemaA.TableC should retain its schema");
+
+        var schemaATableCColumnsAfter = schemaATableC.ChildElements
+            .Where(e => e.SpecializationType == AttributeModel.SpecializationType)
+            .Select(e => e.Name)
+            .OrderBy(n => n)
+            .ToList();
+        schemaATableCColumnsAfter.ShouldBe(schemaATableCColumnsBefore,
+            "Columns on schemaA.TableC must not be removed during schemaB.TableC import");
+
+        // tasks.Attachment must have been added with correct schema and columns
+        var schemaBTableC = classes.SingleOrDefault(c =>
+            c.ExternalReference == ModelNamingUtilities.GetTableExternalReference("schemaB", "TableC"));
+        schemaBTableC.ShouldNotBeNull("tasks.Attachment should have been created");
+
+        var tasksSchema = IntentModelMapper.GetElementDbSchema(schemaBTableC, scenario.Package);
+        tasksSchema.ShouldBe("schemaB", "schemaB.TableA should have the schemaB schema");
+
+        GetAttributeNames(schemaBTableC).ShouldBe(
+            new[] { "TableCId", "Title", "FileSize" },
+            "schemaB.TableC should have its own columns");
+    }
+
+    #endregion
 }
