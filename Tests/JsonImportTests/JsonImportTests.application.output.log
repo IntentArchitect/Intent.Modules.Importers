@@ -3,6 +3,54 @@
   <ApplicationId>6cefaeaa-836d-4830-baac-dcd1bb9a8caa</ApplicationId>
   <FileLogs>
     <FileLog>
+      <ProjectId>52d7ae56-37ff-40a0-9bfd-e83c851609ba</ProjectId>
+      <CorrelationId>Intent.Modules.Common.CSharp.Templates.StaticContentTemplateRegistrations.AIInstructionsStaticContentTemplateRegistration#csharp-guidelines.md</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>.agents/instructions/csharp-guidelines.md</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>csharp-guidelines.md</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>4b52ddca-9635-4b89-a5d3-e0366c51b24b</ProjectId>
+      <CorrelationId>Intent.Application.ServiceImplementations.ServiceImplementationSkillTemplate#faa271b2-0256-4dc9-abaf-5c689aa8240c</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>.agents/skills/application-service-implementation/SKILL.md</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>application-service-implementation/SKILL.md</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>4b52ddca-9635-4b89-a5d3-e0366c51b24b</ProjectId>
+      <CorrelationId>Intent.Entities.DomainEntitySkill#94a56e7c-8278-4290-ad10-c4f65b83cb26</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>.agents/skills/domain-entity/SKILL.md</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>domain-entity/SKILL.md</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>4b52ddca-9635-4b89-a5d3-e0366c51b24b</ProjectId>
+      <CorrelationId>Intent.Application.FluentValidation.CustomValidationSkillTemplate#754bf067-b0db-4706-adb6-b93f650cee41</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>.agents/skills/fluent-validation-custom-validation/SKILL.md</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>fluent-validation-custom-validation/SKILL.md</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>4b52ddca-9635-4b89-a5d3-e0366c51b24b</ProjectId>
+      <CorrelationId>Intent.Application.MediatR.CommandHandlerSkillTemplate#f656a4c0-0e4f-4798-98bf-8daef3c4d4dc</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>.agents/skills/mediatr-command-handler/SKILL.md</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>mediatr-command-handler/SKILL.md</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>4b52ddca-9635-4b89-a5d3-e0366c51b24b</ProjectId>
+      <CorrelationId>Intent.Application.MediatR.QueryHandlerSkillTemplate#c47f0b6b-1d30-44f0-8e4e-f0d43cdc3c15</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>.agents/skills/mediatr-query-handler/SKILL.md</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>mediatr-query-handler/SKILL.md</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
       <CorrelationId>Intent.VisualStudio.Projects.GitIgnore#a7cba691-c3c7-400c-8d05-1e1fbcfcaf90</CorrelationId>
       <OverwriteBehaviour>overwrite-disabled</OverwriteBehaviour>
       <ApplicationRelativeFilePath>.gitignore</ApplicationRelativeFilePath>
@@ -230,6 +278,14 @@
       <OverwriteBehaviour>always</OverwriteBehaviour>
       <ApplicationRelativeFilePath>JsonImportTests.Application/Common/Exceptions/ForbiddenAccessException.cs</ApplicationRelativeFilePath>
       <ProjectRelativeFilePath>ForbiddenAccessException.cs</ProjectRelativeFilePath>
+      <IsIgnored>false</IsIgnored>
+    </FileLog>
+    <FileLog>
+      <ProjectId>3a2346db-286c-42d8-a4b6-f5d97ffdc5fa</ProjectId>
+      <CorrelationId>Intent.Application.MediatR.FluentValidation.BypassPipelineValidationInterface#0ddbfb18-c838-46ed-92c1-4d23975aa4a2</CorrelationId>
+      <OverwriteBehaviour>always</OverwriteBehaviour>
+      <ApplicationRelativeFilePath>JsonImportTests.Application/Common/Interfaces/IBypassPipelineValidation.cs</ApplicationRelativeFilePath>
+      <ProjectRelativeFilePath>IBypassPipelineValidation.cs</ProjectRelativeFilePath>
       <IsIgnored>false</IsIgnored>
     </FileLog>
     <FileLog>

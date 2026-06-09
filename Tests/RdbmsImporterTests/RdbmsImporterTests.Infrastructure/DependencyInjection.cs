@@ -26,6 +26,7 @@ namespace RdbmsImporterTests.Infrastructure
 {
     public static class DependencyInjection
     {
+        [IntentMerge]
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<PostgresAppDbContext>((sp, options) =>
