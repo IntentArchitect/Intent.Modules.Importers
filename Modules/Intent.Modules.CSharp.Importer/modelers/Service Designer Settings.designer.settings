@@ -14,7 +14,11 @@
           <dependencies>
             <dependency name="ServicesJsonImportCore" id="897429b3-3af8-4301-8764-a4947b16ec5b" />
           </dependencies>
-          <script>await importJson(element);</script>
+          <script>if (!await promptIfUnsavedChangesAsync()) {
+    return;
+}
+
+await importJson(element);</script>
         </runScript>
       </contextMenuOptions>
       <creationOptions />
@@ -25,7 +29,11 @@
           <dependencies>
             <dependency name="ServicesJsonImportCore" id="897429b3-3af8-4301-8764-a4947b16ec5b" />
           </dependencies>
-          <script>await importJson(element);</script>
+          <script>if (!await promptIfUnsavedChangesAsync()) {
+    return;
+}
+
+await importJson(element);</script>
         </option>
       </scriptOptions>
       <typeOrder />
@@ -39,7 +47,11 @@
           <dependencies>
             <dependency name="ServicesJsonImportCore" id="897429b3-3af8-4301-8764-a4947b16ec5b" />
           </dependencies>
-          <script>await importJson(element);</script>
+          <script>if (!await promptIfUnsavedChangesAsync()) {
+    return;
+}
+
+await importJson(element);</script>
         </runScript>
       </contextMenuOptions>
       <creationOptions />
@@ -50,7 +62,11 @@
           <dependencies>
             <dependency name="ServicesJsonImportCore" id="897429b3-3af8-4301-8764-a4947b16ec5b" />
           </dependencies>
-          <script>await importJson(element);</script>
+          <script>if (!await promptIfUnsavedChangesAsync()) {
+    return;
+}
+
+await importJson(element);</script>
         </option>
       </scriptOptions>
       <typeOrder />
@@ -66,7 +82,11 @@
           <dependencies>
             <dependency name="ServicesJsonImportCore" id="897429b3-3af8-4301-8764-a4947b16ec5b" />
           </dependencies>
-          <script>await importJson(element);</script>
+          <script>if (!await promptIfUnsavedChangesAsync()) {
+    return;
+}
+
+await importJson(element);</script>
         </runScript>
       </contextMenuOptions>
       <typeOrder />

@@ -240,12 +240,22 @@ public static class TypeAnalysis
         }
         
         if (namedType2.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T ||
-            IsCollection(namedType2, compilation))
+            IsCollectionByName(namedType2))
         {
             typeSymbol = namedType2.TypeArguments.First();
         }
 
         return typeSymbol;
+    }
+
+    private static bool IsCollectionByName(INamedTypeSymbol namedTypeSymbol)
+    {
+        var fullTypeName = namedTypeSymbol.ConstructedFrom.ToDisplayString();
+        if (fullTypeName.EndsWith("<T>"))
+            fullTypeName = fullTypeName.Replace("<T>", "");
+        if (fullTypeName.EndsWith("<>"))
+            fullTypeName = fullTypeName.Replace("<>", "");
+        return CollectionTypes.Any(name => name.Contains(fullTypeName));
     }
 
     public static IReadOnlyList<string> GetGenericParameters(IMethodSymbol methodSymbol)

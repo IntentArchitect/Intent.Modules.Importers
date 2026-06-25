@@ -1,3 +1,8 @@
+### Version 1.0.9
+
+- Improvement: Added prompt to save designer before importing
+- Fixed: Infinite loop which would occuring in some specific scenarios.
+
 ### Version 1.0.8
 
 - Improvement: Support around generic types has been improved - the generic type as well as the generic type parameters will now be imported as separate elements, with the correct references to the types where the generic type is used.
