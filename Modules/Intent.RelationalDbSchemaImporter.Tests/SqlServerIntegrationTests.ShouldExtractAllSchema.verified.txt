@@ -3417,7 +3417,8 @@
             ]
           }
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: sp_AddToCart,
@@ -3444,7 +3445,8 @@
           Direction: In,
           NumericPrecision: 10
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: sp_ComplexDataProcessing,
@@ -3557,7 +3559,8 @@
           IsNullable: false,
           MaxLength: 7
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: sp_ComprehensiveParameterTypes,
@@ -3762,7 +3765,8 @@
           NumericPrecision: 27,
           NumericScale: 7
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: sp_CreateOrder,
@@ -3812,7 +3816,8 @@
           Direction: Both,
           NumericPrecision: 10
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: sp_DynamicReporting,
@@ -3877,7 +3882,8 @@
           Direction: Both,
           MaxLength: -1
         }
-      ]
+      ],
+      ResultSetDetectionFailed: true
     },
     {
       Name: sp_GetOrderDetails,
@@ -4040,7 +4046,8 @@
           IsNullable: false,
           MaxLength: 10
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: sp_GetSalesReport,
@@ -4126,7 +4133,8 @@
           IsNullable: true,
           NumericPrecision: 10
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: sp_GetUserCart,
@@ -4186,7 +4194,8 @@
           NumericPrecision: 21,
           NumericScale: 2
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: sp_GetUserProfile,
@@ -4295,7 +4304,8 @@
           NumericPrecision: 27,
           NumericScale: 7
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: sp_InOutParameterExample,
@@ -4368,7 +4378,8 @@
           IsNullable: true,
           NumericPrecision: 10
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: sp_MultipleResultSets,
@@ -4473,7 +4484,8 @@
           IsNullable: true,
           NumericPrecision: 1
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: sp_ProcessOrder,
@@ -4500,7 +4512,8 @@
           Direction: In,
           MaxLength: 20
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: sp_SearchProducts,
@@ -4662,7 +4675,8 @@
           IsNullable: true,
           NumericPrecision: 10
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: sp_UpdateInventory,
@@ -4689,7 +4703,8 @@
           Direction: In,
           MaxLength: 10
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: sp_UpdateProductStock,
@@ -4738,7 +4753,8 @@
           Direction: In,
           NumericPrecision: 10
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: sp_UpdateUserProfile,
@@ -4779,7 +4795,8 @@
           Direction: In,
           MaxLength: 15
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     }
   ]
 }

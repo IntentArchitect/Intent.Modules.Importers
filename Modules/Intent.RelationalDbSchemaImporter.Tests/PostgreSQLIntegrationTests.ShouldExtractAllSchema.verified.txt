@@ -3383,7 +3383,8 @@
           LanguageDataType: int,
           Direction: In
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: bulk_insert_with_arrays,
@@ -3407,7 +3408,8 @@
           LanguageDataType: bool,
           Direction: In
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: complex_data_processing,
@@ -3485,7 +3487,8 @@
           LanguageDataType: unknown,
           Direction: In
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: comprehensive_parameter_types,
@@ -3680,7 +3683,8 @@
           LanguageDataType: string,
           Direction: In
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: create_order,
@@ -3716,7 +3720,8 @@
           LanguageDataType: decimal,
           Direction: In
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: get_comprehensive_report,
@@ -3748,7 +3753,8 @@
           LanguageDataType: string,
           IsNullable: true
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: get_order_details,
@@ -3768,7 +3774,8 @@
           LanguageDataType: string,
           IsNullable: true
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: get_order_line_items,
@@ -3788,7 +3795,8 @@
           LanguageDataType: string,
           IsNullable: true
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: get_sales_report,
@@ -3820,7 +3828,8 @@
           LanguageDataType: string,
           IsNullable: true
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: get_user_addresses,
@@ -3840,7 +3849,8 @@
           LanguageDataType: string,
           IsNullable: true
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: get_user_cart,
@@ -3860,7 +3870,8 @@
           LanguageDataType: string,
           IsNullable: true
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: get_user_profile,
@@ -3880,7 +3891,8 @@
           LanguageDataType: string,
           IsNullable: true
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: inout_parameter_example,
@@ -3904,7 +3916,8 @@
           LanguageDataType: string,
           Direction: In
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: insertbrand,
@@ -3938,7 +3951,8 @@
             ]
           }
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: multiple_result_sets,
@@ -3970,7 +3984,8 @@
           LanguageDataType: string,
           IsNullable: true
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: process_order,
@@ -3994,7 +4009,8 @@
           LanguageDataType: string,
           Direction: In
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: search_products,
@@ -4044,7 +4060,8 @@
           LanguageDataType: string,
           IsNullable: true
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: update_inventory,
@@ -4068,7 +4085,8 @@
           LanguageDataType: string,
           Direction: In
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: update_product_stock,
@@ -4110,7 +4128,8 @@
           LanguageDataType: string,
           Direction: In
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     },
     {
       Name: update_user_profile,
@@ -4146,7 +4165,8 @@
           LanguageDataType: string,
           Direction: In
         }
-      ]
+      ],
+      ResultSetDetectionFailed: false
     }
   ]
 }
