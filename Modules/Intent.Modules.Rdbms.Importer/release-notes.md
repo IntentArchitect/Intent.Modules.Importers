@@ -1,3 +1,7 @@
+### Version 1.0.17
+
+- Fixed: Issue where a stored procedure or operation's return type could be silently reset to void on re-import if the database provider was unable to determine the result set for that run (e.g. dynamic SQL, temp tables). The existing return type is now preserved when this happens, with a warning added to the import output.
+
 ### Version 1.0.16
 
 - Fixed: Issue where association names would be incorrect if more than one association was present.

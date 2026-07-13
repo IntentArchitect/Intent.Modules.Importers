@@ -24,6 +24,12 @@ public class StoredProcedureSchema
     /// </summary>
     public List<ResultSetColumnSchema> ResultSetColumns { get; set; } = [];
     /// <summary>
+    /// True when result set analysis threw and was caught, rather than the stored procedure genuinely
+    /// having no result set. Distinguishes "unknown this run" from "void" so a re-import doesn't wipe
+    /// an existing return type just because introspection failed transiently.
+    /// </summary>
+    public bool ResultSetDetectionFailed { get; set; }
+    /// <summary>
     /// Additional metadata about the stored procedure.
     /// </summary>
     public Dictionary<string, object> Metadata { get; set; } = new();

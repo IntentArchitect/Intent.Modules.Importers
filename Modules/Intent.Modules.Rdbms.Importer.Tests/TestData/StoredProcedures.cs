@@ -29,6 +29,24 @@ internal static class StoredProcedures
         Metadata = new()
     };
 
+    /// <summary>
+    /// Same procedure identity as <see cref="GetCustomerById"/>, but simulating a re-import where the
+    /// database provider's result-set analyzer threw (e.g. dynamic SQL) rather than the procedure
+    /// genuinely returning nothing.
+    /// </summary>
+    public static StoredProcedureSchema GetCustomerByIdWithFailedDetection() => new()
+    {
+        Schema = "dbo",
+        Name = "sp_GetCustomerById",
+        Parameters =
+        [
+            Parameter("@CustomerId", SqlDbType.Int, StoredProcedureParameterDirection.In)
+        ],
+        ResultSetColumns = [],
+        ResultSetDetectionFailed = true,
+        Metadata = new()
+    };
+
     public static StoredProcedureSchema CreateCustomer() => new()
     {
         Schema = "dbo",

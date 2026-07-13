@@ -262,6 +262,9 @@ internal class DbSchemaIntentMetadataMerger
             // Preserve user's manual IsNullable setting before sync overwrites it
             var preservedIsNullable = existingElement.TypeReference.IsNullable;
 
+            // Preserve the existing return type in case this run can't determine the result set (see ResultSetDetectionFailed below)
+            var preservedTypeId = existingElement.TypeReference.TypeId;
+
             // Update existing stored procedure element
             if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
             {
@@ -277,10 +280,18 @@ internal class DbSchemaIntentMetadataMerger
                 SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, preserveElementTypes, result);
                 RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingElement);
             }
-            
+
             // Restore the preserved IsNullable setting after sync
             existingElement.TypeReference.IsNullable = preservedIsNullable;
-            
+
+            // A failed result-set detection is not confirmation that the procedure is void - restore its
+            // previous return type rather than letting SyncElements' blank TypeId stand.
+            if (storedProc.ResultSetDetectionFailed)
+            {
+                existingElement.TypeReference.TypeId = preservedTypeId;
+                result.Warnings.Add($"Result set for '{storedProc.Schema}.{storedProc.Name}' could not be determined this import; the existing return type was preserved.");
+            }
+
             procElement = existingElement;
         }
         else
@@ -356,14 +367,25 @@ internal class DbSchemaIntentMetadataMerger
             // Preserve user's manual IsNullable setting before sync overwrites it
             var preservedIsNullable = existingSpElement.TypeReference.IsNullable;
 
+            // Preserve the existing return type in case this run can't determine the result set (see ResultSetDetectionFailed below)
+            var preservedSpTypeId = existingSpElement.TypeReference.TypeId;
+
             // Update existing - but don't change parentFolderId (user may have moved it)
             var updatedElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, existingSpElement.ParentFolderId, package, null, udtDataContracts);
             SyncElements(package, existingSpElement, updatedElement, _config.AllowDeletions, preserveElementTypes, result);
             RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingSpElement);
-            
+
             // Restore the preserved IsNullable setting after sync
             existingSpElement.TypeReference.IsNullable = preservedIsNullable;
-            
+
+            // A failed result-set detection is not confirmation that the procedure is void - restore its
+            // previous return type rather than letting SyncElements' blank TypeId stand.
+            if (storedProc.ResultSetDetectionFailed)
+            {
+                existingSpElement.TypeReference.TypeId = preservedSpTypeId;
+                result.Warnings.Add($"Result set for '{storedProc.Schema}.{storedProc.Name}' could not be determined this import; the existing return type was preserved.");
+            }
+
             storedProcElement = existingSpElement;
         }
         else
@@ -446,14 +468,28 @@ internal class DbSchemaIntentMetadataMerger
             // Preserve user's manual IsNullable setting before sync overwrites it
             var preservedOperationIsNullable = existingOperation.TypeReference.IsNullable;
 
+            // Preserve the existing return type in case this run can't determine the result set (see ResultSetDetectionFailed below)
+            var preservedOperationTypeId = existingOperation.TypeReference.TypeId;
+
             // Preserve parent repository ID - don't move the element (user may have moved it)
             var updatedOperation = IntentModelMapper.MapStoredProcedureToOperation(procName, tempStoredProc, existingOperation.ParentFolderId, package, null, udtDataContracts);
             SyncElements(package, existingOperation, updatedOperation, _config.AllowDeletions, preserveElementTypes, result);
             RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingOperation);
-            
+
             // Restore the preserved IsNullable setting after sync
             existingOperation.TypeReference.IsNullable = preservedOperationIsNullable;
-            
+
+            // A failed result-set detection is not confirmation that the procedure is void - restore its
+            // previous return type rather than letting SyncElements' blank TypeId stand. This only protects
+            // the "no output parameters" path below; when there are output parameters, the wrapper-DC branch
+            // always re-points TypeId at the wrapper regardless of ResultSetColumns, which is correct since
+            // that decision is driven by output parameters, not result-set detection.
+            if (storedProc.ResultSetDetectionFailed)
+            {
+                existingOperation.TypeReference.TypeId = preservedOperationTypeId;
+                result.Warnings.Add($"Result set for '{storedProc.Schema}.{storedProc.Name}' could not be determined this import; the existing return type was preserved.");
+            }
+
             operationElement = existingOperation;
         }
         else

@@ -1275,6 +1275,141 @@ public class DbSchemaIntentMetadataMergerTests
     }
 
     [Fact]
+    public void MergeSchemaAndPackage_StoredProcResultSetDetectionFailedOnReimport_PreservesReturnType_RepositoryOperation()
+    {
+        // Arrange - first import succeeds and gets a return type pointing at a Response DataContract
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var config = ImportConfigurations.StoredProceduresAsOperations();
+        config.PreserveAttributeTypes = false; // the bug this test guards against only surfaces without type preservation
+        var merger = new DbSchemaIntentMetadataMerger(config);
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        var repository = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        var operation = repository.ChildElements.Single();
+        var originalTypeId = operation.TypeReference.TypeId;
+        originalTypeId.ShouldNotBeNullOrEmpty();
+
+        // Act - re-import where this run's result-set analysis threw (dynamic SQL, temp table, etc.)
+        scenario.Schema.StoredProcedures = [StoredProcedures.GetCustomerByIdWithFailedDetection()];
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        operation.TypeReference.TypeId.ShouldBe(originalTypeId, "A detection failure must not wipe an existing return type.");
+        result.Warnings.ShouldContain(w => w.Contains("could not be determined"));
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcResultSetDetectionFailedOnReimport_PreservesReturnType_StoredProcedureElement()
+    {
+        // Arrange - first import succeeds and gets a return type pointing at a Response DataContract
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var config = ImportConfigurations.StoredProceduresAsElements();
+        config.PreserveAttributeTypes = false; // the bug this test guards against only surfaces without type preservation
+        var merger = new DbSchemaIntentMetadataMerger(config);
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // In StoredProcedureElement mode, the element is created as a child of the repository, not at package level
+        var repository = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        var spElement = repository.ChildElements.Single(x => x.SpecializationType == StoredProcedures.SpecializationType);
+        var originalTypeId = spElement.TypeReference.TypeId;
+        originalTypeId.ShouldNotBeNullOrEmpty();
+
+        // Act - re-import where this run's result-set analysis threw
+        scenario.Schema.StoredProcedures = [StoredProcedures.GetCustomerByIdWithFailedDetection()];
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        spElement.TypeReference.TypeId.ShouldBe(originalTypeId, "A detection failure must not wipe an existing return type.");
+        result.Warnings.ShouldContain(w => w.Contains("could not be determined"));
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcResultSetDetectionFailedOnReimport_PreservesReturnType_RepositoryOperationMapping()
+    {
+        // Arrange - first import succeeds; both the package-level SP element and its Operation get a return type
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var config = ImportConfigurations.StoredProceduresMappedToOperation();
+        config.PreserveAttributeTypes = false; // the bug this test guards against only surfaces without type preservation
+        var merger = new DbSchemaIntentMetadataMerger(config);
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        var spElement = scenario.Package.Classes.Single(x => x.SpecializationType == StoredProcedures.SpecializationType);
+        var repository = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        var operation = repository.ChildElements.Single();
+
+        var originalSpTypeId = spElement.TypeReference.TypeId;
+        var originalOperationTypeId = operation.TypeReference.TypeId;
+        originalSpTypeId.ShouldNotBeNullOrEmpty();
+        originalOperationTypeId.ShouldNotBeNullOrEmpty();
+
+        // Act - re-import where this run's result-set analysis threw
+        scenario.Schema.StoredProcedures = [StoredProcedures.GetCustomerByIdWithFailedDetection()];
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        spElement.TypeReference.TypeId.ShouldBe(originalSpTypeId, "The stored procedure element's return type must survive a detection failure.");
+        operation.TypeReference.TypeId.ShouldBe(originalOperationTypeId, "The operation's return type must survive a detection failure.");
+        result.Warnings.ShouldContain(w => w.Contains("could not be determined"));
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcGenuinelyVoidOnReimport_StillClearsReturnType()
+    {
+        // Arrange - first import succeeds and gets a return type
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var config = ImportConfigurations.StoredProceduresAsOperations();
+        config.PreserveAttributeTypes = false; // same risky configuration as the detection-failure tests above
+        var merger = new DbSchemaIntentMetadataMerger(config);
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        var repository = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        var operation = repository.ChildElements.Single();
+        operation.TypeReference.TypeId.ShouldNotBeNullOrEmpty();
+
+        // Act - re-import where the procedure genuinely no longer returns anything
+        // (ResultSetColumns is empty AND ResultSetDetectionFailed is false - a real DB change, not a detection failure)
+        var genuinelyVoidProc = StoredProcedures.GetCustomerById();
+        genuinelyVoidProc.ResultSetColumns = [];
+        scenario.Schema.StoredProcedures = [genuinelyVoidProc];
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert - existing behavior is unchanged: this is a real signal, not a detection failure
+        result.IsSuccessful.ShouldBeTrue();
+        operation.TypeReference.TypeId.ShouldBeNullOrEmpty("A genuinely void procedure must still clear its return type.");
+    }
+
+    [Fact]
     public async Task MergeSchemaAndPackage_StoredProcWithUserDefinedTableType_CreatesDataContractWithUdtSettingsStereotype()
     {
         // Arrange

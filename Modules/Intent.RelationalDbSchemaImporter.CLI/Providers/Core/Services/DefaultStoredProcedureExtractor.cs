@@ -91,7 +91,9 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
                 Parameters = ExtractStoredProcedureParameters(databaseSchema, routine, dataTypeMapper)
             };
 
-            storedProcSchema.ResultSetColumns = await ExtractStoredProcedureResultAsync(databaseSchema, routine, analyzer, dataTypeMapper, responseWarnings);
+            var (resultSetColumns, resultSetDetectionFailed) = await ExtractStoredProcedureResultAsync(databaseSchema, routine, analyzer, dataTypeMapper, responseWarnings);
+            storedProcSchema.ResultSetColumns = resultSetColumns;
+            storedProcSchema.ResultSetDetectionFailed = resultSetDetectionFailed;
 
             storedProcedures.Add(storedProcSchema);
         }
@@ -172,11 +174,11 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
         return udt is not null;
     }
 
-    private static async Task<List<ResultSetColumnSchema>> ExtractStoredProcedureResultAsync(
-        DatabaseSchema databaseSchema, 
+    private static async Task<(List<ResultSetColumnSchema> Columns, bool DetectionFailed)> ExtractStoredProcedureResultAsync(
+        DatabaseSchema databaseSchema,
         DatabaseStoredProcedure routine,
         IStoredProcedureAnalyzer analyzer,
-        DataTypeMapperBase dataTypeMapper, 
+        DataTypeMapperBase dataTypeMapper,
         List<string> responseWarnings)
     {
         // Use the stored procedure analyzer for database-specific result set analysis
@@ -189,15 +191,16 @@ internal class DefaultStoredProcedureExtractor : StoredProcedureExtractorBase
         }
         catch (Exception ex)
         {
-            // If analysis fails, return empty result set 
-            // This is common for procedures that don't return result sets or require specific parameters
+            // If analysis fails, return empty result set.
+            // This is indistinguishable from a procedure that genuinely has no result set, so DetectionFailed
+            // tells the merger not to treat this as confirmation that the procedure is void.
             responseWarnings.Add($"Could not analyze result set for stored procedure '{routine.Name}' in schema '{routine.SchemaOwner}': {ex.Message}");
-            return [];
+            return ([], true);
         }
 
         ValidateAnalysisResult(analysisResult, databaseSchema, routine);
 
-        return analysisResult;
+        return (analysisResult, false);
     }
 
     private static void ValidateAnalysisResult(List<ResultSetColumnSchema> analysisResult, DatabaseSchema databaseSchema, DatabaseStoredProcedure routine)
