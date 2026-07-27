@@ -9,6 +9,7 @@ using Intent.Modules.Rdbms.Importer.Tests.TestData;
 using Intent.RelationalDbSchemaImporter.Contracts.DbSchema;
 using Intent.RelationalDbSchemaImporter.Contracts.Enums;
 using Shouldly;
+using MapperConstants = Intent.Modules.Rdbms.Importer.Tasks.Mappers.Constants;
 
 namespace Intent.Modules.Rdbms.Importer.Tests;
 
@@ -2075,6 +2076,172 @@ public class DbSchemaIntentMetadataMergerTests
         GetAttributeNames(schemaBTableC).ShouldBe(
             new[] { "TableCId", "Title", "FileSize" },
             "schemaB.TableC should have its own columns");
+    }
+
+    #endregion
+
+    #region EF.Repositories Gating Tests
+
+    [Fact]
+    public void MergeSchemaAndPackage_DefaultModeWithoutEfRepositories_UsesRawNameAndNoStereotype()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresInDefaultMode(isEfRepositoriesInstalled: false));
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        var operationElement = scenario.Package.Classes
+            .SelectMany(c => c.ChildElements)
+            .Single(e => e.SpecializationType == MapperConstants.SpecializationTypes.Operation.SpecializationType);
+
+        operationElement.Name.ShouldBe("sp_GetCustomerById", "Without EF.Repositories, the raw DB stored procedure name should be used, unformatted");
+        operationElement.Stereotypes.ShouldNotContain(s => s.DefinitionId == MapperConstants.Stereotypes.Rdbms.StoredProcedureOperation.DefinitionId);
+
+        var parameterElement = operationElement.ChildElements.Single();
+        parameterElement.Stereotypes.ShouldNotContain(s => s.DefinitionId == MapperConstants.Stereotypes.Rdbms.StoredProcedureOperationParameter.DefinitionId);
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_ElementModeWithoutEfRepositories_UsesRawNameAndNoStereotype()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresAsElements(isEfRepositoriesInstalled: false));
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        var spElement = scenario.Package.Classes
+            .Concat(scenario.Package.Classes.SelectMany(e => e.ChildElements))
+            .Single(e => e.SpecializationType == MapperConstants.SpecializationTypes.StoredProcedure.SpecializationType);
+
+        spElement.Name.ShouldBe("sp_GetCustomerById", "Without EF.Repositories, the raw DB stored procedure name should be used, unformatted");
+        spElement.Stereotypes.ShouldNotContain(s => s.DefinitionId == MapperConstants.Stereotypes.Rdbms.StoredProcedureElement.DefinitionId);
+
+        var parameterElement = spElement.ChildElements.Single();
+        parameterElement.Stereotypes.ShouldNotContain(s => s.DefinitionId == MapperConstants.Stereotypes.Rdbms.StoredProcedureElementParameter.DefinitionId);
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_RepositoryOperationMappingWithoutEfRepositories_UsesRawNameAndNoStereotypeOnBothElements()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.TestWithOutParam()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresMappedToOperation(isEfRepositoriesInstalled: false));
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        var spElement = scenario.Package.Classes
+            .Single(e => e.SpecializationType == MapperConstants.SpecializationTypes.StoredProcedure.SpecializationType);
+        spElement.Name.ShouldBe("sp_TestWithOutParam");
+        spElement.Stereotypes.ShouldNotContain(s => s.DefinitionId == MapperConstants.Stereotypes.Rdbms.StoredProcedureElement.DefinitionId);
+
+        var operationElement = scenario.Package.Classes
+            .SelectMany(c => c.ChildElements)
+            .Single(e => e.SpecializationType == MapperConstants.SpecializationTypes.Operation.SpecializationType);
+        operationElement.Name.ShouldBe("sp_TestWithOutParam");
+        operationElement.Stereotypes.ShouldNotContain(s => s.DefinitionId == MapperConstants.Stereotypes.Rdbms.StoredProcedureOperation.DefinitionId);
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_DefaultModeWithEfRepositories_StillAppliesStereotypeAndFormattedName()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresInDefaultMode());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        var operationElement = scenario.Package.Classes
+            .SelectMany(c => c.ChildElements)
+            .Single(e => e.SpecializationType == MapperConstants.SpecializationTypes.Operation.SpecializationType);
+
+        operationElement.Name.ShouldBe("GetCustomerById", "With EF.Repositories installed, the existing formatted-name behavior is preserved");
+        operationElement.Stereotypes.ShouldContain(s => s.DefinitionId == MapperConstants.Stereotypes.Rdbms.StoredProcedureOperation.DefinitionId);
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_ReimportWithoutEfRepositories_ExternalReferenceStableAndNoDuplication()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresInDefaultMode(isEfRepositoriesInstalled: false));
+
+        // Act - initial import
+        var firstResult = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        firstResult.IsSuccessful.ShouldBeTrue();
+
+        var operationBefore = scenario.Package.Classes
+            .SelectMany(c => c.ChildElements)
+            .Single(e => e.SpecializationType == MapperConstants.SpecializationTypes.Operation.SpecializationType);
+        var idBefore = operationBefore.Id;
+        var externalReferenceBefore = operationBefore.ExternalReference;
+
+        // Act - re-import with the flag unchanged
+        var secondResult = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        secondResult.IsSuccessful.ShouldBeTrue();
+
+        var operationsAfter = scenario.Package.Classes
+            .SelectMany(c => c.ChildElements)
+            .Where(e => e.SpecializationType == MapperConstants.SpecializationTypes.Operation.SpecializationType)
+            .ToList();
+
+        operationsAfter.ShouldHaveSingleItem("Re-import should not duplicate the operation element");
+        operationsAfter.Single().Id.ShouldBe(idBefore, "Element ID should remain stable across re-import");
+        operationsAfter.Single().ExternalReference.ShouldBe(externalReferenceBefore, "ExternalReference should remain stable across re-import");
     }
 
     #endregion

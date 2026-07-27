@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
@@ -38,10 +38,10 @@ public class DatabaseImport : IModuleTask
         {
             throw new Exception(
                 $"""
-                 Deserialization of the following returned null:
+                Deserialization of the following returned null:
                  
-                 {args[0]}
-                 """);
+                {args[0]}
+                """);
         }
         if (!_metadataManager.TryGetApplicationPackage(importModel.ApplicationId, importModel.PackageId, out _, out var errorMessage))
         {
@@ -164,7 +164,7 @@ public class DatabaseImport : IModuleTask
             }
 
             // Create configuration for our mappers
-            var config = CreateImportConfiguration(importModel);
+            var config = CreateImportConfiguration(importModel, ModuleHelper.IsEfRepositoriesInstalled(_configurationProvider));
 
             // Create the schema mapper
             var schemaMapper = new DbSchemaIntentMetadataMerger(config);
@@ -197,7 +197,7 @@ public class DatabaseImport : IModuleTask
         }
     }
 
-    private static ImportConfiguration CreateImportConfiguration(DatabaseImportModel importModel)
+    private static ImportConfiguration CreateImportConfiguration(DatabaseImportModel importModel, bool isEfRepositoriesInstalled)
     {
         var config = new ImportConfiguration
         {
@@ -209,11 +209,12 @@ public class DatabaseImport : IModuleTask
             AttributeNameConvention = Enum.Parse<AttributeNameConvention>(importModel.AttributeNameConvention),
             TableStereotype = Enum.Parse<TableStereotype>(importModel.TableStereotype),
             StoredProcedureType = string.IsNullOrWhiteSpace(importModel.StoredProcedureType)
-                ? StoredProcedureType.Default
-                : Enum.Parse<StoredProcedureType>(importModel.StoredProcedureType),
+            ? StoredProcedureType.Default
+            : Enum.Parse<StoredProcedureType>(importModel.StoredProcedureType),
             DatabaseType = importModel.DatabaseType,
             AllowDeletions = importModel.AllowDeletions,
-            PreserveAttributeTypes = importModel.PreserveAttributeTypes
+            PreserveAttributeTypes = importModel.PreserveAttributeTypes,
+            IsEfRepositoriesInstalled = isEfRepositoriesInstalled
         };
 
         // Only override TypesToExport if explicitly provided, otherwise use the default from ImportConfiguration

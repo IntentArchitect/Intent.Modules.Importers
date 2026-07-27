@@ -49,43 +49,47 @@ internal static class ImportConfigurations
         ImportFilterFilePath = "test-filter.json" // This would contain the filter configuration
     };
 
-    public static ImportConfiguration StoredProceduresAsOperations() => new()
+    public static ImportConfiguration StoredProceduresAsOperations(bool isEfRepositoriesInstalled = true) => new()
     {
         TypesToExport = [ExportType.StoredProcedure],
         AllowDeletions = false,
         EntityNameConvention = EntityNameConvention.SingularEntity,
         AttributeNameConvention = AttributeNameConvention.Default,
         TableStereotype = TableStereotype.WhenDifferent,
-        StoredProcedureType = StoredProcedureType.RepositoryOperation
+        StoredProcedureType = StoredProcedureType.RepositoryOperation,
+        IsEfRepositoriesInstalled = isEfRepositoriesInstalled
     };
 
-    public static ImportConfiguration StoredProceduresAsElements() => new()
+    public static ImportConfiguration StoredProceduresAsElements(bool isEfRepositoriesInstalled = true) => new()
     {
         TypesToExport = [ExportType.StoredProcedure],
         AllowDeletions = false,
         EntityNameConvention = EntityNameConvention.SingularEntity,
         AttributeNameConvention = AttributeNameConvention.Default,
         TableStereotype = TableStereotype.WhenDifferent,
-        StoredProcedureType = StoredProcedureType.StoredProcedureElement
+        StoredProcedureType = StoredProcedureType.StoredProcedureElement,
+        IsEfRepositoriesInstalled = isEfRepositoriesInstalled
     };
 
-    public static ImportConfiguration StoredProceduresInDefaultMode() => new()
+    public static ImportConfiguration StoredProceduresInDefaultMode(bool isEfRepositoriesInstalled = true) => new()
     {
         TypesToExport = [ExportType.StoredProcedure],
         AllowDeletions = false,
         EntityNameConvention = EntityNameConvention.SingularEntity,
         AttributeNameConvention = AttributeNameConvention.Default,
         TableStereotype = TableStereotype.WhenDifferent,
-        StoredProcedureType = StoredProcedureType.Default
+        StoredProcedureType = StoredProcedureType.Default,
+        IsEfRepositoriesInstalled = isEfRepositoriesInstalled
     };
 
-    public static ImportConfiguration StoredProceduresMappedToOperation() => new()
+    public static ImportConfiguration StoredProceduresMappedToOperation(bool isEfRepositoriesInstalled = true) => new()
     {
         TypesToExport = [ExportType.StoredProcedure],
         AllowDeletions = false,
         EntityNameConvention = EntityNameConvention.SingularEntity,
         AttributeNameConvention = AttributeNameConvention.Default,
         TableStereotype = TableStereotype.WhenDifferent,
-        StoredProcedureType = StoredProcedureType.RepositoryOperationMapping
+        StoredProcedureType = StoredProcedureType.RepositoryOperationMapping,
+        IsEfRepositoriesInstalled = isEfRepositoriesInstalled
     };
 }

@@ -78,4 +78,9 @@ public static class ModuleHelper
             });
         }
     }
+
+    public static bool IsEfRepositoriesInstalled(IApplicationConfigurationProvider configurationProvider)
+    {
+        return configurationProvider.GetInstalledModules().Any(x => x.ModuleId == Constants.Packages.EntityFrameworkCoreRepository.ModuleName);
+    }
 }

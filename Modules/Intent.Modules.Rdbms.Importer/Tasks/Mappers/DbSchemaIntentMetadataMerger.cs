@@ -209,7 +209,7 @@ internal class DbSchemaIntentMetadataMerger
             // Check if we need special handling for stored procedures with output parameters
             bool hasOutputParameters = IntentModelMapper.HasOutputParameters(storedProc);
             bool isOperationMode = _config.StoredProcedureType == StoredProcedureType.Default || 
-                                   _config.StoredProcedureType == StoredProcedureType.RepositoryOperation;
+                _config.StoredProcedureType == StoredProcedureType.RepositoryOperation;
             bool useOutputParameterStrategy = isOperationMode && hasOutputParameters;
 
             if (useOutputParameterStrategy || _config.StoredProcedureType == StoredProcedureType.RepositoryOperationMapping)
@@ -238,7 +238,7 @@ internal class DbSchemaIntentMetadataMerger
         // Create repository first if it doesn't exist
         var repositoryElement = GetOrCreateRepository(_config.RepositoryElementId, package);
 
-        var procName = ModelNamingUtilities.GetStoredProcedureName(storedProc.Name, storedProc.Schema, deduplicationContext);
+        var procName = ModelNamingUtilities.GetStoredProcedureName(storedProc.Name, storedProc.Schema, deduplicationContext, _config.IsEfRepositoriesInstalled);
 
         // Check if stored procedure already exists
         var spExternalRef = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Schema, storedProc.Name);
@@ -271,14 +271,14 @@ internal class DbSchemaIntentMetadataMerger
                 // Preserve parent folder ID - don't move the element (user may have moved it)
                 var updatedElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, existingElement.ParentFolderId, package, null, udtDataContracts);
                 SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, preserveElementTypes, result);
-                RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingElement);
+                RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingElement, _config.IsEfRepositoriesInstalled);
             }
             else
             {
                 // Preserve parent repository ID - don't move the element (user may have moved it)
                 var updatedElement = IntentModelMapper.MapStoredProcedureToOperation(procName, storedProc, existingElement.ParentFolderId, package, null, udtDataContracts);
                 SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, preserveElementTypes, result);
-                RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingElement);
+                RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingElement, _config.IsEfRepositoriesInstalled);
             }
 
             // Restore the preserved IsNullable setting after sync
@@ -300,12 +300,12 @@ internal class DbSchemaIntentMetadataMerger
             if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
             {
                 procElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
-                RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, procElement);
+                RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, procElement, _config.IsEfRepositoriesInstalled);
             }
             else
             {
                 procElement = IntentModelMapper.MapStoredProcedureToOperation(procName, storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
-                RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, procElement);
+                RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, procElement, _config.IsEfRepositoriesInstalled);
             }
             
             repositoryElement.ChildElements.Add(procElement);
@@ -335,7 +335,7 @@ internal class DbSchemaIntentMetadataMerger
     {
         var repositoryElement = GetOrCreateRepository(_config.RepositoryElementId, package);
         var schemaFolder = GetOrCreateSchemaFolder(storedProc.Schema, package);
-        var procName = ModelNamingUtilities.GetStoredProcedureName(storedProc.Name, storedProc.Schema, deduplicationContext);
+        var procName = ModelNamingUtilities.GetStoredProcedureName(storedProc.Name, storedProc.Schema, deduplicationContext, _config.IsEfRepositoriesInstalled);
 
         // 1. Get or create the Stored Procedure Element (at package level)
         var spExternalRef = ModelNamingUtilities.GetStoredProcedureExternalReference(storedProc.Schema, storedProc.Name);
@@ -347,10 +347,10 @@ internal class DbSchemaIntentMetadataMerger
 
         // if it didn't find it in the root look through all folders to see if the SP is there
         existingSpElement ??= package.ChildElements
-               .Where(c => c.SpecializationType == Constants.SpecializationTypes.Folder.SpecializationType)
-               .SelectMany(f => f.ChildElements)
-               .FirstOrDefault(c => c.ExternalReference == spExternalRef &&
-                    c.SpecializationType == Constants.SpecializationTypes.StoredProcedure.SpecializationType);
+            .Where(c => c.SpecializationType == Constants.SpecializationTypes.Folder.SpecializationType)
+            .SelectMany(f => f.ChildElements)
+            .FirstOrDefault(c => c.ExternalReference == spExternalRef &&
+                c.SpecializationType == Constants.SpecializationTypes.StoredProcedure.SpecializationType);
 
         ElementPersistable storedProcElement;
         if (existingSpElement != null)
@@ -373,7 +373,7 @@ internal class DbSchemaIntentMetadataMerger
             // Update existing - but don't change parentFolderId (user may have moved it)
             var updatedElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, existingSpElement.ParentFolderId, package, null, udtDataContracts);
             SyncElements(package, existingSpElement, updatedElement, _config.AllowDeletions, preserveElementTypes, result);
-            RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingSpElement);
+            RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingSpElement, _config.IsEfRepositoriesInstalled);
 
             // Restore the preserved IsNullable setting after sync
             existingSpElement.TypeReference.IsNullable = preservedIsNullable;
@@ -393,7 +393,7 @@ internal class DbSchemaIntentMetadataMerger
             // Create new - place at package level initially (pass null for repositoryId to avoid "Sp" prefix)
             storedProcElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, null, package, deduplicationContext, udtDataContracts);
             storedProcElement.ParentFolderId = package.Id; // Set parent to package level
-            RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, storedProcElement);
+            RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, storedProcElement, _config.IsEfRepositoriesInstalled);
             package.Classes.Add(storedProcElement);
         }
 
@@ -474,7 +474,7 @@ internal class DbSchemaIntentMetadataMerger
             // Preserve parent repository ID - don't move the element (user may have moved it)
             var updatedOperation = IntentModelMapper.MapStoredProcedureToOperation(procName, tempStoredProc, existingOperation.ParentFolderId, package, null, udtDataContracts);
             SyncElements(package, existingOperation, updatedOperation, _config.AllowDeletions, preserveElementTypes, result);
-            RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingOperation);
+            RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingOperation, _config.IsEfRepositoriesInstalled);
 
             // Restore the preserved IsNullable setting after sync
             existingOperation.TypeReference.IsNullable = preservedOperationIsNullable;
@@ -505,7 +505,7 @@ internal class DbSchemaIntentMetadataMerger
             };
 
             operationElement = IntentModelMapper.MapStoredProcedureToOperation(procName, tempStoredProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
-            RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, operationElement);
+            RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, operationElement, _config.IsEfRepositoriesInstalled);
             repositoryElement.ChildElements.Add(operationElement);
         }
 
@@ -611,11 +611,11 @@ internal class DbSchemaIntentMetadataMerger
         {
             var indexExternalRef = ModelNamingUtilities.GetIndexExternalReference(table.Schema, table.Name, index.Name);
             var indexElement = package.Classes
-                                   .FirstOrDefault(x => x.ExternalReference == indexExternalRef &&
-                                                        x.SpecializationType == Constants.SpecializationTypes.Index.SpecializationType)
-                               ?? classElement.ChildElements
-                                   .FirstOrDefault(x => x.ExternalReference == indexExternalRef &&
-                                                        x.SpecializationType == Constants.SpecializationTypes.Index.SpecializationType);
+                .FirstOrDefault(x => x.ExternalReference == indexExternalRef &&
+                    x.SpecializationType == Constants.SpecializationTypes.Index.SpecializationType)
+                ?? classElement.ChildElements
+                    .FirstOrDefault(x => x.ExternalReference == indexExternalRef &&
+                        x.SpecializationType == Constants.SpecializationTypes.Index.SpecializationType);
             if (indexElement is null)
             {
                 indexElement = IntentModelMapper.CreateIndex(table, index, classElement.Id, package);
@@ -639,7 +639,7 @@ internal class DbSchemaIntentMetadataMerger
                 
                 var indexColumnElement = indexElement.ChildElements
                     .FirstOrDefault(x => (x.ExternalReference == ModelNamingUtilities.GetIndexColumnExternalReference(indexColumn.Name) && x.SpecializationType == Constants.SpecializationTypes.IndexColumn.SpecializationType)
-                                         || (x.Name == indexColumn.Name && x.SpecializationType == Constants.SpecializationTypes.IndexColumn.SpecializationType));
+                        || (x.Name == indexColumn.Name && x.SpecializationType == Constants.SpecializationTypes.IndexColumn.SpecializationType));
                 if (indexColumnElement is null)
                 {
                     indexColumnElement = IntentModelMapper.CreateIndexColumn(indexColumn, indexElement.Id, attribute.Id, package);
@@ -682,18 +682,18 @@ internal class DbSchemaIntentMetadataMerger
             result: result,
             visitedElements: new HashSet<ElementPersistable>(EqualityComparer<ElementPersistable>.Create(
                 (a, b) =>
-                    (
-                        (
-                            (a?.ExternalReference is null || b?.ExternalReference is null) &&
-                            string.Equals(a?.Name, b?.Name, StringComparison.InvariantCultureIgnoreCase)
-                        )
-                        ||
-                        (
-                            a?.ExternalReference is not null && b?.ExternalReference is not null &&
-                            string.Equals(a.ExternalReference, b.ExternalReference, StringComparison.InvariantCultureIgnoreCase)
-                        )
-                    ) 
-                    && a?.SpecializationType == b?.SpecializationType,
+                (
+                (
+                (a?.ExternalReference is null || b?.ExternalReference is null) &&
+                string.Equals(a?.Name, b?.Name, StringComparison.InvariantCultureIgnoreCase)
+                )
+                ||
+                (
+                a?.ExternalReference is not null && b?.ExternalReference is not null &&
+                string.Equals(a.ExternalReference, b.ExternalReference, StringComparison.InvariantCultureIgnoreCase)
+                )
+                ) 
+                && a?.SpecializationType == b?.SpecializationType,
                 x => x.ExternalReference?.GetHashCode() ?? x.Name?.GetHashCode() ?? 0)));
         return;
         
@@ -909,7 +909,7 @@ internal class DbSchemaIntentMetadataMerger
         // Find classes that are being imported in this operation
         var classesBeingImported = package.Classes
             .Where(c => !string.IsNullOrWhiteSpace(c.ExternalReference) && 
-                       importedTableExternalRefs.Contains(c.ExternalReference))
+                importedTableExternalRefs.Contains(c.ExternalReference))
             .ToList();
 
         // Use RdbmsSchemaAnnotator to remove obsolete indexes from each imported class
@@ -1044,7 +1044,7 @@ internal class DbSchemaIntentMetadataMerger
         if (!string.IsNullOrWhiteSpace(repositoryElementId))
         {
             repository = package.Classes.FirstOrDefault(x => x.Id == repositoryElementId)
-                         ?? throw new Exception("Selected Repository could not be found. Did you save your designer before running the importer?");
+                ?? throw new Exception("Selected Repository could not be found. Did you save your designer before running the importer?");
         }
         else
         {
@@ -1155,8 +1155,8 @@ internal class DbSchemaIntentMetadataMerger
                     foreignKey.Columns.Select(c => c.Name),
                     StringComparer.OrdinalIgnoreCase);
                 var isSharedPrimaryKeyAssociation = sourcePkColumnNames.Count > 0 &&
-                                                    fkColumnNames.Count > 0 &&
-                                                    sourcePkColumnNames.SetEquals(fkColumnNames);
+                    fkColumnNames.Count > 0 &&
+                    sourcePkColumnNames.SetEquals(fkColumnNames);
 
                 if (isSharedPrimaryKeyAssociation && associationResult.Association?.TargetEnd?.Id != null)
                 {
@@ -1591,7 +1591,7 @@ internal class DbSchemaIntentMetadataMerger
                     }
                 }
                 else if (existingTarget.Type == updatedTarget.Type &&
-                         existingTarget.Specialization == updatedTarget.Specialization)
+                    existingTarget.Specialization == updatedTarget.Specialization)
                 {
                     // Same type/specialization but different name - still preserve ID and TypeReference ID
                     updatedTarget.Id = existingTarget.Id;

@@ -59,13 +59,13 @@ internal static class ModelNamingUtilities
         return deduplicationContext?.DeduplicateColumn(normalized, className, schema) ?? normalized;
     }
 
-    public static string GetStoredProcedureName(string procName, string schema, DeduplicationContext? deduplicationContext)
+    public static string GetStoredProcedureName(string procName, string schema, DeduplicationContext? deduplicationContext, bool applyFormatting = true)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(procName);
         ArgumentException.ThrowIfNullOrWhiteSpace(schema);
         // Remove schema prefix if present and convert to PascalCase
         var name = procName.Contains('.') ? procName.Split('.').Last() : procName;
-        var normalized = NormalizeStoredProcName(name);
+        var normalized = applyFormatting ? NormalizeStoredProcName(name) : name;
         return deduplicationContext?.DeduplicateStoredProcedure(normalized, schema) ?? normalized;
     }
 
@@ -329,7 +329,7 @@ internal static class ModelNamingUtilities
                 case UnicodeCategory.SpaceSeparator:
                 case UnicodeCategory.SpacingCombiningMark:
                 case UnicodeCategory.Surrogate:
-                default:
+                    default:
                     asCharArray[i] = ' ';
                     break;
             }

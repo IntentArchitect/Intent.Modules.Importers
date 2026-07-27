@@ -33,7 +33,7 @@ internal static class RdbmsSchemaAnnotator
                 TableStereotype.Always => true,
                 TableStereotype.WhenDifferent when config.EntityNameConvention is EntityNameConvention.MatchTable => @class.Name != table.Name,
                 TableStereotype.WhenDifferent when config.EntityNameConvention is EntityNameConvention.SingularEntity => @class.Name.Pluralize() !=
-                    table.Name, // This assumes EF convention
+                table.Name, // This assumes EF convention
                 _ => false
             };
         }
@@ -181,7 +181,7 @@ internal static class RdbmsSchemaAnnotator
                 "varchar" when column.MaxLength == -1 => "varchar(max)",
                 "nvarchar" when column.MaxLength == -1 => "nvarchar(max)",
                 "varchar" or "nvarchar" or "varbinary" when column.MaxLength > 0 =>
-                    $"{column.DbDataType.ToLower()}({column.MaxLength})",
+                $"{column.DbDataType.ToLower()}({column.MaxLength})",
                 _ => column.DbDataType.ToLower()
             };
         }
@@ -349,8 +349,13 @@ internal static class RdbmsSchemaAnnotator
         }
     }
 
-    public static void ApplyStoredProcedureElementSettings(StoredProcedureSchema sqlStoredProc, ElementPersistable elementStoredProc)
+    public static void ApplyStoredProcedureElementSettings(StoredProcedureSchema sqlStoredProc, ElementPersistable elementStoredProc, bool isEfRepositoriesInstalled)
     {
+        if (!isEfRepositoriesInstalled)
+        {
+            return;
+        }
+
         var stereotype = elementStoredProc.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedureElement.DefinitionId, InitStoredProcStereotype);
         var prop = stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureElement.PropertyId.NameInSchema);
         var isDefaultSchema = string.IsNullOrEmpty(sqlStoredProc.Schema) || string.Equals(sqlStoredProc.Schema, "dbo", StringComparison.OrdinalIgnoreCase);
@@ -448,8 +453,13 @@ internal static class RdbmsSchemaAnnotator
         }
     }
 
-    public static void ApplyStoredProcedureOperationSettings(StoredProcedureSchema sqlStoredProc, ElementPersistable elementStoredProc)
+    public static void ApplyStoredProcedureOperationSettings(StoredProcedureSchema sqlStoredProc, ElementPersistable elementStoredProc, bool isEfRepositoriesInstalled)
     {
+        if (!isEfRepositoriesInstalled)
+        {
+            return;
+        }
+
         var stereotype = elementStoredProc.GetOrCreateStereotype(Constants.Stereotypes.Rdbms.StoredProcedureOperation.DefinitionId, InitStoredProcOperationStereotype);
         var prop = stereotype.GetOrCreateProperty(Constants.Stereotypes.Rdbms.StoredProcedureOperation.PropertyId.NameInSchema);
         var isDefaultSchema = string.IsNullOrEmpty(sqlStoredProc.Schema) || string.Equals(sqlStoredProc.Schema, "dbo", StringComparison.OrdinalIgnoreCase);

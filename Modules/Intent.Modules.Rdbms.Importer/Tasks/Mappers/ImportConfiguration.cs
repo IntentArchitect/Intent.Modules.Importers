@@ -33,7 +33,14 @@ internal class ImportConfiguration
     /// When false, attribute types will be updated to match the database column types.
     /// </summary>
     public bool PreserveAttributeTypes { get; set; } = true;
-    
+
+    /// <summary>
+    /// Indicates whether the Intent.EntityFrameworkCore.Repositories module is installed in the target application.
+    /// Controls whether EF.Repositories-owned stored procedure stereotypes are written and whether stored procedure
+    /// names are reformatted into C# identifiers.
+    /// </summary>
+    public bool IsEfRepositoriesInstalled { get; set; } = true;
+
     public bool ExportTables()
     {
         return TypesToExport.Contains(ExportType.Table);

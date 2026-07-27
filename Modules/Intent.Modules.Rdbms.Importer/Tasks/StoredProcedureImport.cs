@@ -37,10 +37,10 @@ public class RepositoryImport : IModuleTask
         {
             throw new Exception(
                 $"""
-                 Deserialization of the following returned null:
+                Deserialization of the following returned null:
 
-                 {args[0]}
-                 """);
+                {args[0]}
+                """);
         }
 
         var designer = _metadataManager.GetDesigner(importModel.ApplicationId, "Domain");
@@ -141,7 +141,7 @@ public class RepositoryImport : IModuleTask
             }
 
             // Create configuration for our mappers
-            var config = CreateImportConfiguration(importModel);
+            var config = CreateImportConfiguration(importModel, ModuleHelper.IsEfRepositoriesInstalled(_configurationProvider));
 
             // Create the schema mapper
             var schemaMapper = new DbSchemaIntentMetadataMerger(config);
@@ -196,7 +196,7 @@ public class RepositoryImport : IModuleTask
         }
     }
 
-    private static ImportConfiguration CreateImportConfiguration(RepositoryImportModel importModel)
+    private static ImportConfiguration CreateImportConfiguration(RepositoryImportModel importModel, bool isEfRepositoriesInstalled)
     {
         return new ImportConfiguration
         {
@@ -209,9 +209,10 @@ public class RepositoryImport : IModuleTask
             TableStereotype = Enum.Parse<TableStereotype>(importModel.TableStereotype),
             TypesToExport = importModel.TypesToExport.Select(Enum.Parse<ExportType>).ToHashSet(),
             StoredProcedureType = string.IsNullOrWhiteSpace(importModel.StoredProcedureType)
-                ? StoredProcedureType.Default
-                : Enum.Parse<StoredProcedureType>(importModel.StoredProcedureType),
-            DatabaseType = importModel.DatabaseType ?? throw new Exception("Database type is required for repository import.")
+            ? StoredProcedureType.Default
+            : Enum.Parse<StoredProcedureType>(importModel.StoredProcedureType),
+            DatabaseType = importModel.DatabaseType ?? throw new Exception("Database type is required for repository import."),
+            IsEfRepositoriesInstalled = isEfRepositoriesInstalled
         };
     }
 }

@@ -1,3 +1,7 @@
+### Version 1.0.18
+
+- Fixed: Issue where stored procedure elements/operations and their parameters would always have `Intent.EntityFrameworkCore.Repositories`-owned stereotypes applied, and stored procedure names would always be reformatted into C# identifiers (e.g. stripping `sp_`/`prc`/`proc` prefixes and PascalCasing), even when that module isn't installed in the target application. These behaviors are now gated on whether `Intent.EntityFrameworkCore.Repositories` is installed; when it isn't, the raw database stored procedure name is used and no EF.Repositories stereotypes are written.
+
 ### Version 1.0.17
 
 - Fixed: Issue where a stored procedure or operation's return type could be silently reset to void on re-import if the database provider was unable to determine the result set for that run (e.g. dynamic SQL, temp tables). The existing return type is now preserved when this happens, with a warning added to the import output.
