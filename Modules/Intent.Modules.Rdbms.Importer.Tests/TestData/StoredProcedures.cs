@@ -145,6 +145,22 @@ internal static class StoredProcedures
         Metadata = new()
     };
 
+    public static StoredProcedureSchema GetItemById() => new()
+    {
+        Schema = "dbo",
+        Name = "sp_GetItemById",
+        Parameters =
+        [
+            Parameter("@Item_ID", SqlDbType.Int, StoredProcedureParameterDirection.In)
+        ],
+        ResultSetColumns =
+        [
+            ResultColumn("Id", SqlDbType.Int, isNullable: false),
+            ResultColumn("Name", SqlDbType.NVarChar, length: 100, isNullable: false)
+        ],
+        Metadata = new()
+    };
+
     public static StoredProcedureParameterSchema Parameter(
         string name,
         SqlDbType type,

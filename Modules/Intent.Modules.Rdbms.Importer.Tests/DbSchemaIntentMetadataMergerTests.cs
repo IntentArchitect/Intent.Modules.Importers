@@ -2205,6 +2205,62 @@ public class DbSchemaIntentMetadataMergerTests
     }
 
     [Fact]
+    public void MergeSchemaAndPackage_ParameterWithoutEfRepositories_UsesRawParameterName()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetItemById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresInDefaultMode(isEfRepositoriesInstalled: false));
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        var operationElement = scenario.Package.Classes
+            .SelectMany(c => c.ChildElements)
+            .Single(e => e.SpecializationType == MapperConstants.SpecializationTypes.Operation.SpecializationType);
+
+        var parameterElement = operationElement.ChildElements.Single();
+        parameterElement.Name.ShouldBe("Item_ID", "Without EF.Repositories, the raw SQL parameter name should be used, unformatted");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_ParameterWithEfRepositories_StillAppliesFormattedName()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetItemById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var merger = new DbSchemaIntentMetadataMerger(ImportConfigurations.StoredProceduresInDefaultMode());
+
+        // Act
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+
+        var operationElement = scenario.Package.Classes
+            .SelectMany(c => c.ChildElements)
+            .Single(e => e.SpecializationType == MapperConstants.SpecializationTypes.Operation.SpecializationType);
+
+        var parameterElement = operationElement.ChildElements.Single();
+        parameterElement.Name.ShouldBe("itemID", "With EF.Repositories installed, the existing formatted-name behavior is preserved");
+    }
+
+    [Fact]
     public void MergeSchemaAndPackage_ReimportWithoutEfRepositories_ExternalReferenceStableAndNoDuplication()
     {
         // Arrange
