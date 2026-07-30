@@ -1,5 +1,8 @@
 ### Version 1.0.18
 
+- Fixed: Issue where an import using the "Team-shared metadata (sanitized connection string, no password)" setting would report a `PlatformNotSupportedException` for `Microsoft.Data.SqlClient`, even though the import itself had succeeded. Stripping the password no longer relies on a SQL Server specific connection string builder, which also means it now works for PostgreSQL connection strings.
+- Fixed: Issue where a failure to remember the import settings would be reported as an import failure, and could mask the real error when the import itself was what had failed.
+
 - Fixed: Issue where stored procedure elements/operations and their parameters would always have `Intent.EntityFrameworkCore.Repositories`-owned stereotypes applied, and stored procedure names would always be reformatted into C# identifiers (e.g. stripping `sp_`/`prc`/`proc` prefixes and PascalCasing), even when that module isn't installed in the target application. These behaviors are now gated on whether `Intent.EntityFrameworkCore.Repositories` is installed; when it isn't, the raw database stored procedure name is used and no EF.Repositories stereotypes are written.
 
 ### Version 1.0.17

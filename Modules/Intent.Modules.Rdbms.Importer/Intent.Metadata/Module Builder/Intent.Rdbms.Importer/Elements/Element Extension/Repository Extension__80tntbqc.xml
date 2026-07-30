@@ -62,6 +62,7 @@
       <metadata />
       <childElements>
         <childElement id="cd7a38e1-9e39-478d-a66d-508ee3de628a" type="Run Script Option" typeId="345d46fb-c500-409a-88c7-26720572c9af">
+          <comment>Imports stored procedures for a repository and validates inherited database settings before browse or import so users get clear guidance when package-level Database Import settings are missing.</comment>
           <name>Stored Procedure Import</name>
           <display>Stored Procedure Import: Inline Script</display>
           <isAbstract>false</isAbstract>

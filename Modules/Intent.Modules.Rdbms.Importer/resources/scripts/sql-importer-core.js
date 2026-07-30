@@ -26,8 +26,7 @@ Icons.viewIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACO
 /// <reference path="./icons.ts" />
 class DatabaseImportStrategy {
     async execute(packageElement) {
-        const defaults = this.getDialogDefaults(packageElement);
-        const result = await this.presentImportDialog(defaults, packageElement.id);
+        const result = await this.presentImportDialog(packageElement);
         if (result == null) {
             return;
         }
@@ -38,9 +37,9 @@ class DatabaseImportStrategy {
             openWindow: true
         });
     }
-    getDialogDefaults(element) {
-        const domainPackage = element.getPackage();
-        const persistedValue = this.getSettingValue(domainPackage, "rdbms-import:typesToExport", "");
+    async getDialogDefaults(element) {
+        const persistedSettings = await this.getPersistedSettings(element);
+        const persistedValue = persistedSettings.typesToExport;
         let includeTables = "true";
         let includeViews = "true";
         let includeStoredProcedures = "true";
@@ -70,29 +69,52 @@ class DatabaseImportStrategy {
             });
         }
         const result = {
-            entityNameConvention: this.getSettingValue(domainPackage, "rdbms-import:entityNameConvention", "SingularEntity"),
-            attributeNameConvention: this.getSettingValue(domainPackage, "rdbms-import:attributeNameConvention", "Default"),
-            tableStereotypes: this.getSettingValue(domainPackage, "rdbms-import:tableStereotypes", "WhenDifferent"),
+            entityNameConvention: persistedSettings.entityNameConvention,
+            attributeNameConvention: persistedSettings.attributeNameConvention,
+            tableStereotypes: persistedSettings.tableStereotypes,
             includeTables: includeTables,
             includeViews: includeViews,
             includeStoredProcedures: includeStoredProcedures,
             includeIndexes: includeIndexes,
-            importFilterFilePath: this.getSettingValue(domainPackage, "rdbms-import:importFilterFilePath", "db-import-filter.json"),
-            connectionString: this.getSettingValue(domainPackage, "rdbms-import:connectionString", null),
-            storedProcedureType: this.getSettingValue(domainPackage, "rdbms-import:storedProcedureType", ""),
-            settingPersistence: this.getSettingValue(domainPackage, "rdbms-import:settingPersistence", "None"),
-            databaseType: this.getSettingValue(domainPackage, "rdbms-import:databaseType", "SqlServer"),
-            filterType: this.getSettingValue(domainPackage, "rdbms-import:filterType", "include"),
-            allowDeletions: this.getSettingValue(domainPackage, "rdbms-import:allowDeletions", "true"),
-            preserveAttributeTypes: this.getSettingValue(domainPackage, "rdbms-import:preserveAttributeTypes", "true")
+            importFilterFilePath: persistedSettings.importFilterFilePath,
+            connectionString: persistedSettings.connectionString,
+            storedProcedureType: persistedSettings.storedProcedureType,
+            settingPersistence: persistedSettings.settingPersistence,
+            databaseType: persistedSettings.databaseType,
+            filterType: persistedSettings.filterType,
+            allowDeletions: persistedSettings.allowDeletions,
+            preserveAttributeTypes: persistedSettings.preserveAttributeTypes
         };
         return result;
     }
-    async presentImportDialog(defaults, packageId) {
+    async presentImportDialog(packageElement) {
+        const packageId = packageElement.id;
         const formConfig = {
             title: "RDBMS Import",
             minWidth: "600px",
             height: "80%",
+            onInitialize: async (form) => {
+                let defaults;
+                try {
+                    defaults = await this.getDialogDefaults(packageElement);
+                }
+                catch (error) {
+                    await dialogService.error(`Unable to load persisted import settings: ${error}`);
+                    return;
+                }
+                form.getField("connectionString").value = defaults.connectionString;
+                form.getField("databaseType").value = defaults.databaseType;
+                form.getField("settingPersistence").value = defaults.settingPersistence;
+                form.getField("entityNameConvention").value = defaults.entityNameConvention;
+                form.getField("attributeNameConvention").value = defaults.attributeNameConvention;
+                form.getField("tableStereotypes").value = defaults.tableStereotypes;
+                form.getField("storedProcedureType").value = defaults.storedProcedureType;
+                form.getField("includeIndexes").value = defaults.includeIndexes;
+                form.getField("importFilterFilePath").value = defaults.importFilterFilePath;
+                form.getField("allowDeletions").value = defaults.allowDeletions;
+                form.getField("preserveAttributeTypes").value = defaults.preserveAttributeTypes;
+                form.getField("filterType").value = defaults.filterType;
+            },
             fields: [],
             sections: [
                 {
@@ -105,8 +127,7 @@ class DatabaseImportStrategy {
                             label: "Connection String",
                             placeholder: null,
                             hint: null,
-                            isRequired: true,
-                            value: defaults.connectionString
+                            isRequired: true
                         },
                         {
                             id: "databaseType",
@@ -115,7 +136,6 @@ class DatabaseImportStrategy {
                             placeholder: null,
                             hint: null,
                             isRequired: true,
-                            value: defaults.databaseType,
                             selectOptions: [
                                 { id: "SqlServer", description: "SQL Server" },
                                 { id: "PostgreSQL", description: "PostgreSQL" },
@@ -149,12 +169,12 @@ class DatabaseImportStrategy {
                             fieldType: "select",
                             label: "Remember Settings",
                             hint: "Remember these settings for next time you run the import",
-                            value: defaults.settingPersistence,
                             selectOptions: [
                                 { id: "None", description: "Don't Remember" },
-                                { id: "All", description: "All Settings" },
-                                { id: "AllSanitisedConnectionString", description: "All (with Sanitized connection string, no password))" },
-                                { id: "AllWithoutConnectionString", description: "All (without connection string))" }
+                                { id: "UserLocal", description: "Only for me (user-local)" },
+                                { id: "SharedMetadata", description: "Team-shared metadata" },
+                                { id: "SharedMetadataSanitisedConnectionString", description: "Team-shared metadata (sanitized connection string, no password)" },
+                                { id: "SharedMetadataWithoutConnectionString", description: "Team-shared metadata (without connection string)" }
                             ]
                         }
                     ],
@@ -171,7 +191,6 @@ class DatabaseImportStrategy {
                             label: "Entity name convention",
                             placeholder: "",
                             hint: "",
-                            value: defaults.entityNameConvention,
                             selectOptions: [
                                 {
                                     id: "SingularEntity",
@@ -191,7 +210,6 @@ class DatabaseImportStrategy {
                             label: "Attribute Name Convention",
                             placeholder: "",
                             hint: "How column names should be converted to attribute names",
-                            value: defaults.attributeNameConvention,
                             selectOptions: [
                                 {
                                     id: "Default",
@@ -211,14 +229,12 @@ class DatabaseImportStrategy {
                             label: "Apply Table Stereotypes",
                             placeholder: "",
                             hint: "When to apply Table stereotypes to your domain entities",
-                            value: defaults.tableStereotypes,
                             selectOptions: [{ id: "WhenDifferent", description: "If They Differ" }, { id: "Always", description: "Always" }]
                         },
                         {
                             id: "storedProcedureType",
                             fieldType: "select",
                             label: "Stored Procedure Representation",
-                            value: defaults.storedProcedureType,
                             selectOptions: [
                                 { id: "Default", description: "(Default)" },
                                 { id: "StoredProcedureElement", description: "Stored Procedure Element" },
@@ -238,8 +254,7 @@ class DatabaseImportStrategy {
                             id: "includeIndexes",
                             fieldType: "checkbox",
                             label: "Include Indexes",
-                            hint: "If set, the importer will include database indexes in the import.",
-                            value: defaults.includeIndexes
+                            hint: "If set, the importer will include database indexes in the import."
                         },
                         {
                             id: "importFilterFilePath",
@@ -247,7 +262,6 @@ class DatabaseImportStrategy {
                             label: "Import Filter File",
                             hint: "Path to import filter JSON file (see [documentation](https://docs.intentarchitect.com/articles/modules-importers/intent-rdbms-importer/intent-rdbms-importer.html#filter-file-structure))",
                             placeholder: "(optional)",
-                            value: defaults.importFilterFilePath,
                             openFileOptions: {
                                 fileFilters: [{ name: "JSON", extensions: ["json"] }]
                             },
@@ -285,22 +299,20 @@ class DatabaseImportStrategy {
                             id: "allowDeletions",
                             fieldType: "checkbox",
                             label: "Remove deleted database attributes, indexes and associations",
-                            hint: "Removes imported attributes, associations, and indexes that no longer exist in the database",
-                            value: defaults.allowDeletions
+                            hint: "Removes imported attributes, associations, and indexes that no longer exist in the database"
                         },
                         {
                             id: "preserveAttributeTypes",
                             fieldType: "checkbox",
                             label: "Preserve user-specified attribute types",
-                            hint: "If set, the importer will not overwrite any attribute types set by the user.",
-                            value: defaults.preserveAttributeTypes
+                            hint: "If set, the importer will not overwrite any attribute types set by the user."
                         }
                     ],
                     isCollapsed: true,
                     isHidden: false
                 }
             ],
-            pages: [this.presentManageFiltersDialog(packageId, defaults)]
+            pages: [this.presentManageFiltersDialog(packageId)]
         };
         const capturedInput = await dialogService.openForm(formConfig);
         return capturedInput;
@@ -333,7 +345,7 @@ class DatabaseImportStrategy {
         };
         return importConfig;
     }
-    presentManageFiltersDialog(packageId, defaults) {
+    presentManageFiltersDialog(packageId) {
         const inclusiveSelection = {
             id: "inclusiveSelection",
             fieldType: "tree-view",
@@ -471,7 +483,7 @@ class DatabaseImportStrategy {
                     }
                     // If no existing filter was loaded, use the default filterType to set visibility
                     if (existingFilter == null) {
-                        const include = defaults.filterType === "include";
+                        const include = form.getField("filterType").value === "include";
                         form.getField("inclusiveSelection").isHidden = !include;
                         form.getField("exclusiveSelection").isHidden = include;
                     }
@@ -527,7 +539,6 @@ class DatabaseImportStrategy {
                     id: "filterType",
                     fieldType: "select",
                     label: "Filter Type",
-                    value: defaults.filterType,
                     selectOptions: [
                         {
                             id: "include",
@@ -607,9 +618,17 @@ class DatabaseImportStrategy {
             }))
         };
     }
-    getSettingValue(domainPackage, key, defaultValue) {
-        const persistedValue = domainPackage.getMetadata(key);
-        return persistedValue !== null && persistedValue !== void 0 ? persistedValue : defaultValue;
+    async getPersistedSettings(element) {
+        var _a;
+        const resolutionModel = {
+            applicationId: application.id,
+            packageId: element.getPackage().id
+        };
+        const executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.DatabaseImportSettingsResolution", resolutionModel);
+        if (((_a = executionResult.errors) !== null && _a !== void 0 ? _a : []).length > 0 || executionResult.result == null) {
+            throw new Error("Unable to resolve persisted database import settings.");
+        }
+        return executionResult.result;
     }
     isSchemaIncluded(schemaName, existingFilter) {
         if (existingFilter == null) {
@@ -844,50 +863,62 @@ class DatabaseImportStrategy {
 /// <reference path="./common.ts" />
 /// <reference path="./icons.ts" />
 class StoredProceduresImportStrategy {
+    constructor() {
+        // Resolved once the dialog is open (see presentImportDialog's onInitialize) so that the
+        // settings-resolution module task is never invoked while no dialog is showing.
+        this.inheritedSettings = null;
+    }
     async execute(repositoryElement) {
-        let defaults = this.getDialogDefaults(repositoryElement);
-        let capturedInput = await this.presentImportDialog(defaults);
+        let capturedInput = await this.presentImportDialog(repositoryElement);
         if (capturedInput == null) {
             return;
         }
-        let importModel = await this.createImportModel(capturedInput);
-        if (importModel == null) {
-            return;
-        }
-        launchHostedModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcedureImport", [JSON.stringify(importModel)]);
+        launchHostedModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcedureImport", [JSON.stringify(this.createImportModel(capturedInput))]);
     }
-    getDialogDefaults(element) {
-        let domainPackage = element.getPackage();
-        let result = {
-            inheritedConnectionString: this.getSettingValue(domainPackage, "rdbms-import:connectionString", null),
-            inheritedDatabaseType: this.getSettingValue(domainPackage, "rdbms-import:databaseType", null),
-            connectionString: this.getSettingValue(domainPackage, "rdbms-import-repository:connectionString", null),
-            storedProcedureType: this.getSettingValue(domainPackage, "rdbms-import-repository:storedProcedureType", ""),
-            storedProcNames: "",
-            settingPersistence: this.getSettingValue(domainPackage, "rdbms-import-repository:settingPersistence", "None"),
-            databaseType: this.getSettingValue(domainPackage, "rdbms-import-repository:databaseType", "")
-        };
-        return result;
-    }
-    async presentImportDialog(defaults) {
+    async presentImportDialog(repositoryElement) {
         let formConfig = {
             title: "RDBMS Import",
+            onInitialize: async (form) => {
+                let persistedSettings;
+                try {
+                    persistedSettings = await this.getPersistedSettings(repositoryElement);
+                }
+                catch (error) {
+                    this.inheritedSettings = null;
+                    await dialogService.error(`Unable to load persisted stored procedure import settings: ${error}`);
+                    // settingPersistence is still unset here, so both connection fields stay required.
+                    this.applyConnectionRequirements(form);
+                    return;
+                }
+                this.inheritedSettings = {
+                    connectionString: persistedSettings.inheritedConnectionString,
+                    databaseType: persistedSettings.inheritedDatabaseType
+                };
+                form.getField("connectionString").value = persistedSettings.connectionString;
+                form.getField("databaseType").value = persistedSettings.databaseType;
+                form.getField("storedProcedureType").value = persistedSettings.storedProcedureType;
+                form.getField("settingPersistence").value = persistedSettings.settingPersistence;
+                this.applyConnectionRequirements(form);
+            },
             fields: [
                 {
                     id: "connectionString",
                     fieldType: "text",
                     label: "Connection String",
-                    placeholder: "(optional if inherited setting)",
+                    // Defaults match the required state below; applyConnectionRequirements relaxes both.
+                    placeholder: "Enter a connection string",
                     hint: null,
-                    value: defaults.connectionString
+                    isRequired: true
                 },
                 {
                     id: "databaseType",
                     fieldType: "select",
                     label: "Database Type",
-                    value: defaults.databaseType,
+                    isRequired: true,
                     selectOptions: [
-                        { id: "", description: "(default or inherited setting)" },
+                        // Not "(default...)": the import task has no fallback and fails on a missing
+                        // database type, so blank is only ever resolved by inheriting.
+                        { id: "", description: "(inherited setting)" },
                         { id: "SqlServer", description: "SQL Server" },
                         { id: "PostgreSQL", description: "PostgreSQL" },
                     ]
@@ -896,9 +927,10 @@ class StoredProceduresImportStrategy {
                     id: "storedProcedureType",
                     fieldType: "select",
                     label: "Stored Procedure Representation",
-                    value: defaults.storedProcedureType,
                     selectOptions: [
-                        { id: "", description: "(default or inherited setting)" },
+                        // This one genuinely has a default (StoredProcedureType.Default) and is never
+                        // inherited from the Database Import settings.
+                        { id: "", description: "(default)" },
                         { id: "StoredProcedureElement", description: "Stored Procedure Element" },
                         { id: "RepositoryOperation", description: "Stored Procedure Operation" },
                         { id: "RepositoryOperationMapping", description: "Stored Procedure Element mapped to Operation Element" }
@@ -910,7 +942,6 @@ class StoredProceduresImportStrategy {
                     label: "Stored Procedure Names",
                     placeholder: "Enter Stored Procedure names (comma-separated) or use Browse button",
                     hint: "Enter Stored procedure names (comma-separated) or use the browse button.",
-                    value: defaults.storedProcNames,
                     isRequired: true
                 },
                 {
@@ -921,19 +952,15 @@ class StoredProceduresImportStrategy {
                         const connectionStringValue = form.getField("connectionString").value;
                         const settingPersistenceValue = form.getField("settingPersistence").value;
                         const databaseTypeValue = form.getField("databaseType").value;
-                        if (settingPersistenceValue != "InheritDb" && (connectionStringValue == null || (connectionStringValue === null || connectionStringValue === void 0 ? void 0 : connectionStringValue.trim()) === "")) {
-                            await dialogService.error("Please enter a connection string (or inherit DB settings) before browsing stored procedures.");
+                        const resolved = this.resolveConnectionSettings(settingPersistenceValue, connectionStringValue, databaseTypeValue);
+                        const validationError = this.getConnectionValidationError(resolved);
+                        if (validationError != null) {
+                            await dialogService.error(validationError);
                             return;
                         }
-                        if (settingPersistenceValue != "InheritDb" && (!databaseTypeValue || (databaseTypeValue === null || databaseTypeValue === void 0 ? void 0 : databaseTypeValue.trim()) === "")) {
-                            await dialogService.error("Database Type was not set.");
-                            return null;
-                        }
-                        let connectionStringStr = settingPersistenceValue == "InheritDb" ? defaults.inheritedConnectionString : connectionStringValue;
-                        let dataTypeStr = settingPersistenceValue == "InheritDb" ? defaults.inheritedDatabaseType : databaseTypeValue;
                         let storedProcNames = form.getField("storedProcNames").value;
-                        let capturedStoredProcs = (storedProcNames).split(",").map(x => x.trim());
-                        const selectedProcs = await this.openStoredProcedureBrowseDialog(connectionStringStr, dataTypeStr, capturedStoredProcs);
+                        let capturedStoredProcs = (storedProcNames !== null && storedProcNames !== void 0 ? storedProcNames : "").split(",").map(x => x.trim());
+                        const selectedProcs = await this.openStoredProcedureBrowseDialog(resolved.connectionString, resolved.databaseType, capturedStoredProcs);
                         if (selectedProcs.length > 0) {
                             const storedProcNamesField = form.getField("storedProcNames");
                             storedProcNamesField.value = selectedProcs.join(", ");
@@ -943,15 +970,16 @@ class StoredProceduresImportStrategy {
                 {
                     id: "settingPersistence",
                     fieldType: "select",
-                    label: "Persist Settings",
+                    label: "Remember Settings",
                     hint: "Remember these settings for next time you run the import",
-                    value: defaults.settingPersistence,
+                    onChange: (form) => this.applyConnectionRequirements(form),
                     selectOptions: [
-                        { id: "None", description: "(None)" },
+                        { id: "None", description: "Don't Remember" },
                         { id: "InheritDb", description: "Inherit Database Settings" },
-                        { id: "All", description: "All Settings" },
-                        { id: "AllSanitisedConnectionString", description: "All (with Sanitized connection string, no password))" },
-                        { id: "AllWithoutConnectionString", description: "All (without connection string))" }
+                        { id: "UserLocal", description: "Only for me (user-local)" },
+                        { id: "SharedMetadata", description: "Team-shared metadata" },
+                        { id: "SharedMetadataSanitisedConnectionString", description: "Team-shared metadata (sanitized connection string, no password)" },
+                        { id: "SharedMetadataWithoutConnectionString", description: "Team-shared metadata (without connection string)" }
                     ]
                 }
             ]
@@ -959,16 +987,7 @@ class StoredProceduresImportStrategy {
         let capturedInput = await dialogService.openForm(formConfig);
         return capturedInput;
     }
-    async createImportModel(capturedInput) {
-        var _a, _b;
-        if (capturedInput.settingPersistence != "InheritDb" && (!capturedInput.connectionString || ((_a = capturedInput.connectionString) === null || _a === void 0 ? void 0 : _a.trim()) === "")) {
-            await dialogService.error("Connection String was not set.");
-            return null;
-        }
-        if (capturedInput.settingPersistence != "InheritDb" && (!capturedInput.databaseType || ((_b = capturedInput.databaseType) === null || _b === void 0 ? void 0 : _b.trim()) === "")) {
-            await dialogService.error("Database Type was not set.");
-            return null;
-        }
+    createImportModel(capturedInput) {
         const storedProcNamesArray = capturedInput.storedProcNames.split(',').map((name) => name.trim());
         const domainDesignerId = "6ab29b31-27af-4f56-a67c-986d82097d63";
         let importConfig = {
@@ -984,9 +1003,101 @@ class StoredProceduresImportStrategy {
         };
         return importConfig;
     }
-    getSettingValue(domainPackage, key, defaultValue) {
-        let persistedValue = domainPackage.getMetadata(key);
-        return persistedValue ? persistedValue : defaultValue;
+    /**
+    * The host gates the Done button on AngularJS form validity, checked BEFORE onContinue, so the
+    * connection rules are expressed as isRequired flags rather than by rejecting onContinue -
+    * a rejection replaces the form with a page-level error that nothing can clear.
+    *
+    * Both fields are required by default; inheriting relaxes them only when the inherited database
+    * import settings are actually usable.
+    */
+    applyConnectionRequirements(form) {
+        const settingPersistence = form.getField("settingPersistence").value;
+        const isInheriting = settingPersistence == "InheritDb";
+        const canInherit = this.canInherit(settingPersistence);
+        const connectionStringField = form.getField("connectionString");
+        connectionStringField.isRequired = !canInherit;
+        // Explain why a connection string is still needed despite "Inherit Database Settings".
+        connectionStringField.hint = isInheriting && !canInherit
+            ? StoredProceduresImportStrategy.noInheritedConnectionStringHint
+            : null;
+        connectionStringField.hintType = isInheriting && !canInherit ? "warning" : null;
+        // "(optional...)" would otherwise show on a field that is currently required.
+        connectionStringField.placeholder = canInherit
+            ? "(inherited setting)"
+            : "Enter a connection string";
+        const databaseTypeField = form.getField("databaseType");
+        databaseTypeField.isRequired = !canInherit;
+        if (canInherit) {
+            databaseTypeField.hint = null;
+            databaseTypeField.hintType = null;
+        }
+        else if (isInheriting) {
+            databaseTypeField.hint = StoredProceduresImportStrategy.noInheritedDatabaseTypeHint;
+            databaseTypeField.hintType = "warning";
+        }
+        else {
+            // Carries the guidance the old rejection message had: inheriting is the alternative.
+            databaseTypeField.hint = StoredProceduresImportStrategy.inheritDatabaseTypeTip;
+            databaseTypeField.hintType = null;
+        }
+    }
+    /**
+    * Whether the import can rely on the package-level Database Import settings: the user asked to
+    * inherit them AND the resolved values are usable. Single-sourced here so the form's isRequired
+    * gating and the Browse button's guard cannot disagree about when inheriting is viable.
+    */
+    canInherit(settingPersistence) {
+        var _a, _b, _c, _d;
+        const hasConnectionString = ((_b = (_a = this.inheritedSettings) === null || _a === void 0 ? void 0 : _a.connectionString) !== null && _b !== void 0 ? _b : "").trim() !== "";
+        const hasDatabaseType = ((_d = (_c = this.inheritedSettings) === null || _c === void 0 ? void 0 : _c.databaseType) !== null && _d !== void 0 ? _d : "").trim() !== "";
+        return settingPersistence == "InheritDb" && hasConnectionString && hasDatabaseType;
+    }
+    /**
+    * The connection settings the import will actually use. A value entered on the dialog always wins;
+    * the inherited package-level Database Import settings only fill in what was left blank, and only
+    * when the user opted into inheriting. Mirrors SettingsHelper.ApplyInheritedDbSettings, which
+    * applies the same precedence when the import itself runs.
+    */
+    resolveConnectionSettings(settingPersistence, connectionString, databaseType) {
+        var _a, _b;
+        const isInheriting = settingPersistence == "InheritDb";
+        return {
+            connectionString: (connectionString !== null && connectionString !== void 0 ? connectionString : "").trim() !== ""
+                ? connectionString
+                : isInheriting ? (_a = this.inheritedSettings) === null || _a === void 0 ? void 0 : _a.connectionString : null,
+            databaseType: (databaseType !== null && databaseType !== void 0 ? databaseType : "").trim() !== ""
+                ? databaseType
+                : isInheriting ? (_b = this.inheritedSettings) === null || _b === void 0 ? void 0 : _b.databaseType : null
+        };
+    }
+    /**
+    * The connection rules used by the Browse button, which is not gated by form validity. Validates
+    * what will actually be used, so an explicitly entered connection string and database type are
+    * always sufficient - including under "Inherit Database Settings" when nothing usable could be
+    * inherited, which is exactly the case applyConnectionRequirements prompts the user to fill in.
+    */
+    getConnectionValidationError(resolved) {
+        var _a, _b;
+        if (((_a = resolved.connectionString) !== null && _a !== void 0 ? _a : "").trim() === "") {
+            return StoredProceduresImportStrategy.inheritSettingsMessage;
+        }
+        if (((_b = resolved.databaseType) !== null && _b !== void 0 ? _b : "").trim() === "") {
+            return "Please select a Database Type, or configure the package-level Database Import settings and switch Remember Settings to Inherit Database Settings.";
+        }
+        return null;
+    }
+    async getPersistedSettings(element) {
+        var _a;
+        const resolutionModel = {
+            applicationId: application.id,
+            packageId: element.getPackage().id
+        };
+        const executionResult = await executeImporterModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcedureImportSettingsResolution", resolutionModel);
+        if (((_a = executionResult.errors) !== null && _a !== void 0 ? _a : []).length > 0 || executionResult.result == null) {
+            throw new Error("Unable to resolve persisted stored procedure import settings.");
+        }
+        return executionResult.result;
     }
     async openStoredProcedureBrowseDialog(connectionString, databaseType, preSelectedStoredProcs) {
         let inputProcs = this.sanitizePreSelectedStoredProcs(preSelectedStoredProcs);
@@ -1078,6 +1189,14 @@ class StoredProceduresImportStrategy {
         return preSelectedStoredProcs.map(x => !x.startsWith("dbo.") ? `sp.dbo.${x}` : `sp.${x}`);
     }
 }
+StoredProceduresImportStrategy.inheritSettingsMessage = "Connection string could not be determined. Please enter a connection string, or rerun the Database Import process and ensure the connection string is persisted.";
+// The host renders a field hint as "md-input-container .hint", which is absolutely positioned at
+// bottom: 7px over space reserved for a single line - so a hint that wraps grows upwards over the
+// input itself. Keep these on one line (the longest that renders correctly here is ~70 chars);
+// inheritSettingsMessage carries the full explanation where there is room for it.
+StoredProceduresImportStrategy.noInheritedConnectionStringHint = "No inherited connection string - please enter one.";
+StoredProceduresImportStrategy.noInheritedDatabaseTypeHint = "No inherited database type - please select one.";
+StoredProceduresImportStrategy.inheritDatabaseTypeTip = "Or inherit it - set Remember Settings to Inherit Database Settings.";
 /// <reference path="./strategy-database-import.ts" />
 /// <reference path="./strategy-stored-procedures-import.ts" />
 // noinspection JSUnusedGlobalSymbols

@@ -69,8 +69,8 @@ internal static class IntentModelMapper
                 e.SpecializationType == specializationType &&
                 // Only match if schemas are compatible (both null/empty or both equal)
                 (string.IsNullOrWhiteSpace(dbSchema) ||
-                 string.IsNullOrWhiteSpace(GetElementDbSchema(e, package)) ||
-                 GetElementDbSchema(e, package) == dbSchema));
+                string.IsNullOrWhiteSpace(GetElementDbSchema(e, package)) ||
+                GetElementDbSchema(e, package) == dbSchema));
             if (byName != null)
                 return byName;
         }
@@ -176,7 +176,7 @@ internal static class IntentModelMapper
             var attribute = MapColumnToAttribute(column, table.Name, className, table.Schema, config, package, classElement.Id, deduplicationContext);
             classElement.ChildElements.Add(attribute);
 
-            // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
+        // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
         }
 
         // Table stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
@@ -187,7 +187,7 @@ internal static class IntentModelMapper
             var triggerExternalRef = ModelNamingUtilities.GetTriggerExternalReference(table.Schema, table.Name, trigger.Name);
             var triggerElement = package.Classes
                 .FirstOrDefault(x => x.ExternalReference == triggerExternalRef &&
-                                     x.SpecializationType == Constants.SpecializationTypes.Trigger.SpecializationType);
+                    x.SpecializationType == Constants.SpecializationTypes.Trigger.SpecializationType);
             if (triggerElement is null)
             {
                 triggerElement = MapTriggerToElement(trigger, table.Name, table.Schema, classElement.Id, package);
@@ -232,7 +232,7 @@ internal static class IntentModelMapper
             var attribute = MapColumnToAttribute(column, view.Name, className, view.Schema, config, package, classElement.Id, deduplicationContext);
             classElement.ChildElements.Add(attribute);
 
-            // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
+        // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
         }
 
         // View stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
@@ -285,7 +285,8 @@ internal static class IntentModelMapper
         string? repositoryId,
         PackageModelPersistable package,
         DeduplicationContext? deduplicationContext,
-        Dictionary<string, string>? udtDataContracts)
+        Dictionary<string, string>? udtDataContracts,
+        bool isEfRepositoriesInstalled)
     {
         var procElement = new ElementPersistable
         {
@@ -319,7 +320,7 @@ internal static class IntentModelMapper
         // Map parameters
         foreach (var parameter in storedProc.Parameters)
         {
-            var paramElement = MapStoredProcParameterToElement(parameter, storedProc, procElement.Id, package, udtDataContracts);
+            var paramElement = MapStoredProcParameterToElement(parameter, storedProc, procElement.Id, package, udtDataContracts, isEfRepositoriesInstalled);
             procElement.ChildElements.Add(paramElement);
         }
 
@@ -335,7 +336,8 @@ internal static class IntentModelMapper
         string repositoryId,
         PackageModelPersistable package,
         DeduplicationContext? deduplicationContext,
-        Dictionary<string, string>? udtDataContracts)
+        Dictionary<string, string>? udtDataContracts,
+        bool isEfRepositoriesInstalled)
     {
         var operationElement = new ElementPersistable
         {
@@ -364,11 +366,11 @@ internal static class IntentModelMapper
             PackageName = package.Name,
             Traits =
             [
-                new ImplementedTraitPersistable
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "[Invokable]"
-                }
+            new ImplementedTraitPersistable
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "[Invokable]"
+            }
             ],
             Stereotypes = [],
             Metadata = [],
@@ -378,7 +380,7 @@ internal static class IntentModelMapper
         // Map parameters
         foreach (var parameter in storedProc.Parameters)
         {
-            var paramElement = MapStoredProcParameterToOperation(parameter, operationElement.Id, package, udtDataContracts);
+            var paramElement = MapStoredProcParameterToOperation(parameter, operationElement.Id, package, udtDataContracts, isEfRepositoriesInstalled);
             operationElement.ChildElements.Add(paramElement);
         }
 
@@ -419,7 +421,7 @@ internal static class IntentModelMapper
             var attribute = MapResultSetColumnToAttribute(resultColumn, dataContract.Id, storedProc.Name, storedProc.Schema, resultColumn.Name, config, deduplicationContext);
             dataContract.ChildElements.Add(attribute);
 
-            // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
+        // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
         }
 
         return dataContract;
@@ -464,7 +466,7 @@ internal static class IntentModelMapper
             var attribute = MapUserDefinedTableColumnToAttribute(column, dataContract.Id, udtSchema.Name, udtSchema.Schema, column.Name, config, deduplicationContext);
             dataContract.ChildElements.Add(attribute);
 
-            // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
+        // Stereotypes will be applied by DbSchemaIntentMetadataMerger after sync
         }
 
         return dataContract;
@@ -755,7 +757,7 @@ internal static class IntentModelMapper
         var sourcePkColumns = sourceTable.Columns.Where(c => c.IsPrimaryKey).Select(c => c.Name).ToHashSet();
         var fkColumnNames = foreignKey.Columns.Select(c => c.Name).ToHashSet();
         var isOneToOne = sourcePkColumns.Count == fkColumnNames.Count &&
-                       fkColumnNames.All(fk => sourcePkColumns.Contains(fk));
+            fkColumnNames.All(fk => sourcePkColumns.Contains(fk));
         return isOneToOne;
     }
 
@@ -848,9 +850,9 @@ internal static class IntentModelMapper
     /// <summary>
     /// Maps a stored procedure parameter to a stored procedure element with UserDefinedTable DataContract support
     /// </summary>
-    private static ElementPersistable MapStoredProcParameterToElement(StoredProcedureParameterSchema parameter, StoredProcedureSchema storedProc, string storedProcId, PackageModelPersistable package, Dictionary<string, string>? udtDataContracts)
+    private static ElementPersistable MapStoredProcParameterToElement(StoredProcedureParameterSchema parameter, StoredProcedureSchema storedProc, string storedProcId, PackageModelPersistable package, Dictionary<string, string>? udtDataContracts, bool isEfRepositoriesInstalled)
     {
-        var paramName = ModelNamingUtilities.GetParameterName(parameter.Name);
+        var paramName = ModelNamingUtilities.GetParameterName(parameter.Name, applyFormatting: isEfRepositoriesInstalled);
         var isOutputParam = parameter.Direction == StoredProcedureParameterDirection.Out || parameter.Direction == StoredProcedureParameterDirection.Both;
         var externalRef = isOutputParam
             ? ModelNamingUtilities.GetStoredProcedureOutputParameterExternalReference(storedProc.Schema, storedProc.Name, parameter.Name)
@@ -880,9 +882,9 @@ internal static class IntentModelMapper
     /// <summary>
     /// Maps a stored procedure parameter to an operation parameter with UserDefinedTable DataContract support
     /// </summary>
-    private static ElementPersistable MapStoredProcParameterToOperation(StoredProcedureParameterSchema parameter, string operationId, PackageModelPersistable package, Dictionary<string, string>? udtDataContracts)
+    private static ElementPersistable MapStoredProcParameterToOperation(StoredProcedureParameterSchema parameter, string operationId, PackageModelPersistable package, Dictionary<string, string>? udtDataContracts, bool isEfRepositoriesInstalled)
     {
-        var paramName = ModelNamingUtilities.GetParameterName(parameter.Name);
+        var paramName = ModelNamingUtilities.GetParameterName(parameter.Name, applyFormatting: isEfRepositoriesInstalled);
 
         return new ElementPersistable
         {

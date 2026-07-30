@@ -91,7 +91,16 @@ public class DatabaseImport : IModuleTask
         }
         finally
         {
-            SettingsHelper.PersistSettings(importModel);
+            // Remembering the settings is a convenience - never fail an otherwise successful import
+            // because of it, and never let it replace the exception that actually broke the import.
+            try
+            {
+                SettingsHelper.PersistSettings(importModel);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Warning($"Unable to persist database import settings: {exception.Message}");
+            }
         }
 
         return null;
@@ -99,22 +108,49 @@ public class DatabaseImport : IModuleTask
 
     private DatabaseImportModel PrepareInputModel(DatabaseImportModel inputModel)
     {
-        if (string.IsNullOrWhiteSpace(inputModel.StoredProcedureType))
-        {
-            inputModel.StoredProcedureType = "Default";
-        }
-
-        if (string.IsNullOrWhiteSpace(inputModel.AttributeNameConvention))
-        {
-            inputModel.AttributeNameConvention = "Default";
-        }
-
         if (!_metadataManager.TryGetApplicationPackage(inputModel.ApplicationId, inputModel.PackageId, out var package, out _))
         {
             throw new Exception($"Package {inputModel.PackageId} for Application {inputModel.ApplicationId} doesn't exist");
         }
 
         inputModel.PackageFileName = package.FileLocation;
+
+        var resolvedSettings = SettingsHelper.ResolveDatabaseImportSettings(inputModel.PackageFileName!).Settings;
+
+        if (string.IsNullOrWhiteSpace(inputModel.StoredProcedureType))
+        {
+            inputModel.StoredProcedureType = resolvedSettings.StoredProcedureType;
+        }
+
+        if (string.IsNullOrWhiteSpace(inputModel.AttributeNameConvention))
+        {
+            inputModel.AttributeNameConvention = resolvedSettings.AttributeNameConvention;
+        }
+
+        if (string.IsNullOrWhiteSpace(inputModel.EntityNameConvention))
+        {
+            inputModel.EntityNameConvention = resolvedSettings.EntityNameConvention;
+        }
+
+        if (string.IsNullOrWhiteSpace(inputModel.TableStereotype))
+        {
+            inputModel.TableStereotype = resolvedSettings.TableStereotypes;
+        }
+
+        if (string.IsNullOrWhiteSpace(inputModel.FilterType))
+        {
+            inputModel.FilterType = resolvedSettings.FilterType;
+        }
+
+        if (string.IsNullOrWhiteSpace(inputModel.ImportFilterFilePath))
+        {
+            inputModel.ImportFilterFilePath = resolvedSettings.ImportFilterFilePath;
+        }
+
+        if (inputModel.DatabaseType == default)
+        {
+            inputModel.DatabaseType = Enum.Parse<DatabaseType>(resolvedSettings.DatabaseType);
+        }
 
         // Making required changes for the underlying CLI tool
         var adaptedModel = new DatabaseImportModel(inputModel);

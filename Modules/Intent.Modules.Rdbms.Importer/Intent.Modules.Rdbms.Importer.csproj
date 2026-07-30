@@ -20,12 +20,6 @@
     <PackageReference Include="NuGet.Versioning" Version="5.6.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Microsoft.Data.SqlClient">
-      <HintPath>resources\tool\Microsoft.Data.SqlClient.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  
   <PropertyGroup>
     <CliProjectName>Intent.RelationalDbSchemaImporter.CLI</CliProjectName>
   </PropertyGroup>

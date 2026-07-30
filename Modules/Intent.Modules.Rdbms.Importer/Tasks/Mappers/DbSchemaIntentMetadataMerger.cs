@@ -269,14 +269,14 @@ internal class DbSchemaIntentMetadataMerger
             if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
             {
                 // Preserve parent folder ID - don't move the element (user may have moved it)
-                var updatedElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, existingElement.ParentFolderId, package, null, udtDataContracts);
+                var updatedElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, existingElement.ParentFolderId, package, null, udtDataContracts, _config.IsEfRepositoriesInstalled);
                 SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, preserveElementTypes, result);
                 RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingElement, _config.IsEfRepositoriesInstalled);
             }
             else
             {
                 // Preserve parent repository ID - don't move the element (user may have moved it)
-                var updatedElement = IntentModelMapper.MapStoredProcedureToOperation(procName, storedProc, existingElement.ParentFolderId, package, null, udtDataContracts);
+                var updatedElement = IntentModelMapper.MapStoredProcedureToOperation(procName, storedProc, existingElement.ParentFolderId, package, null, udtDataContracts, _config.IsEfRepositoriesInstalled);
                 SyncElements(package, existingElement, updatedElement, _config.AllowDeletions, preserveElementTypes, result);
                 RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingElement, _config.IsEfRepositoriesInstalled);
             }
@@ -299,12 +299,12 @@ internal class DbSchemaIntentMetadataMerger
             // Create new stored procedure element in the configured repository
             if (_config.StoredProcedureType == StoredProcedureType.StoredProcedureElement)
             {
-                procElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
+                procElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts, _config.IsEfRepositoriesInstalled);
                 RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, procElement, _config.IsEfRepositoriesInstalled);
             }
             else
             {
-                procElement = IntentModelMapper.MapStoredProcedureToOperation(procName, storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
+                procElement = IntentModelMapper.MapStoredProcedureToOperation(procName, storedProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts, _config.IsEfRepositoriesInstalled);
                 RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, procElement, _config.IsEfRepositoriesInstalled);
             }
             
@@ -371,7 +371,7 @@ internal class DbSchemaIntentMetadataMerger
             var preservedSpTypeId = existingSpElement.TypeReference.TypeId;
 
             // Update existing - but don't change parentFolderId (user may have moved it)
-            var updatedElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, existingSpElement.ParentFolderId, package, null, udtDataContracts);
+            var updatedElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, existingSpElement.ParentFolderId, package, null, udtDataContracts, _config.IsEfRepositoriesInstalled);
             SyncElements(package, existingSpElement, updatedElement, _config.AllowDeletions, preserveElementTypes, result);
             RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, existingSpElement, _config.IsEfRepositoriesInstalled);
 
@@ -391,7 +391,7 @@ internal class DbSchemaIntentMetadataMerger
         else
         {
             // Create new - place at package level initially (pass null for repositoryId to avoid "Sp" prefix)
-            storedProcElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, null, package, deduplicationContext, udtDataContracts);
+            storedProcElement = IntentModelMapper.MapStoredProcedureToElement(procName, storedProc, null, package, deduplicationContext, udtDataContracts, _config.IsEfRepositoriesInstalled);
             storedProcElement.ParentFolderId = package.Id; // Set parent to package level
             RdbmsSchemaAnnotator.ApplyStoredProcedureElementSettings(storedProc, storedProcElement, _config.IsEfRepositoriesInstalled);
             package.Classes.Add(storedProcElement);
@@ -472,7 +472,7 @@ internal class DbSchemaIntentMetadataMerger
             var preservedOperationTypeId = existingOperation.TypeReference.TypeId;
 
             // Preserve parent repository ID - don't move the element (user may have moved it)
-            var updatedOperation = IntentModelMapper.MapStoredProcedureToOperation(procName, tempStoredProc, existingOperation.ParentFolderId, package, null, udtDataContracts);
+            var updatedOperation = IntentModelMapper.MapStoredProcedureToOperation(procName, tempStoredProc, existingOperation.ParentFolderId, package, null, udtDataContracts, _config.IsEfRepositoriesInstalled);
             SyncElements(package, existingOperation, updatedOperation, _config.AllowDeletions, preserveElementTypes, result);
             RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, existingOperation, _config.IsEfRepositoriesInstalled);
 
@@ -504,7 +504,7 @@ internal class DbSchemaIntentMetadataMerger
                 Metadata = storedProc.Metadata
             };
 
-            operationElement = IntentModelMapper.MapStoredProcedureToOperation(procName, tempStoredProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts);
+            operationElement = IntentModelMapper.MapStoredProcedureToOperation(procName, tempStoredProc, repositoryElement.Id, package, deduplicationContext, udtDataContracts, _config.IsEfRepositoriesInstalled);
             RdbmsSchemaAnnotator.ApplyStoredProcedureOperationSettings(storedProc, operationElement, _config.IsEfRepositoriesInstalled);
             repositoryElement.ChildElements.Add(operationElement);
         }

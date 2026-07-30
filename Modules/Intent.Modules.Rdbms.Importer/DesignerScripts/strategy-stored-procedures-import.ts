@@ -2,56 +2,76 @@
 /// <reference path="./icons.ts" />
 
 class StoredProceduresImportStrategy {
+    private static readonly inheritSettingsMessage = "Connection string could not be determined. Please enter a connection string, or rerun the Database Import process and ensure the connection string is persisted.";
+
+    // The host renders a field hint as "md-input-container .hint", which is absolutely positioned at
+    // bottom: 7px over space reserved for a single line - so a hint that wraps grows upwards over the
+    // input itself. Keep these on one line (the longest that renders correctly here is ~70 chars);
+    // inheritSettingsMessage carries the full explanation where there is room for it.
+    private static readonly noInheritedConnectionStringHint = "No inherited connection string - please enter one.";
+    private static readonly noInheritedDatabaseTypeHint = "No inherited database type - please select one.";
+    private static readonly inheritDatabaseTypeTip = "Or inherit it - set Remember Settings to Inherit Database Settings.";
+
+    // Resolved once the dialog is open (see presentImportDialog's onInitialize) so that the
+    // settings-resolution module task is never invoked while no dialog is showing.
+    private inheritedSettings: IInheritedDatabaseImportSettings | null = null;
+
     public async execute(repositoryElement: MacroApi.Context.IElementApi): Promise<void> {
-        let defaults = this.getDialogDefaults(repositoryElement);
-        let capturedInput = await this.presentImportDialog(defaults);
+        let capturedInput = await this.presentImportDialog(repositoryElement);
         if (capturedInput == null) {
             return;
         }
 
-        let importModel = await this.createImportModel(capturedInput);
-        if (importModel == null) {
-            return;
-        }
-
-        launchHostedModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcedureImport", [JSON.stringify(importModel)]);
+        launchHostedModuleTask("Intent.Modules.Rdbms.Importer.Tasks.StoredProcedureImport", [JSON.stringify(this.createImportModel(capturedInput))]);
     }
 
-    private getDialogDefaults(element: MacroApi.Context.IElementApi): ISqlStoredProceduresImportPackageSettings {
-        let domainPackage = element.getPackage();
 
-        let result: ISqlStoredProceduresImportPackageSettings = {
-            inheritedConnectionString: this.getSettingValue(domainPackage, "rdbms-import:connectionString", null),
-            inheritedDatabaseType: this.getSettingValue(domainPackage, "rdbms-import:databaseType", null),
-            connectionString: this.getSettingValue(domainPackage, "rdbms-import-repository:connectionString", null),
-            storedProcedureType: this.getSettingValue(domainPackage, "rdbms-import-repository:storedProcedureType", ""),
-            storedProcNames: "",
-            settingPersistence: this.getSettingValue(domainPackage, "rdbms-import-repository:settingPersistence", "None"),
-            databaseType: this.getSettingValue(domainPackage, "rdbms-import-repository:databaseType", "")
-        };
-
-        return result;
-    }
-
-    private async presentImportDialog(defaults: ISqlStoredProceduresImportPackageSettings): Promise<any> {
+    private async presentImportDialog(repositoryElement: MacroApi.Context.IElementApi): Promise<any> {
         let formConfig: MacroApi.Context.IDynamicFormConfig = {
             title: "RDBMS Import",
+            onInitialize: async (form) => {
+                let persistedSettings: IRepositoryImportSettingsResolutionResult;
+                try {
+                    persistedSettings = await this.getPersistedSettings(repositoryElement);
+                } catch (error) {
+                    this.inheritedSettings = null;
+                    await dialogService.error(`Unable to load persisted stored procedure import settings: ${error}`);
+                    // settingPersistence is still unset here, so both connection fields stay required.
+                    this.applyConnectionRequirements(form);
+                    return;
+                }
+
+                this.inheritedSettings = {
+                    connectionString: persistedSettings.inheritedConnectionString,
+                    databaseType: persistedSettings.inheritedDatabaseType
+                };
+
+                form.getField("connectionString").value = persistedSettings.connectionString;
+                form.getField("databaseType").value = persistedSettings.databaseType;
+                form.getField("storedProcedureType").value = persistedSettings.storedProcedureType;
+                form.getField("settingPersistence").value = persistedSettings.settingPersistence;
+
+                this.applyConnectionRequirements(form);
+            },
             fields: [
                 {
                     id: "connectionString",
                     fieldType: "text",
                     label: "Connection String",
-                    placeholder: "(optional if inherited setting)",
+                    // Defaults match the required state below; applyConnectionRequirements relaxes both.
+                    placeholder: "Enter a connection string",
                     hint: null,
-                    value: defaults.connectionString
+                    isRequired: true
                 },
                 {
                     id: "databaseType",
                     fieldType: "select",
                     label: "Database Type",
-                    value: defaults.databaseType,
+                    isRequired: true,
                     selectOptions: [
-                        { id: "", description: "(default or inherited setting)" },
+                        // Not "(default...)": the import task has no fallback and fails on a missing
+                        // database type, so blank is only ever resolved by inheriting.
+                        { id: "", description: "(inherited setting)" },
                         { id: "SqlServer", description: "SQL Server" },
                         { id: "PostgreSQL", description: "PostgreSQL" },
                     ]
@@ -60,9 +80,10 @@ class StoredProceduresImportStrategy {
                     id: "storedProcedureType",
                     fieldType: "select",
                     label: "Stored Procedure Representation",
-                    value: defaults.storedProcedureType,
                     selectOptions: [
-                        { id: "", description: "(default or inherited setting)" },
+                        // This one genuinely has a default (StoredProcedureType.Default) and is never
+                        // inherited from the Database Import settings.
+                        { id: "", description: "(default)" },
                         { id: "StoredProcedureElement", description: "Stored Procedure Element" },
                         { id: "RepositoryOperation", description: "Stored Procedure Operation" },
                         { id: "RepositoryOperationMapping", description: "Stored Procedure Element mapped to Operation Element" }
@@ -74,7 +95,6 @@ class StoredProceduresImportStrategy {
                     label: "Stored Procedure Names",
                     placeholder: "Enter Stored Procedure names (comma-separated) or use Browse button",
                     hint: "Enter Stored procedure names (comma-separated) or use the browse button.",
-                    value: defaults.storedProcNames,
                     isRequired: true
                 },
                 {
@@ -86,23 +106,18 @@ class StoredProceduresImportStrategy {
                         const settingPersistenceValue = form.getField("settingPersistence").value as string;
                         const databaseTypeValue = form.getField("databaseType").value as string;
 
-                        if (settingPersistenceValue != "InheritDb" && (connectionStringValue == null || connectionStringValue?.trim() === "")) {
-                            await dialogService.error("Please enter a connection string (or inherit DB settings) before browsing stored procedures.");
+                        const resolved = this.resolveConnectionSettings(settingPersistenceValue, connectionStringValue, databaseTypeValue);
+
+                        const validationError = this.getConnectionValidationError(resolved);
+                        if (validationError != null) {
+                            await dialogService.error(validationError);
                             return;
                         }
 
-                        if (settingPersistenceValue != "InheritDb" && (!databaseTypeValue || databaseTypeValue?.trim() === "")) {
-                            await dialogService.error("Database Type was not set.");
-                            return null;
-                        }
-
-                        let connectionStringStr = settingPersistenceValue == "InheritDb" ? defaults.inheritedConnectionString : connectionStringValue;
-                        let dataTypeStr = settingPersistenceValue == "InheritDb" ? defaults.inheritedDatabaseType : databaseTypeValue;
-
                         let storedProcNames = form.getField("storedProcNames").value as string;
-                        let capturedStoredProcs = (storedProcNames).split(",").map(x => x.trim());
+                        let capturedStoredProcs = (storedProcNames ?? "").split(",").map(x => x.trim());
 
-                        const selectedProcs = await this.openStoredProcedureBrowseDialog(connectionStringStr, dataTypeStr, capturedStoredProcs);
+                        const selectedProcs = await this.openStoredProcedureBrowseDialog(resolved.connectionString, resolved.databaseType, capturedStoredProcs);
                         if (selectedProcs.length > 0) {
                             const storedProcNamesField = form.getField("storedProcNames");
                             storedProcNamesField.value = selectedProcs.join(", ");
@@ -112,15 +127,16 @@ class StoredProceduresImportStrategy {
                 {
                     id: "settingPersistence",
                     fieldType: "select",
-                    label: "Persist Settings",
+                    label: "Remember Settings",
                     hint: "Remember these settings for next time you run the import",
-                    value: defaults.settingPersistence,
+                    onChange: (form) => this.applyConnectionRequirements(form),
                     selectOptions: [
-                        { id: "None", description: "(None)" },
+                        { id: "None", description: "Don't Remember" },
                         { id: "InheritDb", description: "Inherit Database Settings" },
-                        { id: "All", description: "All Settings" },
-                        { id: "AllSanitisedConnectionString", description: "All (with Sanitized connection string, no password))" },
-                        { id: "AllWithoutConnectionString", description: "All (without connection string))" }
+                        { id: "UserLocal", description: "Only for me (user-local)" },
+                        { id: "SharedMetadata", description: "Team-shared metadata" },
+                        { id: "SharedMetadataSanitisedConnectionString", description: "Team-shared metadata (sanitized connection string, no password)" },
+                        { id: "SharedMetadataWithoutConnectionString", description: "Team-shared metadata (without connection string)" }
                     ]
                 }
             ]
@@ -130,18 +146,9 @@ class StoredProceduresImportStrategy {
         return capturedInput;
     }
 
-    private async createImportModel(capturedInput: any): Promise<IStoredProceduresImportModel | null> {
-        if (capturedInput.settingPersistence != "InheritDb" && (!capturedInput.connectionString || capturedInput.connectionString?.trim() === "")) {
-            await dialogService.error("Connection String was not set.");
-            return null;
-        }
-
-        if (capturedInput.settingPersistence != "InheritDb" && (!capturedInput.databaseType || capturedInput.databaseType?.trim() === "")) {
-            await dialogService.error("Database Type was not set.");
-            return null;
-        }
-
+    private createImportModel(capturedInput: any): IStoredProceduresImportModel {
         const storedProcNamesArray = capturedInput.storedProcNames.split(',').map((name: string) => name.trim());
+
 
         const domainDesignerId: string = "6ab29b31-27af-4f56-a67c-986d82097d63";
 
@@ -160,10 +167,113 @@ class StoredProceduresImportStrategy {
         return importConfig;
     }
 
-    private getSettingValue(domainPackage: MacroApi.Context.IPackageApi, key: string, defaultValue: string): string {
-        let persistedValue = domainPackage.getMetadata(key);
-        return persistedValue ? persistedValue : defaultValue;
+    /**
+    * The host gates the Done button on AngularJS form validity, checked BEFORE onContinue, so the
+    * connection rules are expressed as isRequired flags rather than by rejecting onContinue -
+    * a rejection replaces the form with a page-level error that nothing can clear.
+    *
+    * Both fields are required by default; inheriting relaxes them only when the inherited database
+    * import settings are actually usable.
+    */
+    private applyConnectionRequirements(form: MacroApi.Context.IDynamicFormApi): void {
+        const settingPersistence = form.getField("settingPersistence").value as string;
+        const isInheriting = settingPersistence == "InheritDb";
+        const canInherit = this.canInherit(settingPersistence);
+
+        const connectionStringField = form.getField("connectionString");
+        connectionStringField.isRequired = !canInherit;
+        // Explain why a connection string is still needed despite "Inherit Database Settings".
+        connectionStringField.hint = isInheriting && !canInherit
+            ? StoredProceduresImportStrategy.noInheritedConnectionStringHint
+            : null;
+        connectionStringField.hintType = isInheriting && !canInherit ? "warning" : null;
+        // "(optional...)" would otherwise show on a field that is currently required.
+        connectionStringField.placeholder = canInherit
+            ? "(inherited setting)"
+            : "Enter a connection string";
+
+        const databaseTypeField = form.getField("databaseType");
+        databaseTypeField.isRequired = !canInherit;
+        if (canInherit) {
+            databaseTypeField.hint = null;
+            databaseTypeField.hintType = null;
+        } else if (isInheriting) {
+            databaseTypeField.hint = StoredProceduresImportStrategy.noInheritedDatabaseTypeHint;
+            databaseTypeField.hintType = "warning";
+        } else {
+            // Carries the guidance the old rejection message had: inheriting is the alternative.
+            databaseTypeField.hint = StoredProceduresImportStrategy.inheritDatabaseTypeTip;
+            databaseTypeField.hintType = null;
+        }
     }
+
+    /**
+    * Whether the import can rely on the package-level Database Import settings: the user asked to
+    * inherit them AND the resolved values are usable. Single-sourced here so the form's isRequired
+    * gating and the Browse button's guard cannot disagree about when inheriting is viable.
+    */
+    private canInherit(settingPersistence: string): boolean {
+        const hasConnectionString = (this.inheritedSettings?.connectionString ?? "").trim() !== "";
+        const hasDatabaseType = (this.inheritedSettings?.databaseType ?? "").trim() !== "";
+
+        return settingPersistence == "InheritDb" && hasConnectionString && hasDatabaseType;
+    }
+
+    /**
+    * The connection settings the import will actually use. A value entered on the dialog always wins;
+    * the inherited package-level Database Import settings only fill in what was left blank, and only
+    * when the user opted into inheriting. Mirrors SettingsHelper.ApplyInheritedDbSettings, which
+    * applies the same precedence when the import itself runs.
+    */
+    private resolveConnectionSettings(settingPersistence: string, connectionString: string, databaseType: string): IInheritedDatabaseImportSettings {
+        const isInheriting = settingPersistence == "InheritDb";
+
+        return {
+            connectionString: (connectionString ?? "").trim() !== ""
+                ? connectionString
+                : isInheriting ? this.inheritedSettings?.connectionString : null,
+            databaseType: (databaseType ?? "").trim() !== ""
+                ? databaseType
+                : isInheriting ? this.inheritedSettings?.databaseType : null
+        };
+    }
+
+    /**
+    * The connection rules used by the Browse button, which is not gated by form validity. Validates
+    * what will actually be used, so an explicitly entered connection string and database type are
+    * always sufficient - including under "Inherit Database Settings" when nothing usable could be
+    * inherited, which is exactly the case applyConnectionRequirements prompts the user to fill in.
+    */
+    private getConnectionValidationError(resolved: IInheritedDatabaseImportSettings): string | null {
+        if ((resolved.connectionString ?? "").trim() === "") {
+            return StoredProceduresImportStrategy.inheritSettingsMessage;
+        }
+
+        if ((resolved.databaseType ?? "").trim() === "") {
+            return "Please select a Database Type, or configure the package-level Database Import settings and switch Remember Settings to Inherit Database Settings.";
+        }
+
+        return null;
+    }
+
+    private async getPersistedSettings(element: MacroApi.Context.IElementApi): Promise<IRepositoryImportSettingsResolutionResult> {
+        const resolutionModel = {
+            applicationId: application.id,
+            packageId: element.getPackage().id
+        };
+
+        const executionResult = await executeImporterModuleTask(
+            "Intent.Modules.Rdbms.Importer.Tasks.StoredProcedureImportSettingsResolution",
+            resolutionModel);
+
+        if ((executionResult.errors ?? []).length > 0 || executionResult.result == null) {
+            throw new Error("Unable to resolve persisted stored procedure import settings.");
+        }
+
+        return executionResult.result as IRepositoryImportSettingsResolutionResult;
+    }
+
+
 
     private async openStoredProcedureBrowseDialog(connectionString: string, databaseType: string, preSelectedStoredProcs: string[]): Promise<string[]> {
         let inputProcs = this.sanitizePreSelectedStoredProcs(preSelectedStoredProcs);
@@ -265,16 +375,6 @@ class StoredProceduresImportStrategy {
     }
 }
 
-interface ISqlStoredProceduresImportPackageSettings {
-    inheritedConnectionString: string;
-    inheritedDatabaseType: string;
-    connectionString: string;
-    storedProcedureType: string;
-    storedProcNames: string;
-    settingPersistence: string;
-    databaseType: string;
-}
-
 interface IStoredProceduresImportModel {
     applicationId: string;
     designerId: string;
@@ -286,6 +386,23 @@ interface IStoredProceduresImportModel {
     settingPersistence: string;
     databaseType: string;
 }
+
+interface IInheritedDatabaseImportSettings {
+    connectionString: string;
+    databaseType: string;
+}
+
+interface IRepositoryImportSettingsResolutionResult {
+    connectionString: string;
+    databaseType: string;
+    storedProcedureType: string;
+    settingPersistence: string;
+    source: string;
+    userLocalSettingsPath: string;
+    inheritedConnectionString: string;
+    inheritedDatabaseType: string;
+}
+
 
 interface IStoredProcListInputModel {
     connectionString: string;

@@ -69,11 +69,15 @@ internal static class ModelNamingUtilities
         return deduplicationContext?.DeduplicateStoredProcedure(normalized, schema) ?? normalized;
     }
 
-    public static string GetParameterName(string paramName, HashSet<char>? charsToPreserve = null)
+    public static string GetParameterName(string paramName, HashSet<char>? charsToPreserve = null, bool applyFormatting = true)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(paramName);
         // Remove @ prefix if present and convert to camelCase
         var normalized = paramName.StartsWith("@") ? paramName.Substring(1) : paramName;
+        if (!applyFormatting)
+        {
+            return normalized;
+        }
         normalized = ToCSharpIdentifier(normalized, null, charsToPreserve);
         return normalized.ToCamelCase();
     }

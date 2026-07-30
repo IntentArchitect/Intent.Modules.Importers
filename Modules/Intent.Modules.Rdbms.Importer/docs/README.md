@@ -1,4 +1,4 @@
-﻿# Intent.Rdbms.Importer
+# Intent.Rdbms.Importer
 
 This module adds to the Domain Designer the ability to import / reverse engineer domain models from relational databases such as SQL Server and PostgreSQL.
 
@@ -13,7 +13,7 @@ Selecting this option will provide you with the following dialog:
 ![Database Import dialog](images/db-import-dialog.png)
 
 > [!NOTE]
-> 
+>
 > The dialog is organized into **collapsible sections** for a better user experience.
 
 ### Connection & Settings Section
@@ -35,13 +35,19 @@ Select the type of database you're connecting to:
 
 #### Remember Settings
 
-The dialog can remember your configuration for the next time you want to run it. If you choose to persist the settings, they are saved in the `Domain Package` which is committed in your source code repository.
-If you have any concerns around committing connection string in your code base, use the relevant option to avoid this.
+The dialog resolves remembered settings in: **user-local settings**, **team-shared package metadata**, or not at all.
 
-- **Don't Remember** - Settings will not be persisted and remembered. Previously saved configuration will be deleted.
-- **All (with Sanitized connection string, no password)** - All settings will be persisted. If the connection string has a password in it, the password will not be persisted.
-- **All (without connection string)** - All settings, except for the connection string, will be persisted.
-- **All Settings** - All settings will be persisted.
+- **Don't Remember** - Clears the user-local settings file for the current domain package and any team-shared package metadata settings for database import.
+- **Only for me (user-local)** - Saves all settings for the current domain package to a user-local file under `%APPDATA%\Intent Architect\Intent.Modules.Rdbms.Importer\v1\`, outside source control. Multiple domain packages can keep independent local settings, and the dialog will prefer that package's local settings on next open.
+- **Team-shared metadata** - Saves all settings into package metadata that is typically source-controlled and shared with the team.
+
+- **Team-shared metadata (sanitized connection string, no password)** - Saves the shared metadata variant, but strips any password from the persisted connection string.
+- **Team-shared metadata (without connection string)** - Saves shared metadata, excluding the connection string.
+
+> [!NOTE]
+> Older package metadata persisted using the previous **All Settings** naming continues to load as the **Team-shared metadata** mode for backward compatibility.
+>
+> User-local settings files written by earlier versions of this module are also still read, so upgrading does not lose remembered settings. Files are rewritten in the current format the next time you run an import.
 
 ### Import Options Section
 
@@ -63,8 +69,7 @@ This setting controls how database column names are converted to attribute names
 
 #### Apply Table Stereotypes
 
-This setting controls under which conditions Table stereotypes are applied to the Entities. Table stereotypes are used to specify the underlying SQL Table name.
-Sometimes Entity names may not be directly translatable back to the original table name due to differences in allowable character sets.
+This setting controls under which conditions Table stereotypes are applied to the Entities. Table stereotypes are used to specify the underlying SQL Table name. Sometimes Entity names may not be directly translatable back to the original table name due to differences in allowable character sets.
 
 - **If They Differ** - Only introduce Table stereotypes if the Entity name does not translate back to the original table name.
 - **Always** - Always add explicit table names.
@@ -150,7 +155,7 @@ When checked, the importer will automatically also import dependent tables of th
 A tree view of database objects organized by schema, with separate categories for:
 
 - **Tables** - Database tables
-- **Views** - Database views  
+- **Views** - Database views
 - **Stored Procedures** - Database stored procedures
 
 Items can be checked to specify whether they should be included or excluded depending on the [Filter Type](#filter-type) option selected above.
@@ -206,24 +211,63 @@ The filter file should follow this JSON structure:
 
 #### Filter File Fields
 
-| JSON Field                | Description |
-|---------------------------|-------------|
-| `filter_type`             | Specifies how the filter should be applied. Valid values: `"include"` (only import selected items) or `"exclude"` (import everything except selected items). Default: `"include"`. |
-| `schemas`                 | Database schema names to import. If empty, all schemas are imported. If specified, only these schemas are imported. |
-| `include_dependant_tables`| Determines whether foreign key dependent tables of included tables are automatically included (default: `false`). All dependent tables will be included, unless explicitly excluded by `exclude_tables`. |
-| `include_tables`          | Database tables to import. If empty, all tables are imported. If specified, only these tables are imported. Tables should be specified in `schema.name` format. Each table can have specific columns excluded. |
-| `include_views`           | Database views to import. If empty, all views are imported. If specified, only these views are imported. Views should be specified in `schema.name` format. Each view can have specific columns excluded. |
-| `include_stored_procedures` | Database stored procedures to import. If empty, all stored procedures are imported. If specified, only these stored procedures are imported. Should be specified in `schema.name` format. |
-| `exclude_tables`          | Database tables to exclude from import. Include settings take precedence over exclude settings if the same item is found. Should be specified in `schema.name` format. |
-| `exclude_views`           | Database views to exclude from import. Include settings take precedence over exclude settings if the same item is found. Should be specified in `schema.name` format. |
-| `exclude_stored_procedures` | Database stored procedures to exclude from import. Include settings take precedence over exclude settings if the same item is found. Should be specified in `schema.name` format. |
-| `exclude_table_columns`   | A list of column names that should be excluded from import if they are found in any table during the import process. Useful for globally excluding audit columns like `CreatedBy`, `ModifiedDate`, etc. |
-| `exclude_view_columns`    | A list of column names that should be excluded from import if they are found in any view during the import process. |
+| JSON Field                  | Description                                                                                                                                                                                                    |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `filter_type`               | Specifies how the filter should be applied. Valid values: `"include"` (only import selected items) or `"exclude"` (import everything except selected items). Default: `"include"`.                             |
+| `schemas`                   | Database schema names to import. If empty, all schemas are imported. If specified, only these schemas are imported.                                                                                            |
+| `include_dependant_tables`  | Determines whether foreign key dependent tables of included tables are automatically included (default: `false`). All dependent tables will be included, unless explicitly excluded by `exclude_tables`.       |
+| `include_tables`            | Database tables to import. If empty, all tables are imported. If specified, only these tables are imported. Tables should be specified in `schema.name` format. Each table can have specific columns excluded. |
+| `include_views`             | Database views to import. If empty, all views are imported. If specified, only these views are imported. Views should be specified in `schema.name` format. Each view can have specific columns excluded.      |
+| `include_stored_procedures` | Database stored procedures to import. If empty, all stored procedures are imported. If specified, only these stored procedures are imported. Should be specified in `schema.name` format.                      |
+| `exclude_tables`            | Database tables to exclude from import. Include settings take precedence over exclude settings if the same item is found. Should be specified in `schema.name` format.                                         |
+| `exclude_views`             | Database views to exclude from import. Include settings take precedence over exclude settings if the same item is found. Should be specified in `schema.name` format.                                          |
+| `exclude_stored_procedures` | Database stored procedures to exclude from import. Include settings take precedence over exclude settings if the same item is found. Should be specified in `schema.name` format.                              |
+| `exclude_table_columns`     | A list of column names that should be excluded from import if they are found in any table during the import process. Useful for globally excluding audit columns like `CreatedBy`, `ModifiedDate`, etc.        |
+| `exclude_view_columns`      | A list of column names that should be excluded from import if they are found in any view during the import process.                                                                                            |
 
 > [!TIP]
 > The wizard's visual selection tree automatically manages the filter file for you. Any selections made in the tree view are saved to the specified filter file when you complete the wizard.
 
 ## Stored Procedure Imports
+
+Stored procedure import still supports **Inherit Database Settings**, but those inherited values now come from the same layered database-import resolution: user-local settings first, then shared package metadata, then built-in defaults. This preserves compatibility with older metadata-backed imports while allowing personal connection settings to remain local.
+
+### Remember Settings
+
+The stored procedure import dialog keeps its own remembered settings, entirely separate from the Database Import dialog's. It resolves them in the same layers: **user-local settings first**, then **team-shared package metadata**, and finally **built-in defaults**.
+
+- **Don't Remember** - Clears the user-local stored procedure settings file for the current domain package and any team-shared package metadata settings for stored procedure import.
+- **Inherit Database Settings** - Falls back to the connection string and database type from the resolved Database Import settings for whatever you leave blank. Anything you do enter takes precedence and is remembered - see [Overriding Inherited Connection Settings](#overriding-inherited-connection-settings).
+- **Only for me (user-local)** - Saves the connection string, database type and stored procedure representation for the current domain package to a user-local file under `%APPDATA%\Intent Architect\Intent.Modules.Rdbms.Importer\v1\`, outside source control. The file is named `db-import-<hash>.storedprocs.json`, alongside but independent of the database import's `db-import-<hash>.json`.
+- **Team-shared metadata** - Saves these settings into package metadata that is typically source-controlled and shared with the team.
+- **Team-shared metadata (sanitized connection string, no password)** - Saves the shared metadata variant, but strips any password from the persisted connection string.
+- **Team-shared metadata (without connection string)** - Saves shared metadata, excluding the connection string.
+
+Stored procedure names are never remembered; the field starts blank each time the dialog opens.
+
+> [!NOTE]
+> Older package metadata persisted using the previous **All Settings** naming continues to load as the **Team-shared metadata** mode for backward compatibility.
+
+### Connection String and Database Type
+
+These two fields are only optional when there is something usable to inherit - that is, when **Remember Settings** is set to **Inherit Database Settings** _and_ the resolved Database Import settings supply both a connection string and a database type.
+
+- When both can be inherited, the fields show a `(inherited setting)` placeholder and may be left blank.
+- When **Inherit Database Settings** is selected but nothing usable could be inherited, both fields become required and are marked with a warning explaining what is missing. Filling them in is always sufficient to continue - you do not have to configure the package-level Database Import settings first.
+- For every other **Remember Settings** option, both fields are required.
+
+The **Browse** button resolves the connection the same way the import itself does, so the stored procedure list you browse is always the one the import will actually read from.
+
+### Overriding Inherited Connection Settings
+
+Under **Inherit Database Settings**, a connection string or database type you enter yourself always wins over the inherited value - inheritance only fills in what you leave blank. Such an override is remembered, so it survives to the next time you open the dialog.
+
+**Remember Settings** still reads back as **Inherit Database Settings** afterwards - everything you did not override continues to follow the Database Import settings.
+
+> [!IMPORTANT]
+> While an override is in place it **shadows** the inherited value. Later changes to the Database Import connection string or database type will no longer flow through to that repository.
+>
+> To go back to pure inheritance, clear the field and run the import again - the override is removed and the repository resumes following the Database Import settings.
 
 ### Single-Row Result Sets
 
@@ -231,7 +275,7 @@ When a stored procedure returns a result set, the importer cannot determine whet
 
 For example, the following stored procedure will be imported with `IsCollection` set to `true`:
 
-``` sql
+```sql
 CREATE PROCEDURE [dbo].[sp_SingleRowReturn]
   @InputValueOne int,
   @InputValueTwo int
@@ -243,7 +287,6 @@ END
 
 After import, you can manually update the stored procedure (and any associated operations) to return a single item instead of a collection. If the stored procedure is imported again, the **return type will not be reset to a collection** and will remain at the manually configured value.
 
-
 ## Trigger imports
 
 By default, if a qualifying table has a trigger, it will be imported and modeled as follows:
@@ -251,6 +294,5 @@ By default, if a qualifying table has a trigger, it will be imported and modeled
 ![Trigger Modelling](images/trigger-import.png)
 
 > [!NOTE]
-> 
+>
 > The actual `trigger` implementation is not modeled in the `Domain Designer`. The `trigger` stereotype is used only to mark to the underlying provider (specifically, Entity Framework Core) that the table has an existing trigger. This allows Entity Framework to correctly generate the appropriate SQL statements.
-

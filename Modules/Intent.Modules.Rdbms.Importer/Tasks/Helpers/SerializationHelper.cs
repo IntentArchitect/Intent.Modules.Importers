@@ -9,6 +9,18 @@ internal static class SerializationHelper
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
+        // Settings files written by earlier versions of this module used the default (PascalCase)
+        // naming policy, so reads must tolerate either casing.
+        PropertyNameCaseInsensitive = true,
         Converters = { new JsonStringEnumConverter() }
+    };
+
+    public static readonly JsonSerializerOptions IndentedSerializerOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
+        PropertyNameCaseInsensitive = true,
+        Converters = { new JsonStringEnumConverter() },
+        WriteIndented = true
     };
 }

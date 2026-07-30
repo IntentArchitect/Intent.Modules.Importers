@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
   <id>Intent.Rdbms.Importer</id>
-  <version>1.0.18-pre.0</version>
+  <version>1.0.18-pre.1</version>
   <projectUrl>https://docs.intentarchitect.com/articles/modules-importers/intent-rdbms-importer/intent-rdbms-importer.html</projectUrl>
   <supportedClientVersions>[4.5.13-pre.3, 6.0.0-a)</supportedClientVersions>
   <summary>Support for importing RDBMS schemas into Domain designers.</summary>
@@ -20,13 +20,12 @@
     <dependency id="Intent.Metadata.RDBMS" version="3.7.7" />
     <dependency id="Intent.Modelers.Domain" version="3.9.0" />
     <dependency id="Intent.Modelers.Domain.Repositories" version="3.5.0" />
-	<dependency id="Intent.Modules.Modelers.Domain.StoredProcedures" version="1.2.4" />
+    <dependency id="Intent.Modules.Modelers.Domain.StoredProcedures" version="1.2.4" />
   </dependencies>
   <files>
     <file src="$outDir$/$id$.dll" />
     <file src="$outDir$/$id$.pdb" />
     <file src="$outDir$/NuGet.Versioning.dll" inspect="false" />
-    <file src="$outDir$/Microsoft.Data.SqlClient.dll" inspect="false" />
     <file src="$outDir$/Intent.RelationalDbSchemaImporter.Contracts.dll" inspect="false" />
     <file src="$outDir$/Intent.RelationalDbSchemaImporter.Runner.dll" inspect="false" />
     <file src="$outDir$/CliWrap.dll" inspect="false" />

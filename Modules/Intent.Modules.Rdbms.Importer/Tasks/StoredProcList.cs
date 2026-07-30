@@ -13,8 +13,20 @@ public class StoredProcList : ModuleTaskBase<StoredProcListInputModel>
 
     protected override ValidationResult ValidateInputModel(StoredProcListInputModel inputModel)
     {
+        if (string.IsNullOrWhiteSpace(inputModel.ConnectionString))
+        {
+            return ValidationResult.ErrorResult("Connection string could not be determined. Please enter a connection string before browsing stored procedures, or rerun the Database Import process and ensure the connection string is persisted.");
+        }
+
+
+        if (!System.Enum.IsDefined(inputModel.DatabaseType))
+        {
+            return ValidationResult.ErrorResult("Database Type is required to browse stored procedures. Configure the package-level Database Import Database Type first if this repository inherits settings, or select an explicit repository Database Type.");
+        }
+
         return ValidationResult.SuccessResult();
     }
+
 
     protected override ExecuteResult ExecuteModuleTask(StoredProcListInputModel importModel)
     {

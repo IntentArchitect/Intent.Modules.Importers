@@ -3,9 +3,7 @@
 
 class DatabaseImportStrategy {
     public async execute(packageElement: MacroApi.Context.IElementApi): Promise<void> {
-        const defaults = this.getDialogDefaults(packageElement);
-
-        const result = await this.presentImportDialog(defaults, packageElement.id);
+        const result = await this.presentImportDialog(packageElement);
         if (result == null) {
             return;
         }
@@ -18,9 +16,9 @@ class DatabaseImportStrategy {
         });
     }
 
-    private getDialogDefaults(element: MacroApi.Context.IElementApi): ISqlDatabaseImportPackageSettings {
-        const domainPackage = element.getPackage();
-        const persistedValue = this.getSettingValue(domainPackage, "rdbms-import:typesToExport", "");
+    private async getDialogDefaults(element: MacroApi.Context.IElementApi): Promise<ISqlDatabaseImportPackageSettings> {
+        const persistedSettings = await this.getPersistedSettings(element);
+        const persistedValue = persistedSettings.typesToExport;
         let includeTables = "true";
         let includeViews = "true";
         let includeStoredProcedures = "true";
@@ -51,30 +49,53 @@ class DatabaseImportStrategy {
         }
 
         const result: ISqlDatabaseImportPackageSettings = {
-            entityNameConvention: this.getSettingValue(domainPackage, "rdbms-import:entityNameConvention", "SingularEntity"),
-            attributeNameConvention: this.getSettingValue(domainPackage, "rdbms-import:attributeNameConvention", "Default"),
-            tableStereotypes: this.getSettingValue(domainPackage, "rdbms-import:tableStereotypes", "WhenDifferent"),
+            entityNameConvention: persistedSettings.entityNameConvention,
+            attributeNameConvention: persistedSettings.attributeNameConvention,
+            tableStereotypes: persistedSettings.tableStereotypes,
             includeTables: includeTables,
             includeViews: includeViews,
             includeStoredProcedures: includeStoredProcedures,
             includeIndexes: includeIndexes,
-            importFilterFilePath: this.getSettingValue(domainPackage, "rdbms-import:importFilterFilePath", "db-import-filter.json"),
-            connectionString: this.getSettingValue(domainPackage, "rdbms-import:connectionString", null),
-            storedProcedureType: this.getSettingValue(domainPackage, "rdbms-import:storedProcedureType", ""),
-            settingPersistence: this.getSettingValue(domainPackage, "rdbms-import:settingPersistence", "None"),
-            databaseType: this.getSettingValue(domainPackage, "rdbms-import:databaseType", "SqlServer"),
-            filterType: this.getSettingValue(domainPackage, "rdbms-import:filterType", "include"),
-            allowDeletions: this.getSettingValue(domainPackage, "rdbms-import:allowDeletions", "true"),
-            preserveAttributeTypes: this.getSettingValue(domainPackage, "rdbms-import:preserveAttributeTypes", "true")
+            importFilterFilePath: persistedSettings.importFilterFilePath,
+            connectionString: persistedSettings.connectionString,
+            storedProcedureType: persistedSettings.storedProcedureType,
+            settingPersistence: persistedSettings.settingPersistence,
+            databaseType: persistedSettings.databaseType,
+            filterType: persistedSettings.filterType,
+            allowDeletions: persistedSettings.allowDeletions,
+            preserveAttributeTypes: persistedSettings.preserveAttributeTypes
         };
         return result;
     }
 
-    private async presentImportDialog(defaults: ISqlDatabaseImportPackageSettings, packageId: string): Promise<IFormResult | null> {
+    private async presentImportDialog(packageElement: MacroApi.Context.IElementApi): Promise<IFormResult | null> {
+        const packageId = packageElement.id;
         const formConfig: MacroApi.Context.IDynamicFormConfig = {
             title: "RDBMS Import",
             minWidth: "600px",
             height: "80%",
+            onInitialize: async (form) => {
+                let defaults: ISqlDatabaseImportPackageSettings;
+                try {
+                    defaults = await this.getDialogDefaults(packageElement);
+                } catch (error) {
+                    await dialogService.error(`Unable to load persisted import settings: ${error}`);
+                    return;
+                }
+
+                form.getField("connectionString").value = defaults.connectionString;
+                form.getField("databaseType").value = defaults.databaseType;
+                form.getField("settingPersistence").value = defaults.settingPersistence;
+                form.getField("entityNameConvention").value = defaults.entityNameConvention;
+                form.getField("attributeNameConvention").value = defaults.attributeNameConvention;
+                form.getField("tableStereotypes").value = defaults.tableStereotypes;
+                form.getField("storedProcedureType").value = defaults.storedProcedureType;
+                form.getField("includeIndexes").value = defaults.includeIndexes;
+                form.getField("importFilterFilePath").value = defaults.importFilterFilePath;
+                form.getField("allowDeletions").value = defaults.allowDeletions;
+                form.getField("preserveAttributeTypes").value = defaults.preserveAttributeTypes;
+                form.getField("filterType").value = defaults.filterType;
+            },
             fields: [],
             sections: [
                 {
@@ -87,8 +108,7 @@ class DatabaseImportStrategy {
                             label: "Connection String",
                             placeholder: null,
                             hint: null,
-                            isRequired: true,
-                            value: defaults.connectionString
+                            isRequired: true
                         },
                         {
                             id: "databaseType",
@@ -97,7 +117,6 @@ class DatabaseImportStrategy {
                             placeholder: null,
                             hint: null,
                             isRequired: true,
-                            value: defaults.databaseType,
                             selectOptions: [
                                 { id: "SqlServer", description: "SQL Server" },
                                 { id: "PostgreSQL", description: "PostgreSQL" },
@@ -133,12 +152,12 @@ class DatabaseImportStrategy {
                             fieldType: "select",
                             label: "Remember Settings",
                             hint: "Remember these settings for next time you run the import",
-                            value: defaults.settingPersistence,
                             selectOptions: [
                                 { id: "None", description: "Don't Remember" },
-                                { id: "All", description: "All Settings" },
-                                { id: "AllSanitisedConnectionString", description: "All (with Sanitized connection string, no password))" },
-                                { id: "AllWithoutConnectionString", description: "All (without connection string))" }
+                                { id: "UserLocal", description: "Only for me (user-local)" },
+                                { id: "SharedMetadata", description: "Team-shared metadata" },
+                                { id: "SharedMetadataSanitisedConnectionString", description: "Team-shared metadata (sanitized connection string, no password)" },
+                                { id: "SharedMetadataWithoutConnectionString", description: "Team-shared metadata (without connection string)" }
                             ]
                         }
                     ],
@@ -155,7 +174,6 @@ class DatabaseImportStrategy {
                             label: "Entity name convention",
                             placeholder: "",
                             hint: "",
-                            value: defaults.entityNameConvention,
                             selectOptions: [
                                 { 
                                     id: "SingularEntity", 
@@ -175,7 +193,6 @@ class DatabaseImportStrategy {
                             label: "Attribute Name Convention",
                             placeholder: "",
                             hint: "How column names should be converted to attribute names",
-                            value: defaults.attributeNameConvention,
                             selectOptions: [
                                 { 
                                     id: "Default", 
@@ -195,14 +212,12 @@ class DatabaseImportStrategy {
                             label: "Apply Table Stereotypes",
                             placeholder: "",
                             hint: "When to apply Table stereotypes to your domain entities",
-                            value: defaults.tableStereotypes,
                             selectOptions: [{ id: "WhenDifferent", description: "If They Differ" }, { id: "Always", description: "Always" }]
                         },
                         {
                             id: "storedProcedureType",
                             fieldType: "select",
                             label: "Stored Procedure Representation",
-                            value: defaults.storedProcedureType,
                             selectOptions: [
                                 { id: "Default", description: "(Default)" },
                                 { id: "StoredProcedureElement", description: "Stored Procedure Element" },
@@ -222,8 +237,7 @@ class DatabaseImportStrategy {
                             id: "includeIndexes",
                             fieldType: "checkbox",
                             label: "Include Indexes",
-                            hint: "If set, the importer will include database indexes in the import.",
-                            value: defaults.includeIndexes
+                            hint: "If set, the importer will include database indexes in the import."
                         },
                         {
                             id: "importFilterFilePath",
@@ -231,7 +245,6 @@ class DatabaseImportStrategy {
                             label: "Import Filter File",
                             hint: "Path to import filter JSON file (see [documentation](https://docs.intentarchitect.com/articles/modules-importers/intent-rdbms-importer/intent-rdbms-importer.html#filter-file-structure))",
                             placeholder: "(optional)",
-                            value: defaults.importFilterFilePath,
                             openFileOptions: {
                                 fileFilters: [{ name: "JSON", extensions: ["json"] }]
                             },
@@ -273,22 +286,20 @@ class DatabaseImportStrategy {
                             id: "allowDeletions",
                             fieldType: "checkbox",
                             label: "Remove deleted database attributes, indexes and associations",
-                            hint: "Removes imported attributes, associations, and indexes that no longer exist in the database",
-                            value: defaults.allowDeletions
+                            hint: "Removes imported attributes, associations, and indexes that no longer exist in the database"
                         },
                         {
                             id: "preserveAttributeTypes",
                             fieldType: "checkbox",
                             label: "Preserve user-specified attribute types",
-                            hint: "If set, the importer will not overwrite any attribute types set by the user.",
-                            value: defaults.preserveAttributeTypes
+                            hint: "If set, the importer will not overwrite any attribute types set by the user."
                         }
                     ],
                     isCollapsed: true,
                     isHidden: false
                 }
             ],
-            pages: [this.presentManageFiltersDialog(packageId, defaults)]
+            pages: [this.presentManageFiltersDialog(packageId)]
         }
 
         const capturedInput = await dialogService.openForm(formConfig);
@@ -327,7 +338,7 @@ class DatabaseImportStrategy {
         return importConfig;
     }
 
-    private presentManageFiltersDialog(packageId: string, defaults: ISqlDatabaseImportPackageSettings): MacroApi.Context.IDynamicFormWizardPageConfig {
+    private presentManageFiltersDialog(packageId: string): MacroApi.Context.IDynamicFormWizardPageConfig {
             const inclusiveSelection: MacroApi.Context.IDynamicFormFieldConfig = {
                 id: "inclusiveSelection",
                 fieldType: "tree-view",
@@ -480,7 +491,7 @@ class DatabaseImportStrategy {
                         
                         // If no existing filter was loaded, use the default filterType to set visibility
                         if (existingFilter == null) {
-                            const include = defaults.filterType === "include";
+                            const include = form.getField("filterType").value === "include";
                             form.getField("inclusiveSelection").isHidden = !include;
                             form.getField("exclusiveSelection").isHidden = include;
                         }
@@ -540,7 +551,6 @@ class DatabaseImportStrategy {
                         id: "filterType",
                         fieldType: "select",
                         label: "Filter Type",
-                        value: defaults.filterType,
                         selectOptions: [
                             {
                                 id: "include",
@@ -672,10 +682,23 @@ class DatabaseImportStrategy {
         };
     }
 
-    private getSettingValue(domainPackage: MacroApi.Context.IPackageApi, key: string, defaultValue: string | null): string | null {
-        const persistedValue = domainPackage.getMetadata(key);
-        return persistedValue ?? defaultValue;
+    private async getPersistedSettings(element: MacroApi.Context.IElementApi): Promise<ISqlDatabaseImportPackageSettingsPersistence> {
+        const resolutionModel = {
+            applicationId: application.id,
+            packageId: element.getPackage().id
+        };
+
+        const executionResult = await executeImporterModuleTask(
+            "Intent.Modules.Rdbms.Importer.Tasks.DatabaseImportSettingsResolution",
+            resolutionModel);
+
+        if ((executionResult.errors ?? []).length > 0 || executionResult.result == null) {
+            throw new Error("Unable to resolve persisted database import settings.");
+        }
+
+        return executionResult.result as ISqlDatabaseImportPackageSettingsPersistence;
     }
+
 
     private isSchemaIncluded(schemaName: string, existingFilter: ImportFilterModel | null): boolean {
         if (existingFilter == null) {
@@ -967,6 +990,22 @@ interface ITestConnectionModel {
     connectionString: string;
     databaseType: string;
 }
+
+interface ISqlDatabaseImportPackageSettingsPersistence {
+    entityNameConvention: string;
+    attributeNameConvention: string;
+    tableStereotypes: string;
+    typesToExport: string;
+    importFilterFilePath: string;
+    storedProcedureType: string;
+    connectionString: string;
+    settingPersistence: string;
+    databaseType: string;
+    filterType: string;
+    allowDeletions: string;
+    preserveAttributeTypes: string;
+}
+
 
 interface IRetrieveDatabaseObjectsModel {
     connectionString: string;
