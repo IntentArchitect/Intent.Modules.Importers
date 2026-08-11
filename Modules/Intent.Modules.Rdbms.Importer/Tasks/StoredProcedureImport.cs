@@ -198,11 +198,10 @@ public class RepositoryImport : IModuleTask
         importModel.TypesToExport = ["StoredProcedure"];
         importModel.PackageFileName = package.FileLocation;
 
-        if (SettingsHelper.NormalizeRepositorySettingPersistence(importModel.SettingPersistence) == RepositorySettingPersistence.InheritDb)
-        {
-            SettingsHelper.HydrateDbSettings(importModel);
-            ValidateHydratedDbSettings(importModel);
-        }
+        // Whatever was left blank always falls back to the package-level Database Import settings,
+        // regardless of which Remember Settings option is selected - see SettingsHelper.HydrateDbSettings.
+        SettingsHelper.HydrateDbSettings(importModel);
+        SettingsHelper.ValidateHydratedDbSettings(importModel);
 
         if (string.IsNullOrWhiteSpace(importModel.StoredProcedureType))
         {
@@ -210,19 +209,6 @@ public class RepositoryImport : IModuleTask
         }
     }
 
-    private static void ValidateHydratedDbSettings(RepositoryImportModel importModel)
-    {
-        if (string.IsNullOrWhiteSpace(importModel.ConnectionString))
-        {
-            throw new Exception("Connection string could not be determined. Please enter a connection string when running the stored procedure import, or rerun the Database Import process and ensure the connection string is persisted.");
-        }
-
-
-        if (importModel.DatabaseType is null)
-        {
-            throw new Exception("Stored procedure import cannot continue because Persist Settings is set to Inherit Database Settings, but the package-level Database Import Database Type is missing. Configure the package-level Database Import settings first, or switch Persist Settings away from inherit and provide an explicit repository Connection String and Database Type.");
-        }
-    }
 
 
     private static ImportConfiguration CreateImportConfiguration(RepositoryImportModel importModel, bool isEfRepositoriesInstalled)

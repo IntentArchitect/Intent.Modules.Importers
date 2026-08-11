@@ -237,7 +237,7 @@ Stored procedure import still supports **Inherit Database Settings**, but those 
 The stored procedure import dialog keeps its own remembered settings, entirely separate from the Database Import dialog's. It resolves them in the same layers: **user-local settings first**, then **team-shared package metadata**, and finally **built-in defaults**.
 
 - **Don't Remember** - Clears the user-local stored procedure settings file for the current domain package and any team-shared package metadata settings for stored procedure import.
-- **Inherit Database Settings** - Falls back to the connection string and database type from the resolved Database Import settings for whatever you leave blank. Anything you do enter takes precedence and is remembered - see [Overriding Inherited Connection Settings](#overriding-inherited-connection-settings).
+- **Inherit Database Settings** - Falls back to the connection string and database type from the resolved Database Import settings for whatever you leave blank. Anything you do enter takes precedence and is remembered - see [Overriding Inherited Connection Settings](#overriding-inherited-connection-settings). Note that this same blank-field fallback also applies under every other **Remember Settings** option below - see [Connection String and Database Type](#connection-string-and-database-type).
 - **Only for me (user-local)** - Saves the connection string, database type and stored procedure representation for the current domain package to a user-local file under `%APPDATA%\Intent Architect\Intent.Modules.Rdbms.Importer\v1\`, outside source control. The file is named `db-import-<hash>.storedprocs.json`, alongside but independent of the database import's `db-import-<hash>.json`.
 - **Team-shared metadata** - Saves these settings into package metadata that is typically source-controlled and shared with the team.
 - **Team-shared metadata (sanitized connection string, no password)** - Saves the shared metadata variant, but strips any password from the persisted connection string.
@@ -250,19 +250,20 @@ Stored procedure names are never remembered; the field starts blank each time th
 
 ### Connection String and Database Type
 
-These two fields are only optional when there is something usable to inherit - that is, when **Remember Settings** is set to **Inherit Database Settings** _and_ the resolved Database Import settings supply both a connection string and a database type.
+These two fields may always be left blank when there is something usable to fall back on - that is, whenever the resolved package-level Database Import settings supply a connection string and a database type. This fallback applies no matter which **Remember Settings** option is selected; it is not limited to **Inherit Database Settings**.
 
 - When both can be inherited, the fields show a `(inherited setting)` placeholder and may be left blank.
-- When **Inherit Database Settings** is selected but nothing usable could be inherited, both fields become required and are marked with a warning explaining what is missing. Filling them in is always sufficient to continue - you do not have to configure the package-level Database Import settings first.
-- For every other **Remember Settings** option, both fields are required.
+- When nothing usable could be inherited, both fields become required and are marked with a warning explaining what is missing. Filling them in is always sufficient to continue - you do not have to configure the package-level Database Import settings first.
 
 The **Browse** button resolves the connection the same way the import itself does, so the stored procedure list you browse is always the one the import will actually read from.
 
 ### Overriding Inherited Connection Settings
 
-Under **Inherit Database Settings**, a connection string or database type you enter yourself always wins over the inherited value - inheritance only fills in what you leave blank. Such an override is remembered, so it survives to the next time you open the dialog.
+A connection string or database type you enter yourself always wins over the inherited value - inheritance only fills in what you leave blank, and it does so regardless of which **Remember Settings** option is selected.
 
-**Remember Settings** still reads back as **Inherit Database Settings** afterwards - everything you did not override continues to follow the Database Import settings.
+Under **Remember Settings** options other than **Don't Remember** (including **Inherit Database Settings**, **Only for me** and the **Team-shared metadata** variants), only what you actually typed is remembered - never a value that was merely resolved by falling back to the Database Import settings. This keeps a saved override from silently freezing in place: leaving a field blank keeps tracking later changes to the package-level Database Import settings, no matter which **Remember Settings** option is selected.
+
+**Remember Settings** still reads back as whatever you selected afterwards - everything you did not override continues to follow the Database Import settings.
 
 > [!IMPORTANT]
 > While an override is in place it **shadows** the inherited value. Later changes to the Database Import connection string or database type will no longer flow through to that repository.

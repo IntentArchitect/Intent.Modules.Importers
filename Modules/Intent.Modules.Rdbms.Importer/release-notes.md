@@ -1,3 +1,10 @@
+### Version 1.0.19
+
+- Fixed: Issue where the stored procedure import dialog's Connection String and Database Type fields were shown as required whenever **Remember Settings** was set to anything other than "Inherit Database Settings".
+- Fixed: Issue where a stored procedure or operation that previously had no return type would incorrectly retain `IsCollection`/`IsNullable` as unset instead of being given their normal defaults the first time it received a return type.
+- Fixed: Issue where a stored procedure's return type mapping was kept even after the database stopped reporting a result set for it (and detection had not simply failed); the return type and `IsCollection` are now cleared in that case.
+- Fixed: Issue where element-to-element mappings for a stored procedure's result set were not removed on re-import once the corresponding type was no longer present in the updated result set.
+
 ### Version 1.0.18
 
 - Fixed: Issue where an import using the "Team-shared metadata (sanitized connection string, no password)" setting would report a `PlatformNotSupportedException` for `Microsoft.Data.SqlClient`, even though the import itself had succeeded. Stripping the password no longer relies on a SQL Server specific connection string builder, which also means it now works for PostgreSQL connection strings.

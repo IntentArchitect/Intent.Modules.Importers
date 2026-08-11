@@ -1411,6 +1411,141 @@ public class DbSchemaIntentMetadataMergerTests
     }
 
     [Fact]
+    public void MergeSchemaAndPackage_StoredProcGenuinelyVoidOnReimport_StillClearsReturnType_RepositoryOperation_WithDefaultPreserveAttributeTypes()
+    {
+        // Arrange - first import succeeds and gets a return type (PreserveAttributeTypes defaults to true)
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var config = ImportConfigurations.StoredProceduresAsOperations();
+        var merger = new DbSchemaIntentMetadataMerger(config);
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        var repository = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        var operation = repository.ChildElements.Single();
+        operation.TypeReference.TypeId.ShouldNotBeNullOrEmpty();
+
+        // Act - re-import where the procedure genuinely no longer returns anything
+        var genuinelyVoidProc = StoredProcedures.GetCustomerById();
+        genuinelyVoidProc.ResultSetColumns = [];
+        scenario.Schema.StoredProcedures = [genuinelyVoidProc];
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        operation.TypeReference.TypeId.ShouldBeNullOrEmpty("A genuinely void procedure must still clear its return type, even with attribute type preservation enabled.");
+        operation.TypeReference.IsCollection.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcGenuinelyVoidOnReimport_StillClearsReturnType_StoredProcedureElement_WithDefaultPreserveAttributeTypes()
+    {
+        // Arrange - first import succeeds and gets a return type (PreserveAttributeTypes defaults to true)
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var config = ImportConfigurations.StoredProceduresAsElements();
+        var merger = new DbSchemaIntentMetadataMerger(config);
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        var repository = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        var spElement = repository.ChildElements.Single(x => x.SpecializationType == StoredProcedures.SpecializationType);
+        spElement.TypeReference.TypeId.ShouldNotBeNullOrEmpty();
+
+        // Act - re-import where the procedure genuinely no longer returns anything
+        var genuinelyVoidProc = StoredProcedures.GetCustomerById();
+        genuinelyVoidProc.ResultSetColumns = [];
+        scenario.Schema.StoredProcedures = [genuinelyVoidProc];
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        spElement.TypeReference.TypeId.ShouldBeNullOrEmpty("A genuinely void procedure must still clear its return type, even with attribute type preservation enabled.");
+        spElement.TypeReference.IsCollection.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcGenuinelyVoidOnReimport_StillClearsReturnType_RepositoryOperationMapping_WithDefaultPreserveAttributeTypes()
+    {
+        // Arrange - first import succeeds; both the package-level SP element and its Operation get a return type
+        // (PreserveAttributeTypes defaults to true)
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var config = ImportConfigurations.StoredProceduresMappedToOperation();
+        var merger = new DbSchemaIntentMetadataMerger(config);
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        var spElement = scenario.Package.Classes.Single(x => x.SpecializationType == StoredProcedures.SpecializationType);
+        var repository = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        var operation = repository.ChildElements.Single();
+
+        spElement.TypeReference.TypeId.ShouldNotBeNullOrEmpty();
+        operation.TypeReference.TypeId.ShouldNotBeNullOrEmpty();
+
+        // Act - re-import where the procedure genuinely no longer returns anything
+        var genuinelyVoidProc = StoredProcedures.GetCustomerById();
+        genuinelyVoidProc.ResultSetColumns = [];
+        scenario.Schema.StoredProcedures = [genuinelyVoidProc];
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        result.IsSuccessful.ShouldBeTrue();
+        spElement.TypeReference.TypeId.ShouldBeNullOrEmpty("The stored procedure element's return type must be cleared, even with attribute type preservation enabled.");
+        operation.TypeReference.TypeId.ShouldBeNullOrEmpty("The operation's return type must be cleared, even with attribute type preservation enabled.");
+        spElement.TypeReference.IsCollection.ShouldBeFalse();
+        operation.TypeReference.IsCollection.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcGenuinelyVoidOnReimport_RemovesStaleResultMapping()
+    {
+        // Arrange - first import creates the invocation association with both Invocation and Result mappings
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var config = ImportConfigurations.StoredProceduresMappedToOperation();
+        var merger = new DbSchemaIntentMetadataMerger(config);
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        var association = scenario.Package.Associations.Single();
+        association.TargetEnd.Mappings.Count.ShouldBe(2);
+        association.TargetEnd.Mappings.ShouldContain(m => m.Type == "Stored Procedure Result");
+
+        // Act - re-import where the procedure genuinely no longer returns anything
+        var genuinelyVoidProc = StoredProcedures.GetCustomerById();
+        genuinelyVoidProc.ResultSetColumns = [];
+        scenario.Schema.StoredProcedures = [genuinelyVoidProc];
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert - the stale result mapping is removed, only the invocation mapping remains
+        result.IsSuccessful.ShouldBeTrue();
+        association.TargetEnd.Mappings.Count.ShouldBe(1);
+        association.TargetEnd.Mappings.ShouldContain(m => m.Type == "Stored Procedure Invocation");
+        association.TargetEnd.Mappings.ShouldNotContain(m => m.Type == "Stored Procedure Result");
+    }
+
+    [Fact]
     public async Task MergeSchemaAndPackage_StoredProcWithUserDefinedTableType_CreatesDataContractWithUdtSettingsStereotype()
     {
         // Arrange

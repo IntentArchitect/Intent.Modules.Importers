@@ -1,0 +1,26 @@
+{
+    // Tasks defined here appear as buttons in the Software Factory toolbar.
+    // Each key under "tasks" is the task name. Supported error parsers: "generic", "dotnet".
+    "tasks": {
+        "build": {
+            "label": "Build",
+            "icon": "fa-cogs",
+            "command": "dotnet build \"D:/Dev/Intent.Modules.Importers/Modules/Intent.Modules.Rdbms.Importer/Intent.Modules.Rdbms.Importer.csproj\" && dotnet build \"D:/Dev/Intent.Modules.Importers/Modules/Intent.Modules.Rdbms.Importer.Tests/Intent.Modules.Rdbms.Importer.Tests.csproj\"",
+            "workingDirectory": "D:/Dev/Intent.Modules.Importers/Modules",
+            "aiAutoFix": {
+                "enabled": false,
+                "errorParser": "dotnet"
+            }
+        },
+        "test": {
+            "label": "Test",
+            "icon": "fa-flask",
+            "command": "dotnet test \"D:/Dev/Intent.Modules.Importers/Modules/Intent.Modules.Rdbms.Importer.Tests/Intent.Modules.Rdbms.Importer.Tests.csproj\"",
+            "workingDirectory": "D:/Dev/Intent.Modules.Importers/Modules",
+            "aiAutoFix": {
+                "enabled": false,
+                "errorParser": "dotnet"
+            }
+        }
+    }
+}

@@ -249,11 +249,16 @@ internal class DbSchemaIntentMetadataMerger
         // Level 1: Search globally across all repositories for existing operation (re-import idempotency)
         var existingElement = FindOperationGloballyByExternalReference(package, spExternalRef, expectedSpecializationType);
 
+        // An existing element only carries a deliberate IsCollection choice if it already had a return type.
+        // A previously-void SP was created with IsCollection = false structurally - that is not user intent.
+        var hadExistingReturnType = !string.IsNullOrEmpty(existingElement?.TypeReference?.TypeId);
         ElementPersistable procElement;
+
 
         if (existingElement != null)
         {
             SyncElementType preserveElementTypes = SyncElementType.None | SyncElementType.IsCollection;
+
             if (_config.PreserveAttributeTypes)
             {
                 preserveElementTypes = SyncElementType.AttributeType | SyncElementType.IsCollection;
@@ -313,10 +318,18 @@ internal class DbSchemaIntentMetadataMerger
 
         if (storedProc.ResultSetColumns.Count > 0)
         {
-            ProcessStoredProcedureDataContract(storedProc, procElement, package, result, deduplicationContext, existingElement != null);
+            ProcessStoredProcedureDataContract(storedProc, procElement, package, result, deduplicationContext, hadExistingReturnType);
 
-            procElement.TypeReference.IsCollection = existingElement?.TypeReference.IsCollection ?? true;
+            procElement.TypeReference.IsCollection = hadExistingReturnType
+                ? existingElement!.TypeReference.IsCollection
+                : true;
         }
+        else if (!storedProc.ResultSetDetectionFailed)
+        {
+            procElement.TypeReference.TypeId = null;
+            procElement.TypeReference.IsCollection = false;
+        }
+
     }
 
     /// <summary>
@@ -352,9 +365,12 @@ internal class DbSchemaIntentMetadataMerger
             .FirstOrDefault(c => c.ExternalReference == spExternalRef &&
                 c.SpecializationType == Constants.SpecializationTypes.StoredProcedure.SpecializationType);
 
+        var spHadReturnType = !string.IsNullOrEmpty(existingSpElement?.TypeReference?.TypeId);
+
         ElementPersistable storedProcElement;
         if (existingSpElement != null)
         {
+
             // for Stored Procedures, we always keep whatever is modelled in Intent.
             // This is to cater for when a SP returns a dataset, but only one row (e.g. SELECT @VAR1, @VAR2)
             // This will initially be modelled as a collection, and if the user corrects it to non-collection, we want to keep that
@@ -436,8 +452,16 @@ internal class DbSchemaIntentMetadataMerger
             // Preserve the user's IsNullable setting one more time before setting TypeId
             var preservedSpIsNullable = storedProcElement.TypeReference.IsNullable;
             storedProcElement.TypeReference.TypeId = underlyingResultDataContract.Id;
-            storedProcElement.TypeReference.IsCollection = existingSpElement?.TypeReference?.IsCollection ?? true;
+            storedProcElement.TypeReference.IsCollection = spHadReturnType
+                ? existingSpElement!.TypeReference.IsCollection
+                : true;
             storedProcElement.TypeReference.IsNullable = preservedSpIsNullable;
+
+        }
+        else if (!storedProc.ResultSetDetectionFailed)
+        {
+            storedProcElement.TypeReference.TypeId = null;
+            storedProcElement.TypeReference.IsCollection = false;
         }
 
         // 3. Create the Operation (with only input parameters)
@@ -446,9 +470,12 @@ internal class DbSchemaIntentMetadataMerger
         // Level 1: Search globally across all repositories for existing operation (re-import idempotency)
         var existingOperation = FindOperationGloballyByExternalReference(package, operationExternalRef, Constants.SpecializationTypes.Operation.SpecializationType);
 
+        var operationHadReturnType = !string.IsNullOrEmpty(existingOperation?.TypeReference?.TypeId);
+
         ElementPersistable operationElement;
         if (existingOperation != null)
         {
+
             // Update - create temp operation with only input parameters
             var tempStoredProc = new StoredProcedureSchema
             {
@@ -567,8 +594,16 @@ internal class DbSchemaIntentMetadataMerger
             if (underlyingResultDataContract != null)
             {
                 operationElement.TypeReference.TypeId = underlyingResultDataContract.Id;
-                operationElement.TypeReference.IsCollection = existingOperation?.TypeReference?.IsCollection ?? true;
+                operationElement.TypeReference.IsCollection = operationHadReturnType
+                    ? existingOperation!.TypeReference.IsCollection
+                    : true;
             }
+            else if (!storedProc.ResultSetDetectionFailed)
+            {
+                operationElement.TypeReference.TypeId = null;
+                operationElement.TypeReference.IsCollection = false;
+            }
+
             wrapperDataContract = null!;
         }
 
@@ -1201,8 +1236,9 @@ internal class DbSchemaIntentMetadataMerger
         PackageModelPersistable package,
         MergeResult result,
         DeduplicationContext? deduplicationContext, 
-        bool isExistingStoredProc)
+        bool hadExistingReturnType)
     {
+
         if (storedProc.ResultSetColumns.Count > 0)
         {
             // Get schema folder for data contract placement (same as stored procedure)
@@ -1245,10 +1281,14 @@ internal class DbSchemaIntentMetadataMerger
             ApplyDataContractStereotypes(storedProc, dataContract);
 
             procElement.TypeReference.TypeId = dataContract.Id; // Point to the data contract element ID
-            // if existing, use the current IsCollection value to avoid unintended changes, otherwise default to true for new stored procedures
-            procElement.TypeReference.IsCollection = isExistingStoredProc ? procElement.TypeReference.IsCollection : true;
-            // if existing, preserve the current IsNullable value to avoid unintended changes, otherwise default to false for new stored procedures
-            procElement.TypeReference.IsNullable = isExistingStoredProc ? procElement.TypeReference.IsNullable : false;
+            // If the element already had a return type, use the current IsCollection value to avoid unintended changes.
+            // Otherwise default to true, matching the first import of a newly typed stored procedure.
+            procElement.TypeReference.IsCollection = hadExistingReturnType ? procElement.TypeReference.IsCollection : true;
+            // If the element already had a return type, preserve the current IsNullable value to avoid unintended changes.
+            // Otherwise default to false for a newly typed stored procedure.
+            procElement.TypeReference.IsNullable = hadExistingReturnType ? procElement.TypeReference.IsNullable : false;
+
+
         }
     }
 
@@ -1480,6 +1520,10 @@ internal class DbSchemaIntentMetadataMerger
         List<ElementToElementMappingPersistable> existingMappings,
         List<ElementToElementMappingPersistable> updatedMappings)
     {
+        // Remove existing mappings whose type is no longer present in the updated set
+        var updatedTypes = new HashSet<string>(updatedMappings.Select(m => m.Type));
+        existingMappings.RemoveAll(m => !updatedTypes.Contains(m.Type));
+
         foreach (var updatedMapping in updatedMappings)
         {
             // Find matching existing mapping by Type

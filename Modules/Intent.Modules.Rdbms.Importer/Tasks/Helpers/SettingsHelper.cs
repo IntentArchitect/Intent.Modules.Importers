@@ -67,7 +67,7 @@ internal static class SettingsHelper
                 RepositoryUserLocalStore.Delete(importModel.PackageFileName!);
                 break;
             case RepositorySettingPersistence.UserLocal:
-                RepositoryUserLocalStore.Save(importModel.PackageFileName!, CreateRepositoryUserLocalSettings(importModel, normalizedPersistence));
+                RepositoryUserLocalStore.Save(importModel.PackageFileName!, CreateRepositoryUserLocalSettings(entered, normalizedPersistence));
                 RemoveRepositoryMetadata(package);
                 break;
             case RepositorySettingPersistence.InheritDb:
@@ -77,7 +77,7 @@ internal static class SettingsHelper
             case RepositorySettingPersistence.SharedMetadataSanitisedConnectionString:
             case RepositorySettingPersistence.SharedMetadataWithoutConnectionString:
                 RepositoryUserLocalStore.Delete(importModel.PackageFileName!);
-                PersistSharedRepositoryMetadata(package, importModel, normalizedPersistence);
+                PersistSharedRepositoryMetadata(package, entered, normalizedPersistence);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(importModel.SettingPersistence), importModel.SettingPersistence, "Unsupported repository setting persistence.");
@@ -163,10 +163,38 @@ internal static class SettingsHelper
         return RepositoryUserLocalStore.GetDisplayPath(packageFileName);
     }
 
+    /// <summary>
+    /// Fills in whatever was left blank on the import dialog, falling back first to the
+    /// repository-level remembered settings (e.g. a previously saved "Only for me" value) and then
+    /// to the package-level Database Import settings. Mirrors the dialog's own two-tier fallback in
+    /// strategy-stored-procedures-import.ts.
+    /// </summary>
     public static void HydrateDbSettings(RepositoryImportModel importModel)
     {
+        var repositoryResolution = ResolveRepositoryImportSettings(importModel.PackageFileName!);
+        ApplyInheritedRepositorySettings(importModel, repositoryResolution.Settings);
+
         var resolution = ResolveDatabaseImportSettings(importModel.PackageFileName!);
         ApplyInheritedDbSettings(importModel, resolution.Settings);
+    }
+
+    /// <summary>
+    /// Confirms that, after falling back to the package-level Database Import settings for whatever
+    /// was left blank, a connection string and database type are actually available. This runs
+    /// unconditionally - regardless of which Remember Settings option is selected - since the
+    /// fallback to inherited settings is itself unconditional.
+    /// </summary>
+    internal static void ValidateHydratedDbSettings(RepositoryImportModel importModel)
+    {
+        if (string.IsNullOrWhiteSpace(importModel.ConnectionString))
+        {
+            throw new Exception("Connection string could not be determined. Please enter a connection string when running the stored procedure import, or configure the package-level Database Import settings so it can be inherited.");
+        }
+
+        if (importModel.DatabaseType is null)
+        {
+            throw new Exception("Database type could not be determined. Please select a Database Type when running the stored procedure import, or configure the package-level Database Import settings so it can be inherited.");
+        }
     }
 
     /// <summary>
@@ -176,6 +204,28 @@ internal static class SettingsHelper
     /// effect. Kept in step with the dialog's own resolution in strategy-stored-procedures-import.ts.
     /// </summary>
     internal static void ApplyInheritedDbSettings(RepositoryImportModel importModel, DatabaseImportResolvedSettings settings)
+    {
+        if (string.IsNullOrWhiteSpace(importModel.StoredProcedureType))
+        {
+            importModel.StoredProcedureType = settings.StoredProcedureType;
+        }
+
+        if (string.IsNullOrWhiteSpace(importModel.ConnectionString))
+        {
+            importModel.ConnectionString = settings.ConnectionString!;
+        }
+
+        importModel.DatabaseType ??= Enum.TryParse<DatabaseType>(settings.DatabaseType, out var databaseType)
+            ? databaseType
+            : null;
+    }
+
+    /// <summary>
+    /// Fills in only what was left blank, from the repository-level remembered settings - the first
+    /// fallback tier, tried before the package-level Database Import settings in
+    /// <see cref="ApplyInheritedDbSettings"/>. An explicitly entered value always wins.
+    /// </summary>
+    internal static void ApplyInheritedRepositorySettings(RepositoryImportModel importModel, RepositoryImportResolvedSettings settings)
     {
         if (string.IsNullOrWhiteSpace(importModel.StoredProcedureType))
         {
@@ -209,12 +259,18 @@ internal static class SettingsHelper
         package.AddMetadata("rdbms-import:databaseType", importModel.DatabaseType.ToString());
     }
 
-    private static void PersistSharedRepositoryMetadata(PackageModelPersistable package, RepositoryImportModel importModel, RepositorySettingPersistence normalizedPersistence)
+    /// <summary>
+    /// Persists only what the user actually typed, not the value the import resolved via
+    /// fallback to the package-level Database Import settings - otherwise a blank field that was
+    /// filled in only by inheritance would be written out as a permanent per-repository override,
+    /// silently freezing it in place and no longer tracking later changes to those settings.
+    /// </summary>
+    private static void PersistSharedRepositoryMetadata(PackageModelPersistable package, RepositoryEnteredSettings entered, RepositorySettingPersistence normalizedPersistence)
     {
-        package.AddMetadata("rdbms-import-repository:storedProcedureType", importModel.StoredProcedureType);
-        ProcessRepositoryConnectionStringSetting(package, importModel, normalizedPersistence);
+        package.AddMetadata("rdbms-import-repository:storedProcedureType", entered.StoredProcedureType);
+        ProcessRepositoryConnectionStringSetting(package, entered, normalizedPersistence);
         package.AddMetadata("rdbms-import-repository:settingPersistence", normalizedPersistence.ToString());
-        ProcessRepositoryDatabaseTypeSetting(package, importModel);
+        ProcessRepositoryDatabaseTypeSetting(package, entered);
     }
 
     /// <summary>
@@ -244,17 +300,6 @@ internal static class SettingsHelper
         package.AddMetadata("rdbms-import-repository:settingPersistence", normalizedPersistence.ToString());
         package.RemoveMetadata("rdbms-import-repository:connectionString");
         package.RemoveMetadata("rdbms-import-repository:databaseType");
-    }
-
-    private static RepositoryImportLocalSettings CreateRepositoryUserLocalSettings(RepositoryImportModel importModel, RepositorySettingPersistence persistence)
-    {
-        return new RepositoryImportLocalSettings
-        {
-            ConnectionString = importModel.ConnectionString,
-            DatabaseType = importModel.DatabaseType?.ToString(),
-            StoredProcedureType = importModel.StoredProcedureType,
-            SettingPersistence = persistence.ToString()
-        };
     }
 
     private static RepositoryImportLocalSettings CreateRepositoryUserLocalSettings(RepositoryEnteredSettings entered, RepositorySettingPersistence persistence)
@@ -358,12 +403,12 @@ internal static class SettingsHelper
         }
     }
 
-    private static void ProcessRepositoryDatabaseTypeSetting(PackageModelPersistable package, RepositoryImportModel settings)
+    private static void ProcessRepositoryDatabaseTypeSetting(PackageModelPersistable package, RepositoryEnteredSettings settings)
     {
         package.AddMetadata("rdbms-import-repository:databaseType", settings.DatabaseType.ToString());
     }
 
-    private static void ProcessRepositoryConnectionStringSetting(PackageModelPersistable package, RepositoryImportModel settings, RepositorySettingPersistence normalizedPersistence)
+    private static void ProcessRepositoryConnectionStringSetting(PackageModelPersistable package, RepositoryEnteredSettings settings, RepositorySettingPersistence normalizedPersistence)
     {
         var connectionString = settings.ConnectionString;
 
