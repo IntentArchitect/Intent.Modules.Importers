@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="IEvangelist.Azure.CosmosRepository" Version="10.0.1" />
+    <PackageReference Include="Azure.Identity" Version="1.21.0" />
+    <PackageReference Include="IEvangelist.Azure.CosmosRepository" Version="10.0.2" />
     <PackageReference Include="MassTransit" Version="8.4.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.28" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.21" />

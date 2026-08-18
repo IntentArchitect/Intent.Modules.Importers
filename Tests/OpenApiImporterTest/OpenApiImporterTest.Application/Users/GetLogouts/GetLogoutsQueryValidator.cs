@@ -15,6 +15,7 @@ namespace OpenApiImporterTest.Application.Users.GetLogouts
             ConfigureValidationRules();
         }
 
+        [IntentManaged(Mode.Merge)]
         private void ConfigureValidationRules()
         {
             // Implement custom validation logic here if required

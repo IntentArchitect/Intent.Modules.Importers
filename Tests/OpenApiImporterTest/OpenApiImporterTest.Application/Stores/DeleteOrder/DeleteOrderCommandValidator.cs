@@ -15,6 +15,7 @@ namespace OpenApiImporterTest.Application.Stores.DeleteOrder
             ConfigureValidationRules();
         }
 
+        [IntentManaged(Mode.Merge)]
         private void ConfigureValidationRules()
         {
             // Implement custom validation logic here if required

@@ -15,6 +15,7 @@ namespace OpenApiImporterTest.Application.Stores.CreateOrder
             ConfigureValidationRules();
         }
 
+        [IntentManaged(Mode.Merge)]
         private void ConfigureValidationRules()
         {
             RuleFor(v => v.ShipDate)

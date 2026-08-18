@@ -15,6 +15,7 @@ namespace OpenApiImporterTest.Application.Players.CreateBetsMax
             ConfigureValidationRules();
         }
 
+        [IntentManaged(Mode.Merge)]
         private void ConfigureValidationRules()
         {
             RuleFor(v => v.PriceChange)

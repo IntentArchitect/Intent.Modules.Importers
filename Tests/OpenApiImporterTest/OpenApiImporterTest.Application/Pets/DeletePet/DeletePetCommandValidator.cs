@@ -15,6 +15,7 @@ namespace OpenApiImporterTest.Application.Pets.DeletePet
             ConfigureValidationRules();
         }
 
+        [IntentManaged(Mode.Merge)]
         private void ConfigureValidationRules()
         {
             RuleFor(v => v.Api_key)

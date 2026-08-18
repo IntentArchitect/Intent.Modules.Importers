@@ -15,6 +15,7 @@ namespace OpenApiImporterTest.Application.Users.UpdateUser
             ConfigureValidationRules();
         }
 
+        [IntentManaged(Mode.Merge)]
         private void ConfigureValidationRules()
         {
             RuleFor(v => v.Username)

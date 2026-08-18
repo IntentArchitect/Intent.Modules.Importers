@@ -15,6 +15,7 @@ namespace OpenApiImporterTest.Application.Pets.GetByStatuses
             ConfigureValidationRules();
         }
 
+        [IntentManaged(Mode.Merge)]
         private void ConfigureValidationRules()
         {
             RuleFor(v => v.Status)

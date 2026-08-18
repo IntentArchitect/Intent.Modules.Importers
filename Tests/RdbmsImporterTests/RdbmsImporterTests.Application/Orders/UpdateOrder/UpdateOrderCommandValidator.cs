@@ -15,6 +15,7 @@ namespace RdbmsImporterTests.Application.Orders.UpdateOrder
             ConfigureValidationRules();
         }
 
+        [IntentManaged(Mode.Merge)]
         private void ConfigureValidationRules()
         {
             RuleFor(v => v.RefNo)
