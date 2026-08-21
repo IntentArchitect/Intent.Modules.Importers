@@ -294,6 +294,7 @@ public class DbSchemaIntentMetadataMergerTests
         var userClass = GetClasses(scenario.Package).ShouldHaveSingleItem();
         var statusAttribute = userClass.ChildElements.Single(a => a.Name == "Status");
         statusAttribute.TypeReference.TypeId.ShouldBe("custom-enum-id", "Custom enum type should be preserved");
+        result.Warnings.ShouldContain(w => w.Contains("Preserved user-specified type") && w.Contains("Status"));
     }
 
     [Fact]
@@ -315,6 +316,65 @@ public class DbSchemaIntentMetadataMergerTests
         var userClass = GetClasses(scenario.Package).ShouldHaveSingleItem();
         var statusAttribute = userClass.ChildElements.Single(a => a.Name == "Status");
         statusAttribute.TypeReference.TypeId.ShouldNotBe("custom-enum-id", "Custom enum type should be overridden with database type");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_ColumnIsNullableChanged_ReimportPreservesNullableWhenConfigured()
+    {
+        // Arrange - Initial import
+        var scenario = ScenarioComposer.Create(DatabaseSchemas.WithSimpleUsersTableWithStatus(), PackageModels.Empty());
+        var config = ImportConfigurations.TablesOnly();
+        config.PreserveAttributeTypes = true;
+        var merger = new DbSchemaIntentMetadataMerger(config);
+
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        result.IsSuccessful.ShouldBeTrue();
+
+        var userClass = GetClasses(scenario.Package).ShouldHaveSingleItem();
+        var nameAttribute = userClass.ChildElements.Single(a => a.Name == "Name");
+
+        // Verify initial state: the database reports Name as NOT NULL
+        nameAttribute.TypeReference.IsNullable.ShouldBeFalse("Initial import should reflect the database's NOT NULL column");
+
+        // Act - User manually marks the attribute as nullable in the designer
+        nameAttribute.TypeReference.IsNullable = true;
+
+        // Re-import the same schema (Name is still NOT NULL in the database)
+        var reImportResult = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert
+        reImportResult.IsSuccessful.ShouldBeTrue();
+        var nameAttributeAfter = userClass.ChildElements.Single(a => a.Name == "Name");
+        nameAttributeAfter.TypeReference.IsNullable.ShouldBeTrue(
+            "IsNullable should be preserved from the user's manual change when 'Preserve user-specified attribute types' is enabled");
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_ColumnIsNullableChanged_ReimportOverridesNullableWhenNotConfigured()
+    {
+        // Arrange - Initial import
+        var scenario = ScenarioComposer.Create(DatabaseSchemas.WithSimpleUsersTableWithStatus(), PackageModels.Empty());
+        var config = ImportConfigurations.TablesOnly();
+        config.PreserveAttributeTypes = false;
+        var merger = new DbSchemaIntentMetadataMerger(config);
+
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+        result.IsSuccessful.ShouldBeTrue();
+
+        var userClass = GetClasses(scenario.Package).ShouldHaveSingleItem();
+        var nameAttribute = userClass.ChildElements.Single(a => a.Name == "Name");
+
+        // Act - User manually marks the attribute as nullable in the designer
+        nameAttribute.TypeReference.IsNullable = true;
+
+        // Re-import the same schema (Name is still NOT NULL in the database)
+        var reImportResult = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert - without preservation enabled, the database's NOT NULL wins again
+        reImportResult.IsSuccessful.ShouldBeTrue();
+        var nameAttributeAfter = userClass.ChildElements.Single(a => a.Name == "Name");
+        nameAttributeAfter.TypeReference.IsNullable.ShouldBeFalse(
+            "Without attribute type preservation enabled, IsNullable should follow the database column");
     }
 
     [Fact]
@@ -1411,7 +1471,7 @@ public class DbSchemaIntentMetadataMergerTests
     }
 
     [Fact]
-    public void MergeSchemaAndPackage_StoredProcGenuinelyVoidOnReimport_StillClearsReturnType_RepositoryOperation_WithDefaultPreserveAttributeTypes()
+    public void MergeSchemaAndPackage_StoredProcGenuinelyVoidOnReimport_PreservesReturnType_RepositoryOperation_WithDefaultPreserveAttributeTypes()
     {
         // Arrange - first import succeeds and gets a return type (PreserveAttributeTypes defaults to true)
         var schema = new DatabaseSchema
@@ -1428,22 +1488,23 @@ public class DbSchemaIntentMetadataMergerTests
 
         var repository = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
         var operation = repository.ChildElements.Single();
-        operation.TypeReference.TypeId.ShouldNotBeNullOrEmpty();
+        var originalTypeId = operation.TypeReference.TypeId;
+        originalTypeId.ShouldNotBeNullOrEmpty();
 
-        // Act - re-import where the procedure genuinely no longer returns anything
+        // Act - re-import where the database conclusively reports no result set this run
         var genuinelyVoidProc = StoredProcedures.GetCustomerById();
         genuinelyVoidProc.ResultSetColumns = [];
         scenario.Schema.StoredProcedures = [genuinelyVoidProc];
         var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
 
-        // Assert
+        // Assert - attribute type preservation now also protects the return type from a void re-import
         result.IsSuccessful.ShouldBeTrue();
-        operation.TypeReference.TypeId.ShouldBeNullOrEmpty("A genuinely void procedure must still clear its return type, even with attribute type preservation enabled.");
-        operation.TypeReference.IsCollection.ShouldBeFalse();
+        operation.TypeReference.TypeId.ShouldBe(originalTypeId, "Attribute type preservation should protect an existing return type even when the database reports void this run.");
+        result.Warnings.ShouldContain(w => w.Contains("existing modelled return type was preserved"));
     }
 
     [Fact]
-    public void MergeSchemaAndPackage_StoredProcGenuinelyVoidOnReimport_StillClearsReturnType_StoredProcedureElement_WithDefaultPreserveAttributeTypes()
+    public void MergeSchemaAndPackage_StoredProcGenuinelyVoidOnReimport_PreservesReturnType_StoredProcedureElement_WithDefaultPreserveAttributeTypes()
     {
         // Arrange - first import succeeds and gets a return type (PreserveAttributeTypes defaults to true)
         var schema = new DatabaseSchema
@@ -1460,22 +1521,23 @@ public class DbSchemaIntentMetadataMergerTests
 
         var repository = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
         var spElement = repository.ChildElements.Single(x => x.SpecializationType == StoredProcedures.SpecializationType);
-        spElement.TypeReference.TypeId.ShouldNotBeNullOrEmpty();
+        var originalTypeId = spElement.TypeReference.TypeId;
+        originalTypeId.ShouldNotBeNullOrEmpty();
 
-        // Act - re-import where the procedure genuinely no longer returns anything
+        // Act - re-import where the database conclusively reports no result set this run
         var genuinelyVoidProc = StoredProcedures.GetCustomerById();
         genuinelyVoidProc.ResultSetColumns = [];
         scenario.Schema.StoredProcedures = [genuinelyVoidProc];
         var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
 
-        // Assert
+        // Assert - attribute type preservation now also protects the return type from a void re-import
         result.IsSuccessful.ShouldBeTrue();
-        spElement.TypeReference.TypeId.ShouldBeNullOrEmpty("A genuinely void procedure must still clear its return type, even with attribute type preservation enabled.");
-        spElement.TypeReference.IsCollection.ShouldBeFalse();
+        spElement.TypeReference.TypeId.ShouldBe(originalTypeId, "Attribute type preservation should protect an existing return type even when the database reports void this run.");
+        result.Warnings.ShouldContain(w => w.Contains("existing modelled return type was preserved"));
     }
 
     [Fact]
-    public void MergeSchemaAndPackage_StoredProcGenuinelyVoidOnReimport_StillClearsReturnType_RepositoryOperationMapping_WithDefaultPreserveAttributeTypes()
+    public void MergeSchemaAndPackage_StoredProcGenuinelyVoidOnReimport_PreservesReturnType_RepositoryOperationMapping_WithDefaultPreserveAttributeTypes()
     {
         // Arrange - first import succeeds; both the package-level SP element and its Operation get a return type
         // (PreserveAttributeTypes defaults to true)
@@ -1495,6 +1557,79 @@ public class DbSchemaIntentMetadataMergerTests
         var repository = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
         var operation = repository.ChildElements.Single();
 
+        var originalSpTypeId = spElement.TypeReference.TypeId;
+        var originalOperationTypeId = operation.TypeReference.TypeId;
+        originalSpTypeId.ShouldNotBeNullOrEmpty();
+        originalOperationTypeId.ShouldNotBeNullOrEmpty();
+
+        // Act - re-import where the database conclusively reports no result set this run
+        var genuinelyVoidProc = StoredProcedures.GetCustomerById();
+        genuinelyVoidProc.ResultSetColumns = [];
+        scenario.Schema.StoredProcedures = [genuinelyVoidProc];
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert - attribute type preservation now also protects both return types from a void re-import
+        result.IsSuccessful.ShouldBeTrue();
+        spElement.TypeReference.TypeId.ShouldBe(originalSpTypeId, "The stored procedure element's return type should be protected by attribute type preservation.");
+        operation.TypeReference.TypeId.ShouldBe(originalOperationTypeId, "The operation's return type should be protected by attribute type preservation.");
+        result.Warnings.ShouldContain(w => w.Contains("existing modelled return type on the stored procedure element was preserved"));
+        result.Warnings.ShouldContain(w => w.Contains("existing modelled return type on the operation was preserved"));
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcGenuinelyVoidOnReimport_StillClearsReturnType_StoredProcedureElement_WhenPreservationDisabled()
+    {
+        // Arrange - first import succeeds and gets a return type
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var config = ImportConfigurations.StoredProceduresAsElements();
+        config.PreserveAttributeTypes = false;
+        var merger = new DbSchemaIntentMetadataMerger(config);
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        var repository = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        var spElement = repository.ChildElements.Single(x => x.SpecializationType == StoredProcedures.SpecializationType);
+        spElement.TypeReference.TypeId.ShouldNotBeNullOrEmpty();
+
+        // Act - re-import where the procedure genuinely no longer returns anything
+        var genuinelyVoidProc = StoredProcedures.GetCustomerById();
+        genuinelyVoidProc.ResultSetColumns = [];
+        scenario.Schema.StoredProcedures = [genuinelyVoidProc];
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert - unchecking preservation still gives fully database-driven clearing
+        result.IsSuccessful.ShouldBeTrue();
+        spElement.TypeReference.TypeId.ShouldBeNullOrEmpty("With preservation disabled, a genuinely void procedure must clear its return type.");
+        spElement.TypeReference.IsCollection.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcGenuinelyVoidOnReimport_StillClearsReturnType_RepositoryOperationMapping_WhenPreservationDisabled()
+    {
+        // Arrange - first import succeeds; both the package-level SP element and its Operation get a return type
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var config = ImportConfigurations.StoredProceduresMappedToOperation();
+        config.PreserveAttributeTypes = false;
+        var merger = new DbSchemaIntentMetadataMerger(config);
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        var spElement = scenario.Package.Classes.Single(x => x.SpecializationType == StoredProcedures.SpecializationType);
+        var repository = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        var operation = repository.ChildElements.Single();
+
         spElement.TypeReference.TypeId.ShouldNotBeNullOrEmpty();
         operation.TypeReference.TypeId.ShouldNotBeNullOrEmpty();
 
@@ -1504,12 +1639,100 @@ public class DbSchemaIntentMetadataMergerTests
         scenario.Schema.StoredProcedures = [genuinelyVoidProc];
         var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
 
-        // Assert
+        // Assert - unchecking preservation still gives fully database-driven clearing
         result.IsSuccessful.ShouldBeTrue();
-        spElement.TypeReference.TypeId.ShouldBeNullOrEmpty("The stored procedure element's return type must be cleared, even with attribute type preservation enabled.");
-        operation.TypeReference.TypeId.ShouldBeNullOrEmpty("The operation's return type must be cleared, even with attribute type preservation enabled.");
+        spElement.TypeReference.TypeId.ShouldBeNullOrEmpty("With preservation disabled, the stored procedure element's return type must be cleared.");
+        operation.TypeReference.TypeId.ShouldBeNullOrEmpty("With preservation disabled, the operation's return type must be cleared.");
         spElement.TypeReference.IsCollection.ShouldBeFalse();
         operation.TypeReference.IsCollection.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_ManuallyTypedVoidStoredProcReimported_PreservesUserSpecifiedReturnType_RepositoryOperation()
+    {
+        // Arrange - the procedure never has a SELECT/output parameter, so the first import correctly detects void
+        var voidProc = StoredProcedures.GetCustomerById();
+        voidProc.ResultSetColumns = [];
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [voidProc]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var config = ImportConfigurations.StoredProceduresAsOperations();
+        var merger = new DbSchemaIntentMetadataMerger(config);
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        var repository = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        var operation = repository.ChildElements.Single();
+        operation.TypeReference.TypeId.ShouldBeNullOrEmpty("First import of a genuinely void procedure has no return type to preserve.");
+
+        // Simulate the user manually modelling a return type for the procedure in the designer
+        operation.TypeReference.TypeId = "user-specified-int-type-id";
+        operation.TypeReference.IsNullable = true;
+
+        // Act - re-import with the same void schema
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert - the user-specified type must survive, with a warning explaining why the database type was ignored
+        result.IsSuccessful.ShouldBeTrue();
+        operation.TypeReference.TypeId.ShouldBe("user-specified-int-type-id", "A user-specified return type on an otherwise-void procedure must be preserved when attribute type preservation is enabled.");
+        result.Warnings.ShouldContain(w => w.Contains("existing modelled return type was preserved"));
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcWithResultSetReimportedUnchanged_DoesNotWarn_RepositoryOperation()
+    {
+        // Arrange - a procedure with a genuine result set (e.g. a SELECT), imported once
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var config = ImportConfigurations.StoredProceduresAsOperations();
+        var merger = new DbSchemaIntentMetadataMerger(config);
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Act - re-import the exact same schema, nothing changed
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert - a stored procedure's return type is resolved after SyncElements runs (see
+        // ProcessStoredProcedureStandard), so the source TypeReference SyncElements sees is always an
+        // interim placeholder with no TypeId. That must not be mistaken for "the database detected a
+        // different type" and must not produce a spurious preservation warning.
+        result.IsSuccessful.ShouldBeTrue();
+        result.Warnings.ShouldNotContain(w => w.Contains("Preserved user-specified type"));
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProcWithResultSetReimportedUnchanged_DoesNotWarn_RepositoryOperationMapping()
+    {
+        // Arrange - a procedure with a genuine result set, imported once via the dual SP-element+operation strategy
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.GetCustomerById()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var config = ImportConfigurations.StoredProceduresMappedToOperation();
+        var merger = new DbSchemaIntentMetadataMerger(config);
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Act - re-import the exact same schema, nothing changed
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert - both the stored procedure element and its operation get synced independently; neither
+        // should warn from the interim-placeholder false positive (this strategy is what surfaced the bug
+        // as a duplicated warning, one per synced element).
+        result.IsSuccessful.ShouldBeTrue();
+        result.Warnings.ShouldNotContain(w => w.Contains("Preserved user-specified type"));
     }
 
     [Fact]
@@ -1816,7 +2039,43 @@ public class DbSchemaIntentMetadataMergerTests
 
         sp.TypeReference.IsCollection.ShouldBeFalse();
         operation.TypeReference.IsCollection.ShouldBeFalse();
+        result.Warnings.ShouldContain(w => w.Contains("single-item return type on the stored procedure element was preserved"));
+        result.Warnings.ShouldContain(w => w.Contains("single-item return type on the operation was preserved"));
+    }
 
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProc_MapToOperation_SingleItemReturnType_ResetToCollection_WhenPreservationDisabled()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.TestWithSingleRowResultSet()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var config = ImportConfigurations.StoredProceduresMappedToOperation();
+        config.PreserveAttributeTypes = false;
+        var merger = new DbSchemaIntentMetadataMerger(config);
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        var repository = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        var operation = repository.ChildElements.Single();
+        var sp = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "575edd35-9438-406d-b0a7-b99d6f29b560");
+
+        // Simulate the user manually correcting the return type from a collection to a single item
+        operation.TypeReference.IsCollection = false;
+        sp.TypeReference.IsCollection = false;
+
+        // Act - re-import with preservation disabled
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert - with preservation disabled, the database-driven default (a collection) wins back, with no warning
+        result.IsSuccessful.ShouldBeTrue();
+        sp.TypeReference.IsCollection.ShouldBeTrue("With preservation disabled, the database-driven collection default should override the user's single-item setting.");
+        operation.TypeReference.IsCollection.ShouldBeTrue("With preservation disabled, the database-driven collection default should override the user's single-item setting.");
+        result.Warnings.ShouldNotContain(w => w.Contains("single-item return type"));
     }
 
     [Fact]
@@ -1858,6 +2117,39 @@ public class DbSchemaIntentMetadataMergerTests
         operation.TypeReference.IsCollection = false;
         result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
         operation.TypeReference.IsCollection.ShouldBeFalse();
+        result.Warnings.ShouldContain(w => w.Contains("single-item return type was preserved"));
+    }
+
+    [Fact]
+    public void MergeSchemaAndPackage_StoredProc_StoredProcOperation_SingleItemReturnType_ResetToCollection_WhenPreservationDisabled()
+    {
+        // Arrange
+        var schema = new DatabaseSchema
+        {
+            DatabaseName = "TestDatabase",
+            Tables = [],
+            Views = [],
+            StoredProcedures = [StoredProcedures.TestWithSingleRowResultSet()]
+        };
+        var scenario = ScenarioComposer.Create(schema, PackageModels.Empty());
+        var config = ImportConfigurations.StoredProceduresAsOperations();
+        config.PreserveAttributeTypes = false;
+        var merger = new DbSchemaIntentMetadataMerger(config);
+        merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        var repository = scenario.Package.Classes.Single(x => x.SpecializationTypeId == "96ffceb2-a70a-4b69-869b-0df436c470c3");
+        var operation = repository.ChildElements.Single();
+
+        // Simulate the user manually correcting the return type from a collection to a single item
+        operation.TypeReference.IsCollection = false;
+
+        // Act - re-import with preservation disabled
+        var result = merger.MergeSchemaAndPackage(scenario.Schema, scenario.Package);
+
+        // Assert - with preservation disabled, the database-driven default (a collection) wins back, with no warning
+        result.IsSuccessful.ShouldBeTrue();
+        operation.TypeReference.IsCollection.ShouldBeTrue("With preservation disabled, the database-driven collection default should override the user's single-item setting.");
+        result.Warnings.ShouldNotContain(w => w.Contains("single-item return type was preserved"));
     }
 
     [Fact]

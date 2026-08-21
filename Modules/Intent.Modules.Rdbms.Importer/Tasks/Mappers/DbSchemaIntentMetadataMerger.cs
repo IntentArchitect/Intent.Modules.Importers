@@ -107,7 +107,7 @@ internal class DbSchemaIntentMetadataMerger
                 SyncElementType preserveElementTypes = SyncElementType.None;
                 if(_config.PreserveAttributeTypes)
                 {
-                    preserveElementTypes = SyncElementType.AttributeType;
+                    preserveElementTypes = SyncElementType.AttributeType | SyncElementType.IsNullable;
                 }
 
                 // Update existing class without moving it (keep existing ParentFolderId)
@@ -170,7 +170,7 @@ internal class DbSchemaIntentMetadataMerger
                 SyncElementType preserveElementTypes = SyncElementType.None;
                 if (_config.PreserveAttributeTypes)
                 {
-                    preserveElementTypes = SyncElementType.AttributeType;
+                    preserveElementTypes = SyncElementType.AttributeType | SyncElementType.IsNullable;
                 }
 
                 // Update existing class without moving it (keep existing ParentFolderId)
@@ -320,14 +320,27 @@ internal class DbSchemaIntentMetadataMerger
         {
             ProcessStoredProcedureDataContract(storedProc, procElement, package, result, deduplicationContext, hadExistingReturnType);
 
-            procElement.TypeReference.IsCollection = hadExistingReturnType
-                ? existingElement!.TypeReference.IsCollection
-                : true;
+            if (hadExistingReturnType && _config.PreserveAttributeTypes && !existingElement!.TypeReference.IsCollection)
+            {
+                procElement.TypeReference.IsCollection = false;
+                result.Warnings.Add($"Database reports a collection result set for '{storedProc.Schema}.{storedProc.Name}'; the existing single-item return type was preserved because 'Preserve user-specified attribute types' is enabled.");
+            }
+            else
+            {
+                procElement.TypeReference.IsCollection = true;
+            }
         }
         else if (!storedProc.ResultSetDetectionFailed)
         {
-            procElement.TypeReference.TypeId = null;
-            procElement.TypeReference.IsCollection = false;
+            if (_config.PreserveAttributeTypes && hadExistingReturnType)
+            {
+                result.Warnings.Add($"Database reports no result set for '{storedProc.Schema}.{storedProc.Name}' this import; the existing modelled return type was preserved because 'Preserve user-specified attribute types' is enabled.");
+            }
+            else
+            {
+                procElement.TypeReference.TypeId = null;
+                procElement.TypeReference.IsCollection = false;
+            }
         }
 
     }
@@ -399,7 +412,7 @@ internal class DbSchemaIntentMetadataMerger
             if (storedProc.ResultSetDetectionFailed)
             {
                 existingSpElement.TypeReference.TypeId = preservedSpTypeId;
-                result.Warnings.Add($"Result set for '{storedProc.Schema}.{storedProc.Name}' could not be determined this import; the existing return type was preserved.");
+                result.Warnings.Add($"Result set for '{storedProc.Schema}.{storedProc.Name}' could not be determined this import; the existing return type on the stored procedure element was preserved.");
             }
 
             storedProcElement = existingSpElement;
@@ -433,7 +446,7 @@ internal class DbSchemaIntentMetadataMerger
                 SyncElementType preserveElementTypes = SyncElementType.None;
                 if (_config.PreserveAttributeTypes)
                 {
-                    preserveElementTypes = SyncElementType.AttributeType;
+                    preserveElementTypes = SyncElementType.AttributeType | SyncElementType.IsNullable;
                 }
 
                 var updatedDataContract = IntentModelMapper.CreateDataContractForStoredProcedure(storedProc, schemaFolder.Id, procName, _config, package, deduplicationContext);
@@ -452,16 +465,29 @@ internal class DbSchemaIntentMetadataMerger
             // Preserve the user's IsNullable setting one more time before setting TypeId
             var preservedSpIsNullable = storedProcElement.TypeReference.IsNullable;
             storedProcElement.TypeReference.TypeId = underlyingResultDataContract.Id;
-            storedProcElement.TypeReference.IsCollection = spHadReturnType
-                ? existingSpElement!.TypeReference.IsCollection
-                : true;
+            if (spHadReturnType && _config.PreserveAttributeTypes && !existingSpElement!.TypeReference.IsCollection)
+            {
+                storedProcElement.TypeReference.IsCollection = false;
+                result.Warnings.Add($"Database reports a collection result set for '{storedProc.Schema}.{storedProc.Name}'; the existing single-item return type on the stored procedure element was preserved because 'Preserve user-specified attribute types' is enabled.");
+            }
+            else
+            {
+                storedProcElement.TypeReference.IsCollection = true;
+            }
             storedProcElement.TypeReference.IsNullable = preservedSpIsNullable;
 
         }
         else if (!storedProc.ResultSetDetectionFailed)
         {
-            storedProcElement.TypeReference.TypeId = null;
-            storedProcElement.TypeReference.IsCollection = false;
+            if (_config.PreserveAttributeTypes && spHadReturnType)
+            {
+                result.Warnings.Add($"Database reports no result set for '{storedProc.Schema}.{storedProc.Name}' this import; the existing modelled return type on the stored procedure element was preserved because 'Preserve user-specified attribute types' is enabled.");
+            }
+            else
+            {
+                storedProcElement.TypeReference.TypeId = null;
+                storedProcElement.TypeReference.IsCollection = false;
+            }
         }
 
         // 3. Create the Operation (with only input parameters)
@@ -514,7 +540,7 @@ internal class DbSchemaIntentMetadataMerger
             if (storedProc.ResultSetDetectionFailed)
             {
                 existingOperation.TypeReference.TypeId = preservedOperationTypeId;
-                result.Warnings.Add($"Result set for '{storedProc.Schema}.{storedProc.Name}' could not be determined this import; the existing return type was preserved.");
+                result.Warnings.Add($"Result set for '{storedProc.Schema}.{storedProc.Name}' could not be determined this import; the existing return type on the operation was preserved.");
             }
 
             operationElement = existingOperation;
@@ -561,7 +587,7 @@ internal class DbSchemaIntentMetadataMerger
                 SyncElementType preserveElementTypes = SyncElementType.None;
                 if (_config.PreserveAttributeTypes)
                 {
-                    preserveElementTypes = SyncElementType.AttributeType;
+                    preserveElementTypes = SyncElementType.AttributeType | SyncElementType.IsNullable;
                 }
 
                 var updatedWrapper = IntentModelMapper.CreateWrapperDataContractForStoredProcedure(
@@ -594,14 +620,27 @@ internal class DbSchemaIntentMetadataMerger
             if (underlyingResultDataContract != null)
             {
                 operationElement.TypeReference.TypeId = underlyingResultDataContract.Id;
-                operationElement.TypeReference.IsCollection = operationHadReturnType
-                    ? existingOperation!.TypeReference.IsCollection
-                    : true;
+                if (operationHadReturnType && _config.PreserveAttributeTypes && !existingOperation!.TypeReference.IsCollection)
+                {
+                    operationElement.TypeReference.IsCollection = false;
+                    result.Warnings.Add($"Database reports a collection result set for '{storedProc.Schema}.{storedProc.Name}'; the existing single-item return type on the operation was preserved because 'Preserve user-specified attribute types' is enabled.");
+                }
+                else
+                {
+                    operationElement.TypeReference.IsCollection = true;
+                }
             }
             else if (!storedProc.ResultSetDetectionFailed)
             {
-                operationElement.TypeReference.TypeId = null;
-                operationElement.TypeReference.IsCollection = false;
+                if (_config.PreserveAttributeTypes && operationHadReturnType)
+                {
+                    result.Warnings.Add($"Database reports no result set for '{storedProc.Schema}.{storedProc.Name}' this import; the existing modelled return type on the operation was preserved because 'Preserve user-specified attribute types' is enabled.");
+                }
+                else
+                {
+                    operationElement.TypeReference.TypeId = null;
+                    operationElement.TypeReference.IsCollection = false;
+                }
             }
 
             wrapperDataContract = null!;
@@ -753,17 +792,19 @@ internal class DbSchemaIntentMetadataMerger
                 {
                     existingElement.TypeReference.TypeId = sourceElement.TypeReference.TypeId;
                 }
-                // I want a nice notification here
-                // else if (preserveAttributeTypes && 
-                //          !string.IsNullOrEmpty(existingElement.TypeReference.TypeId) &&
-                //          existingElement.TypeReference.TypeId != sourceElement.TypeReference.TypeId)
-                // {
-                //     // Log warning when type preservation prevents an update
-                //     var elementIdentifier = string.IsNullOrEmpty(parentSchema) 
-                //         ? existingElement.Name 
-                //         : $"{parentSchema}.{existingElement.Name}";
-                //     result?.Warnings.Add($"Preserved user-specified type for '{elementIdentifier}'. Database type would have changed it to '{sourceElement.TypeReference.TypeName}'.");
-                // }
+                else if (!string.IsNullOrEmpty(sourceElement.TypeReference.TypeId) && existingElement.TypeReference.TypeId != sourceElement.TypeReference.TypeId)
+                {
+                    // sourceElement.TypeReference.TypeId is empty for elements whose return type is resolved
+                    // after SyncElements runs (e.g. stored procedure operations/elements - see
+                    // ProcessStoredProcedureStandard/ProcessStoredProcedureWithOperationMapping, which patch
+                    // TypeReference.TypeId directly once the result set is known). An empty source TypeId is
+                    // "not yet determined", not "the database detected a different type" - warning on it would
+                    // be a false positive on every re-import of such an element.
+                    var elementIdentifier = string.IsNullOrEmpty(parentSchema)
+                        ? existingElement.Name
+                        : $"{parentSchema}.{existingElement.Name}";
+                    result?.Warnings.Add($"Preserved user-specified type for '{elementIdentifier}' during re-import (attribute type preservation is enabled).");
+                }
 
                 if ((preserveElementTypes & SyncElementType.GenericType) == 0)
                 {
@@ -1262,7 +1303,7 @@ internal class DbSchemaIntentMetadataMerger
                 SyncElementType preserveElementTypes = SyncElementType.None;
                 if (_config.PreserveAttributeTypes)
                 {
-                    preserveElementTypes = SyncElementType.AttributeType;
+                    preserveElementTypes = SyncElementType.AttributeType | SyncElementType.IsNullable;
                 }
 
                 // Update existing data contract
@@ -1348,7 +1389,7 @@ internal class DbSchemaIntentMetadataMerger
                 SyncElementType preserveElementTypes = SyncElementType.None;
                 if (_config.PreserveAttributeTypes)
                 {
-                    preserveElementTypes = SyncElementType.AttributeType;
+                    preserveElementTypes = SyncElementType.AttributeType | SyncElementType.IsNullable;
                 }
 
                 // Update existing DataContract

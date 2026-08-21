@@ -1,3 +1,8 @@
+### Version 1.0.20
+
+- Fixed: Issue where a manual change to a table's return type was reverted on reimport.
+- Fixed: Issue where a table/view column's or stored procedure result attribute's `IsNullable` value would be reverted to match the database on re-import
+ 
 ### Version 1.0.19
 
 - Fixed: Issue where the stored procedure import dialog's Connection String and Database Type fields were shown as required whenever **Remember Settings** was set to anything other than "Inherit Database Settings".
