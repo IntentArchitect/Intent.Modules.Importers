@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <managedFiles version="1" applicationId="379f3e39-f72f-4cb2-9b3b-77c22ef25a71">
-  <file path=".agents/instructions/csharp-guidelines.md" />
-  <file path=".agents/skills/application-service-implementation/SKILL.md" />
-  <file path=".agents/skills/domain-entity/SKILL.md" />
-  <file path=".agents/skills/domain-services/SKILL.md" />
-  <file path=".agents/skills/ef-repository/SKILL.md" />
-  <file path=".agents/skills/mediatr-domain-event-handler/SKILL.md" />
-  <file path="ImportTest.Api/Configuration/ApiVersionSwaggerGenOptions.cs" />
-  <file path="ImportTest.Api/Configuration/ApiVersioningConfiguration.cs" />
-  <file path="ImportTest.Api/Configuration/ProblemDetailsConfiguration.cs" />
-  <file path="ImportTest.Api/Configuration/SwashbuckleConfiguration.cs" />
-  <file path="ImportTest.Api/Filters/ExceptionFilter.cs" />
-  <file path="ImportTest.Api/Filters/HideRouteParametersFromBodyOperationFilter.cs" />
-  <file path="ImportTest.Api/Filters/TypeSchemaFilter.cs" />
-  <file path="ImportTest.Api/ImportTest.Api.csproj" />
-  <file path="ImportTest.Api/Program.cs" />
-  <file path="ImportTest.Api/Properties/launchSettings.json" />
-  <file path="ImportTest.Api/Startup.cs" />
-  <file path="ImportTest.Api/appsettings.json" />
-  <file path="ImportTest.Application/Common/Interfaces/IDomainEventService.cs" />
-  <file path="ImportTest.Application/Common/Mappings/IMapFrom.cs" />
-  <file path="ImportTest.Application/Common/Mappings/MappingProfile.cs" />
-  <file path="ImportTest.Application/Common/Models/DomainEventNotification.cs" />
-  <file path="ImportTest.Application/Common/Pagination/PagedList.cs" />
-  <file path="ImportTest.Application/Common/Pagination/PagedResult.cs" />
-  <file path="ImportTest.Application/Common/Pagination/PagedResultMappingExtensions.cs" />
-  <file path="ImportTest.Application/DependencyInjection.cs" />
-  <file path="ImportTest.Application/ImportTest.Application.csproj" />
-  <file path="ImportTest.Domain/Common/CollectionExtensions.cs" />
-  <file path="ImportTest.Domain/Common/DomainEvent.cs" />
-  <file path="ImportTest.Domain/Common/Exceptions/NotFoundException.cs" />
-  <file path="ImportTest.Domain/Common/IHasDomainEvent.cs" />
-  <file path="ImportTest.Domain/Common/Interfaces/IUnitOfWork.cs" />
-  <file path="ImportTest.Domain/Common/UpdateHelper.cs" />
-  <file path="ImportTest.Domain/ImportTest.Domain.csproj" />
-  <file path="ImportTest.Domain/Repositories/IEFRepository.cs" />
-  <file path="ImportTest.Domain/Repositories/IPagedList.cs" />
-  <file path="ImportTest.Domain/Repositories/IRepository.cs" />
-  <file path="ImportTest.Domain/ValueObject.cs" />
-  <file path="ImportTest.Infrastructure/DependencyInjection.cs" />
-  <file path="ImportTest.Infrastructure/ImportTest.Infrastructure.csproj" />
-  <file path="ImportTest.Infrastructure/Migrations/README.md" />
-  <file path="ImportTest.Infrastructure/Persistence/ApplicationDbContext.cs" />
-  <file path="ImportTest.Infrastructure/Repositories/RepositoryBase.cs" />
-  <file path="ImportTest.Infrastructure/Services/DomainEventService.cs" />
-  <file path="ImportTest.sln" />
+  <file path=".agents/instructions/csharp-guidelines.md" templateId="Intent.Modules.Common.CSharp.Templates.StaticContentTemplateRegistrations.AIInstructionsStaticContentTemplateRegistration" />
+  <file path=".agents/skills/application-service-implementation/SKILL.md" templateId="Intent.Application.ServiceImplementations.ServiceImplementationSkillTemplate" />
+  <file path=".agents/skills/domain-entity/SKILL.md" templateId="Intent.Entities.DomainEntitySkill" />
+  <file path=".agents/skills/domain-services/SKILL.md" templateId="Intent.DomainServices.DomainServiceSkill" />
+  <file path=".agents/skills/ef-repository/SKILL.md" templateId="Intent.EntityFrameworkCore.Repositories.EFRepositorySkillTemplate" />
+  <file path=".agents/skills/mediatr-domain-event-handler/SKILL.md" templateId="Intent.MediatR.DomainEvents.DomainEventHandlerSkill" />
+  <file path="ImportTest.Api/Configuration/ApiVersionSwaggerGenOptions.cs" templateId="Intent.AspNetCore.Versioning.ApiVersionSwaggerGenOptions" />
+  <file path="ImportTest.Api/Configuration/ApiVersioningConfiguration.cs" templateId="Intent.AspNetCore.Versioning.ApiVersioningConfiguration" />
+  <file path="ImportTest.Api/Configuration/ProblemDetailsConfiguration.cs" templateId="Intent.AspNetCore.ProblemDetailsConfiguration" />
+  <file path="ImportTest.Api/Configuration/SwashbuckleConfiguration.cs" templateId="Intent.AspNetCore.Swashbuckle.SwashbuckleConfiguration" />
+  <file path="ImportTest.Api/Filters/ExceptionFilter.cs" templateId="Intent.AspNetCore.Controllers.ExceptionFilter" />
+  <file path="ImportTest.Api/Filters/HideRouteParametersFromBodyOperationFilter.cs" templateId="Intent.AspNetCore.Swashbuckle.HideRouteParametersFromBodyOperationFilter" />
+  <file path="ImportTest.Api/Filters/TypeSchemaFilter.cs" templateId="Intent.AspNetCore.Swashbuckle.TypeSchemaFilter" />
+  <file path="ImportTest.Api/ImportTest.Api.csproj" templateId="Intent.VisualStudio.Projects.CSharpProject" />
+  <file path="ImportTest.Api/Program.cs" templateId="Intent.AspNetCore.Program" />
+  <file path="ImportTest.Api/Properties/launchSettings.json" templateId="Intent.VisualStudio.Projects.CoreWeb.LaunchSettings" />
+  <file path="ImportTest.Api/Startup.cs" templateId="Intent.AspNetCore.Startup" />
+  <file path="ImportTest.Api/appsettings.json" templateId="Intent.VisualStudio.Projects.CoreWeb.AppSettings-Default" />
+  <file path="ImportTest.Application/Common/Interfaces/IDomainEventService.cs" templateId="Intent.DomainEvents.DomainEventServiceInterface" />
+  <file path="ImportTest.Application/Common/Mappings/IMapFrom.cs" templateId="Intent.Application.AutoMapper.MapFromInterface" />
+  <file path="ImportTest.Application/Common/Mappings/MappingProfile.cs" templateId="Intent.Application.AutoMapper.MappingProfile" />
+  <file path="ImportTest.Application/Common/Models/DomainEventNotification.cs" templateId="Intent.MediatR.DomainEvents.DomainEventNotification" />
+  <file path="ImportTest.Application/Common/Pagination/PagedList.cs" templateId="Intent.EntityFrameworkCore.PagedList" />
+  <file path="ImportTest.Application/Common/Pagination/PagedResult.cs" templateId="Intent.Application.Dtos.Pagination.PagedResult" />
+  <file path="ImportTest.Application/Common/Pagination/PagedResultMappingExtensions.cs" templateId="Intent.Application.Dtos.Pagination.PagedResultMappingExtensions" />
+  <file path="ImportTest.Application/DependencyInjection.cs" templateId="Intent.Application.DependencyInjection.DependencyInjection" />
+  <file path="ImportTest.Application/ImportTest.Application.csproj" templateId="Intent.VisualStudio.Projects.CSharpProject" />
+  <file path="ImportTest.Domain/Common/CollectionExtensions.cs" templateId="Intent.Entities.CollectionExtensions" />
+  <file path="ImportTest.Domain/Common/DomainEvent.cs" templateId="Intent.DomainEvents.DomainEventBase" />
+  <file path="ImportTest.Domain/Common/Exceptions/NotFoundException.cs" templateId="Intent.Entities.NotFoundException" />
+  <file path="ImportTest.Domain/Common/IHasDomainEvent.cs" templateId="Intent.DomainEvents.HasDomainEventInterface" />
+  <file path="ImportTest.Domain/Common/Interfaces/IUnitOfWork.cs" templateId="Intent.Entities.Repositories.Api.UnitOfWorkInterface" />
+  <file path="ImportTest.Domain/Common/UpdateHelper.cs" templateId="Intent.Entities.UpdateHelper" />
+  <file path="ImportTest.Domain/ImportTest.Domain.csproj" templateId="Intent.VisualStudio.Projects.CSharpProject" />
+  <file path="ImportTest.Domain/Repositories/IEFRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.EFRepositoryInterface" />
+  <file path="ImportTest.Domain/Repositories/IPagedList.cs" templateId="Intent.Entities.Repositories.Api.PagedListInterface" />
+  <file path="ImportTest.Domain/Repositories/IRepository.cs" templateId="Intent.Entities.Repositories.Api.RepositoryInterface" />
+  <file path="ImportTest.Domain/ValueObject.cs" templateId="Intent.ValueObjects.ValueObjectBase" />
+  <file path="ImportTest.Infrastructure/DependencyInjection.cs" templateId="Intent.Infrastructure.DependencyInjection.DependencyInjection" />
+  <file path="ImportTest.Infrastructure/ImportTest.Infrastructure.csproj" templateId="Intent.VisualStudio.Projects.CSharpProject" />
+  <file path="ImportTest.Infrastructure/Migrations/README.md" templateId="Intent.EntityFrameworkCore.DbMigrationsReadMe" />
+  <file path="ImportTest.Infrastructure/Persistence/ApplicationDbContext.cs" templateId="Intent.EntityFrameworkCore.DbContext" />
+  <file path="ImportTest.Infrastructure/Repositories/RepositoryBase.cs" templateId="Intent.EntityFrameworkCore.Repositories.RepositoryBase" />
+  <file path="ImportTest.Infrastructure/Services/DomainEventService.cs" templateId="Intent.MediatR.DomainEvents.DomainEventService" />
+  <file path="ImportTest.sln" templateId="Intent.VisualStudio.Projects.VisualStudioSolution" />
 </managedFiles>

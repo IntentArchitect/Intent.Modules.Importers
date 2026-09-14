@@ -1,345 +1,345 @@
 <?xml version="1.0" encoding="utf-8"?>
 <managedFiles version="1" applicationId="a5bda094-e905-46f8-8348-5afef353db68">
-  <file path=".agents/instructions/csharp-guidelines.md" />
-  <file path=".agents/skills/application-service-implementation/SKILL.md" />
-  <file path=".agents/skills/domain-entity/SKILL.md" />
-  <file path=".agents/skills/ef-repository/SKILL.md" />
-  <file path=".agents/skills/fluent-validation-custom-validation/SKILL.md" />
-  <file path=".agents/skills/mediatr-command-handler/SKILL.md" />
-  <file path=".agents/skills/mediatr-domain-event-handler/SKILL.md" />
-  <file path=".agents/skills/mediatr-query-handler/SKILL.md" />
-  <file path="RdbmsImporterTests.Api/Configuration/ApiVersionSwaggerGenOptions.cs" />
-  <file path="RdbmsImporterTests.Api/Configuration/ApiVersioningConfiguration.cs" />
-  <file path="RdbmsImporterTests.Api/Configuration/ApplicationSecurityConfiguration.cs" />
-  <file path="RdbmsImporterTests.Api/Configuration/HealthChecksConfiguration.cs" />
-  <file path="RdbmsImporterTests.Api/Configuration/ProblemDetailsConfiguration.cs" />
-  <file path="RdbmsImporterTests.Api/Configuration/SwashbuckleConfiguration.cs" />
-  <file path="RdbmsImporterTests.Api/Filters/AuthorizeCheckOperationFilter.cs" />
-  <file path="RdbmsImporterTests.Api/Filters/ExceptionFilter.cs" />
-  <file path="RdbmsImporterTests.Api/Filters/HideRouteParametersFromBodyOperationFilter.cs" />
-  <file path="RdbmsImporterTests.Api/Filters/TypeSchemaFilter.cs" />
-  <file path="RdbmsImporterTests.Api/Logging/BoundedLoggingDestructuringPolicy.cs" />
-  <file path="RdbmsImporterTests.Api/Program.cs" />
-  <file path="RdbmsImporterTests.Api/Properties/launchSettings.json" />
-  <file path="RdbmsImporterTests.Api/RdbmsImporterTests.Api.csproj" />
-  <file path="RdbmsImporterTests.Api/Services/CurrentUserService.cs" />
-  <file path="RdbmsImporterTests.Api/Startup.cs" />
-  <file path="RdbmsImporterTests.Api/appsettings.json" />
-  <file path="RdbmsImporterTests.Application/Common/Behaviours/AuthorizationBehaviour.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Behaviours/LoggingBehaviour.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Behaviours/PerformanceBehaviour.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Behaviours/UnhandledExceptionBehaviour.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Behaviours/UnitOfWorkBehaviour.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Behaviours/ValidationBehaviour.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Exceptions/ForbiddenAccessException.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Interfaces/IBypassPipelineValidation.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Interfaces/ICommand.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Interfaces/ICurrentUser.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Interfaces/ICurrentUserService.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Interfaces/IDomainEventService.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Interfaces/IQuery.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Mappings/IMapFrom.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Mappings/MappingProfile.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Models/DomainEventNotification.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Models/Result.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Pagination/PagedList.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Pagination/PagedResult.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Pagination/PagedResultMappingExtensions.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Security/AuthorizeAttribute.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Validation/IValidatorProvider.cs" />
-  <file path="RdbmsImporterTests.Application/Common/Validation/ValidatorProvider.cs" />
-  <file path="RdbmsImporterTests.Application/DependencyInjection.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/CreateOrder/CreateOrderCommand.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/CreateOrder/CreateOrderCommandHandler.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/CreateOrder/CreateOrderCommandValidator.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/CustomerOrderDto.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/CustomerOrderDtoMappingExtensions.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/DeleteOrder/DeleteOrderCommand.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/DeleteOrder/DeleteOrderCommandHandler.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/DeleteOrder/DeleteOrderCommandValidator.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/GetCustomerOrders/GetCustomerOrdersQuery.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/GetCustomerOrders/GetCustomerOrdersQueryHandler.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/GetCustomerOrders/GetCustomerOrdersQueryValidator.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/GetOrderById/GetOrderByIdQuery.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/GetOrderById/GetOrderByIdQueryHandler.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/GetOrderById/GetOrderByIdQueryValidator.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/GetOrders/GetOrdersQuery.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/GetOrders/GetOrdersQueryHandler.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/GetOrders/GetOrdersQueryValidator.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/OrderDto.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/OrderDtoMappingExtensions.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/UpdateOrder/UpdateOrderCommand.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/UpdateOrder/UpdateOrderCommandHandler.cs" />
-  <file path="RdbmsImporterTests.Application/Orders/UpdateOrder/UpdateOrderCommandValidator.cs" />
-  <file path="RdbmsImporterTests.Application/RdbmsImporterTests.Application.csproj" />
-  <file path="RdbmsImporterTests.Domain/Common/CollectionExtensions.cs" />
-  <file path="RdbmsImporterTests.Domain/Common/DomainEvent.cs" />
-  <file path="RdbmsImporterTests.Domain/Common/Exceptions/NotFoundException.cs" />
-  <file path="RdbmsImporterTests.Domain/Common/IHasDomainEvent.cs" />
-  <file path="RdbmsImporterTests.Domain/Common/Interfaces/IUnitOfWork.cs" />
-  <file path="RdbmsImporterTests.Domain/Common/UpdateHelper.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Dbo/BrandTypeModel.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Dbo/GetCustomerOrdersResponse.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Dbo/GetOrderItemDetailsResponse.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Dbo/GetProductDetailsAndCountResponse.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Dbo/GetProductDetailsAndCountResult.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Public/BrandTypeModel.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Public/GetCustomerOrdersResponse.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Public/GetOrderItemDetailsResponse.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidGenerateV1Response.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidGenerateV1mcResponse.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidGenerateV3Response.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidGenerateV4Response.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidGenerateV5Response.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidNilResponse.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidNsDnsResponse.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidNsOidResponse.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidNsUrlResponse.cs" />
-  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidNsX500Response.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Address.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/AspNetRole.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/AspNetRoleClaim.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/AspNetUser.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/AspNetUserClaim.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/AspNetUserLogin.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/AspNetUserRole.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/AspNetUserToken.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Brand.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Child.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Customer.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/FKTable.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/LegacyTable.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Order.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/OrderItem.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Parent.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Price.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/PrimaryTable.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Product.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Dbo/SelfReferenceTable.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/PsgSchema2/Bank.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/PsgSchema2/Bank1.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/PsgSchema2/Customer.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/PsgViews/VwOrder.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/Address.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/AspNetRole.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/AspNetRoleClaim.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/AspNetUser.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/AspNetUserClaim.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/AspNetUserLogin.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/AspNetUserRole.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/AspNetUserToken.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/Brand.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/Child.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/Customer.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/Fktable.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/LegacyTable.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/Order.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/OrderItem.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/Parent.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/Price.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/Primarytable.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/Product.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Public/Selfreferencetable.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Schema2/Bank.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Schema2/Banks.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Schema2/Customer.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Schema2/Customers.cs" />
-  <file path="RdbmsImporterTests.Domain/Entities/Views/VwOrder.cs" />
-  <file path="RdbmsImporterTests.Domain/RdbmsImporterTests.Domain.csproj" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAddressRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAspNetRoleClaimRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAspNetRoleRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAspNetUserClaimRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAspNetUserLoginRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAspNetUserRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAspNetUserRoleRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAspNetUserTokenRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IBrandRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IChildRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/ICustomerRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IElementRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IFKTableRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/ILegacyTableRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IOrderItemRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IOrderRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IParentRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IPriceRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IPrimaryTableRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IProductRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/ISelfReferenceTableRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IStoredProcedureRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/IEFRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/IPagedList.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/IRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/PsgSchema2/IBank1Repository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/PsgSchema2/IBankRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/PsgSchema2/ICustomerRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/PsgViews/IVwOrderRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAddressRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAspNetRoleClaimRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAspNetRoleRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAspNetUserClaimRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAspNetUserLoginRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAspNetUserRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAspNetUserRoleRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAspNetUserTokenRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IBrandRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IChildRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/ICustomerRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IFktableRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/ILegacyTableRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IOrderItemRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IOrderRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IParentRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IPriceRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IPrimarytableRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IProductRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/ISelfreferencetableRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Public/IStoredProcedureRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Schema2/IBankRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Schema2/IBanksRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Schema2/ICustomerRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Schema2/ICustomersRepository.cs" />
-  <file path="RdbmsImporterTests.Domain/Repositories/Views/IVwOrderRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/DependencyInjection.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Migrations/README.md" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/ApplicationDbContext.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AddressConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AspNetRoleClaimConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AspNetRoleConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AspNetUserClaimConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AspNetUserConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AspNetUserLoginConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AspNetUserRoleConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AspNetUserTokenConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/BrandConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/ChildConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/CustomerConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/FKTableConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/GetCustomerOrdersResponseConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/GetOrderItemDetailsResponseConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/GetProductDetailsAndCountResponseConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/LegacyTableConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/OrderConfiguration.cs" deviationsHash="5F63E797A465569E514FFB23D1E2D79085EDA559C0ABB812B2FC7B68D7913034" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/OrderItemConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/ParentConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/PriceConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/PrimaryTableConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/ProductConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/SelfReferenceTableConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/PsgSchema2/Bank1Configuration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/PsgSchema2/BankConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/PsgSchema2/CustomerConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/PsgViews/VwOrderConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AddressConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AspNetRoleClaimConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AspNetRoleConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AspNetUserClaimConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AspNetUserConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AspNetUserLoginConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AspNetUserRoleConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AspNetUserTokenConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/BrandConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/ChildConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/CustomerConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/FktableConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/GetCustomerOrdersResponseConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/GetOrderItemDetailsResponseConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/LegacyTableConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/OrderConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/OrderItemConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/ParentConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/PriceConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/PrimarytableConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/ProductConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/SelfreferencetableConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidGenerateV1ResponseConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidGenerateV1mcResponseConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidGenerateV3ResponseConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidGenerateV4ResponseConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidGenerateV5ResponseConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidNilResponseConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidNsDnsResponseConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidNsOidResponseConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidNsUrlResponseConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidNsX500ResponseConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Schema2/BankConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Schema2/BanksConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Schema2/CustomerConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Schema2/CustomersConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Views/VwOrderConfiguration.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Persistence/PostgresAppDbContext.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/RdbmsImporterTests.Infrastructure.csproj" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AddressRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AspNetRoleClaimRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AspNetRoleRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AspNetUserClaimRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AspNetUserLoginRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AspNetUserRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AspNetUserRoleRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AspNetUserTokenRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/BrandRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/ChildRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/CustomerRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/ElementRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/FKTableRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/LegacyTableRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/OrderItemRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/OrderRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/ParentRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/PriceRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/PrimaryTableRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/ProductRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/SelfReferenceTableRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/StoredProcedureRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Dbo/BrandTypeModelExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Dbo/GetCustomerOrdersResponseExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Dbo/GetOrderItemDetailsResponseExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Dbo/GetProductDetailsAndCountResponseExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/BrandTypeModelExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/GetCustomerOrdersResponseExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/GetOrderItemDetailsResponseExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidGenerateV1ResponseExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidGenerateV1mcResponseExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidGenerateV3ResponseExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidGenerateV4ResponseExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidGenerateV5ResponseExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidNilResponseExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidNsDnsResponseExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidNsOidResponseExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidNsUrlResponseExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidNsX500ResponseExtensionMethods.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/PsgSchema2/Bank1Repository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/PsgSchema2/BankRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/PsgSchema2/CustomerRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/PsgViews/VwOrderRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AddressRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AspNetRoleClaimRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AspNetRoleRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AspNetUserClaimRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AspNetUserLoginRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AspNetUserRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AspNetUserRoleRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AspNetUserTokenRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/BrandRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/ChildRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/CustomerRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/FktableRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/LegacyTableRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/OrderItemRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/OrderRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/ParentRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/PriceRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/PrimarytableRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/ProductRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/SelfreferencetableRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/StoredProcedureRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/RepositoryBase.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Schema2/BankRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Schema2/BanksRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Schema2/CustomerRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Schema2/CustomersRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Repositories/Views/VwOrderRepository.cs" />
-  <file path="RdbmsImporterTests.Infrastructure/Services/DomainEventService.cs" />
-  <file path="RdbmsImporterTests.sln" />
+  <file path=".agents/instructions/csharp-guidelines.md" templateId="Intent.Modules.Common.CSharp.Templates.StaticContentTemplateRegistrations.AIInstructionsStaticContentTemplateRegistration" />
+  <file path=".agents/skills/application-service-implementation/SKILL.md" templateId="Intent.Application.ServiceImplementations.ServiceImplementationSkillTemplate" />
+  <file path=".agents/skills/domain-entity/SKILL.md" templateId="Intent.Entities.DomainEntitySkill" />
+  <file path=".agents/skills/ef-repository/SKILL.md" templateId="Intent.EntityFrameworkCore.Repositories.EFRepositorySkillTemplate" />
+  <file path=".agents/skills/fluent-validation-custom-validation/SKILL.md" templateId="Intent.Application.FluentValidation.CustomValidationSkillTemplate" />
+  <file path=".agents/skills/mediatr-command-handler/SKILL.md" templateId="Intent.Application.MediatR.CommandHandlerSkillTemplate" />
+  <file path=".agents/skills/mediatr-domain-event-handler/SKILL.md" templateId="Intent.MediatR.DomainEvents.DomainEventHandlerSkill" />
+  <file path=".agents/skills/mediatr-query-handler/SKILL.md" templateId="Intent.Application.MediatR.QueryHandlerSkillTemplate" />
+  <file path="RdbmsImporterTests.Api/Configuration/ApiVersionSwaggerGenOptions.cs" templateId="Intent.AspNetCore.Versioning.ApiVersionSwaggerGenOptions" />
+  <file path="RdbmsImporterTests.Api/Configuration/ApiVersioningConfiguration.cs" templateId="Intent.AspNetCore.Versioning.ApiVersioningConfiguration" />
+  <file path="RdbmsImporterTests.Api/Configuration/ApplicationSecurityConfiguration.cs" templateId="Intent.Application.Identity.ApplicationSecurityConfiguration" />
+  <file path="RdbmsImporterTests.Api/Configuration/HealthChecksConfiguration.cs" templateId="Intent.AspNetCore.HealthChecks.HealthChecksConfiguration" />
+  <file path="RdbmsImporterTests.Api/Configuration/ProblemDetailsConfiguration.cs" templateId="Intent.AspNetCore.ProblemDetailsConfiguration" />
+  <file path="RdbmsImporterTests.Api/Configuration/SwashbuckleConfiguration.cs" templateId="Intent.AspNetCore.Swashbuckle.SwashbuckleConfiguration" />
+  <file path="RdbmsImporterTests.Api/Filters/AuthorizeCheckOperationFilter.cs" templateId="Intent.AspNetCore.Swashbuckle.Security.AuthorizeCheckOperationFilter" />
+  <file path="RdbmsImporterTests.Api/Filters/ExceptionFilter.cs" templateId="Intent.AspNetCore.Controllers.ExceptionFilter" />
+  <file path="RdbmsImporterTests.Api/Filters/HideRouteParametersFromBodyOperationFilter.cs" templateId="Intent.AspNetCore.Swashbuckle.HideRouteParametersFromBodyOperationFilter" />
+  <file path="RdbmsImporterTests.Api/Filters/TypeSchemaFilter.cs" templateId="Intent.AspNetCore.Swashbuckle.TypeSchemaFilter" />
+  <file path="RdbmsImporterTests.Api/Logging/BoundedLoggingDestructuringPolicy.cs" templateId="Intent.Modules.AspNetCore.Logging.Serilog.BoundedLoggingDestructuringPolicyTemplate" />
+  <file path="RdbmsImporterTests.Api/Program.cs" templateId="Intent.AspNetCore.Program" />
+  <file path="RdbmsImporterTests.Api/Properties/launchSettings.json" templateId="Intent.VisualStudio.Projects.CoreWeb.LaunchSettings" />
+  <file path="RdbmsImporterTests.Api/RdbmsImporterTests.Api.csproj" templateId="Intent.VisualStudio.Projects.CSharpProject" />
+  <file path="RdbmsImporterTests.Api/Services/CurrentUserService.cs" templateId="Intent.Application.Identity.CurrentUserService" />
+  <file path="RdbmsImporterTests.Api/Startup.cs" templateId="Intent.AspNetCore.Startup" />
+  <file path="RdbmsImporterTests.Api/appsettings.json" templateId="Intent.VisualStudio.Projects.CoreWeb.AppSettings-Default" />
+  <file path="RdbmsImporterTests.Application/Common/Behaviours/AuthorizationBehaviour.cs" templateId="Intent.Application.MediatR.Behaviours.AuthorizationBehaviour" />
+  <file path="RdbmsImporterTests.Application/Common/Behaviours/LoggingBehaviour.cs" templateId="Intent.Application.MediatR.Behaviours.LoggingBehaviour" />
+  <file path="RdbmsImporterTests.Application/Common/Behaviours/PerformanceBehaviour.cs" templateId="Intent.Application.MediatR.Behaviours.PerformanceBehaviour" />
+  <file path="RdbmsImporterTests.Application/Common/Behaviours/UnhandledExceptionBehaviour.cs" templateId="Intent.Application.MediatR.Behaviours.UnhandledExceptionBehaviour" />
+  <file path="RdbmsImporterTests.Application/Common/Behaviours/UnitOfWorkBehaviour.cs" templateId="Intent.Application.MediatR.Behaviours.UnitOfWorkBehaviour" />
+  <file path="RdbmsImporterTests.Application/Common/Behaviours/ValidationBehaviour.cs" templateId="Intent.Application.MediatR.FluentValidation.ValidationBehaviour" />
+  <file path="RdbmsImporterTests.Application/Common/Exceptions/ForbiddenAccessException.cs" templateId="Intent.Application.Identity.ForbiddenAccessException" />
+  <file path="RdbmsImporterTests.Application/Common/Interfaces/IBypassPipelineValidation.cs" templateId="Intent.Application.MediatR.FluentValidation.BypassPipelineValidationInterface" />
+  <file path="RdbmsImporterTests.Application/Common/Interfaces/ICommand.cs" templateId="Intent.Application.MediatR.CommandInterface" />
+  <file path="RdbmsImporterTests.Application/Common/Interfaces/ICurrentUser.cs" templateId="Intent.Application.Identity.CurrentUserInterface" />
+  <file path="RdbmsImporterTests.Application/Common/Interfaces/ICurrentUserService.cs" templateId="Intent.Application.Identity.CurrentUserServiceInterface" />
+  <file path="RdbmsImporterTests.Application/Common/Interfaces/IDomainEventService.cs" templateId="Intent.DomainEvents.DomainEventServiceInterface" />
+  <file path="RdbmsImporterTests.Application/Common/Interfaces/IQuery.cs" templateId="Intent.Application.MediatR.QueryInterface" />
+  <file path="RdbmsImporterTests.Application/Common/Mappings/IMapFrom.cs" templateId="Intent.Application.AutoMapper.MapFromInterface" />
+  <file path="RdbmsImporterTests.Application/Common/Mappings/MappingProfile.cs" templateId="Intent.Application.AutoMapper.MappingProfile" />
+  <file path="RdbmsImporterTests.Application/Common/Models/DomainEventNotification.cs" templateId="Intent.MediatR.DomainEvents.DomainEventNotification" />
+  <file path="RdbmsImporterTests.Application/Common/Models/Result.cs" templateId="Intent.Application.Identity.ResultModel" />
+  <file path="RdbmsImporterTests.Application/Common/Pagination/PagedList.cs" templateId="Intent.EntityFrameworkCore.PagedList" />
+  <file path="RdbmsImporterTests.Application/Common/Pagination/PagedResult.cs" templateId="Intent.Application.Dtos.Pagination.PagedResult" />
+  <file path="RdbmsImporterTests.Application/Common/Pagination/PagedResultMappingExtensions.cs" templateId="Intent.Application.Dtos.Pagination.PagedResultMappingExtensions" />
+  <file path="RdbmsImporterTests.Application/Common/Security/AuthorizeAttribute.cs" templateId="Intent.Application.Identity.AuthorizeAttribute" />
+  <file path="RdbmsImporterTests.Application/Common/Validation/IValidatorProvider.cs" templateId="Intent.Application.FluentValidation.Dtos.ValidatorProviderInterface" />
+  <file path="RdbmsImporterTests.Application/Common/Validation/ValidatorProvider.cs" templateId="Intent.Application.FluentValidation.Dtos.ValidatorProvider" />
+  <file path="RdbmsImporterTests.Application/DependencyInjection.cs" templateId="Intent.Application.DependencyInjection.DependencyInjection" />
+  <file path="RdbmsImporterTests.Application/Orders/CreateOrder/CreateOrderCommand.cs" templateId="Intent.Application.MediatR.CommandModels" />
+  <file path="RdbmsImporterTests.Application/Orders/CreateOrder/CreateOrderCommandHandler.cs" templateId="Intent.Application.MediatR.CommandHandler" />
+  <file path="RdbmsImporterTests.Application/Orders/CreateOrder/CreateOrderCommandValidator.cs" templateId="Intent.Application.MediatR.FluentValidation.CommandValidator" />
+  <file path="RdbmsImporterTests.Application/Orders/CustomerOrderDto.cs" templateId="Intent.Application.Dtos.DtoModel" />
+  <file path="RdbmsImporterTests.Application/Orders/CustomerOrderDtoMappingExtensions.cs" templateId="Intent.Application.Dtos.AutoMapper.MappingExtensions" />
+  <file path="RdbmsImporterTests.Application/Orders/DeleteOrder/DeleteOrderCommand.cs" templateId="Intent.Application.MediatR.CommandModels" />
+  <file path="RdbmsImporterTests.Application/Orders/DeleteOrder/DeleteOrderCommandHandler.cs" templateId="Intent.Application.MediatR.CommandHandler" />
+  <file path="RdbmsImporterTests.Application/Orders/DeleteOrder/DeleteOrderCommandValidator.cs" templateId="Intent.Application.MediatR.FluentValidation.CommandValidator" />
+  <file path="RdbmsImporterTests.Application/Orders/GetCustomerOrders/GetCustomerOrdersQuery.cs" templateId="Intent.Application.MediatR.QueryModels" />
+  <file path="RdbmsImporterTests.Application/Orders/GetCustomerOrders/GetCustomerOrdersQueryHandler.cs" templateId="Intent.Application.MediatR.QueryHandler" />
+  <file path="RdbmsImporterTests.Application/Orders/GetCustomerOrders/GetCustomerOrdersQueryValidator.cs" templateId="Intent.Application.MediatR.FluentValidation.QueryValidator" />
+  <file path="RdbmsImporterTests.Application/Orders/GetOrderById/GetOrderByIdQuery.cs" templateId="Intent.Application.MediatR.QueryModels" />
+  <file path="RdbmsImporterTests.Application/Orders/GetOrderById/GetOrderByIdQueryHandler.cs" templateId="Intent.Application.MediatR.QueryHandler" />
+  <file path="RdbmsImporterTests.Application/Orders/GetOrderById/GetOrderByIdQueryValidator.cs" templateId="Intent.Application.MediatR.FluentValidation.QueryValidator" />
+  <file path="RdbmsImporterTests.Application/Orders/GetOrders/GetOrdersQuery.cs" templateId="Intent.Application.MediatR.QueryModels" />
+  <file path="RdbmsImporterTests.Application/Orders/GetOrders/GetOrdersQueryHandler.cs" templateId="Intent.Application.MediatR.QueryHandler" />
+  <file path="RdbmsImporterTests.Application/Orders/GetOrders/GetOrdersQueryValidator.cs" templateId="Intent.Application.MediatR.FluentValidation.QueryValidator" />
+  <file path="RdbmsImporterTests.Application/Orders/OrderDto.cs" templateId="Intent.Application.Dtos.DtoModel" />
+  <file path="RdbmsImporterTests.Application/Orders/OrderDtoMappingExtensions.cs" templateId="Intent.Application.Dtos.AutoMapper.MappingExtensions" />
+  <file path="RdbmsImporterTests.Application/Orders/UpdateOrder/UpdateOrderCommand.cs" templateId="Intent.Application.MediatR.CommandModels" />
+  <file path="RdbmsImporterTests.Application/Orders/UpdateOrder/UpdateOrderCommandHandler.cs" templateId="Intent.Application.MediatR.CommandHandler" />
+  <file path="RdbmsImporterTests.Application/Orders/UpdateOrder/UpdateOrderCommandValidator.cs" templateId="Intent.Application.MediatR.FluentValidation.CommandValidator" />
+  <file path="RdbmsImporterTests.Application/RdbmsImporterTests.Application.csproj" templateId="Intent.VisualStudio.Projects.CSharpProject" />
+  <file path="RdbmsImporterTests.Domain/Common/CollectionExtensions.cs" templateId="Intent.Entities.CollectionExtensions" />
+  <file path="RdbmsImporterTests.Domain/Common/DomainEvent.cs" templateId="Intent.DomainEvents.DomainEventBase" />
+  <file path="RdbmsImporterTests.Domain/Common/Exceptions/NotFoundException.cs" templateId="Intent.Entities.NotFoundException" />
+  <file path="RdbmsImporterTests.Domain/Common/IHasDomainEvent.cs" templateId="Intent.DomainEvents.HasDomainEventInterface" />
+  <file path="RdbmsImporterTests.Domain/Common/Interfaces/IUnitOfWork.cs" templateId="Intent.Entities.Repositories.Api.UnitOfWorkInterface" />
+  <file path="RdbmsImporterTests.Domain/Common/UpdateHelper.cs" templateId="Intent.Entities.UpdateHelper" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Dbo/BrandTypeModel.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Dbo/GetCustomerOrdersResponse.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Dbo/GetOrderItemDetailsResponse.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Dbo/GetProductDetailsAndCountResponse.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Dbo/GetProductDetailsAndCountResult.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Public/BrandTypeModel.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Public/GetCustomerOrdersResponse.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Public/GetOrderItemDetailsResponse.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidGenerateV1Response.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidGenerateV1mcResponse.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidGenerateV3Response.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidGenerateV4Response.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidGenerateV5Response.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidNilResponse.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidNsDnsResponse.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidNsOidResponse.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidNsUrlResponse.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Contracts/Public/UuidNsX500Response.cs" templateId="Intent.Entities.DataContract" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Address.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/AspNetRole.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/AspNetRoleClaim.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/AspNetUser.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/AspNetUserClaim.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/AspNetUserLogin.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/AspNetUserRole.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/AspNetUserToken.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Brand.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Child.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Customer.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/FKTable.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/LegacyTable.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Order.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/OrderItem.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Parent.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Price.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/PrimaryTable.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/Product.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Dbo/SelfReferenceTable.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/PsgSchema2/Bank.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/PsgSchema2/Bank1.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/PsgSchema2/Customer.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/PsgViews/VwOrder.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/Address.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/AspNetRole.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/AspNetRoleClaim.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/AspNetUser.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/AspNetUserClaim.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/AspNetUserLogin.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/AspNetUserRole.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/AspNetUserToken.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/Brand.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/Child.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/Customer.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/Fktable.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/LegacyTable.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/Order.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/OrderItem.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/Parent.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/Price.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/Primarytable.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/Product.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Public/Selfreferencetable.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Schema2/Bank.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Schema2/Banks.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Schema2/Customer.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Schema2/Customers.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/Entities/Views/VwOrder.cs" templateId="Intent.Entities.DomainEntity" />
+  <file path="RdbmsImporterTests.Domain/RdbmsImporterTests.Domain.csproj" templateId="Intent.VisualStudio.Projects.CSharpProject" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAddressRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAspNetRoleClaimRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAspNetRoleRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAspNetUserClaimRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAspNetUserLoginRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAspNetUserRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAspNetUserRoleRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IAspNetUserTokenRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IBrandRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IChildRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/ICustomerRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IElementRepository.cs" templateId="Intent.Entities.Repositories.Api.CustomRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IFKTableRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/ILegacyTableRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IOrderItemRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IOrderRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IParentRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IPriceRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IPrimaryTableRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IProductRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/ISelfReferenceTableRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Dbo/IStoredProcedureRepository.cs" templateId="Intent.Entities.Repositories.Api.CustomRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/IEFRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.EFRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/IPagedList.cs" templateId="Intent.Entities.Repositories.Api.PagedListInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/IRepository.cs" templateId="Intent.Entities.Repositories.Api.RepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/PsgSchema2/IBank1Repository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/PsgSchema2/IBankRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/PsgSchema2/ICustomerRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/PsgViews/IVwOrderRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAddressRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAspNetRoleClaimRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAspNetRoleRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAspNetUserClaimRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAspNetUserLoginRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAspNetUserRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAspNetUserRoleRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IAspNetUserTokenRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IBrandRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IChildRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/ICustomerRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IFktableRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/ILegacyTableRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IOrderItemRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IOrderRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IParentRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IPriceRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IPrimarytableRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IProductRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/ISelfreferencetableRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Public/IStoredProcedureRepository.cs" templateId="Intent.Entities.Repositories.Api.CustomRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Schema2/IBankRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Schema2/IBanksRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Schema2/ICustomerRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Schema2/ICustomersRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Domain/Repositories/Views/IVwOrderRepository.cs" templateId="Intent.Entities.Repositories.Api.EntityRepositoryInterface" />
+  <file path="RdbmsImporterTests.Infrastructure/DependencyInjection.cs" templateId="Intent.Infrastructure.DependencyInjection.DependencyInjection" />
+  <file path="RdbmsImporterTests.Infrastructure/Migrations/README.md" templateId="Intent.EntityFrameworkCore.DbMigrationsReadMe" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/ApplicationDbContext.cs" templateId="Intent.EntityFrameworkCore.DbContext" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AddressConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AspNetRoleClaimConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AspNetRoleConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AspNetUserClaimConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AspNetUserConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AspNetUserLoginConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AspNetUserRoleConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/AspNetUserTokenConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/BrandConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/ChildConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/CustomerConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/FKTableConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/GetCustomerOrdersResponseConfiguration.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractEntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/GetOrderItemDetailsResponseConfiguration.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractEntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/GetProductDetailsAndCountResponseConfiguration.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractEntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/LegacyTableConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/OrderConfiguration.cs" deviationsHash="5F63E797A465569E514FFB23D1E2D79085EDA559C0ABB812B2FC7B68D7913034" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/OrderItemConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/ParentConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/PriceConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/PrimaryTableConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/ProductConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Dbo/SelfReferenceTableConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/PsgSchema2/Bank1Configuration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/PsgSchema2/BankConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/PsgSchema2/CustomerConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/PsgViews/VwOrderConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AddressConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AspNetRoleClaimConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AspNetRoleConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AspNetUserClaimConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AspNetUserConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AspNetUserLoginConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AspNetUserRoleConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/AspNetUserTokenConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/BrandConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/ChildConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/CustomerConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/FktableConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/GetCustomerOrdersResponseConfiguration.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractEntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/GetOrderItemDetailsResponseConfiguration.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractEntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/LegacyTableConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/OrderConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/OrderItemConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/ParentConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/PriceConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/PrimarytableConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/ProductConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/SelfreferencetableConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidGenerateV1ResponseConfiguration.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractEntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidGenerateV1mcResponseConfiguration.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractEntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidGenerateV3ResponseConfiguration.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractEntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidGenerateV4ResponseConfiguration.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractEntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidGenerateV5ResponseConfiguration.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractEntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidNilResponseConfiguration.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractEntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidNsDnsResponseConfiguration.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractEntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidNsOidResponseConfiguration.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractEntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidNsUrlResponseConfiguration.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractEntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Public/UuidNsX500ResponseConfiguration.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractEntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Schema2/BankConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Schema2/BanksConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Schema2/CustomerConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Schema2/CustomersConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/Configurations/Views/VwOrderConfiguration.cs" templateId="Intent.EntityFrameworkCore.EntityTypeConfiguration" />
+  <file path="RdbmsImporterTests.Infrastructure/Persistence/PostgresAppDbContext.cs" templateId="Intent.EntityFrameworkCore.DbContext" />
+  <file path="RdbmsImporterTests.Infrastructure/RdbmsImporterTests.Infrastructure.csproj" templateId="Intent.VisualStudio.Projects.CSharpProject" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AddressRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AspNetRoleClaimRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AspNetRoleRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AspNetUserClaimRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AspNetUserLoginRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AspNetUserRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AspNetUserRoleRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/AspNetUserTokenRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/BrandRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/ChildRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/CustomerRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/ElementRepository.cs" templateId="Intent.Entities.Repositories.Api.CustomRepository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/FKTableRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/LegacyTableRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/OrderItemRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/OrderRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/ParentRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/PriceRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/PrimaryTableRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/ProductRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/SelfReferenceTableRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Dbo/StoredProcedureRepository.cs" templateId="Intent.Entities.Repositories.Api.CustomRepository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Dbo/BrandTypeModelExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Dbo/GetCustomerOrdersResponseExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Dbo/GetOrderItemDetailsResponseExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Dbo/GetProductDetailsAndCountResponseExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/BrandTypeModelExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/GetCustomerOrdersResponseExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/GetOrderItemDetailsResponseExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidGenerateV1ResponseExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidGenerateV1mcResponseExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidGenerateV3ResponseExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidGenerateV4ResponseExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidGenerateV5ResponseExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidNilResponseExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidNsDnsResponseExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidNsOidResponseExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidNsUrlResponseExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/ExtensionMethods/Public/UuidNsX500ResponseExtensionMethods.cs" templateId="Intent.EntityFrameworkCore.Repositories.DataContractExtensionMethods" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/PsgSchema2/Bank1Repository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/PsgSchema2/BankRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/PsgSchema2/CustomerRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/PsgViews/VwOrderRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AddressRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AspNetRoleClaimRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AspNetRoleRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AspNetUserClaimRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AspNetUserLoginRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AspNetUserRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AspNetUserRoleRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/AspNetUserTokenRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/BrandRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/ChildRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/CustomerRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/FktableRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/LegacyTableRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/OrderItemRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/OrderRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/ParentRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/PriceRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/PrimarytableRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/ProductRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/SelfreferencetableRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Public/StoredProcedureRepository.cs" templateId="Intent.Entities.Repositories.Api.CustomRepository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/RepositoryBase.cs" templateId="Intent.EntityFrameworkCore.Repositories.RepositoryBase" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Schema2/BankRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Schema2/BanksRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Schema2/CustomerRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Schema2/CustomersRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Repositories/Views/VwOrderRepository.cs" templateId="Intent.EntityFrameworkCore.Repositories.Repository" />
+  <file path="RdbmsImporterTests.Infrastructure/Services/DomainEventService.cs" templateId="Intent.MediatR.DomainEvents.DomainEventService" />
+  <file path="RdbmsImporterTests.sln" templateId="Intent.VisualStudio.Projects.VisualStudioSolution" />
 </managedFiles>
